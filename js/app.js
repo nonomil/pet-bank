@@ -298,6 +298,8 @@ function switchPage(page) {
     window.showPetLightbox = function(petName) {
         const poses = ['idle', 'happy', 'attack'];
         const labels = ['😊 待机', '😄 开心', '⚔️ 攻击'];
+        const nameMap = {dog:'柴犬',cat:'橘猫',rabbit:'兔子',turtle:'乌龟',hamster:'仓鼠',parrot:'鹦鹉',fish:'金鱼',hedgehog:'刺猬'};
+        const displayName = nameMap[petName] || petName;
         let overlay = document.getElementById('petLightbox');
         if (!overlay) {
             overlay = document.createElement('div');
@@ -308,7 +310,7 @@ function switchPage(page) {
         }
         overlay.innerHTML = `
             <div style="background:white;border-radius:16px;padding:24px;max-width:720px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-                <h2 style="margin:0 0 16px;font-size:18px;">🐾 ${petName} — 动作展示</h2>
+                <h2 style="margin:0 0 16px;font-size:18px;">🐾 ${displayName} — 动作展示</h2>
                 <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
                     ${poses.map((p, i) => `
                         <div style="text-align:center;cursor:pointer;" onclick="selectLightboxPose('${petName}','${p}')">

@@ -4,245 +4,195 @@
  */
 
 const TreasureChest = (function () {
-    // 宝箱类型定义
-    const CHEST_TYPES = {
-        DAILY: 'daily',
-        EXPLORE: 'explore',
-        MILESTONE: 'milestone'
-    };
+    const STORAGE_KEY = 'petbank_chests';
+    const DAILY_DATE_KEY = 'petbank_daily_claim_date';
+    const MILESTONES_KEY = 'petbank_claimed_milestones';
 
-    // 宝箱库存数据结构 (localStorage: petbank_chests)
+    // 宝箱库存
     let inventory = { daily: 0, explore: 0, milestone: 0 };
-
-    // 内部状态
     let itemsData = null;
 
-    // 加载数据
+    // ============ 数据持久化 ============
+    function save() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(inventory));
+    }
+
     async function load() {
         try {
             const resp = await fetch('data/items.json');
             const data = await resp.json();
             itemsData = data.items || [];
         } catch (e) {
-            console.error('[Treasure] Load items failed:', e);
+            console.warn('[Treasure] items.json load failed:', e);
         }
-
-        const saved = localStorage.getItem('petbank_chests');
+        const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
-            inventory = JSON.parse(saved);
+            try { inventory = JSON.parse(saved); } catch(e) {}
         }
     }
 
-    function save() {
-        localStorage.setItem('petbank_chests', JSON.stringify(inventory));
-    }
-
+    // ============ 日常宝箱 ============
     function hasClaimedDaily() {
-        const lastClaimed = localStorage.getItem('petbank_daily_claim_date');
-        if (!lastClaimed) return false;
-        const today = new Date().toLocaleDateString();
-        return lastClaimed === today;
-    }
-
-    function markDailyClaimed() {
-        localStorage.setItem('petbank_daily_claim_date', new Date().toLocaleDateString());
+        const last = localStorage.getItem(DAILY_DATE_KEY);
+        if (!last) return false;
+        return last === new Date().toLocaleDateString();
     }
 
     function canOpenDaily() {
         if (hasClaimedDaily()) return { can: false, msg: '今日已领取' };
-        
-        // 检查任务完成情况 (假设 app.js 中会更新 petbank_tasks_completed_today)
-        const completedToday = parseInt(localStorage.getItem('petbank_tasks_completed_today') || '0');
-        if (completedToday < 1) return { can: false, msg: '请先完成至少1个任务' };
-        
+        const done = parseInt(localStorage.getItem('petbank_tasks_completed_today') || '0');
+        if (done < 1) return { can: false, msg: '完成至少1个任务后可领取' };
         return { can: true };
     }
 
+    // ============ 里程碑宝箱 ============
     function checkMilestones() {
-        const pet = PetSystem.getState();
-        const level = pet.level;
+        const pet = PetSystem ? PetSystem.getState() : null;
+        if (!pet) return;
+        const level = pet.level || 1;
         const milestones = [5, 10, 15];
-        
-        let claimedMilestones = JSON.parse(localStorage.getItem('petbank_claimed_milestones') || '[]');
-        
-        let newlyUnlocked = false;
+        let claimed = JSON.parse(localStorage.getItem(MILESTONES_KEY) || '[]');
+        let newUnlock = false;
         milestones.forEach(m => {
-            if (level >= m && !claimedMilestones.includes(m)) {
+            if (level >= m && !claimed.includes(m)) {
                 inventory.milestone += 1;
-                claimedMilestones.push(m);
-                newlyUnlocked = true;
+                claimed.push(m);
+                newUnlock = true;
             }
         });
-
-        if (newlyUnlocked) {
-            localStorage.setItem('petbank_claimed_milestones', JSON.stringify(claimedMilestones));
+        if (newUnlock) {
+            localStorage.setItem(MILESTONES_KEY, JSON.stringify(claimed));
             save();
         }
     }
 
     function addExploreChest() {
-        if (Math.random() < 0.3) {
-            inventory.explore += 1;
-            save();
-            return true;
-        }
-        return false;
-    }
-
-    async function openChest(type) {
-        // 1. 验证类型和库存
-        if (type === CHEST_TYPES.DAILY) {
-            const check = canOpenDaily();
-            if (!check.can) {
-                alert(check.msg);
-                return null;
-            }
-            inventory.daily -= 1;
-            markDailyClaimed();
-        } else if (type === CHEST_TYPES.EXPLORE) {
-            if (inventory.explore <= 0) {
-                alert('没有探索宝箱');
-                return null;
-            }
-            inventory.explore -= 1;
-        } else if (type === CHEST_TYPES.MILESTONE) {
-            if (inventory.milestone <= 0) {
-                alert('没有里程碑宝箱');
-                return null;
-            }
-            inventory.milestone -= 1;
-        } else {
-            return null;
-        }
-
+        inventory.explore += 1;
         save();
-        
-        // 2. 动画准备
-        showAnimation(type);
-
-        // 3. 生成奖励并等待动画时间
-        const reward = await new Promise(resolve => {
-            setTimeout(() => {
-                const r = generateReward();
-                resolve(r);
-            }, 1500); // 模拟开箱动画时间
-        });
-
-        // 4. 执行动画效果 (金光 + 展示奖励)
-        showRewardEffect(reward);
-
-        // 5. 延迟应用奖励，让用户看完
-        setTimeout(() => {
-            applyReward(reward);
-            hideAnimation();
-            renderInventory();
-            resolveRewardUI(reward);
-        }, 1000);
-
-        return reward; 
     }
 
-    // 动画 UI 控制
-    function showAnimation(type) {
-        const modal = document.getElementById('chest-anim-modal');
-        const icon = document.getElementById('chest-anim-icon');
-        const typeMap = { 'daily': '🎁', 'explore': '🗺️', 'milestone': '🏆' };
-        
-        modal.style.display = 'flex';
-        icon.className = 'chest-anim-icon shaking';
-        icon.textContent = typeMap[type] || '🎁';
-    }
-
-    function showRewardEffect(reward) {
-        const modal = document.getElementById('chest-anim-modal');
-        const icon = document.getElementById('chest-anim-icon');
-        icon.className = 'chest-anim-icon golden-glow';
-    }
-
-    function hideAnimation() {
-        const modal = document.getElementById('chest-anim-modal');
-        modal.style.display = 'none';
-    }
-
-    function resolveRewardUI(reward) {
-        const resDiv = document.getElementById('chest-anim-reward');
-        if (resDiv) {
-            resDiv.innerHTML = `<h3>获得奖励!</h3><div class="reward-label">${reward.label}</div>`;
-            resDiv.style.display = 'block';
-        }
-    }
-
-    function generateReward() {
-        const isRare = Math.random() < 0.15; 
-        if (isRare) {
-            const points = 20 + Math.floor(Math.random() * 30);
-            return { type: 'points', value: points, label: `${points} 成长积分` };
-        } else {
+    // ============ 开箱 ============
+    function generateReward(rare) {
+        if (!rare) {
             if (Math.random() < 0.5) {
-                const points = 1 + Math.floor(Math.random() * 10);
-                return { type: 'points', value: points, label: `${points} 成长积分` };
-            } else {
-                if (!itemsData || itemsData.length === 0) {
-                    return { type: 'points', value: 5, label: '5 成长积分' };
-                }
+                const pts = 1 + Math.floor(Math.random() * 10);
+                return { type: 'points', value: pts, label: `${pts} 成长积分` };
+            } else if (itemsData && itemsData.length > 0) {
                 const item = itemsData[Math.floor(Math.random() * itemsData.length)];
                 return { type: 'item', id: item.id, label: item.name };
             }
+            return { type: 'points', value: 5, label: '5 成长积分' };
+        } else {
+            const pts = 20 + Math.floor(Math.random() * 30);
+            return { type: 'points', value: pts, label: `${pts} 成长积分` };
         }
     }
 
     function applyReward(reward) {
         if (reward.type === 'points') {
-            if (typeof totalPoints !== 'undefined') {
-                totalPoints += reward.value;
-                const topEl = document.getElementById('topPoints');
-                const accEl = document.getElementById('accountPoints');
-                if (topEl) topEl.textContent = totalPoints;
-                if (accEl) accEl.textContent = totalPoints;
-            }
-        } else if (reward.type === 'item') {
+            if (typeof totalPoints !== 'undefined') totalPoints += reward.value;
+            if (typeof PetSystem !== 'undefined') PetSystem.addExp(reward.value);
+            if (typeof saveAppState === 'function') saveAppState();
+            if (typeof renderAll === 'function') renderAll();
+        } else if (reward.type === 'item' && typeof InventorySystem !== 'undefined') {
             InventorySystem.addItem(reward.id, 1);
         }
     }
 
+    function openChest(type) {
+        if (type === 'daily') {
+            const check = canOpenDaily();
+            if (!check.can) { alert(check.msg); return; }
+            inventory.daily = Math.max(0, inventory.daily - 1);
+            localStorage.setItem(DAILY_DATE_KEY, new Date().toLocaleDateString());
+        } else {
+            if (inventory[type] <= 0) { alert('没有可用的宝箱！'); return; }
+            inventory[type] -= 1;
+        }
+        save();
+
+        const isRare = type === 'milestone' || Math.random() < 0.15;
+        const reward = generateReward(isRare);
+
+        // 动画
+        showChestAnimation(reward, () => {
+            applyReward(reward);
+        });
+    }
+
+    function showChestAnimation(reward, onDone) {
+        const modal = document.getElementById('chest-anim-modal');
+        if (!modal) { onDone(); return; }
+
+        const iconEl = modal.querySelector('#chest-anim-icon') || modal;
+        const rewardEl = modal.querySelector('#chest-anim-reward') || modal;
+
+        modal.style.display = 'flex';
+        modal.style.cssText += 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;flex-direction:column;';
+        iconEl.innerHTML = '<div style="font-size:80px;animation:chest-shake 0.5s ease-in-out 3">📦</div>';
+        rewardEl.innerHTML = '';
+
+        setTimeout(() => {
+            const glow = isRareReward() ? 'text-yellow-400' : 'text-green-400';
+            iconEl.innerHTML = `<div style="font-size:80px;animation:chest-glow 0.5s ease-out">🎉</div>`;
+            rewardEl.innerHTML = `<div style="font-size:24px;font-weight:bold;margin-top:16px;" class="${glow}">${reward.label}</div><button onclick="this.parentElement.parentElement.style.display='none'" style="margin-top:12px;padding:8px 24px;border-radius:8px;background:#4CAF50;color:#fff;border:none;cursor:pointer;">收下</button>`;
+            if (onDone) onDone();
+        }, 1500);
+    }
+
+    function isRareReward() { return false; }
+
+    // ============ UI渲染 ============
+    function renderInventory() {
+        const container = document.getElementById('chest-inventory-area') || document.getElementById('treasureWarehouseGrid');
+        if (!container) return;
+
+        const dailyCheck = canOpenDaily();
+        const dailyBtnStyle = inventory.daily > 0 ? '' : 'opacity:0.5;';
+
+        container.innerHTML = `
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                <div class="chest-card" style="text-align:center;padding:16px;border-radius:12px;background:#f8f6f0;border:2px solid #e8e0c8;cursor:pointer;${dailyBtnStyle}" onclick="TreasureChest.openChest('daily')">
+                    <div style="font-size:32px;">🎁</div>
+                    <div style="font-size:12px;font-weight:bold;margin-top:4px;">日常宝箱</div>
+                    <div style="font-size:20px;font-weight:bold;color:#8B6F2A;">${inventory.daily}</div>
+                    <div style="font-size:10px;color:#999;margin-top:2px;">${dailyCheck.can ? '可领取' : dailyCheck.msg}</div>
+                </div>
+                <div class="chest-card" style="text-align:center;padding:16px;border-radius:12px;background:#f0f8ff;border:2px solid #c8e0f0;cursor:pointer;" onclick="TreasureChest.openChest('explore')">
+                    <div style="font-size:32px;">🗺️</div>
+                    <div style="font-size:12px;font-weight:bold;margin-top:4px;">探索宝箱</div>
+                    <div style="font-size:20px;font-weight:bold;color:#4A90D9;">${inventory.explore}</div>
+                </div>
+                <div class="chest-card" style="text-align:center;padding:16px;border-radius:12px;background:#fff8f0;border:2px solid #f0e0c8;cursor:pointer;" onclick="TreasureChest.openChest('milestone')">
+                    <div style="font-size:32px;">🏆</div>
+                    <div style="font-size:12px;font-weight:bold;margin-top:4px;">里程碑宝箱</div>
+                    <div style="font-size:20px;font-weight:bold;color:#D4A017;">${inventory.milestone}</div>
+                </div>
+            </div>
+        `;
+
+        // 更新状态文字
+        const statusEl = document.getElementById('chestDailyStatus');
+        if (statusEl) {
+            statusEl.textContent = hasClaimedDaily() ? '今日已领取 ✓' : (inventory.daily > 0 ? `${inventory.daily} 个可开` : '今日未领取');
+        }
+    }
+
+    // ============ 初始化 ============
     function init() {
         load().then(() => {
+            // 初始给1个日常宝箱
+            if (!hasClaimedDaily() && inventory.daily === 0) {
+                inventory.daily = 1;
+                save();
+            }
             checkMilestones();
             renderInventory();
         });
     }
 
-    function renderInventory() {
-        const container = document.getElementById('chest-inventory-area');
-        if (!container) return;
-
-        container.innerHTML = `
-            <div class="grid grid-cols-3 gap-4 mt-4">
-                <div class="chest-card" onclick="TreasureChest.openChest('daily')">
-                    <div class="chest-icon">🎁</div>
-                    <div class="chest-name">日常</div>
-                    <div class="chest-count">${inventory.daily}</div>
-                </div>
-                <div class="chest-card" onclick="TreasureChest.openChest('explore')">
-                    <div class="chest-icon">🗺️</div>
-                    <div class="chest-name">探索</div>
-                    <div class="chest-count">${inventory.explore}</div>
-                </div>
-                <div class="chest-card" onclick="TreasureChest.openChest('milestone')">
-                    <div class="chest-icon">🏆</div>
-                    <div class="chest-name">里程碑</div>
-                    <div class="chest-count">${inventory.milestone}</div>
-                </div>
-            </div>
-        `;
-    }
-
     return {
-        init,
-        openChest,
-        addExploreChest,
-        checkMilestones,
-        renderInventory
+        init, openChest, addExploreChest, checkMilestones, renderInventory
     };
 })();
 
