@@ -1,6 +1,13 @@
 /**
- * pet.js - 宠物养成核心系统
+ * pet.js - 宠物养成核心系统 v2.0
  * 负责：宠物状态管理、等级/经验/HP、阶段进化、行动(喂食/玩耍/休息)
+ * 
+ * 宠物数据库来源：
+ *   - pet-bank 原生 8 种（经典系列）
+ *   - 仓鼠大冒险 91 种（灵兽族/星瞳族/绮梦族/萌肖族/酷肖族 等 12 系列）
+ *   - classpet-pro1.0 40 种（萌宠风/幻想风/像素风/科幻风/国潮风 5 风格）
+ * 
+ * 数据文件：data/pets.json（139 种宠物）
  */
 
 const PetSystem = (function () {
@@ -16,8 +23,17 @@ const PetSystem = (function () {
     const EXP_TABLE = [0, 30, 80, 150, 250, 400, 600, 850, 1200, 1600];
     const MAX_LEVEL = 10;
 
-    // 宠物种类配置
-    const SPECIES = [
+    // 稀有度配置
+    const RARITY = {
+        common:    { name: '普通', color: '#95a5a6', icon: '⚪' },
+        rare:      { name: '稀有', color: '#3498db', icon: '🔵' },
+        epic:      { name: '史诗', color: '#9b59b6', icon: '🟣' },
+        legendary: { name: '传说', color: '#f39c12', icon: '🟡' }
+    };
+
+    // 宠物种类数据库（139 种，从 data/pets.json 动态加载）
+    // 内置 fallback 8 种经典宠物
+    const SPECIES_FALLBACK = [
         { id: 'dog', name: '柴犬', emoji: '🐕', desc: '活泼忠诚，需要每天遛弯', base_hp: 110, base_atk: 7 },
         { id: 'cat', name: '橘猫', emoji: '🐈', desc: '独立慵懒，陪伴即可', base_hp: 95, base_atk: 6 },
         { id: 'rabbit', name: '兔子', emoji: '🐰', desc: '温柔安静，需要干净环境', base_hp: 80, base_atk: 4 },
@@ -27,6 +43,10 @@ const PetSystem = (function () {
         { id: 'goldfish', name: '金鱼', emoji: '🐠', desc: '优雅安静，水中王者', base_hp: 75, base_atk: 3 },
         { id: 'hedgehog', name: '刺猬', emoji: '🦔', desc: '防御强，刺可反击', base_hp: 90, base_atk: 8 }
     ];
+
+    let SPECIES = [...SPECIES_FALLBACK];
+    let PET_DB_LOADED = false;
+    let ALL_SERIES = {};
 
     // 当前宠物状态
     let state = {
@@ -243,9 +263,69 @@ const PetSystem = (function () {
         });
     }
 
+    // 加载外部宠物数据库（data/pets.json）
+    async function loadPetDB() {
+        if (PET_DB_LOADED) return;
+        try {
+            const resp = await fetch('data/pets.json');
+            if (!resp.ok) return;
+            const db = await resp.json();
+            if (db.flat && db.flat.length > SPECIES_FALLBACK.length) {
+                SPECIES = db.flat.map(p => ({
+                    id: p.id,
+                    name: p.name,
+                    emoji: p.emoji || '🐾',
+                    desc: p.desc || '',
+                    base_hp: p.base_hp || 100,
+                    base_atk: p.base_atk || 5,
+                    series: p.series,
+                    rarity: p.rarity || 'common',
+                    source: p.source,
+                    stages: p.stages
+                }));
+                ALL_SERIES = db.series || {};
+                PET_DB_LOADED = true;
+                console.log(`[PetDB] Loaded ${SPECIES.length} pets, ${Object.keys(ALL_SERIES).length} series`);
+            }
+        } catch (e) {
+            console.warn('[PetDB] Failed to load pets.json:', e);
+        }
+    }
+
     // 获取所有种类
     function getAllSpecies() {
         return SPECIES;
+    }
+
+    // 按系列分组获取宠物
+    function getAllSpeciesBySeries() {
+        const groups = {};
+        for (const p of SPECIES) {
+            const s = p.series || '经典';
+            if (!groups[s]) groups[s] = [];
+            groups[s].push(p);
+        }
+        return groups;
+    }
+
+    // 按稀有度获取宠物
+    function getSpeciesByRarity(rarity) {
+        return SPECIES.filter(p => (p.rarity || 'common') === rarity);
+    }
+
+    // 获取稀有度配置
+    function getRarityConfig() {
+        return RARITY;
+    }
+
+    // 获取系列列表
+    function getAllSeries() {
+        return ALL_SERIES;
+    }
+
+    // 数据库是否已加载
+    function isDBLoaded() {
+        return PET_DB_LOADED;
     }
 
     // 公开 API
@@ -253,7 +333,9 @@ const PetSystem = (function () {
         load, save, chooseSpecies, getCurrentStage, getStageEmoji,
         addExp, takeDamage, heal, feed, play, rest, revive,
         equip, unequip, addExploration, addWin, getState, getAllSpecies,
-        MAX_LEVEL, EXP_TABLE
+        getAllSpeciesBySeries, getSpeciesByRarity, getRarityConfig, getAllSeries,
+        isDBLoaded, loadPetDB,
+        MAX_LEVEL, EXP_TABLE, STAGES, RARITY
     };
 })();
 

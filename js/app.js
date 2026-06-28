@@ -251,15 +251,48 @@ function renderSpeciesSelection() {
     if (!grid) return;
     const species = PetSystem.getAllSpecies();
     const pet = PetSystem.getState();
-    grid.innerHTML = species.map(s => `
-        <div class="task-card text-center ${pet.species === s.id ? 'done' : ''}" onclick="choosePetSpecies('${s.id}')">
-            <div class="text-4xl">${s.emoji}</div>
-            <div class="font-bold text-sm mt-1">${s.name}</div>
-            <div class="text-xs mt-1" style="color: var(--text-tertiary);">${s.desc}</div>
-            <div class="text-xs mt-1">❤️ ${s.base_hp} ⚔️ ${s.base_atk}</div>
-            ${pet.species === s.id ? '<div class="text-xs mt-1" style="color: var(--sage-green);">✓ 当前</div>' : ''}
-        </div>
-    `).join('');
+    // 更新宠物总数显示
+    const countEl = document.getElementById('petSpeciesCount');
+    if (countEl) countEl.textContent = `(${species.length}种可选)`;
+    const rarityCfg = PetSystem.getRarityConfig();
+
+    // 139种宠物按系列分组展示
+    const series = PetSystem.getAllSpeciesBySeries();
+    const seriesNames = Object.keys(series);
+
+    if (seriesNames.length <= 1) {
+        // 只有经典系列时用简单布局
+        grid.innerHTML = species.map(s => `
+            <div class="task-card text-center ${pet.species === s.id ? 'done' : ''}" onclick="choosePetSpecies('${s.id}')">
+                <div class="text-4xl">${s.emoji}</div>
+                <div class="font-bold text-sm mt-1">${s.name}</div>
+                <div class="text-xs mt-1" style="color: var(--text-tertiary);">${s.desc}</div>
+                <div class="text-xs mt-1">❤️ ${s.base_hp} ⚔️ ${s.base_atk}</div>
+                ${pet.species === s.id ? '<div class="text-xs mt-1" style="color: var(--sage-green);">✓ 当前</div>' : ''}
+            </div>
+        `).join('');
+    } else {
+        // 多系列：按系列分组 + 稀有度标签
+        let html = '';
+        for (const name of seriesNames) {
+            const pets = series[name];
+            html += `<div class="col-span-full mt-4 mb-2">
+                <div class="text-sm font-bold" style="color: var(--sage-green);">${name} <span class="text-xs font-normal" style="color: var(--text-tertiary);">(${pets.length}种)</span></div>
+            </div>`;
+            for (const s of pets) {
+                const r = rarityCfg[s.rarity || 'common'] || rarityCfg.common;
+                html += `
+                <div class="task-card text-center ${pet.species === s.id ? 'done' : ''}" onclick="choosePetSpecies('${s.id}')">
+                    <div class="text-3xl">${s.emoji}</div>
+                    <div class="font-bold text-sm mt-1">${s.name}</div>
+                    <div class="text-xs mt-1" style="color: ${r.color};">${r.icon} ${r.name}</div>
+                    <div class="text-xs mt-1">❤️${s.base_hp} ⚔️${s.base_atk}</div>
+                    ${pet.species === s.id ? '<div class="text-xs mt-1" style="color: var(--sage-green);">✓ 当前</div>' : ''}
+                </div>`;
+            }
+        }
+        grid.innerHTML = html;
+    }
 }
 
 function choosePetSpecies(speciesId) {
