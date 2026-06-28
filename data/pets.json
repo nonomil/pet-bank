@@ -4028,8 +4028,8 @@
   "flat": [
     {
       "id": "dog",
-      "name": "柴犬",
-      "emoji": "🐕",
+      "name": "豌豆射手",
+      "emoji": "🫛",
       "series": "经典",
       "rarity": "common",
       "desc": "活泼忠诚，需要每天遛弯",
@@ -4045,8 +4045,8 @@
     },
     {
       "id": "cat",
-      "name": "橘猫",
-      "emoji": "🐈",
+      "name": "向日葵",
+      "emoji": "🌻",
       "series": "经典",
       "rarity": "common",
       "desc": "独立慵懒，陪伴即可",
@@ -4062,8 +4062,8 @@
     },
     {
       "id": "rabbit",
-      "name": "兔子",
-      "emoji": "🐰",
+      "name": "坚果墙",
+      "emoji": "🥜",
       "series": "经典",
       "rarity": "common",
       "desc": "温柔安静，需要干净环境",
@@ -4079,8 +4079,8 @@
     },
     {
       "id": "turtle",
-      "name": "乌龟",
-      "emoji": "🐢",
+      "name": "大嘴花",
+      "emoji": "🪴",
       "series": "经典",
       "rarity": "common",
       "desc": "长寿稳定，低维护难度",
@@ -4096,8 +4096,8 @@
     },
     {
       "id": "hamster",
-      "name": "仓鼠",
-      "emoji": "🐹",
+      "name": "寒冰射手",
+      "emoji": "❄️",
       "series": "经典",
       "rarity": "common",
       "desc": "小巧玲珑，互动频繁",
@@ -4113,8 +4113,8 @@
     },
     {
       "id": "parrot",
-      "name": "鹦鹉",
-      "emoji": "🦜",
+      "name": "双发射手",
+      "emoji": "🔫",
       "series": "经典",
       "rarity": "common",
       "desc": "能说会道，空中优势",
@@ -4130,8 +4130,8 @@
     },
     {
       "id": "goldfish",
-      "name": "金鱼",
-      "emoji": "🐠",
+      "name": "樱桃炸弹",
+      "emoji": "🍒",
       "series": "经典",
       "rarity": "common",
       "desc": "优雅安静，水中王者",
@@ -4147,8 +4147,8 @@
     },
     {
       "id": "hedgehog",
-      "name": "刺猬",
-      "emoji": "🦔",
+      "name": "机枪豌豆",
+      "emoji": "🟢",
       "series": "经典",
       "rarity": "common",
       "desc": "防御强，刺可反击",
