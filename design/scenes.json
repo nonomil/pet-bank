@@ -1,0 +1,89 @@
+{
+  "scenes": [
+    {
+      "id": "forest",
+      "name": "神秘森林",
+      "emoji": "🌲",
+      "bg_color": "#A8D8A8",
+      "danger_level": 1,
+      "hp_cost": 5,
+      "duration": "5-10 分钟",
+      "min_level": 1,
+      "description": "阳光斑驳的森林，蘑菇和小动物出没",
+      "monsters": [
+        {"id": "snail", "name": "小蜗牛", "emoji": "🐌", "hp": 20, "atk": 2, "exp": 5, "drops": [{"item_id": "leaf", "rate": 0.6}, {"item_id": "mushroom", "rate": 0.3}]},
+        {"id": "rabbit_wild", "name": "野兔子", "emoji": "🐰", "hp": 30, "atk": 3, "exp": 8, "drops": [{"item_id": "carrot", "rate": 0.5}, {"item_id": "leaf", "rate": 0.4}]},
+        {"id": "spider", "name": "大蜘蛛", "emoji": "🕷️", "hp": 50, "atk": 5, "exp": 15, "drops": [{"item_id": "silk", "rate": 0.7}, {"item_id": "mushroom", "rate": 0.3}]}
+      ],
+      "rare_drops": [{"item_id": "forest_gem", "rate": 0.05, "name": "森林之泪"}]
+    },
+    {
+      "id": "beach",
+      "name": "蔚蓝海滩",
+      "emoji": "🏖️",
+      "bg_color": "#B8E0F0",
+      "danger_level": 2,
+      "hp_cost": 8,
+      "duration": "10-15 分钟",
+      "min_level": 2,
+      "description": "阳光、沙滩、贝壳与小螃蟹",
+      "monsters": [
+        {"id": "crab", "name": "小螃蟹", "emoji": "🦀", "hp": 40, "atk": 4, "exp": 10, "drops": [{"item_id": "shell", "rate": 0.7}, {"item_id": "seaweed", "rate": 0.3}]},
+        {"id": "fish", "name": "热带鱼", "emoji": "🐠", "hp": 25, "atk": 2, "exp": 6, "drops": [{"item_id": "pearl", "rate": 0.2}, {"item_id": "shell", "rate": 0.5}]},
+        {"id": "seagull", "name": "海鸥", "emoji": "🐦", "hp": 35, "atk": 5, "exp": 12, "drops": [{"item_id": "feather", "rate": 0.6}]}
+      ],
+      "rare_drops": [{"item_id": "ocean_gem", "rate": 0.04, "name": "海洋之心"}]
+    },
+    {
+      "id": "snow_mountain",
+      "name": "雪山之巅",
+      "emoji": "🏔️",
+      "bg_color": "#D8E8F0",
+      "danger_level": 3,
+      "hp_cost": 12,
+      "duration": "15-20 分钟",
+      "min_level": 3,
+      "description": "寒风呼啸，藏着稀有的冰晶",
+      "monsters": [
+        {"id": "wolf", "name": "雪狼", "emoji": "🐺", "hp": 80, "atk": 8, "exp": 25, "drops": [{"item_id": "ice_crystal", "rate": 0.5}, {"item_id": "fur", "rate": 0.4}]},
+        {"id": "yeti", "name": "小雪人", "emoji": "☃️", "hp": 100, "atk": 6, "exp": 30, "drops": [{"item_id": "ice_crystal", "rate": 0.7}]},
+        {"id": "penguin", "name": "企鹅", "emoji": "🐧", "hp": 60, "atk": 5, "exp": 18, "drops": [{"item_id": "fish_frozen", "rate": 0.6}]}
+      ],
+      "rare_drops": [{"item_id": "snow_gem", "rate": 0.03, "name": "雪莲之魂"}]
+    },
+    {
+      "id": "space_station",
+      "name": "太空站",
+      "emoji": "🚀",
+      "bg_color": "#1A1A3E",
+      "danger_level": 4,
+      "hp_cost": 18,
+      "duration": "20-30 分钟",
+      "min_level": 5,
+      "description": "失重环境，外星生物漂浮",
+      "monsters": [
+        {"id": "alien", "name": "小绿人", "emoji": "👽", "hp": 120, "atk": 10, "exp": 40, "drops": [{"item_id": "alien_tech", "rate": 0.6}]},
+        {"id": "asteroid", "name": "小行星", "emoji": "☄️", "hp": 80, "atk": 12, "exp": 35, "drops": [{"item_id": "space_rock", "rate": 0.7}]},
+        {"id": "robot", "name": "失灵机器人", "emoji": "🤖", "hp": 150, "atk": 9, "exp": 50, "drops": [{"item_id": "circuit", "rate": 0.6}, {"item_id": "battery", "rate": 0.4}]}
+      ],
+      "rare_drops": [{"item_id": "star_gem", "rate": 0.02, "name": "星辰碎片"}]
+    },
+    {
+      "id": "candy_kingdom",
+      "name": "糖果王国",
+      "emoji": "🍭",
+      "bg_color": "#FFD8E8",
+      "danger_level": 2,
+      "hp_cost": 6,
+      "duration": "10-15 分钟",
+      "min_level": 2,
+      "description": "棉花糖云朵，巧克力河流",
+      "monsters": [
+        {"id": "gummy", "name": "软糖怪", "emoji": "🍬", "hp": 50, "atk": 3, "exp": 15, "drops": [{"item_id": "candy", "rate": 0.7}]},
+        {"id": "lollipop", "name": "棒棒糖骑士", "emoji": "🍭", "hp": 70, "atk": 6, "exp": 20, "drops": [{"item_id": "lollipop", "rate": 0.5}, {"item_id": "candy", "rate": 0.3}]},
+        {"id": "cake", "name": "蛋糕魔王", "emoji": "🎂", "hp": 100, "atk": 8, "exp": 30, "drops": [{"item_id": "cake_slice", "rate": 0.4}, {"item_id": "candy", "rate": 0.5}]}
+      ],
+      "rare_drops": [{"item_id": "rainbow_gem", "rate": 0.04, "name": "彩虹糖晶"}]
+    }
+  ]
+}
