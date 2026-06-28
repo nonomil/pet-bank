@@ -1,5 +1,52 @@
 /* pet-bank 全局样式 */
 
+/* ============ 宠物精灵动画 ============ */
+.pet-sprite {
+    transition: transform 0.2s ease, filter 0.2s ease;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+.pet-sprite:hover {
+    transform: scale(1.08) rotate(-2deg);
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+}
+.pet-sprite.dancing {
+    animation: petDance 0.6s ease-in-out;
+}
+@keyframes petDance {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.1) rotate(-5deg); }
+    50% { transform: scale(1.05) rotate(5deg); }
+    75% { transform: scale(1.1) rotate(-3deg); }
+}
+.pet-display-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+}
+.pet-pose-btns {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+.btn-tiny {
+    font-size: 12px;
+    padding: 4px 10px;
+    border: 2px solid var(--sage-green);
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-tiny:hover {
+    background: var(--sage-light);
+    transform: translateY(-1px);
+}
+.btn-tiny.active {
+    background: var(--sage-green);
+    color: white;
+}
+
 :root {
     --sage-green: #6FA893;
     --sage-light: #A8C8B8;

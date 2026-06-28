@@ -191,28 +191,60 @@ function switchPage(page) {
     // 切换到特定页面时执行特定渲染
     if (page === 'pet') renderPetPage();
     if (page === 'explore') renderExplorePage();
+    if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
     if (page === 'inventory') renderInventoryPage();
 }
 
 // ============ 宠物页面渲染 ============
+    // 当前宠物姿态
+    let currentPose = 'idle';
+
+    // 获取宠物图片路径（支持多动作）
+    function getPetImagePath(speciesId, pose) {
+        const map = {
+            'goldfish': 'fish' // 内部ID与文件名映射
+        };
+        const imgName = map[speciesId] || speciesId;
+        return `assets/pets/poses/${imgName}_${pose || 'idle'}.png`;
+    }
+
+    // 切换宠物动作（点击按钮调用）
+    window.setPetPose = function(pose) {
+        currentPose = pose;
+        const pet = PetSystem.getState();
+        if (pet.species) {
+            const img = document.getElementById('petDisplayImg');
+            if (img) {
+                img.src = getPetImagePath(pet.species, pose);
+                // 添加切换动画
+                img.style.transform = 'scale(1.1)';
+                setTimeout(() => { img.style.transform = 'scale(1)'; }, 200);
+            }
+        }
+    };
+
 function renderPetPage() {
     const pet = PetSystem.getState();
     const species = PetSystem.getAllSpecies();
 
-    // 渲染宠物显示
-    const display = document.getElementById('petDisplay');
+    // 渲染宠物图片（替代emoji）
+    const displayImg = document.getElementById('petDisplayImg');
+    const poseBtns = document.getElementById('petPoseBtns');
     const nameDisplay = document.getElementById('petNameDisplay');
     const stageDisplay = document.getElementById('petStageDisplay');
     if (pet.species) {
-        display.textContent = PetSystem.getStageEmoji();
+        if (displayImg) {
+            displayImg.src = getPetImagePath(pet.species, currentPose);
+            displayImg.style.display = 'block';
+        }
+        if (poseBtns) poseBtns.style.display = 'flex';
         nameDisplay.textContent = pet.species_data?.name || '未知';
         stageDisplay.textContent = `${pet.stage.name}阶段 · Lv.${pet.level}`;
-        display.classList.add('happy');
     } else {
-        display.textContent = '🥚';
+        if (displayImg) displayImg.style.display = 'none';
+        if (poseBtns) poseBtns.style.display = 'none';
         nameDisplay.textContent = '尚未选择';
         stageDisplay.textContent = '请从下方选择一只宠物开始';
-        display.classList.remove('happy');
     }
 
     // 渲染 HP / EXP
@@ -419,9 +451,19 @@ function restPet() {
     renderPetPage();
 }
 
-// ============ 探索页面渲染 ============
-async function renderExplorePage() {
-    const grid = document.getElementById('sceneGrid');
+// 暴露给全局以支持 WalkSystem 刷新
+window.refreshPetUI = function() {
+    renderPetPage();
+};
+
+// 渲染种类选择
+renderSpeciesSelection();
+
+};
+
+// 渲染种类选择
+renderSpeciesSelection();
+
     if (!grid) return;
     await ExplorationSystem.loadScenes();
     const scenes = ExplorationSystem.getAllScenes();

@@ -1,0 +1,77 @@
+/* === 宝箱系统样式 === */
+
+/* 宝箱仓库卡片 */
+.chest-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.chest-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border-color: var(--sage-light);
+}
+.chest-icon { font-size: 24px; margin-bottom: 4px; }
+.chest-name { font-size: 12px; color: var(--text-secondary); }
+.chest-count { font-size: 18px; font-weight: 800; color: var(--text-primary); }
+
+/* 开箱动画 Modal */
+#chest-anim-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(45, 62, 54, 0.8);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.chest-anim-icon {
+    font-size: 120px;
+    transition: all 0.5s ease;
+}
+
+.chest-anim-icon.shaking {
+    animation: chest-shake 0.5s infinite;
+}
+
+.chest-anim-icon.golden-glow {
+    animation: chest-glow 1s infinite;
+    filter: drop-shadow(0 0 20px gold);
+}
+
+@keyframes chest-shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}
+
+@keyframes chest-glow {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+#chest-anim-reward {
+    margin-top: 30px;
+    text-align: center;
+    color: white;
+    display: none;
+}
+
+#chest-anim-reward h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.reward-label {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--gold);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
