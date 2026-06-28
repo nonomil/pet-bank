@@ -643,20 +643,36 @@ async function renderExplorePage() {
 
     grid.innerHTML = scenes.map(scene => {
         const unlocked = ExplorationSystem.isSceneUnlocked(scene);
-        return `
-            <div class="scene-card ${unlocked ? '' : 'locked'}" style="background: linear-gradient(135deg, ${scene.bg_color}, ${darken(scene.bg_color, 20)});"
-                 onclick="${unlocked ? `exploreScene('${scene.id}')` : `alert('需要 Lv.${scene.min_level} 才能探索')`}">
-                <div class="scene-emoji">${scene.emoji}</div>
-                <div class="scene-name">${scene.name}</div>
-                <div class="scene-desc">${scene.description}</div>
-                <div class="scene-stats">
-                    <span>⚠️ 危险 ${scene.danger_level}</span>
-                    <span>❤️ -${scene.hp_cost}</span>
-                    <span>⏱️ ${scene.duration}</span>
+        const dangerColors = ['', '#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#a855f7'];
+        const dangerColor = dangerColors[scene.danger_level] || '#6b7280';
+
+        if (!unlocked) {
+            return `<div class="scene-card locked" onclick="ExplorationSystem.tryUnlock('${scene.id}')">
+                <img class="scene-card-bg" src="${scene.image}" alt="${scene.name}" loading="lazy">
+                <div class="scene-card-badges">
+                    <span class="scene-card-badge" style="background:${dangerColor};color:white">Lv.${scene.min_level}</span>
                 </div>
-                ${unlocked ? '' : `<div class="absolute top-3 right-3 text-xs bg-black bg-opacity-30 px-2 py-1 rounded">🔒 Lv.${scene.min_level}</div>`}
+                <div class="scene-card-lock">
+                    <span class="scene-card-lock-icon">🔒</span>
+                    <div class="scene-card-lock-cost">${scene.unlock_cost > 0 ? scene.unlock_cost + ' 积分解锁' : '需要 Lv.' + scene.min_level}</div>
+                </div>
+                <div class="scene-card-overlay">
+                    <div class="scene-card-name">${scene.emoji} ${scene.name}</div>
+                </div>
+            </div>`;
+        }
+
+        return `<div class="scene-card" onclick="exploreScene('${scene.id}')">
+            <img class="scene-card-bg" src="${scene.image}" alt="${scene.name}" loading="lazy">
+            <div class="scene-card-badges">
+                <span class="scene-card-badge" style="background:${dangerColor};color:white">⚠️ ${scene.danger_level}</span>
+                <span class="scene-card-badge" style="background:rgba(0,0,0,0.5);color:white">❤️ -${scene.hp_cost}</span>
             </div>
-        `;
+            <div class="scene-card-overlay">
+                <div class="scene-card-name">${scene.emoji} ${scene.name}</div>
+                <div class="scene-card-desc">${scene.description}</div>
+            </div>
+        </div>`;
     }).join('');
 }
 
