@@ -1,0 +1,5 @@
+.claude/
+.codex/
+.playwright-mcp/
+.tmp/
+node_modules/

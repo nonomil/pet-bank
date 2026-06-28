@@ -109,9 +109,22 @@ const DIMENSIONS = {
 // ============ 应用状态 ============
 let totalPoints = 0;
 let completedTasks = new Set();
+let activeExploreSceneId = null;
+
+Object.defineProperty(window, 'totalPoints', {
+    configurable: true,
+    get() {
+        return totalPoints;
+    },
+    set(value) {
+        const parsed = Number(value);
+        totalPoints = Number.isFinite(parsed) ? parsed : 0;
+    }
+});
 
 // ============ 持久化 ============
 function saveAppState() {
+    window.totalPoints = totalPoints;
     localStorage.setItem('petbank_points', totalPoints.toString());
     localStorage.setItem('petbank_completed', JSON.stringify([...completedTasks]));
 }
@@ -119,6 +132,8 @@ function loadAppState() {
     totalPoints = parseInt(localStorage.getItem('petbank_points') || '0');
     const saved = localStorage.getItem('petbank_completed');
     if (saved) completedTasks = new Set(JSON.parse(saved));
+    localStorage.setItem('petbank_tasks_completed_today', String(completedTasks.size));
+    window.totalPoints = totalPoints;
 }
 
 // ============ 任务系统 ============
@@ -131,6 +146,7 @@ function toggleTask(dim, taskName, pts) {
         completedTasks.add(tid);
         totalPoints += pts;
     }
+    localStorage.setItem('petbank_tasks_completed_today', String(completedTasks.size));
     saveAppState();
     renderAll();
 }
@@ -180,6 +196,7 @@ function renderSidebarTasks() {
 }
 
 function updateStats() {
+    window.totalPoints = totalPoints;
     document.getElementById('topPoints').textContent = totalPoints;
     document.getElementById('accountPoints').textContent = totalPoints;
     const sc = document.getElementById('statCompleted');
@@ -196,6 +213,20 @@ function updateStats() {
     }
 }
 
+function updateTopPoints() {
+    totalPoints = parseInt(localStorage.getItem('petbank_points') || '0', 10);
+    window.totalPoints = totalPoints;
+    updateStats();
+}
+
+function addGrowthPoints(delta) {
+    totalPoints += delta;
+    if (totalPoints < 0) totalPoints = 0;
+    saveAppState();
+    updateStats();
+    return totalPoints;
+}
+
 function completeRecommended() {
     const samples = [
         { dim: 'learning', task: '阅读 20 分钟', pts: 1 },
@@ -209,6 +240,7 @@ function completeRecommended() {
             totalPoints += s.pts;
         }
     });
+    localStorage.setItem('petbank_tasks_completed_today', String(completedTasks.size));
     saveAppState();
     renderAll();
 }
@@ -222,13 +254,15 @@ function switchPage(page) {
     if (tab) tab.classList.add('active');
     // 切换到特定页面时执行特定渲染
     if (page === 'pet') renderPetPage();
-    if (page === 'explore') renderExplorePage();
+    if (page === 'explore') void renderExplorePage();
     if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
     if (page === 'inventory') renderInventoryPage();
     if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
     if (page === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
 }
+
+window.switchPage = switchPage;
 
 // ============ 宠物页面渲染 ============
     // 当前宠物姿态
@@ -306,6 +340,8 @@ function switchPage(page) {
         clearTimeout(toast._timer);
         toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 1200);
     }
+
+window.showToast = showToast;
 
     // 大图灯箱：展示宠物动作/进化阶段
     window.showPetLightbox = function(petName, style) {
@@ -410,12 +446,13 @@ function renderPetPage() {
     }
 
     // 渲染 HP / EXP
-    const hpPercent = (pet.hp / pet.total_max_hp) * 100;
-    const expPercent = pet.level >= PetSystem.MAX_LEVEL ? 100 : (pet.exp / PetSystem.EXP_TABLE[pet.level]) * 100;
+    const expToNext = pet.level >= PetSystem.MAX_LEVEL ? null : PetSystem.EXP_TABLE[pet.level];
+    const hpPercent = pet.total_max_hp > 0 ? (pet.hp / pet.total_max_hp) * 100 : 0;
+    const expPercent = expToNext ? (pet.exp / expToNext) * 100 : 100;
     document.getElementById('petHPFill').style.width = hpPercent + '%';
     document.getElementById('petHPText').textContent = `${pet.hp}/${pet.total_max_hp}`;
     document.getElementById('petEXPFill').style.width = expPercent + '%';
-    document.getElementById('petEXPText').textContent = `${pet.exp}/${PetSystem.EXP_TABLE[pet.level]}`;
+    document.getElementById('petEXPText').textContent = expToNext ? `${pet.exp}/${expToNext}` : 'MAX';
     document.getElementById('petLevelDisplay').textContent = `Lv.${pet.level}`;
     document.getElementById('petATKDisplay').textContent = pet.total_atk;
     document.getElementById('petExploreDisplay').textContent = pet.explorations;
@@ -434,7 +471,7 @@ function renderPetPage() {
     if (mapEmoji) mapEmoji.textContent = PetSystem.getStageEmoji();
     if (mapLevel) mapLevel.textContent = `Lv.${pet.level}`;
     if (mapHP) mapHP.textContent = `${pet.hp}/${pet.total_max_hp}`;
-    if (mapEXP) mapEXP.textContent = `${pet.exp}/${PetSystem.EXP_TABLE[pet.level]}`;
+    if (mapEXP) mapEXP.textContent = expToNext ? `${pet.exp}/${expToNext}` : 'MAX';
 
     // 渲染种类选择
     renderSpeciesSelection();
@@ -631,51 +668,108 @@ window.refreshPetUI = function() {
 };
 
 // ============ 探索页面渲染 ============
-async function renderExplorePage() {
+function renderScenePreview(scene) {
+    const preview = document.getElementById('sceneFocusCard');
+    if (!preview) return;
+    if (!scene) {
+        preview.innerHTML = '<div class="scene-preview-empty">选择一个场景预览</div>';
+        return;
+    }
+
+    const unlocked = ExplorationSystem.isSceneUnlocked(scene);
+    const actionButton = unlocked
+        ? `<button class="btn-primary" onclick="ExplorationSystem.goExplore('${scene.id}')">从 ${scene.name} 出发</button>`
+        : (scene.unlock_cost || 0) > 0
+            ? `<button class="btn-secondary" onclick="ExplorationSystem.tryUnlock('${scene.id}')">解锁 ${scene.name}</button>`
+            : `<button class="btn-secondary" onclick="showToast('需要先提升到 Lv.${scene.min_level}')">需要 Lv.${scene.min_level}</button>`;
+
+    preview.innerHTML = `
+        <div class="scene-preview-card">
+            <div class="scene-preview-image">
+                <img src="${scene.image}" alt="${scene.name}" loading="lazy">
+                <div class="scene-preview-body">
+                    <h3>${scene.emoji} ${scene.name}</h3>
+                    <p>${scene.description}</p>
+                    <div class="scene-preview-meta">
+                        <span>危险 ${scene.danger_level}</span>
+                        <span>HP -${scene.hp_cost}</span>
+                        <span>${scene.duration}</span>
+                        <span>${unlocked ? '已开放' : `Lv.${scene.min_level}`}</span>
+                    </div>
+                    <div class="scene-preview-action">${actionButton}</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
     await ExplorationSystem.loadScenes();
-    // 渲染首页场景卡片网格
-    ExplorationSystem.renderSceneGridMap();
-    // 渲染探索页场景列表
+    ExplorationSystem.renderSceneGridMap(selectedSceneId);
     const grid = document.getElementById('sceneGrid');
     if (!grid) return;
     const scenes = ExplorationSystem.getAllScenes();
-    const pet = PetSystem.getState();
+    if (!scenes.length) {
+        grid.innerHTML = '';
+        renderScenePreview(null);
+        return;
+    }
 
-    grid.innerHTML = scenes.map(scene => {
+    activeExploreSceneId = selectedSceneId && scenes.some((scene) => scene.id === selectedSceneId)
+        ? selectedSceneId
+        : scenes[0].id;
+    const activeScene = scenes.find((scene) => scene.id === activeExploreSceneId) || scenes[0];
+
+    grid.innerHTML = scenes.map((scene) => {
         const unlocked = ExplorationSystem.isSceneUnlocked(scene);
-        const dangerColors = ['', '#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#a855f7'];
-        const dangerColor = dangerColors[scene.danger_level] || '#6b7280';
-
-        if (!unlocked) {
-            return `<div class="scene-card locked" onclick="ExplorationSystem.tryUnlock('${scene.id}')">
-                <img class="scene-card-bg" src="${scene.image}" alt="${scene.name}" loading="lazy">
-                <div class="scene-card-badges">
-                    <span class="scene-card-badge" style="background:${dangerColor};color:white">Lv.${scene.min_level}</span>
+        const isActive = scene.id === activeExploreSceneId;
+        const lockNote = unlocked
+            ? '可立即出发'
+            : (scene.unlock_cost || 0) > 0
+                ? `${scene.unlock_cost} 积分解锁`
+                : `需要 Lv.${scene.min_level}`;
+        return `
+            <article class="scene-route-card ${unlocked ? '' : 'locked'} ${isActive ? 'active' : ''}" onclick="focusExploreScene('${scene.id}')">
+                <div class="scene-route-thumb">
+                    <img src="${scene.image}" alt="${scene.name}" loading="lazy">
                 </div>
-                <div class="scene-card-lock">
-                    <span class="scene-card-lock-icon">🔒</span>
-                    <div class="scene-card-lock-cost">${scene.unlock_cost > 0 ? scene.unlock_cost + ' 积分解锁' : '需要 Lv.' + scene.min_level}</div>
+                <div>
+                    <div class="scene-route-title"><span>${scene.emoji}</span><span>${scene.name}</span></div>
+                    <p class="scene-route-desc">${scene.description}</p>
+                    <div class="scene-route-pills">
+                        <span>危险 ${scene.danger_level}</span>
+                        <span>❤️ -${scene.hp_cost}</span>
+                        <span>${scene.duration}</span>
+                        <span>${unlocked ? '已开放' : `Lv.${scene.min_level}`}</span>
+                    </div>
                 </div>
-                <div class="scene-card-overlay">
-                    <div class="scene-card-name">${scene.emoji} ${scene.name}</div>
+                <div class="scene-route-action">
+                    <div class="scene-route-note">${lockNote}</div>
+                    <button class="${unlocked ? 'btn-primary' : 'btn-secondary'}" onclick="event.stopPropagation(); ${unlocked ? `ExplorationSystem.goExplore('${scene.id}')` : `ExplorationSystem.tryUnlock('${scene.id}')`}">
+                        ${unlocked ? '出发探索' : '尝试解锁'}
+                    </button>
                 </div>
-            </div>`;
-        }
-
-        return `<div class="scene-card" onclick="exploreScene('${scene.id}')">
-            <img class="scene-card-bg" src="${scene.image}" alt="${scene.name}" loading="lazy">
-            <div class="scene-card-badges">
-                <span class="scene-card-badge" style="background:${dangerColor};color:white">⚠️ ${scene.danger_level}</span>
-                <span class="scene-card-badge" style="background:rgba(0,0,0,0.5);color:white">❤️ -${scene.hp_cost}</span>
-            </div>
-            <div class="scene-card-overlay">
-                <div class="scene-card-name">${scene.emoji} ${scene.name}</div>
-                <div class="scene-card-desc">${scene.description}</div>
-            </div>
-        </div>`;
+            </article>
+        `;
     }).join('');
+
+    renderScenePreview(activeScene);
+    if (window.lucide) lucide.createIcons();
 }
 
+function focusExploreScene(sceneId) {
+    activeExploreSceneId = sceneId;
+    void renderExplorePage(sceneId);
+}
+
+function startExplorationUI(sceneId) {
+    activeExploreSceneId = sceneId;
+    void renderExplorePage(sceneId);
+}
+
+window.focusExploreScene = focusExploreScene;
+window.startExplorationUI = startExplorationUI;
+window.renderExplorePage = renderExplorePage;
 function darken(hex, percent) {
     const num = parseInt(hex.replace('#', ''), 16);
     const r = Math.max(0, (num >> 16) - percent);
@@ -687,7 +781,7 @@ function darken(hex, percent) {
 function exploreScene(sceneId) {
     const result = ExplorationSystem.startExploration(sceneId);
     if (!result.success) {
-        alert(result.msg);
+        showToast(result.msg);
         return;
     }
 
@@ -701,7 +795,7 @@ function exploreScene(sceneId) {
         const battle = ExplorationSystem.startBattle(result.battle.scene, result.battle.monster);
         showBattleModal(battle);
     } else {
-        alert(result.msg);
+        showToast(result.msg);
     }
     renderAll();
 }
@@ -745,22 +839,10 @@ function appendBattleLog(battle) {
     logEl.scrollTop = logEl.scrollHeight;
 }
 
-function appendBattleLog(battle) {
-    const logEl = document.getElementById('battleLog');
-    if (!logEl) return;
-    logEl.innerHTML = battle.log.map(l => `<p class="log-${l.type}">${l.text}</p>`).join('');
-    logEl.scrollTop = logEl.scrollHeight;
-}
-
 function battleAction(action) {
-    // 这里的 action 可以是 'attack', 'flee', 'skill:smash', 'skill:heal', etc.
     let result;
-    const battle = ExplorationSystem.getCurrentBattle();
-    
-    if (action.startsWith('skill:')) {
-        const skillId = action.split(':')[1];
-        result = ExplorationSystem.battleTurn('skill', skillId);
-    } else if (action === 'attack') {
+
+    if (action === 'attack') {
         result = ExplorationSystem.battleTurn('attack');
     } else if (action === 'flee') {
         result = ExplorationSystem.battleTurn('flee');
@@ -770,10 +852,6 @@ function battleAction(action) {
 
     if (!result) return;
     appendBattleLog(result);
-    const pet = PetSystem.getState();
-
-    // 触发动画 (如果战斗回合内有动画)
-    // 注意：triggerAnimation 在 exploration.js 中通过 CustomEvent 实现
 
     if (result.status === 'won' || result.status === 'lost' || result.status === 'fled') {
         // 战斗胜利有概率掉落卡片
@@ -798,7 +876,8 @@ function battleAction(action) {
 
 function updateBattleUI(battle) {
     const pet = PetSystem.getState();
-    const hpBars = document.querySelectorAll('.hp-bar .hp-fill');
+    const modal = document.getElementById('battleModal');
+    const hpBars = modal ? modal.querySelectorAll('.hp-bar .hp-fill') : [];
     if (hpBars.length >= 1) {
         hpBars[0].style.width = `${(pet.hp / pet.total_max_hp) * 100}%`;
     }
@@ -836,29 +915,32 @@ function handleBattleAnimate(e) {
 }
 
 function useItemInBattle() {
-    // 增强版：弹出道具选择列表
     const items = InventorySystem.getAllItems().filter(i => i.type === 'consumable');
     if (items.length === 0) {
-        alert('背包中没有消耗品');
+        showToast('背包中没有消耗品');
         return;
     }
 
-    // 简单的 prompt 模拟选择，实际应为 UI 弹窗
-    // 为了快速实现，我们展示一个简单的提示，实际项目建议用 Modal
     const itemNames = items.map((it, idx) => `${idx}: ${it.name} (${InventorySystem.getCount(it.item_id)})`).join('\n');
     const choice = prompt(`选择道具编号:\n${itemNames}`);
-    
-    if (choice !== null && items[choice]) {
-        const itemId = items[choice].item_id;
-        const result = ExplorationSystem.battleTurn('item', null, itemId);
-        if (result) {
-            appendBattleLog(result);
-            updateBattleUI(result);
-            if (result.status === 'won' || result.status === 'lost' || result.status === 'fled') {
-                battleAction(result.status === 'won' ? 'attack' : 'flee'); // 这里的逻辑可以优化
-            }
-        }
+    if (choice === null || !items[choice]) return;
+
+    const selected = items[choice];
+    const result = InventorySystem.useItem(selected.item_id);
+    if (!result.success) {
+        showToast(result.msg);
+        return;
     }
+
+    const battle = ExplorationSystem.getCurrentBattle();
+    if (battle) {
+        battle.log.push({ type: 'reward', text: `🎒 使用 ${selected.name}：${result.msg}` });
+        appendBattleLog(battle);
+        updateBattleUI(battle);
+    }
+
+    showToast(result.msg);
+    renderPetPage();
 }
 
 function closeBattleModal() {
@@ -983,11 +1065,18 @@ function renderAll() {
     renderSidebarTasks();
     updateStats();
     renderPetPage();
-    renderExplorePage();
+    void renderExplorePage();
     renderInventoryPage();
     if (window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (window.lucide) lucide.createIcons();
 }
+
+window.totalPoints = totalPoints;
+window.updateStats = updateStats;
+window.updateTopPoints = updateTopPoints;
+window.addGrowthPoints = addGrowthPoints;
+window.renderAll = renderAll;
+window.saveAppState = saveAppState;
 
 // ============ 初始化 ============
 async function init() {

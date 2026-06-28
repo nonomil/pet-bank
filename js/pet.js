@@ -12,9 +12,9 @@
 
 const PetSystem = (function () {
     // 宠物阶段配置（对应 imageStages 索引）
-    // banchong 宠物：6阶段(0蛋→5完全体)
-    // PVZ 宠物：5阶段(0蛋→1种子→2幼苗→3成熟→4终极)
-    // classpet 宠物：4阶段(emoji)
+    // banchong 宠物：6阶段（0蛋→5完全体）
+    // PVZ 宠物：5阶段（蛋→幼崽→成长期→完全体→终极体）
+    // classpet 宠物：4阶段（emoji）
     const STAGES = [
         { min_level: 1, name: '蛋',     emoji: '🥚', stageIdx: 0 },
         { min_level: 3, name: '幼崽',   emoji: '🐣', stageIdx: 1 },
@@ -24,8 +24,8 @@ const PetSystem = (function () {
     ];
 
     // 等级经验表
-    const EXP_TABLE = [0, 30, 80, 150, 250, 400, 600, 850, 1200, 1600];
-    const MAX_LEVEL = 10;
+    const EXP_TABLE = [0, 30, 80, 150, 250, 400, 600, 850, 1200, 1600, 2100, 2700, 3400, 4200, 5100];
+    const MAX_LEVEL = 15;
 
     // 稀有度配置
     const RARITY = {

@@ -81,54 +81,76 @@
         <main class="main-content">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
-                <!-- 顶部欢迎栏 -->
-                <div class="card mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
-                    <div class="card-body text-center text-white">
-                        <h2 class="text-xl font-bold mb-1">🗺️ 夏日冒险地图</h2>
-                        <p class="text-xs opacity-80">探索每个场景，收集宝藏，成为冒险冠军！</p>
+                <section class="map-hero">
+                    <div class="map-hero-copy">
+                        <p class="map-eyebrow">成长地图 / 纸面路线</p>
+                        <h2>跟着路线走进今天的冒险</h2>
+                        <p>每个节点都是一个场景，点亮后就能继续深入。锁定地点会直接告诉你等级和积分条件。</p>
                     </div>
-                </div>
-
-                <!-- 积分进度条 -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold">🏆 冒险进度</span>
-                            <span class="text-xs text-muted" id="mapUnlockedCount">0/12 场景已解锁</span>
+                    <div class="map-hero-stats">
+                        <div class="map-hero-stat">
+                            <span class="label">总积分</span>
+                            <strong id="mapPoints">0</strong>
                         </div>
-                        <div class="progress-bar mb-2">
+                        <div class="map-hero-stat">
+                            <span class="label">宠物等级</span>
+                            <strong id="mapPetLevel">Lv.1</strong>
+                        </div>
+                        <div class="map-hero-stat">
+                            <span class="label">战斗胜场</span>
+                            <strong id="mapWins">0</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="map-layout">
+                    <div class="map-stage-panel">
+                        <div class="map-panel-head">
+                            <div>
+                                <h3 class="text-sm font-bold">路线地图</h3>
+                                <p class="text-xs text-muted mt-1">像绘本一样点选场景，优先从已经点亮的地点出发</p>
+                            </div>
+                            <div class="map-panel-head-right">
+                                <span class="map-count" id="mapUnlockedCount">0/12 场景已解锁</span>
+                                <span class="map-ribbon">12 个停靠点</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar map-progress mb-3">
                             <div class="progress-fill progress-fill-gold" id="mapProgressBar" style="width: 0%;"></div>
                         </div>
-                        <div class="grid grid-cols-3 gap-3 mt-3">
-                            <div class="text-center"><div class="text-xs text-muted">总积分</div><div class="font-bold text-amber-600" id="mapPoints">0</div></div>
-                            <div class="text-center"><div class="text-xs text-muted">宠物等级</div><div class="font-bold text-green-600" id="mapPetLevel">Lv.1</div></div>
-                            <div class="text-center"><div class="text-xs text-muted">战斗胜场</div><div class="font-bold text-red-500" id="mapWins">0</div></div>
+                        <div class="map-board-shell">
+                            <div class="map-board-surface">
+                                <div class="map-board-texture"></div>
+                                <div id="sceneGridMap" class="map-board">
+                                    <!-- 由 exploration.js 渲染 -->
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- 场景卡片网格 -->
-                <div class="grid grid-cols-2 gap-3 mb-4" id="sceneGridMap">
-                    <!-- 由 exploration.js 渲染 -->
-                </div>
+                    <aside class="map-side-rail">
+                        <section class="map-side-panel">
+                            <div class="map-side-title-row">
+                                <h3 class="text-sm font-bold">快捷入口</h3>
+                                <span class="text-xs text-muted">一键跳转</span>
+                            </div>
+                            <div class="map-quick-grid">
+                                <button class="map-quick-btn" onclick="switchPage('today')"><i data-lucide="clipboard-list" class="w-4 h-4"></i><span>今日打卡</span></button>
+                                <button class="map-quick-btn" onclick="switchPage('pet')"><i data-lucide="paw-print" class="w-4 h-4"></i><span>我的宠物</span></button>
+                                <button class="map-quick-btn" onclick="switchPage('card')"><i data-lucide="book-open" class="w-4 h-4"></i><span>卡片图鉴</span></button>
+                                <button class="map-quick-btn" onclick="switchPage('shop')"><i data-lucide="store" class="w-4 h-4"></i><span>兑换商店</span></button>
+                            </div>
+                        </section>
 
-                <!-- 快捷入口 -->
-                <div class="grid grid-cols-4 gap-3 mb-4">
-                    <button class="quick-btn" onclick="switchPage('today')">📝<br><span class="text-xs">今日打卡</span></button>
-                    <button class="quick-btn" onclick="switchPage('pet')">🐾<br><span class="text-xs">我的宠物</span></button>
-                    <button class="quick-btn" onclick="switchPage('card')">🃏<br><span class="text-xs">卡片图鉴</span></button>
-                    <button class="quick-btn" onclick="switchPage('shop')">🏪<br><span class="text-xs">兑换商店</span></button>
-                </div>
-
-                <!-- 宝箱仓库 -->
-                <div class="card" id="treasureWarehouseCard">
-                    <div class="card-header flex items-center justify-between">
-                        <h3 class="text-sm font-bold">📦 宝箱仓库</h3>
-                        <span class="text-xs text-muted" id="chestDailyStatus">今日未领取</span>
-                    </div>
-                    <div class="card-body grid grid-cols-3 gap-3" id="treasureWarehouseGrid">
-                    </div>
-                </div>
+                        <section class="map-side-panel" id="treasureWarehouseCard">
+                            <div class="map-side-title-row">
+                                <h3 class="text-sm font-bold">宝箱仓库</h3>
+                                <span class="text-xs text-muted" id="chestDailyStatus">今日未领取</span>
+                            </div>
+                            <div class="warehouse-grid" id="treasureWarehouseGrid"></div>
+                        </section>
+                    </aside>
+                </section>
             </div>
 
             <!-- PAGE: 今日打卡 -->
@@ -272,10 +294,20 @@
 
             <!-- PAGE: 探索冒险 -->
             <div class="page" id="page-explore">
-                <div class="card mb-4">
-                    <div class="card-header"><h2 class="text-lg font-bold">🗺️ 探索地图</h2><p class="text-xs mt-1 text-muted">选择场景，开启冒险。危险等级越高，奖励越丰厚</p></div>
-                    <div class="card-body grid grid-cols-3 gap-4" id="sceneGrid"></div>
-                </div>
+                <section class="explore-hero">
+                    <div class="explore-hero-copy">
+                        <p class="map-eyebrow">探索冒险 / 场景路线</p>
+                        <h2>选一个场景，再决定要不要出发</h2>
+                        <p>先看预览和风险，再点击按钮真正进入探索。这样地图首页和探索页会形成一条连贯的旅程。</p>
+                    </div>
+                    <div class="scene-preview" id="sceneFocusCard">
+                        <div class="scene-preview-empty">选择一个场景预览</div>
+                    </div>
+                </section>
+
+                <section class="scene-route-list" id="sceneGrid">
+                    <!-- 由 app.js 渲染 -->
+                </section>
             </div>
 
             <!-- PAGE: 数学PK -->
@@ -335,7 +367,7 @@
                 <h3 class="text-lg font-bold" id="itemModalTitle">物品详情</h3>
                 <button onclick="closeItemModal()" class="text-gray-400 hover:text-gray-600">✕</button>
             </div>
-            <div class="itemModalContent"></div>
+            <div id="itemModalContent"></div>
         </div>
     </div>
 

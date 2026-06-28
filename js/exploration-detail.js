@@ -7,6 +7,7 @@ const ExplorationDetail = (function () {
     let currentScene = null;
     let eventIndex = 0;
     let foundItems = [];
+    const EXPLORE_SHELL_HTML = document.getElementById('page-explore')?.innerHTML || '';
 
     // 每个场景的探索事件序列
     const sceneEvents = {
@@ -280,10 +281,16 @@ const ExplorationDetail = (function () {
     }
 
     function exit() {
+        const sceneId = currentScene?.id;
+        currentScene = null;
+        eventIndex = 0;
+        foundItems = [];
+
         const pageExplore = document.getElementById('page-explore');
         if (pageExplore) {
-            pageExplore.innerHTML = '<div id="sceneGrid"></div>';
-            renderExplorePage();
+            pageExplore.innerHTML = EXPLORE_SHELL_HTML;
+            void renderExplorePage(sceneId);
+            window.scrollTo(0, 0);
         }
     }
 
