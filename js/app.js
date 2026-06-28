@@ -410,8 +410,8 @@ window.showToast = showToast;
             // PVZ 宠物：3动作
             poses = ['idle', 'happy', 'attack'];
             labels = ['😊 待机', '😄 开心', '⚔️ 攻击'];
-        } else if (sp && sp.imageStages && !style) {
-            // banchong 宠物：多进化阶段
+        } else if (sp && sp.imageStages) {
+            // 非 PVZ 宠物：多进化阶段
             poses = Object.keys(sp.imageStages);
             labels = poses.map(p => `⭐ 阶段 ${p}`);
         } else {

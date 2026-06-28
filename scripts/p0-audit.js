@@ -46,9 +46,35 @@ function collectExplorationDetailItemIds(explorationDetailJs) {
   return [...ids].sort();
 }
 
+function collectBanchongSignatureMediaGaps(petsJson) {
+  const groups = new Map();
+
+  for (const pet of petsJson.flat || []) {
+    if (pet.source !== 'banchong' || !Array.isArray(pet.stages) || pet.stages.length === 0) continue;
+    const signature = pet.stages.map((stage) => stage.imageUrl || '').join('|');
+    if (!signature) continue;
+    if (!groups.has(signature)) groups.set(signature, []);
+    groups.get(signature).push(pet);
+  }
+
+  const gaps = [];
+  for (const pets of groups.values()) {
+    const mapped = pets.find((pet) => pet.imageUrl && pet.imageStages && pet.imageStyle === 'banchong');
+    if (!mapped) continue;
+    for (const pet of pets) {
+      if (pet.imageUrl && pet.imageStages && pet.imageStyle === 'banchong') continue;
+      gaps.push(`${pet.name} -> ${mapped.name}`);
+    }
+  }
+
+  return gaps.sort();
+}
+
 function main() {
+  const petsJson = readJson('data/pets.json');
   const itemsJson = readJson('data/items.json');
   const scenesJson = readJson('data/scenes.json');
+  const indexHtml = readText('index.html');
   const appJs = readText('js/app.js');
   const walkJs = readText('js/walk.js');
   const mathPkJs = readText('js/math-pk.js');
@@ -63,6 +89,7 @@ function main() {
   const missingSceneItems = collectSceneItemIds(scenesJson).filter((id) => !itemIds.has(id));
   const missingWalkItems = collectWalkItemIds(walkJs).filter((id) => !itemIds.has(id));
   const missingExplorationDetailItems = collectExplorationDetailItemIds(explorationDetailJs).filter((id) => !itemIds.has(id));
+  const banchongSignatureMediaGaps = collectBanchongSignatureMediaGaps(petsJson);
 
   const checks = [
     {
@@ -80,6 +107,11 @@ function main() {
     {
       name: 'Math PK result return button targets math-pk container',
       ok: /MathPKGame\.renderUI\('math-pk-container'\)/.test(mathPkJs) && !/MathPKGame\.renderUI\('page-mathpk'\)/.test(mathPkJs)
+    },
+    {
+      name: 'Pet page default sprite uses poses asset path',
+      ok: /id="petDisplayImg"[\s\S]*src="assets\/pets\/poses\/dog_idle\.png"/.test(indexHtml)
+        && !/id="petDisplayImg"[\s\S]*src="assets\/pets\/dog_idle\.png"/.test(indexHtml)
     },
     {
       name: 'Card collection rewards use addGrowthPoints instead of direct totalPoints mutation',
@@ -100,6 +132,15 @@ function main() {
     {
       name: 'Scene unlock flow avoids direct points storage mutation when possible',
       ok: /addGrowthPoints\(-scene\.unlock_cost\)/.test(explorationJs)
+    },
+    {
+      name: 'Non-PVZ pets keep multi-stage lightbox galleries',
+      ok: /else if \(sp && sp\.imageStages\)/.test(appJs) && !/else if \(sp && sp\.imageStages && !style\)/.test(appJs)
+    },
+    {
+      name: 'Banchong duplicate-stage pets have normalized display images',
+      ok: banchongSignatureMediaGaps.length === 0,
+      details: banchongSignatureMediaGaps
     },
     {
       name: 'Scene item ids all exist in data/items.json',

@@ -4185,7 +4185,17 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/cyber​​-fire-ji-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/守护系/数码火吉-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/守护系/数码火吉-0.webp",
+        "1": "assets/banchong/守护系/数码火吉-1.webp",
+        "2": "assets/banchong/守护系/数码火吉-2.webp",
+        "3": "assets/banchong/守护系/数码火吉-3.webp",
+        "4": "assets/banchong/守护系/数码火吉-4.webp",
+        "5": "assets/banchong/守护系/数码火吉-5.webp"
+      },
+      "imageStyle": "banchong"
     },
     {
       "id": "219fb5c8-c94",

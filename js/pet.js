@@ -287,6 +287,55 @@ const PetSystem = (function () {
         });
     }
 
+    function getStageSignature(pet) {
+        if (!Array.isArray(pet?.stages) || pet.stages.length === 0) return '';
+        return pet.stages.map((stage) => stage?.imageUrl || '').join('|');
+    }
+
+    function normalizeSpeciesMedia(pets) {
+        const mappedBySignature = new Map();
+
+        for (const pet of pets) {
+            const signature = getStageSignature(pet);
+            if (!signature) continue;
+            if (!pet.imageUrl || !pet.imageStages) continue;
+            mappedBySignature.set(signature, {
+                imageUrl: pet.imageUrl,
+                imageStages: pet.imageStages,
+                imageStyle: pet.imageStyle || (pet.source === 'banchong' ? 'banchong' : '')
+            });
+        }
+
+        return pets.map((pet) => {
+            const normalized = {
+                id: pet.id,
+                name: pet.name,
+                emoji: pet.emoji || '🐾',
+                desc: pet.desc || '',
+                base_hp: pet.base_hp || 100,
+                base_atk: pet.base_atk || 5,
+                series: pet.series,
+                rarity: pet.rarity || 'common',
+                source: pet.source,
+                stages: pet.stages,
+                imageUrl: pet.imageUrl || '',
+                imageStages: pet.imageStages || null,
+                imageStyle: pet.imageStyle || ''
+            };
+
+            if ((!normalized.imageUrl || !normalized.imageStages) && normalized.source === 'banchong') {
+                const inherited = mappedBySignature.get(getStageSignature(pet));
+                if (inherited) {
+                    normalized.imageUrl = normalized.imageUrl || inherited.imageUrl;
+                    normalized.imageStages = normalized.imageStages || inherited.imageStages;
+                    normalized.imageStyle = normalized.imageStyle || inherited.imageStyle;
+                }
+            }
+
+            return normalized;
+        });
+    }
+
     // 加载外部宠物数据库（data/pets.json）
     async function loadPetDB() {
         if (PET_DB_LOADED) return;
@@ -295,21 +344,7 @@ const PetSystem = (function () {
             if (!resp.ok) return;
             const db = await resp.json();
             if (db.flat && db.flat.length > SPECIES_FALLBACK.length) {
-                SPECIES = db.flat.map(p => ({
-                    id: p.id,
-                    name: p.name,
-                    emoji: p.emoji || '🐾',
-                    desc: p.desc || '',
-                    base_hp: p.base_hp || 100,
-                    base_atk: p.base_atk || 5,
-                    series: p.series,
-                    rarity: p.rarity || 'common',
-                    source: p.source,
-                    stages: p.stages,
-                    imageUrl: p.imageUrl || '',
-                    imageStages: p.imageStages || null,
-                    imageStyle: p.imageStyle || ''
-                }));
+                SPECIES = normalizeSpeciesMedia(db.flat);
                 ALL_SERIES = db.series || {};
                 PET_DB_LOADED = true;
                 console.log(`[PetDB] Loaded ${SPECIES.length} pets, ${Object.keys(ALL_SERIES).length} series`);
