@@ -1,5 +1,22 @@
+# --- 工具 / 临时产物 ---
 .claude/
 .codex/
 .playwright-mcp/
 .tmp/
 node_modules/
+
+# --- 大文件 / 项目副本 / 视频（本地保留，不纳入版本控制）---
+# prj/ 含 138MB 的 pet-bank-main.zip 与项目冗余副本
+prj/
+# docs/参考案例/ 含 12MB mp4 与视频抽帧图片，整体不入库
+docs/参考案例/
+*.zip
+*.mp4
+
+# --- HTML 备份与历史版本（开发过程产物）---
+*.new
+*.old-backup
+*.v1.html
+
+# --- 其他杂项 ---
+新建文件夹/
