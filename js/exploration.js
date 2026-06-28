@@ -189,7 +189,7 @@ const ExplorationSystem = (function () {
                 <div class="card-body">
                     <p class="text-sm leading-relaxed mb-4" style="color:#444;line-height:1.8">${scene.story}</p>
                     ${unlocked ? `
-                        <button class="btn-primary w-full py-3 text-base font-bold" onclick="ExplorationSystem.closeSceneDetail();document.querySelector('[data-page=explore]')?.click();setTimeout(()=>exploreScene('${scene.id}'),200)">
+                        <button class="btn-primary w-full py-3 text-base font-bold" onclick="ExplorationSystem.closeSceneDetail();ExplorationDetail.show('${scene.id}')">
                             🗺️ 开始探索
                         </button>
                         ${pet.hp < scene.hp_cost ? '<p class="text-xs text-red-500 text-center mt-2">⚠️ HP不足，请先恢复</p>' : ''}
