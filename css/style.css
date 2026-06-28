@@ -139,6 +139,36 @@
     border-bottom: 1px solid rgba(255,255,255,0.3) !important;
 }
 /* 快捷入口按钮 */
+/* 场景详情页 */
+.scene-detail-img-wrap {
+    position: relative;
+}
+.scene-detail-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.6));
+}
+.scene-detail-back {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(4px);
+    border: none;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.scene-detail-back:hover {
+    background: rgba(255,255,255,0.35);
+}
 .quick-btn {
     display: flex;
     flex-direction: column;

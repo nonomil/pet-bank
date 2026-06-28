@@ -143,9 +143,84 @@ const ExplorationSystem = (function () {
 
     // 跳转探索页
     function goExplore(sceneId) {
-        switchPage('explore');
-        // 触发探索
-        setTimeout(() => startExplorationUI(sceneId), 100);
+        const scene = scenes?.scenes?.find(s => s.id === sceneId);
+        if (!scene) return;
+        showSceneDetail(sceneId);
+    }
+
+    // 显示场景详情（大图+故事+探索按钮）
+    function showSceneDetail(sceneId) {
+        const scene = scenes?.scenes?.find(s => s.id === sceneId);
+        if (!scene) return;
+
+        // 隐藏首页场景网格，显示详情
+        const gridMap = document.getElementById('sceneGridMap');
+        const quickBtns = gridMap?.nextElementSibling; // 快捷入口
+        const headerCard = document.querySelector('#page-map > .card');
+        const statsCard = document.querySelector('#page-map > .card:nth-child(2)');
+        const treasureCard = document.getElementById('treasureWarehouseCard');
+
+        // 插入详情页
+        let detail = document.getElementById('sceneDetail');
+        if (!detail) {
+            detail = document.createElement('div');
+            detail.id = 'sceneDetail';
+            gridMap.parentNode.insertBefore(detail, gridMap);
+        }
+
+        const unlocked = isSceneUnlocked(scene);
+        const pet = PetSystem.getState();
+
+        detail.innerHTML = `
+            <div class="card mb-4 p-0 overflow-hidden">
+                <div class="scene-detail-img-wrap">
+                    <img src="${scene.image}" alt="${scene.name}" class="w-full" style="height:220px;object-fit:cover;">
+                    <div class="scene-detail-overlay">
+                        <button class="scene-detail-back" onclick="ExplorationSystem.closeSceneDetail()">← 返回地图</button>
+                        <div class="text-white">
+                            <h3 class="text-xl font-bold" style="text-shadow:0 2px 4px rgba(0,0,0,0.5)">${scene.emoji} ${scene.name}</h3>
+                            <div class="flex gap-2 mt-1">
+                                <span class="text-xs bg-white bg-opacity-20 px-2 py-0.5 rounded">⚠️ 危险 ${scene.danger_level}</span>
+                                <span class="text-xs bg-white bg-opacity-20 px-2 py-0.5 rounded">❤️ -${scene.hp_cost} HP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="text-sm leading-relaxed mb-4" style="color:#444;line-height:1.8">${scene.story}</p>
+                    ${unlocked ? `
+                        <button class="btn-primary w-full py-3 text-base font-bold" onclick="ExplorationSystem.closeSceneDetail();document.querySelector('[data-page=explore]')?.click();setTimeout(()=>exploreScene('${scene.id}'),200)">
+                            🗺️ 开始探索
+                        </button>
+                        ${pet.hp < scene.hp_cost ? '<p class="text-xs text-red-500 text-center mt-2">⚠️ HP不足，请先恢复</p>' : ''}
+                    ` : `
+                        <button class="btn-primary w-full py-3 text-base font-bold" onclick="ExplorationSystem.tryUnlock('${scene.id}')">
+                            🔓 ${scene.unlock_cost > 0 ? scene.unlock_cost + ' 积分解锁' : '需要 Lv.' + scene.min_level}
+                        </button>
+                    `}
+                </div>
+            </div>
+        `;
+
+        // 隐藏首页其他元素
+        if (headerCard) headerCard.style.display = 'none';
+        if (statsCard) statsCard.style.display = 'none';
+        gridMap.style.display = 'none';
+        if (quickBtns) quickBtns.style.display = 'none';
+        if (treasureCard) treasureCard.style.display = 'none';
+    }
+
+    function closeSceneDetail() {
+        const gridMap = document.getElementById('sceneGridMap');
+        const detail = document.getElementById('sceneDetail');
+        if (detail) detail.remove();
+        // 恢复首页元素
+        document.querySelectorAll('#page-map > .card').forEach(el => el.style.display = '');
+        if (gridMap) gridMap.style.display = '';
+        gridMap?.nextElementSibling && (gridMap.nextElementSibling.style.display = '');
+        const treasureCard = document.getElementById('treasureWarehouseCard');
+        if (treasureCard) treasureCard.style.display = '';
+        window.scrollTo(0, 0);
     }
 
     // 开始探索
@@ -267,7 +342,8 @@ const ExplorationSystem = (function () {
         loadScenes, isSceneUnlocked, unlockScene,
         startExploration, startBattle, battleTurn, endBattle,
         getAllScenes, getCurrentBattle,
-        renderSceneGridMap, updateMapStats, tryUnlock, goExplore
+        renderSceneGridMap, updateMapStats, tryUnlock, goExplore,
+        showSceneDetail, closeSceneDetail
     };
 })();
 
