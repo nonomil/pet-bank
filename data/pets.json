@@ -1,10 +1,11 @@
 {
   "version": "2.0",
-  "total": 139,
+  "total": 147,
   "sources": {
     "original": "pet-bank 原生 8 种",
     "banchong": "仓鼠大冒险 91 种",
-    "classpet": "classpet-pro1.0 40 种"
+    "classpet": "classpet-pro1.0 40 种",
+    "minecraft": "我的世界原版生物"
   },
   "rarity_config": {
     "common": {
@@ -3943,6 +3944,12 @@
       "desc": "PVZ 原版植物角色",
       "source": "original",
       "icon": "🧟"
+    },
+    "我的世界": {
+      "name": "我的世界 Minecraft",
+      "desc": "Minecraft 原版生物，像素方块风格",
+      "source": "minecraft",
+      "icon": "⛏️"
     }
   },
   "flat": [
@@ -8752,6 +8759,166 @@
       "source": "classpet",
       "base_hp": 142,
       "base_atk": 15
+    },
+    {
+      "id": "mc_wolf",
+      "name": "狼",
+      "emoji": "🐺",
+      "desc": "忠诚的伙伴，攻击力强",
+      "base_hp": 120,
+      "base_atk": 10,
+      "rarity": "common",
+      "series": "我的世界",
+      "source": "minecraft",
+      "imageStyle": "minecraft",
+      "imageStages": {
+        "0": "assets/pets/poses/mc_wolf_egg.png",
+        "1": "assets/pets/poses/mc_wolf_baby.png",
+        "2": "assets/pets/poses/mc_wolf_idle.png",
+        "3": "assets/pets/poses/mc_wolf_mature.png",
+        "4": "assets/pets/poses/mc_wolf_ultimate.png"
+      },
+      "imageUrl": "assets/pets/poses/mc_wolf_idle.png"
+    },
+    {
+      "id": "mc_cat",
+      "name": "猫",
+      "emoji": "🐱",
+      "desc": "神秘优雅，吓跑苦力怕",
+      "base_hp": 90,
+      "base_atk": 5,
+      "rarity": "common",
+      "series": "我的世界",
+      "source": "minecraft",
+      "imageStyle": "minecraft",
+      "imageStages": {
+        "0": "assets/pets/poses/mc_cat_egg.png",
+        "1": "assets/pets/poses/mc_cat_baby.png",
+        "2": "assets/pets/poses/mc_cat_idle.png",
+        "3": "assets/pets/poses/mc_cat_mature.png",
+        "4": "assets/pets/poses/mc_cat_ultimate.png"
+      },
+      "imageUrl": "assets/pets/poses/mc_cat_idle.png"
+    },
+    {
+      "id": "mc_rabbit",
+      "name": "兔子",
+      "emoji": "🐰",
+      "desc": "灵活敏捷，跳跃力惊人",
+      "base_hp": 70,
+      "base_atk": 6,
+      "rarity": "common",
+      "series": "我的世界",
+      "source": "minecraft",
+      "imageStyle": "minecraft",
+      "imageStages": {
+        "0": "assets/pets/poses/mc_rabbit_egg.png",
+        "1": "assets/pets/poses/mc_rabbit_baby.png",
+        "2": "assets/pets/poses/mc_rabbit_idle.png",
+        "3": "assets/pets/poses/mc_rabbit_mature.png",
+        "4": "assets/pets/poses/mc_rabbit_ultimate.png"
+      },
+      "imageUrl": "assets/pets/poses/mc_rabbit_idle.png"
+    },
+    {
+      "id": "mc_parrot",
+      "name": "鹦鹉",
+      "emoji": "🦜",
+      "desc": "色彩斑斓，会模仿声音",
+      "base_hp": 80,
+      "base_atk": 7,
+      "rarity": "rare",
+      "series": "我的世界",
+      "source": "minecraft",
+      "imageStyle": "minecraft",
+      "imageStages": {
+        "0": "assets/pets/poses/mc_parrot_egg.png",
+        "1": "assets/pets/poses/mc_parrot_baby.png",
+        "2": "assets/pets/poses/mc_parrot_idle.png",
+        "3": "assets/pets/poses/mc_parrot_mature.png",
+        "4": "assets/pets/poses/mc_parrot_ultimate.png"
+      },
+      "imageUrl": "assets/pets/poses/mc_parrot_idle.png"
+    },
+    {
+      "id": "mc_turtle",
+      "name": "海龟",
+      "emoji": "🐢",
+      "desc": "坚韧防御，水陆两栖",
+      "base_hp": 140,
+      "base_atk": 4,
+      "rarity": "rare",
+      "series": "我的世界",
+      "source": "minecraft",
+      "imageStyle": "minecraft",
+      "imageStages": {
+        "0": "assets/pets/poses/mc_turtle_egg.png",
+        "1": "assets/pets/poses/mc_turtle_baby.png",
+        "2": "assets/pets/poses/mc_turtle_idle.png",
+        "3": "assets/pets/poses/mc_turtle_mature.png",
+        "4": "assets/pets/poses/mc_turtle_ultimate.png"
+      },
+      "imageUrl": "assets/pets/poses/mc_turtle_idle.png"
+    },
+    {
+      "id": "mc_axolotl",
+      "name": "美西螈",
+      "emoji": "🦎",
+      "desc": "可爱水生物，再生能力",
+      "base_hp": 85,
+      "base_atk": 8,
+      "rarity": "rare",
+      "series": "我的世界",
+      "source": "minecraft",
+      "imageStyle": "minecraft",
+      "imageStages": {
+        "0": "assets/pets/poses/mc_axolotl_egg.png",
+        "1": "assets/pets/poses/mc_axolotl_baby.png",
+        "2": "assets/pets/poses/mc_axolotl_idle.png",
+        "3": "assets/pets/poses/mc_axolotl_mature.png",
+        "4": "assets/pets/poses/mc_axolotl_ultimate.png"
+      },
+      "imageUrl": "assets/pets/poses/mc_axolotl_idle.png"
+    },
+    {
+      "id": "mc_enderman",
+      "name": "末影人",
+      "emoji": "🟣",
+      "desc": "传送瞬移，神秘强大",
+      "base_hp": 160,
+      "base_atk": 15,
+      "rarity": "legendary",
+      "series": "我的世界",
+      "source": "minecraft",
+      "imageStyle": "minecraft",
+      "imageStages": {
+        "0": "assets/pets/poses/mc_enderman_egg.png",
+        "1": "assets/pets/poses/mc_enderman_baby.png",
+        "2": "assets/pets/poses/mc_enderman_idle.png",
+        "3": "assets/pets/poses/mc_enderman_mature.png",
+        "4": "assets/pets/poses/mc_enderman_ultimate.png"
+      },
+      "imageUrl": "assets/pets/poses/mc_enderman_idle.png"
+    },
+    {
+      "id": "mc_allay",
+      "name": "悦灵",
+      "emoji": "✨",
+      "desc": "收集物品的小精灵",
+      "base_hp": 60,
+      "base_atk": 3,
+      "rarity": "epic",
+      "series": "我的世界",
+      "source": "minecraft",
+      "imageStyle": "minecraft",
+      "imageStages": {
+        "0": "assets/pets/poses/mc_allay_egg.png",
+        "1": "assets/pets/poses/mc_allay_baby.png",
+        "2": "assets/pets/poses/mc_allay_idle.png",
+        "3": "assets/pets/poses/mc_allay_mature.png",
+        "4": "assets/pets/poses/mc_allay_ultimate.png"
+      },
+      "imageUrl": "assets/pets/poses/mc_allay_idle.png"
     }
   ]
 }

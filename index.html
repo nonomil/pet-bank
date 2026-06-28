@@ -79,49 +79,49 @@
 
         <!-- MAIN CONTENT -->
         <main class="main-content">
-            <!-- PAGE: 成长地图 -->
+            <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
+                <!-- 顶部欢迎栏 -->
+                <div class="card mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                    <div class="card-body text-center text-white">
+                        <h2 class="text-xl font-bold mb-1">🗺️ 夏日冒险地图</h2>
+                        <p class="text-xs opacity-80">探索每个场景，收集宝藏，成为冒险冠军！</p>
+                    </div>
+                </div>
+
+                <!-- 积分进度条 -->
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h2 class="text-lg font-bold mb-1">成长地图</h2>
-                        <p class="text-xs mb-5 text-muted">点亮六大维度，累积每一份成长能量</p>
-                        <div class="relative pt-6 pb-2">
-                            <div class="grid grid-cols-5 gap-3">
-                                <div class="dim-card" onclick="openDimDetail('learning')"><div class="dim-num">1</div><div class="text-xs text-muted">Learning</div><div class="font-bold text-sm mt-1">学习力</div><div class="text-xs mt-1 text-secondary">阅读练字</div><div class="star-row mt-2"><span class="star lit">★</span><span class="star lit">★</span><span class="star lit">★</span></div></div>
-                                <div class="dim-card mt-6" onclick="openDimDetail('sports')"><div class="dim-num">2</div><div class="text-xs text-muted">Sports</div><div class="font-bold text-sm mt-1">运动力</div><div class="text-xs mt-1 text-secondary">强身健体</div><div class="star-row mt-2"><span class="star lit">★</span><span class="star lit">★</span><span class="star">★</span></div></div>
-                                <div class="dim-card" onclick="openDimDetail('selfcontrol')"><div class="dim-num">3</div><div class="text-xs text-muted">Self-control</div><div class="font-bold text-sm mt-1">自控力</div><div class="text-xs mt-1 text-secondary">时间管理</div><div class="star-row mt-2"><span class="star lit">★</span><span class="star lit">★</span><span class="star">★</span></div></div>
-                                <div class="dim-card mt-6" onclick="openDimDetail('exploration')"><div class="dim-num">4</div><div class="text-xs text-muted">Exploration</div><div class="font-bold text-sm mt-1">探索力</div><div class="text-xs mt-1 text-secondary">好奇求知</div><div class="star-row mt-2"><span class="star lit">★</span><span class="star">★</span><span class="star">★</span></div></div>
-                                <div class="dim-card" onclick="openDimDetail('practice')"><div class="dim-num">5</div><div class="text-xs text-muted">Practice</div><div class="font-bold text-sm mt-1">实践力</div><div class="text-xs mt-1 text-secondary">动手劳动</div><div class="star-row mt-2"><span class="star lit">★</span><span class="star lit">★</span><span class="star">★</span></div></div>
-                            </div>
-                            <div class="mt-10 flex justify-center">
-                                <div class="dim-card dim-card-pet w-80" onclick="switchPage('pet')">
-                                    <div class="dim-num dim-num-pet">🐾</div>
-                                    <div class="flex items-center gap-2 mt-1">
-                                        <div>
-                                            <div class="text-xs text-muted">Pet Care · 养成系统</div>
-                                            <div class="font-bold text-sm mt-1" style="color: #8B6F2A;">守护力</div>
-                                        </div>
-                                        <div class="ml-auto text-3xl" id="mapPetEmoji">🥚</div>
-                                    </div>
-                                    <div class="text-xs mt-2 text-secondary">养一只宠物 · 去 5 个场景探索 · 收集 26+ 道具</div>
-                                    <div class="mt-3 pt-3 border-t grid grid-cols-3 gap-2 text-center border-light">
-                                        <div><div class="text-xs text-muted">等级</div><div class="text-sm font-bold text-sage" id="mapPetLevel">Lv.1</div></div>
-                                        <div><div class="text-xs text-muted">HP</div><div class="text-sm font-bold text-hp-red" id="mapPetHP">100/100</div></div>
-                                        <div><div class="text-xs text-muted">EXP</div><div class="text-sm font-bold text-exp" id="mapPetEXP">0/30</div></div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold">🏆 冒险进度</span>
+                            <span class="text-xs text-muted" id="mapUnlockedCount">0/12 场景已解锁</span>
+                        </div>
+                        <div class="progress-bar mb-2">
+                            <div class="progress-fill progress-fill-gold" id="mapProgressBar" style="width: 0%;"></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3 mt-3">
+                            <div class="text-center"><div class="text-xs text-muted">总积分</div><div class="font-bold text-amber-600" id="mapPoints">0</div></div>
+                            <div class="text-center"><div class="text-xs text-muted">宠物等级</div><div class="font-bold text-green-600" id="mapPetLevel">Lv.1</div></div>
+                            <div class="text-center"><div class="text-xs text-muted">战斗胜场</div><div class="font-bold text-red-500" id="mapWins">0</div></div>
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="stat-card"><div class="text-xs mb-1 text-muted">今日完成</div><div class="stat-num" id="statCompleted">0</div></div>
-                    <div class="stat-card"><div class="text-xs mb-1 text-muted">今日存入</div><div class="stat-num" id="statDeposited">0</div></div>
-                    <div class="stat-card"><div class="text-xs mb-1 text-muted">亮点维度</div><div class="stat-num text-lg stat-gold" id="statHighlight">0/6</div></div>
+
+                <!-- 场景卡片网格 -->
+                <div class="grid grid-cols-2 gap-3 mb-4" id="sceneGridMap">
+                    <!-- 由 exploration.js 渲染 -->
+                </div>
+
+                <!-- 快捷入口 -->
+                <div class="grid grid-cols-4 gap-3 mb-4">
+                    <button class="quick-btn" onclick="switchPage('today')">📝<br><span class="text-xs">今日打卡</span></button>
+                    <button class="quick-btn" onclick="switchPage('pet')">🐾<br><span class="text-xs">我的宠物</span></button>
+                    <button class="quick-btn" onclick="switchPage('card')">🃏<br><span class="text-xs">卡片图鉴</span></button>
+                    <button class="quick-btn" onclick="switchPage('shop')">🏪<br><span class="text-xs">兑换商店</span></button>
                 </div>
 
                 <!-- 宝箱仓库 -->
-                <div class="card mt-4" id="treasureWarehouseCard">
+                <div class="card" id="treasureWarehouseCard">
                     <div class="card-header flex items-center justify-between">
                         <h3 class="text-sm font-bold">📦 宝箱仓库</h3>
                         <span class="text-xs text-muted" id="chestDailyStatus">今日未领取</span>

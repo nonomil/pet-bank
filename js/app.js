@@ -494,7 +494,7 @@ function openAdoptModal() {
         if (!sources[src]) sources[src] = 0;
         sources[src]++;
     }
-    const sourceNames = { original: '🌿 PVZ 原版', banchong: '🐹 仓鼠冒险', classpet: '🎨 classpet' };
+    const sourceNames = { original: '🌿 PVZ 原版', banchong: '🐹 仓鼠冒险', classpet: '🎨 classpet', minecraft: '⛏️ 我的世界' };
     const sourceEl = document.getElementById('adoptSourceTabs');
     sourceEl.innerHTML = `<div class="adopt-tab adopt-tab-all ${adoptFilter.source === 'all' ? 'active' : ''}" onclick="setAdoptFilter('source','all')">全部 (${species.length})</div>`;
     for (const [src, cnt] of Object.entries(sources)) {
@@ -632,9 +632,12 @@ window.refreshPetUI = function() {
 
 // ============ 探索页面渲染 ============
 async function renderExplorePage() {
+    await ExplorationSystem.loadScenes();
+    // 渲染首页场景卡片网格
+    ExplorationSystem.renderSceneGridMap();
+    // 渲染探索页场景列表
     const grid = document.getElementById('sceneGrid');
     if (!grid) return;
-    await ExplorationSystem.loadScenes();
     const scenes = ExplorationSystem.getAllScenes();
     const pet = PetSystem.getState();
 
