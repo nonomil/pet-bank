@@ -244,16 +244,104 @@ function switchPage(page) {
     // 切换宠物动作（点击按钮调用）
     window.setPetPose = function(pose) {
         currentPose = pose;
+        updatePetDisplayImg();
+        updatePoseBtnActive();
+    };
+
+    // 点击宠物图片：循环切换动作
+    let poseCycle = ['idle', 'happy', 'attack'];
+    window.onPetSpriteClick = function() {
+        const pet = PetSystem.getState();
+        if (!pet.species) return;
+        const idx = poseCycle.indexOf(currentPose);
+        currentPose = poseCycle[(idx + 1) % poseCycle.length];
+        updatePetDisplayImg();
+        updatePoseBtnActive();
+        const labels = { idle: '😊 待机', happy: '😄 开心', attack: '⚔️ 攻击' };
+        showToast(labels[currentPose]);
+    };
+
+    function updatePetDisplayImg() {
+        const pet = PetSystem.getState();
+        if (!pet.species) return;
+        const img = document.getElementById('petDisplayImg');
+        if (img) {
+            img.classList.remove('dancing');
+            void img.offsetWidth; // reflow
+            img.src = getPetImagePath(pet.species, currentPose);
+            img.classList.add('dancing');
+        }
+    }
+
+    function updatePoseBtnActive() {
+        document.querySelectorAll('#petPoseBtns .btn-tiny').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.querySelector(`#petPoseBtns .btn-tiny:nth-child(${poseCycle.indexOf(currentPose) + 1})`);
+        if (activeBtn) activeBtn.classList.add('active');
+    }
+
+    // Toast 提示
+    function showToast(msg) {
+        let toast = document.getElementById('petToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'petToast';
+            toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#fff;padding:8px 20px;border-radius:20px;font-size:14px;z-index:9999;transition:opacity 0.3s;pointer-events:none;';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        toast.style.opacity = '1';
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 1200);
+    }
+
+    // 大图灯箱：展示宠物3种动作
+    window.showPetLightbox = function(petName) {
+        const poses = ['idle', 'happy', 'attack'];
+        const labels = ['😊 待机', '😄 开心', '⚔️ 攻击'];
+        let overlay = document.getElementById('petLightbox');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'petLightbox';
+            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;';
+            overlay.onclick = function(e) { if (e.target === overlay) closeLightbox(); };
+            document.body.appendChild(overlay);
+        }
+        overlay.innerHTML = `
+            <div style="background:white;border-radius:16px;padding:24px;max-width:720px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+                <h2 style="margin:0 0 16px;font-size:18px;">🐾 ${petName} — 动作展示</h2>
+                <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+                    ${poses.map((p, i) => `
+                        <div style="text-align:center;cursor:pointer;" onclick="selectLightboxPose('${petName}','${p}')">
+                            <img src="assets/pets/poses/${petName}_${p}.png" alt="${labels[i]}" 
+                                 style="width:180px;height:180px;object-fit:contain;border-radius:12px;border:3px solid #eee;transition:all 0.2s;"
+                                 id="lb_${petName}_${p}">
+                            <div style="margin-top:8px;font-size:13px;color:#666;">${labels[i]}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <button onclick="closeLightbox()" style="margin-top:20px;padding:8px 24px;border:none;background:var(--sage-green);color:white;border-radius:12px;cursor:pointer;font-size:14px;">✕ 关闭</button>
+            </div>`;
+        overlay.style.display = 'flex';
+    };
+
+    window.selectLightboxPose = function(petName, pose) {
         const pet = PetSystem.getState();
         if (pet.species) {
-            const img = document.getElementById('petDisplayImg');
-            if (img) {
-                img.src = getPetImagePath(pet.species, pose);
-                // 添加切换动画
-                img.style.transform = 'scale(1.1)';
-                setTimeout(() => { img.style.transform = 'scale(1)'; }, 200);
+            const imgName = pet.species === 'goldfish' ? 'fish' : pet.species;
+            if (imgName === petName) {
+                window.setPetPose(pose);
             }
         }
+        // 高亮选中
+        ['idle', 'happy', 'attack'].forEach(p => {
+            const el = document.getElementById(`lb_${petName}_${p}`);
+            if (el) el.style.borderColor = p === pose ? 'var(--sage-green)' : '#eee';
+        });
+    };
+
+    window.closeLightbox = function() {
+        const overlay = document.getElementById('petLightbox');
+        if (overlay) overlay.style.display = 'none';
     };
 
 function renderPetPage() {
@@ -328,9 +416,14 @@ function renderSpeciesSelection() {
         const sp = species.find(s => s.id === pet.species);
         if (sp && preview) {
             const r = PetSystem.getRarityConfig()[sp.rarity || 'common'] || PetSystem.getRarityConfig().common;
+            const imgName = sp.id === 'goldfish' ? 'fish' : sp.id;
+            const hasImage = ['dog','cat','rabbit','turtle','hamster','parrot','fish','hedgehog'].includes(imgName);
+            const imgHtml = hasImage
+                ? `<div class="pet-thumb-lg" onclick="showPetLightbox('${imgName}')"><img src="assets/pets/poses/${imgName}_idle.png" alt="${sp.name}" loading="lazy"></div>`
+                : `<div class="text-6xl">${sp.emoji}</div>`;
             preview.innerHTML = `
                 <div class="text-center">
-                    <div class="text-6xl">${sp.emoji}</div>
+                    ${imgHtml}
                     <div class="font-bold mt-2">${sp.name}</div>
                     <div class="text-xs" style="color: ${r.color};">${r.icon} ${r.name}</div>
                     <div class="text-xs text-muted mt-1">${sp.series || ''}</div>
@@ -423,10 +516,15 @@ function renderAdoptGrid(currentSpeciesId) {
     grid.innerHTML = filtered.map(s => {
         const r = rarityCfg[s.rarity || 'common'] || rarityCfg.common;
         const isSelected = currentSpeciesId === s.id;
+        const imgName = s.id === 'goldfish' ? 'fish' : s.id;
+        const hasImage = ['dog','cat','rabbit','turtle','hamster','parrot','fish','hedgehog'].includes(imgName);
+        const imgHtml = hasImage
+            ? `<div class="pet-thumb" onclick="event.stopPropagation(); showPetLightbox('${imgName}')"><img src="assets/pets/poses/${imgName}_idle.png" alt="${s.name}" loading="lazy"></div>`
+            : `<div class="emoji">${s.emoji}</div>`;
         return `
         <div class="adopt-card ${isSelected ? 'selected' : ''}" onclick="choosePetFromModal('${s.id}')">
             <div class="rarity-badge rarity-badge-${s.rarity || 'common'}">${r.icon} ${r.name}</div>
-            <div class="emoji">${s.emoji}</div>
+            ${imgHtml}
             <div class="name">${s.name}</div>
             <div class="info">${s.series || ''}</div>
             <div class="stats-row">

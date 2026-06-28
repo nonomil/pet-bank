@@ -47,6 +47,46 @@
     color: white;
 }
 
+/* ============ 宠物缩略图 ============ */
+.pet-thumb {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 8px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.pet-thumb:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.pet-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.pet-thumb-lg {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 8px;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+}
+.pet-thumb-lg:hover {
+    transform: scale(1.06);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+.pet-thumb-lg img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 :root {
     --sage-green: #6FA893;
     --sage-light: #A8C8B8;

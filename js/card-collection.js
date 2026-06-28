@@ -98,6 +98,11 @@ const CardCollection = (function() {
         const container = document.getElementById(containerId);
         if (!container) return;
 
+        // Always refresh species data from PetSystem (async loading)
+        if (typeof PetSystem !== 'undefined') {
+            _allSpecies = PetSystem.getAllSpecies();
+        }
+
         _calculateSeriesStats();
 
         // 1. Stats Header
