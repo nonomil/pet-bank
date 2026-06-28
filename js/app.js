@@ -668,9 +668,6 @@ function showBattleModal(battle) {
         <div class="battle-log mb-4" id="battleLog"></div>
         <div class="battle-actions grid grid-cols-2 gap-2" id="battleActions">
             <button class="btn-primary" onclick="battleAction('attack')">⚔️ 攻击</button>
-            <button class="btn-secondary" onclick="battleAction('skill:smash')">💥 猛击</button>
-            <button class="btn-secondary" onclick="battleAction('skill:defend')">🛡️ 防御</button>
-            <button class="btn-secondary" onclick="battleAction('skill:heal')">💚 恢复</button>
             <button class="btn-secondary" onclick="battleAction('flee')">🏃 逃跑</button>
             <button class="btn-secondary" onclick="useItemInBattle()">🎒 道具</button>
         </div>
