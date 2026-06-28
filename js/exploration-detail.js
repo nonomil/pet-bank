@@ -8,6 +8,16 @@ const ExplorationDetail = (function () {
     let eventIndex = 0;
     let foundItems = [];
     const EXPLORE_SHELL_HTML = document.getElementById('page-explore')?.innerHTML || '';
+    const EXPLORE_ACTIVE_HTML = '<div id="exploreContainer"></div>';
+
+    function disableEventActions() {
+        const actions = document.querySelectorAll('#exploreEvents .explore-continue-btn, #exploreEvents .explore-choice-btn');
+        actions.forEach((action) => {
+            action.disabled = true;
+            action.style.pointerEvents = 'none';
+            action.style.opacity = '0.6';
+        });
+    }
 
     // 每个场景的探索事件序列
     const sceneEvents = {
@@ -132,18 +142,13 @@ const ExplorationDetail = (function () {
         // 切到探索页
         switchPage('explore');
 
-        const container = document.getElementById('exploreContainer');
-        if (!container) {
-            const pageExplore = document.getElementById('page-explore');
-            const old = document.getElementById('sceneGrid');
-            if (pageExplore && old) {
-                const div = document.createElement('div');
-                div.id = 'exploreContainer';
-                pageExplore.replaceChild(div, old);
-            }
+        const pageExplore = document.getElementById('page-explore');
+        if (!pageExplore) return;
+        if (pageExplore.innerHTML !== EXPLORE_ACTIVE_HTML) {
+            pageExplore.innerHTML = EXPLORE_ACTIVE_HTML;
         }
 
-        const el = document.getElementById('exploreContainer') || container;
+        const el = document.getElementById('exploreContainer');
         if (!el) return;
 
         el.innerHTML = `
@@ -187,16 +192,17 @@ const ExplorationDetail = (function () {
                 </div>
             `;
         } else if (event.type === 'discover') {
+            const foundItem = !!(event.item && Math.random() < event.chance);
             // 先显示发现动画
             eventsEl.innerHTML += `
                 <div class="explore-event-card fade-in">
                     <div class="explore-emoji-pop">${event.emoji}</div>
                     <p class="text-sm leading-relaxed" style="color:#ddd">${event.text}</p>
-                    ${Math.random() < event.chance ? '<div class="explore-found-item">✨ 获得物品！</div>' : ''}
+                    ${foundItem ? '<div class="explore-found-item">✨ 获得物品！</div>' : ''}
                     <button class="explore-continue-btn" onclick="ExplorationDetail.next()">继续 →</button>
                 </div>
             `;
-            if (Math.random() < event.chance && event.item) {
+            if (foundItem) {
                 foundItems.push(event.item);
             }
         } else if (event.type === 'choice') {
@@ -231,9 +237,11 @@ const ExplorationDetail = (function () {
         const events = sceneEvents[currentScene.id] || [];
         const event = events[eventIdx];
         if (!event) return;
+        disableEventActions();
 
         const choice = event.options[choiceIdx];
         const eventsEl = document.getElementById('exploreEvents');
+        const foundItem = !!(choice.item && Math.random() < choice.chance);
 
         // 隐藏选择按钮，显示结果
         const cards = eventsEl.querySelectorAll('.explore-event-card');
@@ -242,10 +250,10 @@ const ExplorationDetail = (function () {
             lastCard.querySelector('.explore-choices').innerHTML = `
                 <div class="explore-choice-result">${choice.text}</div>
                 <div class="explore-choice-reward">${choice.reward}</div>
-                ${Math.random() < choice.chance ? '<div class="explore-found-item">✨ 获得物品！</div>' : ''}
+                ${foundItem ? '<div class="explore-found-item">✨ 获得物品！</div>' : ''}
                 <button class="explore-continue-btn" onclick="ExplorationDetail.next()">继续 →</button>
             `;
-            if (Math.random() < choice.chance && choice.item) {
+            if (foundItem) {
                 foundItems.push(choice.item);
             }
         }
@@ -277,6 +285,7 @@ const ExplorationDetail = (function () {
     }
 
     function next() {
+        disableEventActions();
         showNextEvent();
     }
 

@@ -36,6 +36,16 @@ function collectWalkItemIds(walkJs) {
   return [...ids].sort();
 }
 
+function collectExplorationDetailItemIds(explorationDetailJs) {
+  const ids = new Set();
+  const regex = /item:\s*'([^']+)'/g;
+  let match;
+  while ((match = regex.exec(explorationDetailJs))) {
+    ids.add(match[1]);
+  }
+  return [...ids].sort();
+}
+
 function main() {
   const itemsJson = readJson('data/items.json');
   const scenesJson = readJson('data/scenes.json');
@@ -47,10 +57,12 @@ function main() {
   const shopJs = readText('js/shop.js');
   const treasureJs = readText('js/treasure.js');
   const explorationJs = readText('js/exploration.js');
+  const explorationDetailJs = readText('js/exploration-detail.js');
 
   const itemIds = new Set((itemsJson.items || []).map((item) => item.id));
   const missingSceneItems = collectSceneItemIds(scenesJson).filter((id) => !itemIds.has(id));
   const missingWalkItems = collectWalkItemIds(walkJs).filter((id) => !itemIds.has(id));
+  const missingExplorationDetailItems = collectExplorationDetailItemIds(explorationDetailJs).filter((id) => !itemIds.has(id));
 
   const checks = [
     {
@@ -64,6 +76,10 @@ function main() {
     {
       name: 'Math PK uses addGrowthPoints instead of direct totalPoints mutation',
       ok: /addGrowthPoints\(/.test(mathPkJs) && !/window\.totalPoints\s*\+=/.test(mathPkJs)
+    },
+    {
+      name: 'Math PK result return button targets math-pk container',
+      ok: /MathPKGame\.renderUI\('math-pk-container'\)/.test(mathPkJs) && !/MathPKGame\.renderUI\('page-mathpk'\)/.test(mathPkJs)
     },
     {
       name: 'Card collection rewards use addGrowthPoints instead of direct totalPoints mutation',
@@ -94,6 +110,11 @@ function main() {
       name: 'Walk event item ids all exist in data/items.json',
       ok: missingWalkItems.length === 0,
       details: missingWalkItems
+    },
+    {
+      name: 'Exploration detail item ids all exist in data/items.json',
+      ok: missingExplorationDetailItems.length === 0,
+      details: missingExplorationDetailItems
     }
   ];
 

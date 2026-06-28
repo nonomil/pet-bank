@@ -241,7 +241,7 @@
                     </div>
 
                     <button class="btn-primary w-full" onclick="MathPKGame.start()">再玩一次</button>
-                    <button class="btn-secondary w-full mt-3" onclick="MathPKGame.renderUI('page-mathpk')">返回</button>
+                    <button class="btn-secondary w-full mt-3" onclick="MathPKGame.renderUI('math-pk-container')">返回</button>
                 </div>
             `;
         }
