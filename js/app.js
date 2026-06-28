@@ -234,13 +234,21 @@ function switchPage(page) {
     // 当前宠物姿态
     let currentPose = 'idle';
 
-    // 获取宠物图片路径（支持多动作）
+    // 获取宠物图片路径（支持多动作 + banchong宠物）
     function getPetImagePath(speciesId, pose) {
-        const map = {
-            'goldfish': 'fish' // 内部ID与文件名映射
-        };
-        const imgName = map[speciesId] || speciesId;
-        return `assets/pets/poses/${imgName}_${pose || 'idle'}.png`;
+        const species = PetSystem.getAllSpecies();
+        const sp = species.find(s => s.id === speciesId);
+        if (!sp) return '';
+        
+        // 有 imageStages 的宠物（经典8种 PVZ）
+        if (sp.imageStages && sp.imageStages[pose]) {
+            return sp.imageStages[pose];
+        }
+        // banchong 宠物（用 stage 2 作为 idle/happy/attack，选不同进化阶段）
+        if (sp.imageUrl) {
+            return sp.imageUrl;
+        }
+        return '';
     }
 
     // 切换宠物动作（点击按钮调用）
@@ -296,12 +304,25 @@ function switchPage(page) {
         toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 1200);
     }
 
-    // 大图灯箱：展示宠物3种动作
-    window.showPetLightbox = function(petName) {
-        const poses = ['idle', 'happy', 'attack'];
-        const labels = ['😊 待机', '😄 开心', '⚔️ 攻击'];
-        const nameMap = {dog:'柴犬',cat:'橘猫',rabbit:'兔子',turtle:'乌龟',hamster:'仓鼠',parrot:'鹦鹉',fish:'金鱼',hedgehog:'刺猬'};
-        const displayName = nameMap[petName] || petName;
+    // 大图灯箱：展示宠物动作/进化阶段
+    window.showPetLightbox = function(petName, style) {
+        const species = PetSystem.getAllSpecies();
+        const sp = species.find(s => s.name === petName);
+        
+        let poses, labels;
+        if (sp && sp.imageStages && style === 'pvz') {
+            // PVZ 宠物：3动作
+            poses = ['idle', 'happy', 'attack'];
+            labels = ['😊 待机', '😄 开心', '⚔️ 攻击'];
+        } else if (sp && sp.imageStages && !style) {
+            // banchong 宠物：多进化阶段
+            poses = Object.keys(sp.imageStages);
+            labels = poses.map(p => `⭐ 阶段 ${p}`);
+        } else {
+            // 只有一张图
+            poses = ['0'];
+            labels = [''];
+        }
         let overlay = document.getElementById('petLightbox');
         if (!overlay) {
             overlay = document.createElement('div');
@@ -312,16 +333,25 @@ function switchPage(page) {
         }
         overlay.innerHTML = `
             <div style="background:white;border-radius:16px;padding:24px;max-width:720px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-                <h2 style="margin:0 0 16px;font-size:18px;">🐾 ${displayName} — 动作展示</h2>
-                <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-                    ${poses.map((p, i) => `
-                        <div style="text-align:center;cursor:pointer;" onclick="selectLightboxPose('${petName}','${p}')">
-                            <img src="assets/pets/poses/${petName}_${p}.png" alt="${labels[i]}" 
+                <h2 style="margin:0 0 16px;font-size:18px;">🐾 ${petName} — ${style === 'pvz' ? '动作展示' : '进化阶段'}</h2>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:800px;">
+                    ${poses.map((pose, i) => {
+                        let imgSrc;
+                        if (sp && sp.imageStages && sp.imageStages[pose]) {
+                            imgSrc = sp.imageStages[pose];
+                        } else if (sp && sp.imageUrl) {
+                            imgSrc = sp.imageUrl;
+                        } else {
+                            return '';
+                        }
+                        return `
+                        <div style="text-align:center;cursor:pointer;" onclick="selectLightboxPose('${petName}','${pose}')">
+                            <img src="${imgSrc}" alt="${labels[i]}"
                                  style="width:180px;height:180px;object-fit:contain;border-radius:12px;border:3px solid #eee;transition:all 0.2s;"
-                                 id="lb_${petName}_${p}">
+                                 id="lb_${petName}_${pose}">
                             <div style="margin-top:8px;font-size:13px;color:#666;">${labels[i]}</div>
-                        </div>
-                    `).join('')}
+                        </div>`;
+                    }).join('')}
                 </div>
                 <button onclick="closeLightbox()" style="margin-top:20px;padding:8px 24px;border:none;background:var(--sage-green);color:white;border-radius:12px;cursor:pointer;font-size:14px;">✕ 关闭</button>
             </div>`;
@@ -329,17 +359,18 @@ function switchPage(page) {
     };
 
     window.selectLightboxPose = function(petName, pose) {
-        const pet = PetSystem.getState();
-        if (pet.species) {
-            const imgName = pet.species === 'goldfish' ? 'fish' : pet.species;
-            if (imgName === petName) {
+        // PVZ 宠物：切换动作；banchong 宠物：无动作切换
+        const species = PetSystem.getAllSpecies();
+        const sp = species.find(s => s.name === petName);
+        if (sp && sp.imageStyle === 'pvz' && ['idle','happy','attack'].includes(pose)) {
+            const pet = PetSystem.getState();
+            if (pet.species) {
                 window.setPetPose(pose);
             }
         }
         // 高亮选中
-        ['idle', 'happy', 'attack'].forEach(p => {
-            const el = document.getElementById(`lb_${petName}_${p}`);
-            if (el) el.style.borderColor = p === pose ? 'var(--sage-green)' : '#eee';
+        document.querySelectorAll(`[id^="lb_${petName}_"]`).forEach(el => {
+            el.style.borderColor = el.id === `lb_${petName}_${pose}` ? 'var(--sage-green)' : '#eee';
         });
     };
 
@@ -358,11 +389,14 @@ function renderPetPage() {
     const nameDisplay = document.getElementById('petNameDisplay');
     const stageDisplay = document.getElementById('petStageDisplay');
     if (pet.species) {
-        if (displayImg) {
-            displayImg.src = getPetImagePath(pet.species, currentPose);
+        const imgSrc = getPetImagePath(pet.species, currentPose);
+        if (displayImg && imgSrc) {
+            displayImg.src = imgSrc;
             displayImg.style.display = 'block';
         }
-        if (poseBtns) poseBtns.style.display = 'flex';
+        // PVZ 宠物才显示动作按钮
+        const sp = species.find(s => s.id === pet.species);
+        if (poseBtns) poseBtns.style.display = (sp && sp.imageStyle === 'pvz') ? 'flex' : 'none';
         nameDisplay.textContent = pet.species_data?.name || '未知';
         stageDisplay.textContent = `${pet.stage.name}阶段 · Lv.${pet.level}`;
     } else {
@@ -420,10 +454,9 @@ function renderSpeciesSelection() {
         const sp = species.find(s => s.id === pet.species);
         if (sp && preview) {
             const r = PetSystem.getRarityConfig()[sp.rarity || 'common'] || PetSystem.getRarityConfig().common;
-            const imgName = sp.id === 'goldfish' ? 'fish' : sp.id;
-            const hasImage = ['dog','cat','rabbit','turtle','hamster','parrot','fish','hedgehog'].includes(imgName);
-            const imgHtml = hasImage
-                ? `<div class="pet-thumb-lg" onclick="showPetLightbox('${imgName}')"><img src="assets/pets/poses/${imgName}_idle.png" alt="${sp.name}" loading="lazy"></div>`
+            const petImgUrl = sp.imageUrl || '';
+            const imgHtml = petImgUrl
+                ? `<div class="pet-thumb-lg" onclick="showPetLightbox('${sp.name}','${sp.imageStyle || 'banchong'}')"><img src="${petImgUrl}" alt="${sp.name}" loading="lazy"></div>`
                 : `<div class="text-6xl">${sp.emoji}</div>`;
             preview.innerHTML = `
                 <div class="text-center">
@@ -521,9 +554,9 @@ function renderAdoptGrid(currentSpeciesId) {
         const r = rarityCfg[s.rarity || 'common'] || rarityCfg.common;
         const isSelected = currentSpeciesId === s.id;
         const imgName = s.id === 'goldfish' ? 'fish' : s.id;
-        const hasImage = ['dog','cat','rabbit','turtle','hamster','parrot','fish','hedgehog'].includes(imgName);
-        const imgHtml = hasImage
-            ? `<div class="pet-thumb" onclick="event.stopPropagation(); showPetLightbox('${imgName}')"><img src="assets/pets/poses/${imgName}_idle.png" alt="${s.name}" loading="lazy"></div>`
+        const petImgUrl = s.imageUrl || '';
+        const imgHtml = petImgUrl
+            ? `<div class="pet-thumb" onclick="event.stopPropagation(); showPetLightbox('${s.name}','${s.imageStyle || 'banchong'}')"><img src="${petImgUrl}" alt="${s.name}" loading="lazy"></div>`
             : `<div class="emoji">${s.emoji}</div>`;
         return `
         <div class="adopt-card ${isSelected ? 'selected' : ''}" onclick="choosePetFromModal('${s.id}')">
