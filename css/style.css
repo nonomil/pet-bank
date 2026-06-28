@@ -96,6 +96,48 @@
     background: linear-gradient(90deg, #f59e0b, #eab308);
 }
 
+/* 首页大地图背景 */
+.map-page-bg {
+    position: relative;
+    min-height: 100vh;
+    background: url('../assets/home-bg.webp') center top / cover no-repeat;
+    background-attachment: fixed;
+}
+.map-page-bg .main-content {
+    position: relative;
+    z-index: 2;
+}
+.map-page-bg .page {
+    background: transparent !important;
+}
+/* 地图页卡片半透明玻璃效果 */
+.map-page-bg .card {
+    background: rgba(255,255,255,0.88) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.3) !important;
+}
+/* 场景卡片玻璃态 */
+.map-page-bg .scene-card {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    border: 2px solid rgba(255,255,255,0.4);
+}
+.map-page-bg .scene-card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+    border-color: rgba(255,255,255,0.7);
+}
+/* 底部导航栏在地图页也半透明 */
+.map-page-bg .bottom-nav {
+    background: rgba(255,255,255,0.92) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+.map-page-bg .top-nav {
+    background: rgba(255,255,255,0.92) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.3) !important;
+}
 /* 快捷入口按钮 */
 .quick-btn {
     display: flex;
@@ -104,17 +146,18 @@
     justify-content: center;
     padding: 12px 8px;
     border-radius: 12px;
-    background: white;
-    border: 1px solid #f0f0f0;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.3);
     cursor: pointer;
     transition: all 0.2s;
     font-size: 24px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
 }
 .quick-btn:hover {
-    background: #f8f9fa;
+    background: rgba(255,255,255,0.95);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
 }
 
 /* ============ 宠物精灵动画 ============ */
