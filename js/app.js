@@ -3,7 +3,39 @@
  * 负责：任务系统、积分系统、页面切换、UI 渲染
  */
 
+// (Styles would normally be in a CSS file, adding here via JS for ease of implementation in this task)
+const style = document.createElement('style');
+style.textContent = `
+.battle-shake { animation: shake 0.5s; }
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+.battle-flash-red { animation: flash-red 0.5s; }
+@keyframes flash-red {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(255, 0, 0, 0.3); }
+    100% { background-color: transparent; }
+}
+.log-player { color: #4ade80; }
+.log-enemy { color: #f87171; }
+.log-system { color: #94a3b8; font-style: italic; }
+.log-reward { color: #fbbf24; font-weight: bold; }
+`;
+document.head.appendChild(style);
+
 // ============ 任务维度数据 ============
+// ... (rest of the file)
+
 const DIMENSIONS = {
     learning: {
         name: '学习力', en: 'Learning', icon: 'book-open',
@@ -193,6 +225,7 @@ function switchPage(page) {
     if (page === 'explore') renderExplorePage();
     if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
     if (page === 'inventory') renderInventoryPage();
+    if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
 }
 
 // ============ 宠物页面渲染 ============
@@ -521,25 +554,30 @@ function showBattleModal(battle) {
     const pet = PetSystem.getState();
     content.innerHTML = `
         <div class="text-center mb-4">
-            <div class="text-5xl">${PetSystem.getStageEmoji()}</div>
+            <div class="text-5xl" id="battlePetEmoji">PetEmoji</div>
             <div class="text-sm mt-1" style="color: var(--text-tertiary);">${pet.species_data?.name} (Lv.${pet.level})</div>
             <div class="hp-bar mt-2"><div class="hp-fill" style="width: ${(pet.hp / pet.total_max_hp) * 100}%;"></div></div>
             <div class="text-xs">HP: ${pet.hp}/${pet.total_max_hp}</div>
         </div>
-        <div class="text-5xl text-center mb-4">⚔️</div>
+        <div class="text-5xl text-center mb-4" id="battleMonsterEmoji">MonsterEmoji</div>
         <div class="text-center mb-4">
-            <div class="text-5xl">${battle.monster.emoji}</div>
             <div class="text-sm mt-1" style="color: var(--text-tertiary);">${battle.monster.name}</div>
             <div class="hp-bar mt-2"><div class="hp-fill" style="width: ${(battle.monster.current_hp / battle.monster.hp) * 100}%;"></div></div>
             <div class="text-xs">HP: ${battle.monster.current_hp}/${battle.monster.hp}</div>
         </div>
         <div class="battle-log mb-4" id="battleLog"></div>
-        <div class="battle-actions" id="battleActions">
+        <div class="battle-actions grid grid-cols-2 gap-2" id="battleActions">
             <button class="btn-primary" onclick="battleAction('attack')">⚔️ 攻击</button>
+            <button class="btn-secondary" onclick="battleAction('skill:smash')">💥 猛击</button>
+            <button class="btn-secondary" onclick="battleAction('skill:defend')">🛡️ 防御</button>
+            <button class="btn-secondary" onclick="battleAction('skill:heal')">💚 恢复</button>
             <button class="btn-secondary" onclick="battleAction('flee')">🏃 逃跑</button>
             <button class="btn-secondary" onclick="useItemInBattle()">🎒 道具</button>
         </div>
     `;
+    // Set initial emojis
+    document.getElementById('battlePetEmoji').textContent = PetSystem.getStageEmoji();
+    document.getElementById('battleMonsterEmoji').textContent = battle.monster.emoji;
     appendBattleLog(battle);
 }
 
@@ -550,35 +588,119 @@ function appendBattleLog(battle) {
     logEl.scrollTop = logEl.scrollHeight;
 }
 
+function appendBattleLog(battle) {
+    const logEl = document.getElementById('battleLog');
+    if (!logEl) return;
+    logEl.innerHTML = battle.log.map(l => `<p class="log-${l.type}">${l.text}</p>`).join('');
+    logEl.scrollTop = logEl.scrollHeight;
+}
+
 function battleAction(action) {
-    const battle = ExplorationSystem.battleTurn(action);
-    if (!battle) return;
-    appendBattleLog(battle);
+    // 这里的 action 可以是 'attack', 'flee', 'skill:smash', 'skill:heal', etc.
+    let result;
+    const battle = ExplorationSystem.getCurrentBattle();
+    
+    if (action.startsWith('skill:')) {
+        const skillId = action.split(':')[1];
+        result = ExplorationSystem.battleTurn('skill', skillId);
+    } else if (action === 'attack') {
+        result = ExplorationSystem.battleTurn('attack');
+    } else if (action === 'flee') {
+        result = ExplorationSystem.battleTurn('flee');
+    } else {
+        return;
+    }
+
+    if (!result) return;
+    appendBattleLog(result);
     const pet = PetSystem.getState();
 
-    if (battle.status === 'won' || battle.status === 'lost' || battle.status === 'fled') {
+    // 触发动画 (如果战斗回合内有动画)
+    // 注意：triggerAnimation 在 exploration.js 中通过 CustomEvent 实现
+
+    if (result.status === 'won' || result.status === 'lost' || result.status === 'fled') {
+        // 战斗胜利有概率掉落卡片
+        if (result.status === 'won' && window.CardCollection && Math.random() < 0.25) {
+            const petSpecies = PetSystem.getAllSpecies();
+            if (petSpecies.length > 0) {
+                const randomPet = petSpecies[Math.floor(Math.random() * petSpecies.length)];
+                CardCollection.addCard(randomPet.id);
+            }
+        }
         // 显示结算
         const actionsEl = document.getElementById('battleActions');
         actionsEl.innerHTML = `
-            <button class="btn-primary" onclick="closeBattleModal()">${battle.status === 'won' ? '🎉 继续冒险' : battle.status === 'lost' ? '回到宠物页' : '继续'}</button>
+            <button class="btn-primary" onclick="closeBattleModal()">${result.status === 'won' ? '🎉 继续冒险' : result.status === 'lost' ? '回到宠物页' : '继续'}</button>
         `;
-        // 更新战斗信息
-        const hpBar = document.querySelector('.hp-bar .hp-fill');
-        // 重新渲染（用于更新宠物 HP 视觉）
         renderPetPage();
+    }
+    
+    // 重新渲染战斗 UI (HP Bar)
+    updateBattleUI(result);
+}
+
+function updateBattleUI(battle) {
+    const pet = PetSystem.getState();
+    const hpBars = document.querySelectorAll('.hp-bar .hp-fill');
+    if (hpBars.length >= 1) {
+        hpBars[0].style.width = `${(pet.hp / pet.total_max_hp) * 100}%`;
+    }
+    if (hpBars.length >= 2) {
+        hpBars[1].style.width = `${(battle.monster.current_hp / battle.monster.hp) * 100}%`;
+    }
+
+    // 处理动画
+    // 监听 exploration.js 发出的事件
+    window.removeEventListener('battle-animate', handleBattleAnimate);
+    window.addEventListener('battle-animate', handleBattleAnimate, { once: true });
+}
+
+function handleBattleAnimate(e) {
+    const { type } = e.detail;
+    const petEmoji = document.getElementById('battlePetEmoji');
+    const monsterEmoji = document.getElementById('battleMonsterEmoji');
+    const modal = document.getElementById('battleModal');
+
+    if (type === 'player-attack') {
+        if (petEmoji) {
+            petEmoji.classList.add('battle-shake');
+            setTimeout(() => petEmoji.classList.remove('battle-shake'), 500);
+        }
+    } else if (type === 'enemy-attack') {
+        if (monsterEmoji) {
+            monsterEmoji.classList.add('battle-shake');
+            setTimeout(() => monsterEmoji.classList.remove('battle-shake'), 500);
+        }
+        if (modal) {
+            modal.classList.add('battle-flash-red');
+            setTimeout(() => modal.classList.remove('battle-flash-red'), 500);
+        }
     }
 }
 
 function useItemInBattle() {
-    // 简化版：直接给一个使用治疗药水的选项
-    const potionCount = InventorySystem.getCount('potion_small');
-    if (potionCount > 0) {
-        const result = InventorySystem.useItem('potion_small');
-        alert(result.msg);
-        renderPetPage();
-        closeBattleModal();
-    } else {
-        alert('背包中没有治疗药水');
+    // 增强版：弹出道具选择列表
+    const items = InventorySystem.getAllItems().filter(i => i.type === 'consumable');
+    if (items.length === 0) {
+        alert('背包中没有消耗品');
+        return;
+    }
+
+    // 简单的 prompt 模拟选择，实际应为 UI 弹窗
+    // 为了快速实现，我们展示一个简单的提示，实际项目建议用 Modal
+    const itemNames = items.map((it, idx) => `${idx}: ${it.name} (${InventorySystem.getCount(it.item_id)})`).join('\n');
+    const choice = prompt(`选择道具编号:\n${itemNames}`);
+    
+    if (choice !== null && items[choice]) {
+        const itemId = items[choice].item_id;
+        const result = ExplorationSystem.battleTurn('item', null, itemId);
+        if (result) {
+            appendBattleLog(result);
+            updateBattleUI(result);
+            if (result.status === 'won' || result.status === 'lost' || result.status === 'fled') {
+                battleAction(result.status === 'won' ? 'attack' : 'flee'); // 这里的逻辑可以优化
+            }
+        }
     }
 }
 
