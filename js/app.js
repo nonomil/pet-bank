@@ -456,14 +456,9 @@ window.refreshPetUI = function() {
     renderPetPage();
 };
 
-// 渲染种类选择
-renderSpeciesSelection();
-
-};
-
-// 渲染种类选择
-renderSpeciesSelection();
-
+// ============ 探索页面渲染 ============
+async function renderExplorePage() {
+    const grid = document.getElementById('sceneGrid');
     if (!grid) return;
     await ExplorationSystem.loadScenes();
     const scenes = ExplorationSystem.getAllScenes();
@@ -501,6 +496,11 @@ function exploreScene(sceneId) {
     if (!result.success) {
         alert(result.msg);
         return;
+    }
+
+    // 探索宝箱掉落（30%概率）
+    if (window.TreasureChest && Math.random() < 0.3) {
+        TreasureChest.addExploreChest();
     }
 
     if (result.battle) {
@@ -667,6 +667,8 @@ async function init() {
     await InventorySystem.loadItemsData();
     await ExplorationSystem.loadScenes();
     renderAll();
+    // 初始化宝箱系统
+    if (window.TreasureChest) TreasureChest.init();
     if (window.lucide) lucide.createIcons();
 }
 

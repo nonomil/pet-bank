@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/treasure.css">
+    <link rel="stylesheet" href="css/walk.css">
 </head>
 <body>
     <!-- TOP NAV -->
@@ -113,6 +114,16 @@
                     <div class="stat-card"><div class="text-xs mb-1 text-muted">今日存入</div><div class="stat-num" id="statDeposited">0</div></div>
                     <div class="stat-card"><div class="text-xs mb-1 text-muted">亮点维度</div><div class="stat-num text-lg stat-gold" id="statHighlight">0/6</div></div>
                 </div>
+
+                <!-- 宝箱仓库 -->
+                <div class="card mt-4" id="treasureWarehouseCard">
+                    <div class="card-header flex items-center justify-between">
+                        <h3 class="text-sm font-bold">📦 宝箱仓库</h3>
+                        <span class="text-xs text-muted" id="chestDailyStatus">今日未领取</span>
+                    </div>
+                    <div class="card-body grid grid-cols-3 gap-3" id="treasureWarehouseGrid">
+                    </div>
+                </div>
             </div>
 
             <!-- PAGE: 今日打卡 -->
@@ -196,11 +207,13 @@
                                 <div><div class="text-xs text-muted">攻击力</div><div class="font-bold text-lg text-hp-red" id="petATKDisplay">5</div></div>
                                 <div><div class="text-xs text-muted">探索次数</div><div class="font-bold text-lg stat-gold" id="petExploreDisplay">0</div></div>
                             </div>
-                            <div class="grid grid-cols-3 gap-2 mt-4">
+                            <div class="grid grid-cols-4 gap-2 mt-4">
                                 <button class="btn-secondary text-xs" onclick="feedPet()">🍖 喂食</button>
                                 <button class="btn-secondary text-xs" onclick="playWithPet()">🎾 玩耍</button>
                                 <button class="btn-secondary text-xs" onclick="restPet()">💤 休息</button>
+                                <button class="btn-secondary text-xs" onclick="WalkSystem.renderUI('walkArea')">🚶 遛弯</button>
                             </div>
+                            <div id="walkArea" class="mt-3"></div>
                         </div>
                     </div>
                     <div class="card">
@@ -305,19 +318,18 @@
         <div id="chest-anim-reward"></div>
     </div>
 
-    <script src="js/math-pk.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/treasure.js"></script>
+    <!-- Scripts: pet.js must load first (PetSystem), then modules, then app.js last -->
+    <script src="js/pet.js"></script>
     <script>
-        // 启动时自动加载宠物数据库（139种）
         PetSystem.loadPetDB().then(() => {
             console.log('[PetDB] Ready —', PetSystem.getAllSpecies().length, 'pets');
         });
     </script>
-</body>
-</html>
-
+    <script src="js/inventory.js"></script>
+    <script src="js/exploration.js"></script>
+    <script src="js/math-pk.js"></script>
+    <script src="js/treasure.js"></script>
+    <script src="js/walk.js"></script>
     <script src="js/app.js"></script>
 </body>
-</html>    <link rel="stylesheet" href="css/walk.css">
-    <script src="js/walk.js"></script>
+</html>
