@@ -246,53 +246,144 @@ function renderPetPage() {
     renderSpeciesSelection();
 }
 
+// ============ 宠物认养弹窗 ============
+// 参考 classpet-pro1.0 的弹窗认养 + banchong.cn 的系列标签筛选
+let adoptFilter = { source: 'all', series: 'all', rarity: 'all' };
+
 function renderSpeciesSelection() {
-    const grid = document.getElementById('petSpeciesGrid');
-    if (!grid) return;
+    // 预览区：已选宠物或提示
+    const preview = document.getElementById('petSpeciesPreview');
+    const countEl = document.getElementById('petSpeciesCount');
     const species = PetSystem.getAllSpecies();
     const pet = PetSystem.getState();
-    // 更新宠物总数显示
-    const countEl = document.getElementById('petSpeciesCount');
-    if (countEl) countEl.textContent = `(${species.length}种可选)`;
+
+    if (countEl) countEl.textContent = `${species.length} 种宠物可选`;
+
+    if (pet.species) {
+        const sp = species.find(s => s.id === pet.species);
+        if (sp && preview) {
+            const r = PetSystem.getRarityConfig()[sp.rarity || 'common'] || PetSystem.getRarityConfig().common;
+            preview.innerHTML = `
+                <div class="text-center">
+                    <div class="text-6xl">${sp.emoji}</div>
+                    <div class="font-bold mt-2">${sp.name}</div>
+                    <div class="text-xs" style="color: ${r.color};">${r.icon} ${r.name}</div>
+                    <div class="text-xs text-muted mt-1">${sp.series || ''}</div>
+                    <button class="btn-secondary text-xs mt-3" onclick="openAdoptModal()">🔄 更换宠物</button>
+                </div>`;
+        }
+    } else if (preview) {
+        preview.innerHTML = `<div class="text-center text-sm text-muted py-8">点击「认养宠物」选择你的伙伴</div>`;
+    }
+}
+
+function openAdoptModal() {
+    const modal = document.getElementById('adoptModal');
+    if (!modal) return;
+    modal.classList.add('show');
+
+    const species = PetSystem.getAllSpecies();
+    const pet = PetSystem.getState();
+
+    // 更新计数
+    const countEl = document.getElementById('adoptModalCount');
+    if (countEl) countEl.textContent = `共 ${species.length} 种宠物`;
+
+    // 构建来源 Tab
+    const sources = {};
+    for (const s of species) {
+        const src = s.source || 'original';
+        if (!sources[src]) sources[src] = 0;
+        sources[src]++;
+    }
+    const sourceNames = { original: '🐾 经典', banchong: '🐹 仓鼠冒险', classpet: '🎨 classpet' };
+    const sourceEl = document.getElementById('adoptSourceTabs');
+    sourceEl.innerHTML = `<div class="adopt-tab adopt-tab-all ${adoptFilter.source === 'all' ? 'active' : ''}" onclick="setAdoptFilter('source','all')">全部 (${species.length})</div>`;
+    for (const [src, cnt] of Object.entries(sources)) {
+        sourceEl.innerHTML += `<div class="adopt-tab ${adoptFilter.source === src ? 'active' : ''}" onclick="setAdoptFilter('source','${src}')">${sourceNames[src] || src} (${cnt})</div>`;
+    }
+
+    // 构建系列 Tab
+    const seriesMap = {};
+    for (const s of species) {
+        if (adoptFilter.source !== 'all' && (s.source || 'original') !== adoptFilter.source) continue;
+        const ser = s.series || '经典';
+        if (!seriesMap[ser]) seriesMap[ser] = 0;
+        seriesMap[ser]++;
+    }
+    const seriesEl = document.getElementById('adoptSeriesTabs');
+    let seriesTotal = Object.values(seriesMap).reduce((a, b) => a + b, 0);
+    seriesEl.innerHTML = `<div class="adopt-tab adopt-tab-all ${adoptFilter.series === 'all' ? 'active' : ''}" onclick="setAdoptFilter('series','all')">全部系列 (${seriesTotal})</div>`;
+    for (const [name, cnt] of Object.entries(seriesMap)) {
+        seriesEl.innerHTML += `<div class="adopt-tab ${adoptFilter.series === name ? 'active' : ''}" onclick="setAdoptFilter('series','${name}')">${name} (${cnt})</div>`;
+    }
+
+    // 构建稀有度 Tab
+    const rarityEl = document.getElementById('adoptRarityTabs');
+    const rarityNames = { common: '⚪ 普通', rare: '🔵 稀有', epic: '🟣 史诗', legendary: '🟡 传说' };
+    rarityEl.innerHTML = `<div class="adopt-tab adopt-tab-all ${adoptFilter.rarity === 'all' ? 'active' : ''}" onclick="setAdoptFilter('rarity','all')">全部稀有度</div>`;
+    for (const [r, label] of Object.entries(rarityNames)) {
+        rarityEl.innerHTML += `<div class="adopt-tab adopt-tab-rarity-${r} ${adoptFilter.rarity === r ? 'active' : ''}" onclick="setAdoptFilter('rarity','${r}')">${label}</div>`;
+    }
+
+    // 渲染卡片
+    renderAdoptGrid(pet.species);
+}
+
+function setAdoptFilter(type, value) {
+    adoptFilter[type] = value;
+    // 切换来源时重置系列选择
+    if (type === 'source') adoptFilter.series = 'all';
+    openAdoptModal(); // 重新渲染
+}
+
+function renderAdoptGrid(currentSpeciesId) {
+    const grid = document.getElementById('adoptGrid');
+    const species = PetSystem.getAllSpecies();
     const rarityCfg = PetSystem.getRarityConfig();
 
-    // 139种宠物按系列分组展示
-    const series = PetSystem.getAllSpeciesBySeries();
-    const seriesNames = Object.keys(series);
+    // 筛选
+    let filtered = species.filter(s => {
+        if (adoptFilter.source !== 'all' && (s.source || 'original') !== adoptFilter.source) return false;
+        if (adoptFilter.series !== 'all' && (s.series || '经典') !== adoptFilter.series) return false;
+        if (adoptFilter.rarity !== 'all' && (s.rarity || 'common') !== adoptFilter.rarity) return false;
+        return true;
+    });
 
-    if (seriesNames.length <= 1) {
-        // 只有经典系列时用简单布局
-        grid.innerHTML = species.map(s => `
-            <div class="task-card text-center ${pet.species === s.id ? 'done' : ''}" onclick="choosePetSpecies('${s.id}')">
-                <div class="text-4xl">${s.emoji}</div>
-                <div class="font-bold text-sm mt-1">${s.name}</div>
-                <div class="text-xs mt-1" style="color: var(--text-tertiary);">${s.desc}</div>
-                <div class="text-xs mt-1">❤️ ${s.base_hp} ⚔️ ${s.base_atk}</div>
-                ${pet.species === s.id ? '<div class="text-xs mt-1" style="color: var(--sage-green);">✓ 当前</div>' : ''}
-            </div>
-        `).join('');
-    } else {
-        // 多系列：按系列分组 + 稀有度标签
-        let html = '';
-        for (const name of seriesNames) {
-            const pets = series[name];
-            html += `<div class="col-span-full mt-4 mb-2">
-                <div class="text-sm font-bold" style="color: var(--sage-green);">${name} <span class="text-xs font-normal" style="color: var(--text-tertiary);">(${pets.length}种)</span></div>
-            </div>`;
-            for (const s of pets) {
-                const r = rarityCfg[s.rarity || 'common'] || rarityCfg.common;
-                html += `
-                <div class="task-card text-center ${pet.species === s.id ? 'done' : ''}" onclick="choosePetSpecies('${s.id}')">
-                    <div class="text-3xl">${s.emoji}</div>
-                    <div class="font-bold text-sm mt-1">${s.name}</div>
-                    <div class="text-xs mt-1" style="color: ${r.color};">${r.icon} ${r.name}</div>
-                    <div class="text-xs mt-1">❤️${s.base_hp} ⚔️${s.base_atk}</div>
-                    ${pet.species === s.id ? '<div class="text-xs mt-1" style="color: var(--sage-green);">✓ 当前</div>' : ''}
-                </div>`;
-            }
-        }
-        grid.innerHTML = html;
+    if (filtered.length === 0) {
+        grid.innerHTML = '<div class="text-center text-muted py-12 col-span-full">没有匹配的宠物</div>';
+        return;
     }
+
+    grid.innerHTML = filtered.map(s => {
+        const r = rarityCfg[s.rarity || 'common'] || rarityCfg.common;
+        const isSelected = currentSpeciesId === s.id;
+        return `
+        <div class="adopt-card ${isSelected ? 'selected' : ''}" onclick="choosePetFromModal('${s.id}')">
+            <div class="rarity-badge rarity-badge-${s.rarity || 'common'}">${r.icon} ${r.name}</div>
+            <div class="emoji">${s.emoji}</div>
+            <div class="name">${s.name}</div>
+            <div class="info">${s.series || ''}</div>
+            <div class="stats-row">
+                <span>❤️${s.base_hp}</span>
+                <span>⚔️${s.base_atk}</span>
+            </div>
+            ${isSelected ? '<div class="text-xs mt-1" style="color: var(--sage-green);">✓ 当前</div>' : ''}
+        </div>`;
+    }).join('');
+}
+
+function choosePetFromModal(speciesId) {
+    if (confirm('确定选择这只宠物吗？选择后等级会重置。')) {
+        PetSystem.chooseSpecies(speciesId);
+        closeAdoptModal();
+        renderPetPage();
+    }
+}
+
+function closeAdoptModal() {
+    const modal = document.getElementById('adoptModal');
+    if (modal) modal.classList.remove('show');
 }
 
 function choosePetSpecies(speciesId) {

@@ -207,9 +207,38 @@
                     </div>
                 </div>
                 <div class="card" id="petSpeciesCard">
-                    <div class="card-header"><h3 class="text-sm font-bold">🎯 选择你的宠物 <span id="petSpeciesCount" class="text-xs font-normal" style="color: var(--text-tertiary);"></span></h3></div>
-                    <div class="card-body" style="max-height: 600px; overflow-y: auto;">
-                        <div class="grid grid-cols-4 sm:grid-cols-6 gap-2" id="petSpeciesGrid"></div>
+                    <div class="card-header flex items-center justify-between">
+                        <div><h3 class="text-sm font-bold">🎯 宠物图鉴</h3><p class="text-xs text-muted mt-1" id="petSpeciesCount">加载中...</p></div>
+                        <button class="btn-primary text-xs" onclick="openAdoptModal()">🏠 认养宠物</button>
+                    </div>
+                    <div class="card-body" id="petSpeciesPreview">
+                        <div class="text-center text-sm text-muted py-8">点击「认养宠物」选择你的伙伴</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 宠物认养弹窗（全屏 Modal） -->
+            <div id="adoptModal" class="modal">
+                <div class="modal-content modal-large">
+                    <div class="modal-header flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold">🏠 宠物图鉴 · 认养中心</h3>
+                            <p class="text-xs text-muted mt-1" id="adoptModalCount"></p>
+                        </div>
+                        <button class="close-btn text-2xl" onclick="closeAdoptModal()">&times;</button>
+                    </div>
+                    <!-- 筛选 Tab：来源 + 系列 + 稀有度 -->
+                    <div class="adopt-filters">
+                        <!-- 第一行：来源 Tab -->
+                        <div class="adopt-filter-row" id="adoptSourceTabs"></div>
+                        <!-- 第二行：系列/风格 Tab（动态） -->
+                        <div class="adopt-filter-row" id="adoptSeriesTabs"></div>
+                        <!-- 第三行：稀有度筛选 -->
+                        <div class="adopt-filter-row" id="adoptRarityTabs"></div>
+                    </div>
+                    <!-- 宠物卡片网格 -->
+                    <div class="adopt-grid-wrap" style="max-height: 65vh; overflow-y: auto;">
+                        <div class="adopt-grid" id="adoptGrid"></div>
                     </div>
                 </div>
             </div>
