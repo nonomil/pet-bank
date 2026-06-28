@@ -278,7 +278,10 @@ function switchPage(page) {
         if (img) {
             img.classList.remove('dancing');
             void img.offsetWidth; // reflow
-            img.src = getPetImagePath(pet.species, currentPose);
+            // 优先使用当前进化阶段图片
+            const stageImg = PetSystem.getCurrentStageImage();
+            const poseImg = getPetImagePath(pet.species, currentPose);
+            img.src = stageImg || poseImg;
             img.classList.add('dancing');
         }
     }
@@ -491,7 +494,7 @@ function openAdoptModal() {
         if (!sources[src]) sources[src] = 0;
         sources[src]++;
     }
-    const sourceNames = { original: '🐾 经典', banchong: '🐹 仓鼠冒险', classpet: '🎨 classpet' };
+    const sourceNames = { original: '🌿 PVZ 原版', banchong: '🐹 仓鼠冒险', classpet: '🎨 classpet' };
     const sourceEl = document.getElementById('adoptSourceTabs');
     sourceEl.innerHTML = `<div class="adopt-tab adopt-tab-all ${adoptFilter.source === 'all' ? 'active' : ''}" onclick="setAdoptFilter('source','all')">全部 (${species.length})</div>`;
     for (const [src, cnt] of Object.entries(sources)) {
@@ -555,8 +558,11 @@ function renderAdoptGrid(currentSpeciesId) {
         const isSelected = currentSpeciesId === s.id;
         const imgName = s.id === 'goldfish' ? 'fish' : s.id;
         const petImgUrl = s.imageUrl || '';
-        const imgHtml = petImgUrl
-            ? `<div class="pet-thumb" onclick="event.stopPropagation(); showPetLightbox('${s.name}','${s.imageStyle || 'banchong'}')"><img src="${petImgUrl}" alt="${s.name}" loading="lazy"></div>`
+        // 认养卡片显示蛋形态（stage 0）如果有 imageStages
+        const eggImg = (s.imageStages && s.imageStages['0']) ? s.imageStages['0'] : petImgUrl;
+        const displayImg = eggImg || petImgUrl;
+        const imgHtml = displayImg
+            ? `<div class="pet-thumb" onclick="event.stopPropagation(); showPetLightbox('${s.name}','${s.imageStyle || 'banchong'}')"><img src="${displayImg}" alt="${s.name}" loading="lazy"></div>`
             : `<div class="emoji">${s.emoji}</div>`;
         return `
         <div class="adopt-card ${isSelected ? 'selected' : ''}" onclick="choosePetFromModal('${s.id}')">
@@ -574,7 +580,7 @@ function renderAdoptGrid(currentSpeciesId) {
 }
 
 function choosePetFromModal(speciesId) {
-    if (confirm('确定选择这只宠物吗？选择后等级会重置。')) {
+    if (confirm('🥚 领养这颗宠物蛋吗？领养后从蛋开始孵化成长。')) {
         PetSystem.chooseSpecies(speciesId);
         closeAdoptModal();
         renderPetPage();

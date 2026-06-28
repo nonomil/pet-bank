@@ -11,12 +11,16 @@
  */
 
 const PetSystem = (function () {
-    // 宠物阶段配置
+    // 宠物阶段配置（对应 imageStages 索引）
+    // banchong 宠物：6阶段(0蛋→5完全体)
+    // PVZ 宠物：5阶段(0蛋→1种子→2幼苗→3成熟→4终极)
+    // classpet 宠物：4阶段(emoji)
     const STAGES = [
-        { min_level: 1, name: '蛋', emoji: '🥚' },
-        { min_level: 3, name: '幼崽', emoji: '🐣' },
-        { min_level: 5, name: '成长期', emoji: '🐥' },
-        { min_level: 8, name: '完全体', emoji: '🦅' }
+        { min_level: 1, name: '蛋',     emoji: '🥚', stageIdx: 0 },
+        { min_level: 3, name: '幼崽',   emoji: '🐣', stageIdx: 1 },
+        { min_level: 5, name: '成长期', emoji: '🐥', stageIdx: 2 },
+        { min_level: 8, name: '完全体', emoji: '🦅', stageIdx: 3 },
+        { min_level: 15, name: '终极体', emoji: '👑', stageIdx: 4 },
     ];
 
     // 等级经验表
@@ -32,16 +36,16 @@ const PetSystem = (function () {
     };
 
     // 宠物种类数据库（139 种，从 data/pets.json 动态加载）
-    // 内置 fallback 8 种经典宠物
+    // 内置 fallback PVZ 宠物
     const SPECIES_FALLBACK = [
-        { id: 'dog', name: '柴犬', emoji: '🐕', desc: '活泼忠诚，需要每天遛弯', base_hp: 110, base_atk: 7 },
-        { id: 'cat', name: '橘猫', emoji: '🐈', desc: '独立慵懒，陪伴即可', base_hp: 95, base_atk: 6 },
-        { id: 'rabbit', name: '兔子', emoji: '🐰', desc: '温柔安静，需要干净环境', base_hp: 80, base_atk: 4 },
-        { id: 'turtle', name: '乌龟', emoji: '🐢', desc: '长寿稳定，低维护难度', base_hp: 130, base_atk: 5 },
-        { id: 'hamster', name: '仓鼠', emoji: '🐹', desc: '小巧玲珑，互动频繁', base_hp: 70, base_atk: 4 },
-        { id: 'parrot', name: '鹦鹉', emoji: '🦜', desc: '能说会道，空中优势', base_hp: 85, base_atk: 9 },
-        { id: 'goldfish', name: '金鱼', emoji: '🐠', desc: '优雅安静，水中王者', base_hp: 75, base_atk: 3 },
-        { id: 'hedgehog', name: '刺猬', emoji: '🦔', desc: '防御强，刺可反击', base_hp: 90, base_atk: 8 }
+        { id: 'dog', name: '豌豆射手', emoji: '🫛', desc: '发射豌豆攻击，入门级植物', base_hp: 110, base_atk: 7 },
+        { id: 'cat', name: '向日葵', emoji: '🌻', desc: '产出阳光资源，不可或缺', base_hp: 95, base_atk: 6 },
+        { id: 'rabbit', name: '坚果墙', emoji: '🥜', desc: '防御力超强，守护前线', base_hp: 130, base_atk: 5 },
+        { id: 'turtle', name: '大嘴花', emoji: '🪴', desc: '一口吞僵尸，攻击力惊人', base_hp: 80, base_atk: 12 },
+        { id: 'hamster', name: '寒冰射手', emoji: '❄️', desc: '冰冻减速敌人，控制型', base_hp: 70, base_atk: 4 },
+        { id: 'parrot', name: '双发射手', emoji: '🔫', desc: '双倍火力输出，DPS之王', base_hp: 85, base_atk: 9 },
+        { id: 'goldfish', name: '樱桃炸弹', emoji: '🍒', desc: '范围爆炸伤害，一击必杀', base_hp: 75, base_atk: 3 },
+        { id: 'hedgehog', name: '机枪豌豆', emoji: '🟢', desc: '四管齐射，火力压制', base_hp: 90, base_atk: 8 }
     ];
 
     let SPECIES = [...SPECIES_FALLBACK];
@@ -87,10 +91,11 @@ const PetSystem = (function () {
         const species = SPECIES.find(s => s.id === speciesId);
         if (!species) return false;
         state.species = speciesId;
+        state.species_data = species;
         state.max_hp = species.base_hp;
         state.hp = species.base_hp;
         state.atk = species.base_atk;
-        state.level = 1;
+        state.level = 1;       // 从蛋开始
         state.exp = 0;
         state.wins = 0;
         state.explorations = 0;
@@ -98,6 +103,7 @@ const PetSystem = (function () {
         state.weapon = null;
         state.armor = null;
         state.happiness = 100;
+        state.evolution_stage = 0;  // 0=蛋
         save();
         return true;
     }
@@ -111,6 +117,22 @@ const PetSystem = (function () {
             }
         }
         return current;
+    }
+
+    // 获取当前进化阶段索引（映射到 imageStages）
+    function getEvolutionStageIndex() {
+        const stage = getCurrentStage();
+        return stage.stageIdx || 0;
+    }
+
+    // 根据当前阶段获取宠物图片URL
+    function getCurrentStageImage() {
+        if (!state.species) return null;
+        const species = SPECIES.find(s => s.id === state.species);
+        if (!species || !species.imageStages) return species.imageUrl || null;
+        const idx = getEvolutionStageIndex();
+        const key = String(idx);
+        return species.imageStages[key] || species.imageUrl || null;
     }
 
     // 获取当前阶段 emoji
@@ -134,8 +156,10 @@ const PetSystem = (function () {
             state.level += 1;
             // 升级提升属性
             state.max_hp += 15;
-            state.hp = Math.min(state.hp + 30, state.max_hp); // 升级回血
+            state.hp = Math.min(state.hp + 30, state.max_hp);
             state.atk += 2;
+            // 更新进化阶段
+            state.evolution_stage = getEvolutionStageIndex();
             leveled_up = true;
         }
         if (state.level >= MAX_LEVEL) state.exp = 0;
@@ -334,6 +358,7 @@ const PetSystem = (function () {
     // 公开 API
     return {
         load, save, chooseSpecies, getCurrentStage, getStageEmoji,
+        getEvolutionStageIndex, getCurrentStageImage,
         addExp, takeDamage, heal, feed, play, rest, revive,
         equip, unequip, addExploration, addWin, getState, getAllSpecies,
         getAllSpeciesBySeries, getSpeciesByRarity, getRarityConfig, getAllSeries,
