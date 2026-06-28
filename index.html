@@ -87,18 +87,32 @@
                         <h2>跟着路线走进今天的冒险</h2>
                         <p>每个节点都是一个场景，点亮后就能继续深入。锁定地点会直接告诉你等级和积分条件。</p>
                     </div>
-                    <div class="map-hero-stats">
-                        <div class="map-hero-stat">
-                            <span class="label">总积分</span>
-                            <strong id="mapPoints">0</strong>
+                    <div class="map-hero-side">
+                        <div class="map-hero-stats">
+                            <div class="map-hero-stat">
+                                <span class="label">总积分</span>
+                                <strong id="mapPoints">0</strong>
+                            </div>
+                            <div class="map-hero-stat">
+                                <span class="label">宠物等级</span>
+                                <strong id="mapPetLevel">Lv.1</strong>
+                            </div>
+                            <div class="map-hero-stat">
+                                <span class="label">战斗胜场</span>
+                                <strong id="mapWins">0</strong>
+                            </div>
                         </div>
-                        <div class="map-hero-stat">
-                            <span class="label">宠物等级</span>
-                            <strong id="mapPetLevel">Lv.1</strong>
-                        </div>
-                        <div class="map-hero-stat">
-                            <span class="label">战斗胜场</span>
-                            <strong id="mapWins">0</strong>
+                        <div class="map-companion-card">
+                            <div class="map-companion-avatar">
+                                <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.png" alt="当前同行宠物">
+                            </div>
+                            <div class="map-companion-copy">
+                                <p class="map-companion-kicker">今日同行伙伴</p>
+                                <h3 id="mapCompanionName">还没有领养宠物</h3>
+                                <p id="mapCompanionStage">去宠物养成页挑一位伙伴一起冒险</p>
+                                <div class="map-companion-chip" id="mapNextSceneHint">下一站会显示在这里</div>
+                                <button class="map-companion-link" type="button" onclick="switchPage('pet')">前往宠物养成</button>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -139,6 +153,11 @@
                                 <button class="map-quick-btn" onclick="switchPage('pet')"><i data-lucide="paw-print" class="w-4 h-4"></i><span>我的宠物</span></button>
                                 <button class="map-quick-btn" onclick="switchPage('card')"><i data-lucide="book-open" class="w-4 h-4"></i><span>卡片图鉴</span></button>
                                 <button class="map-quick-btn" onclick="switchPage('shop')"><i data-lucide="store" class="w-4 h-4"></i><span>兑换商店</span></button>
+                            </div>
+                            <div class="map-map-legend mt-4">
+                                <div class="map-legend-item"><span class="map-legend-token open"></span><span>金色星点表示已经开放，可以直接进入。</span></div>
+                                <div class="map-legend-item"><span class="map-legend-token locked"></span><span>灰色星点表示还没解锁，卡片上会写明等级或积分条件。</span></div>
+                                <div class="map-legend-item"><span class="map-legend-token path"></span><span>发光路线会把 12 个场景串起来，适合按顺序推进。</span></div>
                             </div>
                         </section>
 

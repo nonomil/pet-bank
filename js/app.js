@@ -211,12 +211,69 @@ function updateStats() {
         });
         sh.textContent = `${litDims}/6`;
     }
+    updateMapCompanionCard();
 }
 
 function updateTopPoints() {
     totalPoints = parseInt(localStorage.getItem('petbank_points') || '0', 10);
     window.totalPoints = totalPoints;
     updateStats();
+}
+
+function getRecommendedScene() {
+    if (!window.ExplorationSystem || typeof ExplorationSystem.getAllScenes !== 'function') {
+        return null;
+    }
+    const scenes = ExplorationSystem.getAllScenes();
+    if (!Array.isArray(scenes) || scenes.length === 0) return null;
+
+    const unlocked = scenes.filter((scene) => ExplorationSystem.isSceneUnlocked(scene));
+    if (unlocked.length > 0) {
+        return unlocked.sort((a, b) => {
+            if ((a.min_level || 0) !== (b.min_level || 0)) return (a.min_level || 0) - (b.min_level || 0);
+            return (a.hp_cost || 0) - (b.hp_cost || 0);
+        })[0];
+    }
+
+    return scenes.slice().sort((a, b) => {
+        if ((a.min_level || 0) !== (b.min_level || 0)) return (a.min_level || 0) - (b.min_level || 0);
+        return (a.unlock_cost || 0) - (b.unlock_cost || 0);
+    })[0];
+}
+
+function updateMapCompanionCard() {
+    const companionImg = document.getElementById('mapCompanionImg');
+    const companionName = document.getElementById('mapCompanionName');
+    const companionStage = document.getElementById('mapCompanionStage');
+    const nextSceneHint = document.getElementById('mapNextSceneHint');
+
+    if (!companionImg || !companionName || !companionStage || !nextSceneHint || !window.PetSystem) return;
+
+    const pet = PetSystem.getState();
+    const hasSpecies = !!pet.species;
+    const stageImage = hasSpecies && typeof PetSystem.getCurrentStageImage === 'function'
+        ? PetSystem.getCurrentStageImage()
+        : 'assets/pets/poses/dog_idle.png';
+    companionImg.src = stageImage || 'assets/pets/poses/dog_idle.png';
+
+    if (hasSpecies) {
+        const petName = pet.species_data?.name || pet.species || '我的伙伴';
+        companionName.textContent = petName;
+        companionStage.textContent = `${pet.stage?.name || '成长'}阶段 · Lv.${pet.level} · ❤️ ${pet.hp}/${pet.total_max_hp}`;
+    } else {
+        companionName.textContent = '还没有领养宠物';
+        companionStage.textContent = '去宠物养成页挑一位伙伴一起冒险';
+    }
+
+    const recommendedScene = getRecommendedScene();
+    if (recommendedScene) {
+        const unlocked = ExplorationSystem.isSceneUnlocked(recommendedScene);
+        nextSceneHint.textContent = unlocked
+            ? `推荐下一站：${recommendedScene.emoji} ${recommendedScene.name}`
+            : `下一站目标：Lv.${recommendedScene.min_level} 解锁 ${recommendedScene.name}`;
+    } else {
+        nextSceneHint.textContent = '下一站会显示在这里';
+    }
 }
 
 function addGrowthPoints(delta) {
@@ -1085,6 +1142,12 @@ async function init() {
     InventorySystem.load();
     await InventorySystem.loadItemsData();
     await ExplorationSystem.loadScenes();
+    if (window.CardCollection && typeof window.CardCollection.init === 'function') {
+        window.CardCollection.init();
+    }
+    if (window.ToolboxSystem && typeof window.ToolboxSystem.init === 'function') {
+        window.ToolboxSystem.init();
+    }
     renderAll();
     // 初始化宝箱系统
     if (window.TreasureChest) TreasureChest.init();

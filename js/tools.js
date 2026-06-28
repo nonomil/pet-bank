@@ -348,10 +348,10 @@ const ToolboxSystem = (function() {
                 _saveState();
                 
                 // Call global functions if they exist
-                if (typeof totalPoints !== 'undefined') {
-                    totalPoints += 5;
-                }
-                if (typeof saveAppState === 'function') {
+                if (typeof window.addGrowthPoints === 'function') {
+                    window.addGrowthPoints(5);
+                } else if (typeof saveAppState === 'function') {
+                    window.totalPoints = (window.totalPoints || 0) + 5;
                     saveAppState();
                 }
                 alert("🍅 番茄钟完成！获得 +5 成长分！");

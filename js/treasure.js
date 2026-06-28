@@ -90,9 +90,14 @@ const TreasureChest = (function () {
 
     function applyReward(reward) {
         if (reward.type === 'points') {
-            if (typeof totalPoints !== 'undefined') totalPoints += reward.value;
+            if (typeof window.addGrowthPoints === 'function') {
+                window.addGrowthPoints(reward.value);
+            } else if (window.totalPoints !== undefined) {
+                window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + reward.value);
+                if (typeof window.saveAppState === 'function') window.saveAppState();
+                if (typeof window.updateStats === 'function') window.updateStats();
+            }
             if (typeof PetSystem !== 'undefined') PetSystem.addExp(reward.value);
-            if (typeof saveAppState === 'function') saveAppState();
             if (typeof renderAll === 'function') renderAll();
         } else if (reward.type === 'item' && typeof InventorySystem !== 'undefined') {
             InventorySystem.addItem(reward.id, 1);

@@ -360,34 +360,13 @@
             const accuracy = Math.round((state.correctCount / state.totalCount) * 100) || 0;
             const earnedPoints = state.score;
 
-            // 1. 写入 PetSystem 积分
-            if (window.PetSystem && typeof window.PetSystem.addExp === 'function') {
-                // 这里假设 PetSystem 有 addExp 或者其他加分方法
-                // 根据需求：“积分写入 PetSystem 的 points 系统”
-                // 既然 app.js 里 totalPoints 是通过 toggleTask 更新的，
-                // 且 PetSystem 只是提供状态，我们需要通过 app.js 的逻辑或者直接操作
-                // 观察 app.js：totalPoints 是全局变量。
-                // 但题目要求“积分写入 PetSystem 的 points 系统”。
-                // 检查 pet.js 逻辑：PetSystem.addExp(amount) 是存在的。
-                // 通常积分和 EXP 是两个概念，但这里需求指的可能是增加玩家的成长分。
-                // 我们尝试调用 PetSystem.addExp (如果它是用来增加积分的)
-                // 或者更稳妥的做法是直接调用 app.js 里的逻辑（如果它暴露了）
-                // 由于 app.js 没导出，我们尝试寻找 PetSystem 里的积分相关方法。
-                // 另外，需求提到“积分系统在 app.js 的 totalPoints 变量中”。
-                // 所以我们可能需要通过某种方式通知 app.js 更新。
-                // 既然是同一个 window 环境，我们可以直接尝试修改（虽然不优雅，但在纯前端小项目中有效）
-                // 或者寻找 PetSystem 是否有类似 addPoints 的方法。
-                // 暂时先按照 PetSystem.addExp 调用，或者查找是否存在 PetSystem.addPoints
-                if (typeof window.PetSystem.addExp === 'function') {
-                   window.PetSystem.addExp(earnedPoints);
-                }
-                // 同时也尝试更新 app.js 的全局变量（如果能访问到）
-                if (window.totalPoints !== undefined) {
-                    window.totalPoints += earnedPoints;
-                    // 更新 UI
-                    if (typeof window.updateStats === 'function') window.updateStats();
-                    if (typeof window.renderAll === 'function') window.renderAll();
-                }
+            // 1. 写入成长分主链路
+            if (typeof window.addGrowthPoints === 'function') {
+                window.addGrowthPoints(earnedPoints);
+            } else if (window.totalPoints !== undefined) {
+                window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + earnedPoints);
+                if (typeof window.saveAppState === 'function') window.saveAppState();
+                if (typeof window.updateStats === 'function') window.updateStats();
             }
 
             // 2. 保存最高分

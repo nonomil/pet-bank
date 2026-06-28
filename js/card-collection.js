@@ -34,6 +34,7 @@ const CardCollection = (function() {
         if (!_cards.includes(petId)) {
             _cards.push(petId);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(_cards));
+            _calculateSeriesStats();
             
             // Check for series completion rewards
             checkSeriesRewards(petId);
@@ -79,11 +80,11 @@ const CardCollection = (function() {
                 localStorage.setItem('petbank_awarded_series', JSON.stringify(awarded));
                 
                 // Grant points via app global
-                if (typeof totalPoints !== 'undefined') {
-                    totalPoints += REWARD_POINTS_PER_SERIES;
-                    // Trigger app update if possible
-                    if (typeof saveAppState === 'function') saveAppState();
-                    // We'll call renderAll via an event or direct call if needed
+                if (typeof window.addGrowthPoints === 'function') {
+                    window.addGrowthPoints(REWARD_POINTS_PER_SERIES);
+                } else if (typeof saveAppState === 'function') {
+                    window.totalPoints = (window.totalPoints || 0) + REWARD_POINTS_PER_SERIES;
+                    saveAppState();
                 }
                 console.log(`🎉 Series completed: ${series}! Received ${REWARD_POINTS_PER_SERIES} points!`);
             }

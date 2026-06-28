@@ -106,10 +106,14 @@ const ExplorationSystem = (function () {
 
     function buildRouteSvg() {
         const points = MAP_LAYOUT.map((node) => `${node.x}% ${node.y}%`).join(', ');
+        const stars = MAP_LAYOUT.map((node) => `
+            <circle class="map-route-spark" cx="${node.x}" cy="${node.y}" r="1.8"></circle>
+        `).join('');
         return `
             <svg class="map-route-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                 <polyline class="map-route-line" points="${points}"></polyline>
                 <polyline class="map-route-dash" points="${points}"></polyline>
+                ${stars}
             </svg>
         `;
     }
@@ -187,7 +191,11 @@ const ExplorationSystem = (function () {
         const points = getCurrentPoints();
         if (points < scene.unlock_cost) return { success: false, msg: `积分不足（需要 ${scene.unlock_cost}）` };
 
-        localStorage.setItem('petbank_points', String(points - scene.unlock_cost));
+        if (typeof window.addGrowthPoints === 'function') {
+            window.addGrowthPoints(-scene.unlock_cost);
+        } else {
+            localStorage.setItem('petbank_points', String(Math.max(0, points - scene.unlock_cost)));
+        }
         unlockedScenes[sceneId] = true;
         saveUnlockState();
         updatePointBindings();

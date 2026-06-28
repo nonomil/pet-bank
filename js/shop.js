@@ -32,12 +32,44 @@ const ShopSystem = (function () {
     }
   ];
 
-  const RANDOM_ITEMS = ['⭐ 幸运星', '🛡️ 勇气勋章', '🍭 糖果棒', '🔍 放大镜', '🚀 火箭模型'];
-  const RARE_ITEMS = ['👑 黄金皇冠', '💎 璀璨钻石', '🦄 独角兽玩偶', '🐉 传说巨龙'];
+  const RANDOM_ITEMS = [
+    { id: 'toy_ball', emoji: '⚽', name: '玩具球' },
+    { id: 'bone', emoji: '🦴', name: '香香骨头' },
+    { id: 'candy', emoji: '🍬', name: '彩虹糖' },
+    { id: 'feather', emoji: '🪶', name: '发光羽毛' },
+    { id: 'chest_fragment', emoji: '🧩', name: '宝箱碎片' }
+  ];
+  const RARE_ITEMS = [
+    { id: 'forest_gem', emoji: '💚', name: '森林之泪' },
+    { id: 'ocean_gem', emoji: '💙', name: '海洋之心' },
+    { id: 'star_gem', emoji: '⭐', name: '星辰碎片' },
+    { id: 'phoenix_feather', emoji: '🪶', name: '凤凰羽毛' }
+  ];
 
   // --- Private Helpers ---
 
   const getHistory = (key) => JSON.parse(localStorage.getItem(key) || '[]');
+
+  const getCurrentPoints = () => {
+    if (typeof window.totalPoints === 'number') return window.totalPoints;
+    if (typeof totalPoints === 'number') return totalPoints;
+    return 0;
+  };
+
+  const adjustGrowthPoints = (delta) => {
+    if (typeof window.addGrowthPoints === 'function') {
+      return window.addGrowthPoints(delta);
+    }
+
+    if (window.totalPoints !== undefined) {
+      window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + delta);
+      if (typeof window.saveAppState === 'function') window.saveAppState();
+      if (typeof window.updateStats === 'function') window.updateStats();
+      return window.totalPoints;
+    }
+
+    return null;
+  };
 
   const saveHistory = (key, entry) => {
     const history = getHistory(key);
@@ -102,38 +134,33 @@ const ShopSystem = (function () {
   // --- Private Logic ---
 
   const buyItem = (item) => {
-    if (typeof totalPoints === 'undefined') {
+    const currentPoints = getCurrentPoints();
+    if (currentPoints === null) {
       alert('Error: totalPoints is not defined.');
       return;
     }
-    if (totalPoints < item.price) {
+    if (currentPoints < item.price) {
       alert('成长分不足，快去完成任务赚积分吧！');
       return;
     }
 
-    totalPoints -= item.price;
+    adjustGrowthPoints(-item.price);
     saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'purchase' });
-    
-    if (typeof saveAppState === 'function') {
-      saveAppState();
-    }
     alert(`兑换成功！${item.name}`);
   };
 
   const openBlindBox = (box, containerId) => {
-    if (typeof totalPoints === 'undefined') {
+    const currentPoints = getCurrentPoints();
+    if (currentPoints === null) {
       alert('Error: totalPoints is not defined.');
       return;
     }
-    if (totalPoints < box.price) {
+    if (currentPoints < box.price) {
       alert('成长分不足，快去完成任务赚积分吧！');
       return;
     }
 
-    totalPoints -= box.price;
-    if (typeof saveAppState === 'function') {
-      saveAppState();
-    }
+    adjustGrowthPoints(-box.price);
 
     // Prepare Animation Overlay
     const overlay = document.createElement('div');
@@ -169,7 +196,7 @@ const ShopSystem = (function () {
           result = { type: 'points', emoji: '💰', name: `${refund} 成长分返利`, value: refund };
         } else {
           const item = RANDOM_ITEMS[Math.floor(Math.random() * RANDOM_ITEMS.length)];
-          result = { type: 'item', emoji: '📦', name: item, value: item };
+          result = { type: 'item', emoji: item.emoji, name: item.name, value: item.id };
         }
       } else {
         // Luxury Box
@@ -178,7 +205,7 @@ const ShopSystem = (function () {
           result = { type: 'points', emoji: '💰', name: `${refund} 成长分返利`, value: refund };
         } else if (rand < 0.7) {
           const item = RARE_ITEMS[Math.floor(Math.random() * RARE_ITEMS.length)];
-          result = { type: 'item', emoji: '✨', name: item, value: item };
+          result = { type: 'item', emoji: item.emoji, name: item.name, value: item.id };
         } else {
           result = { type: 'exp', emoji: '⭐', name: '宠物经验+50', value: 50 };
         }
@@ -186,15 +213,11 @@ const ShopSystem = (function () {
 
       // Apply Result to State
       if (result.type === 'points') {
-        totalPoints += result.value;
-        if (typeof saveAppState === 'function') saveAppState();
+        adjustGrowthPoints(result.value);
       } else if (result.type === 'exp') {
         if (window.PetSystem && typeof window.PetSystem.addExp === 'function') {
           window.PetSystem.addExp(50);
-        } else if (window.PetSystem && typeof window.PetSystem.addExp === 'function') {
-           // Fallback/Safety check if PetSystem exists but method differs
         }
-        // Fallback manual update if PetSystem method is unknown, though we assume it exists
       } else if (result.type === 'item') {
         if (window.InventorySystem && typeof window.InventorySystem.addItem === 'function') {
           window.InventorySystem.addItem(result.value);
@@ -236,7 +259,7 @@ const ShopSystem = (function () {
       <div class="shop-container">
         <div class="shop-header">
           <div style="font-size: 1.2rem; font-weight: bold;">🛍️ 兑换商店</div>
-          <div style="font-size: 1.1rem; color: #e67e22;">当前积分: <span id="shop-total-points">${totalPoints}</span></div>
+          <div style="font-size: 1.1rem; color: #e67e22;">当前积分: <span id="shop-total-points">${getCurrentPoints()}</span></div>
         </div>
 
         <div class="shop-section-title">🎁 盲盒惊喜</div>
@@ -279,7 +302,7 @@ const ShopSystem = (function () {
     
     // Ensure totalPoints is updated in UI
     const ptsSpan = container.querySelector('#shop-total-points');
-    if (ptsSpan) ptsSpan.textContent = totalPoints;
+    if (ptsSpan) ptsSpan.textContent = getCurrentPoints();
   };
 
   // --- Public API ---
