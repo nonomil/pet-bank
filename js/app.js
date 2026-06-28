@@ -226,6 +226,8 @@ function switchPage(page) {
     if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
     if (page === 'inventory') renderInventoryPage();
     if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
+    if (page === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
+    if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
 }
 
 // ============ 宠物页面渲染 ============
@@ -867,6 +869,56 @@ function closeItemModal() {
     document.getElementById('itemModal').classList.remove('show');
 }
 
+// ============ 升级动画 ============
+function showLevelUpAnimation(level) {
+    const pet = PetSystem.getState();
+    const species = pet.species_id ? PetSystem.getAllSpecies().find(s => s.id === pet.species_id) : null;
+    const petName = species ? species.name : '宠物';
+    const stageNames = ['🥚 蛋', '👶 幼崽', '🧒 少年', '💪 成年'];
+
+    const overlay = document.createElement('div');
+    overlay.className = 'level-up-overlay';
+    overlay.id = 'levelUpOverlay';
+    overlay.innerHTML = `
+        <div class="level-up-card">
+            <div style="font-size:48px;">🎉</div>
+            <h2>升级了！</h2>
+            <div class="level-badge">Lv.${level}</div>
+            <div style="font-size:16px;color:#333;margin-top:8px;">${petName} ${stageNames[Math.min(level, 3)] || stageNames[3]}</div>
+            <div class="new-abilities">HP+15 | ATK+2 | ❤️ 回复30</div>
+            <button onclick="document.getElementById('levelUpOverlay').remove()" style="margin-top:20px;padding:10px 32px;border:none;border-radius:10px;background:#4CAF50;color:white;font-size:14px;cursor:pointer;font-weight:bold;">太棒了！</button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    // 撒彩色纸屑
+    const colors = ['#FFD700','#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8'];
+    for (let i = 0; i < 40; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        piece.style.width = (6 + Math.random() * 8) + 'px';
+        piece.style.height = (6 + Math.random() * 8) + 'px';
+        piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+        piece.style.animationDelay = Math.random() * 0.5 + 's';
+        overlay.appendChild(piece);
+    }
+}
+
+// 包装 PetSystem.addExp 以触发升级动画
+const _origAddExp = PetSystem.addExp.bind(PetSystem);
+PetSystem.addExp = function(amount) {
+    const oldLevel = PetSystem.getState().level;
+    const result = _origAddExp(amount);
+    if (result && result.leveled_up) {
+        const newLevel = PetSystem.getState().level;
+        showLevelUpAnimation(newLevel);
+    }
+    return result;
+};
+
 // ============ 总体渲染 ============
 function renderAll() {
     renderTaskGrid();
@@ -875,6 +927,7 @@ function renderAll() {
     renderPetPage();
     renderExplorePage();
     renderInventoryPage();
+    if (window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (window.lucide) lucide.createIcons();
 }
 
@@ -888,6 +941,9 @@ async function init() {
     renderAll();
     // 初始化宝箱系统
     if (window.TreasureChest) TreasureChest.init();
+    // 初始化商店和工具箱
+    if (window.ShopSystem) ShopSystem.renderUI('shop-ui');
+    if (window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
     if (window.lucide) lucide.createIcons();
 }
 

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/walk.css">
     <link rel="stylesheet" href="css/card-collection.css">
+    <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
     <!-- TOP NAV -->
@@ -34,6 +35,8 @@
             <div class="nav-tab" data-page="mathpk" onclick="switchPage('mathpk')">🔢 数学PK</div>
             <div class="nav-tab" data-page="inventory" onclick="switchPage('inventory')">🎒 背包</div>
             <div class="nav-tab" data-page="card" onclick="switchPage('card')">🃏 卡片图鉴</div>
+            <div class="nav-tab" data-page="shop" onclick="switchPage('shop')">🏪 兑换商店</div>
+            <div class="nav-tab" data-page="tools" onclick="switchPage('tools')">🧰 工具箱</div>
             </div>
             <div class="point-capsule">
                 <span>分</span>
@@ -295,6 +298,16 @@
                 <div id="card-collection-container"></div>
             </div>
 
+            <!-- PAGE: 兑换商店 -->
+            <div class="page" id="page-shop">
+                <div id="shop-ui"></div>
+            </div>
+
+            <!-- PAGE: 工具箱 -->
+            <div class="page" id="page-tools">
+                <div id="tools-ui"></div>
+            </div>
+
             <!-- Card Detail Modal -->
             <div id="cardDetailModal" class="modal">
                 <div class="modal-content" style="max-width: 400px;">
@@ -345,6 +358,8 @@
     <script src="js/treasure.js"></script>
     <script src="js/walk.js"></script>
     <script src="js/card-collection.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/tools.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

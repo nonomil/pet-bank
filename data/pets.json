@@ -4034,7 +4034,14 @@
       "rarity": "common",
       "desc": "活泼忠诚，需要每天遛弯",
       "base_hp": 110,
-      "base_atk": 7
+      "base_atk": 7,
+      "imageUrl": "assets/pets/poses/dog_idle.png",
+      "imageStages": {
+        "idle": "assets/pets/poses/dog_idle.png",
+        "happy": "assets/pets/poses/dog_happy.png",
+        "attack": "assets/pets/poses/dog_attack.png"
+      },
+      "imageStyle": "pvz"
     },
     {
       "id": "cat",
@@ -4044,7 +4051,14 @@
       "rarity": "common",
       "desc": "独立慵懒，陪伴即可",
       "base_hp": 95,
-      "base_atk": 6
+      "base_atk": 6,
+      "imageUrl": "assets/pets/poses/cat_idle.png",
+      "imageStages": {
+        "idle": "assets/pets/poses/cat_idle.png",
+        "happy": "assets/pets/poses/cat_happy.png",
+        "attack": "assets/pets/poses/cat_attack.png"
+      },
+      "imageStyle": "pvz"
     },
     {
       "id": "rabbit",
@@ -4054,7 +4068,14 @@
       "rarity": "common",
       "desc": "温柔安静，需要干净环境",
       "base_hp": 80,
-      "base_atk": 4
+      "base_atk": 4,
+      "imageUrl": "assets/pets/poses/rabbit_idle.png",
+      "imageStages": {
+        "idle": "assets/pets/poses/rabbit_idle.png",
+        "happy": "assets/pets/poses/rabbit_happy.png",
+        "attack": "assets/pets/poses/rabbit_attack.png"
+      },
+      "imageStyle": "pvz"
     },
     {
       "id": "turtle",
@@ -4064,7 +4085,14 @@
       "rarity": "common",
       "desc": "长寿稳定，低维护难度",
       "base_hp": 130,
-      "base_atk": 5
+      "base_atk": 5,
+      "imageUrl": "assets/pets/poses/turtle_idle.png",
+      "imageStages": {
+        "idle": "assets/pets/poses/turtle_idle.png",
+        "happy": "assets/pets/poses/turtle_happy.png",
+        "attack": "assets/pets/poses/turtle_attack.png"
+      },
+      "imageStyle": "pvz"
     },
     {
       "id": "hamster",
@@ -4074,7 +4102,14 @@
       "rarity": "common",
       "desc": "小巧玲珑，互动频繁",
       "base_hp": 70,
-      "base_atk": 4
+      "base_atk": 4,
+      "imageUrl": "assets/pets/poses/hamster_idle.png",
+      "imageStages": {
+        "idle": "assets/pets/poses/hamster_idle.png",
+        "happy": "assets/pets/poses/hamster_happy.png",
+        "attack": "assets/pets/poses/hamster_attack.png"
+      },
+      "imageStyle": "pvz"
     },
     {
       "id": "parrot",
@@ -4084,7 +4119,14 @@
       "rarity": "common",
       "desc": "能说会道，空中优势",
       "base_hp": 85,
-      "base_atk": 9
+      "base_atk": 9,
+      "imageUrl": "assets/pets/poses/parrot_idle.png",
+      "imageStages": {
+        "idle": "assets/pets/poses/parrot_idle.png",
+        "happy": "assets/pets/poses/parrot_happy.png",
+        "attack": "assets/pets/poses/parrot_attack.png"
+      },
+      "imageStyle": "pvz"
     },
     {
       "id": "goldfish",
@@ -4094,7 +4136,14 @@
       "rarity": "common",
       "desc": "优雅安静，水中王者",
       "base_hp": 75,
-      "base_atk": 3
+      "base_atk": 3,
+      "imageUrl": "assets/pets/poses/fish_idle.png",
+      "imageStages": {
+        "idle": "assets/pets/poses/fish_idle.png",
+        "happy": "assets/pets/poses/fish_happy.png",
+        "attack": "assets/pets/poses/fish_attack.png"
+      },
+      "imageStyle": "pvz"
     },
     {
       "id": "hedgehog",
@@ -4104,7 +4153,14 @@
       "rarity": "common",
       "desc": "防御强，刺可反击",
       "base_hp": 90,
-      "base_atk": 8
+      "base_atk": 8,
+      "imageUrl": "assets/pets/poses/hedgehog_idle.png",
+      "imageStages": {
+        "idle": "assets/pets/poses/hedgehog_idle.png",
+        "happy": "assets/pets/poses/hedgehog_happy.png",
+        "attack": "assets/pets/poses/hedgehog_attack.png"
+      },
+      "imageStyle": "pvz"
     },
     {
       "id": "375408c4-887",
@@ -4215,7 +4271,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/cyber​​-fire-ji-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/守护系/数码火吉-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/守护系/数码火吉-0.webp",
+        "1": "assets/banchong/守护系/数码火吉-1.webp",
+        "2": "assets/banchong/守护系/数码火吉-2.webp",
+        "3": "assets/banchong/守护系/数码火吉-3.webp",
+        "4": "assets/banchong/守护系/数码火吉-4.webp",
+        "5": "assets/banchong/守护系/数码火吉-5.webp"
+      }
     },
     {
       "id": "5bc5d210-20c",
@@ -4252,7 +4317,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/moon-spirit-fox-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/山海族/月灵狐-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/山海族/月灵狐-0.webp",
+        "1": "assets/banchong/山海族/月灵狐-1.webp",
+        "2": "assets/banchong/山海族/月灵狐-2.webp",
+        "3": "assets/banchong/山海族/月灵狐-3.webp",
+        "4": "assets/banchong/山海族/月灵狐-4.webp",
+        "5": "assets/banchong/山海族/月灵狐-5.webp"
+      }
     },
     {
       "id": "a40e4bd1-dfa",
@@ -4289,7 +4363,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/白鹿5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/山海族/白鹿-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/山海族/白鹿-0.webp",
+        "1": "assets/banchong/山海族/白鹿-1.webp",
+        "2": "assets/banchong/山海族/白鹿-2.webp",
+        "3": "assets/banchong/山海族/白鹿-3.webp",
+        "4": "assets/banchong/山海族/白鹿-4.webp",
+        "5": "assets/banchong/山海族/白鹿-5.webp"
+      }
     },
     {
       "id": "91d0f12a-34a",
@@ -4326,7 +4409,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/jingwei-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/山海族/精卫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/山海族/精卫-0.webp",
+        "1": "assets/banchong/山海族/精卫-1.webp",
+        "2": "assets/banchong/山海族/精卫-2.webp",
+        "3": "assets/banchong/山海族/精卫-3.webp",
+        "4": "assets/banchong/山海族/精卫-4.webp",
+        "5": "assets/banchong/山海族/精卫-5.webp"
+      }
     },
     {
       "id": "e582c75e-639",
@@ -4363,7 +4455,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/qingqiu-nine-tailed-fox-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/山海族/青丘九尾狐-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/山海族/青丘九尾狐-0.webp",
+        "1": "assets/banchong/山海族/青丘九尾狐-1.webp",
+        "2": "assets/banchong/山海族/青丘九尾狐-2.webp",
+        "3": "assets/banchong/山海族/青丘九尾狐-3.webp",
+        "4": "assets/banchong/山海族/青丘九尾狐-4.webp",
+        "5": "assets/banchong/山海族/青丘九尾狐-5.webp"
+      }
     },
     {
       "id": "8ae0a08d-acc",
@@ -4400,7 +4501,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/taotie-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/山海族/饕餮-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/山海族/饕餮-0.webp",
+        "1": "assets/banchong/山海族/饕餮-1.webp",
+        "2": "assets/banchong/山海族/饕餮-2.webp",
+        "3": "assets/banchong/山海族/饕餮-3.webp",
+        "4": "assets/banchong/山海族/饕餮-4.webp",
+        "5": "assets/banchong/山海族/饕餮-5.webp"
+      }
     },
     {
       "id": "3ecae5b3-920",
@@ -4437,7 +4547,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/pipa-playing-blue-bird-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/敦煌族/反弹琵琶青鸟-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/敦煌族/反弹琵琶青鸟-0.webp",
+        "1": "assets/banchong/敦煌族/反弹琵琶青鸟-1.webp",
+        "2": "assets/banchong/敦煌族/反弹琵琶青鸟-2.webp",
+        "3": "assets/banchong/敦煌族/反弹琵琶青鸟-3.webp",
+        "4": "assets/banchong/敦煌族/反弹琵琶青鸟-4.webp",
+        "5": "assets/banchong/敦煌族/反弹琵琶青鸟-5.webp"
+      }
     },
     {
       "id": "f9daaed8-aef",
@@ -4474,7 +4593,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/baoxiang-flower-spirit-fox-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/敦煌族/宝相花灵狐-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/敦煌族/宝相花灵狐-0.webp",
+        "1": "assets/banchong/敦煌族/宝相花灵狐-1.webp",
+        "2": "assets/banchong/敦煌族/宝相花灵狐-2.webp",
+        "3": "assets/banchong/敦煌族/宝相花灵狐-3.webp",
+        "4": "assets/banchong/敦煌族/宝相花灵狐-4.webp",
+        "5": "assets/banchong/敦煌族/宝相花灵狐-5.webp"
+      }
     },
     {
       "id": "2cd112b5-025",
@@ -4511,7 +4639,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/flying-nine-color-deer-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/敦煌族/飞天九色鹿-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/敦煌族/飞天九色鹿-0.webp",
+        "1": "assets/banchong/敦煌族/飞天九色鹿-1.webp",
+        "2": "assets/banchong/敦煌族/飞天九色鹿-2.webp",
+        "3": "assets/banchong/敦煌族/飞天九色鹿-3.webp",
+        "4": "assets/banchong/敦煌族/飞天九色鹿-4.webp",
+        "5": "assets/banchong/敦煌族/飞天九色鹿-5.webp"
+      }
     },
     {
       "id": "0b3af442-25c",
@@ -4548,7 +4685,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/bamboo-hat-panda-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/旅行族/斗笠熊猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/旅行族/斗笠熊猫-0.webp",
+        "1": "assets/banchong/旅行族/斗笠熊猫-1.webp",
+        "2": "assets/banchong/旅行族/斗笠熊猫-2.webp",
+        "3": "assets/banchong/旅行族/斗笠熊猫-3.webp",
+        "4": "assets/banchong/旅行族/斗笠熊猫-4.webp",
+        "5": "assets/banchong/旅行族/斗笠熊猫-5.webp"
+      }
     },
     {
       "id": "c000f1a3-2d4",
@@ -4585,7 +4731,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/samba-parrot-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/旅行族/桑巴鹦鹉-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/旅行族/桑巴鹦鹉-0.webp",
+        "1": "assets/banchong/旅行族/桑巴鹦鹉-1.webp",
+        "2": "assets/banchong/旅行族/桑巴鹦鹉-2.webp",
+        "3": "assets/banchong/旅行族/桑巴鹦鹉-3.webp",
+        "4": "assets/banchong/旅行族/桑巴鹦鹉-4.webp",
+        "5": "assets/banchong/旅行族/桑巴鹦鹉-5.webp"
+      }
     },
     {
       "id": "a215ac4d-468",
@@ -4622,7 +4777,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/pharaoh-explorer-fox-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/旅行族/法老探险狐-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/旅行族/法老探险狐-0.webp",
+        "1": "assets/banchong/旅行族/法老探险狐-1.webp",
+        "2": "assets/banchong/旅行族/法老探险狐-2.webp",
+        "3": "assets/banchong/旅行族/法老探险狐-3.webp",
+        "4": "assets/banchong/旅行族/法老探险狐-4.webp",
+        "5": "assets/banchong/旅行族/法老探险狐-5.webp"
+      }
     },
     {
       "id": "35a035d7-972",
@@ -4659,7 +4823,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/cowboy-corgi-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/旅行族/牛仔柯基-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/旅行族/牛仔柯基-0.webp",
+        "1": "assets/banchong/旅行族/牛仔柯基-1.webp",
+        "2": "assets/banchong/旅行族/牛仔柯基-2.webp",
+        "3": "assets/banchong/旅行族/牛仔柯基-3.webp",
+        "4": "assets/banchong/旅行族/牛仔柯基-4.webp",
+        "5": "assets/banchong/旅行族/牛仔柯基-5.webp"
+      }
     },
     {
       "id": "160e0c15-fa5",
@@ -4696,7 +4869,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/british-guard-cat-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/旅行族/英伦哨兵猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/旅行族/英伦哨兵猫-0.webp",
+        "1": "assets/banchong/旅行族/英伦哨兵猫-1.webp",
+        "2": "assets/banchong/旅行族/英伦哨兵猫-2.webp",
+        "3": "assets/banchong/旅行族/英伦哨兵猫-3.webp",
+        "4": "assets/banchong/旅行族/英伦哨兵猫-4.webp",
+        "5": "assets/banchong/旅行族/英伦哨兵猫-5.webp"
+      }
     },
     {
       "id": "cf056163-0ba",
@@ -4733,7 +4915,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/alpine-st-bernard-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/旅行族/阿尔卑斯圣伯纳-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/旅行族/阿尔卑斯圣伯纳-0.webp",
+        "1": "assets/banchong/旅行族/阿尔卑斯圣伯纳-1.webp",
+        "2": "assets/banchong/旅行族/阿尔卑斯圣伯纳-2.webp",
+        "3": "assets/banchong/旅行族/阿尔卑斯圣伯纳-3.webp",
+        "4": "assets/banchong/旅行族/阿尔卑斯圣伯纳-4.webp",
+        "5": "assets/banchong/旅行族/阿尔卑斯圣伯纳-5.webp"
+      }
     },
     {
       "id": "38226299-99f",
@@ -4770,7 +4961,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/russian-blue-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/俄罗斯蓝猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/俄罗斯蓝猫-0.webp",
+        "1": "assets/banchong/星瞳族/俄罗斯蓝猫-1.webp",
+        "2": "assets/banchong/星瞳族/俄罗斯蓝猫-2.webp",
+        "3": "assets/banchong/星瞳族/俄罗斯蓝猫-3.webp",
+        "4": "assets/banchong/星瞳族/俄罗斯蓝猫-4.webp",
+        "5": "assets/banchong/星瞳族/俄罗斯蓝猫-5.webp"
+      }
     },
     {
       "id": "2d1a03bc-62a",
@@ -4807,7 +5007,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/bengal-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/孟加拉豹猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/孟加拉豹猫-0.webp",
+        "1": "assets/banchong/星瞳族/孟加拉豹猫-1.webp",
+        "2": "assets/banchong/星瞳族/孟加拉豹猫-2.webp",
+        "3": "assets/banchong/星瞳族/孟加拉豹猫-3.webp",
+        "4": "assets/banchong/星瞳族/孟加拉豹猫-4.webp",
+        "5": "assets/banchong/星瞳族/孟加拉豹猫-5.webp"
+      }
     },
     {
       "id": "f2282b26-a4c",
@@ -4844,7 +5053,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/ragdoll-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/布偶猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/布偶猫-0.webp",
+        "1": "assets/banchong/星瞳族/布偶猫-1.webp",
+        "2": "assets/banchong/星瞳族/布偶猫-2.webp",
+        "3": "assets/banchong/星瞳族/布偶猫-3.webp",
+        "4": "assets/banchong/星瞳族/布偶猫-4.webp",
+        "5": "assets/banchong/星瞳族/布偶猫-5.webp"
+      }
     },
     {
       "id": "9a216757-e77",
@@ -4881,7 +5099,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/exotic-shorthair-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/异国短毛猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/异国短毛猫-0.webp",
+        "1": "assets/banchong/星瞳族/异国短毛猫-1.webp",
+        "2": "assets/banchong/星瞳族/异国短毛猫-2.webp",
+        "3": "assets/banchong/星瞳族/异国短毛猫-3.webp",
+        "4": "assets/banchong/星瞳族/异国短毛猫-4.webp",
+        "5": "assets/banchong/星瞳族/异国短毛猫-5.webp"
+      }
     },
     {
       "id": "f80bce05-d8c",
@@ -4918,7 +5145,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/norwegian-forest-cat-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/挪威森林猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/挪威森林猫-0.webp",
+        "1": "assets/banchong/星瞳族/挪威森林猫-1.webp",
+        "2": "assets/banchong/星瞳族/挪威森林猫-2.webp",
+        "3": "assets/banchong/星瞳族/挪威森林猫-3.webp",
+        "4": "assets/banchong/星瞳族/挪威森林猫-4.webp",
+        "5": "assets/banchong/星瞳族/挪威森林猫-5.webp"
+      }
     },
     {
       "id": "5da9b780-7c5",
@@ -4955,7 +5191,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/siamese-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/暹罗猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/暹罗猫-0.webp",
+        "1": "assets/banchong/星瞳族/暹罗猫-1.webp",
+        "2": "assets/banchong/星瞳族/暹罗猫-2.webp",
+        "3": "assets/banchong/星瞳族/暹罗猫-3.webp",
+        "4": "assets/banchong/星瞳族/暹罗猫-4.webp",
+        "5": "assets/banchong/星瞳族/暹罗猫-5.webp"
+      }
     },
     {
       "id": "1d15124f-785",
@@ -4992,7 +5237,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/munchkin-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/曼基康矮脚猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/曼基康矮脚猫-0.webp",
+        "1": "assets/banchong/星瞳族/曼基康矮脚猫-1.webp",
+        "2": "assets/banchong/星瞳族/曼基康矮脚猫-2.webp",
+        "3": "assets/banchong/星瞳族/曼基康矮脚猫-3.webp",
+        "4": "assets/banchong/星瞳族/曼基康矮脚猫-4.webp",
+        "5": "assets/banchong/星瞳族/曼基康矮脚猫-5.webp"
+      }
     },
     {
       "id": "2c79145c-eae",
@@ -5029,7 +5283,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/persian-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/波斯猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/波斯猫-0.webp",
+        "1": "assets/banchong/星瞳族/波斯猫-1.webp",
+        "2": "assets/banchong/星瞳族/波斯猫-2.webp",
+        "3": "assets/banchong/星瞳族/波斯猫-3.webp",
+        "4": "assets/banchong/星瞳族/波斯猫-4.webp",
+        "5": "assets/banchong/星瞳族/波斯猫-5.webp"
+      }
     },
     {
       "id": "ca515e59-0cd",
@@ -5066,7 +5329,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/dragon-li-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/狸花猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/狸花猫-0.webp",
+        "1": "assets/banchong/星瞳族/狸花猫-1.webp",
+        "2": "assets/banchong/星瞳族/狸花猫-2.webp",
+        "3": "assets/banchong/星瞳族/狸花猫-3.webp",
+        "4": "assets/banchong/星瞳族/狸花猫-4.webp",
+        "5": "assets/banchong/星瞳族/狸花猫-5.webp"
+      }
     },
     {
       "id": "e1f51184-6d3",
@@ -5103,7 +5375,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/maine-coon-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/缅因猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/缅因猫-0.webp",
+        "1": "assets/banchong/星瞳族/缅因猫-1.webp",
+        "2": "assets/banchong/星瞳族/缅因猫-2.webp",
+        "3": "assets/banchong/星瞳族/缅因猫-3.webp",
+        "4": "assets/banchong/星瞳族/缅因猫-4.webp",
+        "5": "assets/banchong/星瞳族/缅因猫-5.webp"
+      }
     },
     {
       "id": "0c2567e7-7a3",
@@ -5140,7 +5421,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/scottish-fold-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/苏格兰折耳猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/苏格兰折耳猫-0.webp",
+        "1": "assets/banchong/星瞳族/苏格兰折耳猫-1.webp",
+        "2": "assets/banchong/星瞳族/苏格兰折耳猫-2.webp",
+        "3": "assets/banchong/星瞳族/苏格兰折耳猫-3.webp",
+        "4": "assets/banchong/星瞳族/苏格兰折耳猫-4.webp",
+        "5": "assets/banchong/星瞳族/苏格兰折耳猫-5.webp"
+      }
     },
     {
       "id": "86c3135f-721",
@@ -5177,7 +5467,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/blue-british-shorthair-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/英国短毛蓝猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/英国短毛蓝猫-0.webp",
+        "1": "assets/banchong/星瞳族/英国短毛蓝猫-1.webp",
+        "2": "assets/banchong/星瞳族/英国短毛蓝猫-2.webp",
+        "3": "assets/banchong/星瞳族/英国短毛蓝猫-3.webp",
+        "4": "assets/banchong/星瞳族/英国短毛蓝猫-4.webp",
+        "5": "assets/banchong/星瞳族/英国短毛蓝猫-5.webp"
+      }
     },
     {
       "id": "cb8b0207-0f6",
@@ -5214,7 +5513,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/silver-tabby-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/星瞳族/银渐层英短猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/星瞳族/银渐层英短猫-0.webp",
+        "1": "assets/banchong/星瞳族/银渐层英短猫-1.webp",
+        "2": "assets/banchong/星瞳族/银渐层英短猫-2.webp",
+        "3": "assets/banchong/星瞳族/银渐层英短猫-3.webp",
+        "4": "assets/banchong/星瞳族/银渐层英短猫-4.webp",
+        "5": "assets/banchong/星瞳族/银渐层英短猫-5.webp"
+      }
     },
     {
       "id": "4413441b-af1",
@@ -5251,7 +5559,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/gale-patterned-kirin-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/岚纹麒麟-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/岚纹麒麟-0.webp",
+        "1": "assets/banchong/灵兽族/岚纹麒麟-1.webp",
+        "2": "assets/banchong/灵兽族/岚纹麒麟-2.webp",
+        "3": "assets/banchong/灵兽族/岚纹麒麟-3.webp",
+        "4": "assets/banchong/灵兽族/岚纹麒麟-4.webp",
+        "5": "assets/banchong/灵兽族/岚纹麒麟-5.webp"
+      }
     },
     {
       "id": "0e077327-658",
@@ -5288,7 +5605,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/magma-griffin-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/岩浆狮鹫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/岩浆狮鹫-0.webp",
+        "1": "assets/banchong/灵兽族/岩浆狮鹫-1.webp",
+        "2": "assets/banchong/灵兽族/岩浆狮鹫-2.webp",
+        "3": "assets/banchong/灵兽族/岩浆狮鹫-3.webp",
+        "4": "assets/banchong/灵兽族/岩浆狮鹫-4.webp",
+        "5": "assets/banchong/灵兽族/岩浆狮鹫-5.webp"
+      }
     },
     {
       "id": "4b69cfc0-0fb",
@@ -5325,7 +5651,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/nebula-elephant-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/星云幻象-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/星云幻象-0.webp",
+        "1": "assets/banchong/灵兽族/星云幻象-1.webp",
+        "2": "assets/banchong/灵兽族/星云幻象-2.webp",
+        "3": "assets/banchong/灵兽族/星云幻象-3.webp",
+        "4": "assets/banchong/灵兽族/星云幻象-4.webp",
+        "5": "assets/banchong/灵兽族/星云幻象-5.webp"
+      }
     },
     {
       "id": "c24f20ce-4fb",
@@ -5362,7 +5697,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/astral-tailed-fox-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/星尾幻狐-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/星尾幻狐-0.webp",
+        "1": "assets/banchong/灵兽族/星尾幻狐-1.webp",
+        "2": "assets/banchong/灵兽族/星尾幻狐-2.webp",
+        "3": "assets/banchong/灵兽族/星尾幻狐-3.webp",
+        "4": "assets/banchong/灵兽族/星尾幻狐-4.webp",
+        "5": "assets/banchong/灵兽族/星尾幻狐-5.webp"
+      }
     },
     {
       "id": "9d74db58-401",
@@ -5399,7 +5743,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/stellar-winged-pegasus-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/星羽天马-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/星羽天马-0.webp",
+        "1": "assets/banchong/灵兽族/星羽天马-1.webp",
+        "2": "assets/banchong/灵兽族/星羽天马-2.webp",
+        "3": "assets/banchong/灵兽族/星羽天马-3.webp",
+        "4": "assets/banchong/灵兽族/星羽天马-4.webp",
+        "5": "assets/banchong/灵兽族/星羽天马-5.webp"
+      }
     },
     {
       "id": "e655dde7-4d8",
@@ -5436,7 +5789,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/aurora-frost-wolf-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/极光霜狼-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/极光霜狼-0.webp",
+        "1": "assets/banchong/灵兽族/极光霜狼-1.webp",
+        "2": "assets/banchong/灵兽族/极光霜狼-2.webp",
+        "3": "assets/banchong/灵兽族/极光霜狼-3.webp",
+        "4": "assets/banchong/灵兽族/极光霜狼-4.webp",
+        "5": "assets/banchong/灵兽族/极光霜狼-5.webp"
+      }
     },
     {
       "id": "867feba0-6f6",
@@ -5584,7 +5946,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/viridian-flame-nine-tailed-fox-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/碧炎九尾狐-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/碧炎九尾狐-0.webp",
+        "1": "assets/banchong/灵兽族/碧炎九尾狐-1.webp",
+        "2": "assets/banchong/灵兽族/碧炎九尾狐-2.webp",
+        "3": "assets/banchong/灵兽族/碧炎九尾狐-3.webp",
+        "4": "assets/banchong/灵兽族/碧炎九尾狐-4.webp",
+        "5": "assets/banchong/灵兽族/碧炎九尾狐-5.webp"
+      }
     },
     {
       "id": "0615d945-91a",
@@ -5621,7 +5992,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/jade-feathered-bunny-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/碧翎幻兔-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/碧翎幻兔-0.webp",
+        "1": "assets/banchong/灵兽族/碧翎幻兔-1.webp",
+        "2": "assets/banchong/灵兽族/碧翎幻兔-2.webp",
+        "3": "assets/banchong/灵兽族/碧翎幻兔-3.webp",
+        "4": "assets/banchong/灵兽族/碧翎幻兔-4.webp",
+        "5": "assets/banchong/灵兽族/碧翎幻兔-5.webp"
+      }
     },
     {
       "id": "162ae80f-f87",
@@ -5658,7 +6038,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/verdant-forest-panda-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/翠林熊猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/翠林熊猫-0.webp",
+        "1": "assets/banchong/灵兽族/翠林熊猫-1.webp",
+        "2": "assets/banchong/灵兽族/翠林熊猫-2.webp",
+        "3": "assets/banchong/灵兽族/翠林熊猫-3.webp",
+        "4": "assets/banchong/灵兽族/翠林熊猫-4.webp",
+        "5": "assets/banchong/灵兽族/翠林熊猫-5.webp"
+      }
     },
     {
       "id": "60aab456-a41",
@@ -5769,7 +6158,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/volt-pawed-lynx-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/灵兽族/雷霆灵猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/灵兽族/雷霆灵猫-0.webp",
+        "1": "assets/banchong/灵兽族/雷霆灵猫-1.webp",
+        "2": "assets/banchong/灵兽族/雷霆灵猫-2.webp",
+        "3": "assets/banchong/灵兽族/雷霆灵猫-3.webp",
+        "4": "assets/banchong/灵兽族/雷霆灵猫-4.webp",
+        "5": "assets/banchong/灵兽族/雷霆灵猫-5.webp"
+      }
     },
     {
       "id": "abd57356-67e",
@@ -5806,7 +6204,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/phoenix-tailed-bird-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/瑞兽族/凤尾小朱雀-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/瑞兽族/凤尾小朱雀-0.webp",
+        "1": "assets/banchong/瑞兽族/凤尾小朱雀-1.webp",
+        "2": "assets/banchong/瑞兽族/凤尾小朱雀-2.webp",
+        "3": "assets/banchong/瑞兽族/凤尾小朱雀-3.webp",
+        "4": "assets/banchong/瑞兽族/凤尾小朱雀-4.webp",
+        "5": "assets/banchong/瑞兽族/凤尾小朱雀-5.webp"
+      }
     },
     {
       "id": "0d551286-4a3",
@@ -5843,7 +6250,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/tuanzi-qinglong-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/瑞兽族/团子青龙-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/瑞兽族/团子青龙-0.webp",
+        "1": "assets/banchong/瑞兽族/团子青龙-1.webp",
+        "2": "assets/banchong/瑞兽族/团子青龙-2.webp",
+        "3": "assets/banchong/瑞兽族/团子青龙-3.webp",
+        "4": "assets/banchong/瑞兽族/团子青龙-4.webp",
+        "5": "assets/banchong/瑞兽族/团子青龙-5.webp"
+      }
     },
     {
       "id": "86ff7f37-e45",
@@ -5880,7 +6296,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/ink-rhyme-tortoise-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/瑞兽族/墨韵玄武-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/瑞兽族/墨韵玄武-0.webp",
+        "1": "assets/banchong/瑞兽族/墨韵玄武-1.webp",
+        "2": "assets/banchong/瑞兽族/墨韵玄武-2.webp",
+        "3": "assets/banchong/瑞兽族/墨韵玄武-3.webp",
+        "4": "assets/banchong/瑞兽族/墨韵玄武-4.webp",
+        "5": "assets/banchong/瑞兽族/墨韵玄武-5.webp"
+      }
     },
     {
       "id": "2ffe4fd4-359",
@@ -5917,7 +6342,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/magma-horn-ram-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/瑞兽族/熔角炎羊-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/瑞兽族/熔角炎羊-0.webp",
+        "1": "assets/banchong/瑞兽族/熔角炎羊-1.webp",
+        "2": "assets/banchong/瑞兽族/熔角炎羊-2.webp",
+        "3": "assets/banchong/瑞兽族/熔角炎羊-3.webp",
+        "4": "assets/banchong/瑞兽族/熔角炎羊-4.webp",
+        "5": "assets/banchong/瑞兽族/熔角炎羊-5.webp"
+      }
     },
     {
       "id": "517dad3e-d24",
@@ -5954,7 +6388,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/amber-white-tiger-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/瑞兽族/琥珀小白虎-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/瑞兽族/琥珀小白虎-0.webp",
+        "1": "assets/banchong/瑞兽族/琥珀小白虎-1.webp",
+        "2": "assets/banchong/瑞兽族/琥珀小白虎-2.webp",
+        "3": "assets/banchong/瑞兽族/琥珀小白虎-3.webp",
+        "4": "assets/banchong/瑞兽族/琥珀小白虎-4.webp",
+        "5": "assets/banchong/瑞兽族/琥珀小白虎-5.webp"
+      }
     },
     {
       "id": "4037fda5-a5d",
@@ -5991,7 +6434,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/auspicious-cloud-qilin-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/瑞兽族/祥云小麒麟-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/瑞兽族/祥云小麒麟-0.webp",
+        "1": "assets/banchong/瑞兽族/祥云小麒麟-1.webp",
+        "2": "assets/banchong/瑞兽族/祥云小麒麟-2.webp",
+        "3": "assets/banchong/瑞兽族/祥云小麒麟-3.webp",
+        "4": "assets/banchong/瑞兽族/祥云小麒麟-4.webp",
+        "5": "assets/banchong/瑞兽族/祥云小麒麟-5.webp"
+      }
     },
     {
       "id": "380ccd72-e97",
@@ -6028,7 +6480,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/fluffy-qilin-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/瑞兽族/蓬蓬麒麟-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/瑞兽族/蓬蓬麒麟-0.webp",
+        "1": "assets/banchong/瑞兽族/蓬蓬麒麟-1.webp",
+        "2": "assets/banchong/瑞兽族/蓬蓬麒麟-2.webp",
+        "3": "assets/banchong/瑞兽族/蓬蓬麒麟-3.webp",
+        "4": "assets/banchong/瑞兽族/蓬蓬麒麟-4.webp",
+        "5": "assets/banchong/瑞兽族/蓬蓬麒麟-5.webp"
+      }
     },
     {
       "id": "a321a2a8-783",
@@ -6065,7 +6526,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/mochi-nine-tailed-fox-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/瑞兽族/麻薯九尾狐-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/瑞兽族/麻薯九尾狐-0.webp",
+        "1": "assets/banchong/瑞兽族/麻薯九尾狐-1.webp",
+        "2": "assets/banchong/瑞兽族/麻薯九尾狐-2.webp",
+        "3": "assets/banchong/瑞兽族/麻薯九尾狐-3.webp",
+        "4": "assets/banchong/瑞兽族/麻薯九尾狐-4.webp",
+        "5": "assets/banchong/瑞兽族/麻薯九尾狐-5.webp"
+      }
     },
     {
       "id": "9fc5f5a5-798",
@@ -6102,7 +6572,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/cloud-samoyed-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绒爪族/云朵萨摩耶-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绒爪族/云朵萨摩耶-0.webp",
+        "1": "assets/banchong/绒爪族/云朵萨摩耶-1.webp",
+        "2": "assets/banchong/绒爪族/云朵萨摩耶-2.webp",
+        "3": "assets/banchong/绒爪族/云朵萨摩耶-3.webp",
+        "4": "assets/banchong/绒爪族/云朵萨摩耶-4.webp",
+        "5": "assets/banchong/绒爪族/云朵萨摩耶-5.webp"
+      }
     },
     {
       "id": "f9e989b3-e35",
@@ -6139,7 +6618,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/caramel-red-panda-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绒爪族/焦糖小熊猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绒爪族/焦糖小熊猫-0.webp",
+        "1": "assets/banchong/绒爪族/焦糖小熊猫-1.webp",
+        "2": "assets/banchong/绒爪族/焦糖小熊猫-2.webp",
+        "3": "assets/banchong/绒爪族/焦糖小熊猫-3.webp",
+        "4": "assets/banchong/绒爪族/焦糖小熊猫-4.webp",
+        "5": "assets/banchong/绒爪族/焦糖小熊猫-5.webp"
+      }
     },
     {
       "id": "6fa87b0c-d19",
@@ -6176,7 +6664,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/cloud-bubble-fawn-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/云泡鹿-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/云泡鹿-0.webp",
+        "1": "assets/banchong/绮梦族/云泡鹿-1.webp",
+        "2": "assets/banchong/绮梦族/云泡鹿-2.webp",
+        "3": "assets/banchong/绮梦族/云泡鹿-3.webp",
+        "4": "assets/banchong/绮梦族/云泡鹿-4.webp",
+        "5": "assets/banchong/绮梦族/云泡鹿-5.webp"
+      }
     },
     {
       "id": "6a96f5a4-946",
@@ -6213,7 +6710,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/prism-feather-raccoon-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/彩羽狸-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/彩羽狸-0.webp",
+        "1": "assets/banchong/绮梦族/彩羽狸-1.webp",
+        "2": "assets/banchong/绮梦族/彩羽狸-2.webp",
+        "3": "assets/banchong/绮梦族/彩羽狸-3.webp",
+        "4": "assets/banchong/绮梦族/彩羽狸-4.webp",
+        "5": "assets/banchong/绮梦族/彩羽狸-5.webp"
+      }
     },
     {
       "id": "307d6b3d-462",
@@ -6250,7 +6756,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/star-candy-fox-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/星糖狐-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/星糖狐-0.webp",
+        "1": "assets/banchong/绮梦族/星糖狐-1.webp",
+        "2": "assets/banchong/绮梦族/星糖狐-2.webp",
+        "3": "assets/banchong/绮梦族/星糖狐-3.webp",
+        "4": "assets/banchong/绮梦族/星糖狐-4.webp",
+        "5": "assets/banchong/绮梦族/星糖狐-5.webp"
+      }
     },
     {
       "id": "1010eb9d-b4c",
@@ -6287,7 +6802,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/dawn-light-bird-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/晨光鸟-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/晨光鸟-0.webp",
+        "1": "assets/banchong/绮梦族/晨光鸟-1.webp",
+        "2": "assets/banchong/绮梦族/晨光鸟-2.webp",
+        "3": "assets/banchong/绮梦族/晨光鸟-3.webp",
+        "4": "assets/banchong/绮梦族/晨光鸟-4.webp",
+        "5": "assets/banchong/绮梦族/晨光鸟-5.webp"
+      }
     },
     {
       "id": "45ce32fd-182",
@@ -6324,7 +6848,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/moon-mochi-cat-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/月团猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/月团猫-0.webp",
+        "1": "assets/banchong/绮梦族/月团猫-1.webp",
+        "2": "assets/banchong/绮梦族/月团猫-2.webp",
+        "3": "assets/banchong/绮梦族/月团猫-3.webp",
+        "4": "assets/banchong/绮梦族/月团猫-4.webp",
+        "5": "assets/banchong/绮梦族/月团猫-5.webp"
+      }
     },
     {
       "id": "aa51e52a-151",
@@ -6361,7 +6894,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/jelly-gummy-bear-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/果冻熊-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/果冻熊-0.webp",
+        "1": "assets/banchong/绮梦族/果冻熊-1.webp",
+        "2": "assets/banchong/绮梦族/果冻熊-2.webp",
+        "3": "assets/banchong/绮梦族/果冻熊-3.webp",
+        "4": "assets/banchong/绮梦族/果冻熊-4.webp",
+        "5": "assets/banchong/绮梦族/果冻熊-5.webp"
+      }
     },
     {
       "id": "c0eb5afe-f13",
@@ -6398,7 +6940,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/forest-moss-otter-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/森森獭-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/森森獭-0.webp",
+        "1": "assets/banchong/绮梦族/森森獭-1.webp",
+        "2": "assets/banchong/绮梦族/森森獭-2.webp",
+        "3": "assets/banchong/绮梦族/森森獭-3.webp",
+        "4": "assets/banchong/绮梦族/森森獭-4.webp",
+        "5": "assets/banchong/绮梦族/森森獭-5.webp"
+      }
     },
     {
       "id": "26aae1c5-dce",
@@ -6435,7 +6986,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/flower-bell-deer-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/花铃鹿-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/花铃鹿-0.webp",
+        "1": "assets/banchong/绮梦族/花铃鹿-1.webp",
+        "2": "assets/banchong/绮梦族/花铃鹿-2.webp",
+        "3": "assets/banchong/绮梦族/花铃鹿-3.webp",
+        "4": "assets/banchong/绮梦族/花铃鹿-4.webp",
+        "5": "assets/banchong/绮梦族/花铃鹿-5.webp"
+      }
     },
     {
       "id": "5b4ef85d-5aa",
@@ -6472,7 +7032,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/star-glow-dragon-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/萤星龙-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/萤星龙-0.webp",
+        "1": "assets/banchong/绮梦族/萤星龙-1.webp",
+        "2": "assets/banchong/绮梦族/萤星龙-2.webp",
+        "3": "assets/banchong/绮梦族/萤星龙-3.webp",
+        "4": "assets/banchong/绮梦族/萤星龙-4.webp",
+        "5": "assets/banchong/绮梦族/萤星龙-5.webp"
+      }
     },
     {
       "id": "3a232bcf-84c",
@@ -6509,7 +7078,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/snow-cotton-chirp-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/雪棉啾-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/雪棉啾-0.webp",
+        "1": "assets/banchong/绮梦族/雪棉啾-1.webp",
+        "2": "assets/banchong/绮梦族/雪棉啾-2.webp",
+        "3": "assets/banchong/绮梦族/雪棉啾-3.webp",
+        "4": "assets/banchong/绮梦族/雪棉啾-4.webp",
+        "5": "assets/banchong/绮梦族/雪棉啾-5.webp"
+      }
     },
     {
       "id": "cc63c86a-ef5",
@@ -6546,7 +7124,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/frost-sugar-lamb-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/霜糖羊-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/霜糖羊-0.webp",
+        "1": "assets/banchong/绮梦族/霜糖羊-1.webp",
+        "2": "assets/banchong/绮梦族/霜糖羊-2.webp",
+        "3": "assets/banchong/绮梦族/霜糖羊-3.webp",
+        "4": "assets/banchong/绮梦族/霜糖羊-4.webp",
+        "5": "assets/banchong/绮梦族/霜糖羊-5.webp"
+      }
     },
     {
       "id": "1d17573e-f1a",
@@ -6583,7 +7170,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/dew-drop-bunny-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/绮梦族/露珠兔-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/绮梦族/露珠兔-0.webp",
+        "1": "assets/banchong/绮梦族/露珠兔-1.webp",
+        "2": "assets/banchong/绮梦族/露珠兔-2.webp",
+        "3": "assets/banchong/绮梦族/露珠兔-3.webp",
+        "4": "assets/banchong/绮梦族/露珠兔-4.webp",
+        "5": "assets/banchong/绮梦族/露珠兔-5.webp"
+      }
     },
     {
       "id": "ed464200-acc",
@@ -6620,7 +7216,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/colorful-golden-rooster-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/七彩小锦鸡-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/七彩小锦鸡-0.webp",
+        "1": "assets/banchong/萌肖族/七彩小锦鸡-1.webp",
+        "2": "assets/banchong/萌肖族/七彩小锦鸡-2.webp",
+        "3": "assets/banchong/萌肖族/七彩小锦鸡-3.webp",
+        "4": "assets/banchong/萌肖族/七彩小锦鸡-4.webp",
+        "5": "assets/banchong/萌肖族/七彩小锦鸡-5.webp"
+      }
     },
     {
       "id": "6c5b82ae-8d8",
@@ -6657,7 +7262,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/cloudy-fairy-dragon-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/云端小仙龙-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/云端小仙龙-0.webp",
+        "1": "assets/banchong/萌肖族/云端小仙龙-1.webp",
+        "2": "assets/banchong/萌肖族/云端小仙龙-2.webp",
+        "3": "assets/banchong/萌肖族/云端小仙龙-3.webp",
+        "4": "assets/banchong/萌肖族/云端小仙龙-4.webp",
+        "5": "assets/banchong/萌肖族/云端小仙龙-5.webp"
+      }
     },
     {
       "id": "043e8710-355",
@@ -6694,7 +7308,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/pudding-blessing-pig-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/布丁福气猪-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/布丁福气猪-0.webp",
+        "1": "assets/banchong/萌肖族/布丁福气猪-1.webp",
+        "2": "assets/banchong/萌肖族/布丁福气猪-2.webp",
+        "3": "assets/banchong/萌肖族/布丁福气猪-3.webp",
+        "4": "assets/banchong/萌肖族/布丁福气猪-4.webp",
+        "5": "assets/banchong/萌肖族/布丁福气猪-5.webp"
+      }
     },
     {
       "id": "65088f95-7c8",
@@ -6731,7 +7354,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/iridescent-wing-tiger-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/幻彩小飞虎-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/幻彩小飞虎-0.webp",
+        "1": "assets/banchong/萌肖族/幻彩小飞虎-1.webp",
+        "2": "assets/banchong/萌肖族/幻彩小飞虎-2.webp",
+        "3": "assets/banchong/萌肖族/幻彩小飞虎-3.webp",
+        "4": "assets/banchong/萌肖族/幻彩小飞虎-4.webp",
+        "5": "assets/banchong/萌肖族/幻彩小飞虎-5.webp"
+      }
     },
     {
       "id": "6ed4a238-e6f",
@@ -6768,7 +7400,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/nebula-magic-bunny-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/星云魔法兔-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/星云魔法兔-0.webp",
+        "1": "assets/banchong/萌肖族/星云魔法兔-1.webp",
+        "2": "assets/banchong/萌肖族/星云魔法兔-2.webp",
+        "3": "assets/banchong/萌肖族/星云魔法兔-3.webp",
+        "4": "assets/banchong/萌肖族/星云魔法兔-4.webp",
+        "5": "assets/banchong/萌肖族/星云魔法兔-5.webp"
+      }
     },
     {
       "id": "a01eff8a-42d",
@@ -6805,7 +7446,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/marshmallow-lamb-princess-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/棉花糖公主-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/棉花糖公主-0.webp",
+        "1": "assets/banchong/萌肖族/棉花糖公主-1.webp",
+        "2": "assets/banchong/萌肖族/棉花糖公主-2.webp",
+        "3": "assets/banchong/萌肖族/棉花糖公主-3.webp",
+        "4": "assets/banchong/萌肖族/棉花糖公主-4.webp",
+        "5": "assets/banchong/萌肖族/棉花糖公主-5.webp"
+      }
     },
     {
       "id": "31d22f8f-0db",
@@ -6842,7 +7492,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/cherry-dew-ribbon-snake-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/樱露缎带蛇-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/樱露缎带蛇-0.webp",
+        "1": "assets/banchong/萌肖族/樱露缎带蛇-1.webp",
+        "2": "assets/banchong/萌肖族/樱露缎带蛇-2.webp",
+        "3": "assets/banchong/萌肖族/樱露缎带蛇-3.webp",
+        "4": "assets/banchong/萌肖族/樱露缎带蛇-4.webp",
+        "5": "assets/banchong/萌肖族/樱露缎带蛇-5.webp"
+      }
     },
     {
       "id": "4ae8b028-3ae",
@@ -6879,7 +7538,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/honey-peach-monkey-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/水蜜桃小猕猴-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/水蜜桃小猕猴-0.webp",
+        "1": "assets/banchong/萌肖族/水蜜桃小猕猴-1.webp",
+        "2": "assets/banchong/萌肖族/水蜜桃小猕猴-2.webp",
+        "3": "assets/banchong/萌肖族/水蜜桃小猕猴-3.webp",
+        "4": "assets/banchong/萌肖族/水蜜桃小猕猴-4.webp",
+        "5": "assets/banchong/萌肖族/水蜜桃小猕猴-5.webp"
+      }
     },
     {
       "id": "514bd984-d70",
@@ -6916,7 +7584,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/auspicious-lucky-dog-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/祥瑞小福柴-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/祥瑞小福柴-0.webp",
+        "1": "assets/banchong/萌肖族/祥瑞小福柴-1.webp",
+        "2": "assets/banchong/萌肖族/祥瑞小福柴-2.webp",
+        "3": "assets/banchong/萌肖族/祥瑞小福柴-3.webp",
+        "4": "assets/banchong/萌肖族/祥瑞小福柴-4.webp",
+        "5": "assets/banchong/萌肖族/祥瑞小福柴-5.webp"
+      }
     },
     {
       "id": "2d3e3593-b96",
@@ -6953,7 +7630,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/berry-cheese-mouse-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/莓果奶酪鼠-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/莓果奶酪鼠-0.webp",
+        "1": "assets/banchong/萌肖族/莓果奶酪鼠-1.webp",
+        "2": "assets/banchong/萌肖族/莓果奶酪鼠-2.webp",
+        "3": "assets/banchong/萌肖族/莓果奶酪鼠-3.webp",
+        "4": "assets/banchong/萌肖族/莓果奶酪鼠-4.webp",
+        "5": "assets/banchong/萌肖族/莓果奶酪鼠-5.webp"
+      }
     },
     {
       "id": "d8f31989-db6",
@@ -6990,7 +7676,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/snowy-unicorn-pony-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/踏雪独角小马-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/踏雪独角小马-0.webp",
+        "1": "assets/banchong/萌肖族/踏雪独角小马-1.webp",
+        "2": "assets/banchong/萌肖族/踏雪独角小马-2.webp",
+        "3": "assets/banchong/萌肖族/踏雪独角小马-3.webp",
+        "4": "assets/banchong/萌肖族/踏雪独角小马-4.webp",
+        "5": "assets/banchong/萌肖族/踏雪独角小马-5.webp"
+      }
     },
     {
       "id": "810409c3-162",
@@ -7027,7 +7722,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/lily-milky-cow-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/萌肖族/铃兰小奶牛-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/萌肖族/铃兰小奶牛-0.webp",
+        "1": "assets/banchong/萌肖族/铃兰小奶牛-1.webp",
+        "2": "assets/banchong/萌肖族/铃兰小奶牛-2.webp",
+        "3": "assets/banchong/萌肖族/铃兰小奶牛-3.webp",
+        "4": "assets/banchong/萌肖族/铃兰小奶牛-4.webp",
+        "5": "assets/banchong/萌肖族/铃兰小奶牛-5.webp"
+      }
     },
     {
       "id": "30e92676-24d",
@@ -7064,7 +7768,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/mecha-savage-ox-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/机甲蛮牛-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/机甲蛮牛-0.webp",
+        "1": "assets/banchong/酷肖族/机甲蛮牛-1.webp",
+        "2": "assets/banchong/酷肖族/机甲蛮牛-2.webp",
+        "3": "assets/banchong/酷肖族/机甲蛮牛-3.webp",
+        "4": "assets/banchong/酷肖族/机甲蛮牛-4.webp",
+        "5": "assets/banchong/酷肖族/机甲蛮牛-5.webp"
+      }
     },
     {
       "id": "f8836c5b-7f7",
@@ -7101,7 +7814,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/fiery-red-horse-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/烈焰赤兔-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/烈焰赤兔-0.webp",
+        "1": "assets/banchong/酷肖族/烈焰赤兔-1.webp",
+        "2": "assets/banchong/酷肖族/烈焰赤兔-2.webp",
+        "3": "assets/banchong/酷肖族/烈焰赤兔-3.webp",
+        "4": "assets/banchong/酷肖族/烈焰赤兔-4.webp",
+        "5": "assets/banchong/酷肖族/烈焰赤兔-5.webp"
+      }
     },
     {
       "id": "af497293-463",
@@ -7138,7 +7860,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/argali-climber-sheep-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/盘羊登山家-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/盘羊登山家-0.webp",
+        "1": "assets/banchong/酷肖族/盘羊登山家-1.webp",
+        "2": "assets/banchong/酷肖族/盘羊登山家-2.webp",
+        "3": "assets/banchong/酷肖族/盘羊登山家-3.webp",
+        "4": "assets/banchong/酷肖族/盘羊登山家-4.webp",
+        "5": "assets/banchong/酷肖族/盘羊登山家-5.webp"
+      }
     },
     {
       "id": "36491bfb-b62",
@@ -7175,7 +7906,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/dawn-heavy-armor-rooster-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/破晓重装鸡-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/破晓重装鸡-0.webp",
+        "1": "assets/banchong/酷肖族/破晓重装鸡-1.webp",
+        "2": "assets/banchong/酷肖族/破晓重装鸡-2.webp",
+        "3": "assets/banchong/酷肖族/破晓重装鸡-3.webp",
+        "4": "assets/banchong/酷肖族/破晓重装鸡-4.webp",
+        "5": "assets/banchong/酷肖族/破晓重装鸡-5.webp"
+      }
     },
     {
       "id": "755e3e96-600",
@@ -7212,7 +7952,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/sky-howling-hound-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/神犬哮天-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/神犬哮天-0.webp",
+        "1": "assets/banchong/酷肖族/神犬哮天-1.webp",
+        "2": "assets/banchong/酷肖族/神犬哮天-2.webp",
+        "3": "assets/banchong/酷肖族/神犬哮天-3.webp",
+        "4": "assets/banchong/酷肖族/神犬哮天-4.webp",
+        "5": "assets/banchong/酷肖族/神犬哮天-5.webp"
+      }
     },
     {
       "id": "2b0f4455-0fc",
@@ -7249,7 +7998,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/firmament-armor-dragon-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/苍穹战甲龙-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/苍穹战甲龙-0.webp",
+        "1": "assets/banchong/酷肖族/苍穹战甲龙-1.webp",
+        "2": "assets/banchong/酷肖族/苍穹战甲龙-2.webp",
+        "3": "assets/banchong/酷肖族/苍穹战甲龙-3.webp",
+        "4": "assets/banchong/酷肖族/苍穹战甲龙-4.webp",
+        "5": "assets/banchong/酷肖族/苍穹战甲龙-5.webp"
+      }
     },
     {
       "id": "b35aafee-535",
@@ -7286,7 +8044,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/quantum-gale-rabbit-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/量子疾风兔-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/量子疾风兔-0.webp",
+        "1": "assets/banchong/酷肖族/量子疾风兔-1.webp",
+        "2": "assets/banchong/酷肖族/量子疾风兔-2.webp",
+        "3": "assets/banchong/酷肖族/量子疾风兔-3.webp",
+        "4": "assets/banchong/酷肖族/量子疾风兔-4.webp",
+        "5": "assets/banchong/酷肖族/量子疾风兔-5.webp"
+      }
     },
     {
       "id": "83a7f712-cb6",
@@ -7323,7 +8090,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/steel-plate-hammer-pig-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/钢甲战锤猪-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/钢甲战锤猪-0.webp",
+        "1": "assets/banchong/酷肖族/钢甲战锤猪-1.webp",
+        "2": "assets/banchong/酷肖族/钢甲战锤猪-2.webp",
+        "3": "assets/banchong/酷肖族/钢甲战锤猪-3.webp",
+        "4": "assets/banchong/酷肖族/钢甲战锤猪-4.webp",
+        "5": "assets/banchong/酷肖族/钢甲战锤猪-5.webp"
+      }
     },
     {
       "id": "a36a81a9-64a",
@@ -7360,7 +8136,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/silver-billow-armored-snake-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/银澜甲蛇-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/银澜甲蛇-0.webp",
+        "1": "assets/banchong/酷肖族/银澜甲蛇-1.webp",
+        "2": "assets/banchong/酷肖族/银澜甲蛇-2.webp",
+        "3": "assets/banchong/酷肖族/银澜甲蛇-3.webp",
+        "4": "assets/banchong/酷肖族/银澜甲蛇-4.webp",
+        "5": "assets/banchong/酷肖族/银澜甲蛇-5.webp"
+      }
     },
     {
       "id": "b447828e-f74",
@@ -7397,7 +8182,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/thunder-war-pattern-tiger-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/雷霆战纹虎-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/雷霆战纹虎-0.webp",
+        "1": "assets/banchong/酷肖族/雷霆战纹虎-1.webp",
+        "2": "assets/banchong/酷肖族/雷霆战纹虎-2.webp",
+        "3": "assets/banchong/酷肖族/雷霆战纹虎-3.webp",
+        "4": "assets/banchong/酷肖族/雷霆战纹虎-4.webp",
+        "5": "assets/banchong/酷肖族/雷霆战纹虎-5.webp"
+      }
     },
     {
       "id": "99a1ec7a-1ce",
@@ -7434,7 +8228,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/flying-treasure-rat-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/飞天寻宝鼠-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/飞天寻宝鼠-0.webp",
+        "1": "assets/banchong/酷肖族/飞天寻宝鼠-1.webp",
+        "2": "assets/banchong/酷肖族/飞天寻宝鼠-2.webp",
+        "3": "assets/banchong/酷肖族/飞天寻宝鼠-3.webp",
+        "4": "assets/banchong/酷肖族/飞天寻宝鼠-4.webp",
+        "5": "assets/banchong/酷肖族/飞天寻宝鼠-5.webp"
+      }
     },
     {
       "id": "11cb4a79-060",
@@ -7471,7 +8274,16 @@
           "stage": 5,
           "imageUrl": "/assets/images/pet/monkey-king-junior-5.webp"
         }
-      ]
+      ],
+      "imageUrl": "assets/banchong/酷肖族/齐天小圣-2.webp",
+      "imageStages": {
+        "0": "assets/banchong/酷肖族/齐天小圣-0.webp",
+        "1": "assets/banchong/酷肖族/齐天小圣-1.webp",
+        "2": "assets/banchong/酷肖族/齐天小圣-2.webp",
+        "3": "assets/banchong/酷肖族/齐天小圣-3.webp",
+        "4": "assets/banchong/酷肖族/齐天小圣-4.webp",
+        "5": "assets/banchong/酷肖族/齐天小圣-5.webp"
+      }
     },
     {
       "id": "cp_cat_01",
