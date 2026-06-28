@@ -281,7 +281,10 @@ const PetSystem = (function () {
                     series: p.series,
                     rarity: p.rarity || 'common',
                     source: p.source,
-                    stages: p.stages
+                    stages: p.stages,
+                    imageUrl: p.imageUrl || '',
+                    imageStages: p.imageStages || null,
+                    imageStyle: p.imageStyle || ''
                 }));
                 ALL_SERIES = db.series || {};
                 PET_DB_LOADED = true;
