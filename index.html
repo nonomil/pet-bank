@@ -39,6 +39,11 @@
             <div class="nav-tab" data-page="shop" onclick="switchPage('shop')">🏪 兑换商店</div>
             <div class="nav-tab" data-page="tools" onclick="switchPage('tools')">🧰 工具箱</div>
             </div>
+            <div class="profile-switcher" id="profileSwitcher" onclick="ProfileUI.toggle(event)" title="切换孩子">
+                <span id="profileCurEmoji">🧒</span>
+                <span id="profileCurName">默认孩子</span>
+                <span class="profile-caret">▾</span>
+            </div>
             <div class="point-capsule">
                 <span>分</span>
                 <span class="num" id="topPoints">0</span>
@@ -419,6 +424,7 @@
     <script src="js/card-collection.js"></script>
     <script src="js/shop.js"></script>
     <script src="js/tools.js"></script>
+    <script src="js/profiles.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

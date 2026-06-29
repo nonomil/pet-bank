@@ -1385,3 +1385,50 @@ body {
         font-size: 22px;
     }
 }
+
+/* ===== 多孩子切换器（ProfileManager） ===== */
+.profile-switcher {
+    display: flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08); cursor: pointer;
+    font-size: 13px; transition: background 0.15s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+}
+.profile-switcher:hover { background: rgba(255, 255, 255, 0.15); }
+.profile-switcher #profileCurEmoji { font-size: 16px; }
+.profile-switcher .profile-caret { font-size: 10px; opacity: 0.6; }
+
+.profile-panel {
+    position: fixed; z-index: 9999;
+    background: var(--bg-card, #2a2a3a); color: var(--text-primary, #fff);
+    border-radius: 12px; padding: 12px; min-width: 220px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 13px;
+}
+.profile-panel-title { font-weight: bold; margin-bottom: 8px; opacity: 0.7; font-size: 12px; }
+.profile-list { display: flex; flex-direction: column; gap: 4px; }
+.profile-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: 8px; cursor: pointer;
+    transition: background 0.12s; position: relative;
+}
+.profile-item:hover { background: rgba(255, 255, 255, 0.08); }
+.profile-item.active { background: rgba(126, 182, 108, 0.18); }
+.profile-item-emoji { font-size: 18px; }
+.profile-item-name { flex: 1; }
+.profile-item-check { color: #7eb66c; font-weight: bold; }
+.profile-item-edit, .profile-item-del {
+    background: none; border: none; cursor: pointer; opacity: 0.5;
+    font-size: 13px; padding: 2px 4px; color: inherit;
+}
+.profile-item-edit:hover { opacity: 1; }
+.profile-item-del:hover { opacity: 1; color: #e57373; }
+.profile-new {
+    margin-top: 8px; width: 100%; padding: 8px;
+    border-radius: 8px; border: 1px dashed rgba(255, 255, 255, 0.2);
+    background: transparent; color: inherit; cursor: pointer;
+    font-size: 13px; transition: background 0.12s;
+}
+.profile-new:hover { background: rgba(255, 255, 255, 0.06); }

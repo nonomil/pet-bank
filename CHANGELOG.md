@@ -2,6 +2,28 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.5.0] - 2026-06-29
+### ✨ 新增
+- **多孩子本地切换（ProfileManager swap）**：家庭多娃场景，纯前端，业务代码零改动
+  - `js/profiles.js`：ProfileManager（swap 方案——切换时动态遍历 `petbank_*` 业务键快照存档/恢复）+ ProfileUI（nav 切换器：当前孩子+列表+新建/改名/删除）
+  - 元数据 `petbank_profiles_meta` + `petbank_active_profile` + `petbank_profile_data_{id}` 快照
+  - `ensureDefault` 幂等（老用户零感知：首次建 p_default，业务键原地不动）；`create/remove/rename/switchTo/resetCurrent`
+  - `index.html` 引入 profiles.js + nav 切换器 DOM；`app.js` init 调 ensureDefault + render；`css/style.css` 切换器+面板样式
+  - **playwright 7/7 PASS**（ensureDefault/创建/swap/数据隔离/恢复/删除）
+  - 业务代码零改动（app/pet/inventory 等仍读写 petbank_*）
+  - 方案：[banchong 账号机制分析与多孩子方案](docs/参考/banchong账号机制分析与多孩子方案.md)
+
+---
+
+## [v0.4.0] - 2026-06-29
+### 📝 文档与工程
+- **角色口径统一**：139（错误，115≠139 不自洽）→ **147**（banchong91+classpet40+PVZ8+MC8，数学自洽，数据实际值），14 处修正
+- **docs 重构**：项目现状总览 + plans/changes/进度索引 + 战斗深化设计稿 + 商店家具联动设计/实施稿
+- 综合冒烟清单 `scripts/smoke.mjs`（26 项全 PASS，探索/战斗/盲盒/宝箱）
+- banchong 宠物互动分析 + 账号机制分析（playwright 实测）
+
+---
+
 ## [v0.3.9] - 2026-06-29
 ### ✨ 新增
 - **战斗深化（3 通用技能 + 道具快捷栏）**：

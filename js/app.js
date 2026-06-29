@@ -1265,6 +1265,12 @@ window.saveAppState = saveAppState;
 
 // ============ 初始化 ============
 async function init() {
+    if (window.ProfileManager && typeof ProfileManager.ensureDefault === 'function') {
+        ProfileManager.ensureDefault();
+    }
+    if (window.ProfileUI && typeof ProfileUI.render === 'function') {
+        ProfileUI.render();
+    }
     loadAppState();
     PetSystem.load();
     InventorySystem.load();
