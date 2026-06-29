@@ -348,12 +348,15 @@ window.switchPage = switchPage;
         const species = PetSystem.getAllSpecies();
         const sp = species.find(s => s.id === speciesId);
         if (!sp) return '';
-        
-        // 有 imageStages 的宠物（经典8种 PVZ）
+        // PVZ 宠物的动作（idle/happy/attack）用 poses/{pet}_{action}.png（assets 已有动作图）
+        if (sp.imageStyle === 'pvz' && ['idle', 'happy', 'attack'].includes(pose)) {
+            return `assets/pets/poses/${speciesId}_${pose}.png`;
+        }
+        // 有 imageStages 的宠物（按阶段 key 0-4）
         if (sp.imageStages && sp.imageStages[pose]) {
             return sp.imageStages[pose];
         }
-        // banchong 宠物（用 stage 2 作为 idle/happy/attack，选不同进化阶段）
+        // banchong 宠物（单图）
         if (sp.imageUrl) {
             return sp.imageUrl;
         }
@@ -387,10 +390,12 @@ window.switchPage = switchPage;
         if (img) {
             img.classList.remove('dancing');
             void img.offsetWidth; // reflow
-            // 优先使用当前进化阶段图片
             const stageImg = PetSystem.getCurrentStageImage();
             const poseImg = getPetImagePath(pet.species, currentPose);
-            img.src = stageImg || poseImg;
+            // PVZ 宠物切动作（idle/happy/attack）：用动作图；否则用进化阶段图
+            const sp = PetSystem.getAllSpecies().find(s => s.id === pet.species);
+            const usePose = sp && sp.imageStyle === 'pvz' && ['idle', 'happy', 'attack'].includes(currentPose);
+            img.src = usePose ? poseImg : (stageImg || poseImg);
             img.classList.add('dancing');
         }
     }
@@ -451,7 +456,9 @@ window.showToast = showToast;
                 <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:800px;">
                     ${poses.map((pose, i) => {
                         let imgSrc;
-                        if (sp && sp.imageStages && sp.imageStages[pose]) {
+                        if (sp && sp.imageStyle === 'pvz' && ['idle', 'happy', 'attack'].includes(pose)) {
+                            imgSrc = `assets/pets/poses/${sp.id}_${pose}.png`;
+                        } else if (sp && sp.imageStages && sp.imageStages[pose]) {
                             imgSrc = sp.imageStages[pose];
                         } else if (sp && sp.imageUrl) {
                             imgSrc = sp.imageUrl;
