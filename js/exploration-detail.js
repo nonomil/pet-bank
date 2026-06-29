@@ -77,6 +77,7 @@ const ExplorationDetail = (function () {
         candy: [
             { type: 'narrate', text: '空气中弥漫着草莓和巧克力的味道，脚下的路是饼干碎铺成的！' },
             { type: 'discover', emoji: '🍬', text: '路边有一棵棒棒糖树，你摇了摇，掉下来一颗彩虹糖！', item: 'candy', chance: 0.7 },
+            { type: 'math', mathType: 'word', difficulty: 'medium', text: '糖果树干上挂着一道应用题牌子，答对才能摘到最甜的糖……', reward: { exp: 22, msg: '牌子发光，最甜的糖果掉下来！+22 经验' } },
             { type: 'choice', text: '前面有个分岔路，一条通往巧克力河，一条通往棉花糖山。', options: [
                 { text: '🍫 走巧克力河边', reward: '河水里漂着一块巧克力金币！', item: 'lollipop', chance: 0.5 },
                 { text: '☁️ 爬棉花糖山', reward: '山顶有一块巨大的蛋糕碎片，散发着奶油香气！', item: 'cake_slice', chance: 0.4 }
@@ -86,6 +87,7 @@ const ExplorationDetail = (function () {
         cave: [
             { type: 'narrate', text: '洞穴入口闪烁着紫色的光芒，你深吸一口气走了进去。' },
             { type: 'discover', emoji: '💎', text: '地上有一块碎掉的水晶，但在微光中依然很美！', item: 'crystal_shard', chance: 0.6 },
+            { type: 'math', mathType: 'arithmetic', difficulty: 'hard', text: '洞穴石门刻着一道乘除机关，解开才能继续深入……', reward: { exp: 28, msg: '石门轰隆打开，深处的光涌出来！+28 经验' } },
             { type: 'choice', text: '洞穴分成了两条路，左边传来滴水声，右边飘着淡淡的花香。', options: [
                 { text: '💧 走有水声的路', reward: '水滴汇聚成了一个小水晶池，你捞起了一颗发光的石子！', item: 'crystal_shard', chance: 0.5 },
                 { text: '🌸 走有花香的路', reward: '一朵发光的蘑菇在等你，你轻轻摘下它！', item: 'glowing_mushroom', chance: 0.6 }
@@ -115,6 +117,7 @@ const ExplorationDetail = (function () {
         underwater: [
             { type: 'narrate', text: '你沉入海底，周围是五彩缤纷的珊瑚，小鱼好奇地围着你转。' },
             { type: 'discover', emoji: '🪼', text: '一只透明的水母飘过，它身上发出柔和的蓝光，好漂亮！', item: 'glow_jelly', chance: 0.6 },
+            { type: 'math', mathType: 'word', difficulty: 'medium', text: '一个大海螺里传出应用题，答对它才肯指明方向……', reward: { exp: 22, msg: '海螺指向正确的洋流！+22 经验' } },
             { type: 'choice', text: '前方有一个珊瑚迷宫，左边有洋流，右边看起来很安静。', options: [
                 { text: '🌊 顺着洋流游', reward: '洋流把你带到了一个沉没的宝箱旁，找到了一颗鲨鱼牙！', item: 'shark_tooth', chance: 0.4 },
                 { text: '🤿 穿过安静的路', reward: '珊瑚丛中藏着一袋墨鱼的墨囊！', item: 'ink_sac', chance: 0.5 }
@@ -124,6 +127,7 @@ const ExplorationDetail = (function () {
         castle: [
             { type: 'narrate', text: '你踏上彩虹桥，每走一步桥就发出叮叮咚咚的音乐声。' },
             { type: 'discover', emoji: '⚔️', text: '桥头有一把生锈的小剑，但你擦了擦，它竟然闪起了金光！', item: 'knight_shield', chance: 0.4 },
+            { type: 'math', mathType: 'arithmetic', difficulty: 'medium', text: '城堡大门的锁需要一道乘法钥匙才能打开……', reward: { exp: 24, msg: '锁咔哒打开，大门缓缓开启！+24 经验' } },
             { type: 'choice', text: '城堡大门开着，里面左边是图书馆，右边是武器室。', options: [
                 { text: '📚 去图书馆', reward: '一本旧书里掉出了一张魔法卷轴！', item: 'magic_wand', chance: 0.3 },
                 { text: '🛡️ 去武器室', reward: '墙上挂着一片幼龙的鳞片，闪闪发光！', item: 'dragon_scale', chance: 0.4 }
@@ -133,6 +137,7 @@ const ExplorationDetail = (function () {
         volcano: [
             { type: 'narrate', text: '温暖的空气包裹着你，岩浆像橙色的河流缓缓流淌。' },
             { type: 'discover', emoji: '🔥', text: '路边有一块冷却的岩浆石，掰开后里面竟然有火红色的晶体质！', item: 'fire_scale', chance: 0.5 },
+            { type: 'math', mathType: 'arithmetic', difficulty: 'hard', text: '火山口的石碑刻着乘除算式，平息岩浆才能通过……', reward: { exp: 28, msg: '岩浆缓缓退去，道路浮现！+28 经验' } },
             { type: 'choice', text: '前方有个温泉池，旁边有条小路通向火山口。', options: [
                 { text: '♨️ 在温泉休息一下', reward: '温泉水底有一块温热的水晶！', item: 'lava_crystal', chance: 0.5 },
                 { text: '🌋 爬向火山口', reward: '火山口边缘有一根脱落的凤凰羽毛！', item: 'phoenix_feather', chance: 0.2 }
@@ -142,6 +147,7 @@ const ExplorationDetail = (function () {
         stargarden: [
             { type: 'narrate', text: '你踩在发光的苔藓上，每一步都留下星光般的脚印。' },
             { type: 'discover', emoji: '🌟', text: '一朵花悄悄绽放，花蕊里有一颗小小的星星！', item: 'star_dust', chance: 0.6 },
+            { type: 'math', mathType: 'arithmetic', difficulty: 'hard', text: '星图上闪烁着一道乘除算式，点亮星座才能前进……', reward: { exp: 30, msg: '星座连成一线，星路打开！+30 经验' } },
             { type: 'choice', text: '花园中间有一棵月亮树，树上挂满了发光的灯笼。', options: [
                 { text: '🌕 摘一个月亮灯笼', reward: '灯笼里面装满了星尘！', item: 'star_fragment', chance: 0.3 },
                 { text: '🦊 跟着星狐的脚印走', reward: '脚印尽头有一块月亮形状的糕点！', item: 'moon_cake', chance: 0.4 }
@@ -383,6 +389,15 @@ const ExplorationDetail = (function () {
         forest: '森林里的捣蛋鬼被你吓跑啦！你采到了发光蘑菇，满载而归。',
         beach: '海浪哗哗地为你鼓掌！你带着贝壳和珍珠，开心地回家了。',
         mountain: '雪山的冰晶守卫向你致敬！你收下一块冰晶，踏上归途。',
+        waterfall: '水帘后的秘密被你发现啦！你带着彩虹水珠，踏着水花回家。',
+        desert: '绿洲的守护者送你一袋沙金！你顶着夕阳，满载而归。',
+        space: '不明飞行物化作星光散去！你捧着星尘，从太空凯旋。',
+        candy: '糖果国的国王谢过你！你兜里装满彩虹糖，甜滋滋地回家。',
+        cave: '洞穴深处的宝藏重见天日！你握着水晶，走出黑暗。',
+        underwater: '海底的珊瑚女王向你致谢！你带着珍珠，浮出水面。',
+        castle: '城堡的骑士向你行礼！你收下龙鳞，跨过彩虹桥归去。',
+        volcano: '火山的凤凰赠你一根羽毛！你踩着余温，平安归来。',
+        stargarden: '星花园的精灵为你点亮整片星空！你怀着满兜星光，回到温暖的家。',
     };
 
     // 战斗胜利后显示结束叙事（点 ▶ 回场景列表），无结束语的场景直接 exit
