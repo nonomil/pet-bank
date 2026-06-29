@@ -147,7 +147,7 @@ const ExplorationDetail = (function () {
         stargarden: [
             { type: 'narrate', text: '你踩在发光的苔藓上，每一步都留下星光般的脚印。' },
             { type: 'discover', emoji: '🌟', text: '一朵花悄悄绽放，花蕊里有一颗小小的星星！', item: 'star_dust', chance: 0.6 },
-            { type: 'math', mathType: 'arithmetic', difficulty: 'hard', text: '星图上闪烁着一道乘除算式，点亮星座才能前进……', reward: { exp: 30, msg: '星座连成一线，星路打开！+30 经验' } },
+            { type: 'math', mathType: 'logic', difficulty: 'hard', text: '星图上的星座排成一串数字规律，找出下一个才能点亮它……', reward: { exp: 30, msg: '星座连成一线，星路打开！+30 经验' } },
             { type: 'choice', text: '花园中间有一棵月亮树，树上挂满了发光的灯笼。', options: [
                 { text: '🌕 摘一个月亮灯笼', reward: '灯笼里面装满了星尘！', item: 'star_fragment', chance: 0.3 },
                 { text: '🦊 跟着星狐的脚印走', reward: '脚印尽头有一块月亮形状的糕点！', item: 'moon_cake', chance: 0.4 }
@@ -240,6 +240,8 @@ const ExplorationDetail = (function () {
                 return { text: q.q, answer: q.a, options: q.opts };  // CMATH 自带选项
             }
         }
+        // 逻辑题：找规律 / 等式平衡（思维启蒙，后段场景）
+        if (mathType === 'logic') return genLogic();
         const d = difficulty || 'easy';
         const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
         const ops = d === 'easy' ? ['+', '-'] : d === 'medium' ? ['×', '×'] : ['×', '÷'];
@@ -250,6 +252,23 @@ const ExplorationDetail = (function () {
         else if (op === '×') { a = rand(2, 9); b = rand(2, 9); answer = a * b; }
         else { b = rand(2, 9); const q = rand(2, 9); a = b * q; answer = q; }
         return { text: `${a} ${op} ${b} = ?`, answer };
+    }
+    // 逻辑题：找规律（等差/倍数/斐波那契）/ 等式平衡，思维启蒙向（答案≤50）
+    function genLogic() {
+        const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+        const k = Math.random();
+        if (k < 0.4) {                       // 等差
+            const a0 = rand(1, 5), d = rand(2, 5);
+            return { text: `找规律：${a0}, ${a0 + d}, ${a0 + 2 * d}, ${a0 + 3 * d}, ?`, answer: a0 + 4 * d };
+        } else if (k < 0.65) {               // 倍数
+            const a0 = rand(2, 4);
+            return { text: `找规律：${a0}, ${a0 * 2}, ${a0 * 4}, ?`, answer: a0 * 8 };
+        } else if (k < 0.85) {               // 斐波那契
+            return { text: `找规律：1, 1, 2, 3, 5, ?`, answer: 8 };
+        } else {                             // 等式平衡 ? + a = b
+            const b = rand(10, 18), a = rand(2, 8);
+            return { text: `猜一猜：? + ${a} = ${b}`, answer: b - a };
+        }
     }
     function genMathOptions(answer) {
         const opts = new Set([answer]);
