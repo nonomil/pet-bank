@@ -25,8 +25,8 @@
     position: absolute;
     inset: 0;
     background: url("../data/GPT生图/背景图片-1.png") center/cover no-repeat;
-    opacity: 0.22;
-    filter: saturate(0.95) contrast(1.02);
+    opacity: 0.1;
+    filter: saturate(0.7) contrast(1.02);
     pointer-events: none;
     z-index: 0;
 }
@@ -41,7 +41,7 @@
     background-size: 20px 20px, 28px 28px;
     background-position: 0 0, 10px 10px;
     pointer-events: none;
-    opacity: 0.45;
+    opacity: 0;
     z-index: 1;
 }
 .map-hero-copy,
@@ -1463,6 +1463,7 @@ body {
 .galgame-choice:hover { background: rgba(255,210,120,0.28); transform: translateX(4px); }
 @keyframes galgameBlink { 50% { opacity: 0.3; } }
 .galgame-math { display: inline-block; margin-top: 8px; padding: 6px 14px; background: rgba(126,230,138,0.18); border: 1px solid rgba(126,230,138,0.5); border-radius: 8px; font-size: 22px; font-weight: 700; color: #7ee68a; letter-spacing: 2px; }
+.galgame-word { display: block; margin-top: 8px; padding: 9px 14px; background: rgba(126,230,138,0.12); border: 1px solid rgba(126,230,138,0.4); border-radius: 8px; font-size: 17px; line-height: 1.65; font-weight: 500; color: #bbf7d0; }
 @media (max-width: 768px) {
   .galgame-portrait { max-height: 36vh; }
   .galgame-text { font-size: 16px; }

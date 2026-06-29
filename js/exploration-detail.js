@@ -10,6 +10,19 @@ const ExplorationDetail = (function () {
     const EXPLORE_SHELL_HTML = document.getElementById('page-explore')?.innerHTML || '';
     const EXPLORE_ACTIVE_HTML = '<div id="exploreContainer"></div>';
 
+    // CMATH 应用题池（data/math-cmath.json，来源 XiaoMi/cmath CC BY 4.0）
+    // 懒加载：进入探索即后台 fetch 一次缓存到内存，genMathQuestion 同步读取
+    let CMATH_POOL = null;        // { '1': [...], '2': [...] }
+    let _cmathLoading = false;
+    function _ensureCmathPool() {
+        if (CMATH_POOL || _cmathLoading) return;
+        _cmathLoading = true;
+        fetch('data/math-cmath.json')
+            .then(r => r.json())
+            .then(d => { CMATH_POOL = d.grades || {}; _cmathLoading = false; })
+            .catch(() => { _cmathLoading = false; });
+    }
+
     function disableEventActions() {
         const actions = document.querySelectorAll('#exploreEvents .explore-continue-btn, #exploreEvents .explore-choice-btn');
         actions.forEach((action) => {
@@ -34,6 +47,7 @@ const ExplorationDetail = (function () {
         beach: [
             { type: 'narrate', text: '海浪轻轻拍打着你的脚丫，沙滩上散落着美丽的贝壳。' },
             { type: 'discover', emoji: '🐚', text: '你捡到了一个特别的贝壳，把它放在耳边，竟然听到了大海的秘密！', item: 'shell', chance: 0.6 },
+            { type: 'math', mathType: 'word', difficulty: 'easy', text: '沙滩上的螃蟹举着一块牌子，上面写着一道应用题考验你……', reward: { exp: 18, msg: '谜题解开，沙滩精灵为你让路！+18 经验' } },
             { type: 'choice', text: '一只海鸥叼着什么东西飞过，你决定——', options: [
                 { text: '🏃 追上去看看', reward: '海鸥掉下了一根闪闪发光的羽毛！', item: 'feather', chance: 0.5 },
                 { text: '🏖️ 继续在沙滩寻宝', reward: '你在沙子里挖出了一颗小珍珠！', item: 'pearl', chance: 0.2 }
@@ -81,6 +95,7 @@ const ExplorationDetail = (function () {
         waterfall: [
             { type: 'narrate', text: '水雾在阳光下画出了彩虹，你伸手去触碰，凉凉的，好舒服！' },
             { type: 'discover', emoji: '🌈', text: '水雾中飘浮着几滴发光的水珠，你用叶子接住了一滴！', item: 'rainbow_dew', chance: 0.5 },
+            { type: 'math', mathType: 'word', difficulty: 'easy', text: '荷叶上的青蛙念出一道应用题，答对它才肯带你过河……', reward: { exp: 16, msg: '青蛙呱呱叫好，水路打开了！+16 经验' } },
             { type: 'choice', text: '你看到瀑布后面好像有个洞口，还有一只青蛙在荷叶上看着你。', options: [
                 { text: '🐸 跟着青蛙走', reward: '青蛙带你找到了一片金色的荷叶！', item: 'golden_scale', chance: 0.3 },
                 { text: '🕳️ 钻进瀑布后面的洞', reward: '洞里藏着一枚古代的圆形石币！', item: 'lily_pad', chance: 0.5 }
@@ -90,6 +105,7 @@ const ExplorationDetail = (function () {
         desert: [
             { type: 'narrate', text: '热浪在沙丘上方跳舞，但远处的绿洲给了你希望。' },
             { type: 'discover', emoji: '🦂', text: '沙子里露出了一个古老的铜币，上面刻着你从未见过的文字！', item: 'sand_shell', chance: 0.5 },
+            { type: 'math', mathType: 'word', difficulty: 'medium', text: '绿洲的守护者挡住去路，出了一道应用题考验你……', reward: { exp: 22, msg: '守护者点头，绿洲大门为你打开！+22 经验' } },
             { type: 'choice', text: '你在一块巨石上发现了奇怪的壁画，旁边有两条路。', options: [
                 { text: '🎨 研究壁画再走', reward: '壁画后面藏着一颗沙漠珍珠！', item: 'desert_pearl', chance: 0.2 },
                 { text: '🏜️ 直接去绿洲', reward: '绿洲的泉水边有一颗闪亮的甲虫壳！', item: 'ancient_bandage', chance: 0.5 }
@@ -167,6 +183,7 @@ const ExplorationDetail = (function () {
         if (!currentScene) return;
         eventIndex = 0;
         foundItems = [];
+        _ensureCmathPool();  // 后台预加载应用题库（CMATH）
 
         switchPage('explore');
 
@@ -206,9 +223,20 @@ const ExplorationDetail = (function () {
     }
 
     // 数学解谜出题（难度分级，自实现，不依赖 math-pk 闭包）
-    function genMathQuestion(difficulty) {
+    // mathType: 'arithmetic'(裸算式,默认) | 'word'(CMATH 应用题)
+    function genMathQuestion(mathType, difficulty) {
+        // 应用题：从 CMATH 池按年级抽（池未就绪则回退算式，保证不阻塞）
+        if (mathType === 'word' && CMATH_POOL) {
+            const g = difficulty === 'easy' ? '1' : '2';
+            const pool = CMATH_POOL[g] || CMATH_POOL['1'] || [];
+            if (pool.length) {
+                const q = pool[Math.floor(Math.random() * pool.length)];
+                return { text: q.q, answer: q.a, options: q.opts };  // CMATH 自带选项
+            }
+        }
+        const d = difficulty || 'easy';
         const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
-        const ops = difficulty === 'easy' ? ['+', '-'] : difficulty === 'medium' ? ['×', '×'] : ['×', '÷'];
+        const ops = d === 'easy' ? ['+', '-'] : d === 'medium' ? ['×', '×'] : ['×', '÷'];
         const op = ops[Math.floor(Math.random() * ops.length)];
         let a, b, answer;
         if (op === '+') { a = rand(5, 25); b = rand(5, 25); answer = a + b; }
@@ -276,10 +304,13 @@ const ExplorationDetail = (function () {
             nameEl.textContent = '⚠️ 遭遇';
             textEl.innerHTML = `<span class="galgame-warn">${event.text}</span><br>点击准备战斗！`;
         } else if (event.type === 'math') {
-            const q = genMathQuestion(event.difficulty || 'easy');
-            const opts = genMathOptions(q.answer);
+            const q = genMathQuestion(event.mathType || 'arithmetic', event.difficulty || 'easy');
+            const opts = q.options || genMathOptions(q.answer);
             nameEl.textContent = '🔢 谜题';
-            textEl.innerHTML = `${event.text}<br><span class="galgame-math">${q.text}</span>`;
+            const qHtml = event.mathType === 'word'
+                ? `${event.text}<br><span class="galgame-word">${q.text}</span>`
+                : `${event.text}<br><span class="galgame-math">${q.text}</span>`;
+            textEl.innerHTML = qHtml;
             choicesEl.innerHTML = opts.map(o =>
                 `<button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.answerMath(${o === q.answer}, ${event.reward?.exp || 0}, '${(event.reward?.msg || '').replace(/'/g, "\\'")}')">${o}</button>`
             ).join('');
