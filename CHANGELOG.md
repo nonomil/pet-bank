@@ -2,6 +2,15 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.3.1] - 2026-06-29
+### 🐛 修复
+- **MC 宠物图裁切**：40 张 Minecraft 宠物图（assets/pets/poses/mc_*.png）实为「多体+箭头」进化链对比图（34 张多体 + 6 张 ultimate 单体），作为单体立绘不合适。用 cv2 批量提取：形态学去箭头（椭圆核开运算）→ 最大连通块主体 → 裁切居中 → Lanczos 插值放大到 1024²
+- 验证：playwright 视觉抽样 5 张（enderman/wolf/cat/parrot/turtle 跨阶段）全 PASS（1 个体/完整/无箭头/居中）
+- 原图备份在 .tmp/mc-backup/，git v0.3.0 也有原版可恢复
+- 注：Agnes API key（用户提供）返回 401 无效，未用；改走纯本地 cv2 方案
+
+---
+
 ## [v0.3.0] - 2026-06-29
 
 ### ✨ 新增
