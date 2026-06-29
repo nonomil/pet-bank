@@ -349,7 +349,7 @@ window.switchPage = switchPage;
         const sp = species.find(s => s.id === speciesId);
         if (!sp) return '';
         // PVZ 宠物的动作（idle/happy/attack）用 poses/{pet}_{action}.png（assets 已有动作图）
-        if (sp.imageStyle === 'pvz' && ['idle', 'happy', 'attack'].includes(pose)) {
+        if ((sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && ['idle', 'happy', 'attack'].includes(pose)) {
             return `assets/pets/poses/${speciesId}_${pose}.png`;
         }
         // 有 imageStages 的宠物（按阶段 key 0-4）
@@ -394,7 +394,7 @@ window.switchPage = switchPage;
             const poseImg = getPetImagePath(pet.species, currentPose);
             // PVZ 宠物切动作（idle/happy/attack）：用动作图；否则用进化阶段图
             const sp = PetSystem.getAllSpecies().find(s => s.id === pet.species);
-            const usePose = sp && sp.imageStyle === 'pvz' && ['idle', 'happy', 'attack'].includes(currentPose);
+            const usePose = sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && ['idle', 'happy', 'attack'].includes(currentPose);
             img.src = usePose ? poseImg : (stageImg || poseImg);
             img.classList.add('dancing');
         }
@@ -456,7 +456,7 @@ window.showToast = showToast;
                 <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:800px;">
                     ${poses.map((pose, i) => {
                         let imgSrc;
-                        if (sp && sp.imageStyle === 'pvz' && ['idle', 'happy', 'attack'].includes(pose)) {
+                        if (sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && ['idle', 'happy', 'attack'].includes(pose)) {
                             imgSrc = `assets/pets/poses/${sp.id}_${pose}.png`;
                         } else if (sp && sp.imageStages && sp.imageStages[pose]) {
                             imgSrc = sp.imageStages[pose];
@@ -483,7 +483,7 @@ window.showToast = showToast;
         // PVZ 宠物：切换动作；banchong 宠物：无动作切换
         const species = PetSystem.getAllSpecies();
         const sp = species.find(s => s.name === petName);
-        if (sp && sp.imageStyle === 'pvz' && ['idle','happy','attack'].includes(pose)) {
+        if (sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && ['idle','happy','attack'].includes(pose)) {
             const pet = PetSystem.getState();
             if (pet.species) {
                 window.setPetPose(pose);
@@ -517,7 +517,7 @@ function renderPetPage() {
         }
         // PVZ 宠物才显示动作按钮
         const sp = species.find(s => s.id === pet.species);
-        if (poseBtns) poseBtns.style.display = (sp && sp.imageStyle === 'pvz') ? 'flex' : 'none';
+        if (poseBtns) poseBtns.style.display = (sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft')) ? 'flex' : 'none';
         nameDisplay.textContent = pet.species_data?.name || '未知';
         stageDisplay.textContent = `${pet.stage.name}阶段 · Lv.${pet.level}`;
     } else {
