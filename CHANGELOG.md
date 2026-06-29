@@ -2,6 +2,18 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.5.3] - 2026-06-29
+### ✨ 探索 galgame 重设计 + 数学解谜 + Agnes 生图
+- **galgame 呈现层**：底部对话框 + 左右立绘 + 点击/▶ 推进 + 大字 19px + 选择卡片（替代卡片堆叠），借鉴 [Monogatari](https://monogatari.io/)（web VN 引擎）模式自实现轻量呈现层
+- **数学解谜**：探索中加 `math` 事件（forest 示范）+ `genMathQuestion`（难度分级加减乘除）+ `answerMath`（答对 exp 奖励），把数学 PK 融入探索作"智力关卡"
+- **Agnes 生图**（新 key 有效）：12 场景 galgame 背景（`assets/scenes-vn/`）+ 12 角色立绘（`assets/characters/`：蘑菇仙子/海鸥船长/雪狼/外星向导/糖果公主/水晶守卫/青蛙向导/木乃伊旅人/美人鱼/图书馆幽灵/火凤凰/星狐），`agnes-image-2.1-flash`
+- **立绘接入**：`SCENE_CHAR_PORTRAIT` 场景→角色映射 + `setScenePortrait`，galgame 左侧场景角色 + 右侧宠物立绘
+- `js/exploration-detail.js`（show/showNextEvent/choose/next galgame 重写 + math 分支 + genMathQuestion/answerMath）+ `css/style.css`（galgame 对话框/立绘/字体 19px/算式高亮）
+- **playwright 验证**：galgame 呈现 6/6 + 数学解谜 6/6 + 立绘接入 ✅
+- 设计稿：[docs/plans/2026-06-29-探索故事galgame重设计.md](docs/plans/2026-06-29-探索故事galgame重设计.md)（含开源 VN 调研 Monogatari/Ren'Py + 数学解谜方案 + 提示词）
+
+---
+
 ## [v0.5.2] - 2026-06-29
 ### ✨ 奖励优化
 - **盲盒稀有度分层**：新增 EPIC（城堡徽晶/幼龙鳞片/雪莲之魂/熔岩水晶）+ LEGENDARY（海皇冠/星星碎片/彩瀑灵晶）奖池，`pickRarityItem` 加权抽取
