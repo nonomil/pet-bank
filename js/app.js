@@ -1022,8 +1022,12 @@ function battleAction(action) {
         if (result.status === 'won' && window.CardCollection && Math.random() < 0.25) {
             const petSpecies = PetSystem.getAllSpecies();
             if (petSpecies.length > 0) {
-                const randomPet = petSpecies[Math.floor(Math.random() * petSpecies.length)];
-                CardCollection.addCard(randomPet.id);
+                // 按宠物稀有度加权（common 多见，legendary 罕见，图鉴收集有梯度）
+                const rw = { common: 50, uncommon: 30, rare: 15, epic: 4, legendary: 1 };
+                const weighted = [];
+                petSpecies.forEach(p => { const pw = rw[p.rarity] || 10; for (let i = 0; i < pw; i++) weighted.push(p); });
+                const picked = weighted[Math.floor(Math.random() * weighted.length)];
+                CardCollection.addCard(picked.id);
             }
         }
         // 显示结算

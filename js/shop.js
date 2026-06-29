@@ -45,6 +45,30 @@ const ShopSystem = (function () {
     { id: 'star_gem', emoji: '⭐', name: '星辰碎片' },
     { id: 'phoenix_feather', emoji: '🪶', name: '凤凰羽毛' }
   ];
+  const EPIC_ITEMS = [
+    { id: 'castle_gem', emoji: '🏰', name: '城堡徽晶' },
+    { id: 'dragon_scale', emoji: '🐉', name: '幼龙鳞片' },
+    { id: 'snow_gem', emoji: '❄️', name: '雪莲之魂' },
+    { id: 'lava_crystal', emoji: '🌋', name: '熔岩水晶' }
+  ];
+  const LEGENDARY_ITEMS = [
+    { id: 'ocean_crown', emoji: '👑', name: '海皇冠饰' },
+    { id: 'star_fragment', emoji: '💫', name: '星星碎片' },
+    { id: 'rainbow_gem2', emoji: '🌈', name: '彩瀑灵晶' }
+  ];
+  // 稀有度加权抽取（普通盲盒偏 common，豪华偏 rare+/epic/legendary）
+  const RARITY_POOLS = { common: RANDOM_ITEMS, rare: RARE_ITEMS, epic: EPIC_ITEMS, legendary: LEGENDARY_ITEMS };
+  function pickRarityItem(weights) {
+    const r = Math.random();
+    let acc = 0;
+    for (const rar of ['legendary', 'epic', 'rare', 'common']) {
+      acc += weights[rar] || 0;
+      if (r < acc && RARITY_POOLS[rar] && RARITY_POOLS[rar].length) {
+        return RARITY_POOLS[rar][Math.floor(Math.random() * RARITY_POOLS[rar].length)];
+      }
+    }
+    return RANDOM_ITEMS[0];
+  }
 
   // --- Private Helpers ---
 
@@ -240,19 +264,21 @@ const ShopSystem = (function () {
           const refund = Math.floor(Math.random() * 11) + 5; // 5-15
           result = { type: 'points', emoji: '💰', name: `${refund} 成长分返利`, value: refund };
         } else {
-          const item = RANDOM_ITEMS[Math.floor(Math.random() * RANDOM_ITEMS.length)];
+          // 稀有度加权：common 75% / rare 20% / epic 5%
+          const item = pickRarityItem({ common: 0.75, rare: 0.20, epic: 0.05, legendary: 0 });
           result = { type: 'item', emoji: item.emoji, name: item.name, value: item.id };
         }
       } else {
-        // Luxury Box
+        // Luxury Box：30% 返利 / 20% 经验 / 50% 道具（rare+/epic/legendary）
         if (rand < 0.3) {
           const refund = Math.floor(Math.random() * 21) + 20; // 20-40
           result = { type: 'points', emoji: '💰', name: `${refund} 成长分返利`, value: refund };
-        } else if (rand < 0.7) {
-          const item = RARE_ITEMS[Math.floor(Math.random() * RARE_ITEMS.length)];
-          result = { type: 'item', emoji: item.emoji, name: item.name, value: item.id };
-        } else {
+        } else if (rand < 0.5) {
           result = { type: 'exp', emoji: '⭐', name: '宠物经验+50', value: 50 };
+        } else {
+          // 稀有度加权：rare 60% / epic 30% / legendary 10%
+          const item = pickRarityItem({ common: 0, rare: 0.60, epic: 0.30, legendary: 0.10 });
+          result = { type: 'item', emoji: item.emoji, name: item.name, value: item.id };
         }
       }
 

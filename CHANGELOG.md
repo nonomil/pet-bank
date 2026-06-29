@@ -2,6 +2,18 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.5.2] - 2026-06-29
+### ✨ 奖励优化
+- **盲盒稀有度分层**：新增 EPIC（城堡徽晶/幼龙鳞片/雪莲之魂/熔岩水晶）+ LEGENDARY（海皇冠/星星碎片/彩瀑灵晶）奖池，`pickRarityItem` 加权抽取
+  - 普通盲盒：common 75% / rare 20% / epic 5%
+  - 豪华盲盒：rare 60% / epic 30% / legendary 10%（可出传说道具）
+- **卡片掉落 rarity 权重**：战斗胜利卡片按宠物稀有度加权（common 50/uncommon 30/rare 15/epic 4/legendary 1），图鉴收集有梯度（稀有宠物更难集齐，告别均等随机）
+- `js/shop.js`：EPIC/LEGENDARY_ITEMS + pickRarityItem + openBlindBox 改豪华为 30%返利/20%经验/50%道具(rare+)
+- `js/app.js`：卡片掉落按 rarity 权重
+- **playwright 3/3 PASS**（豪华/普通盲盒权重 + 卡片 rarity 分布）
+
+---
+
 ## [v0.5.1] - 2026-06-29
 ### ✨ 新增
 - **数据导出/导入**（工具箱「数据管理」工具）：
