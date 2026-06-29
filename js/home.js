@@ -151,8 +151,18 @@ const HomeSystem = (function () {
 @keyframes home-revive-flash{0%{transform:scale(.6) rotate(-12deg) translateY(20px);filter:drop-shadow(0 0 24px rgba(127,255,212,.95)) brightness(1.8);}45%{transform:scale(1.15) rotate(0) translateY(-6px);filter:drop-shadow(0 0 30px rgba(127,255,212,.9)) brightness(1.4);}100%{transform:scale(1) rotate(0) translateY(0);filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));}}
 .home-cleanliness{position:absolute;right:14px;top:14px;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;font-size:12px;backdrop-filter:blur(4px);z-index:4;}
 .home-furniture-row{position:absolute;left:14px;bottom:14px;display:flex;gap:8px;z-index:4;}
-.home-furn-slot{width:54px;height:54px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:24px;border:1px dashed rgba(255,255,255,.25);}
-.home-furn-slot.filled{background:rgba(255,255,255,.2);border-style:solid;}
+.home-furn-slot{width:54px;height:54px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:24px;border:1px dashed rgba(255,255,255,.25);cursor:default;transition:background .2s,border-color .2s;}
+.home-furn-slot.filled{background:rgba(255,255,255,.2);border-style:solid;cursor:pointer;}
+.home-furn-slot.home-furn-target{background:rgba(108,92,231,.35);border:1px solid #a29bfe;cursor:pointer;animation:home-furn-pulse 1.2s ease-in-out infinite;color:#fff;font-weight:700;}
+.home-furn-slot.home-furn-dim{opacity:.35;cursor:not-allowed;}
+@keyframes home-furn-pulse{0%,100%{box-shadow:0 0 0 0 rgba(162,155,254,.5);}50%{box-shadow:0 0 0 6px rgba(162,155,254,0);}}
+.home-tray{margin-top:2px;padding:10px 12px;border-radius:12px;background:#faf8ff;border:1px dashed #d8d0f5;}
+.home-tray-head{font-size:11px;color:#6c5ce7;font-weight:600;margin-bottom:8px;}
+.home-tray-head .home-tray-cancel{color:#00b894;cursor:pointer;text-decoration:underline;margin-left:2px;}
+.home-tray-row{display:flex;gap:8px;flex-wrap:wrap;}
+.home-tray-item{width:42px;height:42px;border-radius:8px;background:#fff;border:1px solid #ece6ff;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:transform .15s,border-color .15s;}
+.home-tray-item:hover{transform:translateY(-2px);}
+.home-tray-item.home-tray-item-sel{border:2px solid #6c5ce7;background:#f4f1ff;transform:translateY(-2px);box-shadow:0 3px 8px rgba(108,92,231,.25);}
 .home-side{display:flex;flex-direction:column;gap:14px;}
 .home-card{background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
 .home-card h4{font-size:13px;font-weight:700;margin:0 0 10px;color:#444;}
@@ -432,14 +442,34 @@ const HomeSystem = (function () {
     }
 
     // ---------- 摆放家具 ----------
+    // 槽位兼容检查：家具 slotType 必须匹配槽位类型
+    function canPlace(furnId, slotId) {
+        const item = furnitureCatalogById[furnId];
+        if (!item) return false;
+        const slotType = SLOT_TYPES[slotId];
+        if (!slotType) return false;
+        return item.slotType === slotType;
+    }
+
     function placeFurniture(furnId, slot) {
         if (!homeState || !homeState.slots) return false;
         if (furniture && furniture.indexOf(furnId) < 0) {
             _toast('尚未拥有该家具');
             return false;
         }
+        // 兼容性检查：不兼容槽位拒绝摆放（不改 ownership，不改 slots）
+        if (!canPlace(furnId, slot)) {
+            const item = furnitureCatalogById[furnId];
+            const slotType = SLOT_TYPES[slot];
+            const need = item ? item.slotType : '?';
+            _toast(`不兼容：该家具需要 ${need} 槽位（当前槽位类型 ${slotType || '未知'}）`);
+            return false;
+        }
+        // 同槽位替换：旧家具只是从 slots 移出，ownership 不动 → 自动回到未摆放栏
+        // （homeState.slots[slot] 被覆盖即可，旧家具 id 仍在 furniture 数组里）
         homeState.slots[slot] = furnId;
         _saveHomeState();
+        _selectedFurniture = null; // 摆放后清空选中
         renderUI(_lastContainer);
         return true;
     }
@@ -457,6 +487,18 @@ const HomeSystem = (function () {
             furniture.push(furnId);
             _saveFurniture();
         }
+    }
+
+    // ---------- 未摆放家具选择态（Task 4） ----------
+    let _selectedFurniture = null;
+    function selectFurniture(furnId) {
+        if (!furniture || furniture.indexOf(furnId) < 0) return;
+        _selectedFurniture = (_selectedFurniture === furnId) ? null : furnId;
+        renderUI(_lastContainer);
+    }
+    function clearSelection() {
+        _selectedFurniture = null;
+        renderUI(_lastContainer);
     }
 
     // ---------- 背景层（P1-B 功能2） ----------
@@ -547,19 +589,56 @@ const HomeSystem = (function () {
         const cleanIcon = clean >= 60 ? '✨' : (clean >= 30 ? '🫧' : '🧼');
         const cleanHtml = `<div class="home-cleanliness">${cleanIcon} 清洁 ${clean}</div>`;
 
-        // 家具槽（只渲染拥有的）
-        const FURN_META = {
+        // 家具元数据：优先取共享目录，兜底旧硬编码（避免 catalog 未加载时白屏）
+        const FURN_META_FALLBACK = {
             food_bowl: { icon: '🥣', name: '食盆' },
             bath_tub: { icon: '🛁', name: '浴缸' }
         };
+        function _furnMeta(id) {
+            const cat = furnitureCatalogById[id];
+            if (cat) return { icon: cat.icon, name: cat.name };
+            return FURN_META_FALLBACK[id] || { icon: '📦', name: id };
+        }
+
+        // 家具槽：选中态下点击兼容槽位摆放，否则点击已摆放家具移除
         const slotOrder = ['center_left', 'center_right', 'corner_left', 'back', 'corner_right'];
         const furnHtml = slotOrder.map(slot => {
             const fid = homeState.slots[slot];
-            if (fid && FURN_META[fid]) {
-                return `<div class="home-furn-slot filled" title="${FURN_META[fid].name}（点击移除）" onclick="HomeSystem.removeFurniture('${slot}')">${FURN_META[fid].icon}</div>`;
+            const meta = fid ? _furnMeta(fid) : null;
+            // 选中了家具：判断该槽位是否兼容
+            if (_selectedFurniture) {
+                const ok = canPlace(_selectedFurniture, slot);
+                if (meta) {
+                    // 已有家具：兼容则提示替换，点击进入替换
+                    return ok
+                        ? `<div class="home-furn-slot filled home-furn-target" title="替换为 ${_furnMeta(_selectedFurniture).name}" onclick="HomeSystem.placeFurniture('${_selectedFurniture}','${slot}')">${meta.icon}</div>`
+                        : `<div class="home-furn-slot filled home-furn-dim" title="不兼容槽位">${meta.icon}</div>`;
+                }
+                return ok
+                    ? `<div class="home-furn-slot home-furn-target" title="摆放 ${_furnMeta(_selectedFurniture).name}（点击）" onclick="HomeSystem.placeFurniture('${_selectedFurniture}','${slot}')">＋</div>`
+                    : `<div class="home-furn-slot home-furn-dim" title="不兼容槽位">✕</div>`;
+            }
+            // 未选中：常规态，点击已摆放家具移除
+            if (meta) {
+                return `<div class="home-furn-slot filled" title="${meta.name}（点击移除）" onclick="HomeSystem.removeFurniture('${slot}')">${meta.icon}</div>`;
             }
             return `<div class="home-furn-slot" title="空槽位"></div>`;
         }).join('');
+
+        // 未摆放家具栏：owned - placed，点击选中/取消
+        const unplaced = getUnplacedFurniture();
+        const trayHtml = (unplaced.length > 0) ? `
+            <div class="home-tray">
+                <div class="home-tray-head">${_selectedFurniture ? `已选：${_furnMeta(_selectedFurniture).name}（点击兼容槽位摆放，或` : '点选家具后'}<a class="home-tray-cancel" onclick="HomeSystem.clearSelection()">取消</a>）</div>
+                <div class="home-tray-row">
+                    ${unplaced.map(id => {
+                        const m = _furnMeta(id);
+                        const sel = (_selectedFurniture === id) ? 'home-tray-item-sel' : '';
+                        return `<div class="home-tray-item ${sel}" title="${m.name}（点击${_selectedFurniture === id ? '取消' : '选中'}）" onclick="HomeSystem.selectFurniture('${id}')">${m.icon}</div>`;
+                    }).join('')}
+                </div>
+            </div>
+        ` : '';
 
         // 救援 CTA
         const rescueHtml = downed
@@ -671,6 +750,7 @@ const HomeSystem = (function () {
                         ${vitHtml}
                     </div>
                     ${actionsHtml}
+                    ${trayHtml}
                 </div>
             </div>
         `;
@@ -706,6 +786,7 @@ const HomeSystem = (function () {
         renderUI,
         onFeed, onPlay, onBath, onRest, onRescue,
         placeFurniture, removeFurniture, addFurniture,
+        canPlace, selectFurniture, clearSelection,
         onPetClick, setHomeBg,
         markExit,
         loadCatalog,
