@@ -537,7 +537,7 @@
     box-shadow: 0 0 0 5px rgba(246, 226, 172, 0.5), 0 16px 26px rgba(73, 84, 74, 0.11);
 }
 .scene-route-card.locked {
-    opacity: 0.74;
+    filter: grayscale(0.35);
 }
 .scene-route-thumb {
     height: 116px;
