@@ -1156,8 +1156,12 @@ function closeBattleModal() {
     // 否则 page-explore 仍是 galgame-stage（#sceneGrid 被覆盖 renderAll 渲染不出），
     // 且残留的 encounter 末事件会让点 ▶ 再次 triggerBattle（"又从头打"）。
     if (typeof ExplorationDetail !== 'undefined' && ExplorationDetail.isActive && ExplorationDetail.isActive()) {
-        if (status === 'won') showToast('🎉 击败敌人！场景探索完成，已获得战利品');
-        ExplorationDetail.exit();
+        if (status === 'won' && ExplorationDetail.showEnding) {
+            ExplorationDetail.showEnding();   // 样板场景：胜利后显示结束叙事，点 ▶ 回列表
+        } else {
+            if (status === 'won') showToast('🎉 击败敌人！场景探索完成，已获得战利品');
+            ExplorationDetail.exit();
+        }
     } else {
         renderAll();
     }

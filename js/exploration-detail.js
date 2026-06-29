@@ -378,10 +378,30 @@ const ExplorationDetail = (function () {
         }
     }
 
+    // 场景结束叙事（"奖励→回家"，01 成功标准：进入感+结束感；先配 3 样板场景）
+    const SCENE_ENDING = {
+        forest: '森林里的捣蛋鬼被你吓跑啦！你采到了发光蘑菇，满载而归。',
+        beach: '海浪哗哗地为你鼓掌！你带着贝壳和珍珠，开心地回家了。',
+        mountain: '雪山的冰晶守卫向你致敬！你收下一块冰晶，踏上归途。',
+    };
+
+    // 战斗胜利后显示结束叙事（点 ▶ 回场景列表），无结束语的场景直接 exit
+    function showEnding() {
+        const msg = currentScene && SCENE_ENDING[currentScene.id];
+        const nameEl = document.getElementById('galgameName');
+        const textEl = document.getElementById('galgameText');
+        const box = document.getElementById('galgameBox');
+        if (!msg || !nameEl || !textEl) { exit(); return; }
+        document.getElementById('galgameChoices').innerHTML = '';
+        nameEl.textContent = '🎉 冒险完成';
+        textEl.innerHTML = `<span class="galgame-found">${msg}</span>`;
+        box.onclick = () => ExplorationDetail.exit();
+    }
+
     // 是否处于 galgame 探索中（战斗结束后判断要不要回场景列表）
     function isActive() { return currentScene != null; }
 
-    return { show, next, choose, exit, answerMath, isActive };
+    return { show, next, choose, exit, answerMath, isActive, showEnding };
 })();
 
 window.ExplorationDetail = ExplorationDetail;
