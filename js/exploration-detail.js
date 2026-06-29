@@ -24,6 +24,7 @@ const ExplorationDetail = (function () {
         forest: [
             { type: 'narrate', text: '你小心翼翼地走进森林，脚下的落叶发出沙沙的声音……' },
             { type: 'discover', emoji: '🍄', text: '你发现了一朵发光的蘑菇！轻轻摸了一下，它喷出了彩色的孢子。', item: 'mushroom', chance: 0.5 },
+            { type: 'math', text: '一棵古树上刻着神秘算式，解开才能继续深入森林……', difficulty: 'easy', reward: { exp: 15, msg: '算式亮起金光，道路打开了！+15 经验' } },
             { type: 'choice', text: '前方出现了两条小路，一条传来流水声，另一条飘着花香。', options: [
                 { text: '🌿 走流水小路', reward: '你在溪边发现了一片闪亮的树叶！', item: 'leaf', chance: 0.4 },
                 { text: '🌸 走花香小路', reward: '花瓣间藏着一块小石头，上面刻着星星图案！', item: 'stone', chance: 0.3 }
@@ -131,9 +132,25 @@ const ExplorationDetail = (function () {
         ]
     };
 
-    // 显示探索页
+    // galgame 立绘映射（场景 → 角色立绘图，Agnes 生图后填路径）
+    const SCENE_CHAR_PORTRAIT = {
+        forest: 'assets/characters/forest-mushroom-fairy.png',
+        beach: 'assets/characters/beach-captain-gull.png',
+        mountain: 'assets/characters/mountain-snow-wolf.png',
+        space: 'assets/characters/space-alien-guide.png',
+        candy: 'assets/characters/candy-princess.png',
+        cave: 'assets/characters/cave-crystal-guard.png',
+        waterfall: 'assets/characters/waterfall-frog-guide.png',
+        desert: 'assets/characters/desert-mummy-traveler.png',
+        underwater: 'assets/characters/underwater-mermaid.png',
+        castle: 'assets/characters/castle-library-ghost.png',
+        volcano: 'assets/characters/volcano-phoenix.png',
+        stargarden: 'assets/characters/stargarden-star-fox.png',
+    };
+
+    // 显示探索页（galgame 风格：背景 + 左右立绘 + 底部对话框 + 推进）
     function show(sceneId) {
-        // 宠物小屋 R5 第二守卫（F1 兜底）：hp<=0 且已选宠 → 拦截，防其它路径直调绕过
+        // 宠物小屋 R5 第二守卫（F1 兜底）：hp<=0 且已选宠 → 拦截
         if (window.PetSystem) {
             try {
                 const s = PetSystem.getState();
@@ -149,7 +166,6 @@ const ExplorationDetail = (function () {
         eventIndex = 0;
         foundItems = [];
 
-        // 切到探索页
         switchPage('explore');
 
         const pageExplore = document.getElementById('page-explore');
@@ -157,116 +173,133 @@ const ExplorationDetail = (function () {
         if (pageExplore.innerHTML !== EXPLORE_ACTIVE_HTML) {
             pageExplore.innerHTML = EXPLORE_ACTIVE_HTML;
         }
-
         const el = document.getElementById('exploreContainer');
         if (!el) return;
 
+        // galgame 框架：背景 + 左右立绘位 + 退出 + 底部对话框（点击推进）
         el.innerHTML = `
-            <div class="explore-scene" id="exploreScene">
-                <div class="explore-scene-bg">
-                    <img src="${currentScene.image}" alt="${currentScene.name}">
-                </div>
-                <div class="explore-scene-content">
-                    <button class="explore-back-btn" onclick="ExplorationDetail.exit()">← 退出探索</button>
-                    <div class="explore-scene-header">
-                        <h2 class="text-lg font-bold text-white" style="text-shadow:0 2px 4px rgba(0,0,0,0.5)">${currentScene.emoji} ${currentScene.name}</h2>
-                    </div>
-                    <div class="explore-events" id="exploreEvents"></div>
+            <div class="galgame-stage" id="galgameStage">
+                <div class="galgame-bg"><img src="${currentScene.image}" alt="${currentScene.name}"></div>
+                <img class="galgame-portrait galgame-portrait-left" id="galgamePortraitL" style="display:none">
+                <img class="galgame-portrait galgame-portrait-right" id="galgamePortraitR" src="${PetSystem.getCurrentStageImage ? PetSystem.getCurrentStageImage() : ''}" alt="宠物">
+                <button class="galgame-back" onclick="ExplorationDetail.exit()">← 退出探索</button>
+                <div class="galgame-box" id="galgameBox" onclick="ExplorationDetail.next()">
+                    <div class="galgame-name" id="galgameName">${currentScene.emoji} ${currentScene.name}</div>
+                    <div class="galgame-text" id="galgameText"></div>
+                    <div class="galgame-choices" id="galgameChoices"></div>
+                    <div class="galgame-next">▶</div>
                 </div>
             </div>
         `;
-
-        // 逐个展示事件
         showNextEvent();
+    }
+
+    // 设置左侧角色立绘（场景对应角色）
+    function setScenePortrait() {
+        const img = document.getElementById('galgamePortraitL');
+        if (!img) return;
+        const p = SCENE_CHAR_PORTRAIT[currentScene.id];
+        if (p) { img.src = p; img.style.display = ''; img.onerror = () => { img.style.display = 'none'; }; }
+        else { img.style.display = 'none'; }
+    }
+
+    // 数学解谜出题（难度分级，自实现，不依赖 math-pk 闭包）
+    function genMathQuestion(difficulty) {
+        const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+        const ops = difficulty === 'easy' ? ['+', '-'] : difficulty === 'medium' ? ['×', '×'] : ['×', '÷'];
+        const op = ops[Math.floor(Math.random() * ops.length)];
+        let a, b, answer;
+        if (op === '+') { a = rand(5, 25); b = rand(5, 25); answer = a + b; }
+        else if (op === '-') { a = rand(15, 40); b = rand(1, a - 1); answer = a - b; }
+        else if (op === '×') { a = rand(2, 9); b = rand(2, 9); answer = a * b; }
+        else { b = rand(2, 9); const q = rand(2, 9); a = b * q; answer = q; }
+        return { text: `${a} ${op} ${b} = ?`, answer };
+    }
+    function genMathOptions(answer) {
+        const opts = new Set([answer]);
+        while (opts.size < 4) {
+            const v = answer + Math.floor(Math.random() * 7) - 3;
+            if (v >= 0) opts.add(v);
+        }
+        return [...opts].sort(() => Math.random() - 0.5);
+    }
+    function answerMath(correct, exp, msg) {
+        const textEl = document.getElementById('galgameText');
+        const choicesEl = document.getElementById('galgameChoices');
+        const box = document.getElementById('galgameBox');
+        if (!textEl) return;
+        if (correct) {
+            if (exp && window.PetSystem) PetSystem.addExp(exp);
+            textEl.innerHTML = `<span class="galgame-found">${msg || '答对了！'}</span>`;
+        } else {
+            textEl.innerHTML = `<span class="galgame-warn">答错了……继续探索吧。</span>`;
+        }
+        choicesEl.innerHTML = '';
+        box.onclick = () => ExplorationDetail.next();
     }
 
     function showNextEvent() {
         const events = sceneEvents[currentScene.id] || [];
-        if (eventIndex >= events.length) {
-            // 所有事件结束，触发探索
-            triggerBattle();
-            return;
-        }
-
+        if (eventIndex >= events.length) { triggerBattle(); return; }
         const event = events[eventIndex];
-        const eventsEl = document.getElementById('exploreEvents');
-        if (!eventsEl) return;
-
+        const nameEl = document.getElementById('galgameName');
+        const textEl = document.getElementById('galgameText');
+        const choicesEl = document.getElementById('galgameChoices');
+        const box = document.getElementById('galgameBox');
+        if (!nameEl || !textEl) return;
         eventIndex++;
+        choicesEl.innerHTML = '';
+        box.onclick = () => ExplorationDetail.next();  // 默认点击对话框推进
 
         if (event.type === 'narrate') {
-            eventsEl.innerHTML += `
-                <div class="explore-event-card fade-in">
-                    <p class="text-sm leading-relaxed" style="color:#ddd">${event.text}</p>
-                    <button class="explore-continue-btn" onclick="ExplorationDetail.next()">继续 →</button>
-                </div>
-            `;
+            nameEl.textContent = `${currentScene.emoji} ${currentScene.name}`;
+            textEl.innerHTML = event.text;
+            setScenePortrait();
         } else if (event.type === 'discover') {
-            const foundItem = !!(event.item && Math.random() < event.chance);
-            // 先显示发现动画
-            eventsEl.innerHTML += `
-                <div class="explore-event-card fade-in">
-                    <div class="explore-emoji-pop">${event.emoji}</div>
-                    <p class="text-sm leading-relaxed" style="color:#ddd">${event.text}</p>
-                    ${foundItem ? '<div class="explore-found-item">✨ 获得物品！</div>' : ''}
-                    <button class="explore-continue-btn" onclick="ExplorationDetail.next()">继续 →</button>
-                </div>
-            `;
-            if (foundItem) {
-                foundItems.push(event.item);
-            }
+            const found = !!(event.item && Math.random() < event.chance);
+            nameEl.textContent = '✨ 发现';
+            textEl.innerHTML = `<span style="font-size:28px">${event.emoji}</span> ${event.text}${found ? '<br><span class="galgame-found">✨ 获得物品！</span>' : ''}`;
+            setScenePortrait();
+            if (found) foundItems.push(event.item);
         } else if (event.type === 'choice') {
-            const optionsHtml = event.options.map((opt, i) => `
-                <button class="explore-choice-btn" onclick="ExplorationDetail.choose(${eventIndex - 1}, ${i})">${opt.text}</button>
-            `).join('');
-            eventsEl.innerHTML += `
-                <div class="explore-event-card fade-in">
-                    <p class="text-sm leading-relaxed mb-3" style="color:#ddd">${event.text}</p>
-                    <div class="explore-choices">${optionsHtml}</div>
-                </div>
-            `;
-            // Don't auto-advance, wait for choice
-            eventIndex--; // undo the increment, will advance after choice
+            nameEl.textContent = `${currentScene.emoji} ${currentScene.name}`;
+            textEl.innerHTML = event.text;
+            choicesEl.innerHTML = event.options.map((opt, i) =>
+                `<button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.choose(${eventIndex - 1},${i})">${opt.text}</button>`
+            ).join('');
+            box.onclick = null;  // choice 时禁点击推进，等选择
+            eventIndex--;  // undo，等 choose 推进
             return;
         } else if (event.type === 'encounter') {
-            eventsEl.innerHTML += `
-                <div class="explore-event-card fade-in encounter-card">
-                    <div class="explore-emoji-pop">⚡</div>
-                    <p class="text-sm font-bold" style="color:#ffd700">${event.text}</p>
-                    <button class="explore-continue-btn explore-encounter-btn" onclick="ExplorationDetail.next()">⚔️ 准备战斗！</button>
-                </div>
-            `;
+            nameEl.textContent = '⚠️ 遭遇';
+            textEl.innerHTML = `<span class="galgame-warn">${event.text}</span><br>点击准备战斗！`;
+        } else if (event.type === 'math') {
+            const q = genMathQuestion(event.difficulty || 'easy');
+            const opts = genMathOptions(q.answer);
+            nameEl.textContent = '🔢 谜题';
+            textEl.innerHTML = `${event.text}<br><span class="galgame-math">${q.text}</span>`;
+            choicesEl.innerHTML = opts.map(o =>
+                `<button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.answerMath(${o === q.answer}, ${event.reward?.exp || 0}, '${(event.reward?.msg || '').replace(/'/g, "\\'")}')">${o}</button>`
+            ).join('');
+            box.onclick = null;  // 等答题
+            return;
         }
-
-        // 滚动到底部
-        const sceneEl = document.getElementById('exploreScene');
-        if (sceneEl) sceneEl.scrollTop = sceneEl.scrollHeight;
     }
 
     function choose(eventIdx, choiceIdx) {
         const events = sceneEvents[currentScene.id] || [];
         const event = events[eventIdx];
         if (!event) return;
-        disableEventActions();
-
         const choice = event.options[choiceIdx];
-        const eventsEl = document.getElementById('exploreEvents');
-        const foundItem = !!(choice.item && Math.random() < choice.chance);
-
-        // 隐藏选择按钮，显示结果
-        const cards = eventsEl.querySelectorAll('.explore-event-card');
-        const lastCard = cards[cards.length - 1];
-        if (lastCard) {
-            lastCard.querySelector('.explore-choices').innerHTML = `
-                <div class="explore-choice-result">${choice.text}</div>
-                <div class="explore-choice-reward">${choice.reward}</div>
-                ${foundItem ? '<div class="explore-found-item">✨ 获得物品！</div>' : ''}
-                <button class="explore-continue-btn" onclick="ExplorationDetail.next()">继续 →</button>
-            `;
-            if (foundItem) {
-                foundItems.push(choice.item);
-            }
-        }
+        const found = !!(choice.item && Math.random() < choice.chance);
+        const textEl = document.getElementById('galgameText');
+        const choicesEl = document.getElementById('galgameChoices');
+        const box = document.getElementById('galgameBox');
+        if (!textEl) return;
+        textEl.innerHTML = `<span class="galgame-reward">${choice.text}</span><br>${choice.reward}${found ? '<br><span class="galgame-found">✨ 获得物品！</span>' : ''}`;
+        choicesEl.innerHTML = '';
+        box.onclick = () => ExplorationDetail.next();  // 恢复点击推进
+        if (found) foundItems.push(choice.item);
         eventIndex++;
     }
 
@@ -295,8 +328,7 @@ const ExplorationDetail = (function () {
     }
 
     function next() {
-        disableEventActions();
-        showNextEvent();
+        showNextEvent();  // galgame 单条推进（无堆叠，无需 disable）
     }
 
     function exit() {
@@ -313,7 +345,7 @@ const ExplorationDetail = (function () {
         }
     }
 
-    return { show, next, choose, exit };
+    return { show, next, choose, exit, answerMath };
 })();
 
 window.ExplorationDetail = ExplorationDetail;
