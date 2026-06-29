@@ -2,6 +2,19 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.3.9] - 2026-06-29
+### ✨ 新增
+- **战斗深化（3 通用技能 + 道具快捷栏）**：
+  - `data/skills.json`：3 技能 power_strike(强力击1.8x,CD2) / defend(防御,下回合减伤50%,CD3) / ultimate(必杀3x,CD5)
+  - `js/pet.js`：state 加 skills/cooldowns/defending + 技能 API（loadSkills/getCooldown/startCooldown/tickCooldowns/canUseSkill）+ takeDamage applyDefend 减伤
+  - `js/exploration.js`：battleTurn 加 skill/item 分支 + CD tick + 防御减伤时序 + flee_chance 对齐 combat.json(0.3)
+  - `js/app.js`：showBattleModal 技能面板（3 按钮+CD 显示/禁用）+ 4 槽道具快捷栏（替代 prompt，0 灰显）+ useItemInBattle(id) 消耗 1 回合 + UI 锁定防连点
+  - **playwright 24 项全 pass**（技能伤害1.8x/3x、CD 递减时序、防御减伤一次性、道具消耗回合敌人反击、flee 0.3、道具栏、普攻回归）
+  - 严格边界：不引入 MP/buff/技能树/物种技能/AOE
+- 设计稿：[docs/plans/2026-06-29-battle-depth-design.md](docs/plans/2026-06-29-battle-depth-design.md)
+
+---
+
 ## [v0.3.8] - 2026-06-29
 ### ✨ 新增
 - **商店家具联动（纯装饰版）**：积分消费 → 家具购买 → 小屋摆放 → 持久化的最小闭环
