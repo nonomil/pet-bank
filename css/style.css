@@ -289,11 +289,12 @@
     height: 100%;
     pointer-events: none;
     overflow: visible;
+    z-index: 5;
 }
 .map-route-line {
     fill: none;
     stroke: rgba(252, 228, 148, 0.92);
-    stroke-width: 26;
+    stroke-width: 6;
     stroke-linecap: round;
     stroke-linejoin: round;
     filter: drop-shadow(0 8px 18px rgba(223, 182, 82, 0.24));
@@ -301,9 +302,9 @@
 .map-route-dash {
     fill: none;
     stroke: rgba(255,255,255,0.72);
-    stroke-width: 3;
+    stroke-width: 2;
     stroke-linecap: round;
-    stroke-dasharray: 1 14;
+    stroke-dasharray: 2 10;
 }
 .map-route-spark {
     fill: #fff6cb;

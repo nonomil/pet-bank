@@ -105,14 +105,14 @@ const ExplorationSystem = (function () {
     }
 
     function buildRouteSvg() {
-        const points = MAP_LAYOUT.map((node) => `${node.x}% ${node.y}%`).join(', ');
+        const points = MAP_LAYOUT.map((node) => `${node.x} ${node.y}`).join(', ');
         const stars = MAP_LAYOUT.map((node) => `
             <circle class="map-route-spark" cx="${node.x}" cy="${node.y}" r="1.8"></circle>
         `).join('');
         return `
             <svg class="map-route-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                <polyline class="map-route-line" points="${points}"></polyline>
-                <polyline class="map-route-dash" points="${points}"></polyline>
+                <polyline class="map-route-line" points="${points}" vector-effect="non-scaling-stroke"></polyline>
+                <polyline class="map-route-dash" points="${points}" vector-effect="non-scaling-stroke"></polyline>
                 ${stars}
             </svg>
         `;
@@ -175,7 +175,7 @@ const ExplorationSystem = (function () {
             })
             .join('');
 
-        board.innerHTML = `${buildRouteSvg()}${nodes}`;
+        board.innerHTML = `${nodes}${buildRouteSvg()}`;
         updateMapStats();
     }
 
@@ -220,6 +220,16 @@ const ExplorationSystem = (function () {
 
     // 跳转探索页
     function goExplore(sceneId) {
+        // 宠物小屋 R5 第二守卫（F1）：hp<=0 且已选宠 → 拦截，不进任何探索页
+        if (window.PetSystem) {
+            try {
+                const s = PetSystem.getState();
+                if (s.species && s.hp <= 0) {
+                    alert('宠物倒下了，请先去宠物小屋救援！');
+                    return;
+                }
+            } catch (e) {}
+        }
         if (window.ExplorationDetail && typeof window.ExplorationDetail.show === 'function') {
             window.ExplorationDetail.show(sceneId);
             return;
