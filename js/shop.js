@@ -149,6 +149,51 @@ const ShopSystem = (function () {
     alert(`兑换成功！${item.name}`);
   };
 
+  // --- 家具购买（联动 HomeSystem，纯装饰，永久拥有，不进背包） ---
+  // 守卫顺序：家具存在 → 未拥有 → 积分足够 → 扣分 → 写 ownership → 历史 → 重渲染
+  const SLOT_LABELS = { floor: '地面', corner: '角落', backdrop: '背景' };
+
+  const getFurnitureCatalog = () => {
+    if (window.HomeSystem && typeof window.HomeSystem.getFurnitureCatalog === 'function') {
+      return window.HomeSystem.getFurnitureCatalog();
+    }
+    return [];
+  };
+
+  const getOwnedFurniture = () => {
+    if (window.HomeSystem && typeof window.HomeSystem.getFurniture === 'function') {
+      return window.HomeSystem.getFurniture();
+    }
+    return [];
+  };
+
+  const buyFurniture = (itemId) => {
+    const catalog = getFurnitureCatalog();
+    const item = catalog.find(x => x.id === itemId);
+    if (!item) return false;
+    // 不可重复购买：已拥有直接拦截
+    if (getOwnedFurniture().indexOf(itemId) >= 0) return false;
+
+    const currentPoints = getCurrentPoints();
+    if (currentPoints === null) {
+      alert('Error: totalPoints is not defined.');
+      return false;
+    }
+    if (currentPoints < item.price) {
+      alert('成长分不足，快去完成任务赚积分吧！');
+      return false;
+    }
+
+    adjustGrowthPoints(-item.price);
+    // 只调 HomeSystem.addFurniture，不直接写 localStorage、不进 InventorySystem
+    if (window.HomeSystem && typeof window.HomeSystem.addFurniture === 'function') {
+      window.HomeSystem.addFurniture(itemId);
+    }
+    saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'furniture' });
+    renderUI('shop-ui');
+    return true;
+  };
+
   const openBlindBox = (box, containerId) => {
     const currentPoints = getCurrentPoints();
     if (currentPoints === null) {
@@ -287,6 +332,34 @@ const ShopSystem = (function () {
           `).join('')}
         </div>
 
+        <div class="shop-section-title">🛋️ 家园装饰</div>
+        <div class="shop-grid">
+          ${(() => {
+            const catalog = getFurnitureCatalog();
+            const owned = getOwnedFurniture();
+            if (catalog.length === 0) {
+              return '<div style="color:#999;grid-column:1/-1;text-align:center;padding:10px;">家具目录加载中…</div>';
+            }
+            // 只展示可购买的（排除 defaultOwned 默认两件，避免在商店卖 0 分默认家具）
+            return catalog.filter(it => !it.defaultOwned).map(it => {
+              const isOwned = owned.indexOf(it.id) >= 0;
+              const slotLabel = SLOT_LABELS[it.slotType] || it.slotType;
+              return `
+                <div class="shop-card">
+                  <span class="shop-emoji">${it.icon}</span>
+                  <span class="shop-name">${it.name}</span>
+                  <span class="shop-price">${it.price} 分</span>
+                  <div class="shop-desc">${it.description || ''}</div>
+                  <div style="font-size:.7rem;color:#888;background:#f4f1ff;padding:2px 8px;border-radius:999px;display:inline-block;margin-bottom:8px;">📍 ${slotLabel}</div>
+                  ${isOwned
+                    ? '<button class="shop-btn" disabled>已拥有</button>'
+                    : `<button class="shop-btn" onclick="ShopSystem.buyFurniture('${it.id}')">购买</button>`}
+                </div>
+              `;
+            }).join('');
+          })()}
+        </div>
+
         <div class="shop-section-title">📜 最近动态</div>
         <div class="history-list">
           ${sortedHistory.length === 0 ? '<div style="color:#999; text-align:center; padding:10px;">暂无记录</div>' : 
@@ -312,6 +385,7 @@ const ShopSystem = (function () {
       const item = ITEMS.find(i => i.id === itemId);
       if (item) buyItem(item);
     },
+    buyFurniture,
     openBox: (boxId, containerId) => {
       const box = BLIND_BOXES.find(b => b.id === boxId);
       if (box) openBlindBox(box, containerId);
