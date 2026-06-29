@@ -66,7 +66,11 @@ const PetSystem = (function () {
         weapon: null,            // 装备武器
         armor: null,             // 装备护甲
         last_action_time: null,  // 上次行动时间
-        happiness: 100           // 快乐度
+        happiness: 100,          // 快乐度
+        hunger: 100,             // 饱食度（新增，宠物小屋 §5.3）
+        intimacy: 0,             // 亲密度（新增，宠物小屋 §5.3）
+        cleanliness: 50,         // 清洁度（新增隐藏维度，方案 §4.5，不进五维条）
+        last_home_ts: null       // 上次离开宠物小屋的 unix 秒（新增，decay 结算基准）
     };
 
     // 加载保存的状态
@@ -104,6 +108,10 @@ const PetSystem = (function () {
         state.armor = null;
         state.happiness = 100;
         state.evolution_stage = 0;  // 0=蛋
+        state.hunger = 100;
+        state.intimacy = 0;
+        state.cleanliness = 50;
+        state.last_home_ts = null;
         save();
         return true;
     }
@@ -181,34 +189,58 @@ const PetSystem = (function () {
     }
 
     // 喂食
-    function feed(foodItem) {
+    // options.homeContext === true：宠物小屋调用，走新语义（spendPoints(10) 扣分 + 饱食/exp/happiness）
+    // 不传 homeContext：app.js feedPet 旧入口，走旧语义（仅 heal，不扣分/不加饱食），保留宠物养成页回血行为
+    function feed(foodItem, options = {}) {
         if (!state.species) return { success: false, msg: '请先选择一只宠物' };
         if (state.hp <= 0) return { success: false, msg: '宠物需要先复活' };
-        const healAmount = foodItem.effect?.hp || 20;
+
+        // 新语义：宠物小屋喂食（扣 10 分 + 饱食/exp/happiness）
+        if (options && options.homeContext === true) {
+            if (typeof window.spendPoints !== 'function' || !window.spendPoints(10)) {
+                return { success: false, msg: '积分不足（需 10 分）' };
+            }
+            state.hunger = Math.min(100, state.hunger + 25);
+            addExp(10);
+            state.happiness = Math.min(100, state.happiness + 5);
+            let extraMsg = '';
+            if (foodItem && foodItem.effect && foodItem.effect.hp) {
+                heal(foodItem.effect.hp);
+                extraMsg = `，额外恢复 ${foodItem.effect.hp} HP`;
+            }
+            save();
+            return { success: true, msg: `喂食成功！饱食 +25，经验 +10${extraMsg}` };
+        }
+
+        // 旧语义：仅 heal（兼容 app.js feedPet 702/706 旧入口）
+        const healAmount = (foodItem && foodItem.effect && foodItem.effect.hp) || 20;
         heal(healAmount);
         state.happiness = Math.min(100, state.happiness + 5);
         save();
         return { success: true, msg: `喂食成功！恢复 ${healAmount} HP` };
     }
 
-    // 玩耍
+    // 玩耍（F4：旧入口 playWithPet 保留走新逻辑，自动获得 exp+5/intimacy+5）
     function play() {
         if (!state.species) return { success: false, msg: '请先选择一只宠物' };
         if (state.hp <= 0) return { success: false, msg: '宠物需要先复活' };
         if (state.hp < 10) return { success: false, msg: 'HP 太低，不能玩耍（先去探索或休息）' };
         state.happiness = Math.min(100, state.happiness + 15);
         state.hp -= 5; // 玩耍消耗体力
+        state.intimacy = (state.intimacy || 0) + 5; // 亲密 +5
+        addExp(5);
         save();
-        return { success: true, msg: '玩耍成功！快乐度 +15' };
+        return { success: true, msg: '玩耍成功！快乐 +15，亲密 +5，经验 +5' };
     }
 
-    // 休息
+    // 休息（F4：旧入口 restPet 保留走新逻辑，自动获得 intimacy+2）
     function rest() {
         if (!state.species) return { success: false, msg: '请先选择一只宠物' };
         heal(Math.floor(state.max_hp * 0.3));
         state.happiness = Math.max(0, state.happiness - 5);
+        state.intimacy = (state.intimacy || 0) + 2; // 治疗涨亲密
         save();
-        return { success: true, msg: '休息成功！恢复 30% HP' };
+        return { success: true, msg: '休息成功！恢复 30% HP，亲密 +2' };
     }
 
     // 复活
@@ -217,6 +249,50 @@ const PetSystem = (function () {
         state.hp = Math.floor(state.max_hp * hpPercent / 100);
         save();
         return { success: true, msg: `复活成功！恢复 ${hpPercent}% HP` };
+    }
+
+    // 洗澡（宠物小屋 §4.5）：清洁 +30 / 快乐 +5
+    function bath(options = {}) {
+        if (!state.species) return { success: false, msg: '请先选择一只宠物' };
+        if (state.hp <= 0) return { success: false, msg: '宠物需要先复活' };
+        state.cleanliness = Math.min(100, (state.cleanliness ?? 50) + 30);
+        state.happiness = Math.min(100, state.happiness + 5);
+        save();
+        return { success: true, msg: '洗澡成功！清洁 +30，快乐 +5' };
+    }
+
+    // 衰减结算（宠物小屋 §4.2，R4：单结算）
+    // 触发点：init() 补算、home renderUI 进入结算
+    // 三连守卫：ts 无效 / 未来时间 → hours=0 不扣；结算后立即写 last_home_ts=now 保证幂等
+    function decay() {
+        const now = Math.floor(Date.now() / 1000);
+        const ts = state.last_home_ts;
+        let hours = 0;
+        if (!ts || isNaN(ts) || ts <= 0 || ts > now) {
+            hours = 0;
+        } else {
+            hours = Math.max(0, Math.floor((now - ts) / 3600));
+        }
+        if (hours >= 1) {
+            // 每小时：饱食 -2 / 快乐 -1 / 清洁 -1
+            state.hunger = Math.max(0, state.hunger - hours * 2);
+            state.happiness = Math.max(0, state.happiness - hours * 1);
+            state.cleanliness = Math.max(0, (state.cleanliness ?? 50) - hours * 1);
+            // 饱食归零后 HP -5/小时
+            if (state.hunger <= 0) {
+                state.hp = Math.max(0, state.hp - hours * 5);
+            }
+        }
+        // 结算后立即写 ts（R4 防双结算：后续 renderUI 再算时 hours=0）
+        state.last_home_ts = now;
+        save();
+        return { hours, applied: hours >= 1 };
+    }
+
+    // 标记离开宠物小屋（写入 last_home_ts，下次进入结算）
+    function markHomeExit() {
+        state.last_home_ts = Math.floor(Date.now() / 1000);
+        save();
     }
 
     // 计算总攻击力（含装备）
@@ -395,6 +471,7 @@ const PetSystem = (function () {
         load, save, chooseSpecies, getCurrentStage, getStageEmoji,
         getEvolutionStageIndex, getCurrentStageImage,
         addExp, takeDamage, heal, feed, play, rest, revive,
+        bath, decay, markHomeExit,
         equip, unequip, addExploration, addWin, getState, getAllSpecies,
         getAllSpeciesBySeries, getSpeciesByRarity, getRarityConfig, getAllSeries,
         isDBLoaded, loadPetDB,

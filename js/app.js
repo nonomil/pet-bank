@@ -284,6 +284,17 @@ function addGrowthPoints(delta) {
     return totalPoints;
 }
 
+// 积分预检 + 扣分（R3 定案：宠物小屋喂食等扣分入口封装）
+// 预检 totalPoints >= n，不足 alert 并 return false；足则 addGrowthPoints(-n) 返回 true
+function spendPoints(n) {
+    if (typeof totalPoints === 'undefined' || totalPoints < n) {
+        alert('成长分不足，快去完成任务赚积分吧！');
+        return false;
+    }
+    addGrowthPoints(-n);
+    return true;
+}
+
 function completeRecommended() {
     const samples = [
         { dim: 'learning', task: '阅读 20 分钟', pts: 1 },
@@ -303,6 +314,12 @@ function completeRecommended() {
 }
 
 function switchPage(page) {
+    // 离开宠物小屋：标记 exit（写 last_home_ts，下次进入结算）
+    const prevPageEl = document.querySelector('.page.active');
+    const prevPage = prevPageEl ? prevPageEl.id.replace('page-', '') : null;
+    if (prevPage === 'home' && page !== 'home' && window.PetSystem && typeof PetSystem.markHomeExit === 'function') {
+        PetSystem.markHomeExit();
+    }
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(`page-${page}`);
     if (target) target.classList.add('active');
@@ -317,6 +334,7 @@ function switchPage(page) {
     if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
     if (page === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
+    if (page === 'home' && window.HomeSystem) HomeSystem.renderUI('home-container');
 }
 
 window.switchPage = switchPage;
@@ -761,6 +779,17 @@ function renderScenePreview(scene) {
 }
 
 async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
+    // 宠物小屋 R5 渲染层兜底（F1 第二道）：hp<=0 且已选宠 → 探索页不渲染场景网格
+    if (window.PetSystem) {
+        try {
+            const s = PetSystem.getState();
+            if (s.species && s.hp <= 0) {
+                const grid0 = document.getElementById('sceneGrid');
+                if (grid0) grid0.innerHTML = '<div style="padding:24px;text-align:center;color:#888;">宠物倒下了，请先去宠物小屋救援 🆘</div>';
+                return;
+            }
+        } catch (e) {}
+    }
     await ExplorationSystem.loadScenes();
     ExplorationSystem.renderSceneGridMap(selectedSceneId);
     const grid = document.getElementById('sceneGrid');
@@ -1132,6 +1161,7 @@ window.totalPoints = totalPoints;
 window.updateStats = updateStats;
 window.updateTopPoints = updateTopPoints;
 window.addGrowthPoints = addGrowthPoints;
+window.spendPoints = spendPoints;
 window.renderAll = renderAll;
 window.saveAppState = saveAppState;
 
@@ -1147,6 +1177,15 @@ async function init() {
     }
     if (window.ToolboxSystem && typeof window.ToolboxSystem.init === 'function') {
         window.ToolboxSystem.init();
+    }
+    // 宠物小屋 decay 补算（R4：PetSystem 加载后，若 last_home_ts 存在则结算离线衰减）
+    // decay() 内部结算后会立即写 last_home_ts=now，保证后续 switchPage('home')→renderUI 再算幂等
+    if (typeof PetSystem.decay === 'function' && PetSystem.getState().last_home_ts) {
+        PetSystem.decay();
+    }
+    // 宠物小屋 HomeSystem 初始化（需在 PetSystem 就绪后）
+    if (window.HomeSystem && typeof window.HomeSystem.init === 'function') {
+        window.HomeSystem.init();
     }
     renderAll();
     // 初始化宝箱系统

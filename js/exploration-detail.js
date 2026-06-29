@@ -133,6 +133,16 @@ const ExplorationDetail = (function () {
 
     // 显示探索页
     function show(sceneId) {
+        // 宠物小屋 R5 第二守卫（F1 兜底）：hp<=0 且已选宠 → 拦截，防其它路径直调绕过
+        if (window.PetSystem) {
+            try {
+                const s = PetSystem.getState();
+                if (s.species && s.hp <= 0) {
+                    alert('宠物倒下了，请先去宠物小屋救援！');
+                    return;
+                }
+            } catch (e) {}
+        }
         const scenes = ExplorationSystem.getAllScenes();
         currentScene = scenes.find(s => s.id === sceneId);
         if (!currentScene) return;
