@@ -43,6 +43,7 @@ const ExplorationDetail = (function () {
         mountain: [
             { type: 'narrate', text: '寒风呼啸，雪花打在脸上有点冷，但远处的冰晶闪闪发光，好美！' },
             { type: 'discover', emoji: '❄️', text: '你在一块冰面上看到了奇怪的图案，看起来像是古代的地图！', item: 'ice_crystal', chance: 0.4 },
+            { type: 'math', text: '冰壁上刻着一道乘法算式，融化它才能通过……', difficulty: 'medium', reward: { exp: 20, msg: '冰壁融化了，道路打开！+20 经验' } },
             { type: 'choice', text: '前面有个冰洞，里面传来微弱的蓝光。', options: [
                 { text: '🔦 鼓起勇气走进去', reward: '冰洞深处有一块完美的冰晶，像钻石一样亮！', item: 'ice_crystal', chance: 0.6 },
                 { text: '🏔️ 绕过冰洞爬上去', reward: '山顶上有一块柔软的雪狼毛！', item: 'fur', chance: 0.4 }
@@ -52,6 +53,7 @@ const ExplorationDetail = (function () {
         space: [
             { type: 'narrate', text: '你飘浮在太空中，脚下是蓝色的地球，远处是无尽的星海。' },
             { type: 'discover', emoji: '✨', text: '一颗流星划过，你伸手抓住了它的尾巴——是星尘！', item: 'star_dust', chance: 0.5 },
+            { type: 'math', text: '空间站的舱门需要一道乘除算式密码才能打开……', difficulty: 'hard', reward: { exp: 30, msg: '舱门打开了，星光涌入！+30 经验' } },
             { type: 'choice', text: '空间站的通道分成了两条，左边写着"实验室"，右边写着"花园舱"。', options: [
                 { text: '🧪 去实验室', reward: '你找到了一块外星高科技芯片！', item: 'alien_tech', chance: 0.5 },
                 { text: '🌻 去花园舱', reward: '太空花的种子在发光，你小心地收集了一些！', item: 'space_rock', chance: 0.4 }
