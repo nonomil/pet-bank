@@ -2,6 +2,17 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.5.1] - 2026-06-29
+### ✨ 新增
+- **数据导出/导入**（工具箱「数据管理」工具）：
+  - 导出：收集所有 `petbank_*` 键（含 profiles 元数据 + 各孩子快照）→ JSON 文件下载，整家备份
+  - 导入：JSON 文件 → 校验 → 覆盖 localStorage → reload（覆盖前 confirm 提醒先备份）
+  - 配合多孩子：导出含所有 profile 数据，便于备份/迁移设备（B 云同步的手动轻量替代）
+  - `js/tools.js`：工具箱加「数据管理」工具（createCard + openTool data_io + _initDataIO）
+  - **playwright 4/4 PASS**（卡片/UI/导出收集完整/导入恢复）
+
+---
+
 ## [v0.5.0] - 2026-06-29
 ### ✨ 新增
 - **多孩子本地切换（ProfileManager swap）**：家庭多娃场景，纯前端，业务代码零改动

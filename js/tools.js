@@ -93,6 +93,71 @@ const ToolboxSystem = (function() {
         document.head.appendChild(style);
     };
 
+    // --- Data Import/Export Logic ---
+    const _initDataIO = (container) => {
+        const allKeys = () => Object.keys(localStorage).filter(k => k.startsWith('petbank_'));
+        container.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:16px;max-width:560px;margin:0 auto;width:100%;">
+                <div style="background:#f8f9fa;border-radius:12px;padding:16px;">
+                    <div style="font-weight:bold;margin-bottom:8px;">📤 导出数据</div>
+                    <div style="font-size:12px;color:#666;margin-bottom:12px;">把所有孩子的数据（积分/宠物/背包/小屋/探索...）导出为 JSON 文件备份。</div>
+                    <button id="dio-export-btn" style="width:100%;padding:10px;border:none;border-radius:8px;background:#4caf50;color:#fff;font-weight:bold;cursor:pointer;">导出为 JSON 文件</button>
+                </div>
+                <div style="background:#f8f9fa;border-radius:12px;padding:16px;">
+                    <div style="font-weight:bold;margin-bottom:8px;">📥 导入数据</div>
+                    <div style="font-size:12px;color:#666;margin-bottom:12px;">从 JSON 文件恢复数据。<b style="color:#e53935;">注意：会覆盖当前所有数据。</b></div>
+                    <input type="file" id="dio-import-input" accept=".json,application/json" style="display:none;">
+                    <button id="dio-import-btn" style="width:100%;padding:10px;border:none;border-radius:8px;background:#ff9800;color:#fff;font-weight:bold;cursor:pointer;">选择 JSON 文件导入</button>
+                </div>
+                <div id="dio-msg" style="font-size:12px;color:#666;text-align:center;min-height:18px;"></div>
+            </div>
+        `;
+        const msg = container.querySelector('#dio-msg');
+        // 导出：收集所有 petbank_* 键 → JSON 下载
+        container.querySelector('#dio-export-btn').onclick = () => {
+            const data = {};
+            allKeys().forEach(k => { data[k] = localStorage.getItem(k); });
+            const payload = { __app: 'pet-bank', __version: '1.0', __exportedAt: new Date().toISOString(), data };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `pet-bank-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a); a.click(); a.remove();
+            URL.revokeObjectURL(url);
+            msg.textContent = '✅ 已导出（' + Object.keys(data).length + ' 项数据）';
+            msg.style.color = '#4caf50';
+        };
+        // 导入：读 JSON → 校验 → 覆盖写 localStorage → reload
+        const input = container.querySelector('#dio-import-input');
+        container.querySelector('#dio-import-btn').onclick = () => input.click();
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const payload = JSON.parse(ev.target.result);
+                    const data = payload.data || payload;  // 兼容 {data:{}} 或裸 {}
+                    if (!data || typeof data !== 'object') throw new Error('文件格式错误');
+                    if (!confirm('确认导入？当前所有数据将被覆盖，建议先导出备份。')) return;
+                    allKeys().forEach(k => localStorage.removeItem(k));  // 清空当前
+                    let n = 0;
+                    Object.entries(data).forEach(([k, v]) => {
+                        if (k.startsWith('petbank_') && v != null) { localStorage.setItem(k, v); n++; }
+                    });
+                    msg.textContent = `✅ 导入成功（${n} 项），1 秒后刷新...`;
+                    msg.style.color = '#4caf50';
+                    setTimeout(() => location.reload(), 1000);
+                } catch (err) {
+                    msg.textContent = '❌ 导入失败：' + err.message;
+                    msg.style.color = '#e53935';
+                }
+            };
+            reader.readAsText(file);
+        };
+    };
+
     // --- Random Picker Logic ---
     const _initPicker = (container) => {
         container.innerHTML = `
@@ -424,6 +489,7 @@ const ToolboxSystem = (function() {
 
             cardRow.appendChild(createCard('随机点名', '🎲', '#673ab7', 'picker'));
             cardRow.appendChild(createCard('番茄计时', '🍅', '#ff5252', 'pomodoro'));
+            cardRow.appendChild(createCard('数据管理', '💾', '#607d8b', 'data_io'));
             mainWrapper.appendChild(cardRow);
 
             // 2. Tool Display Area (Two-column layout when a tool is active)
@@ -450,6 +516,8 @@ const ToolboxSystem = (function() {
                 _initPicker(toolArea);
             } else if (toolKey === 'pomodoro') {
                 _initPomodoro(toolArea);
+            } else if (toolKey === 'data_io') {
+                _initDataIO(toolArea);
             }
         },
 
