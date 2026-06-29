@@ -76,8 +76,12 @@ const HomeSystem = (function () {
   background:linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%);box-shadow:inset 0 0 60px rgba(0,0,0,.35);}
 .home-stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 15%,rgba(255,255,255,.08),transparent 40%);pointer-events:none;}
 .home-bubble{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:rgba(255,255,255,.95);color:#333;padding:6px 14px;border-radius:14px;font-size:13px;font-weight:600;white-space:nowrap;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.2);}
-.home-pet-wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:200px;height:200px;display:flex;align-items:center;justify-content:center;}
-.home-pet-img{max-width:100%;max-height:100%;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));transition:filter .4s,transform .4s;}
+.home-pet-wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:200px;height:200px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s ease,filter .2s ease;z-index:3;}
+.home-pet-wrap:hover{transform:translate(-50%,-50%) scale(1.05);}
+.home-pet-wrap:hover .home-pet-img{filter:drop-shadow(0 10px 18px rgba(0,0,0,.5)) brightness(1.08);}
+.home-pet-wrap:active{transform:translate(-50%,-50%) scale(.95);}
+.home-pet-wrap:active .home-pet-img{filter:drop-shadow(0 4px 6px rgba(0,0,0,.45)) brightness(.95);}
+.home-pet-img{max-width:100%;max-height:100%;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));transition:filter .25s ease;}
 .home-pet-img.hungry{filter:drop-shadow(0 6px 10px rgba(0,0,0,.4)) sepia(.5) saturate(1.4) hue-rotate(-15deg);}
 .home-pet-img.dirty{filter:drop-shadow(0 6px 10px rgba(0,0,0,.4)) brightness(.85) contrast(.95);}
 .home-pet-img.weak{filter:drop-shadow(0 6px 10px rgba(0,0,0,.4)) brightness(.7) saturate(.6);opacity:.85;}
@@ -105,6 +109,16 @@ const HomeSystem = (function () {
 .home-vit-fill.exp{background:linear-gradient(90deg,#5B9BD5,#7CB9E8);}
 .home-vit-warn{color:#e67e22;font-size:11px;margin-top:4px;font-weight:600;}
 .home-vit-danger{color:#e74c3c;}
+.home-evo{margin-top:12px;padding-top:10px;border-top:1px dashed #eee;}
+.home-evo-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.home-evo-lv{font-size:14px;font-weight:800;color:#6c5ce7;}
+.home-evo-stage{font-size:11px;color:#888;background:#f4f1ff;padding:2px 8px;border-radius:999px;}
+.home-evo-bar{height:12px;background:#f0f0f0;border-radius:6px;overflow:hidden;position:relative;border:1px solid #ececec;}
+.home-evo-fill{height:100%;background:linear-gradient(90deg,#a29bfe,#6c5ce7,#00cec9);border-radius:6px;transition:width .6s ease;position:relative;}
+.home-evo-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);animation:home-evo-shine 2.2s linear infinite;}
+@keyframes home-evo-shine{from{transform:translateX(-100%);}to{transform:translateX(100%);}}
+.home-evo-meta{display:flex;justify-content:space-between;font-size:10px;color:#999;margin-top:3px;}
+.home-evo-max{font-size:11px;color:#00b894;font-weight:700;}
 .home-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .home-btn{border:none;border-radius:12px;padding:12px 8px;font-size:13px;font-weight:600;cursor:pointer;color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .15s,opacity .15s;}
 .home-btn:active{transform:scale(.96);}
@@ -118,6 +132,14 @@ const HomeSystem = (function () {
 .home-toast{position:fixed;left:50%;top:80px;transform:translateX(-50%);background:rgba(40,40,40,.92);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;z-index:9999;animation:home-toast-in .3s ease;}
 @keyframes home-toast-in{from{opacity:0;transform:translate(-50%,-10px);}to{opacity:1;transform:translate(-50%,0);}}
 .home-nav-disabled{opacity:.45!important;cursor:not-allowed!important;pointer-events:none!important;}
+/* P1-B：点击台词气泡 */
+.home-speech-bubble{z-index:7;opacity:0;transform:translateX(-50%) scale(.7);transition:opacity .3s ease,transform .3s ease;background:rgba(255,255,255,.96);border:2px solid #6c5ce7;color:#4a3a7a;font-weight:700;}
+.home-speech-bubble.home-speech-show{opacity:1;transform:translateX(-50%) scale(1);}
+.home-speech-bubble.home-speech-fade{opacity:0;transform:translateX(-50%) scale(.9);}
+.home-speech-bubble::after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);border:7px solid transparent;border-top-color:#6c5ce7;border-bottom:0;}
+/* P1-B：背景层 */
+.home-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%);transition:background .6s ease;}
+.home-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
         `;
         const style = document.createElement('style');
         style.id = 'home-system-styles';
@@ -145,6 +167,45 @@ const HomeSystem = (function () {
         } catch (e) { return 0; }
     }
 
+    // 进化进度（基于 PetSystem.STAGES 的 min_level 区间）
+    // 返回 { pct, curIdx, nextIdx, curMin, nextMin, isMax, stageName, nextName }
+    function _evoProgress(s) {
+        try {
+            const STAGES = (window.PetSystem && PetSystem.STAGES) || null;
+            const stage = s.stage || {};
+            if (!STAGES || STAGES.length === 0) {
+                return { pct: 0, isMax: !!stage.name, stageName: stage.name || '', nextName: '' };
+            }
+            const lv = s.level || 1;
+            let curIdx = 0;
+            for (let i = 0; i < STAGES.length; i++) {
+                if (lv >= STAGES[i].min_level) curIdx = i;
+            }
+            const isMax = (curIdx >= STAGES.length - 1);
+            if (isMax) {
+                return {
+                    pct: 100, isMax: true,
+                    stageName: STAGES[curIdx].name,
+                    nextName: ''
+                };
+            }
+            const curMin = STAGES[curIdx].min_level;
+            const nextMin = STAGES[curIdx + 1].min_level;
+            const span = nextMin - curMin;
+            const done = lv - curMin;
+            const pct = Math.max(0, Math.min(100, Math.round((done / span) * 100)));
+            return {
+                pct, isMax: false,
+                curIdx, nextIdx: curIdx + 1,
+                curMin, nextMin,
+                stageName: STAGES[curIdx].name,
+                nextName: STAGES[curIdx + 1].name
+            };
+        } catch (e) {
+            return { pct: 0, isMax: false, stageName: '', nextName: '' };
+        }
+    }
+
     // 计算宠物立绘姿态 class
     function _poseClass(s) {
         if (s.hp <= 0) return 'down';
@@ -161,6 +222,76 @@ const HomeSystem = (function () {
         if (s.cleanliness != null && s.cleanliness < 20) return '🛁 我脏脏…';
         if (s.hp < 40) return '🤕 好虚弱…';
         return '';
+    }
+
+    // ---------- 点击台词（P1-B 功能1） ----------
+    // 按状态分组的中文台词库
+    const SPEECH_LINES = {
+        happy: ['主人最好啦~', '今天也元气满满！', '想出去玩~', '抱抱我嘛！', '嘿嘿，开心！'],
+        hungry: ['好饿啊...', '肚子咕咕叫', '求投喂~', '主人有吃的吗？'],
+        dirty: ['好脏呀想洗澡', '需要清洁一下~', '黏糊糊的不舒服'],
+        down: ['...需要救援...', '起不来了...', '眼前发黑...'],
+        weak: ['头好晕...', '没什么力气呢', '想休息一会儿'],
+        default: ['哼哼~', '陪陪我嘛', '在发呆中', '今天天气不错呢', '主人加油！']
+    };
+
+    // 根据状态选择台词组（优先级：倒下 > 饥饿 > 脏 > 虚弱 > 开心 > 默认）
+    function _pickSpeechGroup(s) {
+        if (s.hp <= 0) return SPEECH_LINES.down;
+        if (s.hunger != null && s.hunger < 30) return SPEECH_LINES.hungry;
+        if (s.cleanliness != null && s.cleanliness < 20) return SPEECH_LINES.dirty;
+        if (s.hp < 40) return SPEECH_LINES.weak;
+        if (s.hp > 50 && s.happiness != null && s.happiness > 60) return SPEECH_LINES.happy;
+        return SPEECH_LINES.default;
+    }
+
+    let _speechTimer = null;
+    let _lastSpeechIdx = -1;
+
+    // 显示点击台词气泡（复用 .home-bubble DOM/样式，叠加弹出动画 class）
+    function _showSpeechBubble(text) {
+        try {
+            const stage = document.querySelector('#' + _lastContainer + ' .home-stage');
+            if (!stage) return;
+            let bubble = stage.querySelector('.home-speech-bubble');
+            if (bubble) {
+                bubble.remove();
+            }
+            bubble = document.createElement('div');
+            bubble.className = 'home-speech-bubble home-bubble';
+            bubble.textContent = text;
+            stage.appendChild(bubble);
+            // 触发弹出动画
+            void bubble.offsetWidth;
+            bubble.classList.add('home-speech-show');
+            // 清理上一个 timer
+            if (_speechTimer) { clearTimeout(_speechTimer); _speechTimer = null; }
+            _speechTimer = setTimeout(() => {
+                if (bubble && bubble.parentNode) {
+                    bubble.classList.remove('home-speech-show');
+                    bubble.classList.add('home-speech-fade');
+                    setTimeout(() => { if (bubble.parentNode) bubble.remove(); }, 300);
+                }
+            }, 2000);
+        } catch (e) {}
+    }
+
+    // 点击宠物 → 随机台词
+    function onPetClick() {
+        try {
+            const s = PetSystem.getState();
+            if (!s.species) { _toast('请先选择一只宠物'); return; }
+            const group = _pickSpeechGroup(s);
+            // 避免连续两次相同
+            let idx;
+            if (group.length <= 1) {
+                idx = 0;
+            } else {
+                do { idx = Math.floor(Math.random() * group.length); } while (idx === _lastSpeechIdx);
+            }
+            _lastSpeechIdx = idx;
+            _showSpeechBubble(group[idx]);
+        } catch (e) {}
     }
 
     // ---------- 探索禁用 UI 守卫（R5 第一守卫） ----------
@@ -269,6 +400,57 @@ const HomeSystem = (function () {
         }
     }
 
+    // ---------- 背景层（P1-B 功能2） ----------
+    // 预留主题表：渐变兜底 + img 接口（后续接入 room-starter.webp 等）
+    const BG_THEMES = {
+        cozy_night: {
+            // 默认深夜主题
+            gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)',
+            img: '' // 预留：'assets/background/room-starter.webp'
+        },
+        dawn: {
+            gradient: 'linear-gradient(180deg,#3d2f5d 0%,#6a4d8a 50%,#d4a574 100%)',
+            img: ''
+        },
+        starry: {
+            gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)',
+            img: ''
+        }
+    };
+
+    // 切换背景主题（暴露到 window）
+    function setHomeBg(theme) {
+        try {
+            if (!homeState) _loadHomeState();
+            const t = BG_THEMES[theme];
+            if (!t) { _toast('未知背景主题：' + theme); return false; }
+            homeState.theme = theme;
+            _saveHomeState();
+            // 实时更新背景层（若已渲染）
+            const bg = document.querySelector('#' + _lastContainer + ' .home-bg');
+            if (bg) {
+                _applyBg(bg, t);
+            }
+            return true;
+        } catch (e) { return false; }
+    }
+
+    // 应用背景到 .home-bg 元素（img 优先，图未生时用渐变兜底）
+    function _applyBg(bgEl, theme) {
+        if (!bgEl || !theme) return;
+        bgEl.style.background = theme.gradient || BG_THEMES.cozy_night.gradient;
+        if (theme.img) {
+            const img = bgEl.querySelector('.home-bg-img');
+            if (img) {
+                img.src = theme.img;
+                img.style.display = 'block';
+            }
+        } else {
+            const img = bgEl.querySelector('.home-bg-img');
+            if (img) img.style.display = 'none';
+        }
+    }
+
     // ---------- 渲染 ----------
     let _lastContainer = 'home-container';
 
@@ -341,6 +523,26 @@ const HomeSystem = (function () {
         const hpWarn = (s.hp > 0 && s.hp < 40) ? `<div class="home-vit-warn home-vit-danger">⚠️ HP 过低，建议治疗或救援</div>` : '';
         const hungerWarn = (hungerVal != null && hungerVal < 20) ? `<div class="home-vit-warn">⚠️ 饥饿中，请喂食</div>` : '';
 
+        // 进化进度条（P1-B）：基于 PetSystem.STAGES 的 min_level 区间
+        const evo = _evoProgress(s);
+        const evoHtml = s.species ? (evo.isMax
+            ? `<div class="home-evo">
+                   <div class="home-evo-head">
+                       <span class="home-evo-lv">Lv.${s.level} · ${evo.stageName}</span>
+                       <span class="home-evo-max">🌟 最终形态</span>
+                   </div>
+                   <div class="home-evo-bar"><div class="home-evo-fill" style="width:100%"></div></div>
+                   <div class="home-evo-meta"><span>已达最高进化阶段</span><span>MAX</span></div>
+               </div>`
+            : `<div class="home-evo">
+                   <div class="home-evo-head">
+                       <span class="home-evo-lv">Lv.${s.level} · ${evo.stageName}</span>
+                       <span class="home-evo-stage">下一阶段：${evo.nextName}（Lv.${evo.nextMin}）</span>
+                   </div>
+                   <div class="home-evo-bar"><div class="home-evo-fill" data-evo-fill style="width:${evo.pct}%"></div></div>
+                   <div class="home-evo-meta"><span>当前 Lv.${s.level}</span><span>需 Lv.${evo.nextMin} 进化（${evo.pct}%）</span></div>
+               </div>`) : '';
+
         const vitHtml = `
             <div class="home-vit">
                 <div class="home-vit-row">
@@ -366,6 +568,7 @@ const HomeSystem = (function () {
                     <div class="home-vit-bar"><div class="home-vit-fill exp" style="width:${ep}%"></div></div>
                 </div>
             </div>
+            ${evoHtml}
         `;
 
         // 互动按钮（倒下态禁用）
@@ -385,12 +588,21 @@ const HomeSystem = (function () {
 
         const nameHtml = s.species_data ? `${s.species_data.emoji || ''} ${s.species_data.name}` : '未选择宠物';
 
+        // P1-B 功能2：背景层（渐变兜底 + 预留 img 接口）
+        const curThemeName = (homeState && homeState.theme) || 'cozy_night';
+        const curTheme = BG_THEMES[curThemeName] || BG_THEMES.cozy_night;
+        const bgImgDisplay = curTheme.img ? 'block' : 'none';
+        const bgHtml = `<div class="home-bg" data-bg-theme="${curThemeName}" style="background:${curTheme.gradient};">
+            <img class="home-bg-img" src="${curTheme.img || ''}" alt="" style="display:${bgImgDisplay};">
+        </div>`;
+
         container.innerHTML = `
             <div class="home-wrap">
                 <div class="home-stage">
+                    ${bgHtml}
                     ${bubbleHtml}
                     ${cleanHtml}
-                    <div class="home-pet-wrap">${petImgHtml}</div>
+                    <div class="home-pet-wrap" onclick="HomeSystem.onPetClick()">${petImgHtml}</div>
                     <div class="home-furniture-row">${furnHtml}</div>
                     ${rescueHtml}
                 </div>
@@ -435,6 +647,7 @@ const HomeSystem = (function () {
         renderUI,
         onFeed, onPlay, onBath, onRest, onRescue,
         placeFurniture, removeFurniture, addFurniture,
+        onPetClick, setHomeBg,
         markExit,
         getHomeState: () => homeState,
         getFurniture: () => furniture
