@@ -1193,6 +1193,10 @@ async function init() {
     // 宠物小屋 HomeSystem 初始化（需在 PetSystem 就绪后）
     if (window.HomeSystem && typeof window.HomeSystem.init === 'function') {
         window.HomeSystem.init();
+        // 预加载共享家具目录（商店 + 小屋共用同一份 data/furniture.json）
+        if (typeof window.HomeSystem.loadCatalog === 'function') {
+            try { await window.HomeSystem.loadCatalog(); } catch (e) {}
+        }
     }
     renderAll();
     // 初始化宝箱系统

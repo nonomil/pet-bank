@@ -28,8 +28,19 @@ const HomeSystem = (function () {
     };
     const DEFAULT_FURNITURE = ['food_bowl', 'bath_tub'];
 
+    // 槽位元数据：固定 5 槽位 -> 槽位类型（家具 slotType 必须匹配才能摆放）
+    const SLOT_TYPES = {
+        center_left: 'floor',
+        center_right: 'floor',
+        corner_left: 'corner',
+        corner_right: 'corner',
+        back: 'backdrop'
+    };
+
     let homeState = null;
     let furniture = null;
+    let furnitureCatalog = [];        // 共享家具目录（data/furniture.json）
+    let furnitureCatalogById = {};    // id -> item 索引，便于 canPlace 查询
 
     function _loadHomeState() {
         try {
@@ -55,6 +66,54 @@ const HomeSystem = (function () {
         // 确保默认两件存在
         if (furniture.indexOf('food_bowl') < 0) furniture.push('food_bowl');
         if (furniture.indexOf('bath_tub') < 0) furniture.push('bath_tub');
+    }
+
+    // ---------- 共享目录加载（Task 2） ----------
+    // 从 data/furniture.json 加载家具目录，建立 id 索引，并归一化 ownership
+    async function loadCatalog() {
+        try {
+            const res = await fetch('data/furniture.json');
+            if (!res.ok) throw new Error('furniture.json HTTP ' + res.status);
+            const data = await res.json();
+            furnitureCatalog = Array.isArray(data.furniture) ? data.furniture : [];
+            furnitureCatalogById = {};
+            furnitureCatalog.forEach(it => { furnitureCatalogById[it.id] = it; });
+            // defaults 可能来自 json，兜底用模块常量
+            const defs = Array.isArray(data.defaults) && data.defaults.length ? data.defaults : DEFAULT_FURNITURE;
+            normalizeOwnedFurniture(defs);
+            return true;
+        } catch (e) {
+            // 降级：保留默认两件家具，避免白屏
+            furnitureCatalog = [];
+            furnitureCatalogById = {};
+            normalizeOwnedFurniture(DEFAULT_FURNITURE);
+            return false;
+        }
+    }
+
+    // 强制默认家具始终存在于 ownership 集合（去重）
+    function normalizeOwnedFurniture(defaultIds) {
+        if (!furniture) furniture = [];
+        (defaultIds || DEFAULT_FURNITURE).forEach(id => {
+            if (furniture.indexOf(id) < 0) furniture.push(id);
+        });
+        _saveFurniture();
+    }
+
+    function getFurnitureCatalog() {
+        return furnitureCatalog.slice();
+    }
+
+    // 已拥有未摆放家具 = owned - placed（派生状态，不单独存）
+    function getUnplacedFurniture() {
+        if (!furniture) return [];
+        if (!homeState || !homeState.slots) return furniture.slice();
+        const placed = {};
+        Object.keys(homeState.slots).forEach(slot => {
+            const fid = homeState.slots[slot];
+            if (fid) placed[fid] = true;
+        });
+        return furniture.filter(id => !placed[id]);
     }
 
     function _saveHomeState() {
@@ -649,6 +708,9 @@ const HomeSystem = (function () {
         placeFurniture, removeFurniture, addFurniture,
         onPetClick, setHomeBg,
         markExit,
+        loadCatalog,
+        getFurnitureCatalog,
+        getUnplacedFurniture,
         getHomeState: () => homeState,
         getFurniture: () => furniture
     };
