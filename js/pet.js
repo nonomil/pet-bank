@@ -70,8 +70,16 @@ const PetSystem = (function () {
         hunger: 100,             // 饱食度（新增，宠物小屋 §5.3）
         intimacy: 0,             // 亲密度（新增，宠物小屋 §5.3）
         cleanliness: 50,         // 清洁度（新增隐藏维度，方案 §4.5，不进五维条）
-        last_home_ts: null       // 上次离开宠物小屋的 unix 秒（新增，decay 结算基准）
+        last_home_ts: null,      // 上次离开宠物小屋的 unix 秒（新增，decay 结算基准）
+        // 战斗深化（设计稿 DESIGN-2026-06-29-02）
+        skills: ['power_strike', 'defend', 'ultimate'],  // 已开放技能 id
+        defending: false,        // 防御态：下回合受击减伤 50%（一次性）
+        // cooldowns 不持久化（每场战斗重置），仅运行期由 ExplorationSystem.startBattle 设置
     };
+    // 技能 CD（战斗内 tracking，不写 localStorage）
+    let cooldowns = {};
+    // 技能定义表（data/skills.json）
+    let skillsData = null;
 
     // 加载保存的状态
     function load() {
@@ -176,8 +184,14 @@ const PetSystem = (function () {
     }
 
     // 受到伤害
-    function takeDamage(amount) {
-        state.hp = Math.max(0, state.hp - amount);
+    // options.applyDefend=true（战斗敌人攻击时）：若 state.defending 为真，伤害×0.5 并清除 defending（一次性）
+    function takeDamage(amount, options = {}) {
+        let dmg = amount;
+        if (options && options.applyDefend === true && state.defending) {
+            dmg = Math.max(1, Math.floor(dmg * 0.5));
+            state.defending = false;  // 一次性，用后清除
+        }
+        state.hp = Math.max(0, state.hp - dmg);
         save();
         return state.hp <= 0;
     }
@@ -302,6 +316,76 @@ const PetSystem = (function () {
             total += state.weapon.effect.atk;
         }
         return total;
+    }
+
+    // ============ 战斗深化：技能 / CD / 防御 ============
+    // 加载技能定义表 data/skills.json
+    async function loadSkills() {
+        if (skillsData) return skillsData;
+        try {
+            const resp = await fetch('data/skills.json');
+            skillsData = await resp.json();
+            return skillsData;
+        } catch (e) {
+            console.error('Failed to load skills.json:', e);
+            return { version: '1.0', skills: [] };
+        }
+    }
+
+    // 获取技能定义表
+    function getSkillsData() {
+        return skillsData;
+    }
+
+    // 获取单个技能定义
+    function getSkill(skillId) {
+        return skillsData?.skills?.find(s => s.id === skillId) || null;
+    }
+
+    // 玩家已开放技能 id 列表
+    function getSkills() {
+        return Array.isArray(state.skills) ? [...state.skills] : [];
+    }
+
+    // 当前 CD 剩余回合（0 = 可用）
+    function getCooldown(skillId) {
+        return cooldowns[skillId] || 0;
+    }
+
+    // 启动技能 CD
+    function startCooldown(skillId, cd) {
+        cooldowns[skillId] = Math.max(0, cd);
+    }
+
+    // 每回合结束递减所有 CD（最小 0）
+    // exclude: 本回合刚启动 CD 的技能 id 数组，跳过本次递减（保证 CD=N 真正封禁 N 回合）
+    function tickCooldowns(exclude = []) {
+        const skip = Array.isArray(exclude) ? new Set(exclude) : new Set();
+        for (const id in cooldowns) {
+            if (skip.has(id)) continue;
+            cooldowns[id] = Math.max(0, cooldowns[id] - 1);
+        }
+    }
+
+    // 技能是否可用（已开放 + CD 为 0）
+    function canUseSkill(skillId) {
+        if (!Array.isArray(state.skills) || !state.skills.includes(skillId)) return false;
+        return getCooldown(skillId) <= 0;
+    }
+
+    // 每场战斗开始重置 CD（设计稿 §9：CD 不持久化，每场重置）
+    function resetBattleState() {
+        cooldowns = {};
+        state.defending = false;
+        save();
+    }
+
+    // 设置/读取防御态（战斗用）
+    function setDefending(v) {
+        state.defending = !!v;
+    }
+    function isDefending() {
+        return !!state.defending;
     }
 
     // 计算总最大 HP（含装备）
@@ -473,8 +557,13 @@ const PetSystem = (function () {
         addExp, takeDamage, heal, feed, play, rest, revive,
         bath, decay, markHomeExit,
         equip, unequip, addExploration, addWin, getState, getAllSpecies,
+        getTotalAtk, getTotalMaxHp,
         getAllSpeciesBySeries, getSpeciesByRarity, getRarityConfig, getAllSeries,
         isDBLoaded, loadPetDB,
+        // 战斗深化
+        loadSkills, getSkillsData, getSkill, getSkills,
+        getCooldown, startCooldown, tickCooldowns, canUseSkill,
+        resetBattleState, setDefending, isDefending,
         MAX_LEVEL, EXP_TABLE, STAGES, RARITY
     };
 })();

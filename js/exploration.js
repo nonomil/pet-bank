@@ -288,6 +288,10 @@ const ExplorationSystem = (function () {
 
     function startBattle(scene, monster) {
         const pet = PetSystem.getState();
+        // 战斗深化：每场战斗重置 CD/防御态（设计稿 §9）
+        if (typeof PetSystem.resetBattleState === 'function') {
+            PetSystem.resetBattleState();
+        }
         currentBattle = {
             scene,
             monster: Object.assign({}, monster, { current_hp: monster.hp }),
@@ -300,6 +304,9 @@ const ExplorationSystem = (function () {
         return currentBattle;
     }
 
+    // battleTurn(action)
+    //   action: 'attack' | 'flee' | { type:'skill', skillId } | { type:'item', itemId, itemName, resultMsg }
+    // 技能/道具都消耗 1 回合（敌人反击），defend 在敌人反击时减伤并清除
     function battleTurn(action = 'attack') {
         if (!currentBattle || currentBattle.status !== 'ongoing') return null;
 
@@ -309,8 +316,15 @@ const ExplorationSystem = (function () {
 
         battle.turn += 1;
 
-        if (action === 'flee') {
-            if (Math.random() < 0.5) {
+        // 归一化 action 为对象形式
+        const act = (typeof action === 'string') ? { type: action } : (action || { type: 'attack' });
+        // 本回合刚启动 CD 的技能，回合末 tick 时跳过（保证 CD=N 真正封禁 N 回合）
+        const cdStartedThisTurn = [];
+
+        if (act.type === 'flee') {
+            // flee_chance 对齐 combat.json（0.3）
+            const fleeChance = 0.3;
+            if (Math.random() < fleeChance) {
                 battle.status = 'fled';
                 battle.log.push({ type: 'system', text: '🏃 逃跑成功！' });
                 const expGain = Math.floor(battle.monster.exp * 0.3);
@@ -319,23 +333,64 @@ const ExplorationSystem = (function () {
             } else {
                 battle.log.push({ type: 'system', text: '逃跑失败！' });
                 const damage = Math.max(1, battle.monster.atk - Math.floor(pet.level / 2));
-                PetSystem.takeDamage(damage);
+                const ko = PetSystem.takeDamage(damage, { applyDefend: true });
                 battle.log.push({ type: 'enemy', text: `${battle.monster.name} 攻击！造成 ${damage} 伤害` });
-                if (PetSystem.getState().hp <= 0) {
+                if (ko || PetSystem.getState().hp <= 0) {
                     battle.status = 'lost';
                     battle.log.push({ type: 'system', text: '💀 宠物倒下了...' });
                 }
             }
+            // 回合结束：CD 递减
+            if (typeof PetSystem.tickCooldowns === 'function') PetSystem.tickCooldowns(cdStartedThisTurn);
             return battle;
         }
 
-        const playerDmg = Math.max(1, petAtk + Math.floor(Math.random() * 3) - 1);
-        battle.monster.current_hp -= playerDmg;
-        battle.log.push({
-            type: 'player',
-            text: `⚔️ 你攻击 ${battle.monster.name}，造成 ${playerDmg} 伤害 (${Math.max(0, battle.monster.current_hp)}/${battle.monster.hp})`
-        });
+        // ---- 玩家行动 ----
+        let playerDmg = 0;
+        let actionLabel = '攻击';
 
+        if (act.type === 'skill') {
+            const skill = PetSystem.getSkill(act.skillId);
+            if (!skill) {
+                battle.log.push({ type: 'system', text: `未知技能：${act.skillId}` });
+                return battle;
+            }
+            // CD 校验（理论上 UI 已禁用，二次防护）
+            if (!PetSystem.canUseSkill(act.skillId)) {
+                battle.log.push({ type: 'system', text: `${skill.name} 冷却中（剩 ${PetSystem.getCooldown(act.skillId)} 回合）` });
+                return battle;
+            }
+            if (skill.type === 'defend') {
+                // 防御：设 defending，下回合减伤，本回合不造伤
+                PetSystem.setDefending(true);
+                battle.log.push({ type: 'player', text: `${skill.icon} ${skill.name}！下回合受击减伤 50%` });
+                PetSystem.startCooldown(skill.id, skill.cooldown);
+                cdStartedThisTurn.push(skill.id);
+            } else {
+                // 攻击型技能：multiplier × getTotalAtk
+                playerDmg = Math.max(1, Math.floor(petAtk * skill.multiplier) + Math.floor(Math.random() * 3));
+                battle.monster.current_hp -= playerDmg;
+                battle.log.push({
+                    type: 'player',
+                    text: `${skill.icon} ${skill.name}！对 ${battle.monster.name} 造成 ${playerDmg} 伤害 (${Math.max(0, battle.monster.current_hp)}/${battle.monster.hp})`
+                });
+                PetSystem.startCooldown(skill.id, skill.cooldown);
+                cdStartedThisTurn.push(skill.id);
+            }
+        } else if (act.type === 'item') {
+            // 道具：使用动作在 app.js 已完成（InventorySystem.useItem），这里只记录日志 + 消耗回合
+            battle.log.push({ type: 'reward', text: `🎒 使用 ${act.itemName || '道具'}：${act.resultMsg || '生效'}` });
+        } else {
+            // 普攻
+            playerDmg = Math.max(1, petAtk + Math.floor(Math.random() * 3) - 1);
+            battle.monster.current_hp -= playerDmg;
+            battle.log.push({
+                type: 'player',
+                text: `⚔️ 你攻击 ${battle.monster.name}，造成 ${playerDmg} 伤害 (${Math.max(0, battle.monster.current_hp)}/${battle.monster.hp})`
+            });
+        }
+
+        // ---- 判定胜利 ----
         if (battle.monster.current_hp <= 0) {
             battle.status = 'won';
             PetSystem.addWin();
@@ -360,16 +415,27 @@ const ExplorationSystem = (function () {
                     battle.log.push({ type: 'reward', text: `💎 稀有掉落: ${itemData?.name || rare.item_id} x1` });
                 }
             }
+            // 回合结束：CD 递减
+            if (typeof PetSystem.tickCooldowns === 'function') PetSystem.tickCooldowns(cdStartedThisTurn);
             return battle;
         }
 
-        const enemyDmg = Math.max(1, battle.monster.atk + Math.floor(Math.random() * 2) - 1);
-        const ko = PetSystem.takeDamage(enemyDmg);
-        battle.log.push({ type: 'enemy', text: `${battle.monster.name} 反击！造成 ${enemyDmg} 伤害` });
+        // ---- 敌人反击（defend/道具/普攻/技能后均触发，除非玩家已胜利）----
+        const enemyAtk = Math.max(1, battle.monster.atk + Math.floor(Math.random() * 2) - 1);
+        // applyDefend=true：若玩家处于 defending 态，takeDamage 内部伤害×0.5 并清除 defending（一次性）
+        const wasDefending = !!(typeof PetSystem.isDefending === 'function' && PetSystem.isDefending());
+        const ko = PetSystem.takeDamage(enemyAtk, { applyDefend: true });
+        battle.log.push({
+            type: 'enemy',
+            text: `${battle.monster.name} 反击！造成 ${enemyAtk} 伤害${wasDefending ? '（🛡️ 防御减伤已生效）' : ''}`
+        });
         if (ko) {
             battle.status = 'lost';
             battle.log.push({ type: 'system', text: '💀 宠物倒下了...' });
         }
+
+        // 回合结束：CD 递减
+        if (typeof PetSystem.tickCooldowns === 'function') PetSystem.tickCooldowns(cdStartedThisTurn);
 
         return battle;
     }

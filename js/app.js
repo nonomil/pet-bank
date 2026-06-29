@@ -913,16 +913,72 @@ function showBattleModal(battle) {
             <div class="text-xs">HP: ${battle.monster.current_hp}/${battle.monster.hp}</div>
         </div>
         <div class="battle-log mb-4" id="battleLog"></div>
-        <div class="battle-actions grid grid-cols-2 gap-2" id="battleActions">
-            <button class="btn-primary" onclick="battleAction('attack')">⚔️ 攻击</button>
-            <button class="btn-secondary" onclick="battleAction('flee')">🏃 逃跑</button>
-            <button class="btn-secondary" onclick="useItemInBattle()">🎒 道具</button>
-        </div>
+        <div id="battleActions"></div>
     `;
     // Set initial emojis
     document.getElementById('battlePetEmoji').textContent = PetSystem.getStageEmoji();
     document.getElementById('battleMonsterEmoji').textContent = battle.monster.emoji;
     appendBattleLog(battle);
+    renderBattleActions();   // 渲染技能面板 + 道具快捷栏 + 攻击/逃跑
+}
+
+// 战斗深化：技能面板 + 道具快捷栏（设计稿 DESIGN-2026-06-29-02）
+const BATTLE_ITEM_SLOTS = ['potion_small', 'potion_large', 'pet_food_basic', 'revive_potion'];
+let battleUILocked = false;   // 玩家行动后→敌人反击前，按钮禁用（防连点）
+
+function renderBattleActions() {
+    const container = document.getElementById('battleActions');
+    if (!container) return;
+
+    const pet = PetSystem.getState();
+    const skillsData = PetSystem.getSkillsData?.() || { skills: [] };
+    const ownedSkills = Array.isArray(pet.skills) ? pet.skills : [];
+
+    // 技能按钮（3 个通用技能）
+    const skillBtns = ownedSkills.map(id => {
+        const sk = skillsData.skills?.find(s => s.id === id);
+        if (!sk) return '';
+        const cd = PetSystem.getCooldown ? PetSystem.getCooldown(id) : 0;
+        const disabled = battleUILocked || cd > 0;
+        const cdTip = cd > 0 ? ` (CD:${cd})` : '';
+        const cls = disabled ? 'btn-secondary' : 'btn-primary';
+        return `<button class="${cls}" ${disabled ? 'disabled style="opacity:.5;cursor:not-allowed;"' : ''} onclick="battleAction({type:'skill',skillId:'${sk.id}'})">${sk.icon} ${sk.name}${cdTip}</button>`;
+    }).join('');
+
+    // 道具快捷栏（4 槽）
+    const itemSlots = BATTLE_ITEM_SLOTS.map(id => {
+        const item = InventorySystem.getItemData(id);
+        const count = InventorySystem.getCount(id);
+        if (!item) return '';
+        const empty = count <= 0;
+        const disabled = battleUILocked || empty;
+        const emoji = item.emoji || '🎒';
+        const name = item.name;
+        const cls = disabled ? 'btn-secondary' : 'btn-primary';
+        return `<button class="${cls} battle-item-slot" ${disabled ? 'disabled style="opacity:.45;cursor:not-allowed;"' : ''} onclick="useItemInBattle('${id}')" title="${name}">${emoji} ${name} x${count}</button>`;
+    }).join('');
+
+    // 普攻 / 逃跑
+    const attackDisabled = battleUILocked;
+    const fleeDisabled = battleUILocked;
+
+    container.innerHTML = `
+        <div class="grid grid-cols-2 gap-2 mb-2" id="battleSkillRow">
+            <button class="btn-primary" ${attackDisabled ? 'disabled style="opacity:.5;cursor:not-allowed;"' : ''} onclick="battleAction('attack')">⚔️ 攻击</button>
+            ${skillBtns}
+        </div>
+        <div class="text-xs mt-2 mb-1" style="color: var(--text-tertiary);">🎒 道具快捷栏（使用消耗 1 回合）</div>
+        <div class="grid grid-cols-2 gap-2 mb-2" id="battleItemRow">${itemSlots}</div>
+        <div class="grid grid-cols-1 gap-2" id="battleFleeRow">
+            <button class="btn-secondary" ${fleeDisabled ? 'disabled style="opacity:.5;cursor:not-allowed;"' : ''} onclick="battleAction('flee')">🏃 逃跑</button>
+        </div>
+    `;
+}
+
+// 锁定/解锁战斗 UI（防连点）
+function setBattleUILock(locked) {
+    battleUILocked = !!locked;
+    renderBattleActions();
 }
 
 function appendBattleLog(battle) {
@@ -933,17 +989,32 @@ function appendBattleLog(battle) {
 }
 
 function battleAction(action) {
+    // 战斗结束态或 UI 锁定：忽略
+    const cur = ExplorationSystem.getCurrentBattle();
+    if (!cur || cur.status !== 'ongoing' || battleUILocked) return;
+
     let result;
+    // 行动前锁定 UI（防连点，敌人反击前不可再操作）
+    setBattleUILock(true);
 
     if (action === 'attack') {
         result = ExplorationSystem.battleTurn('attack');
     } else if (action === 'flee') {
         result = ExplorationSystem.battleTurn('flee');
+    } else if (action && typeof action === 'object' && action.type === 'skill') {
+        // 二次校验：CD 中则解锁返回
+        if (typeof PetSystem.canUseSkill === 'function' && !PetSystem.canUseSkill(action.skillId)) {
+            setBattleUILock(false);
+            showToast('技能冷却中');
+            return;
+        }
+        result = ExplorationSystem.battleTurn({ type: 'skill', skillId: action.skillId });
     } else {
+        setBattleUILock(false);
         return;
     }
 
-    if (!result) return;
+    if (!result) { setBattleUILock(false); return; }
     appendBattleLog(result);
 
     if (result.status === 'won' || result.status === 'lost' || result.status === 'fled') {
@@ -961,8 +1032,11 @@ function battleAction(action) {
             <button class="btn-primary" onclick="closeBattleModal()">${result.status === 'won' ? '🎉 继续冒险' : result.status === 'lost' ? '回到宠物页' : '继续'}</button>
         `;
         renderPetPage();
+    } else {
+        // 战斗继续：解锁 UI（敌人反击已完成）
+        setBattleUILock(false);
     }
-    
+
     // 重新渲染战斗 UI (HP Bar)
     updateBattleUI(result);
 }
@@ -1007,31 +1081,48 @@ function handleBattleAnimate(e) {
     }
 }
 
-function useItemInBattle() {
-    const items = InventorySystem.getAllItems().filter(i => i.type === 'consumable');
-    if (items.length === 0) {
-        showToast('背包中没有消耗品');
-        return;
-    }
+// 战斗中使用道具（设计稿 §4：接收 id 参数，替代 prompt；使用消耗 1 回合 → 敌人反击）
+function useItemInBattle(itemId) {
+    const cur = ExplorationSystem.getCurrentBattle();
+    if (!cur || cur.status !== 'ongoing' || battleUILocked) return;
 
-    const itemNames = items.map((it, idx) => `${idx}: ${it.name} (${InventorySystem.getCount(it.item_id)})`).join('\n');
-    const choice = prompt(`选择道具编号:\n${itemNames}`);
-    if (choice === null || !items[choice]) return;
+    const data = InventorySystem.getItemData(itemId);
+    if (!data) { showToast('道具不存在'); return; }
+    const count = InventorySystem.getCount(itemId);
+    if (count <= 0) { showToast(`${data.name} 数量不足`); return; }
 
-    const selected = items[choice];
-    const result = InventorySystem.useItem(selected.item_id);
+    // 战斗中不允许用复活药水（HP>0 时无意义，且 takeDamage 校验在 useItem 内）
+    setBattleUILock(true);
+
+    const result = InventorySystem.useItem(itemId);
     if (!result.success) {
         showToast(result.msg);
+        setBattleUILock(false);
         return;
     }
 
-    const battle = ExplorationSystem.getCurrentBattle();
-    if (battle) {
-        battle.log.push({ type: 'reward', text: `🎒 使用 ${selected.name}：${result.msg}` });
-        appendBattleLog(battle);
-        updateBattleUI(battle);
+    // 消耗 1 回合：调用 battleTurn 的 item 分支（触发敌人反击 + CD tick）
+    const battle = ExplorationSystem.battleTurn({
+        type: 'item',
+        itemId: itemId,
+        itemName: data.name,
+        resultMsg: result.msg
+    });
+
+    if (!battle) { setBattleUILock(false); return; }
+    appendBattleLog(battle);
+
+    if (battle.status === 'won' || battle.status === 'lost' || battle.status === 'fled') {
+        const actionsEl = document.getElementById('battleActions');
+        actionsEl.innerHTML = `
+            <button class="btn-primary" onclick="closeBattleModal()">${battle.status === 'won' ? '🎉 继续冒险' : battle.status === 'lost' ? '回到宠物页' : '继续'}</button>
+        `;
+        renderPetPage();
+    } else {
+        setBattleUILock(false);
     }
 
+    updateBattleUI(battle);
     showToast(result.msg);
     renderPetPage();
 }
@@ -1179,6 +1270,10 @@ async function init() {
     InventorySystem.load();
     await InventorySystem.loadItemsData();
     await ExplorationSystem.loadScenes();
+    // 战斗深化：预加载技能定义表 data/skills.json
+    if (typeof PetSystem.loadSkills === 'function') {
+        try { await PetSystem.loadSkills(); } catch (e) { console.warn('skills.json 加载失败:', e); }
+    }
     if (window.CardCollection && typeof window.CardCollection.init === 'function') {
         window.CardCollection.init();
     }
