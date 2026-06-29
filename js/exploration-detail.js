@@ -378,7 +378,10 @@ const ExplorationDetail = (function () {
         }
     }
 
-    return { show, next, choose, exit, answerMath };
+    // 是否处于 galgame 探索中（战斗结束后判断要不要回场景列表）
+    function isActive() { return currentScene != null; }
+
+    return { show, next, choose, exit, answerMath, isActive };
 })();
 
 window.ExplorationDetail = ExplorationDetail;

@@ -1149,9 +1149,18 @@ function useItemInBattle(itemId) {
 
 function closeBattleModal() {
     battleUILocked = false;   // 关闭战斗时重置 UI 锁，避免残留导致下次战斗按钮全禁用
+    const status = ExplorationSystem.getCurrentBattle && ExplorationSystem.getCurrentBattle()?.status;
     ExplorationSystem.endBattle();
     document.getElementById('battleModal').classList.remove('show');
-    renderAll();
+    // 战斗从 galgame 探索进入：回到场景列表并清理 galgame 状态，
+    // 否则 page-explore 仍是 galgame-stage（#sceneGrid 被覆盖 renderAll 渲染不出），
+    // 且残留的 encounter 末事件会让点 ▶ 再次 triggerBattle（"又从头打"）。
+    if (typeof ExplorationDetail !== 'undefined' && ExplorationDetail.isActive && ExplorationDetail.isActive()) {
+        if (status === 'won') showToast('🎉 击败敌人！场景探索完成，已获得战利品');
+        ExplorationDetail.exit();
+    } else {
+        renderAll();
+    }
 }
 
 // ============ 背包页面渲染 ============
