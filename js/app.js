@@ -894,6 +894,7 @@ function exploreScene(sceneId) {
 }
 
 function showBattleModal(battle) {
+    battleUILocked = false;   // 新战斗开始，重置 UI 锁（修复上次战斗结束残留导致下次卡死）
     const modal = document.getElementById('battleModal');
     const content = document.getElementById('battleContent');
     modal.classList.add('show');
@@ -1132,6 +1133,7 @@ function useItemInBattle(itemId) {
 }
 
 function closeBattleModal() {
+    battleUILocked = false;   // 关闭战斗时重置 UI 锁，避免残留导致下次战斗按钮全禁用
     ExplorationSystem.endBattle();
     document.getElementById('battleModal').classList.remove('show');
     renderAll();
