@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaults": ["food_bowl", "bath_tub"],
+  "furniture": [
+    { "id": "food_bowl", "name": "食盆", "icon": "🥣", "price": 0, "slotType": "floor", "defaultOwned": true, "description": "默认家具，作为喂食区域视觉锚点" },
+    { "id": "bath_tub", "name": "浴缸", "icon": "🛁", "price": 0, "slotType": "corner", "defaultOwned": true, "description": "默认家具，清洁区域视觉锚点" },
+    { "id": "cozy_rug", "name": "温暖地毯", "icon": "🧶", "price": 35, "slotType": "floor", "defaultOwned": false, "description": "柔软的地面装饰，让小屋更温馨" },
+    { "id": "soft_cushion", "name": "软垫", "icon": "🛋️", "price": 45, "slotType": "floor", "defaultOwned": false, "description": "舒适的地面坐垫" },
+    { "id": "toy_box", "name": "玩具箱", "icon": "🧸", "price": 55, "slotType": "floor", "defaultOwned": false, "description": "装满玩具的箱子" },
+    { "id": "night_lamp", "name": "夜灯", "icon": "🪔", "price": 60, "slotType": "corner", "defaultOwned": false, "description": "温暖的角落夜灯" },
+    { "id": "wall_frame", "name": "墙饰相框", "icon": "🖼️", "price": 40, "slotType": "backdrop", "defaultOwned": false, "description": "挂在墙上的装饰相框" },
+    { "id": "star_mobile", "name": "星星挂饰", "icon": "✨", "price": 70, "slotType": "backdrop", "defaultOwned": false, "description": "闪烁的星星背景挂饰" }
+  ]
+}
