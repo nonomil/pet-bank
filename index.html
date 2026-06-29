@@ -24,20 +24,12 @@
                     <p class="text-xs text-muted">任务 · 积分 · 宠物养成 · 探索冒险</p>
                 </div>
             </div>
-            <div class="flex items-center gap-1 overflow-x-auto">
-                <div class="nav-tab active" data-page="map" onclick="switchPage('map')">成长地图</div>
-                <div class="nav-tab" data-page="today" onclick="switchPage('today')">今日打卡</div>
-                <div class="nav-tab" data-page="review" onclick="switchPage('review')">每周复盘</div>
-                <div class="nav-tab" data-page="reward" onclick="switchPage('reward')">奖励兑换</div>
-                <div class="nav-tab" data-page="works" onclick="switchPage('works')">成长作品</div>
-                <div class="nav-tab nav-tab-pet" data-page="pet" onclick="switchPage('pet')">🐾 宠物养成</div>
-            <div class="nav-tab nav-tab-home" data-page="home" onclick="switchPage('home')">🏠 宠物小屋</div>
-            <div class="nav-tab nav-tab-explore" data-page="explore" onclick="switchPage('explore')">🗺️ 探索冒险</div>
-            <div class="nav-tab" data-page="mathpk" onclick="switchPage('mathpk')">🔢 数学PK</div>
-            <div class="nav-tab" data-page="inventory" onclick="switchPage('inventory')">🎒 背包</div>
-            <div class="nav-tab" data-page="card" onclick="switchPage('card')">🃏 卡片图鉴</div>
-            <div class="nav-tab" data-page="shop" onclick="switchPage('shop')">🏪 兑换商店</div>
-            <div class="nav-tab" data-page="tools" onclick="switchPage('tools')">🧰 工具箱</div>
+            <div class="flex items-center gap-1 primary-nav">
+                <div class="nav-tab active" data-page="map" onclick="switchPage('map')">⭐ 积分</div>
+                <div class="nav-tab" data-page="pet" onclick="switchPage('pet')">🐾 宠物</div>
+                <div class="nav-tab" data-page="explore" onclick="switchPage('explore')">🗺️ 探索</div>
+                <div class="nav-tab" data-page="reward" onclick="switchPage('reward')">🎁 兑换</div>
+                <div class="nav-tab" data-page="works" onclick="switchPage('works')">⋯ 更多</div>
             </div>
             <div class="profile-switcher" id="profileSwitcher" onclick="ProfileUI.toggle(event)" title="切换孩子">
                 <span id="profileCurEmoji">🧒</span>
@@ -87,6 +79,12 @@
         <main class="main-content">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
+                <div class="hub-nav">
+                    <span class="hub-nav-label">积分</span>
+                    <button class="hub-nav-btn" onclick="switchPage('today')">📝 今日打卡</button>
+                    <button class="hub-nav-btn" onclick="switchPage('review')">📅 每周复盘</button>
+                    <button class="hub-nav-btn" onclick="switchPage('mathpk')">🔢 数学PK</button>
+                </div>
                 <section class="map-hero">
                     <div class="map-hero-copy">
                         <p class="map-eyebrow">成长地图 / 纸面路线</p>
@@ -155,10 +153,10 @@
                                 <span class="text-xs text-muted">一键跳转</span>
                             </div>
                             <div class="map-quick-grid">
-                                <button class="map-quick-btn" onclick="switchPage('today')"><i data-lucide="clipboard-list" class="w-4 h-4"></i><span>今日打卡</span></button>
                                 <button class="map-quick-btn" onclick="switchPage('pet')"><i data-lucide="paw-print" class="w-4 h-4"></i><span>我的宠物</span></button>
-                                <button class="map-quick-btn" onclick="switchPage('card')"><i data-lucide="book-open" class="w-4 h-4"></i><span>卡片图鉴</span></button>
-                                <button class="map-quick-btn" onclick="switchPage('shop')"><i data-lucide="store" class="w-4 h-4"></i><span>兑换商店</span></button>
+                                <button class="map-quick-btn" onclick="switchPage('explore')"><i data-lucide="map" class="w-4 h-4"></i><span>探索冒险</span></button>
+                                <button class="map-quick-btn" onclick="switchPage('reward')"><i data-lucide="store" class="w-4 h-4"></i><span>兑换</span></button>
+                                <button class="map-quick-btn" onclick="switchPage('works')"><i data-lucide="grid" class="w-4 h-4"></i><span>更多</span></button>
                             </div>
                             <div class="map-map-legend mt-4">
                                 <div class="map-legend-item"><span class="map-legend-token open"></span><span>金色星点表示已经开放，可以直接进入。</span></div>
@@ -206,6 +204,11 @@
 
             <!-- PAGE: 奖励兑换 -->
             <div class="page" id="page-reward">
+                <div class="hub-nav">
+                    <span class="hub-nav-label">兑换</span>
+                    <button class="hub-nav-btn" onclick="switchPage('shop')">🏪 兑换商店</button>
+                    <button class="hub-nav-btn" onclick="switchPage('inventory')">🎒 背包</button>
+                </div>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">我的奖励兑换</h2></div>
                     <div class="card-body grid grid-cols-3 gap-4">
@@ -218,6 +221,10 @@
 
             <!-- PAGE: 成长作品 -->
             <div class="page" id="page-works">
+                <div class="hub-nav">
+                    <span class="hub-nav-label">更多</span>
+                    <button class="hub-nav-btn" onclick="switchPage('tools')">🧰 工具箱</button>
+                </div>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">成长作品收集</h2></div>
                     <div class="card-body space-y-4">
@@ -230,6 +237,12 @@
 
             <!-- PAGE: 宠物养成 -->
             <div class="page" id="page-pet">
+                <div class="hub-nav">
+                    <span class="hub-nav-label">宠物</span>
+                    <button class="hub-nav-btn" onclick="switchPage('home')">🏠 宠物小屋</button>
+                    <button class="hub-nav-btn" onclick="switchPage('card')">🃏 卡片图鉴</button>
+                    <button class="hub-nav-btn" onclick="WalkSystem.renderUI('walkArea')">🚶 遛弯</button>
+                </div>
                 <div class="grid grid-cols-3 gap-4 mb-4">
                     <div class="card col-span-2">
                         <div class="card-body text-center">
@@ -426,5 +439,6 @@
     <script src="js/tools.js"></script>
     <script src="js/profiles.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/voice.js"></script>
 </body>
 </html>

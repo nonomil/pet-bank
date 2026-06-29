@@ -16,8 +16,12 @@
 
 | ID | 文件 | 类型 | 状态 | 摘要 |
 |---|---|---|---|---|
-| `DESIGN-2026-06-29-01` | [2026-06-29-shop-furniture-linkage-design](./2026-06-29-shop-furniture-linkage-design.md) | 设计稿 | 待实施 | 商店家具联动的产品设计，明确“纯装饰闭环”边界与共享家具目录方案 |
-| `PLAN-2026-06-29-01` | [2026-06-29-shop-furniture-linkage-implementation](./2026-06-29-shop-furniture-linkage-implementation.md) | 实施计划 | 待实施 | 商店家具联动的分步实施计划，含文件清单、验证步骤与回归要点 |
+| `DESIGN-2026-06-29-01` | [2026-06-29-shop-furniture-linkage-design](./2026-06-29-shop-furniture-linkage-design.md) | 设计稿 | 已落地 | 商店家具联动的产品设计，明确“纯装饰闭环”边界与共享家具目录方案 |
+| `PLAN-2026-06-29-01` | [2026-06-29-shop-furniture-linkage-implementation](./2026-06-29-shop-furniture-linkage-implementation.md) | 实施计划 | 已落地 | 商店家具联动的分步实施计划，含文件清单、验证步骤与回归要点 |
+| `DESIGN-2026-06-29-02` | [2026-06-29-battle-depth-design](./2026-06-29-battle-depth-design.md) | 设计稿 | 已落地(v0.3.9) | 战斗深化：3 通用技能 + 道具快捷栏 + CD + 防御减伤，明确不引入 MP/技能树/AOE |
+| `DESIGN-2026-06-29-03` | [2026-06-29-home-tab-navigation-design](./2026-06-29-home-tab-navigation-design.md) | 设计稿 | 已落地 | 首页 Tab 收口方案：积分 / 宠物 / 探索优先，其他能力合并进兑换与更多 |
+| `PLAN-2026-06-29-03` | [2026-06-29-home-tab-navigation-implementation](./2026-06-29-home-tab-navigation-implementation.md) | 实施计划 | 已落地 | 首页 Tab 收口的具体改动、验证步骤与文档回填要求 |
+| `DESIGN-2026-06-29-04` | [2026-06-29-探索故事galgame重设计](./2026-06-29-探索故事galgame重设计.md) | 设计稿 | 已落地(v0.5.3) | 探索 galgame 重设计（底部对话框+左右立绘+▶推进+大字19px+选择卡片）+ 数学解谜融入探索 + 开源 VN 调研（Monogatari/Ren'Py）+ Agnes 生图提示词 |
 
 ---
 

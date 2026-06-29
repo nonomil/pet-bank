@@ -313,6 +313,19 @@ function completeRecommended() {
     renderAll();
 }
 
+// ============ 一级导航映射（首页 Tab 收口，M0.6） ============
+// tab 名称 -> 默认落地页（单一事实源，对应 docs/plans/2026-06-29-home-tab-navigation-*）
+const HOME_TAB_MAP = { '积分': 'map', '宠物': 'pet', '探索': 'explore', '兑换': 'reward', '更多': 'works' };
+function getHomeTabMap() { return Object.assign({}, HOME_TAB_MAP); }
+// 叶子页 / hub 页 -> 所属一级 tab 的 data-page（switchPage 时据此高亮父 tab）
+const PAGE_TO_TAB = {
+    map: 'map', today: 'map', review: 'map', mathpk: 'map',
+    pet: 'pet', home: 'pet', card: 'pet', walk: 'pet',
+    explore: 'explore',
+    reward: 'reward', shop: 'reward', inventory: 'reward',
+    works: 'works', tools: 'works'
+};
+
 function switchPage(page) {
     // 离开宠物小屋：标记 exit（写 last_home_ts，下次进入结算）
     const prevPageEl = document.querySelector('.page.active');
@@ -324,7 +337,9 @@ function switchPage(page) {
     const target = document.getElementById(`page-${page}`);
     if (target) target.classList.add('active');
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    const tab = document.querySelector(`.nav-tab[data-page="${page}"]`);
+    // 叶子页（如 today/review/mathpk/shop…）没有独立 tab，按 PAGE_TO_TAB 高亮其父 tab
+    const tabPage = (PAGE_TO_TAB[page] || page);
+    const tab = document.querySelector(`.nav-tab[data-page="${tabPage}"]`);
     if (tab) tab.classList.add('active');
     // 切换到特定页面时执行特定渲染
     if (page === 'pet') renderPetPage();

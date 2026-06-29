@@ -1136,6 +1136,15 @@ body {
 .nav-tab-explore { background: linear-gradient(135deg, #B8E0F0, #A8D8E8); color: #2D5A6E; }
 .nav-tab-explore.active { background: linear-gradient(135deg, #A8D8E8, #98C8D8) !important; color: #1D3A4E; }
 
+/* === 一级导航收口（5 主 tab） === */
+.primary-nav { gap: 6px; overflow-x: auto; }
+.primary-nav .nav-tab { font-size: 15px; padding: 10px 18px; font-weight: 600; }
+/* hub 页二级入口条：叶子页收纳在父 hub 内，不占一级位 */
+.hub-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 14px; margin-bottom: 14px; background: rgba(168, 200, 184, 0.12); border: 1px solid var(--border-light); border-radius: 12px; }
+.hub-nav-label { font-size: 12px; font-weight: 700; color: #8a8f98; padding: 3px 10px; background: #fff; border-radius: 999px; }
+.hub-nav-btn { padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--text-secondary); background: #fff; border: 1px solid var(--border-light); border-radius: 999px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.hub-nav-btn:hover { background: var(--sage-green); color: #fff; border-color: var(--sage-green); }
+
 /* === 积分胶囊 === */
 .point-capsule { display: inline-flex; align-items: center; gap: 6px; background: var(--gold-light); color: #8B6F2A; padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: 14px; }
 .point-capsule .num { font-size: 18px; font-weight: 800; }
