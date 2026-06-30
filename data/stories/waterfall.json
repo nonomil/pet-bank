@@ -1,0 +1,59 @@
+{
+  "id": "waterfall",
+  "name": "彩虹瀑布",
+  "emoji": "🌈",
+  "chapter": 3,
+  "chapter_name": "海边集市",
+  "min_level": 2,
+  "danger_level": 2,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "水雾在阳光下画出了彩虹，你伸手去触碰，凉凉的，好舒服！",
+      "id": "waterfall.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "🌈",
+      "text": "水雾中飘浮着几滴发光的水珠，你用叶子接住了一滴！",
+      "item": "rainbow_dew",
+      "chance": 0.5,
+      "id": "waterfall.discover1"
+    },
+    {
+      "type": "math",
+      "mathType": "word",
+      "difficulty": "easy",
+      "text": "荷叶上的青蛙念出一道应用题，答对它才肯带你过河……",
+      "reward": {
+        "exp": 16,
+        "msg": "青蛙呱呱叫好，水路打开了！+16 经验"
+      },
+      "id": "waterfall.math2"
+    },
+    {
+      "type": "choice",
+      "text": "你看到瀑布后面好像有个洞口，还有一只青蛙在荷叶上看着你。",
+      "options": [
+        {
+          "text": "🐸 跟着青蛙走",
+          "reward": "青蛙带你找到了一片金色的荷叶！",
+          "item": "golden_scale",
+          "chance": 0.3
+        },
+        {
+          "text": "🕳️ 钻进瀑布后面的洞",
+          "reward": "洞里藏着一枚古代的圆形石币！",
+          "item": "lily_pad",
+          "chance": 0.5
+        }
+      ],
+      "id": "waterfall.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "水面突然涌起巨大的水花，一个生物冒了出来……",
+      "id": "waterfall.encounter4"
+    }
+  ]
+}

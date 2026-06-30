@@ -1,0 +1,59 @@
+{
+  "id": "candy",
+  "name": "糖果王国",
+  "emoji": "🍭",
+  "chapter": 2,
+  "chapter_name": "森林边界",
+  "min_level": 2,
+  "danger_level": 2,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "空气中弥漫着草莓和巧克力的味道，脚下的路是饼干碎铺成的！",
+      "id": "candy.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "🍬",
+      "text": "路边有一棵棒棒糖树，你摇了摇，掉下来一颗彩虹糖！",
+      "item": "candy",
+      "chance": 0.7,
+      "id": "candy.discover1"
+    },
+    {
+      "type": "math",
+      "mathType": "word",
+      "difficulty": "medium",
+      "text": "糖果树干上挂着一道应用题牌子，答对才能摘到最甜的糖……",
+      "reward": {
+        "exp": 22,
+        "msg": "牌子发光，最甜的糖果掉下来！+22 经验"
+      },
+      "id": "candy.math2"
+    },
+    {
+      "type": "choice",
+      "text": "前面有个分岔路，一条通往巧克力河，一条通往棉花糖山。",
+      "options": [
+        {
+          "text": "🍫 走巧克力河边",
+          "reward": "河水里漂着一块巧克力金币！",
+          "item": "lollipop",
+          "chance": 0.5
+        },
+        {
+          "text": "☁️ 爬棉花糖山",
+          "reward": "山顶有一块巨大的蛋糕碎片，散发着奶油香气！",
+          "item": "cake_slice",
+          "chance": 0.4
+        }
+      ],
+      "id": "candy.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "棉花糖山后面跳出来一个圆滚滚的身影……",
+      "id": "candy.encounter4"
+    }
+  ]
+}

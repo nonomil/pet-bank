@@ -1,0 +1,58 @@
+{
+  "id": "space",
+  "name": "太空站",
+  "emoji": "🚀",
+  "chapter": 5,
+  "chapter_name": "星空终点",
+  "min_level": 5,
+  "danger_level": 4,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "你飘浮在太空中，脚下是蓝色的地球，远处是无尽的星海。",
+      "id": "space.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "✨",
+      "text": "一颗流星划过，你伸手抓住了它的尾巴——是星尘！",
+      "item": "star_dust",
+      "chance": 0.5,
+      "id": "space.discover1"
+    },
+    {
+      "type": "math",
+      "text": "空间站的舱门需要一道乘除算式密码才能打开……",
+      "difficulty": "hard",
+      "reward": {
+        "exp": 30,
+        "msg": "舱门打开了，星光涌入！+30 经验"
+      },
+      "id": "space.math2"
+    },
+    {
+      "type": "choice",
+      "text": "空间站的通道分成了两条，左边写着“实验室”，右边写着“花园舱”。",
+      "options": [
+        {
+          "text": "🧪 去实验室",
+          "reward": "你找到了一块外星高科技芯片！",
+          "item": "alien_tech",
+          "chance": 0.5
+        },
+        {
+          "text": "🌻 去花园舱",
+          "reward": "太空花的种子在发光，你小心地收集了一些！",
+          "item": "space_rock",
+          "chance": 0.4
+        }
+      ],
+      "id": "space.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "警报响起，雷达上出现了一个不明飞行物……",
+      "id": "space.encounter4"
+    }
+  ]
+}

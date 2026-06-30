@@ -1,0 +1,58 @@
+{
+  "id": "mountain",
+  "name": "雪山之巅",
+  "emoji": "🏔️",
+  "chapter": 4,
+  "chapter_name": "高地洞窟",
+  "min_level": 3,
+  "danger_level": 3,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "寒风呼啸，雪花打在脸上有点冷，但远处的冰晶闪闪发光，好美！",
+      "id": "mountain.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "❄️",
+      "text": "你在一块冰面上看到了奇怪的图案，看起来像是古代的地图！",
+      "item": "ice_crystal",
+      "chance": 0.4,
+      "id": "mountain.discover1"
+    },
+    {
+      "type": "math",
+      "text": "冰壁上刻着一道乘法算式，融化它才能通过……",
+      "difficulty": "medium",
+      "reward": {
+        "exp": 20,
+        "msg": "冰壁融化了，道路打开！+20 经验"
+      },
+      "id": "mountain.math2"
+    },
+    {
+      "type": "choice",
+      "text": "前面有个冰洞，里面传来微弱的蓝光。",
+      "options": [
+        {
+          "text": "🔦 鼓起勇气走进去",
+          "reward": "冰洞深处有一块完美的冰晶，像钻石一样亮！",
+          "item": "ice_crystal",
+          "chance": 0.6
+        },
+        {
+          "text": "🏔️ 绕过冰洞爬上去",
+          "reward": "山顶上有一块柔软的雪狼毛！",
+          "item": "fur",
+          "chance": 0.4
+        }
+      ],
+      "id": "mountain.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "冰面突然裂开，一个白色的身影从雪中站了起来……",
+      "id": "mountain.encounter4"
+    }
+  ]
+}

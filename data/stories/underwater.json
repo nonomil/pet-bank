@@ -1,0 +1,59 @@
+{
+  "id": "underwater",
+  "name": "珊瑚王国",
+  "emoji": "🐠",
+  "chapter": 3,
+  "chapter_name": "海边集市",
+  "min_level": 4,
+  "danger_level": 4,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "你沉入海底，周围是五彩缤纷的珊瑚，小鱼好奇地围着你转。",
+      "id": "underwater.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "🪼",
+      "text": "一只透明的水母飘过，它身上发出柔和的蓝光，好漂亮！",
+      "item": "glow_jelly",
+      "chance": 0.6,
+      "id": "underwater.discover1"
+    },
+    {
+      "type": "math",
+      "mathType": "word",
+      "difficulty": "medium",
+      "text": "一个大海螺里传出应用题，答对它才肯指明方向……",
+      "reward": {
+        "exp": 22,
+        "msg": "海螺指向正确的洋流！+22 经验"
+      },
+      "id": "underwater.math2"
+    },
+    {
+      "type": "choice",
+      "text": "前方有一个珊瑚迷宫，左边有洋流，右边看起来很安静。",
+      "options": [
+        {
+          "text": "🌊 顺着洋流游",
+          "reward": "洋流把你带到了一个沉没的宝箱旁，找到了一颗鲨鱼牙！",
+          "item": "shark_tooth",
+          "chance": 0.4
+        },
+        {
+          "text": "🤿 穿过安静的路",
+          "reward": "珊瑚丛中藏着一袋墨鱼的墨囊！",
+          "item": "ink_sac",
+          "chance": 0.5
+        }
+      ],
+      "id": "underwater.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "珊瑚丛后面闪过一道黑影，越来越大……",
+      "id": "underwater.encounter4"
+    }
+  ]
+}

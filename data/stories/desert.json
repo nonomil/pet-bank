@@ -1,0 +1,59 @@
+{
+  "id": "desert",
+  "name": "沙漠绿洲",
+  "emoji": "🏜️",
+  "chapter": 4,
+  "chapter_name": "高地洞窟",
+  "min_level": 3,
+  "danger_level": 3,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "热浪在沙丘上方跳舞，但远处的绿洲给了你希望。",
+      "id": "desert.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "🦂",
+      "text": "沙子里露出了一个古老的铜币，上面刻着你从未见过的文字！",
+      "item": "sand_shell",
+      "chance": 0.5,
+      "id": "desert.discover1"
+    },
+    {
+      "type": "math",
+      "mathType": "word",
+      "difficulty": "medium",
+      "text": "绿洲的守护者挡住去路，出了一道应用题考验你……",
+      "reward": {
+        "exp": 22,
+        "msg": "守护者点头，绿洲大门为你打开！+22 经验"
+      },
+      "id": "desert.math2"
+    },
+    {
+      "type": "choice",
+      "text": "你在一块巨石上发现了奇怪的壁画，旁边有两条路。",
+      "options": [
+        {
+          "text": "🎨 研究壁画再走",
+          "reward": "壁画后面藏着一颗沙漠珍珠！",
+          "item": "desert_pearl",
+          "chance": 0.2
+        },
+        {
+          "text": "🏜️ 直接去绿洲",
+          "reward": "绿洲的泉水边有一颗闪亮的甲虫壳！",
+          "item": "ancient_bandage",
+          "chance": 0.5
+        }
+      ],
+      "id": "desert.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "沙丘后面缓缓升起了一个缠着绷带的身影……",
+      "id": "desert.encounter4"
+    }
+  ]
+}

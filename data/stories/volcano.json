@@ -1,0 +1,59 @@
+{
+  "id": "volcano",
+  "name": "温暖火山",
+  "emoji": "🌋",
+  "chapter": 4,
+  "chapter_name": "高地洞窟",
+  "min_level": 5,
+  "danger_level": 5,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "温暖的空气包裹着你，岩浆像橙色的河流缓缓流淌。",
+      "id": "volcano.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "🔥",
+      "text": "路边有一块冷却的岩浆石，掰开后里面竟然有火红色的晶体质！",
+      "item": "fire_scale",
+      "chance": 0.5,
+      "id": "volcano.discover1"
+    },
+    {
+      "type": "math",
+      "mathType": "arithmetic",
+      "difficulty": "hard",
+      "text": "火山口的石碑刻着乘除算式，平息岩浆才能通过……",
+      "reward": {
+        "exp": 28,
+        "msg": "岩浆缓缓退去，道路浮现！+28 经验"
+      },
+      "id": "volcano.math2"
+    },
+    {
+      "type": "choice",
+      "text": "前方有个温泉池，旁边有条小路通向火山口。",
+      "options": [
+        {
+          "text": "♨️ 在温泉休息一下",
+          "reward": "温泉水底有一块温热的水晶！",
+          "item": "lava_crystal",
+          "chance": 0.5
+        },
+        {
+          "text": "🌋 爬向火山口",
+          "reward": "火山口边缘有一根脱落的凤凰羽毛！",
+          "item": "phoenix_feather",
+          "chance": 0.2
+        }
+      ],
+      "id": "volcano.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "岩浆里冒出了泡泡，一个火红色的身影浮了上来……",
+      "id": "volcano.encounter4"
+    }
+  ]
+}

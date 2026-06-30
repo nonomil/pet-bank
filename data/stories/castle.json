@@ -1,0 +1,59 @@
+{
+  "id": "castle",
+  "name": "云端城堡",
+  "emoji": "🏰",
+  "chapter": 4,
+  "chapter_name": "高地洞窟",
+  "min_level": 4,
+  "danger_level": 4,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "你踏上彩虹桥，每走一步桥就发出叮叮咚咚的音乐声。",
+      "id": "castle.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "⚔️",
+      "text": "桥头有一把生锈的小剑，但你擦了擦，它竟然闪起了金光！",
+      "item": "knight_shield",
+      "chance": 0.4,
+      "id": "castle.discover1"
+    },
+    {
+      "type": "math",
+      "mathType": "arithmetic",
+      "difficulty": "medium",
+      "text": "城堡大门的锁需要一道乘法钥匙才能打开……",
+      "reward": {
+        "exp": 24,
+        "msg": "锁咔哒打开，大门缓缓开启！+24 经验"
+      },
+      "id": "castle.math2"
+    },
+    {
+      "type": "choice",
+      "text": "城堡大门开着，里面左边是图书馆，右边是武器室。",
+      "options": [
+        {
+          "text": "📚 去图书馆",
+          "reward": "一本旧书里掉出了一张魔法卷轴！",
+          "item": "magic_wand",
+          "chance": 0.3
+        },
+        {
+          "text": "🛡️ 去武器室",
+          "reward": "墙上挂着一片幼龙的鳞片，闪闪发光！",
+          "item": "dragon_scale",
+          "chance": 0.4
+        }
+      ],
+      "id": "castle.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "楼梯上传来沉重的脚步声，越来越近……",
+      "id": "castle.encounter4"
+    }
+  ]
+}

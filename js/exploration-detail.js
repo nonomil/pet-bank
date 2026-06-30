@@ -23,16 +23,18 @@ const ExplorationDetail = (function () {
             .catch(() => { _cmathLoading = false; });
     }
 
-    // 探索故事事件（数据驱动 data/stories.json；fetch 失败回退硬编码 sceneEvents 兜底）
+    // 探索故事事件（数据驱动 data/stories/ 文件夹，每场景一个 json；fetch 失败回退硬编码 sceneEvents 兜底）
+    const STORY_SCENE_IDS = ['forest', 'beach', 'mountain', 'space', 'candy', 'cave', 'waterfall', 'desert', 'underwater', 'castle', 'volcano', 'stargarden'];
     let _storiesLoaded = false;
     async function _loadStories() {
         if (_storiesLoaded) return;
         _storiesLoaded = true;
         try {
-            const r = await fetch('data/stories.json');
-            const data = await r.json();
-            if (data && data.scenes && Object.keys(data.scenes).length) sceneEvents = data.scenes;
-        } catch (e) { console.warn('stories.json load failed, use fallback', e); }
+            const results = await Promise.all(STORY_SCENE_IDS.map(id => fetch(`data/stories/${id}.json`).then(r => r.json())));
+            const obj = {};
+            results.forEach((s, i) => { if (s && s.events) obj[STORY_SCENE_IDS[i]] = s.events; });
+            if (Object.keys(obj).length) sceneEvents = obj;
+        } catch (e) { console.warn('stories folder load failed, use fallback', e); }
     }
 
     function disableEventActions() {

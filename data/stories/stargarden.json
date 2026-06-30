@@ -1,0 +1,59 @@
+{
+  "id": "stargarden",
+  "name": "星光花园",
+  "emoji": "🌟",
+  "chapter": 5,
+  "chapter_name": "星空终点",
+  "min_level": 5,
+  "danger_level": 5,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "你踩在发光的苔藓上，每一步都留下星光般的脚印。",
+      "id": "stargarden.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "🌟",
+      "text": "一朵花悄悄绽放，花蕊里有一颗小小的星星！",
+      "item": "star_dust",
+      "chance": 0.6,
+      "id": "stargarden.discover1"
+    },
+    {
+      "type": "math",
+      "mathType": "logic",
+      "difficulty": "hard",
+      "text": "星图上的星座排成一串数字规律，找出下一个才能点亮它……",
+      "reward": {
+        "exp": 30,
+        "msg": "星座连成一线，星路打开！+30 经验"
+      },
+      "id": "stargarden.math2"
+    },
+    {
+      "type": "choice",
+      "text": "花园中间有一棵月亮树，树上挂满了发光的灯笼。",
+      "options": [
+        {
+          "text": "🌕 摘一个月亮灯笼",
+          "reward": "灯笼里面装满了星尘！",
+          "item": "star_fragment",
+          "chance": 0.3
+        },
+        {
+          "text": "🦊 跟着星狐的脚印走",
+          "reward": "脚印尽头有一块月亮形状的糕点！",
+          "item": "moon_cake",
+          "chance": 0.4
+        }
+      ],
+      "id": "stargarden.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "星座图案突然在空中亮起，一个身影从星光中走了出来……",
+      "id": "stargarden.encounter4"
+    }
+  ]
+}

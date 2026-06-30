@@ -1,0 +1,58 @@
+{
+  "id": "forest",
+  "name": "神秘森林",
+  "emoji": "🌲",
+  "chapter": 1,
+  "chapter_name": "起点花园",
+  "min_level": 1,
+  "danger_level": 1,
+  "events": [
+    {
+      "type": "narrate",
+      "text": "你小心翼翼地走进森林，脚下的落叶发出沙沙的声音……",
+      "id": "forest.narrate0"
+    },
+    {
+      "type": "discover",
+      "emoji": "🍄",
+      "text": "你发现了一朵发光的蘑菇！轻轻摸了一下，它喷出了彩色的孢子。",
+      "item": "mushroom",
+      "chance": 0.5,
+      "id": "forest.discover1"
+    },
+    {
+      "type": "math",
+      "text": "一棵古树上刻着神秘算式，解开才能继续深入森林……",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 15,
+        "msg": "算式亮起金光，道路打开了！+15 经验"
+      },
+      "id": "forest.math2"
+    },
+    {
+      "type": "choice",
+      "text": "前方出现了两条小路，一条传来流水声，另一条飘着花香。",
+      "options": [
+        {
+          "text": "🌿 走流水小路",
+          "reward": "你在溪边发现了一片闪亮的树叶！",
+          "item": "leaf",
+          "chance": 0.4
+        },
+        {
+          "text": "🌸 走花香小路",
+          "reward": "花瓣间藏着一块小石头，上面刻着星星图案！",
+          "item": "stone",
+          "chance": 0.3
+        }
+      ],
+      "id": "forest.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "草丛里窸窸窣窣，有什么东西在动……",
+      "id": "forest.encounter4"
+    }
+  ]
+}
