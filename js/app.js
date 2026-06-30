@@ -295,6 +295,170 @@ function spendPoints(n) {
     return true;
 }
 
+// ============ 加分/扣分项目弹窗 (point-item modal) ============
+// 预设项来自 data/point-items.json；自定义项存 localStorage['petbank_custom_items'] 并合并展示。
+// 加分复用 addGrowthPoints；扣分用 deductGrowthPoints（允许扣到负数，区别于消费预检的 spendPoints）。
+let pointItems = { add: [], deduct: [] };
+let piMode = 'add';                 // 'add' | 'deduct'
+let piCustomItems = [];             // [{emoji,name,pts,mode}]
+const PI_DEFAULT_EMOJI = { add: '⭐', deduct: '⚠️' };
+
+async function loadPointItems() {
+    try {
+        const resp = await fetch('data/point-items.json');
+        if (resp.ok) {
+            const data = await resp.json();
+            pointItems.add = Array.isArray(data.add) ? data.add : [];
+            pointItems.deduct = Array.isArray(data.deduct) ? data.deduct : [];
+        }
+    } catch (e) { console.warn('point-items.json 加载失败:', e); }
+    try { piCustomItems = JSON.parse(localStorage.getItem('petbank_custom_items') || '[]'); }
+    catch (e) { piCustomItems = []; }
+}
+
+// 扣分（惩罚语义）：允许 totalPoints 变为负数。addGrowthPoints 会把 <0 截断到 0，spendPoints 会预检拒绝。
+function deductGrowthPoints(pts) {
+    totalPoints -= Math.max(0, Math.floor(pts));
+    saveAppState();
+    updateStats();
+    return totalPoints;
+}
+
+function getPiList(mode) {
+    const base = (pointItems[mode] || []).map(it => Object.assign({}, it, { _custom: false }));
+    const custom = piCustomItems.filter(it => it.mode === mode).map(it => Object.assign({}, it, { _custom: true }));
+    return base.concat(custom);
+}
+// 删除已收藏的自定义项（按唯一 id）
+function removeCustomItem(item) {
+    if (!item || !item.id) return;
+    piCustomItems = piCustomItems.filter(it => it.id !== item.id);
+    try { localStorage.setItem('petbank_custom_items', JSON.stringify(piCustomItems)); } catch (e) {}
+}
+
+function openPointItemModal() {
+    const modal = document.getElementById('pointItemModal');
+    if (!modal) return;
+    piMode = 'add';
+    const si = document.getElementById('piSearchInput'); if (si) si.value = '';
+    syncPiTabs(); syncPiHeader(); renderPointItems();
+    modal.classList.add('show');
+}
+function closePointItemModal() {
+    const m = document.getElementById('pointItemModal'); if (m) m.classList.remove('show');
+}
+function switchPiMode(mode) {
+    piMode = mode;
+    const si = document.getElementById('piSearchInput'); if (si) si.value = '';
+    syncPiTabs(); syncPiHeader(); renderPointItems();
+}
+function syncPiTabs() {
+    document.querySelectorAll('.pi-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === piMode));
+    const m = document.querySelector('.pi-modal'); if (m) m.classList.toggle('is-deduct', piMode === 'deduct');
+}
+function syncPiHeader() {
+    const mt = document.getElementById('piModeText'); if (mt) mt.textContent = piMode === 'add' ? '加分' : '扣分';
+    const img = document.getElementById('piPetImg');
+    const stage = (window.PetSystem && typeof PetSystem.getCurrentStageImage === 'function') ? PetSystem.getCurrentStageImage() : null;
+    if (img && stage) img.src = stage;
+    const cn = document.getElementById('piChildName');
+    if (cn) {
+        const p = (window.ProfileManager && typeof ProfileManager.getActive === 'function') ? ProfileManager.getActive() : null;
+        cn.textContent = (p && p.name) ? p.name : '宝贝';
+    }
+}
+function escapePiHtml(s) {
+    return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+function renderPointItems() {
+    const grid = document.getElementById('piGrid'); if (!grid) return;
+    const kw = (document.getElementById('piSearchInput').value || '').trim().toLowerCase();
+    const list = getPiList(piMode).filter(it => !kw || (it.name || '').toLowerCase().includes(kw));
+    const sign = piMode === 'add' ? '+' : '-';
+    const cls = piMode === 'add' ? 'pi-add' : 'pi-deduct';
+    const defEmoji = PI_DEFAULT_EMOJI[piMode];
+    grid.innerHTML = list.length ? list.map((it, i) => `
+        <button class="pi-item ${cls} ${it._custom ? 'pi-is-custom' : ''}" data-idx="${i}">
+            <span class="pi-item-emoji">${it.emoji || defEmoji}</span>
+            <span class="pi-item-name">${escapePiHtml(it.name || '')}</span>
+            <span class="pi-item-pts">${sign}${Math.max(1, Math.floor(it.pts || 1))}</span>
+            ${it._custom ? '<span class="pi-item-del" data-del="' + i + '" title="删除">×</span>' : ''}
+        </button>`).join('') : `<p class="pi-empty">没有匹配的项目</p>`;
+    grid.querySelectorAll('.pi-item').forEach(el => {
+        el.addEventListener('click', () => {
+            const idx = parseInt(el.dataset.idx, 10);
+            const item = list[idx];
+            if (item) applyPointItem(item, el);
+        });
+    });
+    grid.querySelectorAll('.pi-item-del').forEach(d => {
+        d.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const idx = parseInt(d.dataset.del, 10);
+            const item = list[idx];
+            if (item && confirm('删除自定义项「' + (item.name || '') + '」？')) {
+                removeCustomItem(item);
+                renderPointItems();
+            }
+        });
+    });
+}
+function filterPointItems() { renderPointItems(); }
+function applyPointItem(item, originEl) {
+    const pts = Math.max(1, Math.floor(item.pts || 1));
+    if (piMode === 'add') { addGrowthPoints(pts); floatPointFeedback('+' + pts, true, originEl); }
+    else { deductGrowthPoints(pts); floatPointFeedback('-' + pts, false, originEl); }
+    updateRewardPetCard();
+}
+function applyCustomItem() {
+    const emojiEl = document.getElementById('piCustomEmoji');
+    const nameEl = document.getElementById('piCustomName');
+    const ptsEl = document.getElementById('piCustomPts');
+    let emoji = (emojiEl && emojiEl.value || '').trim();
+    let name = (nameEl && nameEl.value || '').trim();
+    let pts = parseInt(ptsEl && ptsEl.value, 10);
+    if (!Number.isFinite(pts) || pts < 1) pts = 1;
+    if (!name) { if (nameEl) nameEl.focus(); return; }   // 必须填项目名
+    const item = {
+        id: 'c' + Date.now() + Math.random().toString(36).slice(2, 6),
+        emoji: emoji || PI_DEFAULT_EMOJI[piMode],
+        name: name, pts: pts, mode: piMode
+    };
+    try {
+        piCustomItems.push(item);
+        localStorage.setItem('petbank_custom_items', JSON.stringify(piCustomItems));
+    } catch (e) {}
+    applyPointItem(item, document.getElementById('piCustomBtn'));
+    if (emojiEl) emojiEl.value = '';
+    if (nameEl) nameEl.value = '';
+    if (ptsEl) ptsEl.value = 1;
+    renderPointItems();
+}
+// 浮动 +N/-N 反馈：在被点击的项目按钮（或形象卡）上向上飘起
+function floatPointFeedback(text, isAdd, el) {
+    const host = el || document.getElementById('rewardPetCard');
+    if (!host) return;
+    const f = document.createElement('div');
+    f.className = 'pi-float ' + (isAdd ? 'pi-float-add' : 'pi-float-deduct');
+    f.textContent = text;
+    host.appendChild(f);
+    setTimeout(() => f.remove(), 1100);
+}
+// 刷新积分页顶部宠物形象卡（图/名/孩子名/当前积分）
+function updateRewardPetCard() {
+    const img = document.getElementById('rewardPetImg');
+    const petName = document.getElementById('rewardPetName');
+    const childName = document.getElementById('rewardChildName');
+    const cur = document.getElementById('rewardCurPoints');
+    const stage = (window.PetSystem && typeof PetSystem.getCurrentStageImage === 'function') ? PetSystem.getCurrentStageImage() : null;
+    if (img) img.src = stage || 'assets/pets/poses/dog_idle.webp';
+    const p = (window.ProfileManager && typeof ProfileManager.getActive === 'function') ? ProfileManager.getActive() : null;
+    if (childName) childName.textContent = (p && p.name) ? p.name : '宝贝';
+    const pet = (window.PetSystem && typeof PetSystem.getState === 'function') ? PetSystem.getState() : null;
+    if (petName) petName.textContent = (pet && pet.name) ? pet.name : '点击伙伴开启奖惩';
+    if (cur) cur.textContent = (window.totalPoints != null) ? window.totalPoints : 0;
+}
+
 function completeRecommended() {
     const samples = [
         { dim: 'learning', task: '阅读 20 分钟', pts: 1 },
@@ -350,6 +514,7 @@ function switchPage(page) {
     if (page === 'explore') void renderExplorePage();
     if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
     if (page === 'inventory') renderInventoryPage();
+    if (page === 'today') updateRewardPetCard();
     if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
     if (page === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
@@ -1294,6 +1459,13 @@ window.updateStats = updateStats;
 window.updateTopPoints = updateTopPoints;
 window.addGrowthPoints = addGrowthPoints;
 window.spendPoints = spendPoints;
+window.deductGrowthPoints = deductGrowthPoints;
+window.openPointItemModal = openPointItemModal;
+window.closePointItemModal = closePointItemModal;
+window.switchPiMode = switchPiMode;
+window.filterPointItems = filterPointItems;
+window.applyCustomItem = applyCustomItem;
+window.updateRewardPetCard = updateRewardPetCard;
 window.renderAll = renderAll;
 window.saveAppState = saveAppState;
 
@@ -1309,6 +1481,8 @@ async function init() {
     PetSystem.load();
     InventorySystem.load();
     await InventorySystem.loadItemsData();
+    await loadPointItems();
+    updateRewardPetCard();
     await ExplorationSystem.loadScenes();
     // 战斗深化：预加载技能定义表 data/skills.json
     if (typeof PetSystem.loadSkills === 'function') {

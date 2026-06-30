@@ -195,6 +195,20 @@
                     <button class="hub-nav-btn" onclick="switchPage('shop')">🏪 兑换商店</button>
                     <button class="hub-nav-btn" onclick="switchPage('inventory')">🎒 背包</button>
                 </div>
+                <!-- 可点击宠物形象卡：点击弹出加分/扣分项目弹窗 -->
+                <div class="reward-pet-card" id="rewardPetCard" onclick="openPointItemModal()" role="button" tabindex="0" title="点击给 TA 加分或扣分">
+                    <div class="reward-pet-avatar">
+                        <img id="rewardPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物立绘">
+                    </div>
+                    <div class="reward-pet-copy">
+                        <p class="reward-pet-kicker">给 <span id="rewardChildName">宝贝</span> 加分 / 扣分</p>
+                        <h3 id="rewardPetName">点击伙伴开启奖惩</h3>
+                        <p class="reward-pet-hint">当前成长分 <strong id="rewardCurPoints">0</strong> · 轻触立绘即可操作</p>
+                    </div>
+                    <div class="reward-pet-cta">
+                        <span class="reward-pet-cta-btn">＋ － 积分</span>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header flex items-center justify-between">
                         <div><h2 class="text-lg font-bold">今日成长任务</h2><p class="text-xs mt-1 text-muted">完成即得分，每一分都算数</p></div>
@@ -435,6 +449,36 @@
     <div id="chest-anim-modal">
         <div id="chest-anim-icon"></div>
         <div id="chest-anim-reward"></div>
+    </div>
+
+    <!-- 加分/扣分项目选择弹窗 -->
+    <div id="pointItemModal" class="modal">
+        <div class="modal-content pi-modal">
+            <div class="pi-header">
+                <button class="pi-close" onclick="closePointItemModal()" aria-label="关闭">&times;</button>
+                <div class="pi-pet"><img id="piPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物"></div>
+                <h3 class="pi-title">选择项目</h3>
+                <p class="pi-sub">给 <span class="pi-child" id="piChildName">宝贝</span> <span id="piModeText">加分</span></p>
+            </div>
+            <div class="pi-tabs">
+                <button class="pi-tab active" data-mode="add" onclick="switchPiMode('add')">＋ 加分</button>
+                <button class="pi-tab" data-mode="deduct" onclick="switchPiMode('deduct')">－ 扣分</button>
+            </div>
+            <div class="pi-search">
+                <input type="text" id="piSearchInput" placeholder="搜索项目…" oninput="filterPointItems()">
+            </div>
+            <div class="pi-grid" id="piGrid"></div>
+            <div class="pi-custom">
+                <div class="pi-custom-title">✏️ 自定义项目（输入名称和分数，自动收藏 · 长按列表项可删除）</div>
+                <div class="pi-custom-row">
+                    <input type="text" id="piCustomEmoji" class="pi-custom-emoji" placeholder="⭐" maxlength="2" title="图标（可选）">
+                    <input type="text" id="piCustomName" class="pi-custom-name" placeholder="项目名称">
+                    <input type="number" id="piCustomPts" class="pi-custom-pts" placeholder="分数" min="1" value="1">
+                    <button class="pi-custom-btn" id="piCustomBtn" onclick="applyCustomItem()">添加</button>
+                </div>
+            </div>
+            <p class="pi-tip">✨ 点击项目直接操作</p>
+        </div>
     </div>
 
     <!-- Scripts: pet.js must load first (PetSystem), then modules, then app.js last -->

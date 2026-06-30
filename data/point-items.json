@@ -1,0 +1,25 @@
+{
+  "_comment": "加分/扣分预设项目。emoji=图标, name=项目名, pts=分值(均为正数, 加减由弹窗 mode 决定)。自定义项存 localStorage['petbank_custom_items'], 结构相同并合并展示。",
+  "add": [
+    { "emoji": "🙋", "name": "积极发言", "pts": 1 },
+    { "emoji": "📝", "name": "作业优秀", "pts": 2 },
+    { "emoji": "📈", "name": "进步明显", "pts": 3 },
+    { "emoji": "💯", "name": "成绩满分", "pts": 5 },
+    { "emoji": "❤️", "name": "乐于助人", "pts": 2 },
+    { "emoji": "📖", "name": "阅读30分钟", "pts": 1 },
+    { "emoji": "🏃", "name": "坚持运动", "pts": 1 },
+    { "emoji": "🧹", "name": "主动家务", "pts": 2 },
+    { "emoji": "🤝", "name": "文明礼貌", "pts": 1 },
+    { "emoji": "🎨", "name": "兴趣练习", "pts": 2 }
+  ],
+  "deduct": [
+    { "emoji": "⏰", "name": "迟到早退", "pts": 1 },
+    { "emoji": "🚫", "name": "作业未完成", "pts": 2 },
+    { "emoji": "📱", "name": "沉迷手机", "pts": 2 },
+    { "emoji": "😠", "name": "顶撞长辈", "pts": 3 },
+    { "emoji": "😴", "name": "赖床贪睡", "pts": 1 },
+    { "emoji": "🍟", "name": "挑食浪费", "pts": 1 },
+    { "emoji": "💬", "name": "说谎隐瞒", "pts": 3 },
+    { "emoji": "🗑️", "name": "乱丢垃圾", "pts": 1 }
+  ]
+}
