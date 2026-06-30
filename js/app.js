@@ -341,7 +341,10 @@ function switchPage(page) {
     const tabPage = (PAGE_TO_TAB[page] || page);
     const tab = document.querySelector(`.nav-tab[data-page="${tabPage}"]`);
     if (tab) tab.classList.add('active');
+    // sidebar 只在积分首页(map)显示，其他页面全宽独占 → 每个 tab 都是独立完整页面
+    document.body.classList.toggle('no-sidebar', page !== 'map');
     // 切换到特定页面时执行特定渲染
+    if (page === 'map' && window.ExplorationSystem) ExplorationSystem.renderSceneGridMap();
     if (page === 'pet') renderPetPage();
     if (page === 'explore') void renderExplorePage();
     if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
@@ -350,6 +353,8 @@ function switchPage(page) {
     if (page === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
     if (page === 'home' && window.HomeSystem) HomeSystem.renderUI('home-container');
+    if (page === 'settings' && window.SettingsPage) SettingsPage.render();
+    if (page === 'settings' && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') MathPKGame.renderDifficultySetting('settings-math-diff');
 }
 
 window.switchPage = switchPage;
@@ -813,55 +818,8 @@ async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
         } catch (e) {}
     }
     await ExplorationSystem.loadScenes();
-    ExplorationSystem.renderSceneGridMap(selectedSceneId);
-    const grid = document.getElementById('sceneGrid');
-    if (!grid) return;
-    const scenes = ExplorationSystem.getAllScenes();
-    if (!scenes.length) {
-        grid.innerHTML = '';
-        renderScenePreview(null);
-        return;
-    }
-
-    activeExploreSceneId = selectedSceneId && scenes.some((scene) => scene.id === selectedSceneId)
-        ? selectedSceneId
-        : scenes[0].id;
-    const activeScene = scenes.find((scene) => scene.id === activeExploreSceneId) || scenes[0];
-
-    grid.innerHTML = scenes.map((scene) => {
-        const unlocked = ExplorationSystem.isSceneUnlocked(scene);
-        const isActive = scene.id === activeExploreSceneId;
-        const lockNote = unlocked
-            ? '可立即出发'
-            : (scene.unlock_cost || 0) > 0
-                ? `${scene.unlock_cost} 积分解锁`
-                : `需要 Lv.${scene.min_level}`;
-        return `
-            <article class="scene-route-card ${unlocked ? '' : 'locked'} ${isActive ? 'active' : ''}" onclick="focusExploreScene('${scene.id}')">
-                <div class="scene-route-thumb">
-                    <img src="${scene.image}" alt="${scene.name}" loading="lazy">
-                </div>
-                <div>
-                    <div class="scene-route-title"><span>${scene.emoji}</span><span>${scene.name}</span></div>
-                    <p class="scene-route-desc">${scene.description}</p>
-                    <div class="scene-route-pills">
-                        <span>危险 ${scene.danger_level}</span>
-                        <span>❤️ -${scene.hp_cost}</span>
-                        <span>${scene.duration}</span>
-                        <span>${unlocked ? '已开放' : `Lv.${scene.min_level}`}</span>
-                    </div>
-                </div>
-                <div class="scene-route-action">
-                    <div class="scene-route-note">${lockNote}</div>
-                    <button class="${unlocked ? 'btn-primary' : 'btn-secondary'}" onclick="event.stopPropagation(); ${unlocked ? `ExplorationSystem.goExplore('${scene.id}')` : `ExplorationSystem.tryUnlock('${scene.id}')`}">
-                        ${unlocked ? '出发探索' : '尝试解锁'}
-                    </button>
-                </div>
-            </article>
-        `;
-    }).join('');
-
-    renderScenePreview(activeScene);
+    // 探索 tab 复用首页路线地图（MAP_LAYOUT 坐标 + SVG 连线 + 点击 goExplore），渲染到 #sceneGrid
+    ExplorationSystem.renderSceneGridMap(selectedSceneId, 'sceneGrid');
     if (window.lucide) lucide.createIcons();
 }
 
@@ -1284,6 +1242,7 @@ function renderAll() {
     updateStats();
     renderPetPage();
     void renderExplorePage();
+    if (window.ExplorationSystem) ExplorationSystem.renderSceneGridMap();  // 首页路线地图（双入口）
     renderInventoryPage();
     if (window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (window.lucide) lucide.createIcons();

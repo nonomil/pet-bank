@@ -163,8 +163,8 @@ const ExplorationSystem = (function () {
         `;
     }
 
-    function renderSceneGridMap(activeSceneId = null) {
-        const board = document.getElementById('sceneGridMap');
+    function renderSceneGridMap(activeSceneId = null, boardId = 'sceneGridMap') {
+        const board = document.getElementById(boardId);
         if (!board || !scenes) return;
 
         const sceneMap = new Map(getAllScenes().map((scene) => [scene.id, scene]));

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pet-bank · 暑假成长积分银行</title>
+    <title>成长伙伴 · 萌宠冒险岛</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/walk.css">
     <link rel="stylesheet" href="css/card-collection.css">
+    <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/animations.css">
 </head>
 <body class="map-page-bg">
@@ -18,9 +19,9 @@
     <div class="top-nav">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-6">
             <div class="flex items-center gap-3">
-                <div class="logo-circle">P</div>
+                <div class="logo-circle">萌</div>
                 <div>
-                    <h1 class="text-base font-bold">pet-bank · 暑假成长积分银行</h1>
+                    <h1 class="text-base font-bold">成长伙伴 · 萌宠冒险岛</h1>
                     <p class="text-xs text-muted">任务 · 积分 · 宠物养成 · 探索冒险</p>
                 </div>
             </div>
@@ -84,7 +85,14 @@
                     <button class="hub-nav-btn" onclick="switchPage('today')">📝 今日打卡</button>
                     <button class="hub-nav-btn" onclick="switchPage('review')">📅 每周复盘</button>
                     <button class="hub-nav-btn" onclick="switchPage('mathpk')">🔢 数学PK</button>
+                    <button class="hub-nav-btn" onclick="switchPage('settings')">⚙️ 设置</button>
                 </div>
+                <section class="showcase" id="showcase" aria-label="项目功能展示">
+                    <div class="showcase-track" id="showcaseTrack"></div>
+                    <button class="showcase-arrow showcase-prev" id="showcasePrev" type="button" aria-label="上一个">‹</button>
+                    <button class="showcase-arrow showcase-next" id="showcaseNext" type="button" aria-label="下一个">›</button>
+                    <div class="showcase-dots" id="showcaseDots"></div>
+                </section>
                 <section class="map-hero">
                     <div class="map-hero-copy">
                         <p class="map-eyebrow">成长地图 / 纸面路线</p>
@@ -173,6 +181,21 @@
                             <div class="warehouse-grid" id="treasureWarehouseGrid"></div>
                         </section>
                     </aside>
+                </section>
+            </div>
+
+            <!-- PAGE: 设置 / 账号管理 -->
+            <div class="page" id="page-settings">
+                <section class="map-hero" style="margin-bottom:16px;">
+                    <div class="map-hero-copy">
+                        <p class="map-eyebrow">设置 / 账号管理</p>
+                        <h2>管理所有孩子的账号</h2>
+                        <p>在这里新增、改名或删除孩子账号。切换账号请点右上角头像。</p>
+                    </div>
+                </section>
+                <section class="map-stage-panel">
+                    <div id="settings-account-list"></div>
+                    <div id="settings-math-diff"></div>
                 </section>
             </div>
 
@@ -335,21 +358,20 @@
                 <div id="home-container"></div>
             </div>
 
-            <!-- PAGE: 探索冒险 -->
+            <!-- PAGE: 探索冒险（路线地图） -->
             <div class="page" id="page-explore">
                 <section class="explore-hero">
-                    <div class="explore-hero-copy">
+                    <div class="explore-hero-copy" style="grid-column:1/-1">
                         <p class="map-eyebrow">探索冒险 / 场景路线</p>
-                        <h2>选一个场景，再决定要不要出发</h2>
-                        <p>先看预览和风险，再点击按钮真正进入探索。这样地图首页和探索页会形成一条连贯的旅程。</p>
-                    </div>
-                    <div class="scene-preview" id="sceneFocusCard">
-                        <div class="scene-preview-empty">选择一个场景预览</div>
+                        <h2>沿着星光路线，一站站探索冒险</h2>
+                        <p>点击地图上的场景卡片即可出发。金色星点已开放，灰色尚未解锁，发光路线把场景串成一条旅程。</p>
                     </div>
                 </section>
-
-                <section class="scene-route-list" id="sceneGrid">
-                    <!-- 由 app.js 渲染 -->
+                <section class="map-board-shell">
+                    <div class="map-board-surface">
+                        <div class="map-board-texture"></div>
+                        <div id="sceneGrid" class="map-board"><!-- 由 exploration.js 渲染路线地图 --></div>
+                    </div>
                 </section>
             </div>
 
@@ -439,6 +461,6 @@
     <script src="js/tools.js"></script>
     <script src="js/profiles.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/voice.js"></script>
+    <script src="js/showcase.js"></script>
 </body>
 </html>
