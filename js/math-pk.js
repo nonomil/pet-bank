@@ -1,247 +1,340 @@
 /**
- * math-pk.js - 数学PK游戏模块
- * 功能：随机数学题、积分奖励、难度递进、可视化反馈
+ * math-pk.js - 数学 PK 竞技台（人机对战）
+ *
+ * 全屏竞技台：左=人类选手，右=机器人选手，同题竞速。
+ * 每轮同一题，机器人有「思考倒计时」（按难度），人若在机器人之前答对则人赢该轮；
+ * 答错不结束（继续抢答但机器人仍在计时）。共 5 轮，比胜场，人赢获成长积分。
+ * 难度从「设置」页读取（petbank_math_difficulty），中等档约 30% 出 CMATH 应用题。
+ * 美术：assets/arena/（Agnes 生成：arena-bg / human-kid / robot-rival）。
  */
 (function() {
     'use strict';
 
     // ============ 配置与状态 ============
     const CONFIG = {
-        DURATION: 30, // 游戏时长（秒）
-        BASE_SCORE: 10, // 基础单题得分
-        MAX_LEVEL_SCORE: 50, // 最高单题得分（含连击）
-        STORAGE_KEY_HIGH_SCORE: 'petbank_math_high_score'
+        TOTAL_ROUNDS: 5,         // 每局轮数
+        BASE_SCORE: 10,          // 赢一轮基础分
+        WIN_BONUS: 25,           // 赢得整局额外奖励
+        WORD_RATIO: 0.3,         // medium 出 CMATH 应用题概率
+        STORAGE_KEY_HIGH_SCORE: 'petbank_math_high_score',
+        STORAGE_KEY_DIFFICULTY: 'petbank_math_difficulty'
     };
 
     let state = {
         isPlaying: false,
-        timeLeft: CONFIG.DURATION,
+        roundClosing: false,     // 轮次结算等待期，锁输入
+        mathDifficulty: 'easy',
         currentQuestion: null,
+        currentInput: '',
+        // 竞速
+        round: 0,
+        humanWins: 0,
+        robotWins: 0,
+        roundStartTs: 0,
+        robotThinkMs: 0,
+        robotTimer: null,
+        roundResolved: false,
+        // 计分
         score: 0,
         combo: 0,
         maxCombo: 0,
-        correctCount: 0,
-        totalCount: 0,
-        timerInterval: null,
-        questionIndex: 0 // 用于难度递进判断
+        correctCount: 0
     };
+
+    // CMATH 应用题池（data/math-cmath.json，来源 XiaoMi/cmath CC BY 4.0）
+    let CMATH_POOL = null;
+    let _cmathLoading = false;
+    function _ensureCmathPool() {
+        if (CMATH_POOL || _cmathLoading) return;
+        _cmathLoading = true;
+        fetch('data/math-cmath.json')
+            .then(r => r.json())
+            .then(d => { CMATH_POOL = d.grades || {}; _cmathLoading = false; })
+            .catch(() => { _cmathLoading = false; });
+    }
+
+    let _lastDiffContainer = null;
 
     // ============ 工具函数 ============
     const utils = {
-        getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        },
-        // 生成题目
-        generateQuestion(index) {
-            let a, b, op, answer;
-            // 难度递进逻辑
-            if (index < 5) {
-                // 简单：20以内加减
-                op = Math.random() > 0.5 ? '+' : '-';
-                if (op === '+') {
-                    a = this.getRandomInt(0, 15);
-                    b = this.getRandomInt(0, 15 - a);
-                    answer = a + b;
-                } else {
-                    a = this.getRandomInt(5, 20);
-                    b = this.getRandomInt(0, a);
-                    answer = a - b;
-                }
-            } else if (index < 15) {
-                // 中等：100以内加减
-                op = Math.random() > 0.5 ? '+' : '-';
-                if (op === '+') {
-                    a = this.getRandomInt(10, 80);
-                    b = this.getRandomInt(1, 100 - a);
-                    answer = a + b;
-                } else {
-                    a = this.getRandomInt(30, 100);
-                    b = this.getRandomInt(1, a);
-                    answer = a - b;
-                }
+        getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; },
+        _addsub(maxN) {
+            const op = Math.random() > 0.5 ? '+' : '-';
+            let a, b, answer;
+            if (op === '+') {
+                a = this.getRandomInt(1, maxN - 1);
+                b = this.getRandomInt(1, maxN - a);
+                answer = a + b;
             } else {
-                // 困难：乘除
-                const modes = ['*', '/'];
-                op = modes[this.getRandomInt(0, 1)];
-                if (op === '*') {
-                    a = this.getRandomInt(2, 12);
-                    b = this.getRandomInt(2, 9);
-                    answer = a * b;
-                } else {
-                    // 除法保证整除
-                    answer = this.getRandomInt(2, 10);
-                    b = this.getRandomInt(2, 10);
-                    a = answer * b;
-                    op = '÷';
-                }
+                a = this.getRandomInt(1, maxN);
+                b = this.getRandomInt(0, a);
+                answer = a - b;
             }
-
-            // 统一符号显示
-            const displayOp = op === '*' ? '×' : op;
-            return { text: `${a} ${displayOp} ${b}`, answer, a, b, op };
+            return { text: `${a} ${op} ${b}`, answer, op };
         },
-        // 生成4个选项
-        generateOptions(answer) {
-            const options = new Set([answer]);
-            while (options.size < 4) {
-                // 选项范围在答案附近，防止太离谱
-                const offset = this.getRandomInt(-10, 10);
-                const opt = answer + offset;
-                if (opt >= 0 && opt !== answer) {
-                    options.add(opt);
-                }
-            }
-            return Array.from(options).sort(() => Math.random() - 0.5);
+        _mul(amin, amax, bmin, bmax) {
+            const a = this.getRandomInt(amin, amax);
+            const b = this.getRandomInt(bmin, bmax);
+            return { text: `${a} × ${b}`, answer: a * b, op: '*' };
+        },
+        _div() {
+            const answer = this.getRandomInt(2, 10);
+            const b = this.getRandomInt(2, 10);
+            const a = answer * b;
+            return { text: `${a} ÷ ${b}`, answer, op: '/' };
+        },
+        generateQuestion(difficulty) {
+            const r = Math.random();
+            if (difficulty === 'easy') return r < 0.35 ? this._mul(2, 5, 2, 5) : this._addsub(20);
+            if (difficulty === 'medium') return r < 0.35 ? this._mul(2, 9, 2, 9) : this._addsub(100);
+            return r < 0.5 ? this._mul(2, 12, 2, 9) : this._div();
+        },
+        generateWordQuestion(difficulty) {
+            const grade = difficulty === 'easy' ? '1' : '2';
+            const arr = (CMATH_POOL && CMATH_POOL[grade]) || [];
+            if (arr.length === 0) return null;
+            const item = arr[this.getRandomInt(0, arr.length - 1)];
+            return { text: item.q, answer: item.a, isWord: true };
         }
     };
 
     // ============ UI 渲染 ============
     const render = {
-        // 创建游戏容器
+        // 全屏竞技台外壳 + 起始大厅
         createContainer(containerId) {
             const container = document.getElementById(containerId);
             if (!container) return null;
+            _ensureCmathPool();
             container.innerHTML = `
-                <div class="math-game-wrapper">
+                <div class="math-arena" id="math-arena">
                     <style>
-                        .math-game-wrapper {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            min-height: 60vh;
-                            font-family: inherit;
-                        }
-                        .math-card {
-                            background: white;
-                            border-radius: 24px;
-                            padding: 2rem;
-                            width: 100%;
-                            max-width: 400px;
-                            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-                            text-align: center;
-                        }
-                        .math-question {
-                            font-size: 3.5rem;
-                            font-weight: 900;
-                            margin-bottom: 2rem;
-                            color: #1f2937;
-                        }
-                        .math-options {
-                            display: grid;
-                            grid-template-columns: 1fr 1fr;
-                            gap: 1rem;
-                        }
-                        .math-btn {
-                            padding: 1rem;
-                            font-size: 1.5rem;
-                            font-weight: bold;
-                            border-radius: 16px;
-                            border: 2px solid #e5e7eb;
-                            background: white;
-                            cursor: pointer;
-                            transition: all 0.2s;
-                        }
-                        .math-btn:active { transform: scale(0.95); }
-                        .math-btn.correct {
-                            background-color: #10b981 !important;
-                            color: white !important;
-                            border-color: #10b981 !important;
-                            animation: math-flash-green 0.5s ease;
-                        }
-                        .math-btn.wrong {
-                            background-color: #ef4444 !important;
-                            color: white !important;
-                            border-color: #ef4444 !important;
-                            animation: math-shake 0.4s ease;
-                        }
-                        .math-timer {
-                            font-size: 1.25rem;
-                            font-weight: bold;
-                            color: #ef4444;
-                            margin-bottom: 1rem;
-                        }
-                        .math-stats {
-                            display: flex;
-                            justify-content: space-between;
-                            margin-bottom: 1rem;
-                            font-size: 0.875rem;
-                            color: #6b7280;
-                        }
-                        .math-result-page {
-                            text-align: center;
-                        }
-                        .math-result-score {
-                            font-size: 4rem;
-                            font-weight: 900;
-                            color: #8b5cf6;
-                        }
-                        @keyframes math-flash-green {
-                            0% { opacity: 1; }
-                            50% { opacity: 0.5; }
-                            100% { opacity: 1; }
-                        }
-                        @keyframes math-shake {
-                            0%, 100% { transform: translateX(0); }
-                            25% { transform: translateX(-10px); }
-                            75% { transform: translateX(10px); }
+                        .math-arena { position:fixed; inset:0; z-index:1000; color:#fff; font-family:inherit; overflow:hidden;
+                            background:#0f1419 url('assets/arena/arena-bg.png') center/cover no-repeat; display:flex; flex-direction:column; }
+                        .math-arena::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,12,22,.5), rgba(8,12,22,.78)); }
+                        .arena-topbar { position:relative; z-index:3; display:flex; justify-content:space-between; align-items:center; padding:14px 22px; gap:10px; }
+                        .arena-pill { background:rgba(255,255,255,.13); backdrop-filter:blur(8px); padding:8px 16px; border-radius:999px; font-weight:700; font-size:14px; white-space:nowrap; }
+                        .arena-score { font-size:20px; letter-spacing:3px; }
+                        .arena-score b { color:#ffd166; font-size:24px; }
+                        .arena-exit { background:rgba(255,255,255,.13); border:none; color:#fff; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:18px; }
+                        .arena-exit:hover { background:rgba(255,255,255,.24); }
+                        .arena-stage { position:relative; z-index:2; flex:1; display:grid; grid-template-columns:1fr 1.15fr 1fr; grid-template-areas:'human center robot'; gap:10px; padding:4px 20px 18px; min-height:0; }
+                        .arena-side { grid-area:auto; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; transition:filter .3s; }
+                        .arena-side.human { grid-area:human; }
+                        .arena-side.robot { grid-area:robot; }
+                        .arena-avatar { width:150px; height:150px; object-fit:contain; filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); transition:filter .3s; }
+                        .arena-side.dim .arena-avatar { filter:grayscale(.7) brightness(.55); }
+                        .arena-side.win .arena-avatar { filter:drop-shadow(0 0 20px rgba(110,231,183,.95)); }
+                        .arena-name { font-size:18px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,.5); }
+                        .arena-status { font-size:13px; background:rgba(255,255,255,.15); padding:5px 14px; border-radius:999px; min-height:26px; display:flex; align-items:center; }
+                        .arena-time { font-size:13px; color:#ffd166; font-weight:700; min-height:18px; }
+                        .arena-thinkbar { width:130px; height:9px; background:rgba(255,255,255,.2); border-radius:999px; overflow:hidden; }
+                        .arena-thinkbar > i { display:block; height:100%; width:100%; background:linear-gradient(90deg,#6ee7b7,#22d3ee); }
+                        .arena-center { grid-area:center; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
+                        .arena-qtag { font-size:.72rem; background:rgba(255,255,255,.22); padding:3px 12px; border-radius:999px; }
+                        .arena-question { font-size:3.2rem; font-weight:900; text-shadow:0 3px 12px rgba(0,0,0,.65); text-align:center; line-height:1.1; }
+                        .arena-question.word { font-size:1.15rem; font-weight:600; line-height:1.6; max-width:92%; text-shadow:0 2px 6px rgba(0,0,0,.7); }
+                        .arena-display { background:rgba(15,20,29,.85); color:#6ee7b7; font-family:'Noto Sans SC',monospace; font-size:2rem; font-weight:800; padding:10px 22px; border-radius:14px; min-width:170px; text-align:right; letter-spacing:3px; }
+                        .arena-display.empty { color:rgba(255,255,255,.45); font-size:1rem; letter-spacing:0; font-weight:600; }
+                        .arena-display.shake { animation:arena-shake .35s ease; }
+                        .arena-keypad { display:grid; grid-template-columns:repeat(3,62px); gap:8px; }
+                        .arena-key { width:62px; height:54px; font-size:1.35rem; font-weight:800; color:#fff; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.22); border-radius:13px; cursor:pointer; transition:transform .08s, background .15s; user-select:none; }
+                        .arena-key:hover { background:rgba(255,255,255,.26); }
+                        .arena-key:active { transform:scale(.92); }
+                        .arena-key.clear { background:rgba(239,68,68,.28); }
+                        .arena-key.confirm { background:var(--sage-green,#7BAE8F); border-color:transparent; font-size:1rem; }
+                        .arena-vs { position:absolute; left:50%; top:40%; transform:translate(-50%,-50%); font-size:2.4rem; font-weight:900; color:rgba(255,255,255,.18); z-index:1; pointer-events:none; }
+                        .arena-toast { position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); z-index:6; font-size:1.5rem; font-weight:900; padding:16px 38px; border-radius:18px; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.5); display:none; }
+                        .arena-toast.show { display:block; animation:arena-pop .3s ease; }
+                        .arena-toast small { display:block; font-size:.85rem; font-weight:600; opacity:.9; margin-top:4px; }
+                        .arena-toast.win { background:linear-gradient(135deg,#10b981,#22d3ee); }
+                        .arena-toast.lose { background:linear-gradient(135deg,#ef4444,#f59e0b); }
+                        .arena-lobby { text-align:center; }
+                        .arena-lobby h2 { font-size:2.6rem; font-weight:900; text-shadow:0 4px 14px rgba(0,0,0,.6); margin-bottom:6px; }
+                        .arena-lobby p { color:rgba(255,255,255,.82); margin-bottom:4px; }
+                        .arena-btn { margin-top:14px; padding:15px 44px; font-size:1.25rem; font-weight:800; border:none; border-radius:999px; background:linear-gradient(135deg,var(--gold,#d4b96a),var(--sage-green,#7BAE8F)); color:#fff; cursor:pointer; box-shadow:0 10px 28px rgba(0,0,0,.35); transition:transform .1s; }
+                        .arena-btn:hover { transform:translateY(-2px); }
+                        @keyframes arena-pop { 0%{transform:translate(-50%,-50%) scale(.6);opacity:0;} 100%{transform:translate(-50%,-50%) scale(1);opacity:1;} }
+                        @keyframes arena-shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-7px);} 75%{transform:translateX(7px);} }
+                        @media (max-width:760px){
+                            .arena-stage { grid-template-columns:1fr 1fr; grid-template-areas:'human robot' 'center center'; }
+                            .arena-avatar { width:84px; height:84px; }
+                            .arena-name { font-size:14px; } .arena-status { font-size:11px; }
+                            .arena-thinkbar { width:90px; }
+                            .arena-question { font-size:2.4rem; } .arena-question.word { font-size:1rem; }
+                            .arena-keypad { grid-template-columns:repeat(3,54px); gap:6px; }
+                            .arena-key { width:54px; height:48px; font-size:1.15rem; }
+                            .arena-lobby h2 { font-size:1.8rem; }
                         }
                     </style>
-                    <div id="math-game-content">
-                        <div class="text-center">
-                            <h2 class="text-2xl font-bold mb-4">数学 PK 挑战</h2>
-                            <p class="text-sm text-muted mb-6">快速回答数学题，赚取成长积分！</p>
-                            <button class="btn-primary w-full" onclick="MathPKGame.start()">开始挑战</button>
-                            <div class="mt-4 text-xs text-muted">历史最高分: <span id="math-high-score">0</span></div>
+                    <div class="arena-topbar">
+                        <span class="arena-pill" id="arena-round-pill">数学 PK 竞技台</span>
+                        <span class="arena-pill arena-score" id="arena-score-pill">你 <b id="arena-human-score">0</b> : <b id="arena-robot-score">0</b> 机器人</span>
+                        <button class="arena-exit" title="退出" onclick="MathPKGame._exit()">✕</button>
+                    </div>
+                    <div class="arena-stage">
+                        <div class="arena-side human" id="arena-side-human">
+                            <img class="arena-avatar" src="assets/arena/human-kid.png" alt="你">
+                            <div class="arena-name">你</div>
+                            <div class="arena-status" id="arena-human-status">准备就绪</div>
+                            <div class="arena-time" id="arena-human-time"></div>
                         </div>
+                        <div class="arena-center" id="arena-center"></div>
+                        <div class="arena-side robot" id="arena-side-robot">
+                            <img class="arena-avatar" src="assets/arena/robot-rival.png" alt="机器人">
+                            <div class="arena-name">机器人</div>
+                            <div class="arena-status" id="arena-robot-status">准备就绪</div>
+                            <div class="arena-time" id="arena-robot-time"></div>
+                            <div class="arena-thinkbar" id="arena-robot-bar" style="display:none;"><i></i></div>
+                        </div>
+                        <div class="arena-vs">VS</div>
+                        <div class="arena-toast" id="arena-toast"></div>
                     </div>
                 </div>
             `;
+            this._lobby();
             return container;
         },
 
-        updateQuestionUI(question, options) {
-            const content = document.getElementById('math-game-content');
-            if (!content) return;
-
-            content.innerHTML = `
-                <div class="math-card">
-                    <div class="math-stats">
-                        <span>得分: <span id="math-current-score">${state.score}</span></span>
-                        <span>连击: <span id="math-current-combo">${state.combo}</span></span>
-                    </div>
-                    <div class="math-timer" id="math-timer-display">⏱️ ${state.timeLeft}s</div>
-                    <div class="math-question">${question.text}</div>
-                    <div class="math-options">
-                        ${options.map(opt => `<button class="math-btn" onclick="MathPKGame._handleAnswer(${opt})">${opt}</button>`).join('')}
-                    </div>
+        // 起始大厅
+        _lobby() {
+            const center = document.getElementById('arena-center');
+            if (!center) return;
+            const high = localStorage.getItem(CONFIG.STORAGE_KEY_HIGH_SCORE) || 0;
+            const diffNames = { easy: '简单', medium: '中等', hard: '困难' };
+            center.innerHTML = `
+                <div class="arena-lobby">
+                    <h2>🔢 数学 PK 竞技台</h2>
+                    <p>和机器人同题竞速，${CONFIG.TOTAL_ROUNDS} 局定胜负！</p>
+                    <p>当前难度：<b style="color:#ffd166;">${diffNames[state.mathDifficulty] || '简单'}</b>（在「设置」中修改）</p>
+                    <button class="arena-btn" onclick="MathPKGame.start()">开始对战</button>
+                    <p style="margin-top:14px;font-size:.8rem;opacity:.7;">历史最高分：${high}</p>
                 </div>
             `;
+            // 大厅态：隐藏机器人思考条、重置双方状态
+            const bar = document.getElementById('arena-robot-bar'); if (bar) bar.style.display = 'none';
+            this._setSide('human', { status: '准备就绪', time: '' });
+            this._setSide('robot', { status: '准备就绪', time: '' });
+            this._setSideClass('human', ''); this._setSideClass('robot', '');
         },
 
-        showResult(data) {
-            const content = document.getElementById('math-game-content');
-            if (!content) return;
+        // 对战中：题面 + 显示屏 + 键盘
+        match(question) {
+            const center = document.getElementById('arena-center');
+            if (!center) return;
+            const isWord = !!question.isWord;
+            const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(d =>
+                `<button class="arena-key" onclick="MathPKGame._inputDigit(${d})">${d}</button>`).join('');
+            center.innerHTML = `
+                ${isWord ? '<div class="arena-qtag">📝 应用题</div>' : ''}
+                <div class="arena-question ${isWord ? 'word' : ''}">${question.text}${isWord ? '' : ' ='}</div>
+                <div class="arena-display empty" id="arena-display">输入答案</div>
+                <div class="arena-keypad">
+                    ${keys}
+                    <button class="arena-key clear" onclick="MathPKGame._clearInput()">⌫ 清除</button>
+                    <button class="arena-key" onclick="MathPKGame._inputDigit(0)">0</button>
+                    <button class="arena-key confirm" onclick="MathPKGame._submitAnswer()">✓ 确认</button>
+                </div>
+            `;
+            // 双方进入思考态
+            this._setSide('human', { status: '思考中…', time: '' });
+            this._setSide('robot', { status: '思考中…', time: '' });
+            this._setSideClass('human', ''); this._setSideClass('robot', '');
+        },
 
-            content.innerHTML = `
-                <div class="math-card math-result-page">
-                    <h2 class="text-2xl font-bold mb-2">挑战结束!</h2>
-                    <div class="math-result-score">${data.earnedPoints}</div>
-                    <div class="text-sm text-muted mb-6">获得的成长积分</div>
-                    
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="bg-gray-50 p-3 rounded-xl">
-                            <div class="text-xs text-muted">正确率</div>
-                            <div class="font-bold">${data.accuracy}%</div>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded-xl">
-                            <div class="text-xs text-muted">最高连击</div>
-                            <div class="font-bold">${data.maxCombo}</div>
+        _setSide(who, opts) {
+            const s = document.getElementById(`arena-${who}-status`);
+            const t = document.getElementById(`arena-${who}-time`);
+            if (s && opts.status !== undefined) s.textContent = opts.status;
+            if (t && opts.time !== undefined) t.textContent = opts.time || '';
+        },
+        _setSideClass(who, cls) {
+            const el = document.getElementById(`arena-side-${who}`);
+            if (!el) return;
+            el.classList.remove('win', 'dim');
+            if (cls) el.classList.add(cls);
+        },
+        _setScore() {
+            const h = document.getElementById('arena-human-score');
+            const r = document.getElementById('arena-robot-score');
+            if (h) h.textContent = state.humanWins;
+            if (r) r.textContent = state.robotWins;
+        },
+        _setRoundPill(text) {
+            const el = document.getElementById('arena-round-pill');
+            if (el) el.textContent = text;
+        },
+
+        // 机器人思考条：100% → 0%（robotThinkMs 线性）
+        startRobotBar() {
+            const wrap = document.getElementById('arena-robot-bar');
+            if (!wrap) return;
+            wrap.style.display = '';
+            const bar = wrap.querySelector('i');
+            bar.style.transition = 'none';
+            bar.style.width = '100%';
+            void bar.offsetWidth; // 强制回流
+            bar.style.transition = `width ${state.robotThinkMs}ms linear`;
+            bar.style.width = '0%';
+        },
+
+        toast(html, type) {
+            const el = document.getElementById('arena-toast');
+            if (!el) return;
+            el.className = `arena-toast show ${type}`;
+            el.innerHTML = html;
+        },
+        hideToast() {
+            const el = document.getElementById('arena-toast');
+            if (el) el.classList.remove('show');
+        },
+
+        // 结算（覆盖中央）
+        result(data) {
+            const center = document.getElementById('arena-center');
+            if (!center) return;
+            const bar = document.getElementById('arena-robot-bar'); if (bar) bar.style.display = 'none';
+            const win = data.humanWins > data.robotWins;
+            center.innerHTML = `
+                <div class="arena-lobby">
+                    <h2 style="font-size:2rem;">${win ? '🏆 你赢了！' : (data.humanWins === data.robotWins ? '🤝 平局！' : '🤖 机器人赢了')}</h2>
+                    <p style="font-size:1.1rem;">比分 你 <b style="color:#ffd166;">${data.humanWins}</b> : <b style="color:#ffd166;">${data.robotWins}</b> 机器人</p>
+                    <p style="font-size:2.2rem;font-weight:900;color:#ffd166;margin-top:8px;">+${data.earnedPoints}</p>
+                    <p style="opacity:.8;">获得成长积分</p>
+                    <p style="margin-top:6px;opacity:.75;font-size:.85rem;">答对 ${data.correctCount}/${data.total} · 最高连击 ${data.maxCombo}</p>
+                    <button class="arena-btn" onclick="MathPKGame.start()">再来一局</button>
+                    <button class="arena-btn" style="margin-top:10px;background:rgba(255,255,255,.18);" onclick="MathPKGame.renderUI('math-pk-container')">返回大厅</button>
+                </div>
+            `;
+            this._setSideClass(win ? 'human' : 'robot', 'win');
+            this._setSideClass(win ? 'robot' : 'human', 'dim');
+        },
+
+        // 设置页：难度选择器
+        renderDifficultySetting(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            _lastDiffContainer = containerId;
+            const cur = state.mathDifficulty || 'easy';
+            const opts = [
+                { id: 'easy', label: '简单', desc: '20 以内加减 + 小乘法' },
+                { id: 'medium', label: '中等', desc: '100 以内加减 + 乘法 + 应用题' },
+                { id: 'hard', label: '困难', desc: '乘除（机器人更快）' }
+            ];
+            container.innerHTML = `
+                <div class="card" style="margin-top:16px;">
+                    <div class="card-header"><h3 class="text-sm font-bold">🔢 数学 PK 难度</h3></div>
+                    <div class="card-body">
+                        <p class="text-xs text-muted" style="margin-bottom:12px;">数学 PK 竞技台每局 ${CONFIG.TOTAL_ROUNDS} 轮，在此选择出题难度（也影响机器人速度）。</p>
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+                            ${opts.map(o => `
+                                <button data-diff="${o.id}" onclick="MathPKGame._setDifficulty('${o.id}')"
+                                    style="padding:14px 10px;border-radius:14px;cursor:pointer;text-align:center;border:2px solid ${cur === o.id ? 'transparent' : '#e5e7eb'};background:${cur === o.id ? 'var(--sage-green, #7BAE8F)' : '#f7f9f8'};color:${cur === o.id ? '#fff' : '#3f5e4a'};transition:all 0.15s;">
+                                    <div style="font-weight:700;font-size:15px;">${o.label}</div>
+                                    <div style="font-size:11px;margin-top:4px;opacity:0.85;">${o.desc}</div>
+                                </button>
+                            `).join('')}
                         </div>
                     </div>
-
-                    <button class="btn-primary w-full" onclick="MathPKGame.start()">再玩一次</button>
-                    <button class="btn-secondary w-full mt-3" onclick="MathPKGame.renderUI('math-pk-container')">返回</button>
                 </div>
             `;
         }
@@ -250,117 +343,163 @@
     // ============ 核心逻辑 ============
     const Game = {
         init() {
-            const high = localStorage.getItem(CONFIG.STORAGE_KEY_HIGH_SCORE) || 0;
-            const highScoreEl = document.getElementById('math-high-score');
-            if (highScoreEl) highScoreEl.textContent = high;
+            const savedDiff = localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY);
+            if (['easy', 'medium', 'hard'].includes(savedDiff)) state.mathDifficulty = savedDiff;
+        },
+
+        _setDifficulty(diff) {
+            if (!['easy', 'medium', 'hard'].includes(diff)) return;
+            state.mathDifficulty = diff;
+            try { localStorage.setItem(CONFIG.STORAGE_KEY_DIFFICULTY, diff); } catch (e) {}
+            if (_lastDiffContainer) render.renderDifficultySetting(_lastDiffContainer);
         },
 
         renderUI(containerId) {
             const container = document.getElementById(containerId);
-            if (container) {
-                render.createContainer(containerId);
-                this.init();
-            }
+            if (!container) return;
+            // 先恢复难度，保证大厅显示正确（createContainer 内 _lobby 会用到）
+            const savedDiff = localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY);
+            if (['easy', 'medium', 'hard'].includes(savedDiff)) state.mathDifficulty = savedDiff;
+            render.createContainer(containerId);
+            this.init();
         },
 
         start() {
-            // 重置状态
             state.isPlaying = true;
-            state.timeLeft = CONFIG.DURATION;
+            state.roundClosing = false;
+            state.round = 0;
+            state.humanWins = 0;
+            state.robotWins = 0;
             state.score = 0;
             state.combo = 0;
             state.maxCombo = 0;
             state.correctCount = 0;
-            state.totalCount = 0;
-            state.questionIndex = 0;
-
-            this._nextQuestion();
-            this._startTimer();
+            render._setScore();
+            this._nextRound();
         },
 
-        _startTimer() {
-            if (state.timerInterval) clearInterval(state.timerInterval);
-            state.timerInterval = setInterval(() => {
-                state.timeLeft--;
-                const timerEl = document.getElementById('math-timer-display');
-                if (timerEl) timerEl.textContent = `⏱️ ${state.timeLeft}s`;
-
-                if (state.timeLeft <= 0) {
-                    this._endGame();
-                }
-            }, 1000);
-        },
-
-        _nextQuestion() {
-            state.totalCount++;
-            state.questionIndex++;
-            const question = utils.generateQuestion(state.questionIndex);
-            state.currentQuestion = question;
-            const options = utils.generateOptions(question.answer);
-            render.updateQuestionUI(question, options);
-        },
-
-        _handleAnswer(selected) {
-            if (!state.isPlaying) return;
-
-            const buttons = document.querySelectorAll('.math-btn');
-            const correct = selected === state.currentQuestion.answer;
-            
-            // 找到对应的按钮进行反馈
-            buttons.forEach(btn => {
-                if (parseInt(btn.textContent) === selected) {
-                    if (correct) {
-                        btn.classList.add('correct');
-                    } else {
-                        btn.classList.add('wrong');
-                    }
-                }
-            });
-
-            // 延迟处理，方便看动画
-            setTimeout(() => {
-                if (correct) {
-                    this._onCorrect();
-                } else {
-                    this._onWrong();
-                }
-                this._nextQuestion();
-            }, 400);
-        },
-
-        _onCorrect() {
-            state.correctCount++;
-            state.combo++;
-            if (state.combo > state.maxCombo) state.maxCombo = state.combo;
-            
-            // 积分计算：基础 + 连击加成
-            // 连击越多分数越高，但设个上限
-            const comboBonus = Math.min(state.combo * 2, 20); 
-            const pointsEarned = CONFIG.BASE_SCORE + comboBonus;
-            state.score += pointsEarned;
-
-            // 更新 UI
-            const scoreEl = document.getElementById('math-current-score');
-            const comboEl = document.getElementById('math-current-combo');
-            if (scoreEl) scoreEl.textContent = state.score;
-            if (comboEl) comboEl.textContent = state.combo;
-        },
-
-        _onWrong() {
-            state.combo = 0;
-            const comboEl = document.getElementById('math-current-combo');
-            if (comboEl) comboEl.textContent = state.combo;
-        },
-
-        _endGame() {
+        _exit() {
             state.isPlaying = false;
-            clearInterval(state.timerInterval);
+            if (state.robotTimer) clearTimeout(state.robotTimer);
+            if (typeof window.switchPage === 'function') switchPage('map');
+            else render.renderUI('math-pk-container');
+        },
 
-            // 计算结果
-            const accuracy = Math.round((state.correctCount / state.totalCount) * 100) || 0;
-            const earnedPoints = state.score;
+        _genQuestion() {
+            const diff = state.mathDifficulty || 'easy';
+            if (diff === 'medium' && CMATH_POOL && Math.random() < CONFIG.WORD_RATIO) {
+                const w = utils.generateWordQuestion(diff);
+                if (w) return w;
+            }
+            return utils.generateQuestion(diff);
+        },
 
-            // 1. 写入成长分主链路
+        _robotThinkMs(diff) {
+            if (diff === 'easy') return 4500 + Math.floor(Math.random() * 3500);   // 4.5-8s
+            if (diff === 'hard') return 2800 + Math.floor(Math.random() * 1700);   // 2.8-4.5s
+            return 3500 + Math.floor(Math.random() * 2500);                          // 3.5-6s (medium)
+        },
+
+        _nextRound() {
+            if (state.round >= CONFIG.TOTAL_ROUNDS) { this._endMatch(); return; }
+            state.round++;
+            state.roundResolved = false;
+            state.roundClosing = false;
+            state.currentInput = '';
+            state.currentQuestion = this._genQuestion();
+            state.robotThinkMs = this._robotThinkMs(state.mathDifficulty);
+            state.roundStartTs = Date.now();
+            render._setRoundPill(`第 ${state.round} / ${CONFIG.TOTAL_ROUNDS} 轮`);
+            render.match(state.currentQuestion);
+            render.hideToast();
+            render.startRobotBar();
+            if (state.robotTimer) clearTimeout(state.robotTimer);
+            state.robotTimer = setTimeout(() => this._robotAnswer(), state.robotThinkMs);
+        },
+
+        _robotAnswer() {
+            if (state.roundResolved) return;
+            state.roundResolved = true;
+            this._resolveRound('robot');
+        },
+
+        _inputDigit(d) {
+            if (!state.isPlaying || state.roundClosing || state.roundResolved) return;
+            if (state.currentInput.length >= 4) return;
+            state.currentInput += String(d);
+            this._refreshDisplay();
+        },
+        _clearInput() {
+            if (!state.isPlaying || state.roundClosing || state.roundResolved) return;
+            state.currentInput = '';
+            this._refreshDisplay();
+        },
+        _refreshDisplay() {
+            const el = document.getElementById('arena-display');
+            if (!el) return;
+            if (state.currentInput === '') { el.textContent = '输入答案'; el.classList.add('empty'); }
+            else { el.textContent = state.currentInput; el.classList.remove('empty'); }
+        },
+
+        _submitAnswer() {
+            if (!state.isPlaying || state.roundClosing || state.roundResolved) return;
+            if (state.currentInput === '') return;
+            const selected = parseInt(state.currentInput, 10);
+            const correct = selected === state.currentQuestion.answer;
+            if (!correct) {
+                // 答错：不结束本轮，扣时间继续抢答（机器人仍在计时）
+                const disp = document.getElementById('arena-display');
+                if (disp) { disp.classList.add('shake'); setTimeout(() => disp.classList.remove('shake'), 350); }
+                state.currentInput = '';
+                this._refreshDisplay();
+                return;
+            }
+            // 答对：人在机器人之前完成 → 人赢本轮
+            state.roundResolved = true;
+            if (state.robotTimer) clearTimeout(state.robotTimer);
+            const humanMs = Date.now() - state.roundStartTs;
+            this._resolveRound('human', humanMs);
+        },
+
+        _resolveRound(winner, humanMs) {
+            state.roundClosing = true;
+            const robotSec = (state.robotThinkMs / 1000).toFixed(1);
+            if (winner === 'human') {
+                state.humanWins++;
+                state.correctCount++;
+                state.combo++;
+                if (state.combo > state.maxCombo) state.maxCombo = state.combo;
+                state.score += CONFIG.BASE_SCORE + Math.min(state.combo * 2, 20);
+                const hs = (humanMs / 1000).toFixed(1);
+                render._setSide('human', { status: '✓ 答对！', time: `⚡ ${hs}s` });
+                render._setSide('robot', { status: '被抢先了', time: '' });
+                render._setSideClass('human', 'win'); render._setSideClass('robot', 'dim');
+                render.toast(`⚡ 你赢了！<small>用时 ${hs}s · +${CONFIG.BASE_SCORE + Math.min(state.combo * 2, 20)} 分</small>`, 'win');
+            } else {
+                state.robotWins++;
+                state.combo = 0;
+                render._setSide('robot', { status: '✓ 答对！', time: `⚡ ${robotSec}s` });
+                render._setSide('human', { status: '慢了一步', time: '' });
+                render._setSideClass('robot', 'win'); render._setSideClass('human', 'dim');
+                render.toast(`🤖 机器人赢了<small>它用时 ${robotSec}s</small>`, 'lose');
+            }
+            render._setScore();
+            // 停掉机器人思考条动画
+            const bar = document.getElementById('arena-robot-bar');
+            if (bar) bar.style.display = 'none';
+
+            setTimeout(() => {
+                render.hideToast();
+                this._nextRound();
+            }, 1500);
+        },
+
+        _endMatch() {
+            state.isPlaying = false;
+            const win = state.humanWins > state.robotWins;
+            const earnedPoints = state.score + (win ? CONFIG.WIN_BONUS : 0);
+
+            // 写入成长分主链路
             if (typeof window.addGrowthPoints === 'function') {
                 window.addGrowthPoints(earnedPoints);
             } else if (window.totalPoints !== undefined) {
@@ -368,18 +507,18 @@
                 if (typeof window.saveAppState === 'function') window.saveAppState();
                 if (typeof window.updateStats === 'function') window.updateStats();
             }
+            // 最高分
+            const currentHigh = Number(localStorage.getItem(CONFIG.STORAGE_KEY_HIGH_SCORE) || 0);
+            if (state.score > currentHigh) localStorage.setItem(CONFIG.STORAGE_KEY_HIGH_SCORE, String(state.score));
 
-            // 2. 保存最高分
-            const currentHigh = localStorage.getItem(CONFIG.STORAGE_KEY_HIGH_SCORE) || 0;
-            if (state.score > currentHigh) {
-                localStorage.setItem(CONFIG.STORAGE_KEY_HIGH_SCORE, state.score.toString());
-            }
-
-            // 3. 显示结果页面
-            render.showResult({
-                accuracy: accuracy,
-                earnedPoints: earnedPoints,
-                maxCombo: state.maxCombo
+            render._setRoundPill(win ? '🏆 胜利' : '对战结束');
+            render.result({
+                humanWins: state.humanWins,
+                robotWins: state.robotWins,
+                earnedPoints,
+                correctCount: state.correctCount,
+                maxCombo: state.maxCombo,
+                total: CONFIG.TOTAL_ROUNDS
             });
         }
     };
@@ -388,14 +527,20 @@
     window.MathPKGame = {
         start: () => Game.start(),
         renderUI: (id) => Game.renderUI(id),
-        // 供内部回调使用
-        _handleAnswer: (val) => Game._handleAnswer(val)
+        _exit: () => Game._exit(),
+        _setDifficulty: (d) => Game._setDifficulty(d),
+        renderDifficultySetting: (id) => render.renderDifficultySetting(id),
+        _inputDigit: (d) => Game._inputDigit(d),
+        _clearInput: () => Game._clearInput(),
+        _submitAnswer: () => Game._submitAnswer()
     };
 
-    // 启动初始化
-    document.addEventListener('DOMContentLoaded', () => {
-        // 仅在 DOM 加载后尝试初始化（如果有容器的话）
-        // 实际上 renderUI 会被手动调用
+    // 物理键盘支持（仅对战中）
+    document.addEventListener('keydown', (e) => {
+        if (!state.isPlaying || state.roundClosing || state.roundResolved) return;
+        if (e.key >= '0' && e.key <= '9') Game._inputDigit(parseInt(e.key, 10));
+        else if (e.key === 'Backspace') Game._clearInput();
+        else if (e.key === 'Enter') Game._submitAnswer();
     });
 
 })();
