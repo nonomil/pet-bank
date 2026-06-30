@@ -433,6 +433,10 @@
     border-radius: 50%;
     border: 1px solid rgba(255,255,255,0.66);
 }
+.map-scene-node.is-open .map-scene-star {
+    background: radial-gradient(circle at 30% 30%, #fff7d4, var(--chapter-color, #ffd45d) 75%);
+}
+.map-scene-chapter { font-size: 11px; font-weight: 600; margin-top: 2px; letter-spacing: 0.5px; }
 .map-scene-node.is-locked .map-scene-star {
     background: radial-gradient(circle at 30% 30%, #f0f0ec, #cfd5cd 72%, #aab1ab 100%);
 }
@@ -1121,6 +1125,8 @@ body {
 .mx-auto { margin-left: auto; margin-right: auto; }
 .sidebar { width: 18rem; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
 .main-content { flex: 1; min-width: 0; }
+/* 非积分首页隐藏 sidebar，main 全宽独占（每个 tab 独立完整页面） */
+body.no-sidebar .sidebar { display: none; }
 
 /* === 卡片 === */
 .card { background: #FFFFFF; border-radius: 16px; box-shadow: 0 2px 8px rgba(45, 62, 54, 0.04), 0 1px 2px rgba(45, 62, 54, 0.06); border: 1px solid var(--border-light); }
@@ -1411,20 +1417,20 @@ body {
 
 .profile-panel {
     position: fixed; z-index: 9999;
-    background: var(--bg-card, #2a2a3a); color: var(--text-primary, #fff);
+    background: #ffffff; color: var(--text-primary);
     border-radius: 12px; padding: 12px; min-width: 220px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 32px rgba(73, 84, 74, 0.16);
+    border: 1px solid rgba(220, 228, 221, 0.9);
     font-size: 13px;
 }
-.profile-panel-title { font-weight: bold; margin-bottom: 8px; opacity: 0.7; font-size: 12px; }
+.profile-panel-title { font-weight: bold; margin-bottom: 8px; opacity: 0.6; font-size: 12px; color: var(--text-secondary); }
 .profile-list { display: flex; flex-direction: column; gap: 4px; }
 .profile-item {
     display: flex; align-items: center; gap: 8px;
     padding: 8px 10px; border-radius: 8px; cursor: pointer;
     transition: background 0.12s; position: relative;
 }
-.profile-item:hover { background: rgba(255, 255, 255, 0.08); }
+.profile-item:hover { background: rgba(126, 182, 108, 0.12); }
 .profile-item.active { background: rgba(126, 182, 108, 0.18); }
 .profile-item-emoji { font-size: 18px; }
 .profile-item-name { flex: 1; }
@@ -1437,11 +1443,11 @@ body {
 .profile-item-del:hover { opacity: 1; color: #e57373; }
 .profile-new {
     margin-top: 8px; width: 100%; padding: 8px;
-    border-radius: 8px; border: 1px dashed rgba(255, 255, 255, 0.2);
-    background: transparent; color: inherit; cursor: pointer;
+    border-radius: 8px; border: 1px dashed rgba(126, 182, 108, 0.5);
+    background: transparent; color: var(--text-primary); cursor: pointer;
     font-size: 13px; transition: background 0.12s;
 }
-.profile-new:hover { background: rgba(255, 255, 255, 0.06); }
+.profile-new:hover { background: rgba(126, 182, 108, 0.08); }
 
 /* ===== 探索 galgame 风格 ===== */
 .galgame-stage { position: relative; height: calc(100vh - 100px); overflow: hidden; border-radius: 16px; }

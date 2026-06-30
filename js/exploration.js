@@ -4,19 +4,27 @@
 
 const ExplorationSystem = (function () {
     const MAP_LAYOUT = [
-        { id: 'forest', x: 17, y: 18, size: 198 },
-        { id: 'beach', x: 70, y: 12, size: 182 },
-        { id: 'mountain', x: 85, y: 34, size: 182 },
-        { id: 'waterfall', x: 56, y: 42, size: 176 },
-        { id: 'candy', x: 28, y: 43, size: 176 },
-        { id: 'cave', x: 54, y: 64, size: 198 },
-        { id: 'desert', x: 82, y: 62, size: 176 },
-        { id: 'underwater', x: 22, y: 72, size: 188 },
-        { id: 'castle', x: 49, y: 84, size: 188 },
-        { id: 'space', x: 75, y: 83, size: 174 },
-        { id: 'volcano', x: 32, y: 92, size: 176 },
-        { id: 'stargarden', x: 64, y: 95, size: 194 }
+        { id: 'forest', x: 17, y: 18, size: 198, chapter: 1 },
+        { id: 'beach', x: 70, y: 12, size: 182, chapter: 2 },
+        { id: 'candy', x: 28, y: 43, size: 176, chapter: 2 },
+        { id: 'waterfall', x: 56, y: 42, size: 176, chapter: 3 },
+        { id: 'underwater', x: 22, y: 72, size: 188, chapter: 3 },
+        { id: 'mountain', x: 85, y: 34, size: 182, chapter: 4 },
+        { id: 'cave', x: 54, y: 64, size: 198, chapter: 4 },
+        { id: 'desert', x: 82, y: 62, size: 176, chapter: 4 },
+        { id: 'castle', x: 49, y: 84, size: 188, chapter: 4 },
+        { id: 'volcano', x: 32, y: 92, size: 176, chapter: 4 },
+        { id: 'space', x: 75, y: 83, size: 174, chapter: 5 },
+        { id: 'stargarden', x: 64, y: 95, size: 194, chapter: 5 }
     ];
+    // 章节（03 章节结构）：1 起点花园 / 2 森林边界 / 3 海边集市 / 4 高地洞窟 / 5 星空终点
+    const CHAPTER_THEME = {
+        1: { name: '起点花园', color: '#7ee68a' },
+        2: { name: '森林边界', color: '#5ec8a0' },
+        3: { name: '海边集市', color: '#5ab8d4' },
+        4: { name: '高地洞窟', color: '#c89060' },
+        5: { name: '星空终点', color: '#a888d4' }
+    };
 
     let scenes = null;
     let currentBattle = null;
@@ -125,8 +133,10 @@ const ExplorationSystem = (function () {
         const action = unlocked
             ? `ExplorationSystem.goExplore('${scene.id}')`
             : `ExplorationSystem.tryUnlock('${scene.id}')`;
+        const theme = CHAPTER_THEME[layout.chapter] || CHAPTER_THEME[1];
         const stateClass = [
             'map-scene-node',
+            `chapter-${layout.chapter}`,
             unlocked ? 'is-open' : 'is-locked',
             activeSceneId === scene.id ? 'is-active' : ''
         ].filter(Boolean).join(' ');
@@ -138,7 +148,7 @@ const ExplorationSystem = (function () {
             <button
                 type="button"
                 class="${stateClass}"
-                style="left:${layout.x}%;top:${layout.y}%;--node-size:${layout.size}px;"
+                style="left:${layout.x}%;top:${layout.y}%;--node-size:${layout.size}px;--chapter-color:${theme.color};"
                 onclick="${action}"
                 aria-label="${unlocked ? `前往${scene.name}` : `解锁${scene.name}`}"
             >
@@ -147,6 +157,7 @@ const ExplorationSystem = (function () {
                         <img src="${scene.image}" alt="${scene.name}" loading="lazy">
                         <div class="map-scene-meta">
                             <div class="map-scene-title"><span>${scene.emoji}</span><span>${scene.name}</span></div>
+                            <div class="map-scene-chapter" style="color:${theme.color}">${theme.name}</div>
                             <div class="map-scene-desc">${scene.description}</div>
                         </div>
                         ${!unlocked ? `
