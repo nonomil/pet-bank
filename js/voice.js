@@ -344,15 +344,9 @@
 
     // ===== 自动播报：监听文字容器 =====
     // 选择器规则：sel + extract(node)->string + 可选 throttle
+    // 自动播报规则：只保留探索地图 galgame 对话（用户：除探索对话外，其他模块不需语音）
     var AUTOPLAY_RULES = [
-        { sel: '#galgameText', extract: function (n) { return n.textContent; }, throttle: 1500 },
-        { sel: '#sceneFocusCard', extract: function (n) { var p = n.querySelector('p'); return p ? p.textContent : ''; } },
-        { sel: '#petToast', extract: function (n) { return n.textContent; } },
-        { sel: '.home-toast', extract: function (n) { return n.textContent; } },
-        { sel: '#battleLog', extract: function (n) { var ps = n.querySelectorAll('p'); return ps.length ? ps[ps.length - 1].textContent : ''; }, throttle: 600 },
-        { sel: '.walk-event-msg', extract: function (n) { return n.textContent; } },
-        { sel: '.math-question', extract: function (n) { return n.textContent; } },
-        { sel: '.math-result-page', extract: function (n) { var h = n.querySelector('h2'); return h ? h.textContent : ''; } }
+        { sel: '#galgameText', extract: function (n) { return n.textContent; }, throttle: 1500 }
     ];
 
     function _matchAndExtract(node) {
