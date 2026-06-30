@@ -6,8 +6,10 @@
 node_modules/
 
 # --- 大文件 / 项目副本 / 视频（本地保留，不纳入版本控制）---
-# prj/ 含 138MB 的 pet-bank-main.zip 与项目冗余副本
-prj/
+# prj/ 含 138MB 的 pet-bank-main.zip 与项目冗余副本（放行自建的 TTS 服务）
+prj/*
+!prj/tts/
+!prj/tts-portable/
 # docs/参考案例/ 含 12MB mp4 与视频抽帧图片，整体不入库
 docs/参考案例/
 *.zip

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoxCPM2 探索语音样片试听</title>
+<style>
+  body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;max-width:760px;margin:30px auto;padding:0 20px;background:#f7f9f7;color:#2D3E36}
+  h1{color:#6FA893;font-size:22px}
+  .meta{color:#6B7A70;font-size:14px;margin-bottom:24px}
+  .card{background:#fff;border:1px solid #E5EDE7;border-radius:10px;padding:16px 20px;margin:14px 0}
+  .card h3{margin:0 0 6px;color:#3a5a4a;font-size:16px}
+  .card p{margin:0 0 12px;color:#6B7A70;line-height:1.7}
+  audio{width:100%}
+  .tag{display:inline-block;background:#6FA893;color:#fff;font-size:12px;padding:2px 10px;border-radius:10px;margin-right:8px}
+  .hint{margin-top:28px;padding:14px 18px;background:#FAF8F2;border-left:3px solid #D4B96A;font-size:13px;color:#6B7A70;border-radius:4px}
+</style>
+</head>
+<body>
+  <h1>🔊 VoxCPM2 探索语音样片</h1>
+  <div class="meta">音色：温柔妈妈（mom） · 引擎：VoxCPM2（RTX 5060 GPU） · 本地模型 4.7GB · 声线描述对齐绘本 gentle_mom</div>
+
+  <div class="card">
+    <h3><span class="tag">森林</span>narrate</h3>
+    <p>你小心翼翼地走进森林，脚下的落叶发出沙沙的声音……</p>
+    <audio controls src="01_forest.mp3"></audio>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag">海滩</span>discover</h3>
+    <p>你捡到了一个特别的贝壳，把它放在耳边，竟然听到了大海的秘密！</p>
+    <audio controls src="02_beach.mp3"></audio>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag">山洞</span>discover</h3>
+    <p>地上有一块碎掉的水晶，但在微光中依然很美！</p>
+    <audio controls src="03_cave.mp3"></audio>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag">城堡</span>discover</h3>
+    <p>桥头有一把生锈的小剑，但你擦了擦，它竟然闪起了金光！</p>
+    <audio controls src="04_castle.mp3"></audio>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag">星空花园</span>narrate</h3>
+    <p>你踩在发光的苔藓上，每一步都留下星光般的脚印。</p>
+    <audio controls src="05_stargarden.mp3"></audio>
+  </div>
+
+  <div class="hint">
+    <b>怎么对比</b>：这些是 VoxCPM2 实时生成的（优化后的 mom 声线）。如果觉得音色好，下一步可以做<b>预生成批量模式</b>——用单进程加载一次模型、把所有探索剧情文本批量生成 mp3（首条 30s 后续每条几秒），前端直接放现成的，秒播、稳定、音质统一，不再每次实时等 30 秒。
+  </div>
+</body>
+</html>
