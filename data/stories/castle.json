@@ -64,5 +64,6 @@
       "id": "castle.encounter4"
     }
   ],
-  "chapter_skill": "mul_div_mech"
+  "chapter_skill": "mul_div_mech",
+  "ending_text": "城堡的骑士向你行礼！你收下龙鳞，跨过彩虹桥归去。"
 }

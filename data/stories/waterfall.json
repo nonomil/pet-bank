@@ -64,5 +64,6 @@
       "id": "waterfall.encounter4"
     }
   ],
-  "chapter_skill": "life_apply"
+  "chapter_skill": "life_apply",
+  "ending_text": "水帘后的秘密被你发现啦！你带着彩虹水珠，踏着水花回家。"
 }

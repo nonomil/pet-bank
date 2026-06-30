@@ -64,5 +64,6 @@
       "id": "volcano.encounter4"
     }
   ],
-  "chapter_skill": "mul_div_mech"
+  "chapter_skill": "mul_div_mech",
+  "ending_text": "火山的凤凰赠你一根羽毛！你踩着余温，平安归来。"
 }

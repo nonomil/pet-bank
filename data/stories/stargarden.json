@@ -64,5 +64,6 @@
       "id": "stargarden.encounter4"
     }
   ],
-  "chapter_skill": "pattern_logic"
+  "chapter_skill": "pattern_logic",
+  "ending_text": "星花园的精灵为你点亮整片星空！你怀着满兜星光，回到温暖的家。"
 }

@@ -64,5 +64,6 @@
       "id": "beach.encounter4"
     }
   ],
-  "chapter_skill": "add_sub_apply"
+  "chapter_skill": "add_sub_apply",
+  "ending_text": "海浪哗哗地为你鼓掌！你带着贝壳和珍珠，开心地回家了。"
 }

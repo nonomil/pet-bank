@@ -64,5 +64,6 @@
       "id": "candy.encounter4"
     }
   ],
-  "chapter_skill": "add_sub_apply"
+  "chapter_skill": "add_sub_apply",
+  "ending_text": "糖果国的国王谢过你！你兜里装满彩虹糖，甜滋滋地回家。"
 }

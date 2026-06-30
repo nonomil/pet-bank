@@ -64,5 +64,6 @@
       "id": "forest.encounter4"
     }
   ],
-  "chapter_skill": "number_sense"
+  "chapter_skill": "number_sense",
+  "ending_text": "森林里的捣蛋鬼被你吓跑啦！你采到了发光蘑菇，满载而归。"
 }

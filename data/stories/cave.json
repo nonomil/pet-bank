@@ -64,5 +64,6 @@
       "id": "cave.encounter4"
     }
   ],
-  "chapter_skill": "mul_div_mech"
+  "chapter_skill": "mul_div_mech",
+  "ending_text": "洞穴深处的宝藏重见天日！你握着水晶，走出黑暗。"
 }

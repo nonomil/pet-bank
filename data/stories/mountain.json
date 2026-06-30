@@ -64,5 +64,6 @@
       "id": "mountain.encounter4"
     }
   ],
-  "chapter_skill": "mul_div_mech"
+  "chapter_skill": "mul_div_mech",
+  "ending_text": "雪山的冰晶守卫向你致敬！你收下一块冰晶，踏上归途。"
 }

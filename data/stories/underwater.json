@@ -64,5 +64,6 @@
       "id": "underwater.encounter4"
     }
   ],
-  "chapter_skill": "life_apply"
+  "chapter_skill": "life_apply",
+  "ending_text": "海底的珊瑚女王向你致谢！你带着珍珠，浮出水面。"
 }

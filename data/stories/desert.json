@@ -64,5 +64,6 @@
       "id": "desert.encounter4"
     }
   ],
-  "chapter_skill": "life_apply"
+  "chapter_skill": "life_apply",
+  "ending_text": "绿洲的守护者送你一袋沙金！你顶着夕阳，满载而归。"
 }
