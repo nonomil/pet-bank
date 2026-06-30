@@ -24,12 +24,20 @@
       "type": "math",
       "mathType": "word",
       "difficulty": "medium",
-      "text": "绿洲的守护者挡住去路，出了一道应用题考验你……",
+      "text": "绿洲的守护者要你数清棕榈树才放行……",
       "reward": {
         "exp": 22,
         "msg": "守护者点头，绿洲大门为你打开！+22 经验"
       },
-      "id": "desert.math2"
+      "id": "desert.math2",
+      "question": "绿洲有 4 棵棕榈树，又种了 3 棵，一共几棵？",
+      "answer": 7,
+      "options": [
+        6,
+        7,
+        8,
+        9
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "沙丘后面缓缓升起了一个缠着绷带的身影……",
       "id": "desert.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "life_apply"
 }

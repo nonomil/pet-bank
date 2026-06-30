@@ -24,12 +24,20 @@
       "type": "math",
       "mathType": "arithmetic",
       "difficulty": "hard",
-      "text": "洞穴石门刻着一道乘除机关，解开才能继续深入……",
+      "text": "石像沉默不语，分清水晶才能打开石门……",
       "reward": {
         "exp": 28,
         "msg": "石门轰隆打开，深处的光涌出来！+28 经验"
       },
-      "id": "cave.math2"
+      "id": "cave.math2",
+      "question": "12 颗水晶平均分给 3 个石像，每个石像几颗？",
+      "answer": 4,
+      "options": [
+        3,
+        4,
+        5,
+        6
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "黑暗中，一双亮晶晶的眼睛正盯着你……",
       "id": "cave.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "mul_div_mech"
 }

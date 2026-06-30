@@ -24,12 +24,20 @@
       "type": "math",
       "mathType": "word",
       "difficulty": "medium",
-      "text": "一个大海螺里传出应用题，答对它才肯指明方向……",
+      "text": "珊瑚丛里，小鱼游来游去，数对才能前进……",
       "reward": {
         "exp": 22,
         "msg": "海螺指向正确的洋流！+22 经验"
       },
-      "id": "underwater.math2"
+      "id": "underwater.math2",
+      "question": "5 条小鱼游走了 2 条，还剩几条？",
+      "answer": 3,
+      "options": [
+        2,
+        3,
+        4,
+        5
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "珊瑚丛后面闪过一道黑影，越来越大……",
       "id": "underwater.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "life_apply"
 }

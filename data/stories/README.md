@@ -31,7 +31,19 @@ galgame 对话框文字变化 -> 自动 speak(text) -> 查 assets/voice/map.json
 
 ## 章节（03 章节结构）
 
-1 起点花园(forest) / 2 森林边界(beach,candy) / 3 海边集市(waterfall,underwater) / 4 高地洞窟(mountain,cave,desert,castle,volcano) / 5 星空终点(space,stargarden)
+1 起点花园(forest) / 2 森林边界(beach,candy) / 3 海边集市(waterfall,underwater,desert) / 4 高地洞窟(mountain,cave,castle,volcano) / 5 星空终点(space,stargarden)
+
+## 5 章教育目标（R3，每场景顶层 chapter_skill 字段）
+
+| 章 | 章名 | chapter_skill | 教育目标 | 题型 |
+|----|------|--------------|---------|------|
+| 1 | 起点花园 | `number_sense` | 数感/数量关系 | arithmetic（20 内加减）|
+| 2 | 森林边界 | `add_sub_apply` | 加减应用 | word（加减应用题）|
+| 3 | 海边集市 | `life_apply` | 生活情境应用 | word（买卖/分配/剩余）|
+| 4 | 高地洞窟 | `mul_div_mech` | 乘除与机关 | arithmetic（乘除）+ 场景机关 |
+| 5 | 星空终点 | `pattern_logic` | 规律/逻辑 | logic（找规律/斐波那契）|
+
+每场景 math 事件含**固定场景题**（question/answer/options，题面=场景具象计数/分配），`genMathQuestion` 优先用 event.question；无则回退随机（arithmetic/word-CMATH/logic）。事件 id 不改（配音映射稳定）。
 
 ## 审查
 

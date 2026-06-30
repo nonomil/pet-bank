@@ -24,12 +24,20 @@
       "type": "math",
       "mathType": "word",
       "difficulty": "medium",
-      "text": "糖果树干上挂着一道应用题牌子，答对才能摘到最甜的糖……",
+      "text": "糖果树沙沙作响，数清糖果才能摘到最甜的……",
       "reward": {
         "exp": 22,
         "msg": "牌子发光，最甜的糖果掉下来！+22 经验"
       },
-      "id": "candy.math2"
+      "id": "candy.math2",
+      "question": "棒棒糖树上有 6 颗糖，你摘了 2 颗，还剩几颗？",
+      "answer": 4,
+      "options": [
+        3,
+        4,
+        5,
+        6
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "棉花糖山后面跳出来一个圆滚滚的身影……",
       "id": "candy.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "add_sub_apply"
 }

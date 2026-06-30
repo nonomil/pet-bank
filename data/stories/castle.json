@@ -24,12 +24,20 @@
       "type": "math",
       "mathType": "arithmetic",
       "difficulty": "medium",
-      "text": "城堡大门的锁需要一道乘法钥匙才能打开……",
+      "text": "城堡的旗帜迎风飘扬，数对才能进大门……",
       "reward": {
         "exp": 24,
         "msg": "锁咔哒打开，大门缓缓开启！+24 经验"
       },
-      "id": "castle.math2"
+      "id": "castle.math2",
+      "question": "城堡有 5 个塔楼，每个塔楼 3 面旗，一共几面旗？",
+      "answer": 15,
+      "options": [
+        13,
+        14,
+        15,
+        16
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "楼梯上传来沉重的脚步声，越来越近……",
       "id": "castle.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "mul_div_mech"
 }

@@ -22,14 +22,22 @@
     },
     {
       "type": "math",
-      "text": "冰壁上刻着一道乘法算式，融化它才能通过……",
+      "text": "冰壁上的冰柱闪闪发光，数对才能融化它……",
       "difficulty": "medium",
       "reward": {
         "exp": 20,
         "msg": "冰壁融化了，道路打开！+20 经验"
       },
       "id": "mountain.math2",
-      "mathType": "arithmetic"
+      "mathType": "arithmetic",
+      "question": "冰壁上有 3 排冰柱，每排 4 根，一共几根？",
+      "answer": 12,
+      "options": [
+        10,
+        11,
+        12,
+        13
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "冰面突然裂开，一个白色的身影从雪中站了起来……",
       "id": "mountain.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "mul_div_mech"
 }

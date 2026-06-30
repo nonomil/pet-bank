@@ -24,12 +24,20 @@
       "type": "math",
       "mathType": "logic",
       "difficulty": "hard",
-      "text": "星图上的星座排成一串数字规律，找出下一个才能点亮它……",
+      "text": "星星的数量藏着秘密，找出规律才能点亮星座……",
       "reward": {
         "exp": 30,
         "msg": "星座连成一线，星路打开！+30 经验"
       },
-      "id": "stargarden.math2"
+      "id": "stargarden.math2",
+      "question": "星星数量：1, 1, 2, 3, 5, ?（找规律）",
+      "answer": 8,
+      "options": [
+        6,
+        7,
+        8,
+        9
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "星座图案突然在空中亮起，一个身影从星光中走了出来……",
       "id": "stargarden.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "pattern_logic"
 }

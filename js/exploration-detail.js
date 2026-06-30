@@ -243,8 +243,13 @@ const ExplorationDetail = (function () {
     }
 
     // 数学解谜出题（难度分级，自实现，不依赖 math-pk 闭包）
-    // mathType: 'arithmetic'(裸算式,默认) | 'word'(CMATH 应用题)
-    function genMathQuestion(mathType, difficulty) {
+    // mathType: 'arithmetic'(裸算式,默认) | 'word'(CMATH 应用题) | 'logic'(找规律)
+    // event: 可选，携带 R3 固定场景题(question/answer/options)时优先用
+    function genMathQuestion(mathType, difficulty, event) {
+        // R3 场景化：事件自带固定场景题优先（无则回退 arithmetic/word-CMATH/logic）
+        if (event && event.question && event.answer != null) {
+            return { text: event.question, answer: event.answer, options: event.options || genMathOptions(event.answer) };
+        }
         // 应用题：从 CMATH 池按年级抽（池未就绪则回退算式，保证不阻塞）
         if (mathType === 'word' && CMATH_POOL) {
             const g = difficulty === 'easy' ? '1' : '2';
@@ -343,12 +348,12 @@ const ExplorationDetail = (function () {
             nameEl.textContent = '⚠️ 遭遇';
             textEl.innerHTML = `<span class="galgame-warn">${event.text}</span><br>点击准备战斗！`;
         } else if (event.type === 'math') {
-            const q = genMathQuestion(event.mathType || 'arithmetic', event.difficulty || 'easy');
+            const q = genMathQuestion(event.mathType || 'arithmetic', event.difficulty || 'easy', event);
             const opts = q.options || genMathOptions(q.answer);
             nameEl.textContent = '🔢 谜题';
-            const qHtml = event.mathType === 'word'
-                ? `${event.text}<br><span class="galgame-word">${q.text}</span>`
-                : `${event.text}<br><span class="galgame-math">${q.text}</span>`;
+            // R3: 固定场景题(长题面)用 galgame-word 样式, 仅裸算式保留 galgame-math
+            const useWordStyle = !!event.question || event.mathType === 'word';
+            const qHtml = `${event.text}<br><span class="${useWordStyle ? 'galgame-word' : 'galgame-math'}">${q.text}</span>`;
             textEl.innerHTML = qHtml;
             choicesEl.innerHTML = opts.map(o =>
                 `<button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.answerMath(${o === q.answer}, ${event.reward?.exp || 0}, '${(event.reward?.msg || '').replace(/'/g, "\\'")}')">${o}</button>`

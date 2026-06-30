@@ -24,12 +24,20 @@
       "type": "math",
       "mathType": "word",
       "difficulty": "easy",
-      "text": "沙滩上的螃蟹举着一块牌子，上面写着一道应用题考验你……",
+      "text": "沙滩上的贝壳排成一排，数对了精灵才让路……",
       "reward": {
         "exp": 18,
         "msg": "谜题解开，沙滩精灵为你让路！+18 经验"
       },
-      "id": "beach.math2"
+      "id": "beach.math2",
+      "question": "你捡了 8 个贝壳，送给妹妹 3 个，还剩几个？",
+      "answer": 5,
+      "options": [
+        4,
+        5,
+        6,
+        7
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "突然，沙堡后面钻出了一个奇怪的身影……",
       "id": "beach.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "add_sub_apply"
 }

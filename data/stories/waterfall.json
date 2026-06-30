@@ -24,12 +24,20 @@
       "type": "math",
       "mathType": "word",
       "difficulty": "easy",
-      "text": "荷叶上的青蛙念出一道应用题，答对它才肯带你过河……",
+      "text": "荷叶轻摇，青蛙要你数清露珠才肯带路……",
       "reward": {
         "exp": 16,
         "msg": "青蛙呱呱叫好，水路打开了！+16 经验"
       },
-      "id": "waterfall.math2"
+      "id": "waterfall.math2",
+      "question": "荷叶上有 8 颗露珠，清晨滚落了 2 颗，还剩几颗？",
+      "answer": 6,
+      "options": [
+        4,
+        5,
+        6,
+        7
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "水面突然涌起巨大的水花，一个生物冒了出来……",
       "id": "waterfall.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "life_apply"
 }

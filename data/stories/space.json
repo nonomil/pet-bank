@@ -22,14 +22,22 @@
     },
     {
       "type": "math",
-      "text": "空间站的舱门需要一道乘除算式密码才能打开……",
+      "text": "星座的亮度在变化，找出规律才能打开舱门……",
       "difficulty": "hard",
       "reward": {
         "exp": 30,
         "msg": "舱门打开了，星光涌入！+30 经验"
       },
       "id": "space.math2",
-      "mathType": "arithmetic"
+      "mathType": "arithmetic",
+      "question": "星座亮度：2, 4, 6, 8, ?（每次变亮几）",
+      "answer": 10,
+      "options": [
+        9,
+        10,
+        11,
+        12
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "警报响起，雷达上出现了一个不明飞行物……",
       "id": "space.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "pattern_logic"
 }

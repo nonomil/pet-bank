@@ -24,12 +24,20 @@
       "type": "math",
       "mathType": "arithmetic",
       "difficulty": "hard",
-      "text": "火山口的石碑刻着乘除算式，平息岩浆才能通过……",
+      "text": "火山口的火石滚烫，分对堆才能平息岩浆……",
       "reward": {
         "exp": 28,
         "msg": "岩浆缓缓退去，道路浮现！+28 经验"
       },
-      "id": "volcano.math2"
+      "id": "volcano.math2",
+      "question": "火山口喷出 15 颗火石，平均分成 3 堆，每堆几颗？",
+      "answer": 5,
+      "options": [
+        4,
+        5,
+        6,
+        7
+      ]
     },
     {
       "type": "choice",
@@ -55,5 +63,6 @@
       "text": "岩浆里冒出了泡泡，一个火红色的身影浮了上来……",
       "id": "volcano.encounter4"
     }
-  ]
+  ],
+  "chapter_skill": "mul_div_mech"
 }
