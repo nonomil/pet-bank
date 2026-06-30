@@ -31,3 +31,7 @@ docs/参考案例/
 
 # --- 临时探测脚本（banchong/voxcpm 下载探测，不入库）---
 scripts/_*.py
+
+# --- 宠物图去白底前的原图备份（git 历史已有原版，本地保留可回滚，不入库）---
+assets/pets-originals/
+assets/pets/poses-originals/

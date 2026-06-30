@@ -415,8 +415,8 @@ window.switchPage = switchPage;
             const poseImg = getPetImagePath(pet.species, currentPose);
             // PVZ 宠物切动作（idle/happy/attack）：用动作图；否则用进化阶段图
             const sp = PetSystem.getAllSpecies().find(s => s.id === pet.species);
-            const usePose = sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && ['idle', 'happy', 'attack'].includes(currentPose);
-            img.src = usePose ? poseImg : (stageImg || poseImg);
+            const isActionPose = sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && (currentPose === 'happy' || currentPose === 'attack');
+            img.src = isActionPose ? poseImg : (stageImg || poseImg);
             img.classList.add('dancing');
         }
     }
@@ -531,14 +531,28 @@ function renderPetPage() {
     const nameDisplay = document.getElementById('petNameDisplay');
     const stageDisplay = document.getElementById('petStageDisplay');
     if (pet.species) {
-        const imgSrc = getPetImagePath(pet.species, currentPose);
+        const sp = species.find(s => s.id === pet.species);
+        // 默认按成长阶段(stage)显示(蛋→幼崽→…→终极)；仅 PVZ/minecraft 的 happy/attack 动作才用动作图
+        const isPosePet = sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft');
+        const isEgg = pet.level < 3;
+        const isActionPose = isPosePet && (currentPose === 'happy' || currentPose === 'attack');
+        const imgSrc = isActionPose ? getPetImagePath(pet.species, currentPose) : (PetSystem.getCurrentStageImage() || getPetImagePath(pet.species, currentPose));
+        const area = document.getElementById('petDisplayArea');
         if (displayImg && imgSrc) {
             displayImg.src = imgSrc;
             displayImg.style.display = 'block';
+            area?.querySelector('.pet-emoji-fallback')?.remove();
+        } else {
+            // 无图宠物(课堂宠物等)：显示阶段 emoji 兜底(蛋→幼崽…)
+            if (displayImg) displayImg.style.display = 'none';
+            if (area) {
+                let fb = area.querySelector('.pet-emoji-fallback');
+                if (!fb) { fb = document.createElement('div'); fb.className = 'pet-emoji-fallback'; fb.style.cssText = 'font-size:110px;line-height:160px;text-align:center;width:160px;height:160px;'; area.insertBefore(fb, area.firstChild); }
+                fb.textContent = PetSystem.getStageEmoji ? PetSystem.getStageEmoji() : (pet.species_data?.emoji || '🐾');
+            }
         }
-        // PVZ 宠物才显示动作按钮
-        const sp = species.find(s => s.id === pet.species);
-        if (poseBtns) poseBtns.style.display = (sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft')) ? 'flex' : 'none';
+        // 蛋阶段无动作；非蛋 PVZ/minecraft 才显示动作按钮
+        if (poseBtns) poseBtns.style.display = (isPosePet && !isEgg) ? 'flex' : 'none';
         nameDisplay.textContent = pet.species_data?.name || '未知';
         stageDisplay.textContent = `${pet.stage.name}阶段 · Lv.${pet.level}`;
     } else {

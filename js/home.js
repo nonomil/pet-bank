@@ -53,6 +53,8 @@ const HomeSystem = (function () {
         if (!homeState || typeof homeState !== 'object') homeState = JSON.parse(JSON.stringify(DEFAULT_HOME_STATE));
         if (!homeState.slots || typeof homeState.slots !== 'object') homeState.slots = JSON.parse(JSON.stringify(DEFAULT_HOME_STATE.slots));
         if (!homeState.theme) homeState.theme = 'cozy_night';
+        if (!Array.isArray(homeState.unlockedThemes)) homeState.unlockedThemes = ['cozy_night'];
+        if (homeState.unlockedThemes.indexOf('cozy_night') < 0) homeState.unlockedThemes.push('cozy_night');
     }
 
     function _loadFurniture() {
@@ -134,13 +136,15 @@ const HomeSystem = (function () {
 .home-stage{position:relative;border-radius:16px;overflow:hidden;min-height:440px;padding:20px;color:#fff;
   background:linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%);box-shadow:inset 0 0 60px rgba(0,0,0,.35);}
 .home-stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 15%,rgba(255,255,255,.08),transparent 40%);pointer-events:none;}
-.home-bubble{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:rgba(255,255,255,.95);color:#333;padding:6px 14px;border-radius:14px;font-size:13px;font-weight:600;white-space:nowrap;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.home-bubble{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:rgba(255,255,255,.96);color:#3a3050;padding:9px 18px;border-radius:16px;font-size:17px;font-weight:700;white-space:nowrap;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:80%;}
 .home-pet-wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:200px;height:200px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s ease,filter .2s ease;z-index:3;}
 .home-pet-wrap:hover{transform:translate(-50%,-50%) scale(1.05);}
 .home-pet-wrap:hover .home-pet-img{filter:drop-shadow(0 10px 18px rgba(0,0,0,.5)) brightness(1.08);}
 .home-pet-wrap:active{transform:translate(-50%,-50%) scale(.95);}
 .home-pet-wrap:active .home-pet-img{filter:drop-shadow(0 4px 6px rgba(0,0,0,.45)) brightness(.95);}
 .home-pet-img{max-width:100%;max-height:100%;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));transition:filter .25s ease;}
+.home-pet-img:not(.down):not(.revive-flash){animation:home-pet-idle 3.6s ease-in-out infinite;transform-origin:center bottom;}
+@keyframes home-pet-idle{0%,100%{transform:scale(1) rotate(0);}25%{transform:scale(1.03) rotate(-1.3deg);}75%{transform:scale(1.03) rotate(1.3deg);}}
 .home-pet-img.hungry{filter:drop-shadow(0 6px 10px rgba(0,0,0,.4)) sepia(.5) saturate(1.4) hue-rotate(-15deg);}
 .home-pet-img.dirty{filter:drop-shadow(0 6px 10px rgba(0,0,0,.4)) brightness(.85) contrast(.95);}
 .home-pet-img.weak{filter:drop-shadow(0 6px 10px rgba(0,0,0,.4)) brightness(.7) saturate(.6);opacity:.85;}
@@ -204,13 +208,40 @@ const HomeSystem = (function () {
 @keyframes home-toast-in{from{opacity:0;transform:translate(-50%,-10px);}to{opacity:1;transform:translate(-50%,0);}}
 .home-nav-disabled{opacity:.45!important;cursor:not-allowed!important;pointer-events:none!important;}
 /* P1-B：点击台词气泡 */
-.home-speech-bubble{z-index:7;opacity:0;transform:translateX(-50%) scale(.7);transition:opacity .3s ease,transform .3s ease;background:rgba(255,255,255,.96);border:2px solid #6c5ce7;color:#4a3a7a;font-weight:700;}
+.home-speech-bubble{z-index:8;top:74px;font-size:21px;padding:11px 22px;border-radius:18px;max-width:78%;opacity:0;transform:translateX(-50%) scale(.7);transition:opacity .3s ease,transform .3s ease;background:rgba(255,255,255,.97);border:2.5px solid #6c5ce7;color:#4a3a7a;font-weight:700;box-shadow:0 6px 20px rgba(76,58,122,.35);}
 .home-speech-bubble.home-speech-show{opacity:1;transform:translateX(-50%) scale(1);}
 .home-speech-bubble.home-speech-fade{opacity:0;transform:translateX(-50%) scale(.9);}
 .home-speech-bubble::after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);border:7px solid transparent;border-top-color:#6c5ce7;border-bottom:0;}
 /* P1-B：背景层 */
 .home-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%);transition:background .6s ease;}
 .home-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+/* 管理小屋弹窗（背景积分解锁制） */
+.home-manage-overlay{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;background:rgba(20,15,40,.6);backdrop-filter:blur(3px);padding:16px;}
+.home-manage-overlay.show{display:flex;animation:home-fade-in .2s ease;}
+.home-manage-modal{width:100%;max-width:520px;max-height:88vh;overflow-y:auto;background:linear-gradient(180deg,#fff,#f6f3ff);border-radius:18px;padding:18px 18px 22px;box-shadow:0 24px 60px rgba(40,20,80,.4);}
+.home-manage-head{display:flex;justify-content:space-between;align-items:center;font-size:18px;font-weight:800;color:#4a3a7a;margin-bottom:6px;}
+.home-manage-close{background:none;border:none;font-size:26px;color:#9a8fc4;cursor:pointer;line-height:1;}
+.home-manage-tip{font-size:12px;color:#7a6da0;background:#f0eaff;border-radius:8px;padding:7px 10px;margin-bottom:10px;}
+.home-manage-balance{font-size:13px;color:#6c5ce7;font-weight:700;margin-bottom:12px;padding:8px 12px;background:#fff;border:1px solid #e6dffa;border-radius:10px;}
+.home-bg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
+.home-bg-card{position:relative;border-radius:14px;overflow:hidden;border:2.5px solid #e6dffa;background:#fff;transition:transform .15s,border-color .15s;}
+.home-bg-card:hover{transform:translateY(-2px);}
+.home-bg-card.active{border-color:#6c5ce7;box-shadow:0 0 0 3px rgba(108,92,231,.18);}
+.home-bg-card.locked .home-bg-thumb{filter:grayscale(.55) brightness(.82);}
+.home-bg-thumb{width:100%;height:84px;object-fit:cover;display:block;background:#eee;}
+.home-bg-thumb-fallback{width:100%;height:84px;}
+.home-bg-badge{position:absolute;top:6px;left:6px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.92);color:#444;}
+.home-bg-badge.active{background:#6c5ce7;color:#fff;}
+.home-bg-badge.locked{background:rgba(40,30,60,.82);color:#fff;}
+.home-bg-name{font-size:13px;font-weight:700;color:#3a3050;padding:7px 8px 2px;}
+.home-bg-desc{font-size:11px;color:#8a7fa8;line-height:1.4;padding:0 8px 6px;min-height:30px;}
+.home-bg-btn{display:block;width:calc(100% - 16px);margin:0 8px 9px;padding:7px 0;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;color:#fff;}
+.home-bg-btn.use{background:linear-gradient(135deg,#6c5ce7,#a29bfe);}
+.home-bg-btn.buy{background:linear-gradient(135deg,#f39c12,#e67e22);}
+.home-bg-btn.buy.poor{background:#b8b0c8;cursor:not-allowed;}
+.home-bg-btn.using{background:#d8d0f0;color:#7a6da0;cursor:default;}
+.home-bg-coin{font-size:12px;margin-right:2px;}
+@keyframes home-fade-in{from{opacity:0;}to{opacity:1;}}
         `;
         const style = document.createElement('style');
         style.id = 'home-system-styles';
@@ -506,33 +537,57 @@ const HomeSystem = (function () {
     // ---------- 背景层（P1-B 功能2） ----------
     // 背景主题表：渐变兜底 + Agnes 生图 img（assets/background/{theme}.webp）
     const BG_THEMES = {
-        cozy_night: { name: '深夜温馨卧室', gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)', img: 'assets/background/cozy_night.webp' },
-        dawn: { name: '清晨阳光房', gradient: 'linear-gradient(180deg,#f6c68b 0%,#f3a8a2 38%,#8ecae6 100%)', img: 'assets/background/dawn.webp' },
-        starry: { name: '星空阁楼', gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)', img: 'assets/background/starry.webp' },
-        garden_balcony: { name: '花园阳台', gradient: 'linear-gradient(180deg,#b7e4c7 0%,#8fd3c8 45%,#f6d7a7 100%)', img: 'assets/background/garden_balcony.webp' },
-        underwater_aquarium: { name: '海底水族房', gradient: 'linear-gradient(180deg,#7ad7f0 0%,#4ca7d8 45%,#1f5d8f 100%)', img: 'assets/background/underwater_aquarium.webp' },
-        candy_cottage: { name: '糖果甜梦屋', gradient: 'linear-gradient(180deg,#ffd6e7 0%,#ffc4a3 45%,#fff1b8 100%)', img: 'assets/background/candy_cottage.webp' },
-        forest_treehouse: { name: '森林树屋', gradient: 'linear-gradient(180deg,#7fb77e 0%,#4f8f6b 45%,#d6b37a 100%)', img: 'assets/background/forest_treehouse.webp' },
-        volcano_hearth: { name: '火山暖窝', gradient: 'linear-gradient(180deg,#5b3a32 0%,#8f4e3a 42%,#f2a65a 100%)', img: 'assets/background/volcano_hearth.webp' }
+        cozy_night: { name: '深夜温馨卧室', desc: '默认小屋，温馨的星空卧室，免费入住。', gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)', img: 'assets/background/cozy_night.webp', price: 0 },
+        dawn: { name: '清晨阳光房', desc: '清晨阳光洒满的温暖房间，元气满满。', gradient: 'linear-gradient(180deg,#f6c68b 0%,#f3a8a2 38%,#8ecae6 100%)', img: 'assets/background/dawn.webp', price: 60 },
+        starry: { name: '星空阁楼', desc: '满天星斗的安静阁楼，适合许愿。', gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)', img: 'assets/background/starry.webp', price: 80 },
+        garden_balcony: { name: '花园阳台', desc: '鲜花环绕的小阳台，蝴蝶常来做客。', gradient: 'linear-gradient(180deg,#b7e4c7 0%,#8fd3c8 45%,#f6d7a7 100%)', img: 'assets/background/garden_balcony.webp', price: 60 },
+        underwater_aquarium: { name: '海底水族房', desc: '海底世界水族房，和鱼儿一起游泳。', gradient: 'linear-gradient(180deg,#7ad7f0 0%,#4ca7d8 45%,#1f5d8f 100%)', img: 'assets/background/underwater_aquarium.webp', price: 100 },
+        candy_cottage: { name: '糖果甜梦屋', desc: '甜蜜糖果色的梦幻小屋，甜到心里。', gradient: 'linear-gradient(180deg,#ffd6e7 0%,#ffc4a3 45%,#fff1b8 100%)', img: 'assets/background/candy_cottage.webp', price: 80 },
+        forest_treehouse: { name: '森林树屋', desc: '森林深处的秘密树屋，鸟语花香。', gradient: 'linear-gradient(180deg,#7fb77e 0%,#4f8f6b 45%,#d6b37a 100%)', img: 'assets/background/forest_treehouse.webp', price: 100 },
+        volcano_hearth: { name: '火山暖窝', desc: '火山旁的温暖小窝，热乎乎超安心。', gradient: 'linear-gradient(180deg,#5b3a32 0%,#8f4e3a 42%,#f2a65a 100%)', img: 'assets/background/volcano_hearth.webp', price: 120 }
     };
     const BG_THEME_ORDER = ['cozy_night', 'dawn', 'starry', 'garden_balcony', 'underwater_aquarium', 'candy_cottage', 'forest_treehouse', 'volcano_hearth'];  // 换背景循环顺序(8主题)
 
-    // 循环切换背景（换背景按钮）
+    // 循环切换背景（换背景按钮）→ 打开「管理小屋」弹窗
     function cycleHomeBg() {
-        if (!homeState) _loadHomeState();
-        const cur = (homeState && homeState.theme) || 'cozy_night';
-        const idx = BG_THEME_ORDER.indexOf(cur);
-        const next = BG_THEME_ORDER[(idx + 1) % BG_THEME_ORDER.length];
-        setHomeBg(next);
-        _toast('背景：' + (BG_THEMES[next].name || next));
+        openManageHome();
     }
 
-    // 切换背景主题（暴露到 window）
+    // 判断背景是否已解锁（price<=0 视为免费默认）
+    function _isThemeUnlocked(theme) {
+        if (!homeState) _loadHomeState();
+        const t = BG_THEMES[theme];
+        if (!t) return false;
+        if (!t.price || t.price <= 0) return true;
+        return Array.isArray(homeState.unlockedThemes) && homeState.unlockedThemes.indexOf(theme) >= 0;
+    }
+
+    // 购买解锁背景（花成长分）
+    function buyTheme(theme) {
+        try {
+            if (!homeState) _loadHomeState();
+            const t = BG_THEMES[theme];
+            if (!t) return false;
+            if (_isThemeUnlocked(theme)) { setHomeBg(theme); _renderManageBgGrid(); return true; }
+            if (typeof window.spendPoints !== 'function') { _toast('积分系统未就绪'); return false; }
+            if (!window.spendPoints(t.price)) return false; // 积分不足会 alert
+            if (!Array.isArray(homeState.unlockedThemes)) homeState.unlockedThemes = ['cozy_night'];
+            homeState.unlockedThemes.push(theme);
+            _saveHomeState();
+            setHomeBg(theme);
+            _toast('🎉 解锁「' + t.name + '」！');
+            _renderManageBgGrid();
+            return true;
+        } catch (e) { return false; }
+    }
+
+    // 切换背景主题（仅已解锁可切，暴露到 window）
     function setHomeBg(theme) {
         try {
             if (!homeState) _loadHomeState();
             const t = BG_THEMES[theme];
             if (!t) { _toast('未知背景主题：' + theme); return false; }
+            if (!_isThemeUnlocked(theme)) { _toast('该背景未解锁，先在管理小屋购买~'); return false; }
             homeState.theme = theme;
             _saveHomeState();
             // 实时更新背景层（若已渲染）
@@ -543,6 +598,56 @@ const HomeSystem = (function () {
             return true;
         } catch (e) { return false; }
     }
+
+    // 「管理小屋」弹窗：背景网格（已解锁可切/未解锁花积分解锁）
+    function openManageHome() {
+        if (!homeState) _loadHomeState();
+        let modal = document.getElementById('homeManageModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'homeManageModal';
+            modal.className = 'home-manage-overlay';
+            modal.innerHTML = '<div class="home-manage-modal">'
+                + '<div class="home-manage-head"><span>🏠 管理小屋</span><button class="home-manage-close" onclick="HomeSystem.closeManageHome()">×</button></div>'
+                + '<div class="home-manage-tip">💡 切换小屋背景需用成长分解锁；装饰家具请到【商店】购买。</div>'
+                + '<div class="home-manage-balance" id="homeManageBalance"></div>'
+                + '<div class="home-bg-grid" id="homeBgGrid"></div>'
+                + '</div>';
+            modal.addEventListener('click', e => { if (e.target === modal) closeManageHome(); });
+            document.body.appendChild(modal);
+        }
+        _renderManageBgGrid();
+        modal.classList.add('show');
+    }
+    function closeManageHome() {
+        const modal = document.getElementById('homeManageModal');
+        if (modal) modal.classList.remove('show');
+    }
+    // 渲染背景网格卡片
+    function _renderManageBgGrid() {
+        const grid = document.getElementById('homeBgGrid');
+        if (!grid) return;
+        if (!homeState) _loadHomeState();
+        const cur = (homeState && homeState.theme) || 'cozy_night';
+        const pts = (typeof window.totalPoints === 'number') ? window.totalPoints : 0;
+        const unlockedCount = BG_THEME_ORDER.filter(k => _isThemeUnlocked(k)).length;
+        grid.innerHTML = BG_THEME_ORDER.map(key => {
+            const t = BG_THEMES[key];
+            const unlocked = _isThemeUnlocked(key);
+            const active = cur === key;
+            const thumb = t.img
+                ? `<img class="home-bg-thumb" src="${t.img}" alt="${t.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="home-bg-thumb-fallback" style="display:none;background:${t.gradient}"></div>`
+                : `<div class="home-bg-thumb-fallback" style="background:${t.gradient}"></div>`;
+            let badge, action;
+            if (active) { badge = '<span class="home-bg-badge active">✓ 使用中</span>'; action = '<button class="home-bg-btn using" disabled>当前</button>'; }
+            else if (unlocked) { badge = '<span class="home-bg-badge unlocked">已拥有</span>'; action = `<button class="home-bg-btn use" onclick="HomeSystem.setHomeBg('${key}');HomeSystem.refreshManage()">切换</button>`; }
+            else { badge = '<span class="home-bg-badge locked">🔒 未解锁</span>'; action = `<button class="home-bg-btn buy ${pts < t.price ? 'poor' : ''}" onclick="HomeSystem.buyTheme('${key}')"><span class="home-bg-coin">🪙</span>${t.price}</button>`; }
+            return `<div class="home-bg-card ${active ? 'active' : ''} ${!unlocked ? 'locked' : ''}">${badge}${thumb}<div class="home-bg-name">${t.name}</div><div class="home-bg-desc">${t.desc || ''}</div>${action}</div>`;
+        }).join('');
+        const bal = document.getElementById('homeManageBalance');
+        if (bal) bal.innerHTML = `💰 成长分 <b>${pts}</b> · 已解锁 <b>${unlockedCount}</b> / ${BG_THEME_ORDER.length} 间`;
+    }
+    function refreshManage() { _renderManageBgGrid(); }
 
     // 应用背景到 .home-bg 元素（img 优先，图未生时用渐变兜底）
     function _applyBg(bgEl, theme) {
@@ -752,7 +857,7 @@ const HomeSystem = (function () {
             <div class="home-wrap">
                 <div class="home-stage">
                     ${bgHtml}
-                    <button class="home-bg-switch" onclick="HomeSystem.cycleHomeBg()" title="切换背景">🖼️ 换背景</button>
+                    <button class="home-bg-switch" onclick="HomeSystem.cycleHomeBg()" title="管理小屋 / 切换背景">🏠 管理小屋</button>
                     ${bubbleHtml}
                     ${cleanHtml}
                     <div class="home-pet-wrap" onclick="HomeSystem.onPetClick()">${petImgHtml}</div>
@@ -803,6 +908,7 @@ const HomeSystem = (function () {
         placeFurniture, removeFurniture, addFurniture,
         canPlace, selectFurniture, clearSelection,
         onPetClick, setHomeBg, cycleHomeBg,
+        openManageHome, closeManageHome, buyTheme, refreshManage,
         markExit,
         loadCatalog,
         getFurnitureCatalog,
