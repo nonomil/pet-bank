@@ -315,15 +315,16 @@ function completeRecommended() {
 
 // ============ 一级导航映射（首页 Tab 收口，M0.6） ============
 // tab 名称 -> 默认落地页（单一事实源，对应 docs/plans/2026-06-29-home-tab-navigation-*）
-const HOME_TAB_MAP = { '积分': 'map', '宠物': 'pet', '探索': 'explore', '兑换': 'reward', '更多': 'works' };
+const HOME_TAB_MAP = { '首页': 'map', '积分': 'today', '宠物': 'pet', '探索': 'explore', '更多': 'works' };
 function getHomeTabMap() { return Object.assign({}, HOME_TAB_MAP); }
 // 叶子页 / hub 页 -> 所属一级 tab 的 data-page（switchPage 时据此高亮父 tab）
 const PAGE_TO_TAB = {
-    map: 'map', today: 'map', review: 'map', mathpk: 'map',
-    pet: 'pet', home: 'pet', card: 'pet', walk: 'pet',
-    explore: 'explore',
-    reward: 'reward', shop: 'reward', inventory: 'reward',
-    works: 'works', tools: 'works'
+    map: 'map',                                                 // 首页（dashboard）
+    today: 'today', review: 'today', mathpk: 'today',           // 积分
+    reward: 'today', shop: 'today', inventory: 'today',         // 兑换并入积分
+    pet: 'pet', home: 'pet', card: 'pet', walk: 'pet',          // 宠物
+    explore: 'explore',                                         // 探索（含成长地图）
+    works: 'works', tools: 'works', settings: 'works'           // 更多
 };
 
 function switchPage(page) {

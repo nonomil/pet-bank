@@ -26,10 +26,10 @@
                 </div>
             </div>
             <div class="flex items-center gap-1 primary-nav">
-                <div class="nav-tab active" data-page="map" onclick="switchPage('map')">⭐ 积分</div>
+                <div class="nav-tab active" data-page="map" onclick="switchPage('map')">🏠 首页</div>
+                <div class="nav-tab" data-page="today" onclick="switchPage('today')">⭐ 积分</div>
                 <div class="nav-tab" data-page="pet" onclick="switchPage('pet')">🐾 宠物</div>
                 <div class="nav-tab" data-page="explore" onclick="switchPage('explore')">🗺️ 探索</div>
-                <div class="nav-tab" data-page="reward" onclick="switchPage('reward')">🎁 兑换</div>
                 <div class="nav-tab" data-page="works" onclick="switchPage('works')">⋯ 更多</div>
             </div>
             <div class="profile-switcher" id="profileSwitcher" onclick="ProfileUI.toggle(event)" title="切换孩子">
@@ -80,13 +80,6 @@
         <main class="main-content">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
-                <div class="hub-nav">
-                    <span class="hub-nav-label">积分</span>
-                    <button class="hub-nav-btn" onclick="switchPage('today')">📝 今日打卡</button>
-                    <button class="hub-nav-btn" onclick="switchPage('review')">📅 每周复盘</button>
-                    <button class="hub-nav-btn" onclick="switchPage('mathpk')">🔢 数学PK</button>
-                    <button class="hub-nav-btn" onclick="switchPage('settings')">⚙️ 设置</button>
-                </div>
                 <section class="showcase" id="showcase" aria-label="项目功能展示">
                     <div class="showcase-track" id="showcaseTrack"></div>
                     <button class="showcase-arrow showcase-prev" id="showcasePrev" type="button" aria-label="上一个">‹</button>
@@ -95,9 +88,9 @@
                 </section>
                 <section class="map-hero">
                     <div class="map-hero-copy">
-                        <p class="map-eyebrow">成长地图 / 纸面路线</p>
-                        <h2>跟着路线走进今天的冒险</h2>
-                        <p>每个节点都是一个场景，点亮后就能继续深入。锁定地点会直接告诉你等级和积分条件。</p>
+                        <p class="map-eyebrow">首页 / 成长概览</p>
+                        <h2>今天，从哪里开始冒险？</h2>
+                        <p>下面几个大卡片一键跳转，或点顶部标签切换。路线地图在「探索」里。</p>
                     </div>
                     <div class="map-hero-side">
                         <div class="map-hero-stats">
@@ -129,6 +122,17 @@
                     </div>
                 </section>
 
+                <section class="dash-launcher">
+                    <div class="dash-cards">
+                        <button class="dash-card c-today" onclick="switchPage('today')"><span class="dash-emoji">📝</span><span class="dash-title">今日打卡</span><span class="dash-sub">完成任务赚积分</span></button>
+                        <button class="dash-card c-mathpk" onclick="switchPage('mathpk')"><span class="dash-emoji">🔢</span><span class="dash-title">数学 PK</span><span class="dash-sub">人机竞技台</span></button>
+                        <button class="dash-card c-pet" onclick="switchPage('pet')"><span class="dash-emoji">🐾</span><span class="dash-title">我的宠物</span><span class="dash-sub">养成陪伴</span></button>
+                        <button class="dash-card c-explore" onclick="switchPage('explore')"><span class="dash-emoji">🗺️</span><span class="dash-title">探索冒险</span><span class="dash-sub">成长地图路线</span></button>
+                        <button class="dash-card c-shop" onclick="switchPage('shop')"><span class="dash-emoji">🎁</span><span class="dash-title">兑换商店</span><span class="dash-sub">花积分换奖励</span></button>
+                        <button class="dash-card c-more" onclick="switchPage('works')"><span class="dash-emoji">⋯</span><span class="dash-title">更多</span><span class="dash-sub">作品/工具/设置</span></button>
+                    </div>
+                </section>
+
                 <section class="map-layout">
                     <div class="map-stage-panel">
                         <div class="map-panel-head">
@@ -155,24 +159,6 @@
                     </div>
 
                     <aside class="map-side-rail">
-                        <section class="map-side-panel">
-                            <div class="map-side-title-row">
-                                <h3 class="text-sm font-bold">快捷入口</h3>
-                                <span class="text-xs text-muted">一键跳转</span>
-                            </div>
-                            <div class="map-quick-grid">
-                                <button class="map-quick-btn" onclick="switchPage('pet')"><i data-lucide="paw-print" class="w-4 h-4"></i><span>我的宠物</span></button>
-                                <button class="map-quick-btn" onclick="switchPage('explore')"><i data-lucide="map" class="w-4 h-4"></i><span>探索冒险</span></button>
-                                <button class="map-quick-btn" onclick="switchPage('reward')"><i data-lucide="store" class="w-4 h-4"></i><span>兑换</span></button>
-                                <button class="map-quick-btn" onclick="switchPage('works')"><i data-lucide="grid" class="w-4 h-4"></i><span>更多</span></button>
-                            </div>
-                            <div class="map-map-legend mt-4">
-                                <div class="map-legend-item"><span class="map-legend-token open"></span><span>金色星点表示已经开放，可以直接进入。</span></div>
-                                <div class="map-legend-item"><span class="map-legend-token locked"></span><span>灰色星点表示还没解锁，卡片上会写明等级或积分条件。</span></div>
-                                <div class="map-legend-item"><span class="map-legend-token path"></span><span>发光路线会把 12 个场景串起来，适合按顺序推进。</span></div>
-                            </div>
-                        </section>
-
                         <section class="map-side-panel" id="treasureWarehouseCard">
                             <div class="map-side-title-row">
                                 <h3 class="text-sm font-bold">宝箱仓库</h3>
@@ -201,6 +187,14 @@
 
             <!-- PAGE: 今日打卡 -->
             <div class="page" id="page-today">
+                <div class="hub-nav">
+                    <span class="hub-nav-label">积分</span>
+                    <button class="hub-nav-btn" onclick="switchPage('review')">📅 每周复盘</button>
+                    <button class="hub-nav-btn" onclick="switchPage('mathpk')">🔢 数学PK</button>
+                    <button class="hub-nav-btn" onclick="switchPage('reward')">🎁 奖励兑换</button>
+                    <button class="hub-nav-btn" onclick="switchPage('shop')">🏪 兑换商店</button>
+                    <button class="hub-nav-btn" onclick="switchPage('inventory')">🎒 背包</button>
+                </div>
                 <div class="card">
                     <div class="card-header flex items-center justify-between">
                         <div><h2 class="text-lg font-bold">今日成长任务</h2><p class="text-xs mt-1 text-muted">完成即得分，每一分都算数</p></div>
@@ -247,6 +241,7 @@
                 <div class="hub-nav">
                     <span class="hub-nav-label">更多</span>
                     <button class="hub-nav-btn" onclick="switchPage('tools')">🧰 工具箱</button>
+                    <button class="hub-nav-btn" onclick="switchPage('settings')">⚙️ 设置</button>
                 </div>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">成长作品收集</h2></div>

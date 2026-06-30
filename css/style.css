@@ -1152,6 +1152,23 @@ body.no-sidebar .sidebar { display: none; }
 .hub-nav-btn { padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--text-secondary); background: #fff; border: 1px solid var(--border-light); border-radius: 999px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
 .hub-nav-btn:hover { background: var(--sage-green); color: #fff; border-color: var(--sage-green); }
 
+/* 首页 dashboard 大卡片启动器 */
+.dash-launcher { margin-bottom: 18px; }
+.dash-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.dash-card { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 18px 20px; border-radius: 18px; border: 1px solid var(--border-light); background: #fff; cursor: pointer; transition: transform 0.12s, box-shadow 0.15s; text-align: left; box-shadow: 0 2px 8px rgba(45,62,54,0.05); }
+.dash-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(45,62,54,0.12); }
+.dash-card:active { transform: translateY(-1px) scale(0.99); }
+.dash-card .dash-emoji { font-size: 1.8rem; line-height: 1; margin-bottom: 4px; }
+.dash-card .dash-title { font-size: 1.05rem; font-weight: 800; color: var(--text-primary); }
+.dash-card .dash-sub { font-size: 0.78rem; color: var(--text-secondary); }
+.dash-card.c-today { background: linear-gradient(135deg,#fff7e6,#fff); }
+.dash-card.c-mathpk { background: linear-gradient(135deg,#eef2ff,#fff); }
+.dash-card.c-pet { background: linear-gradient(135deg,#fff0f3,#fff); }
+.dash-card.c-explore { background: linear-gradient(135deg,#e6f7ff,#fff); }
+.dash-card.c-shop { background: linear-gradient(135deg,#fffbe6,#fff); }
+.dash-card.c-more { background: linear-gradient(135deg,#f0fff4,#fff); }
+@media (max-width:760px){ .dash-cards { grid-template-columns: repeat(2,1fr); } }
+
 /* === 积分胶囊 === */
 .point-capsule { display: inline-flex; align-items: center; gap: 6px; background: var(--gold-light); color: #8B6F2A; padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: 14px; }
 .point-capsule .num { font-size: 18px; font-weight: 800; }

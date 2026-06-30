@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.3.0](https://img.shields.io/badge/Version-v0.3.0-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.5.4](https://img.shields.io/badge/Version-v0.5.4-brightgreen.svg)](CHANGELOG.md)
 
 📖 **结构化文档**：[文档总索引](docs/README.md) ｜ [需求规格书](docs/规格/需求规格书.md) ｜ [技术架构](docs/设计/技术架构.md) ｜ [开发路线图](docs/路线/差距清单与开发路线图.md) ｜ [更新日志](CHANGELOG.md)
 
