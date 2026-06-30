@@ -283,7 +283,7 @@ const ExplorationSystem = (function () {
         PetSystem.takeDamage(scene.hp_cost);
         PetSystem.addExploration();
 
-        if (Math.random() < 0.7 && scene.monsters.length > 0) {
+        if (scene.monsters.length > 0) {
             const monster = scene.monsters[Math.floor(Math.random() * scene.monsters.length)];
             return { success: true, msg: `遇到 ${monster.name}！`, battle: { scene, monster } };
         }
@@ -303,13 +303,15 @@ const ExplorationSystem = (function () {
         if (typeof PetSystem.resetBattleState === 'function') {
             PetSystem.resetBattleState();
         }
+        const arenaChapter = (MAP_LAYOUT.find(m => m.id === scene.id) || {}).chapter || 1;
         currentBattle = {
             scene,
             monster: Object.assign({}, monster, { current_hp: monster.hp }),
             pet_max_hp: pet.hp,
             log: [],
             turn: 1,
-            status: 'ongoing'
+            status: 'ongoing',
+            chapter: arenaChapter
         };
         currentBattle.log.push({ type: 'system', text: `⚔️ 遭遇战：${pet.species_data?.name || '宠物'} vs ${monster.name} (Lv.${scene.danger_level})` });
         return currentBattle;

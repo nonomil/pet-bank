@@ -1254,7 +1254,7 @@ body.no-sidebar .sidebar { display: none; }
 @keyframes glow { 0%, 100% { box-shadow: 0 0 10px rgba(255,107,157,0.5); } 50% { box-shadow: 0 0 16px rgba(255,107,157,0.8); } }
 
 /* === 战斗日志 === */
-.battle-log { max-height: 200px; overflow-y: auto; background: #F8FAF8; border-radius: 10px; padding: 12px; font-size: 13px; }
+.battle-log { max-height: 180px; overflow-y: auto; background: rgba(0,0,0,0.32); color:#fff; border-radius: 10px; padding: 12px 14px; font-size: 18px; line-height: 1.6; }
 .battle-log p { margin: 4px 0; }
 .battle-log .log-player { color: var(--sage-green); }
 .battle-log .log-enemy { color: var(--hp-red); }
@@ -1262,6 +1262,33 @@ body.no-sidebar .sidebar { display: none; }
 .battle-log .log-reward { color: var(--gold); font-weight: 600; }
 .battle-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .battle-actions button { flex: 1; min-width: 100px; }
+
+/* === 战斗竞技场（左右对峙 + 中间VS + 底部大对话框）=== */
+#battleModal .modal-content { max-width: 720px; padding: 0; overflow: hidden; }
+.battle-arena { position: relative; height: 340px; overflow: hidden; }
+.battle-arena-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.battle-fighters { position: relative; display: flex; justify-content: space-between; align-items: flex-end; height: 100%; padding: 0 5%; z-index: 2; }
+.battle-fighter { display: flex; flex-direction: column; align-items: center; width: 38%; }
+.battle-fighter-img { width: 100%; max-width: 200px; height: 220px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4)); }
+.battle-fighter-emoji { font-size: 96px; line-height: 1.4; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
+.battle-fighter-name { margin-top: 4px; background: rgba(0,0,0,0.5); color:#fff; padding: 3px 12px; border-radius: 999px; font-size: 15px; font-weight: 600; text-align: center; }
+.battle-fighter-name span { font-size: 12px; opacity: 0.85; }
+.battle-vs { position: absolute; left: 50%; top: 38%; transform: translate(-50%,-50%); text-align: center; color:#ffd45d; font-size: 40px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.6); z-index: 3; }
+.battle-vs span { display: block; font-size: 18px; letter-spacing: 2px; }
+.battle-hp-row { position: absolute; left: 5%; right: 5%; bottom: 12px; display: flex; justify-content: space-between; gap: 16px; z-index: 3; }
+.battle-hp-row .hp-bar { flex: 1; height: 14px; border-radius: 7px; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+.battle-damage-zone { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.battle-damage-float { position: absolute; top: 35%; font-size: 34px; font-weight: 900; color:#ff5b5b; text-shadow: 0 2px 4px rgba(0,0,0,0.7); animation: battle-dmg-float 1.2s ease-out forwards; }
+.battle-damage-float.battle-damage-pet { left: 18%; }
+.battle-damage-float.battle-damage-monster { left: 66%; }
+@keyframes battle-dmg-float { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-60px); opacity: 0; } }
+.battle-hit { animation: battle-hit-shake 0.5s; }
+@keyframes battle-hit-shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-9px); } 40% { transform: translateX(9px); } 60% { transform: translateX(-7px); } 80% { transform: translateX(7px); } }
+.battle-flash-red { animation: battle-flash 0.5s; }
+@keyframes battle-flash { 0%,100% { box-shadow: inset 0 0 0 rgba(255,0,0,0); } 50% { box-shadow: inset 0 0 90px rgba(255,40,40,0.5); } }
+.battle-box { padding: 14px 18px 18px; background: rgba(18,18,28,0.94); }
+.battle-box .battle-log { margin-bottom: 12px; }
+@media (max-width: 600px) { .battle-arena { height: 260px; } .battle-fighter-img { height: 160px; } .battle-fighter-emoji { font-size: 72px; } .battle-vs { font-size: 30px; } }
 
 /* === 模态框 === */
 .modal { position: fixed; inset: 0; z-index: 50; display: none; background: rgba(45, 62, 54, 0.4); backdrop-filter: blur(4px); align-items: center; justify-content: center; }

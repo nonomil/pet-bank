@@ -874,25 +874,36 @@ function showBattleModal(battle) {
     modal.classList.add('show');
 
     const pet = PetSystem.getState();
+    const arenaBg = `assets/arena/arena-${battle.chapter || 1}.png`;
+    const petImg = (PetSystem.getCurrentStageImage ? PetSystem.getCurrentStageImage() : '') || '';
+    const monsterImg = `assets/monsters/${battle.monster.id}.webp`;
+    const petName = pet.species_data?.name || '宠物';
     content.innerHTML = `
-        <div class="text-center mb-4">
-            <div class="text-5xl" id="battlePetEmoji">PetEmoji</div>
-            <div class="text-sm mt-1" style="color: var(--text-tertiary);">${pet.species_data?.name} (Lv.${pet.level})</div>
-            <div class="hp-bar mt-2"><div class="hp-fill" style="width: ${(pet.hp / pet.total_max_hp) * 100}%;"></div></div>
-            <div class="text-xs">HP: ${pet.hp}/${pet.total_max_hp}</div>
+        <div class="battle-arena">
+            <img class="battle-arena-bg" src="${arenaBg}" alt="" onerror="this.style.display='none'">
+            <div class="battle-fighters">
+                <div class="battle-fighter battle-fighter-left" id="battleFighterPet">
+                    <img class="battle-fighter-img" src="${petImg}" alt="${petName}">
+                    <div class="battle-fighter-name">${petName} <span>Lv.${pet.level}</span></div>
+                </div>
+                <div class="battle-vs">⚔️<span>VS</span></div>
+                <div class="battle-fighter battle-fighter-right" id="battleFighterMonster">
+                    <img class="battle-fighter-img" src="${monsterImg}" alt="${battle.monster.name}" onerror="this.onerror=null;this.style.display='none';this.parentElement.querySelector('.battle-fighter-emoji').style.display=''">
+                    <div class="battle-fighter-emoji" style="display:none">${battle.monster.emoji}</div>
+                    <div class="battle-fighter-name">${battle.monster.name}</div>
+                </div>
+            </div>
+            <div class="battle-hp-row">
+                <div class="hp-bar"><div class="hp-fill" style="width:${(pet.hp / pet.total_max_hp) * 100}%"></div></div>
+                <div class="hp-bar"><div class="hp-fill" style="width:${(battle.monster.current_hp / battle.monster.hp) * 100}%"></div></div>
+            </div>
+            <div class="battle-damage-zone" id="battleDamageZone"></div>
         </div>
-        <div class="text-5xl text-center mb-4" id="battleMonsterEmoji">MonsterEmoji</div>
-        <div class="text-center mb-4">
-            <div class="text-sm mt-1" style="color: var(--text-tertiary);">${battle.monster.name}</div>
-            <div class="hp-bar mt-2"><div class="hp-fill" style="width: ${(battle.monster.current_hp / battle.monster.hp) * 100}%;"></div></div>
-            <div class="text-xs">HP: ${battle.monster.current_hp}/${battle.monster.hp}</div>
+        <div class="battle-box">
+            <div class="battle-log" id="battleLog"></div>
+            <div id="battleActions"></div>
         </div>
-        <div class="battle-log mb-4" id="battleLog"></div>
-        <div id="battleActions"></div>
     `;
-    // Set initial emojis
-    document.getElementById('battlePetEmoji').textContent = PetSystem.getStageEmoji();
-    document.getElementById('battleMonsterEmoji').innerHTML = `<img src="assets/monsters/${battle.monster.id}.webp" alt="${battle.monster.name}" style="max-height:120px;object-fit:contain" onerror="this.onerror=null;this.parentElement.className='text-5xl text-center mb-4';this.parentElement.textContent='${battle.monster.emoji}'">`;
     appendBattleLog(battle);
     renderBattleActions();   // 渲染技能面板 + 道具快捷栏 + 攻击/逃跑
 }
@@ -991,6 +1002,12 @@ function battleAction(action) {
 
     if (!result) { setBattleUILock(false); return; }
     appendBattleLog(result);
+    // 浮动伤害：取最后一条伤害记录，弹到对应一方上方
+    const lastDmg = result.log.slice().reverse().find(l => /造成\s*(\d+)\s*伤害/.test(l.text));
+    if (lastDmg) {
+        const m = lastDmg.text.match(/造成\s*(\d+)\s*伤害/);
+        if (m) showBattleDamage(parseInt(m[1], 10), lastDmg.type === 'enemy' ? 'pet' : 'monster');
+    }
 
     if (result.status === 'won' || result.status === 'lost' || result.status === 'fled') {
         // 战斗胜利有概率掉落卡片
@@ -1037,22 +1054,31 @@ function updateBattleUI(battle) {
     window.addEventListener('battle-animate', handleBattleAnimate, { once: true });
 }
 
+// 浮动伤害数字（出招时弹到 battleDamageZone，1.2s 上浮淡出）
+function showBattleDamage(dmg, target) {
+    const zone = document.getElementById('battleDamageZone');
+    if (!zone) return;
+    const el = document.createElement('div');
+    el.className = 'battle-damage-float battle-damage-' + (target === 'pet' ? 'pet' : 'monster');
+    el.textContent = '-' + dmg;
+    zone.appendChild(el);
+    setTimeout(() => el.remove(), 1200);
+}
+
 function handleBattleAnimate(e) {
     const { type } = e.detail;
-    const petEmoji = document.getElementById('battlePetEmoji');
-    const monsterEmoji = document.getElementById('battleMonsterEmoji');
+    const petEl = document.getElementById('battleFighterPet');
+    const monsterEl = document.getElementById('battleFighterMonster');
     const modal = document.getElementById('battleModal');
 
     if (type === 'player-attack') {
-        if (petEmoji) {
-            petEmoji.classList.add('battle-shake');
-            setTimeout(() => petEmoji.classList.remove('battle-shake'), 500);
-        }
+        // 玩家攻击 → 怪物受击抖动
+        monsterEl?.classList.add('battle-hit');
+        setTimeout(() => monsterEl?.classList.remove('battle-hit'), 500);
     } else if (type === 'enemy-attack') {
-        if (monsterEmoji) {
-            monsterEmoji.classList.add('battle-shake');
-            setTimeout(() => monsterEmoji.classList.remove('battle-shake'), 500);
-        }
+        // 敌人攻击 → 宠物受击抖动 + 红闪
+        petEl?.classList.add('battle-hit');
+        setTimeout(() => petEl?.classList.remove('battle-hit'), 500);
         if (modal) {
             modal.classList.add('battle-flash-red');
             setTimeout(() => modal.classList.remove('battle-flash-red'), 500);
