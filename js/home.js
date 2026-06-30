@@ -150,6 +150,8 @@ const HomeSystem = (function () {
 .home-pet-img.revive-flash{animation:home-revive-flash .9s ease-out;}
 @keyframes home-revive-flash{0%{transform:scale(.6) rotate(-12deg) translateY(20px);filter:drop-shadow(0 0 24px rgba(127,255,212,.95)) brightness(1.8);}45%{transform:scale(1.15) rotate(0) translateY(-6px);filter:drop-shadow(0 0 30px rgba(127,255,212,.9)) brightness(1.4);}100%{transform:scale(1) rotate(0) translateY(0);filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));}}
 .home-cleanliness{position:absolute;right:14px;top:14px;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;font-size:12px;backdrop-filter:blur(4px);z-index:4;}
+.home-bg-switch{position:absolute;left:14px;top:14px;background:rgba(255,255,255,.16);color:#fff;border:none;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(4px);z-index:5;transition:background .15s;}
+.home-bg-switch:hover{background:rgba(255,255,255,.3);}
 .home-furniture-row{position:absolute;left:14px;bottom:14px;display:flex;gap:8px;z-index:4;}
 .home-furn-slot{width:54px;height:54px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:24px;border:1px dashed rgba(255,255,255,.25);cursor:default;transition:background .2s,border-color .2s;}
 .home-furn-slot.filled{background:rgba(255,255,255,.2);border-style:solid;cursor:pointer;}
@@ -502,22 +504,28 @@ const HomeSystem = (function () {
     }
 
     // ---------- 背景层（P1-B 功能2） ----------
-    // 预留主题表：渐变兜底 + img 接口（后续接入 room-starter.webp 等）
+    // 背景主题表：渐变兜底 + Agnes 生图 img（assets/background/{theme}.png）
     const BG_THEMES = {
-        cozy_night: {
-            // 默认深夜主题
-            gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)',
-            img: '' // 预留：'assets/background/room-starter.webp'
-        },
-        dawn: {
-            gradient: 'linear-gradient(180deg,#3d2f5d 0%,#6a4d8a 50%,#d4a574 100%)',
-            img: ''
-        },
-        starry: {
-            gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)',
-            img: ''
-        }
+        cozy_night: { name: '深夜温馨卧室', gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)', img: 'assets/background/cozy_night.png' },
+        dawn: { name: '清晨阳光房', gradient: 'linear-gradient(180deg,#f6c68b 0%,#f3a8a2 38%,#8ecae6 100%)', img: 'assets/background/dawn.png' },
+        starry: { name: '星空阁楼', gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)', img: 'assets/background/starry.png' },
+        garden_balcony: { name: '花园阳台', gradient: 'linear-gradient(180deg,#b7e4c7 0%,#8fd3c8 45%,#f6d7a7 100%)', img: 'assets/background/garden_balcony.png' },
+        underwater_aquarium: { name: '海底水族房', gradient: 'linear-gradient(180deg,#7ad7f0 0%,#4ca7d8 45%,#1f5d8f 100%)', img: 'assets/background/underwater_aquarium.png' },
+        candy_cottage: { name: '糖果甜梦屋', gradient: 'linear-gradient(180deg,#ffd6e7 0%,#ffc4a3 45%,#fff1b8 100%)', img: 'assets/background/candy_cottage.png' },
+        forest_treehouse: { name: '森林树屋', gradient: 'linear-gradient(180deg,#7fb77e 0%,#4f8f6b 45%,#d6b37a 100%)', img: 'assets/background/forest_treehouse.png' },
+        volcano_hearth: { name: '火山暖窝', gradient: 'linear-gradient(180deg,#5b3a32 0%,#8f4e3a 42%,#f2a65a 100%)', img: 'assets/background/volcano_hearth.png' }
     };
+    const BG_THEME_ORDER = ['cozy_night', 'dawn', 'starry', 'garden_balcony', 'underwater_aquarium', 'candy_cottage', 'forest_treehouse', 'volcano_hearth'];  // 换背景循环顺序(8主题)
+
+    // 循环切换背景（换背景按钮）
+    function cycleHomeBg() {
+        if (!homeState) _loadHomeState();
+        const cur = (homeState && homeState.theme) || 'cozy_night';
+        const idx = BG_THEME_ORDER.indexOf(cur);
+        const next = BG_THEME_ORDER[(idx + 1) % BG_THEME_ORDER.length];
+        setHomeBg(next);
+        _toast('背景：' + (BG_THEMES[next].name || next));
+    }
 
     // 切换背景主题（暴露到 window）
     function setHomeBg(theme) {
@@ -738,6 +746,7 @@ const HomeSystem = (function () {
             <div class="home-wrap">
                 <div class="home-stage">
                     ${bgHtml}
+                    <button class="home-bg-switch" onclick="HomeSystem.cycleHomeBg()" title="切换背景">🖼️ 换背景</button>
                     ${bubbleHtml}
                     ${cleanHtml}
                     <div class="home-pet-wrap" onclick="HomeSystem.onPetClick()">${petImgHtml}</div>
@@ -787,7 +796,7 @@ const HomeSystem = (function () {
         onFeed, onPlay, onBath, onRest, onRescue,
         placeFurniture, removeFurniture, addFurniture,
         canPlace, selectFurniture, clearSelection,
-        onPetClick, setHomeBg,
+        onPetClick, setHomeBg, cycleHomeBg,
         markExit,
         loadCatalog,
         getFurnitureCatalog,
