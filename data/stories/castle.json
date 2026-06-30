@@ -45,7 +45,7 @@
       "options": [
         {
           "text": "📚 去图书馆",
-          "reward": "一本旧书里掉出了一张魔法卷轴！",
+          "reward": "旧书自己翻开了页，一张魔法卷轴轻轻飘了下来！",
           "item": "magic_wand",
           "chance": 0.3
         },
@@ -60,7 +60,7 @@
     },
     {
       "type": "encounter",
-      "text": "楼梯上传来沉重的脚步声，越来越近……",
+      "text": "螺旋楼梯上走下一个披着旧披风的守门影子……",
       "id": "castle.encounter4"
     }
   ],

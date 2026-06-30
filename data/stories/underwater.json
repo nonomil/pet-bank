@@ -45,7 +45,7 @@
       "options": [
         {
           "text": "🌊 顺着洋流游",
-          "reward": "洋流把你带到了一个沉没的宝箱旁，找到了一颗鲨鱼牙！",
+          "reward": "洋流推着你转了个圈，沙里冒出一个沉睡的宝箱！",
           "item": "shark_tooth",
           "chance": 0.4
         },
@@ -60,7 +60,7 @@
     },
     {
       "type": "encounter",
-      "text": "珊瑚丛后面闪过一道黑影，越来越大……",
+      "text": "一串泡泡里游来一条浑身发光的灯笼鱼……",
       "id": "underwater.encounter4"
     }
   ],

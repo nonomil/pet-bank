@@ -45,7 +45,7 @@
       "options": [
         {
           "text": "🌕 摘一个月亮灯笼",
-          "reward": "灯笼里面装满了星尘！",
+          "reward": "灯笼一碰就变轻，里面的星尘流进你的手心！",
           "item": "star_fragment",
           "chance": 0.3
         },
@@ -60,7 +60,7 @@
     },
     {
       "type": "encounter",
-      "text": "星座图案突然在空中亮起，一个身影从星光中走了出来……",
+      "text": "星光里走出一只尾巴拖着银色星尘的星狐……",
       "id": "stargarden.encounter4"
     }
   ],

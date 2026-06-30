@@ -38,16 +38,7 @@ const ExplorationDetail = (function () {
         } catch (e) { console.warn('stories folder load failed', e); }
     }
 
-    function disableEventActions() {
-        const actions = document.querySelectorAll('#exploreEvents .explore-continue-btn, #exploreEvents .explore-choice-btn');
-        actions.forEach((action) => {
-            action.disabled = true;
-            action.style.pointerEvents = 'none';
-            action.style.opacity = '0.6';
-        });
-    }
-
-    // 每个场景的探索事件序列（硬编码兜底；_loadStories 成功后由 data/stories.json 覆盖，便于扩充+配音）
+    // 每个场景的探索事件序列（R1 单一源：data/stories/*.json 唯一正式源，_loadStories 加载填充）
     let sceneEvents = {};
 
     // galgame 立绘映射（场景 → 角色立绘图，Agnes 生图后填路径）
