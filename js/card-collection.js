@@ -187,21 +187,21 @@ const CardCollection = (function() {
             <div class="card-modal-overlay" onclick="CardCollection.closeDetail()"></div>
             <div class="card-modal-content">
                 <div class="card-detail-header">
-                    <div class="card-detail-emoji">${pet.emoji}</div>
+                    <div class="card-detail-emoji">${isCollected ? pet.emoji : '❓'}</div>
                     <div class="card-detail-title">
-                        <div class="text-xl font-bold">${pet.name}</div>
-                        <div class="text-xs opacity-70">${pet.series || '经典'} · ${pet.rarity}</div>
+                        <div class="text-xl font-bold">${isCollected ? pet.name : '???'}</div>
+                        <div class="text-xs opacity-70">${isCollected ? (pet.series || '经典') + ' · ' + pet.rarity : '未收集 · 探索解锁'}</div>
                     </div>
                     <button class="close-btn" onclick="CardCollection.closeDetail()">&times;</button>
                 </div>
                 <div class="card-detail-body">
+                    ${isCollected ? `
                     <div class="card-detail-stat-grid">
                         <div class="stat-box"><span>❤️ HP</span><strong>${pet.base_hp || pet.hp}</strong></div>
                         <div class="stat-box"><span>⚔️ ATK</span><strong>${pet.base_atk || pet.atk}</strong></div>
                     </div>
-                    <div class="card-detail-desc">
-                        ${pet.desc || '暂无描述'}
-                    </div>
+                    <div class="card-detail-desc">${pet.desc || '暂无描述'}</div>
+                    ` : `<div class="card-detail-desc" style="text-align:center;opacity:.75;padding:20px 8px;">🔍 还没收集到这只宠物<br><span style="font-size:13px;">去探索冒险，击败怪物有机会获得！</span></div>`}
                 </div>
                 <div class="card-detail-footer">
                     ${isCollected ? '<span class="text-green-400">已收藏</span>' : '<span class="text-gray-500">未收集</span>'}
