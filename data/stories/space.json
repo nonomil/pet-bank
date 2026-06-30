@@ -28,7 +28,8 @@
         "exp": 30,
         "msg": "舱门打开了，星光涌入！+30 经验"
       },
-      "id": "space.math2"
+      "id": "space.math2",
+      "mathType": "arithmetic"
     },
     {
       "type": "choice",

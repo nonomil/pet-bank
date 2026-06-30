@@ -28,7 +28,8 @@
         "exp": 20,
         "msg": "冰壁融化了，道路打开！+20 经验"
       },
-      "id": "mountain.math2"
+      "id": "mountain.math2",
+      "mathType": "arithmetic"
     },
     {
       "type": "choice",

@@ -2,8 +2,8 @@
   "id": "desert",
   "name": "沙漠绿洲",
   "emoji": "🏜️",
-  "chapter": 4,
-  "chapter_name": "高地洞窟",
+  "chapter": 3,
+  "chapter_name": "海边集市",
   "min_level": 3,
   "danger_level": 3,
   "events": [

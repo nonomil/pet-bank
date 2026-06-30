@@ -11,7 +11,7 @@ const ExplorationSystem = (function () {
         { id: 'underwater', x: 22, y: 72, size: 188, chapter: 3 },
         { id: 'mountain', x: 85, y: 34, size: 182, chapter: 4 },
         { id: 'cave', x: 54, y: 64, size: 198, chapter: 4 },
-        { id: 'desert', x: 82, y: 62, size: 176, chapter: 4 },
+        { id: 'desert', x: 82, y: 62, size: 176, chapter: 3 },
         { id: 'castle', x: 49, y: 84, size: 188, chapter: 4 },
         { id: 'volcano', x: 32, y: 92, size: 176, chapter: 4 },
         { id: 'space', x: 75, y: 83, size: 174, chapter: 5 },

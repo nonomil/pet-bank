@@ -28,7 +28,8 @@
         "exp": 15,
         "msg": "算式亮起金光，道路打开了！+15 经验"
       },
-      "id": "forest.math2"
+      "id": "forest.math2",
+      "mathType": "arithmetic"
     },
     {
       "type": "choice",
