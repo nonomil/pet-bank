@@ -23,6 +23,18 @@ const ExplorationDetail = (function () {
             .catch(() => { _cmathLoading = false; });
     }
 
+    // 探索故事事件（数据驱动 data/stories.json；fetch 失败回退硬编码 sceneEvents 兜底）
+    let _storiesLoaded = false;
+    async function _loadStories() {
+        if (_storiesLoaded) return;
+        _storiesLoaded = true;
+        try {
+            const r = await fetch('data/stories.json');
+            const data = await r.json();
+            if (data && data.scenes && Object.keys(data.scenes).length) sceneEvents = data.scenes;
+        } catch (e) { console.warn('stories.json load failed, use fallback', e); }
+    }
+
     function disableEventActions() {
         const actions = document.querySelectorAll('#exploreEvents .explore-continue-btn, #exploreEvents .explore-choice-btn');
         actions.forEach((action) => {
@@ -32,8 +44,8 @@ const ExplorationDetail = (function () {
         });
     }
 
-    // 每个场景的探索事件序列
-    const sceneEvents = {
+    // 每个场景的探索事件序列（硬编码兜底；_loadStories 成功后由 data/stories.json 覆盖，便于扩充+配音）
+    let sceneEvents = {
         forest: [
             { type: 'narrate', text: '你小心翼翼地走进森林，脚下的落叶发出沙沙的声音……' },
             { type: 'discover', emoji: '🍄', text: '你发现了一朵发光的蘑菇！轻轻摸了一下，它喷出了彩色的孢子。', item: 'mushroom', chance: 0.5 },
@@ -434,6 +446,8 @@ const ExplorationDetail = (function () {
 
     // 是否处于 galgame 探索中（战斗结束后判断要不要回场景列表）
     function isActive() { return currentScene != null; }
+
+    _loadStories();  // 模块加载即预取 data/stories.json（数据驱动），show 用缓存/兜底
 
     return { show, next, choose, exit, answerMath, isActive, showEnding };
 })();
