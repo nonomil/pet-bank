@@ -109,7 +109,7 @@
                 <div class="math-arena" id="math-arena">
                     <style>
                         .math-arena { position:fixed; inset:0; z-index:1000; color:#fff; font-family:inherit; overflow:hidden;
-                            background:#0f1419 url('assets/arena/arena-bg.png') center/cover no-repeat; display:flex; flex-direction:column; }
+                            background:#0f1419 url('assets/arena/arena-bg.webp') center/cover no-repeat; display:flex; flex-direction:column; }
                         .math-arena::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,12,22,.5), rgba(8,12,22,.78)); }
                         .arena-topbar { position:relative; z-index:3; display:flex; justify-content:space-between; align-items:center; padding:14px 22px; gap:10px; }
                         .arena-pill { background:rgba(255,255,255,.13); backdrop-filter:blur(8px); padding:8px 16px; border-radius:999px; font-weight:700; font-size:14px; white-space:nowrap; }
@@ -173,14 +173,14 @@
                     </div>
                     <div class="arena-stage">
                         <div class="arena-side human" id="arena-side-human">
-                            <img class="arena-avatar" src="assets/arena/human-kid.png" alt="你">
+                            <img class="arena-avatar" src="assets/arena/human-kid.webp" alt="你">
                             <div class="arena-name">你</div>
                             <div class="arena-status" id="arena-human-status">准备就绪</div>
                             <div class="arena-time" id="arena-human-time"></div>
                         </div>
                         <div class="arena-center" id="arena-center"></div>
                         <div class="arena-side robot" id="arena-side-robot">
-                            <img class="arena-avatar" src="assets/arena/robot-rival.png" alt="机器人">
+                            <img class="arena-avatar" src="assets/arena/robot-rival.webp" alt="机器人">
                             <div class="arena-name">机器人</div>
                             <div class="arena-status" id="arena-robot-status">准备就绪</div>
                             <div class="arena-time" id="arena-robot-time"></div>

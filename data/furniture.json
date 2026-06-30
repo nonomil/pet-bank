@@ -31,7 +31,7 @@
       "slotType": "floor",
       "defaultOwned": false,
       "description": "柔软的地面装饰，让小屋更温馨",
-      "image": "assets/decor/cozy_rug.png"
+      "image": "assets/decor/cozy_rug.webp"
     },
     {
       "id": "soft_cushion",
@@ -41,7 +41,7 @@
       "slotType": "floor",
       "defaultOwned": false,
       "description": "舒适的地面坐垫",
-      "image": "assets/decor/soft_cushion.png"
+      "image": "assets/decor/soft_cushion.webp"
     },
     {
       "id": "toy_box",
@@ -51,7 +51,7 @@
       "slotType": "floor",
       "defaultOwned": false,
       "description": "装满玩具的箱子",
-      "image": "assets/decor/toy_box.png"
+      "image": "assets/decor/toy_box.webp"
     },
     {
       "id": "night_lamp",
@@ -61,7 +61,7 @@
       "slotType": "corner",
       "defaultOwned": false,
       "description": "温暖的角落夜灯",
-      "image": "assets/decor/night_lamp.png"
+      "image": "assets/decor/night_lamp.webp"
     },
     {
       "id": "wall_frame",
@@ -71,7 +71,7 @@
       "slotType": "backdrop",
       "defaultOwned": false,
       "description": "挂在墙上的装饰相框",
-      "image": "assets/decor/wall_frame.png"
+      "image": "assets/decor/wall_frame.webp"
     },
     {
       "id": "star_mobile",
@@ -81,7 +81,7 @@
       "slotType": "backdrop",
       "defaultOwned": false,
       "description": "闪烁的星星背景挂饰",
-      "image": "assets/decor/star_mobile.png"
+      "image": "assets/decor/star_mobile.webp"
     },
     {
       "id": "potted_plant",
@@ -90,7 +90,7 @@
       "price": 50,
       "slotType": "corner",
       "defaultOwned": false,
-      "image": "assets/decor/potted_plant.png",
+      "image": "assets/decor/potted_plant.webp",
       "description": "角落的绿色盆栽"
     },
     {
@@ -100,7 +100,7 @@
       "price": 45,
       "slotType": "corner",
       "defaultOwned": false,
-      "image": "assets/decor/book_stack.png",
+      "image": "assets/decor/book_stack.webp",
       "description": "一摞冒险绘本"
     },
     {
@@ -110,7 +110,7 @@
       "price": 65,
       "slotType": "corner",
       "defaultOwned": false,
-      "image": "assets/decor/crystal_lamp.png",
+      "image": "assets/decor/crystal_lamp.webp",
       "description": "梦幻星晶灯"
     },
     {
@@ -120,7 +120,7 @@
       "price": 75,
       "slotType": "corner",
       "defaultOwned": false,
-      "image": "assets/decor/mini_aquarium.png",
+      "image": "assets/decor/mini_aquarium.webp",
       "description": "小鱼水族箱"
     },
     {
@@ -130,7 +130,7 @@
       "price": 50,
       "slotType": "floor",
       "defaultOwned": false,
-      "image": "assets/decor/campfire_pillow.png",
+      "image": "assets/decor/campfire_pillow.webp",
       "description": "温暖的篝火抱枕"
     },
     {
@@ -140,7 +140,7 @@
       "price": 55,
       "slotType": "backdrop",
       "defaultOwned": false,
-      "image": "assets/decor/cloud_shelf.png",
+      "image": "assets/decor/cloud_shelf.webp",
       "description": "云朵造型壁架"
     }
   ]

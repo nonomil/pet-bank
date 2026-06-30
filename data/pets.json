@@ -3962,13 +3962,13 @@
       "desc": "活泼忠诚，需要每天遛弯",
       "base_hp": 110,
       "base_atk": 7,
-      "imageUrl": "assets/pets/poses/dog_idle.png",
+      "imageUrl": "assets/pets/poses/dog_idle.webp",
       "imageStages": {
-        "0": "assets/pets/poses/dog_egg.png",
-        "1": "assets/pets/poses/dog_seed.png",
-        "2": "assets/pets/poses/dog_idle.png",
-        "3": "assets/pets/poses/dog_mature.png",
-        "4": "assets/pets/poses/dog_ultimate.png"
+        "0": "assets/pets/poses/dog_egg.webp",
+        "1": "assets/pets/poses/dog_seed.webp",
+        "2": "assets/pets/poses/dog_idle.webp",
+        "3": "assets/pets/poses/dog_mature.webp",
+        "4": "assets/pets/poses/dog_ultimate.webp"
       },
       "imageStyle": "pvz",
       "source": "original"
@@ -3982,13 +3982,13 @@
       "desc": "独立慵懒，陪伴即可",
       "base_hp": 95,
       "base_atk": 6,
-      "imageUrl": "assets/pets/poses/cat_idle.png",
+      "imageUrl": "assets/pets/poses/cat_idle.webp",
       "imageStages": {
-        "0": "assets/pets/poses/cat_egg.png",
-        "1": "assets/pets/poses/cat_seed.png",
-        "2": "assets/pets/poses/cat_idle.png",
-        "3": "assets/pets/poses/cat_mature.png",
-        "4": "assets/pets/poses/cat_ultimate.png"
+        "0": "assets/pets/poses/cat_egg.webp",
+        "1": "assets/pets/poses/cat_seed.webp",
+        "2": "assets/pets/poses/cat_idle.webp",
+        "3": "assets/pets/poses/cat_mature.webp",
+        "4": "assets/pets/poses/cat_ultimate.webp"
       },
       "imageStyle": "pvz",
       "source": "original"
@@ -4002,13 +4002,13 @@
       "desc": "温柔安静，需要干净环境",
       "base_hp": 80,
       "base_atk": 4,
-      "imageUrl": "assets/pets/poses/rabbit_idle.png",
+      "imageUrl": "assets/pets/poses/rabbit_idle.webp",
       "imageStages": {
-        "0": "assets/pets/poses/rabbit_egg.png",
-        "1": "assets/pets/poses/rabbit_seed.png",
-        "2": "assets/pets/poses/rabbit_idle.png",
-        "3": "assets/pets/poses/rabbit_mature.png",
-        "4": "assets/pets/poses/rabbit_ultimate.png"
+        "0": "assets/pets/poses/rabbit_egg.webp",
+        "1": "assets/pets/poses/rabbit_seed.webp",
+        "2": "assets/pets/poses/rabbit_idle.webp",
+        "3": "assets/pets/poses/rabbit_mature.webp",
+        "4": "assets/pets/poses/rabbit_ultimate.webp"
       },
       "imageStyle": "pvz",
       "source": "original"
@@ -4022,13 +4022,13 @@
       "desc": "长寿稳定，低维护难度",
       "base_hp": 130,
       "base_atk": 5,
-      "imageUrl": "assets/pets/poses/turtle_idle.png",
+      "imageUrl": "assets/pets/poses/turtle_idle.webp",
       "imageStages": {
-        "0": "assets/pets/poses/turtle_egg.png",
-        "1": "assets/pets/poses/turtle_seed.png",
-        "2": "assets/pets/poses/turtle_idle.png",
-        "3": "assets/pets/poses/turtle_mature.png",
-        "4": "assets/pets/poses/turtle_ultimate.png"
+        "0": "assets/pets/poses/turtle_egg.webp",
+        "1": "assets/pets/poses/turtle_seed.webp",
+        "2": "assets/pets/poses/turtle_idle.webp",
+        "3": "assets/pets/poses/turtle_mature.webp",
+        "4": "assets/pets/poses/turtle_ultimate.webp"
       },
       "imageStyle": "pvz",
       "source": "original"
@@ -4042,13 +4042,13 @@
       "desc": "小巧玲珑，互动频繁",
       "base_hp": 70,
       "base_atk": 4,
-      "imageUrl": "assets/pets/poses/hamster_idle.png",
+      "imageUrl": "assets/pets/poses/hamster_idle.webp",
       "imageStages": {
-        "0": "assets/pets/poses/hamster_egg.png",
-        "1": "assets/pets/poses/hamster_seed.png",
-        "2": "assets/pets/poses/hamster_idle.png",
-        "3": "assets/pets/poses/hamster_mature.png",
-        "4": "assets/pets/poses/hamster_ultimate.png"
+        "0": "assets/pets/poses/hamster_egg.webp",
+        "1": "assets/pets/poses/hamster_seed.webp",
+        "2": "assets/pets/poses/hamster_idle.webp",
+        "3": "assets/pets/poses/hamster_mature.webp",
+        "4": "assets/pets/poses/hamster_ultimate.webp"
       },
       "imageStyle": "pvz",
       "source": "original"
@@ -4062,13 +4062,13 @@
       "desc": "能说会道，空中优势",
       "base_hp": 85,
       "base_atk": 9,
-      "imageUrl": "assets/pets/poses/parrot_idle.png",
+      "imageUrl": "assets/pets/poses/parrot_idle.webp",
       "imageStages": {
-        "0": "assets/pets/poses/parrot_egg.png",
-        "1": "assets/pets/poses/parrot_seed.png",
-        "2": "assets/pets/poses/parrot_idle.png",
-        "3": "assets/pets/poses/parrot_mature.png",
-        "4": "assets/pets/poses/parrot_ultimate.png"
+        "0": "assets/pets/poses/parrot_egg.webp",
+        "1": "assets/pets/poses/parrot_seed.webp",
+        "2": "assets/pets/poses/parrot_idle.webp",
+        "3": "assets/pets/poses/parrot_mature.webp",
+        "4": "assets/pets/poses/parrot_ultimate.webp"
       },
       "imageStyle": "pvz",
       "source": "original"
@@ -4082,13 +4082,13 @@
       "desc": "优雅安静，水中王者",
       "base_hp": 75,
       "base_atk": 3,
-      "imageUrl": "assets/pets/poses/fish_idle.png",
+      "imageUrl": "assets/pets/poses/fish_idle.webp",
       "imageStages": {
-        "0": "assets/pets/poses/fish_egg.png",
-        "1": "assets/pets/poses/fish_seed.png",
-        "2": "assets/pets/poses/fish_idle.png",
-        "3": "assets/pets/poses/fish_mature.png",
-        "4": "assets/pets/poses/fish_ultimate.png"
+        "0": "assets/pets/poses/fish_egg.webp",
+        "1": "assets/pets/poses/fish_seed.webp",
+        "2": "assets/pets/poses/fish_idle.webp",
+        "3": "assets/pets/poses/fish_mature.webp",
+        "4": "assets/pets/poses/fish_ultimate.webp"
       },
       "imageStyle": "pvz",
       "source": "original"
@@ -4102,13 +4102,13 @@
       "desc": "防御强，刺可反击",
       "base_hp": 90,
       "base_atk": 8,
-      "imageUrl": "assets/pets/poses/hedgehog_idle.png",
+      "imageUrl": "assets/pets/poses/hedgehog_idle.webp",
       "imageStages": {
-        "0": "assets/pets/poses/hedgehog_egg.png",
-        "1": "assets/pets/poses/hedgehog_seed.png",
-        "2": "assets/pets/poses/hedgehog_idle.png",
-        "3": "assets/pets/poses/hedgehog_mature.png",
-        "4": "assets/pets/poses/hedgehog_ultimate.png"
+        "0": "assets/pets/poses/hedgehog_egg.webp",
+        "1": "assets/pets/poses/hedgehog_seed.webp",
+        "2": "assets/pets/poses/hedgehog_idle.webp",
+        "3": "assets/pets/poses/hedgehog_mature.webp",
+        "4": "assets/pets/poses/hedgehog_ultimate.webp"
       },
       "imageStyle": "pvz",
       "source": "original"
@@ -8782,13 +8782,13 @@
       "source": "minecraft",
       "imageStyle": "minecraft",
       "imageStages": {
-        "0": "assets/pets/poses/mc_wolf_egg.png",
-        "1": "assets/pets/poses/mc_wolf_baby.png",
-        "2": "assets/pets/poses/mc_wolf_idle.png",
-        "3": "assets/pets/poses/mc_wolf_mature.png",
-        "4": "assets/pets/poses/mc_wolf_ultimate.png"
+        "0": "assets/pets/poses/mc_wolf_egg.webp",
+        "1": "assets/pets/poses/mc_wolf_baby.webp",
+        "2": "assets/pets/poses/mc_wolf_idle.webp",
+        "3": "assets/pets/poses/mc_wolf_mature.webp",
+        "4": "assets/pets/poses/mc_wolf_ultimate.webp"
       },
-      "imageUrl": "assets/pets/poses/mc_wolf_idle.png"
+      "imageUrl": "assets/pets/poses/mc_wolf_idle.webp"
     },
     {
       "id": "mc_cat",
@@ -8802,13 +8802,13 @@
       "source": "minecraft",
       "imageStyle": "minecraft",
       "imageStages": {
-        "0": "assets/pets/poses/mc_cat_egg.png",
-        "1": "assets/pets/poses/mc_cat_baby.png",
-        "2": "assets/pets/poses/mc_cat_idle.png",
-        "3": "assets/pets/poses/mc_cat_mature.png",
-        "4": "assets/pets/poses/mc_cat_ultimate.png"
+        "0": "assets/pets/poses/mc_cat_egg.webp",
+        "1": "assets/pets/poses/mc_cat_baby.webp",
+        "2": "assets/pets/poses/mc_cat_idle.webp",
+        "3": "assets/pets/poses/mc_cat_mature.webp",
+        "4": "assets/pets/poses/mc_cat_ultimate.webp"
       },
-      "imageUrl": "assets/pets/poses/mc_cat_idle.png"
+      "imageUrl": "assets/pets/poses/mc_cat_idle.webp"
     },
     {
       "id": "mc_rabbit",
@@ -8822,13 +8822,13 @@
       "source": "minecraft",
       "imageStyle": "minecraft",
       "imageStages": {
-        "0": "assets/pets/poses/mc_rabbit_egg.png",
-        "1": "assets/pets/poses/mc_rabbit_baby.png",
-        "2": "assets/pets/poses/mc_rabbit_idle.png",
-        "3": "assets/pets/poses/mc_rabbit_mature.png",
-        "4": "assets/pets/poses/mc_rabbit_ultimate.png"
+        "0": "assets/pets/poses/mc_rabbit_egg.webp",
+        "1": "assets/pets/poses/mc_rabbit_baby.webp",
+        "2": "assets/pets/poses/mc_rabbit_idle.webp",
+        "3": "assets/pets/poses/mc_rabbit_mature.webp",
+        "4": "assets/pets/poses/mc_rabbit_ultimate.webp"
       },
-      "imageUrl": "assets/pets/poses/mc_rabbit_idle.png"
+      "imageUrl": "assets/pets/poses/mc_rabbit_idle.webp"
     },
     {
       "id": "mc_parrot",
@@ -8842,13 +8842,13 @@
       "source": "minecraft",
       "imageStyle": "minecraft",
       "imageStages": {
-        "0": "assets/pets/poses/mc_parrot_egg.png",
-        "1": "assets/pets/poses/mc_parrot_baby.png",
-        "2": "assets/pets/poses/mc_parrot_idle.png",
-        "3": "assets/pets/poses/mc_parrot_mature.png",
-        "4": "assets/pets/poses/mc_parrot_ultimate.png"
+        "0": "assets/pets/poses/mc_parrot_egg.webp",
+        "1": "assets/pets/poses/mc_parrot_baby.webp",
+        "2": "assets/pets/poses/mc_parrot_idle.webp",
+        "3": "assets/pets/poses/mc_parrot_mature.webp",
+        "4": "assets/pets/poses/mc_parrot_ultimate.webp"
       },
-      "imageUrl": "assets/pets/poses/mc_parrot_idle.png"
+      "imageUrl": "assets/pets/poses/mc_parrot_idle.webp"
     },
     {
       "id": "mc_turtle",
@@ -8862,13 +8862,13 @@
       "source": "minecraft",
       "imageStyle": "minecraft",
       "imageStages": {
-        "0": "assets/pets/poses/mc_turtle_egg.png",
-        "1": "assets/pets/poses/mc_turtle_baby.png",
-        "2": "assets/pets/poses/mc_turtle_idle.png",
-        "3": "assets/pets/poses/mc_turtle_mature.png",
-        "4": "assets/pets/poses/mc_turtle_ultimate.png"
+        "0": "assets/pets/poses/mc_turtle_egg.webp",
+        "1": "assets/pets/poses/mc_turtle_baby.webp",
+        "2": "assets/pets/poses/mc_turtle_idle.webp",
+        "3": "assets/pets/poses/mc_turtle_mature.webp",
+        "4": "assets/pets/poses/mc_turtle_ultimate.webp"
       },
-      "imageUrl": "assets/pets/poses/mc_turtle_idle.png"
+      "imageUrl": "assets/pets/poses/mc_turtle_idle.webp"
     },
     {
       "id": "mc_axolotl",
@@ -8882,13 +8882,13 @@
       "source": "minecraft",
       "imageStyle": "minecraft",
       "imageStages": {
-        "0": "assets/pets/poses/mc_axolotl_egg.png",
-        "1": "assets/pets/poses/mc_axolotl_baby.png",
-        "2": "assets/pets/poses/mc_axolotl_idle.png",
-        "3": "assets/pets/poses/mc_axolotl_mature.png",
-        "4": "assets/pets/poses/mc_axolotl_ultimate.png"
+        "0": "assets/pets/poses/mc_axolotl_egg.webp",
+        "1": "assets/pets/poses/mc_axolotl_baby.webp",
+        "2": "assets/pets/poses/mc_axolotl_idle.webp",
+        "3": "assets/pets/poses/mc_axolotl_mature.webp",
+        "4": "assets/pets/poses/mc_axolotl_ultimate.webp"
       },
-      "imageUrl": "assets/pets/poses/mc_axolotl_idle.png"
+      "imageUrl": "assets/pets/poses/mc_axolotl_idle.webp"
     },
     {
       "id": "mc_enderman",
@@ -8902,13 +8902,13 @@
       "source": "minecraft",
       "imageStyle": "minecraft",
       "imageStages": {
-        "0": "assets/pets/poses/mc_enderman_egg.png",
-        "1": "assets/pets/poses/mc_enderman_baby.png",
-        "2": "assets/pets/poses/mc_enderman_idle.png",
-        "3": "assets/pets/poses/mc_enderman_mature.png",
-        "4": "assets/pets/poses/mc_enderman_ultimate.png"
+        "0": "assets/pets/poses/mc_enderman_egg.webp",
+        "1": "assets/pets/poses/mc_enderman_baby.webp",
+        "2": "assets/pets/poses/mc_enderman_idle.webp",
+        "3": "assets/pets/poses/mc_enderman_mature.webp",
+        "4": "assets/pets/poses/mc_enderman_ultimate.webp"
       },
-      "imageUrl": "assets/pets/poses/mc_enderman_idle.png"
+      "imageUrl": "assets/pets/poses/mc_enderman_idle.webp"
     },
     {
       "id": "mc_allay",
@@ -8922,13 +8922,13 @@
       "source": "minecraft",
       "imageStyle": "minecraft",
       "imageStages": {
-        "0": "assets/pets/poses/mc_allay_egg.png",
-        "1": "assets/pets/poses/mc_allay_baby.png",
-        "2": "assets/pets/poses/mc_allay_idle.png",
-        "3": "assets/pets/poses/mc_allay_mature.png",
-        "4": "assets/pets/poses/mc_allay_ultimate.png"
+        "0": "assets/pets/poses/mc_allay_egg.webp",
+        "1": "assets/pets/poses/mc_allay_baby.webp",
+        "2": "assets/pets/poses/mc_allay_idle.webp",
+        "3": "assets/pets/poses/mc_allay_mature.webp",
+        "4": "assets/pets/poses/mc_allay_ultimate.webp"
       },
-      "imageUrl": "assets/pets/poses/mc_allay_idle.png"
+      "imageUrl": "assets/pets/poses/mc_allay_idle.webp"
     }
   ]
 }

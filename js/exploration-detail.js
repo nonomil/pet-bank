@@ -43,18 +43,18 @@ const ExplorationDetail = (function () {
 
     // galgame 立绘映射（场景 → 角色立绘图，Agnes 生图后填路径）
     const SCENE_CHAR_PORTRAIT = {
-        forest: 'assets/characters/forest-mushroom-fairy.png',
-        beach: 'assets/characters/beach-captain-gull.png',
-        mountain: 'assets/characters/mountain-snow-wolf.png',
-        space: 'assets/characters/space-alien-guide.png',
-        candy: 'assets/characters/candy-princess.png',
-        cave: 'assets/characters/cave-crystal-guard.png',
-        waterfall: 'assets/characters/waterfall-frog-guide.png',
-        desert: 'assets/characters/desert-mummy-traveler.png',
-        underwater: 'assets/characters/underwater-mermaid.png',
-        castle: 'assets/characters/castle-library-ghost.png',
-        volcano: 'assets/characters/volcano-phoenix.png',
-        stargarden: 'assets/characters/stargarden-star-fox.png',
+        forest: 'assets/characters/forest-mushroom-fairy.webp',
+        beach: 'assets/characters/beach-captain-gull.webp',
+        mountain: 'assets/characters/mountain-snow-wolf.webp',
+        space: 'assets/characters/space-alien-guide.webp',
+        candy: 'assets/characters/candy-princess.webp',
+        cave: 'assets/characters/cave-crystal-guard.webp',
+        waterfall: 'assets/characters/waterfall-frog-guide.webp',
+        desert: 'assets/characters/desert-mummy-traveler.webp',
+        underwater: 'assets/characters/underwater-mermaid.webp',
+        castle: 'assets/characters/castle-library-ghost.webp',
+        volcano: 'assets/characters/volcano-phoenix.webp',
+        stargarden: 'assets/characters/stargarden-star-fox.webp',
     };
 
     // 显示探索页（galgame 风格：背景 + 左右立绘 + 底部对话框 + 推进）

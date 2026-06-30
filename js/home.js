@@ -504,16 +504,16 @@ const HomeSystem = (function () {
     }
 
     // ---------- 背景层（P1-B 功能2） ----------
-    // 背景主题表：渐变兜底 + Agnes 生图 img（assets/background/{theme}.png）
+    // 背景主题表：渐变兜底 + Agnes 生图 img（assets/background/{theme}.webp）
     const BG_THEMES = {
-        cozy_night: { name: '深夜温馨卧室', gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)', img: 'assets/background/cozy_night.png' },
-        dawn: { name: '清晨阳光房', gradient: 'linear-gradient(180deg,#f6c68b 0%,#f3a8a2 38%,#8ecae6 100%)', img: 'assets/background/dawn.png' },
-        starry: { name: '星空阁楼', gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)', img: 'assets/background/starry.png' },
-        garden_balcony: { name: '花园阳台', gradient: 'linear-gradient(180deg,#b7e4c7 0%,#8fd3c8 45%,#f6d7a7 100%)', img: 'assets/background/garden_balcony.png' },
-        underwater_aquarium: { name: '海底水族房', gradient: 'linear-gradient(180deg,#7ad7f0 0%,#4ca7d8 45%,#1f5d8f 100%)', img: 'assets/background/underwater_aquarium.png' },
-        candy_cottage: { name: '糖果甜梦屋', gradient: 'linear-gradient(180deg,#ffd6e7 0%,#ffc4a3 45%,#fff1b8 100%)', img: 'assets/background/candy_cottage.png' },
-        forest_treehouse: { name: '森林树屋', gradient: 'linear-gradient(180deg,#7fb77e 0%,#4f8f6b 45%,#d6b37a 100%)', img: 'assets/background/forest_treehouse.png' },
-        volcano_hearth: { name: '火山暖窝', gradient: 'linear-gradient(180deg,#5b3a32 0%,#8f4e3a 42%,#f2a65a 100%)', img: 'assets/background/volcano_hearth.png' }
+        cozy_night: { name: '深夜温馨卧室', gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)', img: 'assets/background/cozy_night.webp' },
+        dawn: { name: '清晨阳光房', gradient: 'linear-gradient(180deg,#f6c68b 0%,#f3a8a2 38%,#8ecae6 100%)', img: 'assets/background/dawn.webp' },
+        starry: { name: '星空阁楼', gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)', img: 'assets/background/starry.webp' },
+        garden_balcony: { name: '花园阳台', gradient: 'linear-gradient(180deg,#b7e4c7 0%,#8fd3c8 45%,#f6d7a7 100%)', img: 'assets/background/garden_balcony.webp' },
+        underwater_aquarium: { name: '海底水族房', gradient: 'linear-gradient(180deg,#7ad7f0 0%,#4ca7d8 45%,#1f5d8f 100%)', img: 'assets/background/underwater_aquarium.webp' },
+        candy_cottage: { name: '糖果甜梦屋', gradient: 'linear-gradient(180deg,#ffd6e7 0%,#ffc4a3 45%,#fff1b8 100%)', img: 'assets/background/candy_cottage.webp' },
+        forest_treehouse: { name: '森林树屋', gradient: 'linear-gradient(180deg,#7fb77e 0%,#4f8f6b 45%,#d6b37a 100%)', img: 'assets/background/forest_treehouse.webp' },
+        volcano_hearth: { name: '火山暖窝', gradient: 'linear-gradient(180deg,#5b3a32 0%,#8f4e3a 42%,#f2a65a 100%)', img: 'assets/background/volcano_hearth.webp' }
     };
     const BG_THEME_ORDER = ['cozy_night', 'dawn', 'starry', 'garden_balcony', 'underwater_aquarium', 'candy_cottage', 'forest_treehouse', 'volcano_hearth'];  // 换背景循环顺序(8主题)
 

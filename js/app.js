@@ -253,8 +253,8 @@ function updateMapCompanionCard() {
     const hasSpecies = !!pet.species;
     const stageImage = hasSpecies && typeof PetSystem.getCurrentStageImage === 'function'
         ? PetSystem.getCurrentStageImage()
-        : 'assets/pets/poses/dog_idle.png';
-    companionImg.src = stageImage || 'assets/pets/poses/dog_idle.png';
+        : 'assets/pets/poses/dog_idle.webp';
+    companionImg.src = stageImage || 'assets/pets/poses/dog_idle.webp';
 
     if (hasSpecies) {
         const petName = pet.species_data?.name || pet.species || '我的伙伴';
@@ -369,9 +369,9 @@ window.switchPage = switchPage;
         const species = PetSystem.getAllSpecies();
         const sp = species.find(s => s.id === speciesId);
         if (!sp) return '';
-        // PVZ 宠物的动作（idle/happy/attack）用 poses/{pet}_{action}.png（assets 已有动作图）
+        // PVZ 宠物的动作（idle/happy/attack）用 poses/{pet}_{action}.webp（assets 已有动作图）
         if ((sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && ['idle', 'happy', 'attack'].includes(pose)) {
-            return `assets/pets/poses/${speciesId}_${pose}.png`;
+            return `assets/pets/poses/${speciesId}_${pose}.webp`;
         }
         // 有 imageStages 的宠物（按阶段 key 0-4）
         if (sp.imageStages && sp.imageStages[pose]) {
@@ -478,7 +478,7 @@ window.showToast = showToast;
                     ${poses.map((pose, i) => {
                         let imgSrc;
                         if (sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && ['idle', 'happy', 'attack'].includes(pose)) {
-                            imgSrc = `assets/pets/poses/${sp.id}_${pose}.png`;
+                            imgSrc = `assets/pets/poses/${sp.id}_${pose}.webp`;
                         } else if (sp && sp.imageStages && sp.imageStages[pose]) {
                             imgSrc = sp.imageStages[pose];
                         } else if (sp && sp.imageUrl) {
@@ -892,7 +892,7 @@ function showBattleModal(battle) {
     `;
     // Set initial emojis
     document.getElementById('battlePetEmoji').textContent = PetSystem.getStageEmoji();
-    document.getElementById('battleMonsterEmoji').innerHTML = `<img src="assets/monsters/${battle.monster.id}.png" alt="${battle.monster.name}" style="max-height:120px;object-fit:contain" onerror="this.onerror=null;this.parentElement.className='text-5xl text-center mb-4';this.parentElement.textContent='${battle.monster.emoji}'">`;
+    document.getElementById('battleMonsterEmoji').innerHTML = `<img src="assets/monsters/${battle.monster.id}.webp" alt="${battle.monster.name}" style="max-height:120px;object-fit:contain" onerror="this.onerror=null;this.parentElement.className='text-5xl text-center mb-4';this.parentElement.textContent='${battle.monster.emoji}'">`;
     appendBattleLog(battle);
     renderBattleActions();   // 渲染技能面板 + 道具快捷栏 + 攻击/逃跑
 }

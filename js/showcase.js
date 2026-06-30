@@ -3,7 +3,7 @@
   const SLIDES = [
     { icon: '🗺️', title: '场景探索冒险', desc: '12大奇幻场景，点亮路线解锁剧情与宝藏', img: 'assets/scenes/forest.webp' },
     { icon: '🐾', title: '宠物养成', desc: '领养10族伙伴，喂食互动陪它一起成长', img: 'assets/banchong/灵兽族/岚纹麒麟-0.webp' },
-    { icon: '⚔️', title: '热血战斗', desc: '回合对战掉装备，越级挑战赢取稀有奖励', img: 'assets/characters/volcano-phoenix.png' },
+    { icon: '⚔️', title: '热血战斗', desc: '回合对战掉装备，越级挑战赢取稀有奖励', img: 'assets/characters/volcano-phoenix.webp' },
     { icon: '🔢', title: '数学PK', desc: '趣味数学挑战，烧脑对答赚取积分', img: 'assets/scenes/stargarden.webp' },
     { icon: '🎁', title: '积分兑换', desc: '积分开盲盒，抽出稀有道具与宠物', img: 'assets/scenes/castle.webp' },
     { icon: '📖', title: '宠物图鉴', desc: '收集147只宠物，点亮全族图鉴', img: 'assets/banchong/灵兽族/岚纹麒麟-0.webp' },
