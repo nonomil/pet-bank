@@ -604,8 +604,14 @@ const HomeSystem = (function () {
         };
         function _furnMeta(id) {
             const cat = furnitureCatalogById[id];
-            if (cat) return { icon: cat.icon, name: cat.name };
+            if (cat) return { icon: cat.icon, name: cat.name, image: cat.image || '' };
             return FURN_META_FALLBACK[id] || { icon: '📦', name: id };
+        }
+        // 家具视觉：image 优先(img)，无图回退 emoji icon
+        function _furnVisual(meta) {
+            if (!meta) return '';
+            if (meta.image) return `<img src="${meta.image}" alt="${meta.name}" style="width:100%;height:100%;object-fit:contain" onerror="this.style.display='none';this.parentElement.textContent='${meta.icon}'">`;
+            return meta.icon;
         }
 
         // 家具槽：选中态下点击兼容槽位摆放，否则点击已摆放家具移除
@@ -619,8 +625,8 @@ const HomeSystem = (function () {
                 if (meta) {
                     // 已有家具：兼容则提示替换，点击进入替换
                     return ok
-                        ? `<div class="home-furn-slot filled home-furn-target" title="替换为 ${_furnMeta(_selectedFurniture).name}" onclick="HomeSystem.placeFurniture('${_selectedFurniture}','${slot}')">${meta.icon}</div>`
-                        : `<div class="home-furn-slot filled home-furn-dim" title="不兼容槽位">${meta.icon}</div>`;
+                        ? `<div class="home-furn-slot filled home-furn-target" title="替换为 ${_furnMeta(_selectedFurniture).name}" onclick="HomeSystem.placeFurniture('${_selectedFurniture}','${slot}')">${_furnVisual(meta)}</div>`
+                        : `<div class="home-furn-slot filled home-furn-dim" title="不兼容槽位">${_furnVisual(meta)}</div>`;
                 }
                 return ok
                     ? `<div class="home-furn-slot home-furn-target" title="摆放 ${_furnMeta(_selectedFurniture).name}（点击）" onclick="HomeSystem.placeFurniture('${_selectedFurniture}','${slot}')">＋</div>`
@@ -628,7 +634,7 @@ const HomeSystem = (function () {
             }
             // 未选中：常规态，点击已摆放家具移除
             if (meta) {
-                return `<div class="home-furn-slot filled" title="${meta.name}（点击移除）" onclick="HomeSystem.removeFurniture('${slot}')">${meta.icon}</div>`;
+                return `<div class="home-furn-slot filled" title="${meta.name}（点击移除）" onclick="HomeSystem.removeFurniture('${slot}')">${_furnVisual(meta)}</div>`;
             }
             return `<div class="home-furn-slot" title="空槽位"></div>`;
         }).join('');
@@ -642,7 +648,7 @@ const HomeSystem = (function () {
                     ${unplaced.map(id => {
                         const m = _furnMeta(id);
                         const sel = (_selectedFurniture === id) ? 'home-tray-item-sel' : '';
-                        return `<div class="home-tray-item ${sel}" title="${m.name}（点击${_selectedFurniture === id ? '取消' : '选中'}）" onclick="HomeSystem.selectFurniture('${id}')">${m.icon}</div>`;
+                        return `<div class="home-tray-item ${sel}" title="${m.name}（点击${_selectedFurniture === id ? '取消' : '选中'}）" onclick="HomeSystem.selectFurniture('${id}')">${_furnVisual(m)}</div>`;
                     }).join('')}
                 </div>
             </div>

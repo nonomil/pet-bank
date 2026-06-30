@@ -1,14 +1,147 @@
 {
   "version": "1.0",
-  "defaults": ["food_bowl", "bath_tub"],
+  "defaults": [
+    "food_bowl",
+    "bath_tub"
+  ],
   "furniture": [
-    { "id": "food_bowl", "name": "食盆", "icon": "🥣", "price": 0, "slotType": "floor", "defaultOwned": true, "description": "默认家具，作为喂食区域视觉锚点" },
-    { "id": "bath_tub", "name": "浴缸", "icon": "🛁", "price": 0, "slotType": "corner", "defaultOwned": true, "description": "默认家具，清洁区域视觉锚点" },
-    { "id": "cozy_rug", "name": "温暖地毯", "icon": "🧶", "price": 35, "slotType": "floor", "defaultOwned": false, "description": "柔软的地面装饰，让小屋更温馨" },
-    { "id": "soft_cushion", "name": "软垫", "icon": "🛋️", "price": 45, "slotType": "floor", "defaultOwned": false, "description": "舒适的地面坐垫" },
-    { "id": "toy_box", "name": "玩具箱", "icon": "🧸", "price": 55, "slotType": "floor", "defaultOwned": false, "description": "装满玩具的箱子" },
-    { "id": "night_lamp", "name": "夜灯", "icon": "🪔", "price": 60, "slotType": "corner", "defaultOwned": false, "description": "温暖的角落夜灯" },
-    { "id": "wall_frame", "name": "墙饰相框", "icon": "🖼️", "price": 40, "slotType": "backdrop", "defaultOwned": false, "description": "挂在墙上的装饰相框" },
-    { "id": "star_mobile", "name": "星星挂饰", "icon": "✨", "price": 70, "slotType": "backdrop", "defaultOwned": false, "description": "闪烁的星星背景挂饰" }
+    {
+      "id": "food_bowl",
+      "name": "食盆",
+      "icon": "🥣",
+      "price": 0,
+      "slotType": "floor",
+      "defaultOwned": true,
+      "description": "默认家具，作为喂食区域视觉锚点"
+    },
+    {
+      "id": "bath_tub",
+      "name": "浴缸",
+      "icon": "🛁",
+      "price": 0,
+      "slotType": "corner",
+      "defaultOwned": true,
+      "description": "默认家具，清洁区域视觉锚点"
+    },
+    {
+      "id": "cozy_rug",
+      "name": "温暖地毯",
+      "icon": "🧶",
+      "price": 35,
+      "slotType": "floor",
+      "defaultOwned": false,
+      "description": "柔软的地面装饰，让小屋更温馨",
+      "image": "assets/decor/cozy_rug.png"
+    },
+    {
+      "id": "soft_cushion",
+      "name": "软垫",
+      "icon": "🛋️",
+      "price": 45,
+      "slotType": "floor",
+      "defaultOwned": false,
+      "description": "舒适的地面坐垫",
+      "image": "assets/decor/soft_cushion.png"
+    },
+    {
+      "id": "toy_box",
+      "name": "玩具箱",
+      "icon": "🧸",
+      "price": 55,
+      "slotType": "floor",
+      "defaultOwned": false,
+      "description": "装满玩具的箱子",
+      "image": "assets/decor/toy_box.png"
+    },
+    {
+      "id": "night_lamp",
+      "name": "夜灯",
+      "icon": "🪔",
+      "price": 60,
+      "slotType": "corner",
+      "defaultOwned": false,
+      "description": "温暖的角落夜灯",
+      "image": "assets/decor/night_lamp.png"
+    },
+    {
+      "id": "wall_frame",
+      "name": "墙饰相框",
+      "icon": "🖼️",
+      "price": 40,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "挂在墙上的装饰相框",
+      "image": "assets/decor/wall_frame.png"
+    },
+    {
+      "id": "star_mobile",
+      "name": "星星挂饰",
+      "icon": "✨",
+      "price": 70,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "闪烁的星星背景挂饰",
+      "image": "assets/decor/star_mobile.png"
+    },
+    {
+      "id": "potted_plant",
+      "name": "盆栽植物",
+      "icon": "🪴",
+      "price": 50,
+      "slotType": "corner",
+      "defaultOwned": false,
+      "image": "assets/decor/potted_plant.png",
+      "description": "角落的绿色盆栽"
+    },
+    {
+      "id": "book_stack",
+      "name": "冒险绘本堆",
+      "icon": "📚",
+      "price": 45,
+      "slotType": "corner",
+      "defaultOwned": false,
+      "image": "assets/decor/book_stack.png",
+      "description": "一摞冒险绘本"
+    },
+    {
+      "id": "crystal_lamp",
+      "name": "星晶小灯",
+      "icon": "💎",
+      "price": 65,
+      "slotType": "corner",
+      "defaultOwned": false,
+      "image": "assets/decor/crystal_lamp.png",
+      "description": "梦幻星晶灯"
+    },
+    {
+      "id": "mini_aquarium",
+      "name": "小水族箱",
+      "icon": "🐟",
+      "price": 75,
+      "slotType": "corner",
+      "defaultOwned": false,
+      "image": "assets/decor/mini_aquarium.png",
+      "description": "小鱼水族箱"
+    },
+    {
+      "id": "campfire_pillow",
+      "name": "篝火抱枕",
+      "icon": "🔥",
+      "price": 50,
+      "slotType": "floor",
+      "defaultOwned": false,
+      "image": "assets/decor/campfire_pillow.png",
+      "description": "温暖的篝火抱枕"
+    },
+    {
+      "id": "cloud_shelf",
+      "name": "云朵壁架",
+      "icon": "☁️",
+      "price": 55,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "image": "assets/decor/cloud_shelf.png",
+      "description": "云朵造型壁架"
+    }
   ]
 }
