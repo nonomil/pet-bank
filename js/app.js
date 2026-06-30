@@ -891,7 +891,7 @@ function showBattleModal(battle) {
     `;
     // Set initial emojis
     document.getElementById('battlePetEmoji').textContent = PetSystem.getStageEmoji();
-    document.getElementById('battleMonsterEmoji').textContent = battle.monster.emoji;
+    document.getElementById('battleMonsterEmoji').innerHTML = `<img src="assets/monsters/${battle.monster.id}.png" alt="${battle.monster.name}" style="max-height:120px;object-fit:contain" onerror="this.onerror=null;this.parentElement.className='text-5xl text-center mb-4';this.parentElement.textContent='${battle.monster.emoji}'">`;
     appendBattleLog(battle);
     renderBattleActions();   // 渲染技能面板 + 道具快捷栏 + 攻击/逃跑
 }
