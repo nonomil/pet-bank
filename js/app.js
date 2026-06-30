@@ -599,7 +599,7 @@ function renderSpeciesSelection() {
             const r = PetSystem.getRarityConfig()[sp.rarity || 'common'] || PetSystem.getRarityConfig().common;
             const petImgUrl = sp.imageUrl || '';
             const imgHtml = petImgUrl
-                ? `<div class="pet-thumb-lg" onclick="showPetLightbox('${sp.name}','${sp.imageStyle || 'banchong'}')"><img src="${petImgUrl}" alt="${sp.name}" loading="lazy"></div>`
+                ? `<div class="pet-thumb-lg" onclick="showPetLightbox('${sp.name}','${sp.imageStyle || 'banchong'}')"><img src="${petImgUrl}" alt="${sp.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.textContent='${sp.emoji||'🐾'}'"></div>`
                 : `<div class="text-6xl">${sp.emoji}</div>`;
             preview.innerHTML = `
                 <div class="text-center">
@@ -702,7 +702,7 @@ function renderAdoptGrid(currentSpeciesId) {
         const eggImg = (s.imageStages && s.imageStages['0']) ? s.imageStages['0'] : petImgUrl;
         const displayImg = eggImg || petImgUrl;
         const imgHtml = displayImg
-            ? `<div class="pet-thumb" onclick="event.stopPropagation(); showPetLightbox('${s.name}','${s.imageStyle || 'banchong'}')"><img src="${displayImg}" alt="${s.name}" loading="lazy"></div>`
+            ? `<div class="pet-thumb" onclick="event.stopPropagation(); showPetLightbox('${s.name}','${s.imageStyle || 'banchong'}')"><img src="${displayImg}" alt="${s.name}" loading="lazy" onerror="this.onerror=null;this.parentElement.textContent='${s.emoji||'🐾'}'"></div>`
             : `<div class="emoji">${s.emoji}</div>`;
         return `
         <div class="adopt-card ${isSelected ? 'selected' : ''}" onclick="choosePetFromModal('${s.id}')">

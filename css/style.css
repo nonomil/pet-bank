@@ -24,7 +24,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: url("../data/GPT生图/背景图片-1.webp") center/cover no-repeat;
+    background: url("../data/GPT生图/背景图片-1.png") center/cover no-repeat;
     opacity: 0.1;
     filter: saturate(0.7) contrast(1.02);
     pointer-events: none;
