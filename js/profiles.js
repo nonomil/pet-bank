@@ -291,12 +291,10 @@
                             <span class="profile-item-emoji">${p.emoji}</span>
                             <span class="profile-item-name">${p.name}</span>
                             ${p.id === activeId ? '<span class="profile-item-check">✓</span>' : ''}
-                            <button class="profile-item-edit" title="改名" onclick="event.stopPropagation();ProfileUI.rename('${p.id}')">✎</button>
-                            ${p.id !== 'p_default' && list.length > 1 ? `<button class="profile-item-del" title="删除" onclick="event.stopPropagation();ProfileUI.remove('${p.id}')">✕</button>` : ''}
                         </div>
                     `).join('')}
                 </div>
-                <button class="profile-new" onclick="ProfileUI.create()">➕ 新建孩子</button>
+                <button class="profile-new" onclick="ProfileUI._close();switchPage('settings')">⚙️ 账号管理 →</button>
             `;
             document.body.appendChild(panel);
             const sw = document.getElementById('profileSwitcher');
@@ -342,4 +340,65 @@
         }
     };
     window.ProfileUI = ProfileUI;
+
+    // ---------- SettingsPage：账号管理页渲染 ----------
+    const SettingsPage = {
+        render() {
+            const container = document.getElementById('settings-account-list');
+            if (!container) return;
+            const list = ProfileManager.list();
+            const activeId = ProfileManager.getActiveId();
+            const html = list.map(p => {
+                const isActive = p.id === activeId;
+                // 默认账号 p_default 或仅剩 1 个时不显示删除
+                const canDelete = p.id !== 'p_default' && list.length > 1;
+                return `
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border:1px solid rgba(220,228,221,0.9);border-radius:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(73,84,74,0.06);">
+                        <span style="font-size:28px;">${p.emoji}</span>
+                        <span style="flex:1;font-size:15px;font-weight:600;color:var(--text-primary);">${p.name}</span>
+                        ${isActive ? '<span style="font-size:12px;font-weight:700;color:#fff;background:var(--sage-green);padding:2px 10px;border-radius:999px;">当前</span>' : ''}
+                        <button onclick="SettingsPage.rename('${p.id}')" title="改名" style="background:none;border:none;cursor:pointer;font-size:16px;padding:4px 8px;color:var(--text-secondary);">✎</button>
+                        ${canDelete ? `<button onclick="SettingsPage.remove('${p.id}')" title="删除" style="background:none;border:none;cursor:pointer;font-size:16px;padding:4px 8px;color:#e57373;">✕</button>` : ''}
+                    </div>
+                `;
+            }).join('');
+            const footer = `
+                <button onclick="SettingsPage.create()" style="margin-top:8px;width:100%;padding:12px;border:1px dashed rgba(126,182,108,0.5);border-radius:12px;background:transparent;color:var(--text-primary);cursor:pointer;font-size:14px;font-weight:600;transition:background 0.12s;" onmouseover="this.style.background='rgba(126,182,108,0.08)'" onmouseout="this.style.background='transparent'">➕ 新建孩子</button>
+            `;
+            container.innerHTML = html + footer;
+        },
+        create() {
+            const name = prompt('新孩子的名字：', '');
+            if (!name || !name.trim()) return;
+            const p = ProfileManager.create(name.trim(), '🧒');
+            if (confirm(`已创建「${p.name}」，立即切换过去吗？`)) {
+                ProfileManager.switchTo(p.id); // 内部会 reload
+            } else {
+                this.render();
+            }
+        },
+        rename(id) {
+            const p = ProfileManager.get(id);
+            if (!p) return;
+            const name = prompt('修改名字：', p.name);
+            if (name && name.trim()) {
+                ProfileManager.rename(id, name.trim());
+                this.render();
+                if (window.ProfileUI) ProfileUI.render();
+            }
+        },
+        remove(id) {
+            const p = ProfileManager.get(id);
+            if (!p) return;
+            if (confirm(`删除「${p.name}」？该孩子的所有数据将被清除，不可恢复。`)) {
+                const res = ProfileManager.remove(id);
+                // 若删除的是当前 active，remove 内部已 reload，无需再 render
+                if (res.ok && !res.reloaded) {
+                    this.render();
+                    if (window.ProfileUI) ProfileUI.render();
+                }
+            }
+        }
+    };
+    window.SettingsPage = SettingsPage;
 })();

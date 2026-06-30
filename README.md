@@ -1,6 +1,6 @@
-# 🐾 宠物积分系统 · 暑假成长积分银行
+# 🐾 成长伙伴 · 萌宠冒险岛
 
-> 一个为 7 岁孩子量身定制的「成长积分银行」——把暑假目标变成可触摸、可积累、可炫耀的小小成就。游戏化 + 养宠物 + 长期主义，**让孩子在照顾一只虚拟宠物的过程中，悄悄学会责任与爱**。
+> 一个为孩子量身定制的「成长积分 + 萌宠冒险」应用——把暑假成长目标变成可累积的积分，用积分养成专属宠物、解锁 12 大奇幻场景的探索冒险。游戏化 + 宠物养成 + 场景探索，**让孩子在陪伴一只虚拟宠物冒险的过程中，悄悄学会坚持与责任**。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()

@@ -1,0 +1,120 @@
+/* 首页功能展示轮播 */
+.showcase {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 200px;
+    margin-bottom: 16px;
+    background: #e8ddca;
+}
+
+@media (max-width: 640px) {
+    .showcase {
+        height: 160px;
+    }
+}
+
+.showcase-track {
+    position: absolute;
+    inset: 0;
+}
+
+.showcase-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity .6s ease;
+}
+
+.showcase-slide.active {
+    opacity: 1;
+}
+
+.showcase-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(30,20,15,.78) 0%, rgba(30,20,15,.35) 55%, rgba(30,20,15,.1) 100%);
+}
+
+.showcase-copy {
+    position: absolute;
+    left: 24px;
+    bottom: 20px;
+    color: #fff;
+    max-width: 70%;
+    z-index: 2;
+}
+
+.showcase-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.showcase-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 6px 0 4px;
+    text-shadow: 0 1px 4px rgba(0,0,0,.4);
+}
+
+.showcase-desc {
+    font-size: .92rem;
+    opacity: .92;
+    text-shadow: 0 1px 4px rgba(0,0,0,.4);
+}
+
+.showcase-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,.25);
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    backdrop-filter: blur(2px);
+    z-index: 3;
+}
+
+.showcase-arrow:hover {
+    background: rgba(255,255,255,.4);
+}
+
+.showcase-prev {
+    left: 12px;
+}
+
+.showcase-next {
+    right: 12px;
+}
+
+.showcase-dots {
+    position: absolute;
+    bottom: 14px;
+    right: 18px;
+    display: flex;
+    gap: 6px;
+    z-index: 3;
+}
+
+.showcase-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.5);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all .3s;
+}
+
+.showcase-dot.active {
+    width: 22px;
+    border-radius: 4px;
+    background: #fff;
+}
