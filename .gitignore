@@ -28,3 +28,6 @@ docs/参考案例/
 
 # --- 环境配置（本地，不入库；示例见 .env.example）---
 .env
+
+# --- 临时探测脚本（banchong/voxcpm 下载探测，不入库）---
+scripts/_*.py
