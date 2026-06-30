@@ -254,3 +254,15 @@
     background: rgba(0, 0, 0, 0.2);
     font-size: 0.875rem;
 }
+
+/* === 大类卡片 + 返回按钮（两级图鉴）=== */
+.card-category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; margin-top: 12px; }
+.card-category-item { background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.14); border-radius: 14px; padding: 20px 14px; text-align: center; cursor: pointer; transition: transform .15s, border-color .15s; }
+.card-category-item:hover { transform: translateY(-3px); border-color: #7ee68a; }
+.card-category-emoji { font-size: 44px; line-height: 1; }
+.card-category-name { font-size: 15px; font-weight: 700; color: #fff; margin-top: 8px; }
+.card-category-count { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+.card-category-item .card-progress-bar { margin-top: 10px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+.card-category-item .card-progress-fill { height: 100%; background: linear-gradient(90deg, #7ee68a, #fbbf24); transition: width .4s; }
+.card-back-btn { display: inline-block; padding: 8px 18px; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; cursor: pointer; font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+.card-back-btn:hover { background: rgba(255,255,255,0.16); }

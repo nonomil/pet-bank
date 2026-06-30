@@ -10,6 +10,17 @@ const CardCollection = (function() {
     // Internal state for the UI
     let _allSpecies = [];
     let _seriesStats = {};
+    let _view = 'category';            // 'category'(大类卡片) | 'grid'(瀑布流)
+    let _selectedSource = null;
+    let _lastContainerId = 'card-collection-container';
+    const SOURCE_NAMES = { original: '原生宠物', banchong: '仓鼠大冒险', classpet: '课堂宠物', minecraft: '我的世界' };
+    const SOURCE_EMOJI = { original: '🐾', banchong: '🐹', classpet: '🎓', minecraft: '⛏️' };
+
+    function setView(view, source) {
+        _view = view;
+        _selectedSource = source || null;
+        renderUI(_lastContainerId);
+    }
 
     /**
      * Initialize the collection system
@@ -98,77 +109,66 @@ const CardCollection = (function() {
     function renderUI(containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
-
-        // Always refresh species data from PetSystem (async loading)
-        if (typeof PetSystem !== 'undefined') {
-            _allSpecies = PetSystem.getAllSpecies();
-        }
-
+        _lastContainerId = containerId;
+        if (typeof PetSystem !== 'undefined') _allSpecies = PetSystem.getAllSpecies();
         _calculateSeriesStats();
+        container.innerHTML = (_view === 'grid' && _selectedSource) ? _renderGrid() : _renderCategory();
+    }
 
-        // 1. Stats Header
+    // 大类视图：总收集 + 4 大类卡片(点击进入瀑布流)
+    function _renderCategory() {
         const totalCollected = _cards.length;
         const totalPossible = _allSpecies.length;
         const rarityCounts = { common: 0, rare: 0, epic: 0, legendary: 0 };
-        _cards.forEach(id => {
-            const p = _allSpecies.find(s => s.id === id);
-            if (p && rarityCounts[p.rarity] !== undefined) rarityCounts[p.rarity]++;
-        });
-
-        let statsHtml = `
+        _cards.forEach(id => { const p = _allSpecies.find(s => s.id === id); if (p && rarityCounts[p.rarity] !== undefined) rarityCounts[p.rarity]++; });
+        const statsHtml = `
             <div class="card-stats-container">
-                <div class="card-stat-item">
-                    <div class="card-stat-label">总收集</div>
-                    <div class="card-stat-value">${totalCollected} / ${totalPossible}</div>
-                </div>
-                <div class="card-stat-item">
-                    <div class="card-stat-label">稀有度</div>
-                    <div class="card-stat-value text-xs">
-                        <span class="text-gray-400">⚪${rarityCounts.common}</span> 
-                        <span class="text-blue-400">🔵${rarityCounts.rare}</span> 
-                        <span class="text-purple-400">🟣${rarityCounts.epic}</span> 
-                        <span class="text-yellow-400">🟡${rarityCounts.legendary}</span>
-                    </div>
-                </div>
-            </div>
-        `;
+                <div class="card-stat-item"><div class="card-stat-label">总收集</div><div class="card-stat-value">${totalCollected} / ${totalPossible}</div></div>
+                <div class="card-stat-item"><div class="card-stat-label">稀有度</div><div class="card-stat-value text-xs">
+                    <span class="text-gray-400">⚪${rarityCounts.common}</span>
+                    <span class="text-blue-400">🔵${rarityCounts.rare}</span>
+                    <span class="text-purple-400">🟣${rarityCounts.epic}</span>
+                    <span class="text-yellow-400">🟡${rarityCounts.legendary}</span>
+                </div></div>
+            </div>`;
 
-        // 2. Series Progress
-        let seriesHtml = `<div class="card-section-title">系列进度</div><div class="card-series-grid">`;
-        Object.entries(_seriesStats).forEach(([name, stats]) => {
-            const percent = Math.round((stats.collected / stats.total) * 100);
-            const isComplete = stats.collected === stats.total;
-            seriesHtml += `
-                <div class="card-series-item ${isComplete ? 'complete' : ''}">
-                    <div class="card-series-info">
-                        <span class="card-series-name">${name}</span>
-                        <span class="card-series-count">${stats.collected}/${stats.total}</span>
-                    </div>
-                    <div class="card-progress-bar">
-                        <div class="card-progress-fill" style="width: ${percent}%"></div>
-                    </div>
-                </div>
-            `;
+        const sources = ['original', 'banchong', 'classpet', 'minecraft'];
+        let catHtml = `<div class="card-section-title">宠物大类 · 点击进入图鉴</div><div class="card-category-grid">`;
+        sources.forEach(src => {
+            const pets = _allSpecies.filter(s => (s.source || 'original') === src);
+            if (!pets.length) return;
+            const collected = pets.filter(s => _cards.includes(s.id)).length;
+            const percent = Math.round(collected / pets.length * 100);
+            catHtml += `
+                <div class="card-category-item" onclick="CardCollection.setView('grid','${src}')">
+                    <div class="card-category-emoji">${SOURCE_EMOJI[src] || '🐾'}</div>
+                    <div class="card-category-name">${SOURCE_NAMES[src] || src}</div>
+                    <div class="card-category-count">${collected} / ${pets.length}</div>
+                    <div class="card-progress-bar"><div class="card-progress-fill" style="width:${percent}%"></div></div>
+                </div>`;
         });
-        seriesHtml += `</div>`;
+        catHtml += `</div>`;
+        return statsHtml + catHtml;
+    }
 
-        // 3. Collection Grid
-        let gridHtml = `<div class="card-section-title">宠物图鉴</div><div class="card-grid">`;
-        _allSpecies.forEach(s => {
+    // 瀑布流视图：返回 + 该大类所有卡片
+    function _renderGrid() {
+        const pets = _allSpecies.filter(s => (s.source || 'original') === _selectedSource);
+        const backHtml = `<div class="card-back-btn" onclick="CardCollection.setView('category')">← 返回大类</div>`;
+        const titleHtml = `<div class="card-section-title">${SOURCE_EMOJI[_selectedSource] || ''} ${SOURCE_NAMES[_selectedSource] || _selectedSource}（${pets.length} 种）</div>`;
+        let gridHtml = `<div class="card-grid">`;
+        pets.forEach(s => {
             const isCollected = _cards.includes(s.id);
             const rarityClass = `card-rarity-${s.rarity || 'common'}`;
             gridHtml += `
-                <div class="card-item ${isCollected ? 'collected' : 'uncollected'} ${rarityClass}" 
+                <div class="card-item ${isCollected ? 'collected' : 'uncollected'} ${rarityClass}"
                      onclick="CardCollection.showDetail('${s.id}')">
                     <div class="card-emoji">${isCollected ? s.emoji : '❓'}</div>
                     <div class="card-name">${isCollected ? s.name : '???'}</div>
-                    <div class="card-rarity-tag">${isCollected ? s.rarity : ''}</div>
-                </div>
-            `;
+                </div>`;
         });
         gridHtml += `</div>`;
-
-        container.innerHTML = statsHtml + seriesHtml + gridHtml;
+        return backHtml + titleHtml + gridHtml;
     }
 
     /**
@@ -222,7 +222,8 @@ const CardCollection = (function() {
         renderUI,
         addCard,
         showDetail,
-        closeDetail
+        closeDetail,
+        setView
     };
 })();
 
