@@ -381,7 +381,7 @@ const ExplorationSystem = (function () {
                 cdStartedThisTurn.push(skill.id);
             } else {
                 // 攻击型技能：multiplier × getTotalAtk
-                playerDmg = Math.max(1, Math.floor(petAtk * skill.multiplier) + Math.floor(Math.random() * 3));
+                playerDmg = BattleEngine.calcDamage(petAtk, battle.monster.def || 0, { mult: skill.multiplier, randSub: 0 });
                 battle.monster.current_hp -= playerDmg;
                 battle.log.push({
                     type: 'player',
@@ -395,7 +395,7 @@ const ExplorationSystem = (function () {
             battle.log.push({ type: 'reward', text: `🎒 使用 ${act.itemName || '道具'}：${act.resultMsg || '生效'}` });
         } else {
             // 普攻
-            playerDmg = Math.max(1, petAtk + Math.floor(Math.random() * 3) - 1);
+            playerDmg = BattleEngine.calcDamage(petAtk, battle.monster.def || 0, { useDef: false });
             battle.monster.current_hp -= playerDmg;
             battle.log.push({
                 type: 'player',
@@ -434,7 +434,7 @@ const ExplorationSystem = (function () {
         }
 
         // ---- 敌人反击（defend/道具/普攻/技能后均触发，除非玩家已胜利）----
-        const enemyAtk = Math.max(1, battle.monster.atk + Math.floor(Math.random() * 2) - 1);
+        const enemyAtk = BattleEngine.calcDamage(battle.monster.atk, 0, { randMax: 2 });
         // applyDefend=true：若玩家处于 defending 态，takeDamage 内部伤害×0.5 并清除 defending（一次性）
         const wasDefending = !!(typeof PetSystem.isDefending === 'function' && PetSystem.isDefending());
         const ko = PetSystem.takeDamage(enemyAtk, { applyDefend: true });

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/card-collection.css">
     <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/arena.css">
 </head>
 <body class="map-page-bg">
     <!-- TOP NAV -->
@@ -274,6 +275,7 @@
                     <button class="hub-nav-btn" onclick="switchPage('home')">🏠 宠物小屋</button>
                     <button class="hub-nav-btn" onclick="switchPage('card')">🃏 卡片图鉴</button>
                     <button class="hub-nav-btn" onclick="WalkSystem.renderUI('walkArea')">🚶 遛弯</button>
+                    <button class="hub-nav-btn" onclick="CardArenaUI.openTeamSelect()">⚔️ 卡牌对战</button>
                 </div>
                 <div class="grid grid-cols-3 gap-4 mb-4">
                     <div class="card col-span-2">
@@ -434,6 +436,34 @@
         </div>
     </div>
 
+    <!-- 卡牌对战：选队 Modal -->
+    <div id="arenaTeamModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-bold">⚔️ 选队（3v3）</h3>
+                <button onclick="CardArenaUI.closeTeamModal()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div class="text-xs text-muted mb-1">从已收集的宠物中选 3 只上场（传说 SSR 每队最多 1 只）。按速度首发。</div>
+            <div class="arena-team-grid" id="arenaTeamGrid"></div>
+            <div class="arena-team-footer">
+                <span class="text-sm font-bold" id="arenaTeamCount">已选 0 / 3</span>
+                <button class="btn-primary" id="arenaTeamConfirm" disabled onclick="CardArenaUI.confirmTeam()">开始对战 ⚔️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 卡牌对战：3v3 对战 Modal -->
+    <div id="arenaBattleModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between" style="padding: 12px 18px 0;">
+                <h3 class="text-base font-bold">⚔️ 卡牌对战</h3>
+                <button onclick="CardArenaUI.closeBattleModal()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div class="arena-stage" id="arenaStage"></div>
+            <div class="arena-actions" id="arenaActions"></div>
+        </div>
+    </div>
+
     <!-- Item Modal -->
     <div id="itemModal" class="modal">
         <div class="modal-content">
@@ -489,6 +519,9 @@
         });
     </script>
     <script src="js/inventory.js"></script>
+    <script src="js/battle-engine.js"></script>
+    <script src="js/card-arena.js"></script>
+    <script src="js/card-arena-ui.js"></script>
     <script src="js/exploration.js"></script>
     <script src="js/exploration-detail.js"></script>
     <script src="js/home.js"></script>
