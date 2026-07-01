@@ -5,11 +5,21 @@
 # 幂等：已存在且 >100B 的 mp3 跳过（仅记录 mapping）。
 import hashlib
 import json
+import re as _re
 import time
 from pathlib import Path
 
 from voxcpm import VoxCPM
 import soundfile as sf
+
+
+def _voice_clean(t):
+    """与 js/voice.js _cleanGalgameText 对齐：去所有空格后再 trim。
+    保证 map 键与运行时 textContent 清理结果一致。"""
+    if not isinstance(t, str):
+        return ''
+    t = _re.sub(r'\s+', '', t)
+    return t.strip()
 
 MODEL = "D:/HuggingFaceCache/VoxCPM2"
 OUT = Path(__file__).resolve().parent.parent.parent / "assets" / "voice"  # 宠物积分/assets/voice
@@ -334,16 +344,17 @@ print(f"total texts: {len(TEXTS)}")
 mapping = {}
 timings = []  # [(idx, len, seconds)]
 for i, text in enumerate(TEXTS):
-    h = hashlib.md5(text.encode("utf-8")).hexdigest()
+    key = _voice_clean(text)          # map 键：去空格对齐运行时清理
+    h = hashlib.md5(key.encode("utf-8")).hexdigest()
     out = OUT / f"{h}.mp3"
     if out.exists() and out.stat().st_size > 100:
-        mapping[text] = h
+        mapping[key] = h
         continue  # 幂等跳过
     t = time.time()
-    wav = model.generate(text=VOICE_PREFIX + text, cfg_value=2.0, inference_timesteps=10)
+    wav = model.generate(text=VOICE_PREFIX + text, cfg_value=2.0, inference_timesteps=10)  # 播报仍用原文
     sf.write(str(out), wav, sr)
     dt = time.time() - t
-    mapping[text] = h
+    mapping[key] = h
     timings.append((i, len(text), dt))
     print(f"[{i+1}/{len(TEXTS)}] {len(text)}字 {dt:.1f}s {h}")
 
