@@ -535,16 +535,16 @@ const HomeSystem = (function () {
     }
 
     // ---------- 背景层（P1-B 功能2） ----------
-    // 背景主题表：渐变兜底 + Agnes 生图 img（assets/background/{theme}.webp）
+    // 背景主题表：渐变兜底 + ChatGPT 生图 img（assets/home-bg/room-{theme}.webp）
     const BG_THEMES = {
-        cozy_night: { name: '深夜温馨卧室', desc: '默认小屋，温馨的星空卧室，免费入住。', gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)', img: 'assets/background/cozy_night.webp', price: 0 },
-        dawn: { name: '清晨阳光房', desc: '清晨阳光洒满的温暖房间，元气满满。', gradient: 'linear-gradient(180deg,#f6c68b 0%,#f3a8a2 38%,#8ecae6 100%)', img: 'assets/background/dawn.webp', price: 60 },
-        starry: { name: '星空阁楼', desc: '满天星斗的安静阁楼，适合许愿。', gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)', img: 'assets/background/starry.webp', price: 80 },
-        garden_balcony: { name: '花园阳台', desc: '鲜花环绕的小阳台，蝴蝶常来做客。', gradient: 'linear-gradient(180deg,#b7e4c7 0%,#8fd3c8 45%,#f6d7a7 100%)', img: 'assets/background/garden_balcony.webp', price: 60 },
-        underwater_aquarium: { name: '海底水族房', desc: '海底世界水族房，和鱼儿一起游泳。', gradient: 'linear-gradient(180deg,#7ad7f0 0%,#4ca7d8 45%,#1f5d8f 100%)', img: 'assets/background/underwater_aquarium.webp', price: 100 },
-        candy_cottage: { name: '糖果甜梦屋', desc: '甜蜜糖果色的梦幻小屋，甜到心里。', gradient: 'linear-gradient(180deg,#ffd6e7 0%,#ffc4a3 45%,#fff1b8 100%)', img: 'assets/background/candy_cottage.webp', price: 80 },
-        forest_treehouse: { name: '森林树屋', desc: '森林深处的秘密树屋，鸟语花香。', gradient: 'linear-gradient(180deg,#7fb77e 0%,#4f8f6b 45%,#d6b37a 100%)', img: 'assets/background/forest_treehouse.webp', price: 100 },
-        volcano_hearth: { name: '火山暖窝', desc: '火山旁的温暖小窝，热乎乎超安心。', gradient: 'linear-gradient(180deg,#5b3a32 0%,#8f4e3a 42%,#f2a65a 100%)', img: 'assets/background/volcano_hearth.webp', price: 120 }
+        cozy_night: { name: '深夜温馨卧室', desc: '默认小屋，温馨的星空卧室，免费入住。', gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)', img: 'assets/home-bg/room-starter.webp', price: 0 },
+        dawn: { name: '清晨阳光房', desc: '清晨阳光洒满的温暖房间，元气满满。', gradient: 'linear-gradient(180deg,#f6c68b 0%,#f3a8a2 38%,#8ecae6 100%)', img: '', price: 60 },
+        starry: { name: '星空阁楼', desc: '满天星斗的安静阁楼，适合许愿。', gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)', img: 'assets/home-bg/room-starry.webp', price: 80 },
+        garden_balcony: { name: '花园阳台', desc: '鲜花环绕的小阳台，蝴蝶常来做客。', gradient: 'linear-gradient(180deg,#b7e4c7 0%,#8fd3c8 45%,#f6d7a7 100%)', img: '', price: 60 },
+        underwater_aquarium: { name: '海底水族房', desc: '海底世界水族房，和鱼儿一起游泳。', gradient: 'linear-gradient(180deg,#7ad7f0 0%,#4ca7d8 45%,#1f5d8f 100%)', img: 'assets/home-bg/room-ocean.webp', price: 100 },
+        candy_cottage: { name: '糖果甜梦屋', desc: '甜蜜糖果色的梦幻小屋，甜到心里。', gradient: 'linear-gradient(180deg,#ffd6e7 0%,#ffc4a3 45%,#fff1b8 100%)', img: 'assets/home-bg/room-candy.webp', price: 80 },
+        forest_treehouse: { name: '森林树屋', desc: '森林深处的秘密树屋，鸟语花香。', gradient: 'linear-gradient(180deg,#7fb77e 0%,#4f8f6b 45%,#d6b37a 100%)', img: 'assets/home-bg/room-forest.webp', price: 100 },
+        volcano_hearth: { name: '火山暖窝', desc: '火山旁的温暖小窝，热乎乎超安心。', gradient: 'linear-gradient(180deg,#5b3a32 0%,#8f4e3a 42%,#f2a65a 100%)', img: 'assets/home-bg/room-volcano.webp', price: 120 }
     };
     const BG_THEME_ORDER = ['cozy_night', 'dawn', 'starry', 'garden_balcony', 'underwater_aquarium', 'candy_cottage', 'forest_treehouse', 'volcano_hearth'];  // 换背景循环顺序(8主题)
 
