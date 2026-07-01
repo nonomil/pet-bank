@@ -77,9 +77,8 @@ const CardArenaUI = (function () {
                 unlockedNext = stageId + 1;
             }
             _saveProgress(p);
-            // 发奖励（仅首次）
-            granted.points = (reward && reward.points) || 0;
-            if (granted.points > 0) _grantReward(granted.points);
+            // 发奖励（仅首次）：首通只送固定新卡，不再发成长积分
+            // （卡牌系统不产出成长积分，收口到主循环任务/探索；reward.points 字段保留供 Step6 接训练券复用）
             if (reward && reward.dropCard) {
                 try {
                     if (window.CardCollection && typeof CardCollection.addCard === 'function') {
@@ -182,7 +181,7 @@ const CardArenaUI = (function () {
                     <div class="stage-chapter">轻章节 · ${stars}</div>
                     <div class="stage-desc">${st.desc || ''}</div>
                     <div class="stage-enemies">敌方：${enemyNames}</div>
-                    <div class="stage-reward">奖励：+${(st.reward&&st.reward.points)||0} 积分${(st.reward&&st.reward.dropCard)?' · 卡:'+_speciesName(st.reward.dropCard):''}</div>
+                    <div class="stage-reward">🃏 首通送新卡：${(st.reward&&st.reward.dropCard)?_speciesName(st.reward.dropCard):'—'}</div>
                 </div>
             `;
         }).join('');

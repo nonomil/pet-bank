@@ -32,6 +32,7 @@
 |---|---|---|---|---|
 | `PLAN-HOME-P0` | [宠物小屋-方案](./宠物小屋-方案.md) | 方案 | 已落地 | 宠物小屋 P0 的边界、结构、依赖、验收基线 |
 | `PLAN-NARRATIVE-CLOSURE-V1` | [叙事收口与文案优化-方案](./叙事收口与文案优化-方案.md) | 方案 | 当前最高优先 | 解释为什么下一阶段应先做探索叙事收口、数学场景化、单一源治理，而不是继续扩系统 |
+| `TOPIC-CARD-SYSTEM` | [../卡牌系统/README](../卡牌系统/README.md) | 专题索引 | 当前活跃 | 卡牌系统专题目录：方案、调研、执行、资源统一收纳 |
 | `CHECKLIST-HOME-P0` | [requirements-checklist-宠物小屋](./requirements-checklist-宠物小屋.md) | 检查清单 | 已归档 | 宠物小屋 solution-loop 阶段的需求与验收清单 |
 | `CR-001` | [change-request-001-宠物小屋P0范围扩大](./change-request-001-宠物小屋P0范围扩大.md) | 变更 | 已执行 | 宠物小屋 P0 范围扩大：衰减、救援、洗澡、5 维常驻并入 P0 |
 | `CR-002` | [change-request-002-首页地图连线层级bug](./change-request-002-首页地图连线层级bug.md) | 变更 | 已执行 | 首页成长地图连线不可见问题的根因、修复与验证 |
@@ -48,6 +49,8 @@
   读 `CR-*`
 - 想看“下一阶段正式设计稿 / 实施计划”：
   去看 [../plans/README.md](../plans/README.md)
+- 想看“卡牌系统现在到底怎么收口、哪些文档最该读”：
+  去看 [../卡牌系统/README.md](../卡牌系统/README.md)
 - 想看“版本发布 / CR / 进度之间怎么对应”：
   去看 [../changes/README.md](../changes/README.md)
 - 想看“本轮是否真做完了”：
