@@ -1253,13 +1253,13 @@ body.no-sidebar .sidebar { display: none; }
 .rarity-legendary { border-color: #FF6B9D; box-shadow: 0 0 10px rgba(255,107,157,0.5); animation: glow 2s infinite; }
 @keyframes glow { 0%, 100% { box-shadow: 0 0 10px rgba(255,107,157,0.5); } 50% { box-shadow: 0 0 16px rgba(255,107,157,0.8); } }
 
-/* === 战斗日志 === */
-.battle-log { max-height: 180px; overflow-y: auto; background: rgba(0,0,0,0.32); color:#fff; border-radius: 10px; padding: 12px 14px; font-size: 18px; line-height: 1.6; }
-.battle-log p { margin: 4px 0; }
-.battle-log .log-player { color: var(--sage-green); }
-.battle-log .log-enemy { color: var(--hp-red); }
-.battle-log .log-system { color: var(--text-tertiary); font-style: italic; }
-.battle-log .log-reward { color: var(--gold); font-weight: 600; }
+/* === 战斗状态气泡（最新日志浮动浮现，不挡按钮） === */
+.battle-status-bubble { position:absolute; top:14px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.62); color:#fff; padding:8px 18px; border-radius:999px; font-size:15px; font-weight:600; max-width:86%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; z-index:6; pointer-events:none; animation:battle-bubble 2.2s ease-out forwards; box-shadow:0 4px 12px rgba(0,0,0,0.35); }
+.battle-status-bubble.log-player { color:#a8e063; }
+.battle-status-bubble.log-enemy { color:#ff8a8a; }
+.battle-status-bubble.log-system { color:#cfcfcf; font-style:italic; }
+.battle-status-bubble.log-reward { color:#ffd24d; }
+@keyframes battle-bubble { 0%{opacity:0;transform:translateX(-50%) translateY(10px);} 15%{opacity:1;transform:translateX(-50%) translateY(0);} 75%{opacity:1;} 100%{opacity:0;transform:translateX(-50%) translateY(-10px);} }
 .battle-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .battle-actions button { flex: 1; min-width: 100px; }
 
@@ -1287,7 +1287,6 @@ body.no-sidebar .sidebar { display: none; }
 .battle-flash-red { animation: battle-flash 0.5s; }
 @keyframes battle-flash { 0%,100% { box-shadow: inset 0 0 0 rgba(255,0,0,0); } 50% { box-shadow: inset 0 0 90px rgba(255,40,40,0.5); } }
 .battle-box { padding: 14px 18px 18px; background: rgba(18,18,28,0.94); }
-.battle-box .battle-log { margin-bottom: 12px; }
 @media (max-width: 600px) { .battle-arena { height: 260px; } .battle-fighter-img { height: 160px; } .battle-fighter-emoji { font-size: 72px; } .battle-vs { font-size: 30px; } }
 
 /* === 模态框 === */

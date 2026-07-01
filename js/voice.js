@@ -118,8 +118,8 @@
     var _lastText = '';
     var _lastTime = 0;
 
-    function speak(text) {
-        if (!settings.enabled) return;
+    function speak(text, opts) {
+        if (!settings.enabled && !(opts && opts.force)) return;
         if (typeof text !== 'string' || !text) return;
         var prefetchHit = (_prefetchMap && settings.voice === 'mom' && _prefetchMap[text]);
         var queueText;
@@ -303,21 +303,19 @@
         btn.className = 'voice-play-btn';
         btn.textContent = '🔊';
         btn.title = '朗读当前对话';
-        btn.style.cssText = 'position:absolute;top:8px;right:8px;z-index:50;background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;display:' + (settings.enabled ? 'inline-flex' : 'none') + ';align-items:center;justify-content:center;line-height:1;';
+        btn.style.cssText = 'position:absolute;top:8px;right:8px;z-index:50;background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:1;';
         // 关键：阻止冒泡到 #galgameBox 的 onclick=next()
         btn.addEventListener('click', function (e) {
             e.stopPropagation();
             e.preventDefault();
             var t = document.getElementById('galgameText');
-            speak(t ? t.textContent : '');
+            speak(t ? t.textContent : '', { force: true });
         });
         box.appendChild(btn);
     }
 
     function _syncPlayButtonsDisplay() {
-        var show = settings.enabled ? 'inline-flex' : 'none';
-        var btns = document.querySelectorAll('.voice-play-btn');
-        for (var i = 0; i < btns.length; i++) btns[i].style.display = show;
+        // 播放按钮始终显示（点击 force 播放，不受 enabled 影响）；enabled 仅控制自动播报
     }
 
     function _initPlayButtonObserver() {
