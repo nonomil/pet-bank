@@ -447,7 +447,7 @@
             <div class="arena-stages-grid" id="arenaStagesGrid"></div>
             <div style="margin-top:12px;padding-top:10px;border-top:1px dashed rgba(0,0,0,.12);">
                 <button class="btn-secondary" style="width:100%;" onclick="CardArenaUI.openPvpSetup()">🤝 家庭双人彩蛋（同设备两人）</button>
-                <div class="text-xs text-muted" style="margin-top:4px;text-align:center;">各选 3 只，轮流操作，无 AI</div>
+                <div class="text-xs text-muted" style="margin-top:4px;text-align:center;">各选 2 只，轮流操作，无 AI</div>
             </div>
         </div>
     </div>
@@ -456,27 +456,22 @@
     <div id="arenaTeamModal" class="modal">
         <div class="modal-content">
             <div class="flex items-center justify-between mb-3">
-                <h3 class="text-lg font-bold">⚔️ 选队（3v3）</h3>
+                <h3 class="text-lg font-bold">⚔️ 选队（2v2）</h3>
                 <button onclick="CardArenaUI.closeTeamModal()" class="text-gray-400 hover:text-gray-600">✕</button>
             </div>
-            <div class="text-xs text-muted mb-1">从已收集的宠物中选 3 只上场（传说 SSR 每队最多 1 只）。按速度首发。</div>
+            <div class="text-xs text-muted mb-1">从已收集的宠物中选 2 只上场（1 上场 + 1 替补，传说 SSR 每队最多 1 只）。按速度首发。</div>
             <div class="arena-team-grid" id="arenaTeamGrid"></div>
             <div class="arena-team-footer">
-                <span class="text-sm font-bold" id="arenaTeamCount">已选 0 / 3</span>
+                <span class="text-sm font-bold" id="arenaTeamCount">已选 0 / 2</span>
                 <button class="btn-primary" id="arenaTeamConfirm" disabled onclick="CardArenaUI.confirmTeam()">开始训练 ⚔️</button>
             </div>
         </div>
     </div>
 
-    <!-- 宠物训练营：3v3 对战 Modal -->
+    <!-- 宠物训练营：2v2 全屏对战 Modal（math-pk 风格竞技台）-->
     <div id="arenaBattleModal" class="modal">
-        <div class="modal-content">
-            <div class="flex items-center justify-between" style="padding: 12px 18px 0;">
-                <h3 class="text-base font-bold">⚔️ 训练中</h3>
-                <button onclick="CardArenaUI.closeBattleModal()" class="text-gray-400 hover:text-gray-600">✕</button>
-            </div>
+        <div class="modal-content modal-arena-fullscreen">
             <div class="arena-stage" id="arenaStage"></div>
-            <div class="arena-actions" id="arenaActions"></div>
         </div>
     </div>
 

@@ -1,11 +1,12 @@
 /**
- * card-arena.js - 卡牌对战（宝可梦式 3v3 PvE）核心逻辑
+ * card-arena.js - 卡牌对战（宝可梦式 2v2 PvE）核心逻辑
  *
  * 设计（方案 docs/方案/2026-07-01-卡牌对战-方案.md §3 机制 / §4 架构 / §5 技术）：
  *   - 纯逻辑 + 状态：选队 / 入场 / 回合制（普攻/技能/防御/换人） / 胜负 / 自动换人
  *   - 不碰 DOM/UI/掉落/EXP（mode adapter 职责，UI 由 app.js 后续接入）
  *   - def/spd 必接：calcDamage(useDef:true) + decideOrder 先手
  *   - combatant 用 BattleEngine.makeCombatant
+ *   - 队伍规模 TEAM_SIZE=2（1 上场 + 1 替补），原 3v3 收口为 2v2 降低认知负担
  *
  * 事件契约（log 数组，供 UI 渲染，非中文文本判伤害）：
  *   { actor, side, action, dmg, targetHp, faint, switch }
@@ -25,10 +26,13 @@ const CardArena = (function () {
     // SSR（传说）稀有度限制：每队 ≤1
     const SSR_RARITIES = ['legendary'];
 
-    let playerTeam = null;   // 玩家选定队伍（combatant×3，已 makeCombatant）
+    // 队伍规模：2 只（1 上场 + 1 替补）。原 3v3 → 2v2，降低认知负担。
+    const TEAM_SIZE = 2;
+
+    let playerTeam = null;   // 玩家选定队伍（combatant×TEAM_SIZE，已 makeCombatant）
     let arenaState = null;   // 当前对战状态
     // ===== PvP 本地热座（彩蛋）状态 =====
-    // pvpTeamA/pvpTeamB：双人各自选定的 3 只 combatant（side='player'/'enemy' 区分方位）
+    // pvpTeamA/pvpTeamB：双人各自选定的 TEAM_SIZE 只 combatant（side='player'/'enemy' 区分方位）
     let pvpTeamA = null;     // 玩家A 队伍（方位 player）
     let pvpTeamB = null;     // 玩家B 队伍（方位 enemy）
 
@@ -96,15 +100,15 @@ const CardArena = (function () {
 
     /**
      * 选队内部构建：从 speciesId 数组构建 combatant 队伍（含校验）
-     * @param {string[]} petIds 3 个 species id
+     * @param {string[]} petIds TEAM_SIZE 个 species id
      * @param {'player'|'enemy'} side 方位
      * @returns {object} { ok, error?, team? }
      *
-     * 校验：恰好 3 只 + 每队 SSR(legendary) ≤1
+     * 校验：恰好 TEAM_SIZE 只 + 每队 SSR(legendary) ≤1
      */
     function _buildTeam(petIds, side) {
-        if (!Array.isArray(petIds) || petIds.length !== 3) {
-            return { ok: false, error: '队伍必须恰好 3 只' };
+        if (!Array.isArray(petIds) || petIds.length !== TEAM_SIZE) {
+            return { ok: false, error: '队伍必须恰好 ' + TEAM_SIZE + ' 只' };
         }
         const all = (typeof PetSystem !== 'undefined') ? PetSystem.getAllSpecies() : [];
         const picked = [];
@@ -127,11 +131,11 @@ const CardArena = (function () {
     }
 
     /**
-     * 选队（PvE）：从收集卡 / 任意 species 选 3 只上场，方位 player
-     * @param {string[]} petIds 3 个 species id
+     * 选队（PvE）：从收集卡 / 任意 species 选 TEAM_SIZE 只上场，方位 player
+     * @param {string[]} petIds TEAM_SIZE 个 species id
      * @returns {object} { ok, error?, team? }
      *
-     * 校验：恰好 3 只 + 每队 SSR(legendary) ≤1
+     * 校验：恰好 TEAM_SIZE 只 + 每队 SSR(legendary) ≤1
      */
     function selectTeam(petIds) {
         const res = _buildTeam(petIds, 'player');
@@ -140,9 +144,9 @@ const CardArena = (function () {
     }
 
     /**
-     * PvP 选队：双人各选 3 只（共用收集卡池），分别落 player/enemy 方位
-     * @param {string[]} teamAIds 玩家A 的 3 个 species id（方位 player）
-     * @param {string[]} teamBIds 玩家B 的 3 个 species id（方位 enemy）
+     * PvP 选队：双人各选 TEAM_SIZE 只（共用收集卡池），分别落 player/enemy 方位
+     * @param {string[]} teamAIds 玩家A 的 TEAM_SIZE 个 species id（方位 player）
+     * @param {string[]} teamBIds 玩家B 的 TEAM_SIZE 个 species id（方位 enemy）
      * @returns {object} { ok, error?, teamA?, teamB? }
      */
     function selectTeamPvp(teamAIds, teamBIds) {
@@ -157,15 +161,15 @@ const CardArena = (function () {
 
     /**
      * 开始对战
-     * @param {(string|object)[]} enemySpeciesOrIds 敌方 3 只（speciesId 或预设数值对象）
+     * @param {(string|object)[]} enemySpeciesOrIds 敌方 TEAM_SIZE 只（speciesId 或预设数值对象）
      * @returns {object} arenaState
      */
     function startBattle(enemySpeciesOrIds) {
-        if (!playerTeam || playerTeam.length !== 3) {
+        if (!playerTeam || playerTeam.length !== TEAM_SIZE) {
             throw new Error('startBattle: 尚未选队，请先 selectTeam');
         }
-        if (!Array.isArray(enemySpeciesOrIds) || enemySpeciesOrIds.length !== 3) {
-            throw new Error('startBattle: 敌方必须 3 只');
+        if (!Array.isArray(enemySpeciesOrIds) || enemySpeciesOrIds.length !== TEAM_SIZE) {
+            throw new Error('startBattle: 敌方必须 ' + TEAM_SIZE + ' 只');
         }
         const enemy = enemySpeciesOrIds.map(spec => _combatantFromEnemySpec(spec, 'enemy'));
         arenaState = {
@@ -189,7 +193,7 @@ const CardArena = (function () {
      * @returns {object} arenaState
      */
     function startBattlePvp() {
-        if (!pvpTeamA || pvpTeamA.length !== 3 || !pvpTeamB || pvpTeamB.length !== 3) {
+        if (!pvpTeamA || pvpTeamA.length !== TEAM_SIZE || !pvpTeamB || pvpTeamB.length !== TEAM_SIZE) {
             throw new Error('startBattlePvp: 尚未完成双人选队，请先 selectTeamPvp');
         }
         // spd 决定首回合谁先操作（A 的首发 vs B 的首发）
@@ -685,6 +689,8 @@ const CardArena = (function () {
         turnPvp,
         getState,
         reset,
+        // 暴露常量供 UI/测试查阅
+        TEAM_SIZE,
         // 暴露技能定义供 UI/测试查阅
         SKILL_DEFS
     };
