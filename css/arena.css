@@ -245,7 +245,7 @@
 .arena-stage-card .stage-head { display:flex; align-items:center; gap:6px; margin-bottom:4px; }
 .arena-stage-card .stage-no {
     display:inline-flex; width:22px; height:22px; border-radius:50%;
-    background: #6366f1; color:#fff; font-size:12px; font-weight:bold;
+    background: #6FA893; color:#fff; font-size:12px; font-weight:bold;
     align-items:center; justify-content:center; flex-shrink:0;
 }
 .arena-stage-card .stage-name { font-weight:bold; font-size:14px; flex:1; }

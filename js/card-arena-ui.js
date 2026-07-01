@@ -127,7 +127,7 @@ const CardArenaUI = (function () {
         const p = getProgress();
         // 自由练习入口卡片（置顶）：随机敌人，不计进度不计积分，随时玩
         const freePlayCard = `
-            <div class="arena-stage-card open" onclick="CardArenaUI.openFreePlay()">
+            <div class="arena-stage-card open" style="grid-column:1/-1;background:linear-gradient(90deg,#FFF8DC80,#FAF8F2);border-color:#D4B96A;" onclick="CardArenaUI.openFreePlay()">
                 <div class="stage-head">
                     <span class="stage-no">🆓</span>
                     <span class="stage-name">自由练习</span>
@@ -139,7 +139,30 @@ const CardArenaUI = (function () {
                 <div class="stage-reward">奖励：无（成长积分看轻章节首通）</div>
             </div>
         `;
-        grid.innerHTML = freePlayCard + data.stages.map(st => {
+        // 按 5 大区域分组渲染：每区域一个标题 + 该区域下的轻章节卡片
+        // 五区低饱和色（贴合项目鼠尾草绿基调；参考 design-to-code 生成图 + Codex token）
+        const regionColors = {
+            1: { main: '#8FCAA6', text: '#3F7A5E' },  // 起点花园 薄荷绿
+            2: { main: '#7AB06A', text: '#4A7A40' },  // 森林边界 苔藓绿
+            3: { main: '#7AB5CC', text: '#3D6E85' },  // 海边集市 雾蓝
+            4: { main: '#A89C8C', text: '#6A5E50' },  // 高地洞窟 石灰棕
+            5: { main: '#D4B96A', text: '#8A7240' }   // 星空终点 浅金
+        };
+        let lastChapter = 0;
+        const stagesHtml = data.stages.map(st => {
+            // 区域切换 → 插入区域标题（grid-column:1/-1 跨两列独占行）
+            let regionHeader = '';
+            if (st.chapter !== lastChapter) {
+                const ch = (data.chapters || []).find(c => c.id === st.chapter) || {};
+                const rc = regionColors[st.chapter] || regionColors[1];
+                regionHeader = `
+                    <div class="arena-region-head" style="grid-column:1/-1;display:flex;align-items:baseline;flex-wrap:wrap;gap:8px;margin:10px 0 2px;padding:6px 12px;background:linear-gradient(90deg,${rc.main}33,${rc.main}0A);border-left:3px solid ${rc.main};border-radius:10px;">
+                        <span style="font-weight:700;font-size:13px;color:${rc.text};">🗺️ 区域 ${st.chapter} · ${ch.name || ''}</span>
+                        <span class="text-xs text-muted">${ch.theme || ''}</span>
+                    </div>
+                `;
+                lastChapter = st.chapter;
+            }
             const cleared = p.cleared.includes(st.id);
             const unlocked = st.id <= p.current;
             const stateTag = cleared ? '✓ 已通关' : (unlocked ? '▶ 可挑战' : '🔒 锁定');
@@ -149,20 +172,21 @@ const CardArenaUI = (function () {
             const clickAttr = unlocked
                 ? `onclick="CardArenaUI.enterStage(${st.id})"`
                 : '';
-            return `
+            return regionHeader + `
                 <div class="arena-stage-card ${stateCls}" ${clickAttr}>
                     <div class="stage-head">
                         <span class="stage-no">${st.id}</span>
                         <span class="stage-name">${st.name}</span>
                         <span class="stage-state ${stateCls}">${stateTag}</span>
                     </div>
-                    <div class="stage-chapter">第${st.chapter}章 · ${stars}</div>
+                    <div class="stage-chapter">轻章节 · ${stars}</div>
                     <div class="stage-desc">${st.desc || ''}</div>
                     <div class="stage-enemies">敌方：${enemyNames}</div>
                     <div class="stage-reward">奖励：+${(st.reward&&st.reward.points)||0} 积分${(st.reward&&st.reward.dropCard)?' · 卡:'+_speciesName(st.reward.dropCard):''}</div>
                 </div>
             `;
         }).join('');
+        grid.innerHTML = freePlayCard + stagesHtml;
         modal.classList.add('show');
     }
 
