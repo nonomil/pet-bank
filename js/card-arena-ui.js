@@ -326,7 +326,7 @@ const CardArenaUI = (function () {
             if (text) text.textContent = `${who}：已选 ${selectedIds.length} / 3`;
             if (btn) {
                 btn.disabled = selectedIds.length !== 3;
-                btn.textContent = (pvpMode === 'pickA') ? '玩家A 确认 →' : '开始 PvP ⚔️';
+                btn.textContent = (pvpMode === 'pickA') ? '玩家A 确认 →' : '开始友谊赛 ⚔️';
             }
         } else {
             if (text) text.textContent = `已选 ${selectedIds.length} / 3`;
@@ -709,7 +709,7 @@ const CardArenaUI = (function () {
             const winner = isWin ? 'A' : 'B';  // A 队=player 全灭→lose→B 胜
             overlay.innerHTML = `
                 <div class="arena-result-title win">🏆 玩家${winner} 获胜！</div>
-                <div class="text-xs text-muted" style="margin:4px 0;">本地热座 PvP · 友谊赛无积分</div>
+                <div class="text-xs text-muted" style="margin:4px 0;">家庭双人彩蛋 · 友谊赛不计积分</div>
                 <div class="arena-result-btns">
                     <button class="btn-primary" onclick="CardArenaUI.rematchPvp()">🔁 再战</button>
                     <button class="btn-secondary" onclick="CardArenaUI.closeBattleModal()">✕ 关闭</button>
