@@ -1199,15 +1199,33 @@ function battleAction(action) {
 
     if (result.status === 'won' || result.status === 'lost' || result.status === 'fled') {
         // 战斗胜利有概率掉落卡片
-        if (result.status === 'won' && window.CardCollection && Math.random() < 0.25) {
-            const petSpecies = PetSystem.getAllSpecies();
-            if (petSpecies.length > 0) {
-                // 按宠物稀有度加权（common 多见，legendary 罕见，图鉴收集有梯度）
-                const rw = { common: 50, uncommon: 30, rare: 15, epic: 4, legendary: 1 };
-                const weighted = [];
-                petSpecies.forEach(p => { const pw = rw[p.rarity] || 10; for (let i = 0; i < pw; i++) weighted.push(p); });
-                const picked = weighted[Math.floor(Math.random() * weighted.length)];
-                CardCollection.addCard(picked.id);
+        if (result.status === 'won' && window.CardCollection) {
+            const curBattle = (typeof ExplorationSystem.getCurrentBattle === 'function') ? ExplorationSystem.getCurrentBattle() : null;
+            const enemySpeciesId = (curBattle && curBattle.monster && curBattle.monster.isSpecies) ? curBattle.monster.speciesId : null;
+            if (enemySpeciesId) {
+                // species 敌人：首胜 100% 定向掉卡，重复击败降级 10%（防刷卡；见 species 敌人规则 §七）
+                const FW_KEY = 'petbank_species_first_win';
+                let firstWon = [];
+                try { firstWon = JSON.parse(localStorage.getItem(FW_KEY) || '[]'); } catch (e) {}
+                const isFirst = !firstWon.includes(enemySpeciesId);
+                if (Math.random() < (isFirst ? 1.0 : 0.1)) {
+                    CardCollection.addCard(enemySpeciesId);
+                    if (isFirst) {
+                        firstWon.push(enemySpeciesId);
+                        localStorage.setItem(FW_KEY, JSON.stringify(firstWon));
+                        if (typeof showToast === 'function') showToast(`🃏 首胜定向掉卡：${curBattle.monster.baseName || enemySpeciesId}`);
+                    }
+                }
+            } else if (Math.random() < 0.25) {
+                // monster：现有 25% 通用随机掉卡（按 rarity 加权）
+                const petSpecies = PetSystem.getAllSpecies();
+                if (petSpecies.length > 0) {
+                    const rw = { common: 50, uncommon: 30, rare: 15, epic: 4, legendary: 1 };
+                    const weighted = [];
+                    petSpecies.forEach(p => { const pw = rw[p.rarity] || 10; for (let i = 0; i < pw; i++) weighted.push(p); });
+                    const picked = weighted[Math.floor(Math.random() * weighted.length)];
+                    CardCollection.addCard(picked.id);
+                }
             }
         }
         // 显示结算

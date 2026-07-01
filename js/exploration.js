@@ -284,7 +284,14 @@ const ExplorationSystem = (function () {
         PetSystem.addExploration();
 
         if (scene.monsters.length > 0) {
-            const monster = scene.monsters[Math.floor(Math.random() * scene.monsters.length)];
+            // 章末精英区（danger>=4）40% 概率遇 species 敌人（图鉴宠物，首胜定向掉卡）
+            let monster = null;
+            if (scene.danger_level >= 4 && Math.random() < 0.4 && typeof PetSystem.getAllSpecies === 'function') {
+                monster = _pickSpeciesEnemy(scene.danger_level);
+            }
+            if (!monster) {
+                monster = scene.monsters[Math.floor(Math.random() * scene.monsters.length)];
+            }
             return { success: true, msg: `遇到 ${monster.name}！`, battle: { scene, monster } };
         }
 
@@ -294,6 +301,35 @@ const ExplorationSystem = (function () {
             success: true,
             msg: `安全通过！获得 ${expGain} EXP${result.leveled_up ? `，升级到 Lv.${result.new_level}！` : ''}`,
             leveled_up: result.leveled_up
+        };
+    }
+
+    // 章末精英区 species 敌人（图鉴宠物，包装名，首胜定向掉卡；见 docs/卡牌系统/方案/2026-07-01-探索species敌人-规则.md）
+    function _pickSpeciesEnemy(danger) {
+        const all = PetSystem.getAllSpecies();
+        const rarities = danger >= 5 ? ['legendary', 'epic'] : ['epic', 'legendary'];
+        const pool = all.filter(s => rarities.includes(s.rarity));
+        if (pool.length === 0) return null;
+        const sp = pool[Math.floor(Math.random() * pool.length)];
+        // 命名包装（不敌对感）：野生/失控/镜像/同族守卫 4 选 1
+        const base = sp.name || sp.id;
+        const r = Math.random();
+        const name = r < 0.25 ? `${base}同族守卫`
+            : r < 0.5 ? `野生${base}`
+            : r < 0.75 ? `失控${base}`
+            : `镜像${base}`;
+        return {
+            id: sp.id + '_enemy',
+            name: name,
+            emoji: sp.emoji || '🐾',
+            hp: sp.base_hp,
+            atk: sp.base_atk,
+            def: sp.base_def || 0,
+            exp: 10 + danger * 5,
+            drops: [],
+            isSpecies: true,
+            speciesId: sp.id,
+            baseName: base
         };
     }
 
