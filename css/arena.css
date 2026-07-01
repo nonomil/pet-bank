@@ -191,3 +191,41 @@
     .arena-fighter .fighter-emoji { font-size: 64px; line-height: 96px; }
     .arena-action-row { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ===== 闯关：关卡选择卡片 ===== */
+.arena-stages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 2px;
+}
+.arena-stage-card {
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 10px 12px;
+    background: var(--card, #fff);
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s;
+}
+.arena-stage-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+.arena-stage-card.locked { opacity: .45; cursor: not-allowed; filter: grayscale(.6); }
+.arena-stage-card.locked:hover { transform: none; box-shadow: none; }
+.arena-stage-card.cleared { border-color: #10b981; }
+.arena-stage-card .stage-head { display:flex; align-items:center; gap:6px; margin-bottom:4px; }
+.arena-stage-card .stage-no {
+    display:inline-flex; width:22px; height:22px; border-radius:50%;
+    background: #6366f1; color:#fff; font-size:12px; font-weight:bold;
+    align-items:center; justify-content:center; flex-shrink:0;
+}
+.arena-stage-card .stage-name { font-weight:bold; font-size:14px; flex:1; }
+.arena-stage-card .stage-state { font-size:11px; padding:1px 6px; border-radius:8px; flex-shrink:0; }
+.arena-stage-card .stage-state.open { background:#dbeafe; color:#1d4ed8; }
+.arena-stage-card .stage-state.cleared { background:#d1fae5; color:#047857; }
+.arena-stage-card .stage-state.locked { background:#f3f4f6; color:#9ca3af; }
+.arena-stage-card .stage-chapter { font-size:11px; color:#f59e0b; margin-bottom:4px; }
+.arena-stage-card .stage-desc { font-size:11px; color:var(--muted,#6b7280); margin-bottom:4px; line-height:1.4; }
+.arena-stage-card .stage-enemies { font-size:11px; color:#6b7280; margin-bottom:2px; }
+.arena-stage-card .stage-reward { font-size:11px; color:#059669; }
+@media (max-width: 600px) { .arena-stages-grid { grid-template-columns: 1fr; } }

@@ -275,7 +275,7 @@
                     <button class="hub-nav-btn" onclick="switchPage('home')">🏠 宠物小屋</button>
                     <button class="hub-nav-btn" onclick="switchPage('card')">🃏 卡片图鉴</button>
                     <button class="hub-nav-btn" onclick="WalkSystem.renderUI('walkArea')">🚶 遛弯</button>
-                    <button class="hub-nav-btn" onclick="CardArenaUI.openTeamSelect()">⚔️ 卡牌对战</button>
+                    <button class="hub-nav-btn" onclick="CardArenaUI.openStages()">⚔️ 卡牌对战</button>
                 </div>
                 <div class="grid grid-cols-3 gap-4 mb-4">
                     <div class="card col-span-2">
@@ -433,6 +433,18 @@
                 <button onclick="closeBattleModal()" class="text-gray-400 hover:text-gray-600">✕</button>
             </div>
             <div id="battleContent"></div>
+        </div>
+    </div>
+
+    <!-- 卡牌对战：关卡选择 Modal -->
+    <div id="arenaStagesModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-bold">⚔️ 闯关模式</h3>
+                <button onclick="CardArenaUI.closeStages()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div class="text-xs text-muted mb-2">通关解锁下一关。已通关关卡可重玩（奖励仅首次发放）。</div>
+            <div class="arena-stages-grid" id="arenaStagesGrid"></div>
         </div>
     </div>
 
