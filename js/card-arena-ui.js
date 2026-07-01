@@ -124,6 +124,15 @@ const CardArenaUI = (function () {
             return;
         }
         const p = getProgress();
+        _claimDailyTickets();  // 每日登录送训练券 + 首次初始 10 张（渲染前发放，券数实时显示）
+        const ticketCount = (typeof InventorySystem !== 'undefined' && InventorySystem.getCount)
+            ? InventorySystem.getCount('arena_ticket') : 0;
+        const ticketBar = `
+            <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:6px 12px;margin-bottom:6px;background:linear-gradient(90deg,#FFF8DC80,#FAF8F2);border:1px dashed #D4B96A;border-radius:8px;">
+                <span style="font-size:12px;color:#8A7240;font-weight:bold;">🎫 训练券 · 挑战轻章节消耗 1 张</span>
+                <span style="font-size:13px;color:#8A7240;font-weight:bold;">持有 ${ticketCount}</span>
+            </div>
+        `;
         // 自由练习入口卡片（置顶）：随机敌人，不计进度不计积分，随时玩
         const freePlayCard = `
             <div class="arena-stage-card open" style="grid-column:1/-1;background:linear-gradient(90deg,#FFF8DC80,#FAF8F2);border-color:#D4B96A;" onclick="CardArenaUI.openFreePlay()">
@@ -181,11 +190,11 @@ const CardArenaUI = (function () {
                     <div class="stage-chapter">轻章节 · ${stars}</div>
                     <div class="stage-desc">${st.desc || ''}</div>
                     <div class="stage-enemies">敌方：${enemyNames}</div>
-                    <div class="stage-reward">🃏 首通送新卡：${(st.reward&&st.reward.dropCard)?_speciesName(st.reward.dropCard):'—'}</div>
+                    <div class="stage-reward">🃏 首通新卡：${(st.reward&&st.reward.dropCard)?_speciesName(st.reward.dropCard):'—'} · 🎫 挑战-1</div>
                 </div>
             `;
         }).join('');
-        grid.innerHTML = freePlayCard + stagesHtml;
+        grid.innerHTML = ticketBar + freePlayCard + stagesHtml;
         modal.classList.add('show');
     }
 
@@ -197,9 +206,39 @@ const CardArenaUI = (function () {
     // 点关卡 → 进入选队（敌人 = 该关 enemies）
     function enterStage(stageId) {
         if (!isUnlocked(stageId)) return;
+        // 轻章节挑战消耗 1 张训练券（自由练习 openFreePlay 不消耗，基础练习免费）
+        if (typeof InventorySystem !== 'undefined' && InventorySystem.getCount) {
+            if (InventorySystem.getCount('arena_ticket') <= 0) {
+                if (typeof showToast === 'function') showToast('🎫 训练券不足！每日登录送 3 张');
+                else alert('🎫 训练券不足，每日登录送 3 张');
+                return;
+            }
+            InventorySystem.removeItem('arena_ticket', 1);
+        }
         pendingStageId = stageId;
         closeStages();
         openTeamSelect(stageId);
+    }
+
+    // 每日登录送训练券（3 张/天）+ 新玩家首次初始 10 张（openStages 渲染前调用）
+    function _claimDailyTickets() {
+        try {
+            if (typeof InventorySystem === 'undefined' || !InventorySystem.addItem) return;
+            // 首次初始 10 张
+            const INIT_KEY = 'petbank_arena_ticket_init';
+            if (!localStorage.getItem(INIT_KEY)) {
+                localStorage.setItem(INIT_KEY, '1');
+                InventorySystem.addItem('arena_ticket', 10);
+            }
+            // 每日 3 张（按本地日期去重）
+            const DAY_KEY = 'petbank_arena_ticket_day';
+            const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD
+            if (localStorage.getItem(DAY_KEY) !== today) {
+                localStorage.setItem(DAY_KEY, today);
+                InventorySystem.addItem('arena_ticket', 3);
+                if (typeof showToast === 'function') showToast('🎫 每日训练券 +3');
+            }
+        } catch (e) {}
     }
 
     // 自由练习入口：随机敌人，不计进度不计积分，随时玩（基础练习免费）

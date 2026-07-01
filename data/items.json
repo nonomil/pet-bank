@@ -11,6 +11,16 @@
       "stack_max": 99
     },
     {
+      "id": "arena_ticket",
+      "name": "训练券",
+      "emoji": "🎫",
+      "type": "ticket",
+      "rarity": "common",
+      "description": "挑战训练章节所需，每日登录送 3 张",
+      "effect": {},
+      "stack_max": 99
+    },
+    {
       "id": "ancient_bandage",
       "name": "古老绷带",
       "emoji": "🩹",
