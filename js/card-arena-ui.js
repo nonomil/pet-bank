@@ -93,6 +93,15 @@ const CardArenaUI = (function () {
                     }
                 } catch (e) {}
             }
+            // 对战道具首通奖励（进 InventorySystem 背包）
+            if (reward && reward.dropItem) {
+                try {
+                    if (typeof InventorySystem !== 'undefined' && typeof InventorySystem.addItem === 'function') {
+                        const r = InventorySystem.addItem(reward.dropItem, 1);
+                        if (r && r.success) granted.item = reward.dropItem;
+                    }
+                } catch (e) {}
+            }
         }
         return { firstClear, unlockedNext, granted };
     }
@@ -697,17 +706,27 @@ const CardArenaUI = (function () {
             { id: 'defend', label: '🛡️ 防御', action: { type: 'defend', skillId: 'defend' } },
             { id: 'ultimate', label: '🌟 必杀', action: { type: 'skill', skillId: 'ultimate' } },
         ];
-        return buttons.map(b => {
+        const skillBtns = buttons.map(b => {
             const sk = findSk(b.id);
             const cd = sk ? sk.currentCd : 0;
-            // 非操作方 / 锁中 / CD 中 → 禁用
             const disabled = !sideEnabled || uiLocked || cd > 0;
             const cdTag = cd > 0 ? `<span class="cd-tag">CD ${cd}</span>` : '';
-            // action 带 side 字段，doAction 据此路由（PvE 忽略，PvP 用来判定方位）
             const actWithSide = Object.assign({ side: side }, b.action);
             const act = JSON.stringify(actWithSide).replace(/"/g, '&quot;');
             return `<button class="arena-act-btn" ${disabled ? 'disabled' : ''} onclick='CardArenaUI.doAction(${act})'>${b.label}${cdTag}</button>`;
         }).join('');
+
+        // 道具按钮：显示持有 battle 道具总数 badge，点击打开道具面板
+        let battleCount = 0;
+        try {
+            if (typeof InventorySystem !== 'undefined' && InventorySystem.getItemsByType) {
+                battleCount = InventorySystem.getItemsByType('battle').reduce((s, i) => s + (i.count || 0), 0);
+            }
+        } catch (e) {}
+        const itemDisabled = !sideEnabled || uiLocked || battleCount <= 0;
+        const badge = battleCount > 0 ? `<span class="cd-tag" style="background:#4CAF50;color:#fff;">${battleCount}</span>` : '';
+        const itemBtn = `<button class="arena-act-btn" ${itemDisabled ? 'disabled' : ''} onclick='CardArenaUI.openItemPanel("${side}")'>🎒 道具${badge}</button>`;
+        return skillBtns + itemBtn;
     }
 
     // 换人按钮（除当前上场外，存活的）；sideEnabled 控制启用
@@ -744,6 +763,15 @@ const CardArenaUI = (function () {
         }
         switch (ev.action) {
             case 'defend': return `${side} 进入防御`;
+            case 'itemUsed': {
+                let tail = '';
+                if (ev.heal > 0) tail = `回血 +${ev.heal}`;
+                else if (ev.dmg > 0) tail = `造成 ${ev.dmg} 伤害`;
+                else if (ev.target === 'reviveFlag') tail = '复活标记已存';
+                else if (ev.target && String(ev.target).indexOf('revive') === 0) tail = '复活替补';
+                else if (ev.target === 'self') tail = '属性提升';
+                return `${side} 使用 ${ev.name || '道具'}${tail ? '（' + tail + '）' : ''}`;
+            }
             case 'attack': return `${side} 普攻 → ${ev.dmg} 伤害`;
             case 'power_strike': return `${side} 重击 → ${ev.dmg} 伤害`;
             case 'ultimate': return `${side} 必杀 → ${ev.dmg} 伤害`;
@@ -757,6 +785,97 @@ const CardArenaUI = (function () {
                 return ev.result === 'win' ? '胜利！' : '失败';
             default: return '';
         }
+    }
+
+    // ===== 对战道具面板 =====
+    function _injectArenaItemStyles() {
+        if (document.getElementById('arena-item-panel-styles')) return;
+        const style = document.createElement('style');
+        style.id = 'arena-item-panel-styles';
+        style.textContent = `
+            .arena-item-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; z-index:1100; }
+            .arena-item-panel { background:#fff; border-radius:14px; padding:16px; width:min(92vw,420px); max-height:80vh; overflow-y:auto; box-shadow:0 8px 30px rgba(0,0,0,0.25); }
+            .arena-item-title { font-weight:bold; font-size:16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+            .arena-item-list { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+            .arena-item-card { border:1px solid #eee; border-radius:10px; padding:10px; text-align:center; cursor:pointer; transition:transform .15s, box-shadow .15s; background:#fafafa; }
+            .arena-item-card:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.12); border-color:#4CAF50; }
+            .arena-item-card.disabled { opacity:.45; cursor:not-allowed; }
+            .arena-item-emoji { font-size:2rem; display:block; }
+            .arena-item-name { font-weight:bold; font-size:13px; margin:4px 0 2px; }
+            .arena-item-count { font-size:.75rem; color:#888; }
+            .arena-item-desc { font-size:.7rem; color:#999; margin-top:4px; line-height:1.3; }
+            .arena-item-empty { grid-column:1/-1; text-align:center; color:#999; padding:20px 0; }
+            @media (max-width:480px) { .arena-item-list { grid-template-columns:1fr; } }
+        `;
+        document.head.appendChild(style);
+    }
+
+    function openItemPanel(side) {
+        const s = CardArena.getState();
+        if (!s || s.status !== 'ongoing' || uiLocked) return;
+        if (s.mode === 'pvp') {
+            const opSide = (s.operator === 'A') ? 'player' : 'enemy';
+            if (side !== opSide) return;
+        }
+        _injectArenaItemStyles();
+        let items = [];
+        try {
+            if (typeof InventorySystem !== 'undefined' && InventorySystem.getItemsByType) {
+                items = InventorySystem.getItemsByType('battle');
+            }
+        } catch (e) {}
+        const overlay = document.createElement('div');
+        overlay.className = 'arena-item-overlay';
+        overlay.id = 'arenaItemOverlay';
+        overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+        const list = items.length === 0
+            ? '<div class="arena-item-empty">背包没有对战道具<br>去商店「🎒 对战道具」分类购买</div>'
+            : items.map(it => `
+                <div class="arena-item-card ${it.count <= 0 ? 'disabled' : ''}"
+                     ${it.count > 0 ? `onclick="CardArenaUI.useBattleItem('${it.id}','${side}')"` : ''}>
+                    <span class="arena-item-emoji">${it.emoji || '🎒'}</span>
+                    <div class="arena-item-name">${it.name}</div>
+                    <div class="arena-item-count">x${it.count}</div>
+                    <div class="arena-item-desc">${it.description || ''}</div>
+                </div>
+            `).join('');
+        overlay.innerHTML = `
+            <div class="arena-item-panel">
+                <div class="arena-item-title">
+                    <span>🎒 选择对战道具</span>
+                    <button onclick="CardArenaUI.closeItemPanel()" style="background:none;border:none;font-size:18px;color:#999;cursor:pointer;">✕</button>
+                </div>
+                <div class="arena-item-list">${list}</div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    }
+
+    function closeItemPanel() {
+        const el = document.getElementById('arenaItemOverlay');
+        if (el) el.remove();
+    }
+
+    function useBattleItem(itemId, side) {
+        const s = CardArena.getState();
+        if (!s || s.status !== 'ongoing' || uiLocked) return;
+        if (s.mode === 'pvp') {
+            const opSide = (s.operator === 'A') ? 'player' : 'enemy';
+            if (side !== opSide) return;
+        }
+        closeItemPanel();
+        uiLocked = true;
+        const beforeLogLen = s.log.length;
+        const action = { type: 'item', itemId: itemId, side: side };
+        let st;
+        try {
+            st = (s.mode === 'pvp') ? CardArena.turnPvp(action) : CardArena.turn(action);
+        } catch (err) {
+            uiLocked = false;
+            if (typeof showToast === 'function') showToast(err.message || '道具使用失败');
+            return;
+        }
+        _animateAndRender(st, beforeLogLen);
     }
 
     // ===== 动作执行 =====
@@ -856,6 +975,15 @@ const CardArenaUI = (function () {
             if (ev.action === 'defend') {
                 return `${skillIcon.defend} ${sideLabel(ev.side)} 防御`;
             }
+            if (ev.action === 'itemUsed') {
+                let tail = '';
+                if (ev.heal > 0) tail = ` +${ev.heal} HP`;
+                else if (ev.dmg > 0) tail = ` → ${ev.dmg} 伤害`;
+                else if (ev.target === 'reviveFlag') tail = '（标记已存）';
+                else if (ev.target && String(ev.target).indexOf('revive') === 0) tail = '（复活成功）';
+                else if (ev.target === 'self') tail = '（增益生效）';
+                return `${ev.name || '🎒'} ${sideLabel(ev.side)}${tail}`;
+            }
             if (ev.action === 'attack' || ev.action === 'power_strike' || ev.action === 'ultimate') {
                 const icon = skillIcon[ev.action] || '⚔️';
                 const name = skillName[ev.action] || '攻击';
@@ -925,6 +1053,11 @@ const CardArenaUI = (function () {
             if (result.firstClear) {
                 if (result.granted.points) rewardLines.push(`+${result.granted.points} 积分`);
                 if (result.granted.card) rewardLines.push(`🃏 解锁新卡：${_speciesName(result.granted.card)}`);
+                if (result.granted.item) {
+                    const it = (typeof InventorySystem !== 'undefined' && InventorySystem.getItemData)
+                        ? InventorySystem.getItemData(result.granted.item) : null;
+                    rewardLines.push(`${it ? it.emoji : '🎒'} 获得道具：${it ? it.name : result.granted.item}`);
+                }
             } else {
                 rewardLines.push('重玩关卡（奖励已领取）');
             }
@@ -1086,6 +1219,10 @@ const CardArenaUI = (function () {
         closeBattleModal,
         doAction,
         doSwitch,
+        // 对战道具
+        openItemPanel,
+        closeItemPanel,
+        useBattleItem,
         rematch,
         // PvP 本地热座
         openPvpSetup,

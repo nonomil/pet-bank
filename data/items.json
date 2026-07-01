@@ -67,6 +67,56 @@
       "stack_max": 999
     },
     {
+      "id": "battle_atk_elixir",
+      "name": "攻击药",
+      "emoji": "⚔️",
+      "type": "battle",
+      "rarity": "common",
+      "description": "对战中本场上场宠物 atk +30%（本战有效）",
+      "effect": { "atk_buff": 0.3 },
+      "stack_max": 99
+    },
+    {
+      "id": "battle_bomb",
+      "name": "炸弹",
+      "emoji": "💣",
+      "type": "battle",
+      "rarity": "common",
+      "description": "对战中敌方上场宠物固定 -30 HP",
+      "effect": { "dmg": 30 },
+      "stack_max": 99
+    },
+    {
+      "id": "battle_def_elixir",
+      "name": "防御药",
+      "emoji": "🛡️",
+      "type": "battle",
+      "rarity": "common",
+      "description": "对战中本场上场宠物 def +30%（本战有效）",
+      "effect": { "def_buff": 0.3 },
+      "stack_max": 99
+    },
+    {
+      "id": "battle_heal_potion",
+      "name": "回血药",
+      "emoji": "🧪",
+      "type": "battle",
+      "rarity": "common",
+      "description": "对战中本场上场宠物回 30% maxHp",
+      "effect": { "heal_pct": 30 },
+      "stack_max": 99
+    },
+    {
+      "id": "battle_revive",
+      "name": "复活符",
+      "emoji": "🌟",
+      "type": "battle",
+      "rarity": "common",
+      "description": "对战中复活第一个阵亡替补（50% hp），无阵亡则存标记自动触发",
+      "effect": { "revive_pct": 50 },
+      "stack_max": 99
+    },
+    {
       "id": "bone",
       "name": "香香骨头",
       "emoji": "🦴",

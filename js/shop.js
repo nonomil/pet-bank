@@ -32,6 +32,15 @@ const ShopSystem = (function () {
     }
   ];
 
+  // 对战道具（积分购买 → 进 InventorySystem 背包，竞技场对战中使用）
+  const BATTLE_ITEMS = [
+    { id: 'battle_heal_potion', emoji: '🧪', name: '回血药', price: 15, desc: '对战中上场宠物回 30% maxHp', toInventory: true },
+    { id: 'battle_atk_elixir', emoji: '⚔️', name: '攻击药', price: 25, desc: '对战中上场宠物 atk +30%（本战）', toInventory: true },
+    { id: 'battle_def_elixir', emoji: '🛡️', name: '防御药', price: 25, desc: '对战中上场宠物 def +30%（本战）', toInventory: true },
+    { id: 'battle_bomb', emoji: '💣', name: '炸弹', price: 30, desc: '对战中敌方上场固定 -30 HP', toInventory: true },
+    { id: 'battle_revive', emoji: '🌟', name: '复活符', price: 40, desc: '复活阵亡替补 50% hp（无阵亡存标记）', toInventory: true }
+  ];
+
   const RANDOM_ITEMS = [
     { id: 'toy_ball', emoji: '⚽', name: '玩具球' },
     { id: 'bone', emoji: '🦴', name: '香香骨头' },
@@ -169,8 +178,15 @@ const ShopSystem = (function () {
     }
 
     adjustGrowthPoints(-item.price);
-    saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'purchase' });
-    alert(`兑换成功！${item.name}`);
+    // 对战道具进背包（InventorySystem），奖励券类仍走历史记录（不进背包保持原行为）
+    if (item.toInventory && window.InventorySystem && typeof window.InventorySystem.addItem === 'function') {
+      const res = window.InventorySystem.addItem(item.id, 1);
+      saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'battle_item' });
+      alert(`${res.success ? '兑换成功！' : ''}${item.name}${res.success ? '' : '（背包写入失败）'}`);
+    } else {
+      saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'purchase' });
+      alert(`兑换成功！${item.name}`);
+    }
   };
 
   // --- 家具购买（联动 HomeSystem，纯装饰，永久拥有，不进背包） ---
@@ -358,6 +374,21 @@ const ShopSystem = (function () {
           `).join('')}
         </div>
 
+        <div class="shop-section-title">🎒 对战道具（训练营专用）</div>
+        <div class="shop-grid">
+          ${BATTLE_ITEMS.map(item => {
+            const held = (window.InventorySystem && InventorySystem.getCount) ? InventorySystem.getCount(item.id) : 0;
+            return `
+            <div class="shop-card">
+              <span class="shop-emoji">${item.emoji}</span>
+              <span class="shop-name">${item.name}${held > 0 ? ` <span style="color:#888;font-size:.75rem;">(持有 ${held})</span>` : ''}</span>
+              <span class="shop-price">${item.price} 分</span>
+              <div class="shop-desc">${item.desc}</div>
+              <button class="shop-btn" onclick="ShopSystem.buyBattle('${item.id}')">购买</button>
+            </div>`;
+          }).join('')}
+        </div>
+
         <div class="shop-section-title">🛋️ 家园装饰</div>
         <div class="shop-grid">
           ${(() => {
@@ -410,6 +441,13 @@ const ShopSystem = (function () {
     buy: (itemId) => {
       const item = ITEMS.find(i => i.id === itemId);
       if (item) buyItem(item);
+    },
+    buyBattle: (itemId) => {
+      const item = BATTLE_ITEMS.find(i => i.id === itemId);
+      if (item) {
+        buyItem(item);
+        renderUI('shop-ui');
+      }
     },
     buyFurniture,
     openBox: (boxId, containerId) => {

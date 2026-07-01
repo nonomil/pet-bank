@@ -52,7 +52,7 @@ const CardArena = (function () {
      * @param {'player'|'enemy'} side
      */
     function _combatantFromSpecies(species, side) {
-        return BattleEngine.makeCombatant({
+        const c = BattleEngine.makeCombatant({
             id: species.id,
             name: species.name || species.id,
             img: (species.imageStages && species.imageStages['2']) || species.imageUrl || '',
@@ -65,6 +65,22 @@ const CardArena = (function () {
             spd: species.base_spd || 0,
             skills: _defaultSkills()
         });
+        _initArenaFields(c);
+        return c;
+    }
+
+    /**
+     * 给 combatant 加上竞技场对战道具 buff 字段（不污染 BattleEngine.makeCombatant）
+     * - atkMult/defMult：本战有效，道具可叠加（攻击药 +30%、防御药 +30%）
+     * - reviveFlag：复活符标记（无阵亡时存此，阵亡时自动触发）
+     * 新对战 makeCombatant 默认无这些字段，本战结束随 combatant 丢弃即重置
+     */
+    function _initArenaFields(c) {
+        if (!c) return c;
+        c.atkMult = 1;
+        c.defMult = 1;
+        c.reviveFlag = null;
+        return c;
     }
 
     /**
@@ -73,7 +89,7 @@ const CardArena = (function () {
     function _combatantFromEnemySpec(spec, side) {
         // 已是 combatant-like 对象（含 hp/atk/def/spd）
         if (spec && (spec.hp != null || spec.maxHp != null) && (spec.atk != null)) {
-            return BattleEngine.makeCombatant({
+            const c = BattleEngine.makeCombatant({
                 id: spec.id || ('enemy_' + Math.random().toString(36).slice(2, 7)),
                 name: spec.name || spec.id || '敌方',
                 img: spec.img || '',
@@ -86,16 +102,20 @@ const CardArena = (function () {
                 spd: spec.spd || 0,
                 skills: Array.isArray(spec.skills) && spec.skills.length ? spec.skills : _defaultSkills()
             });
+            _initArenaFields(c);
+            return c;
         }
         // 否则当 speciesId，查 PetSystem
         const all = (typeof PetSystem !== 'undefined') ? PetSystem.getAllSpecies() : [];
         const sp = all.find(s => s.id === spec);
         if (sp) return _combatantFromSpecies(sp, side);
         // 兜底
-        return BattleEngine.makeCombatant({
+        const c = BattleEngine.makeCombatant({
             id: String(spec), name: String(spec), side: side,
             hp: 100, maxHp: 100, atk: 5, def: 0, spd: 0, skills: _defaultSkills()
         });
+        _initArenaFields(c);
+        return c;
     }
 
     /**
@@ -249,8 +269,11 @@ const CardArena = (function () {
      */
     function _dealDamage(actor, target, skill) {
         const mult = skill ? (skill.mult || 1) : 1;
+        // 对战道具 buff：atk×atkMult（攻击药 +30%），def×defMult（防御药 +30%）
+        const effAtk = Math.max(0, Math.floor((actor.atk || 0) * (actor.atkMult || 1)));
+        const effDef = Math.max(0, Math.floor((target.def || 0) * (target.defMult || 1)));
         // calcDamage(useDef:true) → base = max(1, atk - floor(def/2))，def=0 退化安全（atk）
-        let dmg = BattleEngine.calcDamage(actor.atk, target.def, { mult: mult, useDef: true });
+        let dmg = BattleEngine.calcDamage(effAtk, effDef, { mult: mult, useDef: true });
         // defend 减伤：目标本回合 defending → 受击 ×0.5（一次性，方案 §3.2）
         if (target.defending) {
             dmg = Math.max(1, Math.floor(dmg * 0.5));
@@ -326,11 +349,129 @@ const CardArena = (function () {
     }
 
     /**
+     * 复活符标记触发：本方当前上场带 reviveFlag 且 hp<=0 → 按 pct 复活（消耗标记）
+     * 在 _autoSwitchAfterFaint 之前调用，复活成功则不进入换人流程
+     * @param {'player'|'enemy'} side
+     * @returns {boolean} 是否触发了复活
+     */
+    function _triggerReviveFlagIfAny(side) {
+        const team = (side === 'player') ? arenaState.player : arenaState.enemy;
+        const activeIdx = (side === 'player') ? arenaState.activeP : arenaState.activeE;
+        const c = team[activeIdx];
+        if (c && c.hp <= 0 && c.reviveFlag) {
+            const pct = c.reviveFlag.pct || 50;
+            c.hp = Math.max(1, Math.floor(c.maxHp * pct / 100));
+            arenaState.log.push({
+                actor: c.id, side: side, action: 'itemUsed',
+                dmg: 0, targetHp: c.hp, faint: false, switch: false,
+                itemId: c.reviveFlag.itemId || 'battle_revive',
+                name: '复活符（自动触发）', target: 'revive:auto'
+            });
+            c.reviveFlag = null;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 使用对战道具（竞技场专用，type:'battle'）
+     * - heal_pct：本方上场宠物回 heal_pct% × maxHp（不超 maxHp）
+     * - atk_buff：本方上场宠物 atkMult *= (1+atk_buff)（本战有效）
+     * - def_buff：本方上场宠物 defMult *= (1+def_buff)（本战有效）
+     * - dmg：对敌方上场宠物造成固定伤害（触发 faint 判定）
+     * - revive_pct：若本方有阵亡替补，复活第一个（revive_pct% hp）；否则存 reviveFlag，下次阵亡自动触发
+     * 校验：InventorySystem.getCount(itemId) > 0
+     * 消耗：InventorySystem.removeItem(itemId, 1)
+     * log：{ actor, side, action:'itemUsed', itemId, name, target, dmg?, heal? }
+     * @param {'player'|'enemy'} side 使用方（PvP 由 operator 映射）
+     * @param {string} itemId 对战道具 id
+     * @returns {{ ok:boolean, error?:string, log?:object }} 处理结果
+     */
+    function _useBattleItem(side, itemId) {
+        if (typeof InventorySystem === 'undefined' || !InventorySystem.getItemData) {
+            return { ok: false, error: '背包系统未就绪' };
+        }
+        const data = InventorySystem.getItemData(itemId);
+        if (!data || data.type !== 'battle') {
+            return { ok: false, error: '非对战道具: ' + itemId };
+        }
+        if (InventorySystem.getCount(itemId) <= 0) {
+            return { ok: false, error: data.name + ' 数量不足' };
+        }
+
+        const isPlayerSide = (side === 'player');
+        const selfTeam = isPlayerSide ? arenaState.player : arenaState.enemy;
+        const enemyTeam = isPlayerSide ? arenaState.enemy : arenaState.player;
+        const selfActive = selfTeam[isPlayerSide ? arenaState.activeP : arenaState.activeE];
+        const enemyActive = enemyTeam[isPlayerSide ? arenaState.activeE : arenaState.activeE];
+        const eff = data.effect || {};
+        const logEntry = {
+            actor: selfActive.id, side: side, action: 'itemUsed',
+            dmg: 0, targetHp: 0, faint: false, switch: false,
+            itemId: itemId, name: data.name, target: ''
+        };
+
+        if (typeof eff.heal_pct === 'number') {
+            const c = selfActive;
+            if (c.hp > 0) {
+                const before = c.hp;
+                c.hp = Math.min(c.maxHp, c.hp + Math.floor(c.maxHp * eff.heal_pct / 100));
+                logEntry.heal = c.hp - before;
+                logEntry.target = 'self';
+                logEntry.targetHp = c.hp;
+            } else {
+                return { ok: false, error: '上场宠物已倒下，无法回血' };
+            }
+        } else if (typeof eff.atk_buff === 'number') {
+            if (selfActive.hp <= 0) return { ok: false, error: '上场宠物已倒下' };
+            selfActive.atkMult = (selfActive.atkMult || 1) * (1 + eff.atk_buff);
+            logEntry.target = 'self';
+            logEntry.targetHp = selfActive.hp;
+        } else if (typeof eff.def_buff === 'number') {
+            if (selfActive.hp <= 0) return { ok: false, error: '上场宠物已倒下' };
+            selfActive.defMult = (selfActive.defMult || 1) * (1 + eff.def_buff);
+            logEntry.target = 'self';
+            logEntry.targetHp = selfActive.hp;
+        } else if (typeof eff.dmg === 'number') {
+            const c = enemyActive;
+            if (!c || c.hp <= 0) return { ok: false, error: '敌方上场已倒下' };
+            const before = c.hp;
+            c.hp = Math.max(0, c.hp - eff.dmg);
+            logEntry.dmg = before - c.hp;
+            logEntry.faint = c.hp <= 0;
+            logEntry.target = 'enemy';
+            logEntry.targetHp = c.hp;
+        } else if (typeof eff.revive_pct === 'number') {
+            // 复活符：先找阵亡替补复活；无阵亡则存 reviveFlag（下次阵亡自动触发）
+            const faintedIdx = selfTeam.findIndex(c => c.hp <= 0);
+            if (faintedIdx >= 0) {
+                const c = selfTeam[faintedIdx];
+                c.hp = Math.max(1, Math.floor(c.maxHp * eff.revive_pct / 100));
+                logEntry.target = 'revive:' + faintedIdx;
+                logEntry.targetHp = c.hp;
+                logEntry.switch = true;
+            } else {
+                selfActive.reviveFlag = { pct: eff.revive_pct, itemId: itemId };
+                logEntry.target = 'reviveFlag';
+                logEntry.targetHp = selfActive.hp;
+            }
+        } else {
+            return { ok: false, error: '未知对战道具效果' };
+        }
+
+        InventorySystem.removeItem(itemId, 1);
+        arenaState.log.push(logEntry);
+        return { ok: true, log: logEntry };
+    }
+
+    /**
      * 倒下后自动换人（不耗回合）
      * @param {'player'|'enemy'} side
      * @returns {boolean} 是否触发了换人
      */
     function _autoSwitchAfterFaint(side) {
+        // 先判复活符标记：触发则 hp>0，跳过换人
+        if (_triggerReviveFlagIfAny(side)) return false;
         if (side === 'player') {
             const fainted = _activeP();
             if (fainted.hp <= 0) {
@@ -432,6 +573,31 @@ const CardArena = (function () {
 
         const p = _activeP();
         const e = _activeE();
+
+        // ----- 使用对战道具：耗本回合，玩家不出招，敌方 AI 反击 -----
+        if (action.type === 'item') {
+            const res = _useBattleItem('player', action.itemId);
+            if (!res.ok) {
+                throw new Error('turn: ' + (res.error || '道具使用失败'));
+            }
+            // 道具致死敌方 → 自动换人 + 胜负判定（玩家不主动出招）
+            if (res.log && res.log.faint) {
+                _autoSwitchAfterFaint('enemy');
+            }
+            if (_resolveEnd()) { arenaState.round++; return arenaState; }
+            // 敌方 AI 反击
+            const ea = _enemyDecide(_activeE());
+            _execAction(_activeE(), _activeP(), ea, 'enemy');
+            if (ea.skillId && ea.type !== 'attack') {
+                startedThisTurn.add(_activeE().id + ':' + ea.skillId);
+            }
+            // 玩方被反击致死 → 自动换人（_autoSwitchAfterFaint 内含 reviveFlag 触发）
+            _autoSwitchAfterFaint('player');
+            if (_resolveEnd()) { arenaState.round++; return arenaState; }
+            _cdTick(startedThisTurn);
+            arenaState.round++;
+            return arenaState;
+        }
 
         // ----- 玩家手动换人：耗本回合，不出招 -----
         if (action.type === 'switch') {
@@ -545,6 +711,35 @@ const CardArena = (function () {
         const opTeam = (opSide === 'player') ? arenaState.player : arenaState.enemy;
         const opActiveIdx = (opSide === 'player') ? arenaState.activeP : arenaState.activeE;
         const opActive = opTeam[opActiveIdx];
+
+        // ----- 使用对战道具：作用于操作方当前 combatant，耗本操作方回合 → 切 operator -----
+        if (action.type === 'item') {
+            const res = _useBattleItem(opSide, action.itemId);
+            if (!res.ok) {
+                throw new Error('turnPvp: ' + (res.error || '道具使用失败'));
+            }
+            // 道具致死防守方 → 自动换人（_autoSwitchAfterFaint 内含 reviveFlag）
+            const defSideForItem = (opSide === 'player') ? 'enemy' : 'player';
+            if (res.log && res.log.faint) {
+                _autoSwitchAfterFaint(defSideForItem);
+            }
+            _pvpEndTurnTick(startedThisTurn);
+            _pvpCheckEnd();
+            if (arenaState.status !== 'ongoing') {
+                arenaState.round++;
+                return arenaState;
+            }
+            _pvpSwitchOperator();
+            if (arenaState.status === 'ongoing') {
+                arenaState.log.push({
+                    actor: 'system', side: 'system', action: 'pvpTurnStart',
+                    dmg: 0, targetHp: 0, faint: false, switch: false,
+                    operator: arenaState.operator
+                });
+            }
+            arenaState.round++;
+            return arenaState;
+        }
 
         // ----- 换人：本方换人（不造伤），仍耗本操作方回合 → 切 operator -----
         if (action.type === 'switch') {

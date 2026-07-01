@@ -35,7 +35,7 @@
       "desc": "森林边境的稀有游骑兵，速度为先。",
       "enemies": ["a40e4bd1-dfa", "f2282b26-a4c", "867feba0-6f6"],
       "difficulty": 2,
-      "reward": { "points": 55, "dropCard": "09622f40-378" }
+      "reward": { "points": 55, "dropCard": "09622f40-378", "dropItem": "battle_heal_potion" }
     },
     {
       "id": 4,
@@ -53,7 +53,7 @@
       "desc": "海边集市的混合阵容，攻防兼备。",
       "enemies": ["f9daaed8-aef", "ca515e59-0cd", "38226299-99f"],
       "difficulty": 3,
-      "reward": { "points": 90, "dropCard": "5bc5d210-20c" }
+      "reward": { "points": 90, "dropCard": "5bc5d210-20c", "dropItem": "battle_bomb" }
     },
     {
       "id": 6,
@@ -71,7 +71,7 @@
       "desc": "高地洞窟的史诗守卫，善用必杀技。",
       "enemies": ["5bc5d210-20c", "f9daaed8-aef", "a360a473-b83"],
       "difficulty": 4,
-      "reward": { "points": 140, "dropCard": "60aab456-a41" }
+      "reward": { "points": 140, "dropCard": "60aab456-a41", "dropItem": "battle_revive" }
     },
     {
       "id": 8,
