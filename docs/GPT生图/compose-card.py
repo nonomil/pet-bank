@@ -102,8 +102,8 @@ samples += [p for p in flat if p not in samples][:max(0, N - len(samples))]
 for p in samples[:N]:
     try:
         img = compose(p)
-        out = os.path.join(OUT_DIR, f"{p['id']}.png")
-        img.save(out)
+        out = os.path.join(OUT_DIR, f"{p['id']}.webp")
+        img.save(out, format='WEBP', quality=90)
         print(f'✓ {p["id"]:16s} {p.get("name",""):8s} rarity={p.get("rarity"):10s} hp={p.get("base_hp")} atk={p.get("base_atk")} def={p.get("base_def")} spd={p.get("base_spd")} → {out}')
     except Exception as e:
         print(f'✗ {p["id"]} 失败: {e}')

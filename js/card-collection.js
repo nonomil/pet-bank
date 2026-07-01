@@ -151,7 +151,7 @@ const CardCollection = (function() {
         return statsHtml + catHtml;
     }
 
-    // 瀑布流视图：返回 + 该大类所有卡牌（四层叠加：边框+立绘/emoji+暗角+HTML数值角标）
+    // 瀑布流视图：返回 + 该大类所有卡牌
     function _renderGrid() {
         const pets = _allSpecies.filter(s => (s.source || 'original') === _selectedSource);
         const backHtml = `<div class="card-back-btn" onclick="CardCollection.setView('category')">← 返回大类</div>`;
@@ -160,31 +160,35 @@ const CardCollection = (function() {
         pets.forEach(s => {
             const isCollected = _cards.includes(s.id);
             const rarityClass = `card-rarity-${s.rarity || 'common'}`;
-            // Layer2 立绘：有图用图(emoji 兜底层 + img 上层)，无图纯 emoji；未收集留空(::before ❓蒙版)
-            let portrait;
             if (isCollected) {
-                const img = (s.imageStages && s.imageStages['2']) || s.imageUrl;
-                portrait = `<div class="card-emoji-big">${s.emoji || '🐾'}</div>` +
-                    (img ? `<img src="${img}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">` : '');
-            } else {
-                portrait = '';
-            }
-            // Layer4 四角数值角标（未收集显示 ?，def/spd P0 暂'-' P1 填）
-            const sv = (v) => isCollected ? ((v != null && v !== undefined) ? v : '-') : '?';
-            const statsHtml = `
-                <div class="card-stat card-stat-hp" title="生命">❤${sv(s.base_hp)}</div>
-                <div class="card-stat card-stat-spd" title="速度">✦${sv(s.base_spd)}</div>
-                <div class="card-stat card-stat-def" title="防御">🛡${sv(s.base_def)}</div>
-                <div class="card-stat card-stat-atk" title="攻击">⚔${sv(s.base_atk)}</div>`;
-            const seriesHtml = (isCollected && s.series) ? `<div class="card-series-tag">${s.series}</div>` : '';
-            gridHtml += `
-                <div class="card-item ${isCollected ? 'collected' : 'uncollected'} ${rarityClass}"
-                     onclick="CardCollection.showDetail('${s.id}')">
+                // 已收集：主用合成卡牌图(Agnes背景+立绘+数值)；底层留 CSS 卡牌作 fallback(图缺失时露出)
+                const composed = `assets/cards/composed/${s.id}.webp`;
+                const img2 = (s.imageStages && s.imageStages['2']) || s.imageUrl;
+                const portrait = `<div class="card-emoji-big">${s.emoji || '🐾'}</div>` +
+                    (img2 ? `<img src="${img2}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">` : '');
+                const sv = (v) => (v != null && v !== undefined) ? v : '-';
+                const statsHtml = `
+                    <div class="card-stat card-stat-hp">❤${sv(s.base_hp)}</div>
+                    <div class="card-stat card-stat-spd">✦${sv(s.base_spd)}</div>
+                    <div class="card-stat card-stat-def">🛡${sv(s.base_def)}</div>
+                    <div class="card-stat card-stat-atk">⚔${sv(s.base_atk)}</div>`;
+                const seriesHtml = s.series ? `<div class="card-series-tag">${s.series}</div>` : '';
+                gridHtml += `
+                <div class="card-item composed ${rarityClass}" onclick="CardCollection.showDetail('${s.id}')">
                     ${seriesHtml}
                     <div class="card-portrait">${portrait}</div>
                     ${statsHtml}
-                    <div class="card-name">${isCollected ? s.name : '???'}</div>
+                    <div class="card-name">${s.name}</div>
+                    <img class="card-composed-img" src="${composed}" alt="${s.name}" loading="lazy"
+                         onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
                 </div>`;
+            } else {
+                // 未收集：CSS 卡牌剪影(::before ❓蒙版 + grayscale)，轮廓可见不剧透
+                gridHtml += `
+                <div class="card-item uncollected ${rarityClass}" onclick="CardCollection.showDetail('${s.id}')">
+                    <div class="card-name">???</div>
+                </div>`;
+            }
         });
         gridHtml += `</div>`;
         return backHtml + titleHtml + gridHtml;

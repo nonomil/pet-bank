@@ -182,6 +182,20 @@
     to { box-shadow: 0 4px 12px rgba(0,0,0,.45), 0 0 20px rgba(255,128,0,.9); }
 }
 
+/* 合成卡牌图（Agnes背景+立绘+数值，覆盖底层 CSS 卡牌） */
+.card-item.composed { border-color: transparent; background: transparent; box-shadow: 0 4px 12px rgba(0,0,0,.45); }
+.card-item.composed:hover { transform: translateY(-3px); }
+.card-item.composed .card-composed-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; border-radius: 9px; z-index: 6;
+}
+/* 合成图加载失败 → 露出底层 CSS 卡牌，恢复稀有度边框 */
+.card-item.composed.fallback { background: linear-gradient(160deg, rgba(35,28,58,.95), rgba(18,13,32,.98)); }
+.card-item.composed.fallback.card-rarity-common { border-color: #9D9D9D; }
+.card-item.composed.fallback.card-rarity-rare { border-color: #0070DD; }
+.card-item.composed.fallback.card-rarity-epic { border-color: #A335EE; }
+.card-item.composed.fallback.card-rarity-legendary { border-color: #FF8000; }
+
 /* Modal */
 #cardDetailModal {
     position: fixed;
