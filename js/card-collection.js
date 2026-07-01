@@ -151,7 +151,7 @@ const CardCollection = (function() {
         return statsHtml + catHtml;
     }
 
-    // 瀑布流视图：返回 + 该大类所有卡片
+    // 瀑布流视图：返回 + 该大类所有卡牌（四层叠加：边框+立绘/emoji+暗角+HTML数值角标）
     function _renderGrid() {
         const pets = _allSpecies.filter(s => (s.source || 'original') === _selectedSource);
         const backHtml = `<div class="card-back-btn" onclick="CardCollection.setView('category')">← 返回大类</div>`;
@@ -160,10 +160,29 @@ const CardCollection = (function() {
         pets.forEach(s => {
             const isCollected = _cards.includes(s.id);
             const rarityClass = `card-rarity-${s.rarity || 'common'}`;
+            // Layer2 立绘：有图用图(emoji 兜底层 + img 上层)，无图纯 emoji；未收集留空(::before ❓蒙版)
+            let portrait;
+            if (isCollected) {
+                const img = (s.imageStages && s.imageStages['2']) || s.imageUrl;
+                portrait = `<div class="card-emoji-big">${s.emoji || '🐾'}</div>` +
+                    (img ? `<img src="${img}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">` : '');
+            } else {
+                portrait = '';
+            }
+            // Layer4 四角数值角标（未收集显示 ?，def/spd P0 暂'-' P1 填）
+            const sv = (v) => isCollected ? ((v != null && v !== undefined) ? v : '-') : '?';
+            const statsHtml = `
+                <div class="card-stat card-stat-hp" title="生命">❤${sv(s.base_hp)}</div>
+                <div class="card-stat card-stat-spd" title="速度">✦${sv(s.base_spd)}</div>
+                <div class="card-stat card-stat-def" title="防御">🛡${sv(s.base_def)}</div>
+                <div class="card-stat card-stat-atk" title="攻击">⚔${sv(s.base_atk)}</div>`;
+            const seriesHtml = (isCollected && s.series) ? `<div class="card-series-tag">${s.series}</div>` : '';
             gridHtml += `
                 <div class="card-item ${isCollected ? 'collected' : 'uncollected'} ${rarityClass}"
                      onclick="CardCollection.showDetail('${s.id}')">
-                    <div class="card-emoji">${isCollected ? s.emoji : '❓'}</div>
+                    ${seriesHtml}
+                    <div class="card-portrait">${portrait}</div>
+                    ${statsHtml}
                     <div class="card-name">${isCollected ? s.name : '???'}</div>
                 </div>`;
         });

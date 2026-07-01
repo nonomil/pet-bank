@@ -60,6 +60,8 @@ const PetSystem = (function () {
         hp: 100,                 // 当前 HP
         max_hp: 100,             // 最大 HP
         atk: 5,                  // 攻击力
+        def: 0,                  // 防御力（卡牌展示，P4 可选接入战斗）
+        spd: 0,                  // 速度（卡牌展示，P4 可选接入战斗）
         wins: 0,                 // 战斗胜利数
         explorations: 0,         // 探索次数
         days_cared: 0,           // 陪伴天数
@@ -91,6 +93,14 @@ const PetSystem = (function () {
                 console.error('Pet state load failed:', e);
             }
         }
+        // 旧档兼容：def/spd 缺失时从 species 回填（P1 新增字段）
+        if (state.species && (state.def == null || state.spd == null)) {
+            const sp = SPECIES.find(s => s.id === state.species);
+            if (sp) {
+                if (state.def == null) state.def = sp.base_def || 0;
+                if (state.spd == null) state.spd = sp.base_spd || 0;
+            }
+        }
     }
 
     // 保存状态
@@ -107,6 +117,8 @@ const PetSystem = (function () {
         state.max_hp = species.base_hp;
         state.hp = species.base_hp;
         state.atk = species.base_atk;
+        state.def = species.base_def || 0;
+        state.spd = species.base_spd || 0;
         state.level = 1;       // 从蛋开始
         state.exp = 0;
         state.wins = 0;
@@ -318,6 +330,20 @@ const PetSystem = (function () {
         return total;
     }
 
+    // 防御力（基础 + 护甲加成预留）
+    function getTotalDef() {
+        let total = state.def || 0;
+        if (state.armor && state.armor.effect?.def) {
+            total += state.armor.effect.def;
+        }
+        return total;
+    }
+
+    // 速度（基础，暂无装备加成）
+    function getTotalSpd() {
+        return state.spd || 0;
+    }
+
     // ============ 战斗深化：技能 / CD / 防御 ============
     // 加载技能定义表 data/skills.json
     async function loadSkills() {
@@ -474,6 +500,8 @@ const PetSystem = (function () {
                 desc: pet.desc || '',
                 base_hp: pet.base_hp || 100,
                 base_atk: pet.base_atk || 5,
+                base_def: pet.base_def || 0,
+                base_spd: pet.base_spd || 0,
                 series: pet.series,
                 rarity: pet.rarity || 'common',
                 source: pet.source,
@@ -557,7 +585,7 @@ const PetSystem = (function () {
         addExp, takeDamage, heal, feed, play, rest, revive,
         bath, decay, markHomeExit,
         equip, unequip, addExploration, addWin, getState, getAllSpecies,
-        getTotalAtk, getTotalMaxHp,
+        getTotalAtk, getTotalMaxHp, getTotalDef, getTotalSpd,
         getAllSpeciesBySeries, getSpeciesByRarity, getRarityConfig, getAllSeries,
         isDBLoaded, loadPetDB,
         // 战斗深化

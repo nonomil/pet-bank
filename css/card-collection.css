@@ -82,68 +82,105 @@
     background: #fbbf24;
 }
 
-/* Grid */
+/* Grid - 3:4 卡牌网格 */
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
 }
 
+/* 卡牌容器：3:4 竖卡，四层叠加（Layer1 边框+底） */
 .card-item {
-    aspect-ratio: 1/1;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    cursor: pointer;
     position: relative;
-    transition: transform 0.1s, background 0.2s;
-    border: 2px solid transparent;
-}
-
-.card-item:active {
-    transform: scale(0.95);
-}
-
-.card-item.uncollected {
-    opacity: 0.4;
-    filter: grayscale(1);
-}
-
-.card-item.collected {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.card-emoji {
-    font-size: 2rem;
-}
-
-.card-name {
-    font-size: 0.7rem;
-    margin-top: 0.25rem;
-    text-align: center;
-    white-space: nowrap;
+    aspect-ratio: 3/4;
+    border-radius: 12px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
+    cursor: pointer;
+    border: 3px solid #9D9D9D;
+    background: linear-gradient(160deg, rgba(35,28,58,.95), rgba(18,13,32,.98));
+    transition: transform .15s, box-shadow .15s;
+    display: flex; flex-direction: column;
+}
+.card-item:hover { transform: translateY(-3px); }
+.card-item:active { transform: scale(.97); }
+.card-item.collected { box-shadow: 0 4px 12px rgba(0,0,0,.45); }
+
+/* Layer2: 立绘 / emoji 区（占 60-70%） */
+.card-portrait {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    padding: 10px 10px 0; position: relative; min-height: 0; width: 100%;
+}
+.card-portrait img {
+    position: relative; z-index: 1;
+    max-width: 92%; max-height: 100%; object-fit: contain;
+    image-rendering: pixelated; filter: drop-shadow(0 3px 6px rgba(0,0,0,.5));
+}
+.card-portrait .card-emoji-big {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; line-height: 1; filter: drop-shadow(0 3px 6px rgba(0,0,0,.5));
 }
 
-.card-rarity-tag {
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-    font-size: 0.5rem;
-    opacity: 0.6;
+/* Layer3: 暗角（增强名称可读性） */
+.card-item::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 42%;
+    background: linear-gradient(to top, rgba(0,0,0,.78), transparent);
+    pointer-events: none; z-index: 1;
 }
 
-/* Rarity Borders */
-.card-rarity-common { border-color: #95a5a6; }
-.card-rarity-rare { border-color: #3498db; box-shadow: 0 0 5px rgba(52, 152, 219, 0.3); }
-.card-rarity-epic { border-color: #9b59b6; box-shadow: 0 0 5px rgba(155, 89, 182, 0.3); }
-.card-rarity-legendary { border-color: #f1c40f; box-shadow: 0 0 8px rgba(241, 196, 15, 0.5); }
+/* Layer4: 名称栏（底部） */
+.card-name {
+    position: relative; z-index: 2;
+    font-size: 0.82rem; font-weight: 700; color: #fff;
+    text-align: center; padding: 6px 4px 9px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    text-shadow: 0 1px 3px rgba(0,0,0,.9);
+}
+
+/* Layer4: 四角数值角标 */
+.card-stat {
+    position: absolute; z-index: 3;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 800; color: #fff;
+    border: 2px solid rgba(0,0,0,.45);
+    text-shadow: 0 1px 2px rgba(0,0,0,.9);
+    box-shadow: 0 2px 4px rgba(0,0,0,.45);
+}
+.card-stat-hp { top: 6px; left: 6px; background: #C0392B; }
+.card-stat-spd { top: 6px; right: 6px; background: #27AE60; }
+.card-stat-def { bottom: 30px; left: 6px; background: #2C7BE5; }
+.card-stat-atk { bottom: 30px; right: 6px; background: #D35400; }
+.card-stat small { font-size: 0.55rem; opacity: .85; margin-right: 1px; }
+
+/* 系列标签（顶部中央） */
+.card-series-tag {
+    position: absolute; top: 7px; left: 50%; transform: translateX(-50%); z-index: 2;
+    font-size: 0.6rem; color: #e8e0ff; background: rgba(0,0,0,.55);
+    padding: 1px 7px; border-radius: 999px; white-space: nowrap;
+}
+
+/* 未收集：grayscale+暗化（非 opacity，轮廓可见，与探索场景统一） */
+.card-item.uncollected .card-portrait img,
+.card-item.uncollected .card-portrait .card-emoji-big { filter: grayscale(1) brightness(.4); }
+.card-item.uncollected .card-stat { background: #4a4458; color: #aaa; }
+.card-item.uncollected::before {
+    content: "❓"; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; z-index: 4; opacity: .88; pointer-events: none;
+}
+
+/* Rarity Borders - WoW 体系配色 + 光效 */
+.card-rarity-common { border-color: #9D9D9D; }
+.card-rarity-rare { border-color: #0070DD; }
+.card-rarity-epic { border-color: #A335EE; }
+.card-rarity-legendary { border-color: #FF8000; }
+.card-item.collected.card-rarity-rare { box-shadow: 0 4px 12px rgba(0,0,0,.45), 0 0 6px rgba(0,112,221,.5); }
+.card-item.collected.card-rarity-epic { box-shadow: 0 4px 12px rgba(0,0,0,.45), 0 0 9px rgba(163,53,238,.55); }
+.card-item.collected.card-rarity-legendary { box-shadow: 0 4px 12px rgba(0,0,0,.45), 0 0 11px rgba(255,128,0,.65); animation: card-legendary-glow 2.2s ease-in-out infinite alternate; }
+@keyframes card-legendary-glow {
+    from { box-shadow: 0 4px 12px rgba(0,0,0,.45), 0 0 11px rgba(255,128,0,.65); }
+    to { box-shadow: 0 4px 12px rgba(0,0,0,.45), 0 0 20px rgba(255,128,0,.9); }
+}
 
 /* Modal */
 #cardDetailModal {
