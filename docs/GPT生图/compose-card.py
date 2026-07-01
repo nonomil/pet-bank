@@ -19,6 +19,14 @@ def font(sz):
             except: pass
     return ImageFont.load_default()
 
+def emoji_font(sz):
+    # emoji 优先 Segoe UI Emoji(可辨)，否则雅黑
+    for fp in ['C:/Windows/Fonts/seguiemj.ttf', 'C:/Windows/Fonts/seguisym.ttf', 'C:/Windows/Fonts/msyh.ttc']:
+        if os.path.exists(fp):
+            try: return ImageFont.truetype(fp, sz)
+            except: pass
+    return font(sz)
+
 STATS = {
     'hp':  {'pos': (55, 130),  'color': (192, 57, 43)},
     'spd': {'pos': (425, 130), 'color': (39, 174, 96)},
@@ -72,7 +80,7 @@ def compose(pet):
         frame.alpha_composite(portrait, (px, py))
     else:
         d = ImageDraw.Draw(frame)
-        d.text((240, 270), pet.get('emoji', '🐾'), font=font(110), fill='white', anchor='mm')
+        d.text((240, 270), pet.get('emoji', '🐾'), font=emoji_font(110), fill='white', anchor='mm')
     d = ImageDraw.Draw(frame)
     # 名称栏
     d.text((240, 582), pet.get('name', '???'), font=font(32), fill='white', stroke_width=2, stroke_fill='black', anchor='mm')
