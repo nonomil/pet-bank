@@ -5,7 +5,7 @@
 const CardCollection = (function() {
     let _cards = []; // Collected pet IDs
     const STORAGE_KEY = 'petbank_cards';
-    const REWARD_POINTS_PER_SERIES = 100;
+    const REWARD_TICKETS_PER_SERIES = 5;  // 系列完成奖励：5 张训练券（不再送成长积分；卡牌系统不产出成长积分）
 
     // Internal state for the UI
     let _allSpecies = [];
@@ -90,14 +90,12 @@ const CardCollection = (function() {
                 awarded.push(series);
                 localStorage.setItem('petbank_awarded_series', JSON.stringify(awarded));
                 
-                // Grant points via app global
-                if (typeof window.addGrowthPoints === 'function') {
-                    window.addGrowthPoints(REWARD_POINTS_PER_SERIES);
-                } else if (typeof saveAppState === 'function') {
-                    window.totalPoints = (window.totalPoints || 0) + REWARD_POINTS_PER_SERIES;
-                    saveAppState();
+                // 系列完成奖励：5 张训练券（不再送成长积分；卡牌系统不产出成长积分，收口到主循环）
+                if (typeof InventorySystem !== 'undefined' && InventorySystem.addItem) {
+                    InventorySystem.addItem('arena_ticket', REWARD_TICKETS_PER_SERIES);
+                    if (typeof showToast === 'function') showToast(`🎉 系列「${series}」收集完成！+${REWARD_TICKETS_PER_SERIES} 训练券`);
                 }
-                console.log(`🎉 Series completed: ${series}! Received ${REWARD_POINTS_PER_SERIES} points!`);
+                console.log(`🎉 Series completed: ${series}! +${REWARD_TICKETS_PER_SERIES} tickets`);
             }
         }
     }
