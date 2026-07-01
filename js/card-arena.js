@@ -27,6 +27,10 @@ const CardArena = (function () {
 
     let playerTeam = null;   // 玩家选定队伍（combatant×3，已 makeCombatant）
     let arenaState = null;   // 当前对战状态
+    // ===== PvP 本地热座（彩蛋）状态 =====
+    // pvpTeamA/pvpTeamB：双人各自选定的 3 只 combatant（side='player'/'enemy' 区分方位）
+    let pvpTeamA = null;     // 玩家A 队伍（方位 player）
+    let pvpTeamB = null;     // 玩家B 队伍（方位 enemy）
 
     /**
      * 构建默认 3 技能槽（普攻 + power_strike + defend + ultimate 四技能）
@@ -91,13 +95,14 @@ const CardArena = (function () {
     }
 
     /**
-     * 选队：从收集卡 / 任意 species 选 3 只上场
+     * 选队内部构建：从 speciesId 数组构建 combatant 队伍（含校验）
      * @param {string[]} petIds 3 个 species id
+     * @param {'player'|'enemy'} side 方位
      * @returns {object} { ok, error?, team? }
      *
      * 校验：恰好 3 只 + 每队 SSR(legendary) ≤1
      */
-    function selectTeam(petIds) {
+    function _buildTeam(petIds, side) {
         if (!Array.isArray(petIds) || petIds.length !== 3) {
             return { ok: false, error: '队伍必须恰好 3 只' };
         }
@@ -117,8 +122,37 @@ const CardArena = (function () {
         }
         // 首发：spd 最高首发（方案 §3.3）。按 spd 降序排，首发 index=0
         picked.sort((a, b) => (b.base_spd || 0) - (a.base_spd || 0));
-        playerTeam = picked.map(sp => _combatantFromSpecies(sp, 'player'));
-        return { ok: true, team: playerTeam };
+        const team = picked.map(sp => _combatantFromSpecies(sp, side));
+        return { ok: true, team: team };
+    }
+
+    /**
+     * 选队（PvE）：从收集卡 / 任意 species 选 3 只上场，方位 player
+     * @param {string[]} petIds 3 个 species id
+     * @returns {object} { ok, error?, team? }
+     *
+     * 校验：恰好 3 只 + 每队 SSR(legendary) ≤1
+     */
+    function selectTeam(petIds) {
+        const res = _buildTeam(petIds, 'player');
+        if (res.ok) playerTeam = res.team;
+        return res;
+    }
+
+    /**
+     * PvP 选队：双人各选 3 只（共用收集卡池），分别落 player/enemy 方位
+     * @param {string[]} teamAIds 玩家A 的 3 个 species id（方位 player）
+     * @param {string[]} teamBIds 玩家B 的 3 个 species id（方位 enemy）
+     * @returns {object} { ok, error?, teamA?, teamB? }
+     */
+    function selectTeamPvp(teamAIds, teamBIds) {
+        const a = _buildTeam(teamAIds, 'player');
+        if (!a.ok) return { ok: false, error: '玩家A：' + a.error };
+        const b = _buildTeam(teamBIds, 'enemy');
+        if (!b.ok) return { ok: false, error: '玩家B：' + b.error };
+        pvpTeamA = a.team;
+        pvpTeamB = b.team;
+        return { ok: true, teamA: pvpTeamA, teamB: pvpTeamB };
     }
 
     /**
@@ -135,6 +169,7 @@ const CardArena = (function () {
         }
         const enemy = enemySpeciesOrIds.map(spec => _combatantFromEnemySpec(spec, 'enemy'));
         arenaState = {
+            mode: 'pve',          // 'pve' 闯关/自由对战 / 'pvp' 本地热座
             player: playerTeam,
             enemy: enemy,
             activeP: 0,
@@ -143,6 +178,40 @@ const CardArena = (function () {
             status: 'ongoing',
             log: []
         };
+        return arenaState;
+    }
+
+    /**
+     * 开始 PvP 本地热座对战（无 AI，双人轮流操作）
+     * - arenaState 加 mode:'pvp' + operator:'A'|'B'（当前操作方）
+     * - operator 仅决定"谁出招"，不改变方位：A 操作 player 方，B 操作 enemy 方
+     * - 首回合 operator 由双方首发 spd 决定（spd 高者先操作，平手 A 先）
+     * @returns {object} arenaState
+     */
+    function startBattlePvp() {
+        if (!pvpTeamA || pvpTeamA.length !== 3 || !pvpTeamB || pvpTeamB.length !== 3) {
+            throw new Error('startBattlePvp: 尚未完成双人选队，请先 selectTeamPvp');
+        }
+        // spd 决定首回合谁先操作（A 的首发 vs B 的首发）
+        const spdA = pvpTeamA[0].spd || 0;
+        const spdB = pvpTeamB[0].spd || 0;
+        const firstOperator = BattleEngine.decideOrder(spdA, spdB) === 'A' ? 'A' : 'B';
+        arenaState = {
+            mode: 'pvp',
+            player: pvpTeamA,    // 玩家A 队伍（方位 player）
+            enemy: pvpTeamB,     // 玩家B 队伍（方位 enemy）
+            activeP: 0,
+            activeE: 0,
+            round: 1,
+            operator: firstOperator,  // 当前操作方 'A'|'B'
+            status: 'ongoing',
+            log: []
+        };
+        // 记录初始操作方（便于 UI 提示）
+        arenaState.log.push({
+            actor: 'system', side: 'system', action: 'pvpTurnStart',
+            dmg: 0, targetHp: 0, faint: false, switch: false, operator: firstOperator
+        });
         return arenaState;
     }
 
@@ -443,6 +512,153 @@ const CardArena = (function () {
     }
 
     /**
+     * PvP 本地热座回合：**仅当前操作方做 1 动作**，动作后切换 operator（A↔B）
+     * - operator=A → 操作 player 方当前 combatant → 造伤 enemy 方 → 切换 operator=B
+     * - operator=B → 操作 enemy 方当前 combatant → 造伤 player 方 → 切换 operator=A
+     * - 动作类型：attack / skill / defend / switch（换人=本方换，不造伤，仍切 operator）
+     * - HP 归零自动换人（被换方自己换，不耗 operator 回合）；全灭判胜负
+     * - def/spd 接入：useDef:true 减伤；spd 仅决定首回合 operator（startBattlePvp 内已定）
+     * @param {object} action { type:'attack'|'skill'|'defend'|'switch', skillId?, switchIdx? }
+     * @returns {object} arenaState
+     */
+    function turnPvp(action) {
+        if (!arenaState || arenaState.mode !== 'pvp') {
+            throw new Error('turnPvp: 当前不是 PvP 对战');
+        }
+        if (arenaState.status !== 'ongoing') {
+            throw new Error('turnPvp: 无进行中的对战');
+        }
+        if (!action || !action.type) {
+            throw new Error('turnPvp: 缺少 action.type');
+        }
+
+        const op = arenaState.operator;   // 'A' | 'B'
+        // 操作方 → 方位映射：A 操作 player 方，B 操作 enemy 方
+        const opSide = (op === 'A') ? 'player' : 'enemy';
+        const defSide = (op === 'A') ? 'enemy' : 'player';  // 防守方（被造伤方）
+        const startedThisTurn = new Set();
+
+        const opTeam = (opSide === 'player') ? arenaState.player : arenaState.enemy;
+        const opActiveIdx = (opSide === 'player') ? arenaState.activeP : arenaState.activeE;
+        const opActive = opTeam[opActiveIdx];
+
+        // ----- 换人：本方换人（不造伤），仍耗本操作方回合 → 切 operator -----
+        if (action.type === 'switch') {
+            const idx = action.switchIdx;
+            if (typeof idx !== 'number' || idx < 0 || idx >= opTeam.length) {
+                throw new Error('turnPvp: switchIdx 非法');
+            }
+            if (idx === opActiveIdx) {
+                throw new Error('turnPvp: 不能换成当前上场宠物');
+            }
+            if (opTeam[idx].hp <= 0) {
+                throw new Error('turnPvp: 不能换成已倒下的宠物');
+            }
+            if (opSide === 'player') arenaState.activeP = idx;
+            else arenaState.activeE = idx;
+            arenaState.log.push({
+                actor: opTeam[idx].id, side: opSide, action: 'switch',
+                dmg: 0, targetHp: opTeam[idx].hp, faint: false, switch: true
+            });
+            // 换人结束本操作方回合
+            _pvpEndTurnTick(startedThisTurn);
+            _pvpSwitchOperator();
+            _pvpCheckEnd();
+            if (arenaState.status === 'ongoing') {
+                arenaState.log.push({
+                    actor: 'system', side: 'system', action: 'pvpTurnStart',
+                    dmg: 0, targetHp: 0, faint: false, switch: false,
+                    operator: arenaState.operator
+                });
+            }
+            arenaState.round++;
+            return arenaState;
+        }
+
+        // ----- 攻击/技能/防御：操作方对防守方当前 combatant 出招 -----
+        const defTeam = (defSide === 'player') ? arenaState.player : arenaState.enemy;
+        const defActiveIdx = (defSide === 'player') ? arenaState.activeP : arenaState.activeE;
+        const defActive = defTeam[defActiveIdx];
+
+        // defend：设置本方 defending（不造伤），仍切 operator
+        // attack/skill：对防守方当前 combatant 造伤
+        const act = { type: action.type, skillId: action.skillId || (action.type === 'defend' ? 'defend' : 'attack') };
+        _execAction(opActive, defActive, act, opSide);
+        if (act.skillId && action.type !== 'attack') {
+            startedThisTurn.add(opActive.id + ':' + act.skillId);
+        }
+
+        // 防守方倒下 → 自动换人（防守方自己换，不耗 operator 回合）
+        if (defActive.hp <= 0) {
+            _autoSwitchAfterFaint(defSide);
+        }
+
+        // 本操作方回合结束
+        _pvpEndTurnTick(startedThisTurn);
+        _pvpSwitchOperator();
+        _pvpCheckEnd();
+        if (arenaState.status === 'ongoing') {
+            arenaState.log.push({
+                actor: 'system', side: 'system', action: 'pvpTurnStart',
+                dmg: 0, targetHp: 0, faint: false, switch: false,
+                operator: arenaState.operator
+            });
+        }
+        arenaState.round++;
+        return arenaState;
+    }
+
+    /**
+     * PvP 辅助：回合末 CD tick（所有 6 只 combatant，跳过本回合启动的）
+     */
+    function _pvpEndTurnTick(startedThisTurn) {
+        const tick = (c) => {
+            if (!c.skills) return;
+            for (const sk of c.skills) {
+                if (sk.currentCd > 0) {
+                    const key = c.id + ':' + sk.id;
+                    if (!startedThisTurn.has(key)) {
+                        sk.currentCd = Math.max(0, sk.currentCd - 1);
+                    }
+                }
+            }
+        };
+        arenaState.player.forEach(tick);
+        arenaState.enemy.forEach(tick);
+    }
+
+    /**
+     * PvP 辅助：切换操作方 A↔B
+     */
+    function _pvpSwitchOperator() {
+        arenaState.operator = (arenaState.operator === 'A') ? 'B' : 'A';
+    }
+
+    /**
+     * PvP 辅助：判胜负（win = 玩家A 胜，lose = 玩家A 负/玩家B 胜）
+     * 兼容现有 _showResult 逻辑：enemy 全灭 → win；player 全灭 → lose
+     */
+    function _pvpCheckEnd() {
+        if (_allFainted(arenaState.enemy)) {
+            // enemy 方（玩家B）全灭 → 玩家A 胜
+            arenaState.status = 'win';
+            arenaState.log.push({
+                actor: 'system', side: 'system', action: 'battleEnd',
+                dmg: 0, targetHp: 0, faint: false, switch: false,
+                result: 'win', pvpWinner: 'A'
+            });
+        } else if (_allFainted(arenaState.player)) {
+            // player 方（玩家A）全灭 → 玩家B 胜
+            arenaState.status = 'lose';
+            arenaState.log.push({
+                actor: 'system', side: 'system', action: 'battleEnd',
+                dmg: 0, targetHp: 0, faint: false, switch: false,
+                result: 'lose', pvpWinner: 'B'
+            });
+        }
+    }
+
+    /**
      * 获取当前对战状态
      */
     function getState() {
@@ -455,13 +671,18 @@ const CardArena = (function () {
     function reset() {
         playerTeam = null;
         arenaState = null;
+        pvpTeamA = null;
+        pvpTeamB = null;
     }
 
     // Public API
     return {
         selectTeam,
+        selectTeamPvp,
         startBattle,
+        startBattlePvp,
         turn,
+        turnPvp,
         getState,
         reset,
         // 暴露技能定义供 UI/测试查阅

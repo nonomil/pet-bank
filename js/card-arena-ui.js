@@ -15,6 +15,12 @@ const CardArenaUI = (function () {
     let lastDamageEvents = [];   // 本回合伤害事件（用于浮动数字）
     let uiLocked = false;        // 动作锁（防连点）
 
+    // ===== PvP 本地热座状态 =====
+    // pvpMode：'off' | 'pickA' | 'pickB'（选队阶段轮到谁）
+    let pvpMode = 'off';         // 选队进度：off=A未选 / pickA=A选队中 / pickB=B选队中
+    let pvpTeamAIds = [];        // 玩家A 已选 species id（3 只）
+    let pvpTeamBIds = [];        // 玩家B 已选 species id（3 只）
+
     // ===== 闯关：关卡数据 + 进度 =====
     const PROGRESS_KEY = 'petbank_arena_progress'; // { cleared:[id], current:id }
     let stagesCache = null;       // arena-stages.json 缓存
@@ -223,6 +229,29 @@ const CardArenaUI = (function () {
     // stageId 可选：闯关模式传关卡 id（敌人用该关 enemies）；不传 = 自由对战（随机敌人）
     function openTeamSelect(stageId) {
         pendingStageId = (typeof stageId === 'number') ? stageId : null;
+        pvpMode = 'off';  // PvE 选队：清空 PvP 模式标记
+        _openTeamSelectInternal();
+    }
+
+    /**
+     * PvP 本地热座入口：双人轮流选 3 只，共用收集卡池
+     * 流程：A 选 3 只 → 确认 → 提示"轮到玩家B" → B 选 3 只 → 确认 → 开战（mode='pvp'）
+     */
+    function openPvpSetup() {
+        pvpMode = 'pickA';        // 进入 A 选队阶段
+        pvpTeamAIds = [];
+        pvpTeamBIds = [];
+        pendingStageId = null;    // PvP 不走闯关
+        closeStages();
+        _openTeamSelectInternal();
+    }
+
+    /**
+     * 选队 modal 内部实现（PvE / PvP 共用）
+     * - pvpMode='off'：PvE 单人选队（selectedIds）
+     * - pvpMode='pickA'/'pickB'：PvP 双人轮流选队（selectedIds 复用作当前方暂存）
+     */
+    function _openTeamSelectInternal() {
         const ids = _getCollectedIds();
         if (ids.length < 3) {
             // 收集不足：提示去探索，不打开 modal
@@ -230,7 +259,7 @@ const CardArenaUI = (function () {
             else alert('收集的宠物不足 3 只，先去探索收集宠物卡');
             return;
         }
-        selectedIds = [];
+        selectedIds = [];  // 重置当前方暂存
         const all = PetSystem.getAllSpecies();
         const owned = ids
             .map(id => all.find(s => s.id === id))
@@ -269,7 +298,7 @@ const CardArenaUI = (function () {
                 if (typeof showToast === 'function') showToast('已选满 3 只');
                 return;
             }
-            // SSR 校验提示（最终以 CardArena.selectTeam 为准）
+            // SSR 校验提示（最终以 CardArena.selectTeam / selectTeamPvp 为准）
             const all = PetSystem.getAllSpecies();
             const sp = all.find(s => s.id === id);
             const ssrCount = selectedIds
@@ -291,12 +320,56 @@ const CardArenaUI = (function () {
     function _updateTeamFooter() {
         const text = document.getElementById('arenaTeamCount');
         const btn = document.getElementById('arenaTeamConfirm');
-        if (text) text.textContent = `已选 ${selectedIds.length} / 3`;
-        if (btn) btn.disabled = selectedIds.length !== 3;
+        if (pvpMode === 'pickA' || pvpMode === 'pickB') {
+            // PvP：提示当前选择方
+            const who = (pvpMode === 'pickA') ? '玩家A' : '玩家B';
+            if (text) text.textContent = `${who}：已选 ${selectedIds.length} / 3`;
+            if (btn) {
+                btn.disabled = selectedIds.length !== 3;
+                btn.textContent = (pvpMode === 'pickA') ? '玩家A 确认 →' : '开始 PvP ⚔️';
+            }
+        } else {
+            if (text) text.textContent = `已选 ${selectedIds.length} / 3`;
+            if (btn) btn.disabled = selectedIds.length !== 3;
+        }
     }
 
     function confirmTeam() {
         if (selectedIds.length !== 3) return;
+
+        // ===== PvP 轮流选队分支 =====
+        if (pvpMode === 'pickA') {
+            // 玩家A 确认 → 暂存 A 队，切到 B 选队
+            pvpTeamAIds = selectedIds.slice();
+            pvpMode = 'pickB';
+            selectedIds = [];
+            // 重开 modal 渲染 B 选队（共用卡池）
+            _openTeamSelectInternal();
+            if (typeof showToast === 'function') showToast('玩家A 已选完，轮到玩家B 选队');
+            return;
+        }
+        if (pvpMode === 'pickB') {
+            // 玩家B 确认 → 开战
+            pvpTeamBIds = selectedIds.slice();
+            pvpMode = 'off';
+            // 调用 CardArena PvP 选队 + 开战
+            const res = CardArena.selectTeamPvp(pvpTeamAIds.slice(), pvpTeamBIds.slice());
+            if (!res.ok) {
+                if (typeof showToast === 'function') showToast(res.error || 'PvP 选队失败');
+                pvpMode = 'pickA'; pvpTeamAIds = []; pvpTeamBIds = [];
+                _openTeamSelectInternal();
+                return;
+            }
+            document.getElementById('arenaTeamModal').classList.remove('show');
+            CardArena.startBattlePvp();
+            logSeenLen = 0;
+            lastDamageEvents = [];
+            uiLocked = false;
+            openBattleModal();
+            return;
+        }
+
+        // ===== PvE 选队分支（原逻辑）=====
         const res = CardArena.selectTeam(selectedIds.slice());
         if (!res.ok) {
             if (typeof showToast === 'function') showToast(res.error || '选队失败');
@@ -315,6 +388,12 @@ const CardArenaUI = (function () {
 
     function closeTeamModal() {
         document.getElementById('arenaTeamModal').classList.remove('show');
+        // PvP 选队中途关闭：重置 PvP 状态，避免脏数据残留
+        if (pvpMode === 'pickA' || pvpMode === 'pickB') {
+            pvpMode = 'off';
+            pvpTeamAIds = [];
+            pvpTeamBIds = [];
+        }
     }
 
     // ===== 对战 modal =====
@@ -336,12 +415,19 @@ const CardArenaUI = (function () {
     function renderBattle() {
         const s = CardArena.getState();
         if (!s) return;
+        const isPvp = (s.mode === 'pvp');
         const stage = document.getElementById('arenaStage');
         const p = s.player[s.activeP];
         const e = s.enemy[s.activeE];
 
+        // PvP：顶部显示当前操作方提示（玩家A/B 回合）
+        const opTag = (isPvp && s.operator)
+            ? `<div class="arena-pvp-turn-tag ${s.operator === 'A' ? 'pvp-a' : 'pvp-b'}">🎮 ${s.operator === 'A' ? '玩家A' : '玩家B'} 回合</div>`
+            : '';
+
         stage.innerHTML = `
             <div class="arena-round-tag">第 ${s.round} 回合</div>
+            ${opTag}
             <div class="arena-field">
                 <div class="arena-fighter" id="arenaFighterP">
                     ${_fighterHtml(p, 'player')}
@@ -364,18 +450,47 @@ const CardArenaUI = (function () {
             <div class="arena-result-overlay" id="arenaResultOverlay"></div>
         `;
 
-        // 玩家替补队列
+        // 替补队列：PvP 双方都显示（A 队=左/上方，B 队=右/下方），PvE 仅玩家
         const bench = document.getElementById('arenaBench');
-        bench.innerHTML = '<span style="font-size:11px;align-self:center;opacity:.7;margin-right:4px;">替补</span>' +
-            s.player.map((c, i) => _benchSlotHtml(c, i, i === s.activeP)).join('');
+        if (isPvp) {
+            bench.innerHTML =
+                '<span style="font-size:11px;align-self:center;opacity:.7;margin-right:4px;">A替补</span>' +
+                s.player.map((c, i) => _benchSlotHtml(c, i, i === s.activeP, 'player')).join('') +
+                '<span style="font-size:11px;align-self:center;opacity:.7;margin:0 4px;">|</span>' +
+                '<span style="font-size:11px;align-self:center;opacity:.7;margin-right:4px;">B替补</span>' +
+                s.enemy.map((c, i) => _benchSlotHtml(c, i, i === s.activeE, 'enemy')).join('');
+        } else {
+            bench.innerHTML = '<span style="font-size:11px;align-self:center;opacity:.7;margin-right:4px;">替补</span>' +
+                s.player.map((c, i) => _benchSlotHtml(c, i, i === s.activeP, 'player')).join('');
+        }
 
         // 动作区
         const actions = document.getElementById('arenaActions');
-        actions.innerHTML = `
-            <div class="arena-action-row">${_actionBtnsHtml(p)}</div>
-            <div class="arena-switch-row">${_switchBtnsHtml(s)}</div>
-            <div class="arena-log" id="arenaLog"></div>
-        `;
+        if (isPvp) {
+            // PvP：双方动作按钮（操作方启用，非操作方禁用）
+            const pEnabled = (s.operator === 'A');
+            const eEnabled = (s.operator === 'B');
+            actions.innerHTML = `
+                <div class="arena-action-row arena-action-pvp">
+                    <div class="arena-side-label ${pEnabled ? 'active' : ''}">玩家A</div>
+                    <div class="arena-side-btns">${_actionBtnsHtml(p, 'player', pEnabled)}</div>
+                    <div class="arena-switch-row">${_switchBtnsHtml(s, 'player', pEnabled)}</div>
+                </div>
+                <div class="arena-action-row arena-action-pvp">
+                    <div class="arena-side-label ${eEnabled ? 'active' : ''}">玩家B</div>
+                    <div class="arena-side-btns">${_actionBtnsHtml(e, 'enemy', eEnabled)}</div>
+                    <div class="arena-switch-row">${_switchBtnsHtml(s, 'enemy', eEnabled)}</div>
+                </div>
+                <div class="arena-log" id="arenaLog"></div>
+            `;
+        } else {
+            // PvE：仅玩家动作按钮（原逻辑）
+            actions.innerHTML = `
+                <div class="arena-action-row">${_actionBtnsHtml(p, 'player', true)}</div>
+                <div class="arena-switch-row">${_switchBtnsHtml(s, 'player', true)}</div>
+                <div class="arena-log" id="arenaLog"></div>
+            `;
+        }
 
         // 渲染最近 3 条日志
         _renderLog();
@@ -393,12 +508,20 @@ const CardArenaUI = (function () {
         `;
     }
 
-    function _benchSlotHtml(c, i, active) {
+    /**
+     * 替补槽 HTML
+     * @param {object} c combatant
+     * @param {number} i 队内 index
+     * @param {boolean} active 是否当前上场
+     * @param {'player'|'enemy'} side 方位（PvP 点击换人需带上）
+     */
+    function _benchSlotHtml(c, i, active, side) {
         const img = c.img;
         const fainted = c.hp <= 0;
+        const clickAttr = (!active && !fainted) ? `onclick="CardArenaUI.doSwitch(${i}, '${side}')"` : '';
         return `
             <div class="arena-bench-slot ${active ? 'active' : ''} ${fainted ? 'fainted' : ''}"
-                 ${(!active && !fainted) ? `onclick="CardArenaUI.doSwitch(${i})"` : ''}
+                 ${clickAttr}
                  title="${fainted ? '已倒下' : (active ? '上场中' : '点击换人（耗回合）')}">
                 ${img
                     ? `<img class="bench-img" src="${img}" alt="${c.name}" onerror="this.style.display='none';this.parentElement.querySelector('.bench-emoji').style.display=''">`
@@ -408,8 +531,9 @@ const CardArenaUI = (function () {
         `;
     }
 
-    // 4 动作按钮（普攻/重击/防御/必杀），CD 中禁用
-    function _actionBtnsHtml(p) {
+    // 4 动作按钮（普攻/重击/防御/必杀），CD 中或非操作方禁用
+    // sideEnabled：该方是否为当前操作方（PvE 传 true）
+    function _actionBtnsHtml(p, side, sideEnabled) {
         const findSk = (id) => (p.skills || []).find(s => s.id === id);
         const buttons = [
             { id: 'attack', label: '⚔️ 普攻', action: { type: 'attack' } },
@@ -420,20 +544,25 @@ const CardArenaUI = (function () {
         return buttons.map(b => {
             const sk = findSk(b.id);
             const cd = sk ? sk.currentCd : 0;
-            const disabled = uiLocked || cd > 0;
+            // 非操作方 / 锁中 / CD 中 → 禁用
+            const disabled = !sideEnabled || uiLocked || cd > 0;
             const cdTag = cd > 0 ? `<span class="cd-tag">CD ${cd}</span>` : '';
-            const act = JSON.stringify(b.action).replace(/"/g, '&quot;');
+            // action 带 side 字段，doAction 据此路由（PvE 忽略，PvP 用来判定方位）
+            const actWithSide = Object.assign({ side: side }, b.action);
+            const act = JSON.stringify(actWithSide).replace(/"/g, '&quot;');
             return `<button class="arena-act-btn" ${disabled ? 'disabled' : ''} onclick='CardArenaUI.doAction(${act})'>${b.label}${cdTag}</button>`;
         }).join('');
     }
 
-    // 换人按钮（除当前上场外，存活的）
-    function _switchBtnsHtml(s) {
-        return s.player.map((c, i) => {
-            if (i === s.activeP) return '';
+    // 换人按钮（除当前上场外，存活的）；sideEnabled 控制启用
+    function _switchBtnsHtml(s, side, sideEnabled) {
+        const team = (side === 'enemy') ? s.enemy : s.player;
+        const activeIdx = (side === 'enemy') ? s.activeE : s.activeP;
+        return team.map((c, i) => {
+            if (i === activeIdx) return '';
             const fainted = c.hp <= 0;
-            const disabled = uiLocked || fainted;
-            return `<button class="arena-switch-btn" ${disabled ? 'disabled' : ''} onclick="CardArenaUI.doSwitch(${i})">🔄 ${c.name}（${c.hp}）</button>`;
+            const disabled = !sideEnabled || uiLocked || fainted;
+            return `<button class="arena-switch-btn" ${disabled ? 'disabled' : ''} onclick="CardArenaUI.doSwitch(${i}, '${side}')">🔄 ${c.name}（${c.hp}）</button>`;
         }).join('');
     }
 
@@ -449,7 +578,14 @@ const CardArenaUI = (function () {
 
     // 日志事件 → 简洁文本（不用于判伤害，仅展示）
     function _logText(ev) {
-        const side = ev.side === 'player' ? '我方' : (ev.side === 'enemy' ? '敌方' : '系统');
+        // PvP：方位→玩家标识
+        const s = CardArena.getState();
+        let side;
+        if (s && s.mode === 'pvp') {
+            side = ev.side === 'player' ? '玩家A' : (ev.side === 'enemy' ? '玩家B' : '系统');
+        } else {
+            side = ev.side === 'player' ? '我方' : (ev.side === 'enemy' ? '敌方' : '系统');
+        }
         switch (ev.action) {
             case 'defend': return `${side} 进入防御`;
             case 'attack': return `${side} 普攻 → ${ev.dmg} 伤害`;
@@ -457,20 +593,35 @@ const CardArenaUI = (function () {
             case 'ultimate': return `${side} 必杀 → ${ev.dmg} 伤害`;
             case 'switch': return `${side} 换人`;
             case 'faint': return `${side} 倒下`;
-            case 'battleEnd': return ev.result === 'win' ? '胜利！' : '失败';
+            case 'pvpTurnStart': return `轮到 ${ev.operator === 'A' ? '玩家A' : '玩家B'} 操作`;
+            case 'battleEnd':
+                if (s && s.mode === 'pvp') {
+                    return `玩家${ev.pvpWinner || (ev.result === 'win' ? 'A' : 'B')} 获胜！`;
+                }
+                return ev.result === 'win' ? '胜利！' : '失败';
             default: return '';
         }
     }
 
     // ===== 动作执行 =====
+    /**
+     * @param {object} action { type, skillId?, side? } side 由按钮注入（'player'/'enemy'）
+     * PvE：忽略 side，走 CardArena.turn
+     * PvP：校验 action.side === 当前操作方方位，否则忽略；走 CardArena.turnPvp
+     */
     function doAction(action) {
         const s = CardArena.getState();
         if (!s || s.status !== 'ongoing' || uiLocked) return;
+        // PvP：校验操作方方位（A=player, B=enemy），非操作方点击忽略
+        if (s.mode === 'pvp') {
+            const opSide = (s.operator === 'A') ? 'player' : 'enemy';
+            if (action.side !== opSide) return;
+        }
         uiLocked = true;
         const beforeLogLen = s.log.length;
         let st;
         try {
-            st = CardArena.turn(action);
+            st = (s.mode === 'pvp') ? CardArena.turnPvp(action) : CardArena.turn(action);
         } catch (err) {
             uiLocked = false;
             if (typeof showToast === 'function') showToast(err.message || '操作失败');
@@ -480,14 +631,25 @@ const CardArenaUI = (function () {
         _animateAndRender(st, beforeLogLen);
     }
 
-    function doSwitch(idx) {
+    /**
+     * @param {number} idx 换人目标 index
+     * @param {'player'|'enemy'} side 方位（PvP 区分双方；PvE 默认 player）
+     */
+    function doSwitch(idx, side) {
         const s = CardArena.getState();
         if (!s || s.status !== 'ongoing' || uiLocked) return;
+        const actSide = side || 'player';
+        // PvP：校验操作方方位
+        if (s.mode === 'pvp') {
+            const opSide = (s.operator === 'A') ? 'player' : 'enemy';
+            if (actSide !== opSide) return;
+        }
         uiLocked = true;
         const beforeLogLen = s.log.length;
+        const action = { type: 'switch', switchIdx: idx, side: actSide };
         let st;
         try {
-            st = CardArena.turn({ type: 'switch', switchIdx: idx });
+            st = (s.mode === 'pvp') ? CardArena.turnPvp(action) : CardArena.turn(action);
         } catch (err) {
             uiLocked = false;
             if (typeof showToast === 'function') showToast(err.message || '换人失败');
@@ -532,12 +694,30 @@ const CardArenaUI = (function () {
     }
 
     // ===== 胜负结算 =====
+    // PvP 模式（s.mode==='pvp'）：显示玩家A/B 获胜 + 再战/关闭
     // 闯关模式（pendingStageId!=null）：胜利→clearStage（仅首次发奖+解锁下一关）；失败→不结算进度
     // 自由对战（pendingStageId==null）：随机积分，行为不变
     function _showResult(status) {
         const overlay = document.getElementById('arenaResultOverlay');
         if (!overlay) return;
         const isWin = status === 'win';
+        const s = CardArena.getState();
+
+        // —— PvP 本地热座彩蛋 ——
+        // win = 玩家A 胜（enemy=玩家B 全灭），lose = 玩家A 负 / 玩家B 胜
+        if (s && s.mode === 'pvp') {
+            const winner = isWin ? 'A' : 'B';  // A 队=player 全灭→lose→B 胜
+            overlay.innerHTML = `
+                <div class="arena-result-title win">🏆 玩家${winner} 获胜！</div>
+                <div class="text-xs text-muted" style="margin:4px 0;">本地热座 PvP · 友谊赛无积分</div>
+                <div class="arena-result-btns">
+                    <button class="btn-primary" onclick="CardArenaUI.rematchPvp()">🔁 再战</button>
+                    <button class="btn-secondary" onclick="CardArenaUI.closeBattleModal()">✕ 关闭</button>
+                </div>
+            `;
+            overlay.classList.add('show');
+            return;
+        }
 
         // —— 闯关模式 ——
         if (isWin && pendingStageId != null) {
@@ -676,6 +856,29 @@ const CardArenaUI = (function () {
         openTeamSelect();
     }
 
+    /**
+     * PvP 再战：用已存的双方队伍 ID 重新选队 + 开战（不重走选队 modal）
+     */
+    function rematchPvp() {
+        const overlay = document.getElementById('arenaResultOverlay');
+        if (overlay) overlay.classList.remove('show');
+        CardArena.reset();
+        if (pvpTeamAIds.length === 3 && pvpTeamBIds.length === 3) {
+            const res = CardArena.selectTeamPvp(pvpTeamAIds.slice(), pvpTeamBIds.slice());
+            if (res.ok) {
+                CardArena.startBattlePvp();
+                logSeenLen = 0;
+                lastDamageEvents = [];
+                uiLocked = false;
+                renderBattle();
+                return;
+            }
+        }
+        // 队伍信息丢失 → 回到 PvP 选队
+        closeBattleModal();
+        openPvpSetup();
+    }
+
     // Public API
     return {
         openTeamSelect,
@@ -686,6 +889,9 @@ const CardArenaUI = (function () {
         doAction,
         doSwitch,
         rematch,
+        // PvP 本地热座
+        openPvpSetup,
+        rematchPvp,
         // 闯关
         openStages,
         closeStages,

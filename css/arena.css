@@ -172,6 +172,35 @@
 }
 .arena-log p { margin: 1px 0; }
 
+/* ===== PvP 本地热座彩蛋 ===== */
+/* 当前操作方提示（顶部） */
+.arena-pvp-turn-tag {
+    margin: 2px 0 6px; padding: 4px 10px; border-radius: 8px;
+    font-size: 13px; font-weight: 700; text-align: center;
+}
+.arena-pvp-turn-tag.pvp-a { background: #dbeafe; color: #1d4ed8; }
+.arena-pvp-turn-tag.pvp-b { background: #fce7f3; color: #be185d; }
+
+/* 双方动作区（PvP 显示双方按钮，操作方高亮） */
+.arena-action-pvp {
+    display: grid; grid-template-columns: auto 1fr; gap: 6px 8px;
+    align-items: center; padding: 6px 0;
+    border-bottom: 1px dashed rgba(0,0,0,.08);
+}
+.arena-action-pvp:last-of-type { border-bottom: none; }
+.arena-side-label {
+    font-size: 12px; font-weight: 700; opacity: .45;
+    padding: 4px 8px; border-radius: 6px; background: rgba(0,0,0,.06);
+    white-space: nowrap;
+}
+.arena-side-label.active { opacity: 1; box-shadow: 0 0 0 2px #10b981 inset; }
+.arena-side-btns {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+}
+/* 双方动作区中换人行收紧 */
+.arena-action-pvp .arena-switch-row { margin-top: 4px; }
+.arena-action-pvp .arena-switch-btn { min-width: 60px; font-size: 11px; padding: 4px 6px; }
+
 /* 结算层 */
 .arena-result-overlay {
     position: absolute; inset: 0;
