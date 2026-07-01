@@ -35,3 +35,7 @@ scripts/_*.py
 # --- 宠物图去白底前的原图备份（git 历史已有原版，本地保留可回滚，不入库）---
 assets/pets-originals/
 assets/pets/poses-originals/
+
+# --- Claude 工具配置（本地，不入库）---
+.agents/
+skills-lock.json
