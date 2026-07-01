@@ -901,6 +901,10 @@ function renderAdoptGrid(currentSpeciesId) {
 function choosePetFromModal(speciesId) {
     if (confirm('🥚 领养这颗宠物蛋吗？领养后从蛋开始孵化成长。')) {
         PetSystem.chooseSpecies(speciesId);
+        // 领养即入卡池（修复卡牌可达性：领养的宠物也能用于卡牌对战）
+        if (window.CardCollection && typeof CardCollection.addCard === 'function') {
+            CardCollection.addCard(speciesId);
+        }
         closeAdoptModal();
         renderPetPage();
     }
@@ -1079,7 +1083,6 @@ function showBattleModal(battle) {
             <div class="battle-damage-zone" id="battleDamageZone"></div>
         </div>
         <div class="battle-box">
-            <div class="battle-log" id="battleLog"></div>
             <div id="battleActions"></div>
         </div>
     `;
@@ -1147,10 +1150,16 @@ function setBattleUILock(locked) {
 }
 
 function appendBattleLog(battle) {
-    const logEl = document.getElementById('battleLog');
-    if (!logEl) return;
-    logEl.innerHTML = battle.log.map(l => `<p class="log-${l.type}">${l.text}</p>`).join('');
-    logEl.scrollTop = logEl.scrollHeight;
+    // 浮动气泡版：只在 arena 顶部冒最新一条，2.2s 消失，不挡按钮
+    if (!battle || !battle.log || battle.log.length === 0) return;
+    const zone = document.getElementById('battleDamageZone');
+    if (!zone) return;
+    const last = battle.log[battle.log.length - 1];
+    const bubble = document.createElement('div');
+    bubble.className = `battle-status-bubble log-${last.type || 'system'}`;
+    bubble.textContent = last.text;
+    zone.appendChild(bubble);
+    setTimeout(() => { if (bubble.parentNode) bubble.remove(); }, 2200);
 }
 
 function battleAction(action) {
@@ -1490,6 +1499,17 @@ async function init() {
     }
     if (window.CardCollection && typeof window.CardCollection.init === 'function') {
         window.CardCollection.init();
+        // 新玩家初始送 3 张 common 卡（修复卡牌可达性：保证能凑够 3 只打卡牌，只送一次）
+        try {
+            if (!localStorage.getItem('petbank_starter_cards') && typeof PetSystem.getAllSpecies === 'function') {
+                const commons = PetSystem.getAllSpecies().filter(s => s.rarity === 'common');
+                if (commons.length >= 3) {
+                    commons.slice().sort(() => Math.random() - 0.5).slice(0, 3)
+                        .forEach(c => window.CardCollection.addCard(c.id));
+                    localStorage.setItem('petbank_starter_cards', '1');
+                }
+            }
+        } catch (e) {}
     }
     if (window.ToolboxSystem && typeof window.ToolboxSystem.init === 'function') {
         window.ToolboxSystem.init();
