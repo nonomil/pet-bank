@@ -125,7 +125,21 @@ const CardArenaUI = (function () {
             return;
         }
         const p = getProgress();
-        grid.innerHTML = data.stages.map(st => {
+        // 自由练习入口卡片（置顶）：随机敌人，不计进度不计积分，随时玩
+        const freePlayCard = `
+            <div class="arena-stage-card open" onclick="CardArenaUI.openFreePlay()">
+                <div class="stage-head">
+                    <span class="stage-no">🆓</span>
+                    <span class="stage-name">自由练习</span>
+                    <span class="stage-state open">▶ 随时玩</span>
+                </div>
+                <div class="stage-chapter">不计进度 · 不计积分</div>
+                <div class="stage-desc">随机对手，自由组队，随时热身一局。</div>
+                <div class="stage-enemies">敌方：随机 3 只</div>
+                <div class="stage-reward">奖励：无（成长积分看轻章节首通）</div>
+            </div>
+        `;
+        grid.innerHTML = freePlayCard + data.stages.map(st => {
             const cleared = p.cleared.includes(st.id);
             const unlocked = st.id <= p.current;
             const stateTag = cleared ? '✓ 已通关' : (unlocked ? '▶ 可挑战' : '🔒 锁定');
@@ -163,6 +177,13 @@ const CardArenaUI = (function () {
         pendingStageId = stageId;
         closeStages();
         openTeamSelect(stageId);
+    }
+
+    // 自由练习入口：随机敌人，不计进度不计积分，随时玩（基础练习免费）
+    function openFreePlay() {
+        pendingStageId = null;
+        closeStages();
+        openTeamSelect();  // 不传 stageId → 自由对战分支（_currentEnemies 走随机敌人）
     }
 
     // 预设敌方队伍（中等强度，保证有对战）
@@ -763,12 +784,12 @@ const CardArenaUI = (function () {
             return;
         }
 
-        // —— 自由对战（兼容旧行为）——
-        const reward = isWin ? Math.floor(30 + Math.random() * 30) : 5; // 胜 30-60 积分，败 5 积分
-        _grantReward(reward);
+        // —— 自由对战（练习模式：可随时玩，不计成长积分，避免刷分循环）——
+        // 奖励收口到「轻章节首通」；自由练习只给成就感，不走 addGrowthPoints
         overlay.innerHTML = `
             <div class="arena-result-title ${isWin ? 'win' : 'lose'}">${isWin ? '🏆 胜利' : '💀 失败'}</div>
-            <div class="arena-result-reward">+${reward} 积分</div>
+            <div class="arena-result-reward">${isWin ? '练习完成！' : '再调整队伍试试'}</div>
+            <div class="text-xs text-muted" style="margin:4px 0;">自由练习 · 不计成长积分（奖励看轻章节首通）</div>
             <div class="arena-result-btns">
                 <button class="btn-primary" onclick="CardArenaUI.rematch()">🔁 再战一局</button>
                 <button class="btn-secondary" onclick="CardArenaUI.closeBattleModal()">✕ 关闭</button>
@@ -896,6 +917,7 @@ const CardArenaUI = (function () {
         openStages,
         closeStages,
         enterStage,
+        openFreePlay,
         gotoNext,
         replayStage,
         backToStages,
