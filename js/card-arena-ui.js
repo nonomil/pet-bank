@@ -119,19 +119,19 @@ const CardArenaUI = (function () {
     }
 
     /**
-     * 取当前对战背景图 URL
-     * - 闯关模式（pendingStageId != null）：按关卡 chapter 取 assets/arena/arena-{chapter}.png（1~5）
-     * - 自由对战 / PvP：用 assets/arena/arena-bg.webp 兜底
-     * 章节越界（>5 或 <1）退化为 arena-bg.webp
+     * 取当前对战背景图 URL（训练营专属卡牌对战训练场背景）
+     * - 闯关模式（pendingStageId != null）：按关卡 chapter 取 assets/arena/training-bg-{chapter}.png（1~5）
+     * - 自由对战 / PvP：用 training-bg-1.png（通用训练场）
+     * 章节越界（>5 或 <1）退化为 training-bg-1.png
      */
     function _arenaBgUrl() {
         if (pendingStageId != null && stagesCache) {
             const st = stagesCache.stages.find(s => s.id === pendingStageId);
             if (st && st.chapter >= 1 && st.chapter <= 5) {
-                return 'assets/arena/arena-' + st.chapter + '.png';
+                return 'assets/arena/training-bg-' + st.chapter + '.png';
             }
         }
-        return 'assets/arena/arena-bg.webp';
+        return 'assets/arena/training-bg-1.png';
     }
 
     /**
