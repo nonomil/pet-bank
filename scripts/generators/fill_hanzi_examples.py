@@ -277,7 +277,7 @@ def main():
         json.dump(report, f, ensure_ascii=False, indent=2)
 
     print("\n===== 报告 =====")
-    print(f"模型: {MODEL}")
+    print(f"模型: {cfg['model']}")
     print(f"处理: {len(targets)} / 候选 {total}")
     print(f"成功: {success}  失败: {failed}  跳过: {skipped}")
     print(f"耗时: {elapsed:.1f}s  报告: {REPORT}")
