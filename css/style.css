@@ -251,8 +251,8 @@
     border-radius: 24px;
     overflow: hidden;
     background:
-        linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)),
-        url("../assets/home-bg.webp") center/cover no-repeat,
+        linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15)),
+        url("../assets/home-bg/map-board.png") center/cover no-repeat,
         linear-gradient(180deg, #f7fbf4 0%, #eff8ea 40%, #fffaf1 100%);
 }
 .map-board-surface::before {
@@ -292,6 +292,32 @@
     overflow: visible;
     z-index: 5;
 }
+.map-ring-guide {
+    fill: rgba(255, 248, 214, 0.08);
+    stroke: rgba(243, 211, 129, 0.38);
+    stroke-width: 1.4;
+    stroke-dasharray: 5 7;
+}
+.map-ring-guide.ring-3,
+.map-ring-guide.ring-4 {
+    stroke: rgba(255, 226, 154, 0.5);
+}
+/* S1：路线装饰点仅做气氛承接，不再作为可交互节点。 */
+.map-blank-node {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    margin: -11px 0 0 -11px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,0.92), rgba(255,236,177,0.92) 45%, rgba(245,196,86,0.68) 78%, rgba(245,196,86,0.08) 100%);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.66),
+        0 3px 10px rgba(194, 152, 62, 0.2);
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0.84;
+}
 .map-route-line {
     fill: none;
     stroke: rgba(252, 228, 148, 0.92);
@@ -307,6 +333,14 @@
     stroke-linecap: round;
     stroke-dasharray: 2 10;
 }
+/* S1 多圈层：章节色淡彩铺垫段，画在金线之下，给每圈层一层颜色暗示推进层次 */
+.map-route-tier {
+    fill: none;
+    stroke-width: 14;
+    opacity: 0.16;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
 .map-route-spark {
     fill: #fff6cb;
     stroke: rgba(248, 199, 88, 0.82);
@@ -321,6 +355,12 @@
     transition: transform 0.22s ease, filter 0.22s ease, box-shadow 0.22s ease;
     /* S1：中心手调点（ch5 星空终点）层级抬到路线之上，hover/active 时再抬一层 */
     z-index: 6;
+}
+.map-scene-node.ring-4 {
+    z-index: 7;
+}
+.map-scene-node.ring-5 {
+    z-index: 8;
 }
 .map-scene-node.chapter-5 {
     z-index: 8;
@@ -1429,13 +1469,13 @@ body.no-sidebar .sidebar { display: none; }
     }
     .map-board-surface,
     .map-board {
-        min-height: 1160px;
+        min-height: 1280px;
     }
     .map-scene-node {
-        width: min(var(--node-size, 190px), 42vw);
+        width: min(var(--node-size, 190px), 34vw);
     }
     .map-scene-thumb {
-        height: 112px;
+        height: 92px;
     }
     .map-scene-title {
         font-size: 13px;

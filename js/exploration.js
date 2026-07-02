@@ -4,54 +4,51 @@
 
 const ExplorationSystem = (function () {
     /**
-     * S1：阿基米德螺旋布局生成器 r = b·θ（外→内顺时针，约 2.5 圈）。
-     * 参数：K=42（r→百分比映射，外圈首点落 ~8%/92% 边缘带）；
-     *      θStart=5π，dθ=5π/(count-1)（12 点跨 2.5 圈）；
-     *      b=K/(5π)，外圈首点 r=K≈42%。
-     * 半径最小的最后 4 点（i=8~11，castle/volcano/space/stargarden）
-     * 因 190px 固定卡片在中心死区（r<15%）必然重叠，**手调坐标**拉开间距，
-     * 标记 [手调]，保证路径相邻卡片不覆盖（相邻间距均 ≥22%）。
-     * 返回 [{x,y},...] 顺时针向内；数组前部=外圈=低章节，末部=中心=第5章终点。
+     * S1（按 min_level 重排版）：12 场景按解锁等级 LV1→LV2→LV3→LV4→LV5 由外向内螺旋推进，
+     * array 顺序即路线 polyline 顺序；同 LV 场景连续排列，LV 过渡处两节点地理相邻、直连无绕行
+     * （修复红框反馈：waterfall[Lv2 尾] → desert[Lv3 头] 上下紧挨，中间不隔其他节点）。
+     *
+     * 圈层划分（按 min_level，非 chapter）：
+     *   外层 Lv1-2：forest + beach/candy/waterfall（顶部弧）
+     *   中层 Lv3  ：desert/cave/mountain（右→底弧）
+     *   内层 Lv4  ：castle/underwater（底→左）
+     *   中心 Lv5  ：volcano/space/stargarden（向心，终点）
+     *
+     * chapter 字段保留原值（供 arenaChapter / buildMapNode 章节主题用），不再用作分层依据；
+     * ring 字段值 = min_level（1-5 圈层 CSS 类）。相邻中心距 ≥24%，桌面 190px 卡不重叠。
      */
-    function generateSpiralLayout(count) {
-        const n = count || 12;
-        const K = 42;
-        const thetaStart = 5 * Math.PI;            // 外圈起始角
-        const dtheta = (5 * Math.PI) / (n - 1);    // 每步
-        const b = K / (5 * Math.PI);               // 使外圈首点 r=K
-        const pts = [];
-        for (let i = 0; i < n; i++) {
-            const theta = thetaStart - i * dtheta; // 顺时针向内
-            const r = b * theta;
-            const t = -theta;                       // 屏幕 y 向下 → -θ 视觉顺时针
-            pts.push({
-                x: +(50 + r * Math.cos(t)).toFixed(1),
-                y: +(50 + r * Math.sin(t)).toFixed(1)
-            });
-        }
-        // [手调] 最后 4 点（r 最小、中心死区）改人工坐标，保证相邻不覆盖
-        pts[8]  = { x: 40, y: 70 };  // castle    [手调] 左下
-        pts[9]  = { x: 62, y: 72 };  // volcano   [手调] 右下
-        pts[10] = { x: 68, y: 44 };  // space     [手调] 右上
-        pts[11] = { x: 46, y: 57 };  // stargarden[手调] 核心终点
-        return pts;
-    }
-
-    // 螺旋坐标由 generateSpiralLayout() 生成；size/chapter/id 保留，章节顺序外→内（1→5）。
-    const _SPIRAL = generateSpiralLayout(12);
     const MAP_LAYOUT = [
-        { id: 'forest',     x: _SPIRAL[0].x,  y: _SPIRAL[0].y,  size: 198, chapter: 1 },
-        { id: 'beach',      x: _SPIRAL[1].x,  y: _SPIRAL[1].y,  size: 182, chapter: 2 },
-        { id: 'candy',      x: _SPIRAL[2].x,  y: _SPIRAL[2].y,  size: 176, chapter: 2 },
-        { id: 'waterfall',  x: _SPIRAL[3].x,  y: _SPIRAL[3].y,  size: 176, chapter: 3 },
-        { id: 'underwater', x: _SPIRAL[4].x,  y: _SPIRAL[4].y,  size: 188, chapter: 3 },
-        { id: 'desert',     x: _SPIRAL[5].x,  y: _SPIRAL[5].y,  size: 176, chapter: 3 },
-        { id: 'mountain',   x: _SPIRAL[6].x,  y: _SPIRAL[6].y,  size: 182, chapter: 4 },
-        { id: 'cave',       x: _SPIRAL[7].x,  y: _SPIRAL[7].y,  size: 198, chapter: 4 },
-        { id: 'castle',     x: _SPIRAL[8].x,  y: _SPIRAL[8].y,  size: 188, chapter: 4 },
-        { id: 'volcano',    x: _SPIRAL[9].x,  y: _SPIRAL[9].y,  size: 176, chapter: 4 },
-        { id: 'space',      x: _SPIRAL[10].x, y: _SPIRAL[10].y, size: 174, chapter: 5 },
-        { id: 'stargarden', x: _SPIRAL[11].x, y: _SPIRAL[11].y, size: 194, chapter: 5 }
+        { id: 'forest',     x:  8, y: 12, size: 198, chapter: 1, min_level: 1, ring: 1 }, // 外层 左上 起点 Lv1
+        { id: 'beach',      x: 32, y:  6, size: 182, chapter: 2, min_level: 2, ring: 2 }, // 外层 上左 Lv2
+        { id: 'candy',      x: 60, y:  6, size: 176, chapter: 2, min_level: 2, ring: 2 }, // 外层 上右 Lv2
+        { id: 'waterfall',  x: 88, y: 12, size: 176, chapter: 3, min_level: 2, ring: 2 }, // 外层 右上 Lv2 尾
+        { id: 'desert',     x: 92, y: 38, size: 176, chapter: 3, min_level: 3, ring: 3 }, // 中层 右上 Lv3 头（紧挨 waterfall）
+        { id: 'cave',       x: 88, y: 64, size: 172, chapter: 4, min_level: 3, ring: 3 }, // 中层 右下 Lv3
+        { id: 'mountain',   x: 68, y: 86, size: 172, chapter: 4, min_level: 3, ring: 3 }, // 中层 底偏右 Lv3 尾
+        { id: 'castle',     x: 40, y: 88, size: 176, chapter: 4, min_level: 4, ring: 4 }, // 内层 底偏左 Lv4 头（紧挨 mountain）
+        { id: 'underwater', x: 12, y: 70, size: 176, chapter: 3, min_level: 4, ring: 4 }, // 内层 左下 Lv4 尾
+        { id: 'volcano',    x: 10, y: 44, size: 172, chapter: 4, min_level: 5, ring: 5 }, // 中心 左中 Lv5 头（紧挨 underwater）
+        { id: 'space',      x: 40, y: 34, size: 168, chapter: 5, min_level: 5, ring: 5 }, // 中心 上 Lv5
+        { id: 'stargarden', x: 60, y: 50, size: 194, chapter: 5, min_level: 5, ring: 5 }  // 中心 终点 Lv5
+    ];
+
+    /**
+     * BLANK_CELLS 仅作为路线装饰点保留，不再暗示可点击的额外玩法节点。
+     */
+    const BLANK_CELLS = [
+        { x: 20, y:  9 }, // forest→beach
+        { x: 74, y: 10 }, // candy→waterfall
+        { x: 90, y: 25 }, // waterfall→desert（Lv2→Lv3 过渡）
+        { x: 54, y: 87 }, // mountain→castle（Lv3→Lv4 过渡）
+        { x: 11, y: 57 }, // underwater→volcano（Lv4→Lv5 过渡）
+        { x: 50, y: 42 }  // space→stargarden
+    ];
+
+    const RING_GUIDES = [
+        { ring: 1, cx: 50, cy: 49, rx: 44, ry: 42 },
+        { ring: 2, cx: 50, cy: 49, rx: 34, ry: 32 },
+        { ring: 3, cx: 50, cy: 50, rx: 24, ry: 22 },
+        { ring: 4, cx: 50, cy: 50, rx: 12, ry: 15 }
     ];
     // 章节（03 章节结构）：1 起点花园 / 2 森林边界 / 3 海边集市 / 4 高地洞窟 / 5 星空终点
     const CHAPTER_THEME = {
@@ -60,6 +57,14 @@ const ExplorationSystem = (function () {
         3: { name: '海边集市', color: '#5ab8d4' },
         4: { name: '高地洞窟', color: '#c89060' },
         5: { name: '星空终点', color: '#a888d4' }
+    };
+    // LV（解锁等级）色系：buildRouteSvg 色带按 min_level 分段，呈现"外绿→蓝→棕→橙→中心紫"等级递进
+    const LV_THEME = {
+        1: { name: '初探', color: '#7ee68a' },
+        2: { name: '进阶', color: '#5ab8d4' },
+        3: { name: '勇者', color: '#c89060' },
+        4: { name: '挑战', color: '#f0a040' },
+        5: { name: '终章', color: '#a888d4' }
     };
 
     let scenes = null;
@@ -149,14 +154,45 @@ const ExplorationSystem = (function () {
     }
 
     function buildRouteSvg() {
-        const points = MAP_LAYOUT.map((node) => `${node.x} ${node.y}`).join(', ');
+        const points = MAP_LAYOUT.map((node) => `${node.x} ${node.y}`);
+        const full = points.join(', ');
+        const guides = RING_GUIDES.map((guide) => `
+            <ellipse
+                class="map-ring-guide ring-${guide.ring}"
+                cx="${guide.cx}"
+                cy="${guide.cy}"
+                rx="${guide.rx}"
+                ry="${guide.ry}"
+                vector-effect="non-scaling-stroke"
+            ></ellipse>
+        `).join('');
         const stars = MAP_LAYOUT.map((node) => `
             <circle class="map-route-spark" cx="${node.x}" cy="${node.y}" r="1.8"></circle>
         `).join('');
+        // S1（按 min_level 重排）：路径按解锁等级 LV 切成连续段（边界节点同时属于前后段，段段相连），
+        // 每段铺一层 LV 色淡彩，沿螺旋呈现"外绿 → 蓝 → 棕 → 橙 → 中心紫"的等级递进感。
+        const tierSegs = [];
+        let cur = MAP_LAYOUT.length ? (MAP_LAYOUT[0].min_level || 1) : 1;
+        let start = 0;
+        for (let i = 1; i <= MAP_LAYOUT.length; i++) {
+            const lv = i < MAP_LAYOUT.length ? (MAP_LAYOUT[i].min_level || cur) : null;
+            if (lv !== cur) {
+                const end = i < MAP_LAYOUT.length ? i : MAP_LAYOUT.length - 1;
+                const sub = points.slice(start, end + 1).join(', ');
+                const color = (LV_THEME[cur] || {}).color || '#f5e09e';
+                tierSegs.push(
+                    `<polyline class="map-route-tier" points="${sub}" stroke="${color}" vector-effect="non-scaling-stroke"></polyline>`
+                );
+                start = end; // 下一段从边界节点起步，段与段相连
+                cur = lv;
+            }
+        }
         return `
             <svg class="map-route-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                <polyline class="map-route-line" points="${points}" vector-effect="non-scaling-stroke"></polyline>
-                <polyline class="map-route-dash" points="${points}" vector-effect="non-scaling-stroke"></polyline>
+                ${guides}
+                ${tierSegs.join('')}
+                <polyline class="map-route-line" points="${full}" vector-effect="non-scaling-stroke"></polyline>
+                <polyline class="map-route-dash" points="${full}" vector-effect="non-scaling-stroke"></polyline>
                 ${stars}
             </svg>
         `;
@@ -174,6 +210,7 @@ const ExplorationSystem = (function () {
         const theme = CHAPTER_THEME[layout.chapter] || CHAPTER_THEME[1];
         const stateClass = [
             'map-scene-node',
+            `ring-${layout.ring || 1}`,
             `chapter-${layout.chapter}`,
             unlocked ? 'is-open' : 'is-locked',
             activeSceneId === scene.id ? 'is-active' : ''
@@ -186,7 +223,7 @@ const ExplorationSystem = (function () {
             <button
                 type="button"
                 class="${stateClass}"
-                style="left:${layout.x}%;top:${layout.y}%;--node-size:${layout.size}px;--chapter-color:${theme.color};"
+                style="left:${layout.x}%;top:${layout.y}%;--node-size:${layout.size}px;--chapter-color:${theme.color};--ring-level:${layout.ring || 1};"
                 onclick="${action}"
                 aria-label="${unlocked ? `前往${scene.name}` : `解锁${scene.name}`}"
             >
@@ -224,7 +261,12 @@ const ExplorationSystem = (function () {
             })
             .join('');
 
-        board.innerHTML = `${nodes}${buildRouteSvg()}`;
+        // 路线装饰点铺在场景节点之下（z-index:4 < 场景卡 z-index:6），不参与交互。
+        const blanks = BLANK_CELLS.map((cell) => `
+            <span class="map-blank-node" style="left:${cell.x}%;top:${cell.y}%;" aria-hidden="true"></span>
+        `).join('');
+
+        board.innerHTML = `${blanks}${nodes}${buildRouteSvg()}`;
         updateMapStats();
     }
 
@@ -539,7 +581,6 @@ const ExplorationSystem = (function () {
         getSceneById,
         getCurrentBattle,
         getMapLayout,
-        generateSpiralLayout,
         getUnlockedCount,
         isSceneUnlocked,
         unlockScene,
