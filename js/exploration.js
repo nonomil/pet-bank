@@ -66,6 +66,23 @@ const ExplorationSystem = (function () {
         4: { name: '挑战', color: '#f0a040' },
         5: { name: '终章', color: '#a888d4' }
     };
+    // S2（层级信息增强）：把 5 个 min_level 合并成 4 个可视圈层带，配套标签文案 / 代表色 / 标签坐标。
+    // 坐标取每圈底部空隙（12 节点最大空档在底部偏中），x=50 纵向堆叠，不遮挡节点；不改 S1 坐标/色带分段。
+    // idx 与 RING_GUIDES 一一对应（0=外圈最大椭圆 → outer，3=最内椭圆 → core）。
+    const TIER_META = [
+        { key: 'outer', label: 'Lv.1-2 启程', levelRange: [1, 2],  color: LV_THEME[1].color, lx: 50, ly: 85 },
+        { key: 'mid',   label: 'Lv.3 探险',   levelRange: [3, 3],  color: LV_THEME[3].color, lx: 50, ly: 76 },
+        { key: 'inner', label: 'Lv.4 精英',   levelRange: [4, 4],  color: LV_THEME[4].color, lx: 50, ly: 67 },
+        { key: 'core',  label: 'Lv.5 终点',   levelRange: [5, 99], color: LV_THEME[5].color, lx: 50, ly: 59 }
+    ];
+    // 宠物当前等级 → 所在圈层 key（pet.level 来自 PetSystem.getState().level）
+    function petLevelToTierKey(level) {
+        const lv = Number(level) || 1;
+        for (const t of TIER_META) {
+            if (lv >= t.levelRange[0] && lv <= t.levelRange[1]) return t.key;
+        }
+        return 'core';
+    }
 
     let scenes = null;
     let currentBattle = null;
@@ -153,9 +170,18 @@ const ExplorationSystem = (function () {
         if (winsEl) winsEl.textContent = pet.wins || 0;
     }
 
-    function buildRouteSvg() {
+    function buildRouteSvg(currentTierKey) {
         const points = MAP_LAYOUT.map((node) => `${node.x} ${node.y}`);
         const full = points.join(', ');
+        // S2：4 个 LV 圈层分区底——同尺寸由大到小叠层填色，形成 4 条彩色圈带（外→内：绿/棕/橙/紫）。
+        // 当前层 fill-opacity 0.16，其余 0.085，让"我在这一层"更易辨（07：装饰半透明、不喧宾夺主）。
+        const bandFills = RING_GUIDES.map((guide, idx) => {
+            const tier = TIER_META[idx];
+            if (!tier) return '';
+            const isCur = currentTierKey && currentTierKey === tier.key;
+            const op = isCur ? 0.16 : 0.085;
+            return `<ellipse class="map-ring-fill" cx="${guide.cx}" cy="${guide.cy}" rx="${guide.rx}" ry="${guide.ry}" fill="${tier.color}" fill-opacity="${op}" vector-effect="non-scaling-stroke"></ellipse>`;
+        }).join('');
         const guides = RING_GUIDES.map((guide) => `
             <ellipse
                 class="map-ring-guide ring-${guide.ring}"
@@ -189,6 +215,7 @@ const ExplorationSystem = (function () {
         }
         return `
             <svg class="map-route-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                ${bandFills}
                 ${guides}
                 ${tierSegs.join('')}
                 <polyline class="map-route-line" points="${full}" vector-effect="non-scaling-stroke"></polyline>
@@ -213,6 +240,7 @@ const ExplorationSystem = (function () {
             `ring-${layout.ring || 1}`,
             `chapter-${layout.chapter}`,
             unlocked ? 'is-open' : 'is-locked',
+            unlocked ? 'is-reachable' : '',
             activeSceneId === scene.id ? 'is-active' : ''
         ].filter(Boolean).join(' ');
         const pillText = unlocked
@@ -266,7 +294,15 @@ const ExplorationSystem = (function () {
             <span class="map-blank-node" style="left:${cell.x}%;top:${cell.y}%;" aria-hidden="true"></span>
         `).join('');
 
-        board.innerHTML = `${blanks}${nodes}${buildRouteSvg()}`;
+        // S2：读宠物等级 → 当前 LV 圈层；注入 4 个圈层标签（当前层 is-current 高亮）+ 分区底色（透传 buildRouteSvg）
+        const petLevel = (window.PetSystem && typeof PetSystem.getState === 'function')
+            ? (PetSystem.getState().level || 1) : 1;
+        const curTierKey = petLevelToTierKey(petLevel);
+        const tierLabels = TIER_META.map((t) => `
+            <div class="map-tier-label ${t.key === curTierKey ? 'is-current' : ''}" style="left:${t.lx}%;top:${t.ly}%;--tier-color:${t.color};" aria-hidden="true">${t.label}</div>
+        `).join('');
+
+        board.innerHTML = `${blanks}${nodes}${tierLabels}${buildRouteSvg(curTierKey)}`;
         updateMapStats();
     }
 

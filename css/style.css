@@ -486,6 +486,41 @@
     background: radial-gradient(circle at 30% 30%, #fff7d4, var(--chapter-color, #ffd45d) 75%);
 }
 .map-scene-chapter { font-size: 11px; font-weight: 600; margin-top: 2px; letter-spacing: 0.5px; }
+/* S2：LV 圈层标签（4 层）+ 当前层高亮 + 可进入节点轻量提示。装饰半透明，不喧宾夺主。 */
+.map-tier-label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 9;
+    pointer-events: none;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: var(--tier-color, #8a7340);
+    background: rgba(255, 252, 240, 0.78);
+    padding: 2px 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    opacity: 0.72;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+.map-tier-label.is-current {
+    opacity: 1;
+    font-weight: 800;
+    color: #fff;
+    background: var(--tier-color, #f0a040);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 0 0 3px rgba(255, 255, 255, 0.4);
+}
+/* is-reachable：unlocked 节点的轻量"可进入"暗示，不破坏 is-open 既有视觉 */
+.map-scene-node.is-reachable .map-scene-bubble {
+    box-shadow: 0 14px 28px rgba(77, 89, 79, 0.14), 0 0 0 2px rgba(255, 226, 143, 0.22);
+}
+.map-scene-node.is-reachable.is-active .map-scene-bubble {
+    box-shadow:
+        0 14px 28px rgba(77, 89, 79, 0.14),
+        0 0 0 6px rgba(255, 226, 143, 0.38);
+}
 .map-scene-node.is-locked .map-scene-star {
     background: radial-gradient(circle at 30% 30%, #f0f0ec, #cfd5cd 72%, #aab1ab 100%);
 }
@@ -1477,6 +1512,8 @@ body.no-sidebar .sidebar { display: none; }
     .map-scene-thumb {
         height: 92px;
     }
+    .map-tier-label { font-size: 9px; padding: 1px 6px; opacity: 0.6; letter-spacing: 0.2px; }
+    .map-tier-label.is-current { opacity: 0.95; }
     .map-scene-title {
         font-size: 13px;
     }
