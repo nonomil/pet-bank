@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "total": 10,
-  "desc": "卡牌对战 PvE 闯关（10 关 / 5 章 × 每章 2 关）。敌人 id 取自 data/pets.json 真实 species。难度递增：common → rare → epic → legendary。",
+  "desc": "卡牌对战 PvE 闯关（10 关 / 5 章 × 每章 2 关）。敌人 id 取自 data/pets.json 真实 species。难度递增：common → rare → epic → legendary。低章节（chapter 1-2，即前 4 关）带 enemyMult={atk,hp} 弱化倍率，保证低等级玩家 1v1 可胜。",
   "chapters": [
     { "id": 1, "name": "起点花园", "theme": "温顺草系，新手练兵" },
     { "id": 2, "name": "森林边界", "theme": "敏捷稀有，初尝挑战" },
@@ -13,6 +13,7 @@
     {
       "id": 1,
       "chapter": 1,
+      "enemyMult": { "atk": 0.7, "hp": 0.8 },
       "name": "草地练习场",
       "desc": "新手关，温顺的草系宠物陪你热身。",
       "enemies": ["375408c4-887", "de62160d-fd0", "219fb5c8-c94"],
@@ -22,6 +23,7 @@
     {
       "id": 2,
       "chapter": 1,
+      "enemyMult": { "atk": 0.7, "hp": 0.8 },
       "name": "花海初阵",
       "desc": "草系守护者小队，检验你的首发编排。",
       "enemies": ["8ae0a08d-acc", "2cd112b5-025", "0b3af442-25c"],
@@ -31,6 +33,7 @@
     {
       "id": 3,
       "chapter": 2,
+      "enemyMult": { "atk": 0.7, "hp": 0.8 },
       "name": "林间游骑",
       "desc": "森林边境的稀有游骑兵，速度为先。",
       "enemies": ["a40e4bd1-dfa", "f2282b26-a4c", "867feba0-6f6"],
@@ -40,6 +43,7 @@
     {
       "id": 4,
       "chapter": 2,
+      "enemyMult": { "atk": 0.7, "hp": 0.8 },
       "name": "密林九尾",
       "desc": "九尾狐领衔的密林小队，注意高血量。",
       "enemies": ["e582c75e-639", "c000f1a3-2d4", "5da9b780-7c5"],

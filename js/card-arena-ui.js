@@ -347,6 +347,14 @@ const CardArenaUI = (function () {
         return st ? st.reward : null;
     }
 
+    // 取当前关卡敌人弱化倍率（闯关模式；自由对战/无配置返回 null）
+    // 低章节 stage.enemyMult={atk,hp}，用于 CardArena.startBattle 第 2 参弱化敌人
+    function _currentEnemyMult() {
+        if (pendingStageId == null || !stagesCache) return null;
+        const st = stagesCache.stages.find(s => s.id === pendingStageId);
+        return (st && st.enemyMult) ? st.enemyMult : null;
+    }
+
     // 读取已收集的卡 id（CardCollection 私有，读同名 localStorage）
     function _getCollectedIds() {
         try {
@@ -552,7 +560,7 @@ const CardArenaUI = (function () {
         document.getElementById('arenaTeamModal').classList.remove('show');
         // 开战：闯关模式用该关 enemies，否则随机敌人（自由对战兼容）
         const enemies = _currentEnemies();
-        CardArena.startBattle(enemies);
+        CardArena.startBattle(enemies, _currentEnemyMult());
         logSeenLen = 0;
         lastDamageEvents = [];
         lastMoveText = '';
@@ -1184,7 +1192,7 @@ const CardArenaUI = (function () {
         CardArena.reset();
         const res = CardArena.selectTeam(selectedIds.slice());
         if (!res.ok) { closeBattleModal(); openStages(); return; }
-        CardArena.startBattle(_currentEnemies());
+        CardArena.startBattle(_currentEnemies(), _currentEnemyMult());
         logSeenLen = 0;
         lastDamageEvents = [];
         lastMoveText = '';
@@ -1231,7 +1239,7 @@ const CardArenaUI = (function () {
         if (selectedIds.length === TEAM_SIZE) {
             const res = CardArena.selectTeam(selectedIds.slice());
             if (res.ok) {
-                CardArena.startBattle(_currentEnemies());
+                CardArena.startBattle(_currentEnemies(), _currentEnemyMult());
                 logSeenLen = 0;
                 lastDamageEvents = [];
                 lastMoveText = '';

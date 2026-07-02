@@ -84,9 +84,26 @@ const CardArena = (function () {
     }
 
     /**
-     * 从预设数值构建 enemy combatant（enemySpeciesOrIds 项若是 object 直接用，否则当 speciesId 查）
+     * 对 enemy combatant 应用弱化倍率（低章节用，data/arena-stages.json 的 stage.enemyMult）
+     * 仅影响 atk / maxHp(&hp)，floor≥1；player 队不走此函数，不受影响
      */
-    function _combatantFromEnemySpec(spec, side) {
+    function _applyEnemyMult(c, statMult) {
+        if (!statMult || !c) return;
+        if (statMult.atk != null) {
+            c.atk = Math.max(1, Math.floor((c.atk || 1) * statMult.atk));
+        }
+        if (statMult.hp != null) {
+            const newMax = Math.max(1, Math.floor((c.maxHp || c.hp || 1) * statMult.hp));
+            c.maxHp = newMax;
+            c.hp = Math.min(c.hp, newMax);
+        }
+    }
+
+    /**
+     * 从预设数值构建 enemy combatant（enemySpeciesOrIds 项若是 object 直接用，否则当 speciesId 查）
+     * @param {object} statMult 可选弱化倍率 {atk,hp}（低章节敌人弱化用）
+     */
+    function _combatantFromEnemySpec(spec, side, statMult) {
         // 已是 combatant-like 对象（含 hp/atk/def/spd）
         if (spec && (spec.hp != null || spec.maxHp != null) && (spec.atk != null)) {
             const c = BattleEngine.makeCombatant({
@@ -103,18 +120,24 @@ const CardArena = (function () {
                 skills: Array.isArray(spec.skills) && spec.skills.length ? spec.skills : _defaultSkills()
             });
             _initArenaFields(c);
+            _applyEnemyMult(c, statMult);
             return c;
         }
         // 否则当 speciesId，查 PetSystem
         const all = (typeof PetSystem !== 'undefined') ? PetSystem.getAllSpecies() : [];
         const sp = all.find(s => s.id === spec);
-        if (sp) return _combatantFromSpecies(sp, side);
+        if (sp) {
+            const c = _combatantFromSpecies(sp, side);
+            _applyEnemyMult(c, statMult);
+            return c;
+        }
         // 兜底
         const c = BattleEngine.makeCombatant({
             id: String(spec), name: String(spec), side: side,
             hp: 100, maxHp: 100, atk: 5, def: 0, spd: 0, skills: _defaultSkills()
         });
         _initArenaFields(c);
+        _applyEnemyMult(c, statMult);
         return c;
     }
 
@@ -182,16 +205,17 @@ const CardArena = (function () {
     /**
      * 开始对战
      * @param {(string|object)[]} enemySpeciesOrIds 敌方 TEAM_SIZE 只（speciesId 或预设数值对象）
+     * @param {object} [enemyStatMult] 可选弱化倍率 {atk,hp}（低章节敌人弱化，由 UI 从 stage.enemyMult 传入）
      * @returns {object} arenaState
      */
-    function startBattle(enemySpeciesOrIds) {
+    function startBattle(enemySpeciesOrIds, enemyStatMult) {
         if (!playerTeam || playerTeam.length !== TEAM_SIZE) {
             throw new Error('startBattle: 尚未选队，请先 selectTeam');
         }
         if (!Array.isArray(enemySpeciesOrIds) || enemySpeciesOrIds.length !== TEAM_SIZE) {
             throw new Error('startBattle: 敌方必须 ' + TEAM_SIZE + ' 只');
         }
-        const enemy = enemySpeciesOrIds.map(spec => _combatantFromEnemySpec(spec, 'enemy'));
+        const enemy = enemySpeciesOrIds.map(spec => _combatantFromEnemySpec(spec, 'enemy', enemyStatMult));
         arenaState = {
             mode: 'pve',          // 'pve' 闯关/自由对战 / 'pvp' 本地热座
             player: playerTeam,
@@ -274,10 +298,19 @@ const CardArena = (function () {
         const effDef = Math.max(0, Math.floor((target.def || 0) * (target.defMult || 1)));
         // calcDamage(useDef:true) → base = max(1, atk - floor(def/2))，def=0 退化安全（atk）
         let dmg = BattleEngine.calcDamage(effAtk, effDef, { mult: mult, useDef: true });
+        // 先记下是否主动防御（下面的分支会消耗 defending 标志）
+        const activeDefended = !!target.defending;
         // defend 减伤：目标本回合 defending → 受击 ×0.5（一次性，方案 §3.2）
         if (target.defending) {
             dmg = Math.max(1, Math.floor(dmg * 0.5));
             target.defending = false; // 一次性消耗
+        }
+        // 低等级(Lv1-4)无defend按钮，被动韧性减伤25%防秒杀；Lv5+有defend后取消
+        // 条件：受击方=玩家宠物 且 等级<5 且 本回合未主动 defend（避免与主动防御叠加）
+        if (target.side === 'player' && !activeDefended
+            && typeof PetSystem !== 'undefined' && PetSystem.getState
+            && PetSystem.getState().level < 5) {
+            dmg = Math.max(1, Math.floor(dmg * 0.75));
         }
         target.hp = Math.max(0, target.hp - dmg);
         return { dmg: dmg, targetHp: target.hp };
