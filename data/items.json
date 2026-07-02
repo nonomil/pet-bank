@@ -12,11 +12,11 @@
     },
     {
       "id": "arena_ticket",
-      "name": "训练券",
+      "name": "额外对战券",
       "emoji": "🎫",
       "type": "ticket",
       "rarity": "common",
-      "description": "挑战训练章节所需，每日登录送 3 张",
+      "description": "今日3场用完后，每张可多打1场",
       "effect": {},
       "stack_max": 99
     },

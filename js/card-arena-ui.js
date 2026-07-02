@@ -171,13 +171,15 @@ const CardArenaUI = (function () {
             return;
         }
         const p = getProgress();
-        _claimDailyTickets();  // 每日登录送训练券 + 首次初始 10 张（渲染前发放，券数实时显示）
+        _claimDailyTickets();  // 空操作（积分兑换制不再每日发券），保留调用兼容
         const ticketCount = (typeof InventorySystem !== 'undefined' && InventorySystem.getCount)
             ? InventorySystem.getCount('arena_ticket') : 0;
+        const usedToday = _arenaBattleUsedToday();
+        const remainToday = Math.max(0, 3 - usedToday);
         const ticketBar = `
-            <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:6px 12px;margin-bottom:6px;background:linear-gradient(90deg,#FFF8DC80,#FAF8F2);border:1px dashed #D4B96A;border-radius:8px;">
-                <span style="font-size:12px;color:#8A7240;font-weight:bold;">🎫 训练券 · 挑战轻章节消耗 1 张</span>
-                <span style="font-size:13px;color:#8A7240;font-weight:bold;">持有 ${ticketCount}</span>
+            <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px;padding:6px 12px;margin-bottom:6px;background:linear-gradient(90deg,#FFF8DC80,#FAF8F2);border:1px dashed #D4B96A;border-radius:8px;">
+                <span style="font-size:12px;color:#8A7240;font-weight:bold;">🏕️ 每日 3 场免费 · 🎫额外券可续战</span>
+                <span style="font-size:12px;color:#8A7240;font-weight:bold;">今日剩余 ${remainToday}/3 · 持有额外券 ${ticketCount}</span>
             </div>
         `;
         // 自由练习入口卡片（置顶）：随机敌人，不计进度不计积分，随时玩
@@ -237,7 +239,7 @@ const CardArenaUI = (function () {
                     <div class="stage-chapter">轻章节 · ${stars}</div>
                     <div class="stage-desc">${st.desc || ''}</div>
                     <div class="stage-enemies">敌方：${enemyNames}</div>
-                    <div class="stage-reward">🃏 首通新卡：${(st.reward&&st.reward.dropCard)?_speciesName(st.reward.dropCard):'—'} · 🎫 挑战-1</div>
+                    <div class="stage-reward">🃏 首通新卡：${(st.reward&&st.reward.dropCard)?_speciesName(st.reward.dropCard):'—'} · 🎫 每日3场免费</div>
                 </div>
             `;
         }).join('');
@@ -253,39 +255,59 @@ const CardArenaUI = (function () {
     // 点关卡 → 进入选队（敌人 = 该关 enemies）
     function enterStage(stageId) {
         if (!isUnlocked(stageId)) return;
-        // 轻章节挑战消耗 1 张训练券（自由练习 openFreePlay 不消耗，基础练习免费）
-        if (typeof InventorySystem !== 'undefined' && InventorySystem.getCount) {
-            if (InventorySystem.getCount('arena_ticket') <= 0) {
-                if (typeof showToast === 'function') showToast('🎫 训练券不足！每日登录送 3 张');
-                else alert('🎫 训练券不足，每日登录送 3 张');
-                return;
-            }
-            InventorySystem.removeItem('arena_ticket', 1);
-        }
+        // 对战每日 3 场免费 / profile；用完后可凭 arena_ticket（额外券）续战
+        if (!_payArenaEntry()) return;
         pendingStageId = stageId;
         closeStages();
         openTeamSelect(stageId);
     }
 
-    // 每日登录送训练券（3 张/天）+ 新玩家首次初始 10 张（openStages 渲染前调用）
-    function _claimDailyTickets() {
+    // 入场校验：每日 3 场免费 / profile；3 场用完后每张 arena_ticket（额外券）续战 1 场
+    // 日限 key petbank_arena_battle_day_${activeId} = JSON {date:'YYYY-MM-DD', count:N}，跨日重置
+    function _payArenaEntry() {
+        const DAILY_LIMIT = 3;
+        const pid = (window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function')
+            ? (window.ProfileManager.getActiveId() || 'default') : 'default';
+        const DAY_KEY = 'petbank_arena_battle_day_' + pid;
+        const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD
+        let rec = null;
+        try { rec = JSON.parse(localStorage.getItem(DAY_KEY) || 'null'); } catch (e) { rec = null; }
+        if (!rec || rec.date !== today) rec = { date: today, count: 0 };
+        // 每日 3 场免费
+        if (rec.count < DAILY_LIMIT) {
+            rec.count += 1;
+            try { localStorage.setItem(DAY_KEY, JSON.stringify(rec)); } catch (e) {}
+            return true;
+        }
+        // 超过 3 场：用 🎫额外对战券续战
+        if (typeof InventorySystem !== 'undefined' && InventorySystem.getCount
+            && InventorySystem.getCount('arena_ticket') > 0
+            && InventorySystem.removeItem) {
+            InventorySystem.removeItem('arena_ticket', 1);
+            return true;
+        }
+        const msg = '今日 3 场已用完，可用 🎫额外对战券续战';
+        if (typeof showToast === 'function') showToast(msg); else alert(msg);
+        return false;
+    }
+
+    // 读取今日对战已用次数（供 UI 展示，0~3）
+    function _arenaBattleUsedToday() {
+        const pid = (window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function')
+            ? (window.ProfileManager.getActiveId() || 'default') : 'default';
+        const DAY_KEY = 'petbank_arena_battle_day_' + pid;
+        const today = new Date().toLocaleDateString('sv-SE');
         try {
-            if (typeof InventorySystem === 'undefined' || !InventorySystem.addItem) return;
-            // 首次初始 10 张
-            const INIT_KEY = 'petbank_arena_ticket_init';
-            if (!localStorage.getItem(INIT_KEY)) {
-                localStorage.setItem(INIT_KEY, '1');
-                InventorySystem.addItem('arena_ticket', 10);
-            }
-            // 每日 3 张（按本地日期去重）
-            const DAY_KEY = 'petbank_arena_ticket_day';
-            const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD
-            if (localStorage.getItem(DAY_KEY) !== today) {
-                localStorage.setItem(DAY_KEY, today);
-                InventorySystem.addItem('arena_ticket', 3);
-                if (typeof showToast === 'function') showToast('🎫 每日训练券 +3');
-            }
+            const rec = JSON.parse(localStorage.getItem(DAY_KEY) || 'null');
+            if (rec && rec.date === today) return rec.count || 0;
         } catch (e) {}
+        return 0;
+    }
+
+    // 积分兑换制上线后不再每日发券（arena_ticket 改为「免费券」由兑换商店等途径产出）
+    // 保留空函数避免 openStages 调用报错；旧 localStorage 标记保留避免回退触发
+    function _claimDailyTickets() {
+        return;
     }
 
     // 自由练习入口：随机敌人，不计进度不计积分，随时玩（基础练习免费）
@@ -331,6 +353,25 @@ const CardArenaUI = (function () {
             const raw = localStorage.getItem('petbank_cards');
             return raw ? JSON.parse(raw) : [];
         } catch (e) { return []; }
+    }
+
+    // 打赢随机奖励：从全量 species 随机抽 1，未拥有→addCard，已拥有→addExp(20)；返回提示文本
+    function _grantRandomCardOrExp() {
+        try {
+            if (typeof PetSystem === 'undefined' || !PetSystem.getAllSpecies) return '';
+            const all = PetSystem.getAllSpecies();
+            if (!Array.isArray(all) || all.length === 0) return '';
+            const sp = all[Math.floor(Math.random() * all.length)];
+            const petId = sp.id;
+            const spName = _speciesName(petId);
+            const owned = _getCollectedIds().indexOf(petId) !== -1;
+            if (!owned && window.CardCollection && typeof CardCollection.addCard === 'function') {
+                CardCollection.addCard(petId);
+                return '🃏 获得新卡：' + spName;
+            }
+            if (typeof PetSystem.addExp === 'function') PetSystem.addExp(20);
+            return '✨ 重复卡 +20 EXP（' + spName + '）';
+        } catch (e) { return ''; }
     }
 
     // 取 species 立绘图（imageStages['2'] 终极态 / imageUrl）
@@ -699,13 +740,17 @@ const CardArenaUI = (function () {
     // 4 动作按钮（普攻/重击/防御/必杀），CD 中或非操作方禁用
     // sideEnabled：该方是否为当前操作方（PvE 传 true）
     function _actionBtnsHtml(p, side, sideEnabled) {
+        // 等级分级（等级 = PetSystem.getState().level）：Lv1-4 攻击系；Lv5-9 +防御；Lv10+ +必杀+道具
+        const petLevel = (typeof PetSystem !== 'undefined' && PetSystem.getState)
+            ? (PetSystem.getState().level || 1) : 1;
         const findSk = (id) => (p.skills || []).find(s => s.id === id);
-        const buttons = [
-            { id: 'attack', label: '⚔️ 普攻', action: { type: 'attack' } },
-            { id: 'power_strike', label: '💥 重击', action: { type: 'skill', skillId: 'power_strike' } },
-            { id: 'defend', label: '🛡️ 防御', action: { type: 'defend', skillId: 'defend' } },
-            { id: 'ultimate', label: '🌟 必杀', action: { type: 'skill', skillId: 'ultimate' } },
+        const allBtns = [
+            { id: 'attack', label: '⚔️ 普攻', action: { type: 'attack' }, minLv: 1 },
+            { id: 'power_strike', label: '💥 重击', action: { type: 'skill', skillId: 'power_strike' }, minLv: 1 },
+            { id: 'defend', label: '🛡️ 防御', action: { type: 'defend', skillId: 'defend' }, minLv: 5 },
+            { id: 'ultimate', label: '🌟 必杀', action: { type: 'skill', skillId: 'ultimate' }, minLv: 10 },
         ];
+        const buttons = allBtns.filter(b => petLevel >= b.minLv);
         const skillBtns = buttons.map(b => {
             const sk = findSk(b.id);
             const cd = sk ? sk.currentCd : 0;
@@ -716,7 +761,8 @@ const CardArenaUI = (function () {
             return `<button class="arena-act-btn" ${disabled ? 'disabled' : ''} onclick='CardArenaUI.doAction(${act})'>${b.label}${cdTag}</button>`;
         }).join('');
 
-        // 道具按钮：显示持有 battle 道具总数 badge，点击打开道具面板
+        // 道具按钮：Lv10+ 才开放；显示持有 battle 道具总数 badge，点击打开道具面板
+        if (petLevel < 10) return skillBtns;
         let battleCount = 0;
         try {
             if (typeof InventorySystem !== 'undefined' && InventorySystem.getItemsByType) {
@@ -731,6 +777,10 @@ const CardArenaUI = (function () {
 
     // 换人按钮（除当前上场外，存活的）；sideEnabled 控制启用
     function _switchBtnsHtml(s, side, sideEnabled) {
+        // 换人 Lv5+ 才开放（Lv1-4 返回空，不渲染换人按钮）
+        const petLevel = (typeof PetSystem !== 'undefined' && PetSystem.getState)
+            ? (PetSystem.getState().level || 1) : 1;
+        if (petLevel < 5) return '';
         const team = (side === 'enemy') ? s.enemy : s.player;
         const activeIdx = (side === 'enemy') ? s.activeE : s.activeP;
         return team.map((c, i) => {
@@ -1060,6 +1110,15 @@ const CardArenaUI = (function () {
                 }
             } else {
                 rewardLines.push('重玩关卡（奖励已领取）');
+            }
+            // 积分兑换制奖励：每次打赢 → 出场宠 +10 EXP + 随机卡/经验（不计积分）
+            try {
+                if (typeof PetSystem !== 'undefined' && PetSystem.addExp) PetSystem.addExp(10);
+            } catch (e) {}
+            const extraGrant = _grantRandomCardOrExp();
+            if (extraGrant) {
+                rewardLines.unshift(extraGrant);
+                if (typeof showToast === 'function') showToast(extraGrant);
             }
             const nextBtn = result.unlockedNext
                 ? `<button class="btn-primary" onclick="CardArenaUI.gotoNext(${result.unlockedNext})">➡️ 下一关</button>`

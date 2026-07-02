@@ -17,7 +17,7 @@
       "desc": "新手关，温顺的草系宠物陪你热身。",
       "enemies": ["375408c4-887", "de62160d-fd0", "219fb5c8-c94"],
       "difficulty": 1,
-      "reward": { "points": 30, "dropCard": "91d0f12a-34a" }
+      "reward": { "points": 0, "dropCard": "91d0f12a-34a" }
     },
     {
       "id": 2,
@@ -26,7 +26,7 @@
       "desc": "草系守护者小队，检验你的首发编排。",
       "enemies": ["8ae0a08d-acc", "2cd112b5-025", "0b3af442-25c"],
       "difficulty": 1,
-      "reward": { "points": 40, "dropCard": "35a035d7-972" }
+      "reward": { "points": 0, "dropCard": "35a035d7-972" }
     },
     {
       "id": 3,
@@ -35,7 +35,7 @@
       "desc": "森林边境的稀有游骑兵，速度为先。",
       "enemies": ["a40e4bd1-dfa", "f2282b26-a4c", "867feba0-6f6"],
       "difficulty": 2,
-      "reward": { "points": 55, "dropCard": "09622f40-378", "dropItem": "battle_heal_potion" }
+      "reward": { "points": 0, "dropCard": "09622f40-378", "dropItem": "battle_heal_potion" }
     },
     {
       "id": 4,
@@ -44,7 +44,7 @@
       "desc": "九尾狐领衔的密林小队，注意高血量。",
       "enemies": ["e582c75e-639", "c000f1a3-2d4", "5da9b780-7c5"],
       "difficulty": 2,
-      "reward": { "points": 70, "dropCard": "a215ac4d-468" }
+      "reward": { "points": 0, "dropCard": "a215ac4d-468" }
     },
     {
       "id": 5,
@@ -53,7 +53,7 @@
       "desc": "海边集市的混合阵容，攻防兼备。",
       "enemies": ["f9daaed8-aef", "ca515e59-0cd", "38226299-99f"],
       "difficulty": 3,
-      "reward": { "points": 90, "dropCard": "5bc5d210-20c", "dropItem": "battle_bomb" }
+      "reward": { "points": 0, "dropCard": "5bc5d210-20c", "dropItem": "battle_bomb" }
     },
     {
       "id": 6,
@@ -62,7 +62,7 @@
       "desc": "烈狮与翼龙镇守集市，硬碰硬的对决。",
       "enemies": ["a360a473-b83", "60aab456-a41", "3ecae5b3-920"],
       "difficulty": 3,
-      "reward": { "points": 110, "dropCard": "4037fda5-a5d" }
+      "reward": { "points": 0, "dropCard": "4037fda5-a5d" }
     },
     {
       "id": 7,
@@ -71,7 +71,7 @@
       "desc": "高地洞窟的史诗守卫，善用必杀技。",
       "enemies": ["5bc5d210-20c", "f9daaed8-aef", "a360a473-b83"],
       "difficulty": 4,
-      "reward": { "points": 140, "dropCard": "60aab456-a41", "dropItem": "battle_revive" }
+      "reward": { "points": 0, "dropCard": "60aab456-a41", "dropItem": "battle_revive" }
     },
     {
       "id": 8,
@@ -80,7 +80,7 @@
       "desc": "麒麟与烈狮的终极史诗组合。",
       "enemies": ["4037fda5-a5d", "a360a473-b83", "ca515e59-0cd"],
       "difficulty": 4,
-      "reward": { "points": 170, "dropCard": "3ecae5b3-920" }
+      "reward": { "points": 0, "dropCard": "3ecae5b3-920" }
     },
     {
       "id": 9,
@@ -89,7 +89,7 @@
       "desc": "传说宠物降临，通往终点的最后一战。",
       "enemies": ["cp_panda_01", "cp_rainbow_dragon", "cp_skeleton_dragon"],
       "difficulty": 5,
-      "reward": { "points": 220, "dropCard": "cp_cyber_dragon" }
+      "reward": { "points": 0, "dropCard": "cp_cyber_dragon" }
     },
     {
       "id": 10,
@@ -98,7 +98,7 @@
       "desc": "金龙镇守的终极试炼，唯有最强者通关。",
       "enemies": ["cp_golden_dragon", "cp_cyber_dragon", "cp_panda_01"],
       "difficulty": 5,
-      "reward": { "points": 300, "dropCard": "cp_golden_dragon" }
+      "reward": { "points": 0, "dropCard": "cp_golden_dragon" }
     }
   ]
 }
