@@ -9535,7 +9535,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_peashooter_idle.webp",
+        "0": "assets/pets/poses/pvz_peashooter_egg.webp",
         "1": "assets/pets/poses/pvz_peashooter_idle.webp",
         "2": "assets/pets/poses/pvz_peashooter_idle.webp",
         "3": "assets/pets/poses/pvz_peashooter_idle.webp",
@@ -9558,7 +9558,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_sunflower_idle.webp",
+        "0": "assets/pets/poses/pvz_sunflower_egg.webp",
         "1": "assets/pets/poses/pvz_sunflower_idle.webp",
         "2": "assets/pets/poses/pvz_sunflower_idle.webp",
         "3": "assets/pets/poses/pvz_sunflower_idle.webp",
@@ -9581,7 +9581,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_wallnut_idle.webp",
+        "0": "assets/pets/poses/pvz_wallnut_egg.webp",
         "1": "assets/pets/poses/pvz_wallnut_idle.webp",
         "2": "assets/pets/poses/pvz_wallnut_idle.webp",
         "3": "assets/pets/poses/pvz_wallnut_idle.webp",
@@ -9650,7 +9650,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_snowpea_idle.webp",
+        "0": "assets/pets/poses/pvz_snowpea_egg.webp",
         "1": "assets/pets/poses/pvz_snowpea_idle.webp",
         "2": "assets/pets/poses/pvz_snowpea_idle.webp",
         "3": "assets/pets/poses/pvz_snowpea_idle.webp",
@@ -9696,7 +9696,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_repeater_idle.webp",
+        "0": "assets/pets/poses/pvz_repeater_egg.webp",
         "1": "assets/pets/poses/pvz_repeater_idle.webp",
         "2": "assets/pets/poses/pvz_repeater_idle.webp",
         "3": "assets/pets/poses/pvz_repeater_idle.webp",
@@ -9742,7 +9742,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_melonpult_idle.webp",
+        "0": "assets/pets/poses/pvz_melonpult_egg.webp",
         "1": "assets/pets/poses/pvz_melonpult_idle.webp",
         "2": "assets/pets/poses/pvz_melonpult_idle.webp",
         "3": "assets/pets/poses/pvz_melonpult_idle.webp",
@@ -9765,7 +9765,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_cabbagepult_idle.webp",
+        "0": "assets/pets/poses/pvz_cabbagepult_egg.webp",
         "1": "assets/pets/poses/pvz_cabbagepult_idle.webp",
         "2": "assets/pets/poses/pvz_cabbagepult_idle.webp",
         "3": "assets/pets/poses/pvz_cabbagepult_idle.webp",
@@ -9788,7 +9788,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_kernelpult_idle.webp",
+        "0": "assets/pets/poses/pvz_kernelpult_egg.webp",
         "1": "assets/pets/poses/pvz_kernelpult_idle.webp",
         "2": "assets/pets/poses/pvz_kernelpult_idle.webp",
         "3": "assets/pets/poses/pvz_kernelpult_idle.webp",
@@ -9811,7 +9811,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_threepeater_idle.webp",
+        "0": "assets/pets/poses/pvz_threepeater_egg.webp",
         "1": "assets/pets/poses/pvz_threepeater_idle.webp",
         "2": "assets/pets/poses/pvz_threepeater_idle.webp",
         "3": "assets/pets/poses/pvz_threepeater_idle.webp",
@@ -9834,7 +9834,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_torchwood_idle.webp",
+        "0": "assets/pets/poses/pvz_torchwood_egg.webp",
         "1": "assets/pets/poses/pvz_torchwood_idle.webp",
         "2": "assets/pets/poses/pvz_torchwood_idle.webp",
         "3": "assets/pets/poses/pvz_torchwood_idle.webp",
@@ -9857,7 +9857,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_tallnut_idle.webp",
+        "0": "assets/pets/poses/pvz_tallnut_egg.webp",
         "1": "assets/pets/poses/pvz_tallnut_idle.webp",
         "2": "assets/pets/poses/pvz_tallnut_idle.webp",
         "3": "assets/pets/poses/pvz_tallnut_idle.webp",
@@ -9880,7 +9880,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_pumpkin_idle.webp",
+        "0": "assets/pets/poses/pvz_pumpkin_egg.webp",
         "1": "assets/pets/poses/pvz_pumpkin_idle.webp",
         "2": "assets/pets/poses/pvz_pumpkin_idle.webp",
         "3": "assets/pets/poses/pvz_pumpkin_idle.webp",
@@ -9903,7 +9903,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_spikeweed_idle.webp",
+        "0": "assets/pets/poses/pvz_spikeweed_egg.webp",
         "1": "assets/pets/poses/pvz_spikeweed_idle.webp",
         "2": "assets/pets/poses/pvz_spikeweed_idle.webp",
         "3": "assets/pets/poses/pvz_spikeweed_idle.webp",
@@ -9926,7 +9926,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_spikerock_idle.webp",
+        "0": "assets/pets/poses/pvz_spikerock_egg.webp",
         "1": "assets/pets/poses/pvz_spikerock_idle.webp",
         "2": "assets/pets/poses/pvz_spikerock_idle.webp",
         "3": "assets/pets/poses/pvz_spikerock_idle.webp",
@@ -9949,7 +9949,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_twinsunflower_idle.webp",
+        "0": "assets/pets/poses/pvz_twinsunflower_egg.webp",
         "1": "assets/pets/poses/pvz_twinsunflower_idle.webp",
         "2": "assets/pets/poses/pvz_twinsunflower_idle.webp",
         "3": "assets/pets/poses/pvz_twinsunflower_idle.webp",
@@ -9972,7 +9972,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_squash_idle.webp",
+        "0": "assets/pets/poses/pvz_squash_egg.webp",
         "1": "assets/pets/poses/pvz_squash_idle.webp",
         "2": "assets/pets/poses/pvz_squash_idle.webp",
         "3": "assets/pets/poses/pvz_squash_idle.webp",
