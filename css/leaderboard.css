@@ -1,0 +1,91 @@
+/* ============================================================
+   css/leaderboard.css
+   排行榜样式：圆角阴影「呼吸感」，网格列表，简易 sparkline
+   ============================================================ */
+
+.lb-page.card {
+    max-width: 720px;
+    margin: 16px auto;
+    padding: 20px;
+    border-radius: 18px;
+    background: linear-gradient(160deg, #fffdf7 0%, #fff6e6 100%);
+    box-shadow: 0 6px 24px rgba(255, 180, 60, 0.18), 0 2px 6px rgba(0,0,0,0.04);
+    animation: lb-breath 4.5s ease-in-out infinite;
+}
+
+@keyframes lb-breath {
+    0%, 100% { box-shadow: 0 6px 24px rgba(255, 180, 60, 0.18), 0 2px 6px rgba(0,0,0,0.04); }
+    50%      { box-shadow: 0 8px 30px rgba(255, 180, 60, 0.28), 0 2px 6px rgba(0,0,0,0.05); }
+}
+
+.lb-body {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 最高分卡片 */
+.lb-best-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ffd86b 0%, #ff9a3c 100%);
+    color: #5a3208;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.lb-best-label { font-size: 13px; opacity: 0.85; }
+.lb-best-num {
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1.1;
+    text-shadow: 0 2px 0 rgba(255,255,255,0.35);
+}
+.lb-best-trend { font-size: 13px; margin-top: 4px; }
+.lb-trend.up   { color: #1f7a3a; background: #d9f7e3; padding: 1px 8px; border-radius: 10px; }
+.lb-trend.down { color: #b3402a; background: #ffe0d8; padding: 1px 8px; border-radius: 10px; }
+.lb-trend.flat { color: #6b6b6b; background: #eee;    padding: 1px 8px; border-radius: 10px; }
+
+/* sparkline 趋势 */
+.lb-spark-wrap { padding: 10px 14px; border-radius: 12px; background: #fff8eb; }
+.lb-spark-label, .lb-list-label { font-size: 12px; color: #8a7349; margin-bottom: 6px; }
+.lb-spark {
+    font-family: "Noto Sans SC", monospace;
+    font-size: 26px;
+    letter-spacing: 3px;
+    color: #ff9a3c;
+    line-height: 1;
+    overflow-x: auto;
+}
+.lb-spark-bar { display: inline-block; }
+.lb-spark-empty { font-size: 13px; color: #aaa; letter-spacing: 0; }
+
+/* 最近列表 */
+.lb-list-wrap { padding: 10px 14px; border-radius: 12px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.lb-list { list-style: none; margin: 0; padding: 0; }
+.lb-row {
+    display: grid;
+    grid-template-columns: 36px 64px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 4px;
+    border-bottom: 1px dashed #f0e6cf;
+    font-size: 14px;
+}
+.lb-row:last-child { border-bottom: none; }
+.lb-rank { font-size: 13px; color: #b08a3e; font-weight: 700; }
+.lb-score { font-weight: 700; color: #d2691e; text-align: right; }
+.lb-meta-wrap { display: flex; gap: 6px; flex-wrap: wrap; }
+.lb-meta {
+    font-size: 11px; color: #6b6b6b;
+    background: #f6efe0; padding: 1px 7px; border-radius: 8px;
+}
+.lb-ts { font-size: 11px; color: #aaa; }
+.lb-empty { text-align: center; color: #aaa; padding: 24px 0; list-style: none; }
+
+@media (max-width: 480px) {
+    .lb-best-num { font-size: 36px; }
+    .lb-row { grid-template-columns: 30px 52px 1fr auto; font-size: 13px; }
+}

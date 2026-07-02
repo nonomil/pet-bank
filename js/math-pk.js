@@ -507,9 +507,22 @@
                 if (typeof window.saveAppState === 'function') window.saveAppState();
                 if (typeof window.updateStats === 'function') window.updateStats();
             }
-            // 最高分
+            // 最高分（旧键，保留向后兼容）
             const currentHigh = Number(localStorage.getItem(CONFIG.STORAGE_KEY_HIGH_SCORE) || 0);
             if (state.score > currentHigh) localStorage.setItem(CONFIG.STORAGE_KEY_HIGH_SCORE, String(state.score));
+
+            // 写入通用排行榜
+            if (window.Leaderboard && typeof window.Leaderboard.record === 'function') {
+                // best-effort 迁移：首次进入时把旧 high_score 吞入排行榜
+                if (window.Leaderboard.getBest('mathpk') === 0 && currentHigh > 0) {
+                    window.Leaderboard.record('mathpk', currentHigh, { migrated: true });
+                }
+                window.Leaderboard.record('mathpk', state.score, {
+                    correct: state.correctCount,
+                    total: CONFIG.TOTAL_ROUNDS,
+                    win: win
+                });
+            }
 
             render._setRoundPill(win ? '🏆 胜利' : '对战结束');
             render.result({

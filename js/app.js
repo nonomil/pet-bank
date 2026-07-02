@@ -484,11 +484,14 @@ function getHomeTabMap() { return Object.assign({}, HOME_TAB_MAP); }
 // 叶子页 / hub 页 -> 所属一级 tab 的 data-page（switchPage 时据此高亮父 tab）
 const PAGE_TO_TAB = {
     map: 'map',                                                 // 首页（dashboard）
-    today: 'today', review: 'today', mathpk: 'today',           // 积分
-    reward: 'today', shop: 'today', inventory: 'today',         // 兑换并入积分
+    today: 'today', review: 'today', reward: 'today',           // 积分（核心任务/复盘/奖励）
+    shop: 'today', inventory: 'today',                          // 兑换并入积分
+    playground: 'playground',                                   // 游乐场（hub）
+    mathpk: 'playground', hanzi: 'playground',                  // 数学PK/汉字 → 游乐场
+    leaderboard: 'playground',                                  // 排行榜 → 游乐场
     pet: 'pet', home: 'pet', card: 'pet', walk: 'pet',          // 宠物
     explore: 'explore',                                         // 探索（含成长地图）
-    works: 'works', tools: 'works', settings: 'works'           // 更多
+    works: 'playground', tools: 'works', settings: 'works'      // 作品/工具/设置：works 归游乐场 tab
 };
 
 function switchPage(page) {
@@ -513,6 +516,8 @@ function switchPage(page) {
     if (page === 'pet') renderPetPage();
     if (page === 'explore') void renderExplorePage();
     if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
+    if (page === 'hanzi' && window.HanziGame) HanziGame.renderUI('hanzi-container');
+    if (page === 'leaderboard' && window.Leaderboard) switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
     if (page === 'inventory') renderInventoryPage();
     if (page === 'today') updateRewardPetCard();
     if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
@@ -524,6 +529,19 @@ function switchPage(page) {
 }
 
 window.switchPage = switchPage;
+
+// ============ 排行榜玩法 tab 切换（mathpk / hanzi） ============
+function switchLeaderboardTab(game) {
+    game = game || 'mathpk';
+    window._lbCurrentGame = game;
+    document.querySelectorAll('.hz-lb-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.game === game);
+    });
+    if (!window.Leaderboard) return;
+    const label = game === 'hanzi' ? '汉字挑战' : '数学 PK';
+    Leaderboard.renderUI('leaderboard-container', game, { label: label });
+}
+window.switchLeaderboardTab = switchLeaderboardTab;
 
 // ============ 宠物页面渲染 ============
     // 当前宠物姿态

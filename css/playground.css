@@ -1,0 +1,64 @@
+/* playground.css - 游乐场 Hub 页样式
+ * 风格对齐 .dash-card（圆角 18px + 柔阴影 + hover 上浮）
+ * 4 个大板块入口卡：数学PK / 汉字 / 卡牌 / 排行榜
+ */
+
+.playground-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    padding: 8px 4px 24px;
+}
+
+.pg-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 28px 24px;
+    min-height: 140px;
+    border-radius: 20px;
+    border: 1px solid var(--border-light, #E5E8E2);
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.14s, box-shadow 0.16s;
+    text-align: left;
+    box-shadow: 0 3px 10px rgba(45, 62, 54, 0.06);
+}
+
+.pg-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(45, 62, 54, 0.14);
+}
+
+.pg-card:active {
+    transform: translateY(-1px) scale(0.99);
+}
+
+.pg-card .pg-emoji {
+    font-size: 2.4rem;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.pg-card .pg-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-primary, #2D3A36);
+}
+
+.pg-card .pg-sub {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #6B7A6F);
+}
+
+/* 各板块渐变底色（与首页 dash-card 系一致） */
+.pg-card.pg-mathpk { background: linear-gradient(135deg, #eef2ff, #fff); }
+.pg-card.pg-hanzi { background: linear-gradient(135deg, #fff7e6, #fff); }
+.pg-card.pg-card-arena { background: linear-gradient(135deg, #fff0f3, #fff); }
+.pg-card.pg-leaderboard { background: linear-gradient(135deg, #f0f7ff, #fff); }
+
+/* 窄屏单列 */
+@media (max-width: 560px) {
+    .playground-grid { grid-template-columns: 1fr; }
+}

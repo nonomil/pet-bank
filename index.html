@@ -8,12 +8,15 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/playground.css">
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/walk.css">
     <link rel="stylesheet" href="css/card-collection.css">
     <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/arena.css">
+    <link rel="stylesheet" href="css/leaderboard.css">
+    <link rel="stylesheet" href="css/hanzi-game.css">
 </head>
 <body class="map-page-bg">
     <!-- TOP NAV -->
@@ -31,7 +34,7 @@
                 <div class="nav-tab" data-page="today" onclick="switchPage('today')">⭐ 积分</div>
                 <div class="nav-tab" data-page="pet" onclick="switchPage('pet')">🐾 宠物</div>
                 <div class="nav-tab" data-page="explore" onclick="switchPage('explore')">🗺️ 探索</div>
-                <div class="nav-tab" data-page="works" onclick="switchPage('works')">⋯ 更多</div>
+                <div class="nav-tab" data-page="playground" onclick="switchPage('playground')">🎡 游乐场</div>
             </div>
             <div class="profile-switcher" id="profileSwitcher" onclick="ProfileUI.toggle(event)" title="切换孩子">
                 <span id="profileCurEmoji">🧒</span>
@@ -126,7 +129,7 @@
                 <section class="dash-launcher">
                     <div class="dash-cards">
                         <button class="dash-card c-today" onclick="switchPage('today')"><span class="dash-emoji">📝</span><span class="dash-title">今日打卡</span><span class="dash-sub">完成任务赚积分</span></button>
-                        <button class="dash-card c-mathpk" onclick="switchPage('mathpk')"><span class="dash-emoji">🔢</span><span class="dash-title">数学 PK</span><span class="dash-sub">人机竞技台</span></button>
+                        <button class="dash-card c-playground" onclick="switchPage('playground')"><span class="dash-emoji">🎡</span><span class="dash-title">游乐场</span><span class="dash-sub">数学/汉字/卡牌/排行</span></button>
                         <button class="dash-card c-pet" onclick="switchPage('pet')"><span class="dash-emoji">🐾</span><span class="dash-title">我的宠物</span><span class="dash-sub">养成陪伴</span></button>
                         <button class="dash-card c-explore" onclick="switchPage('explore')"><span class="dash-emoji">🗺️</span><span class="dash-title">探索冒险</span><span class="dash-sub">成长地图路线</span></button>
                         <button class="dash-card c-shop" onclick="switchPage('shop')"><span class="dash-emoji">🎁</span><span class="dash-title">兑换商店</span><span class="dash-sub">花积分换奖励</span></button>
@@ -249,6 +252,36 @@
                         <div class="reward-tier"><h3 class="font-bold text-sm mb-3">60 分大奖</h3><ul class="text-sm space-y-2 text-secondary"><li>🚄 一次短途旅行</li><li>🎢 主题体验活动</li><li>🎁 一个小心愿</li></ul><button class="btn-secondary w-full mt-4 text-xs">兑换</button></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- PAGE: 游乐场 Hub -->
+            <div class="page" id="page-playground">
+                <div class="hub-nav">
+                    <span class="hub-nav-label">游乐场</span>
+                    <button class="hub-nav-btn" onclick="switchPage('works')">⋯ 更多</button>
+                </div>
+                <section class="playground-grid">
+                    <button class="pg-card pg-mathpk" onclick="switchPage('mathpk')">
+                        <span class="pg-emoji">🔢</span>
+                        <span class="pg-title">数学 PK</span>
+                        <span class="pg-sub">人机竞技台</span>
+                    </button>
+                    <button class="pg-card pg-hanzi" onclick="switchPage('hanzi')">
+                        <span class="pg-emoji">📝</span>
+                        <span class="pg-title">汉字游戏</span>
+                        <span class="pg-sub">看拼音选字 / 填空</span>
+                    </button>
+                    <button class="pg-card pg-card-arena" onclick="CardArenaUI.openStages()">
+                        <span class="pg-emoji">🃏</span>
+                        <span class="pg-title">卡牌对战</span>
+                        <span class="pg-sub">宠物训练营 · 2v2</span>
+                    </button>
+                    <button class="pg-card pg-leaderboard" onclick="switchPage('leaderboard')">
+                        <span class="pg-emoji">🏆</span>
+                        <span class="pg-title">排行榜</span>
+                        <span class="pg-sub">和自己赛跑</span>
+                    </button>
+                </section>
             </div>
 
             <!-- PAGE: 成长作品 -->
@@ -389,6 +422,20 @@
             <!-- PAGE: 数学PK -->
             <div class="page" id="page-mathpk">
                 <div id="math-pk-container"></div>
+            </div>
+
+            <!-- PAGE: 汉字挑战 -->
+            <div class="page" id="page-hanzi">
+                <div id="hanzi-container"></div>
+            </div>
+
+            <!-- PAGE: 排行榜 -->
+            <div class="page" id="page-leaderboard">
+                <div class="hz-lb-tabs">
+                    <button class="hz-lb-tab active" data-game="mathpk" onclick="switchLeaderboardTab('mathpk')">🔢 数学 PK</button>
+                    <button class="hz-lb-tab" data-game="hanzi" onclick="switchLeaderboardTab('hanzi')">📝 汉字挑战</button>
+                </div>
+                <div id="leaderboard-container"></div>
             </div>
 
             <!-- PAGE: 背包 -->
@@ -537,6 +584,8 @@
     <script src="js/exploration-detail.js"></script>
     <script src="js/home.js"></script>
     <script src="js/math-pk.js"></script>
+    <script src="js/leaderboard.js"></script>
+    <script src="js/hanzi-game.js"></script>
     <script src="js/treasure.js"></script>
     <script src="js/walk.js"></script>
     <script src="js/card-collection.js"></script>

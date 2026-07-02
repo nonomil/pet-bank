@@ -1,0 +1,353 @@
+/* ============================================================
+   css/hanzi-game.css
+   汉字答题玩法：卡片网格、圆角阴影「呼吸感」、正误动效、淡入淡出
+   对齐 math-pk 全屏覆盖层调性，零依赖
+   ============================================================ */
+
+/* ---- 大厅：等级选择 + 开始按钮 ---- */
+.hz-lobby {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+}
+.hz-lobby-head {
+    text-align: center;
+    margin-bottom: 18px;
+}
+.hz-lobby-head h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+.hz-lobby-head p {
+    font-size: 12px;
+    color: var(--text-muted, #94a3b8);
+    margin: 0;
+}
+.hz-level-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 18px 0 22px;
+}
+.hz-level-card {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform .18s, box-shadow .18s, border-color .18s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
+}
+.hz-level-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+}
+.hz-level-card.active {
+    border-color: var(--sage-green, #84cc16);
+    box-shadow: 0 0 0 3px rgba(132, 204, 22, .18);
+}
+.hz-level-num {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--sage-green, #65a30d);
+    line-height: 1;
+}
+.hz-level-label {
+    font-size: 13px;
+    margin-top: 6px;
+    color: #475569;
+}
+.hz-level-sub {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+.hz-start-btn {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 8px auto 0;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #84cc16, #65a30d);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(101, 163, 13, .3);
+    transition: transform .15s;
+}
+.hz-start-btn:hover { transform: translateY(-1px); }
+.hz-start-btn:active { transform: translateY(1px); }
+.hz-best-hint {
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 12px;
+}
+
+/* ---- 全屏覆盖层（对齐 math-pk：fixed;inset:0;z-index:1000） ---- */
+.hz-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: linear-gradient(160deg, #fef9e7, #f0fdf4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    overflow-y: auto;
+}
+.hz-stage {
+    width: 100%;
+    max-width: 640px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .15);
+    padding: 20px 18px 24px;
+    animation: hz-pop .3s ease;
+}
+@keyframes hz-pop {
+    from { opacity: 0; transform: scale(.94); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ---- 顶栏：进度 / 分数 / 退出 ---- */
+.hz-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+.hz-pill {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+.hz-score-pill {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+}
+.hz-exit-btn {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: #64748b;
+    cursor: pointer;
+}
+.hz-exit-btn:hover { background: #f8fafc; }
+
+/* ---- 题目卡片：四要素展示 ---- */
+.hz-card {
+    text-align: center;
+    padding: 18px 12px 8px;
+    transition: opacity .35s ease;
+}
+.hz-card.fading { opacity: 0; }
+.hz-mode-tag {
+    display: inline-block;
+    background: #ecfccb;
+    color: #4d7c0f;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+}
+.hz-emoji {
+    font-size: 54px;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    animation: hz-breathe 2.4s ease-in-out infinite;
+}
+@keyframes hz-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+}
+.hz-char {
+    font-size: 84px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #1e293b;
+    margin: 4px 0;
+}
+.hz-pinyin {
+    font-size: 22px;
+    color: #65a30d;
+    font-style: italic;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+.hz-example {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #334155;
+    margin: 10px 12px;
+}
+.hz-example .hz-blank {
+    display: inline-block;
+    min-width: 28px;
+    padding: 0 6px;
+    margin: 0 2px;
+    border-bottom: 3px solid #f59e0b;
+    color: transparent;
+    background: #fffbeb;
+    border-radius: 4px 4px 0 0;
+}
+.hz-example .hz-target {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+/* ---- 选项网格 ---- */
+.hz-opts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 16px 8px 8px;
+}
+.hz-opt {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px 12px;
+    font-size: 26px;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    transition: transform .12s, border-color .12s, background .12s;
+}
+.hz-opt:hover { transform: translateY(-2px); border-color: #cbd5e1; }
+.hz-opt:active { transform: translateY(0); }
+.hz-opt.correct {
+    background: #ecfccb;
+    border-color: #84cc16;
+    color: #4d7c0f;
+    animation: hz-correct .5s ease;
+}
+.hz-opt.wrong {
+    background: #fee2e2;
+    border-color: #f87171;
+    color: #b91c1c;
+    animation: hz-wrong .45s ease;
+}
+.hz-opt.disabled { pointer-events: none; opacity: .6; }
+@keyframes hz-correct {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.12); }
+    100% { transform: scale(1); }
+}
+@keyframes hz-wrong {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+/* ---- toast 反馈 ---- */
+.hz-toast {
+    position: fixed;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: rgba(15, 23, 42, .9);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    z-index: 1100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s, transform .25s;
+}
+.hz-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.hz-toast.win { background: linear-gradient(135deg, #84cc16, #65a30d); }
+.hz-toast.lose { background: linear-gradient(135deg, #f87171, #dc2626); }
+.hz-toast small {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    opacity: .9;
+    margin-top: 2px;
+}
+
+/* ---- 结算页 ---- */
+.hz-result {
+    text-align: center;
+    padding: 24px 16px;
+}
+.hz-result-emoji { font-size: 60px; line-height: 1; }
+.hz-result-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 8px 0 4px;
+}
+.hz-result-score {
+    font-size: 40px;
+    font-weight: 700;
+    color: #65a30d;
+    margin: 6px 0;
+}
+.hz-result-meta {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 16px;
+}
+.hz-result-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.hz-result-actions button {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.hz-btn-primary {
+    background: linear-gradient(135deg, #84cc16, #65a30d);
+    color: #fff;
+}
+.hz-btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+/* ---- 排行榜页 tab（mathpk / 汉字） ---- */
+.hz-lb-tabs {
+    display: flex;
+    gap: 8px;
+    max-width: 760px;
+    margin: 0 auto 8px;
+    padding: 12px 16px 0;
+}
+.hz-lb-tab {
+    padding: 8px 18px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all .15s;
+}
+.hz-lb-tab:hover { background: #f8fafc; }
+.hz-lb-tab.active {
+    background: linear-gradient(135deg, #84cc16, #65a30d);
+    color: #fff;
+    border-color: transparent;
+}

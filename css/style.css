@@ -319,6 +319,15 @@
     cursor: pointer;
     transform: translate(-50%, -50%);
     transition: transform 0.22s ease, filter 0.22s ease, box-shadow 0.22s ease;
+    /* S1：中心手调点（ch5 星空终点）层级抬到路线之上，hover/active 时再抬一层 */
+    z-index: 6;
+}
+.map-scene-node.chapter-5 {
+    z-index: 8;
+}
+.map-scene-node:hover,
+.map-scene-node.is-active {
+    z-index: 12;
 }
 .map-scene-node:hover {
     transform: translate(-50%, -54%);

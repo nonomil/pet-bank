@@ -3,19 +3,55 @@
  */
 
 const ExplorationSystem = (function () {
+    /**
+     * S1：阿基米德螺旋布局生成器 r = b·θ（外→内顺时针，约 2.5 圈）。
+     * 参数：K=42（r→百分比映射，外圈首点落 ~8%/92% 边缘带）；
+     *      θStart=5π，dθ=5π/(count-1)（12 点跨 2.5 圈）；
+     *      b=K/(5π)，外圈首点 r=K≈42%。
+     * 半径最小的最后 4 点（i=8~11，castle/volcano/space/stargarden）
+     * 因 190px 固定卡片在中心死区（r<15%）必然重叠，**手调坐标**拉开间距，
+     * 标记 [手调]，保证路径相邻卡片不覆盖（相邻间距均 ≥22%）。
+     * 返回 [{x,y},...] 顺时针向内；数组前部=外圈=低章节，末部=中心=第5章终点。
+     */
+    function generateSpiralLayout(count) {
+        const n = count || 12;
+        const K = 42;
+        const thetaStart = 5 * Math.PI;            // 外圈起始角
+        const dtheta = (5 * Math.PI) / (n - 1);    // 每步
+        const b = K / (5 * Math.PI);               // 使外圈首点 r=K
+        const pts = [];
+        for (let i = 0; i < n; i++) {
+            const theta = thetaStart - i * dtheta; // 顺时针向内
+            const r = b * theta;
+            const t = -theta;                       // 屏幕 y 向下 → -θ 视觉顺时针
+            pts.push({
+                x: +(50 + r * Math.cos(t)).toFixed(1),
+                y: +(50 + r * Math.sin(t)).toFixed(1)
+            });
+        }
+        // [手调] 最后 4 点（r 最小、中心死区）改人工坐标，保证相邻不覆盖
+        pts[8]  = { x: 40, y: 70 };  // castle    [手调] 左下
+        pts[9]  = { x: 62, y: 72 };  // volcano   [手调] 右下
+        pts[10] = { x: 68, y: 44 };  // space     [手调] 右上
+        pts[11] = { x: 46, y: 57 };  // stargarden[手调] 核心终点
+        return pts;
+    }
+
+    // 螺旋坐标由 generateSpiralLayout() 生成；size/chapter/id 保留，章节顺序外→内（1→5）。
+    const _SPIRAL = generateSpiralLayout(12);
     const MAP_LAYOUT = [
-        { id: 'forest', x: 17, y: 18, size: 198, chapter: 1 },
-        { id: 'beach', x: 70, y: 12, size: 182, chapter: 2 },
-        { id: 'candy', x: 28, y: 43, size: 176, chapter: 2 },
-        { id: 'waterfall', x: 56, y: 42, size: 176, chapter: 3 },
-        { id: 'underwater', x: 22, y: 72, size: 188, chapter: 3 },
-        { id: 'mountain', x: 85, y: 34, size: 182, chapter: 4 },
-        { id: 'cave', x: 54, y: 64, size: 198, chapter: 4 },
-        { id: 'desert', x: 82, y: 62, size: 176, chapter: 3 },
-        { id: 'castle', x: 49, y: 84, size: 188, chapter: 4 },
-        { id: 'volcano', x: 32, y: 92, size: 176, chapter: 4 },
-        { id: 'space', x: 75, y: 83, size: 174, chapter: 5 },
-        { id: 'stargarden', x: 64, y: 95, size: 194, chapter: 5 }
+        { id: 'forest',     x: _SPIRAL[0].x,  y: _SPIRAL[0].y,  size: 198, chapter: 1 },
+        { id: 'beach',      x: _SPIRAL[1].x,  y: _SPIRAL[1].y,  size: 182, chapter: 2 },
+        { id: 'candy',      x: _SPIRAL[2].x,  y: _SPIRAL[2].y,  size: 176, chapter: 2 },
+        { id: 'waterfall',  x: _SPIRAL[3].x,  y: _SPIRAL[3].y,  size: 176, chapter: 3 },
+        { id: 'underwater', x: _SPIRAL[4].x,  y: _SPIRAL[4].y,  size: 188, chapter: 3 },
+        { id: 'desert',     x: _SPIRAL[5].x,  y: _SPIRAL[5].y,  size: 176, chapter: 3 },
+        { id: 'mountain',   x: _SPIRAL[6].x,  y: _SPIRAL[6].y,  size: 182, chapter: 4 },
+        { id: 'cave',       x: _SPIRAL[7].x,  y: _SPIRAL[7].y,  size: 198, chapter: 4 },
+        { id: 'castle',     x: _SPIRAL[8].x,  y: _SPIRAL[8].y,  size: 188, chapter: 4 },
+        { id: 'volcano',    x: _SPIRAL[9].x,  y: _SPIRAL[9].y,  size: 176, chapter: 4 },
+        { id: 'space',      x: _SPIRAL[10].x, y: _SPIRAL[10].y, size: 174, chapter: 5 },
+        { id: 'stargarden', x: _SPIRAL[11].x, y: _SPIRAL[11].y, size: 194, chapter: 5 }
     ];
     // 章节（03 章节结构）：1 起点花园 / 2 森林边界 / 3 海边集市 / 4 高地洞窟 / 5 星空终点
     const CHAPTER_THEME = {
@@ -126,13 +162,15 @@ const ExplorationSystem = (function () {
         `;
     }
 
-    function buildMapNode(scene, layout, activeSceneId) {
+    function buildMapNode(scene, layout, activeSceneId, boardId) {
         const unlocked = isSceneUnlocked(scene);
         const unlockCost = scene.unlock_cost || 0;
         const isLockedByPoints = unlockCost > 0 && !unlockedScenes[scene.id];
+        // S0(F2)：解锁动作透传 boardId，避免重渲回首页板
+        const safeBoard = boardId || 'sceneGridMap';
         const action = unlocked
             ? `ExplorationSystem.goExplore('${scene.id}')`
-            : `ExplorationSystem.tryUnlock('${scene.id}')`;
+            : `ExplorationSystem.tryUnlock('${scene.id}', '${safeBoard}')`;
         const theme = CHAPTER_THEME[layout.chapter] || CHAPTER_THEME[1];
         const stateClass = [
             'map-scene-node',
@@ -182,7 +220,7 @@ const ExplorationSystem = (function () {
         const nodes = MAP_LAYOUT
             .map((layout) => {
                 const scene = sceneMap.get(layout.id);
-                return scene ? buildMapNode(scene, layout, activeSceneId) : '';
+                return scene ? buildMapNode(scene, layout, activeSceneId, boardId) : '';
             })
             .join('');
 
@@ -214,7 +252,7 @@ const ExplorationSystem = (function () {
         return { success: true, msg: `解锁成功！花费 ${scene.unlock_cost} 积分` };
     }
 
-    function tryUnlock(sceneId) {
+    function tryUnlock(sceneId, boardId) {
         const result = unlockScene(sceneId);
         if (typeof window.showToast === 'function') {
             window.showToast(result.msg);
@@ -222,8 +260,10 @@ const ExplorationSystem = (function () {
             alert(result.msg);
         }
         if (result.success) {
-            renderSceneGridMap(sceneId);
-            if (typeof window.renderExplorePage === 'function') {
+            // S0(F2)：重渲保留调用方所在 board，默认首页板；探索 tab 内调用透传 'sceneGrid'。
+            const targetBoard = boardId || 'sceneGridMap';
+            renderSceneGridMap(sceneId, targetBoard);
+            if (targetBoard === 'sceneGrid' && typeof window.renderExplorePage === 'function') {
                 void window.renderExplorePage(sceneId);
             }
         }
@@ -499,6 +539,7 @@ const ExplorationSystem = (function () {
         getSceneById,
         getCurrentBattle,
         getMapLayout,
+        generateSpiralLayout,
         getUnlockedCount,
         isSceneUnlocked,
         unlockScene,
