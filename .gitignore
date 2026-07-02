@@ -10,6 +10,7 @@ node_modules/
 prj/*
 !prj/tts/
 !prj/tts-portable/
+!prj/browser-act-imagegen/
 # docs/参考案例/ 含 12MB mp4 与视频抽帧图片，整体不入库
 docs/参考案例/
 *.zip
