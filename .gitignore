@@ -39,3 +39,8 @@ assets/pets/poses-originals/
 # --- Claude 工具配置（本地，不入库）---
 .agents/
 skills-lock.json
+data/*.fill-report.json
+
+# Python 缓存
+__pycache__/
+*.pyc
