@@ -108,22 +108,22 @@ def _extract_json(content: str) -> dict | None:
     return None
 
 
-def call_llm(char: str, api_key: str, retries: int = 2, sleep: float = 0.5) -> dict | None:
+def call_llm(char: str, cfg: dict, retries: int = 2, sleep: float = 0.5) -> dict | None:
     """对单个汉字调一次，返回 {"pinyin","example"} 或 None。失败指数退避重试。"""
     payload = {
-        "model": MODEL,
+        "model": cfg["model"],
         "messages": [{"role": "user", "content": PROMPT_TMPL.format(ch=char)}],
-        "temperature": 0.3,
+        "temperature": 0.7,
         "max_tokens": 200,
     }
     headers = {
-        "Authorization": f"Bearer {api_key}",
+        "Authorization": f"Bearer {cfg['token']}",
         "Content-Type": "application/json",
     }
     last_err = ""
     for attempt in range(retries + 1):
         try:
-            resp = requests.post(API_URL, headers=headers, json=payload, timeout=60)
+            resp = requests.post(cfg["base"], headers=headers, json=payload, timeout=60)
             if resp.status_code == 429:
                 last_err = "rate_limit_429"
                 time.sleep(sleep * (2 ** attempt) + 0.5)
@@ -136,8 +136,9 @@ def call_llm(char: str, api_key: str, retries: int = 2, sleep: float = 0.5) -> d
                 return obj
             last_err = f"bad_json:{content[:60]}"
         except Exception as e:
-            last_err = f"{type(e).__name__}:{e}"
+            last_err = f"{type(e).__name__}:{str(e)[:80]}"
         time.sleep(sleep * (2 ** attempt))
+    sys.stderr.write(f"  [{char}] 失败: {last_err[:80]}\n")
     return None
 
 
@@ -191,11 +192,13 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="只调 API 不写回文件")
     args = ap.parse_args()
 
-    api_key = get_api_key()
-    if not api_key:
+    cfg = get_config()
+    if not cfg["base"] or not cfg["token"]:
         sys.stderr.write(
-            "[阻塞] 未找到 API key。请设置 SILICONFLOW_API_KEY 环境变量，"
-            "或放置 openclaw.json（字段：models.providers.siliconflow.apiKey）。\n"
+            "[阻塞] 未找到配置。请在项目根 .env 设置：\n"
+            "  HFLLM_BASE_URL=https://opencode.ai/zen/go/v1/chat/completions\n"
+            "  HFLLM_MODEL=deepseek-v4-flash\n"
+            "  HFLLM_TOKEN=sk-...\n"
         )
         sys.exit(2)
 
@@ -204,7 +207,7 @@ def main():
     # 筛单字题（example 空 + choose-char-by-pinyin）
     targets = [it for it in items if not it.get("example") and "choose-char-by-pinyin" in it.get("modes", [])]
     total = len(targets)
-    print(f"[info] 模型={MODEL} 候选单字={total} workers={args.workers} retries={args.retries}")
+    print(f"[info] 模型={cfg['model']} 候选单字={total} workers={args.workers} retries={args.retries}")
 
     if args.limit > 0:
         targets = targets[: args.limit]
@@ -217,7 +220,7 @@ def main():
 
     def worker(it):
         ch = it["char"]
-        obj = call_llm(ch, api_key, retries=args.retries, sleep=args.sleep)
+        obj = call_llm(ch, cfg, retries=args.retries, sleep=args.sleep)
         if obj is None:
             return it, None, ["llm_failed"]
         ex, py, issues = validate(obj, ch)
@@ -259,7 +262,7 @@ def main():
         save_data(doc)
 
     report = {
-        "model": MODEL,
+        "model": cfg["model"],
         "total_candidates": total,
         "processed": len(targets),
         "success": success,
