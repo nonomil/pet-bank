@@ -8539,7 +8539,16 @@
       "base_hp": 113,
       "base_atk": 7,
       "base_def": 4,
-      "base_spd": 5
+      "base_spd": 5,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_cat_01_egg.webp",
+        "1": "assets/pets/poses/cp_cat_01_egg.webp",
+        "2": "assets/pets/poses/cp_cat_01_egg.webp",
+        "3": "assets/pets/poses/cp_cat_01_egg.webp",
+        "4": "assets/pets/poses/cp_cat_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_cat_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_dog_01",
@@ -8552,7 +8561,16 @@
       "base_hp": 92,
       "base_atk": 5,
       "base_def": 4,
-      "base_spd": 4
+      "base_spd": 4,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_dog_01_egg.webp",
+        "1": "assets/pets/poses/cp_dog_01_egg.webp",
+        "2": "assets/pets/poses/cp_dog_01_egg.webp",
+        "3": "assets/pets/poses/cp_dog_01_egg.webp",
+        "4": "assets/pets/poses/cp_dog_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_dog_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_rabbit_01",
@@ -8565,7 +8583,16 @@
       "base_hp": 92,
       "base_atk": 9,
       "base_def": 4,
-      "base_spd": 4
+      "base_spd": 4,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_rabbit_01_egg.webp",
+        "1": "assets/pets/poses/cp_rabbit_01_egg.webp",
+        "2": "assets/pets/poses/cp_rabbit_01_egg.webp",
+        "3": "assets/pets/poses/cp_rabbit_01_egg.webp",
+        "4": "assets/pets/poses/cp_rabbit_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_rabbit_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_hamster_01",
@@ -8578,7 +8605,16 @@
       "base_hp": 115,
       "base_atk": 5,
       "base_def": 4,
-      "base_spd": 5
+      "base_spd": 5,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_hamster_01_egg.webp",
+        "1": "assets/pets/poses/cp_hamster_01_egg.webp",
+        "2": "assets/pets/poses/cp_hamster_01_egg.webp",
+        "3": "assets/pets/poses/cp_hamster_01_egg.webp",
+        "4": "assets/pets/poses/cp_hamster_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_hamster_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_bear_01",
@@ -8591,7 +8627,16 @@
       "base_hp": 105,
       "base_atk": 10,
       "base_def": 6,
-      "base_spd": 8
+      "base_spd": 8,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_bear_01_egg.webp",
+        "1": "assets/pets/poses/cp_bear_01_egg.webp",
+        "2": "assets/pets/poses/cp_bear_01_egg.webp",
+        "3": "assets/pets/poses/cp_bear_01_egg.webp",
+        "4": "assets/pets/poses/cp_bear_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_bear_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_fox_01",
@@ -8604,7 +8649,16 @@
       "base_hp": 104,
       "base_atk": 11,
       "base_def": 6,
-      "base_spd": 8
+      "base_spd": 8,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_fox_01_egg.webp",
+        "1": "assets/pets/poses/cp_fox_01_egg.webp",
+        "2": "assets/pets/poses/cp_fox_01_egg.webp",
+        "3": "assets/pets/poses/cp_fox_01_egg.webp",
+        "4": "assets/pets/poses/cp_fox_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_fox_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_raccoon_01",
@@ -8617,7 +8671,16 @@
       "base_hp": 123,
       "base_atk": 10,
       "base_def": 10,
-      "base_spd": 11
+      "base_spd": 11,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_raccoon_01_egg.webp",
+        "1": "assets/pets/poses/cp_raccoon_01_egg.webp",
+        "2": "assets/pets/poses/cp_raccoon_01_egg.webp",
+        "3": "assets/pets/poses/cp_raccoon_01_egg.webp",
+        "4": "assets/pets/poses/cp_raccoon_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_raccoon_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_panda_01",
@@ -8630,7 +8693,16 @@
       "base_hp": 160,
       "base_atk": 15,
       "base_def": 12,
-      "base_spd": 15
+      "base_spd": 15,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_panda_01_egg.webp",
+        "1": "assets/pets/poses/cp_panda_01_egg.webp",
+        "2": "assets/pets/poses/cp_panda_01_egg.webp",
+        "3": "assets/pets/poses/cp_panda_01_egg.webp",
+        "4": "assets/pets/poses/cp_panda_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_panda_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_dragon_01",
@@ -8643,7 +8715,16 @@
       "base_hp": 90,
       "base_atk": 7,
       "base_def": 3,
-      "base_spd": 5
+      "base_spd": 5,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_dragon_01_egg.webp",
+        "1": "assets/pets/poses/cp_dragon_01_egg.webp",
+        "2": "assets/pets/poses/cp_dragon_01_egg.webp",
+        "3": "assets/pets/poses/cp_dragon_01_egg.webp",
+        "4": "assets/pets/poses/cp_dragon_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_dragon_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_unicorn_01",
@@ -8656,7 +8737,16 @@
       "base_hp": 101,
       "base_atk": 9,
       "base_def": 3,
-      "base_spd": 5
+      "base_spd": 5,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_unicorn_01_egg.webp",
+        "1": "assets/pets/poses/cp_unicorn_01_egg.webp",
+        "2": "assets/pets/poses/cp_unicorn_01_egg.webp",
+        "3": "assets/pets/poses/cp_unicorn_01_egg.webp",
+        "4": "assets/pets/poses/cp_unicorn_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_unicorn_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_fairy_01",
@@ -8669,7 +8759,16 @@
       "base_hp": 98,
       "base_atk": 6,
       "base_def": 3,
-      "base_spd": 5
+      "base_spd": 5,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_fairy_01_egg.webp",
+        "1": "assets/pets/poses/cp_fairy_01_egg.webp",
+        "2": "assets/pets/poses/cp_fairy_01_egg.webp",
+        "3": "assets/pets/poses/cp_fairy_01_egg.webp",
+        "4": "assets/pets/poses/cp_fairy_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_fairy_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_crystal_01",
@@ -8682,7 +8781,16 @@
       "base_hp": 134,
       "base_atk": 8,
       "base_def": 6,
-      "base_spd": 7
+      "base_spd": 7,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_crystal_01_egg.webp",
+        "1": "assets/pets/poses/cp_crystal_01_egg.webp",
+        "2": "assets/pets/poses/cp_crystal_01_egg.webp",
+        "3": "assets/pets/poses/cp_crystal_01_egg.webp",
+        "4": "assets/pets/poses/cp_crystal_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_crystal_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_phoenix_01",
@@ -8695,7 +8803,16 @@
       "base_hp": 119,
       "base_atk": 10,
       "base_def": 7,
-      "base_spd": 8
+      "base_spd": 8,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_phoenix_01_egg.webp",
+        "1": "assets/pets/poses/cp_phoenix_01_egg.webp",
+        "2": "assets/pets/poses/cp_phoenix_01_egg.webp",
+        "3": "assets/pets/poses/cp_phoenix_01_egg.webp",
+        "4": "assets/pets/poses/cp_phoenix_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_phoenix_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_moonrabbit_01",
@@ -8708,7 +8825,16 @@
       "base_hp": 138,
       "base_atk": 12,
       "base_def": 10,
-      "base_spd": 11
+      "base_spd": 11,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_moonrabbit_01_egg.webp",
+        "1": "assets/pets/poses/cp_moonrabbit_01_egg.webp",
+        "2": "assets/pets/poses/cp_moonrabbit_01_egg.webp",
+        "3": "assets/pets/poses/cp_moonrabbit_01_egg.webp",
+        "4": "assets/pets/poses/cp_moonrabbit_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_moonrabbit_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_starbeast_01",
@@ -8721,7 +8847,16 @@
       "base_hp": 148,
       "base_atk": 12,
       "base_def": 10,
-      "base_spd": 11
+      "base_spd": 11,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_starbeast_01_egg.webp",
+        "1": "assets/pets/poses/cp_starbeast_01_egg.webp",
+        "2": "assets/pets/poses/cp_starbeast_01_egg.webp",
+        "3": "assets/pets/poses/cp_starbeast_01_egg.webp",
+        "4": "assets/pets/poses/cp_starbeast_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_starbeast_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_rainbow_dragon",
@@ -8734,7 +8869,16 @@
       "base_hp": 137,
       "base_atk": 12,
       "base_def": 13,
-      "base_spd": 14
+      "base_spd": 14,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_rainbow_dragon_egg.webp",
+        "1": "assets/pets/poses/cp_rainbow_dragon_egg.webp",
+        "2": "assets/pets/poses/cp_rainbow_dragon_egg.webp",
+        "3": "assets/pets/poses/cp_rainbow_dragon_egg.webp",
+        "4": "assets/pets/poses/cp_rainbow_dragon_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_rainbow_dragon_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_chicken_01",
@@ -8747,7 +8891,16 @@
       "base_hp": 92,
       "base_atk": 5,
       "base_def": 4,
-      "base_spd": 4
+      "base_spd": 4,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_chicken_01_egg.webp",
+        "1": "assets/pets/poses/cp_chicken_01_egg.webp",
+        "2": "assets/pets/poses/cp_chicken_01_egg.webp",
+        "3": "assets/pets/poses/cp_chicken_01_egg.webp",
+        "4": "assets/pets/poses/cp_chicken_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_chicken_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_frog_01",
@@ -8760,7 +8913,16 @@
       "base_hp": 95,
       "base_atk": 5,
       "base_def": 4,
-      "base_spd": 4
+      "base_spd": 4,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_frog_01_egg.webp",
+        "1": "assets/pets/poses/cp_frog_01_egg.webp",
+        "2": "assets/pets/poses/cp_frog_01_egg.webp",
+        "3": "assets/pets/poses/cp_frog_01_egg.webp",
+        "4": "assets/pets/poses/cp_frog_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_frog_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_dinosaur_01",
@@ -8773,7 +8935,16 @@
       "base_hp": 103,
       "base_atk": 9,
       "base_def": 3,
-      "base_spd": 4
+      "base_spd": 4,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_dinosaur_01_egg.webp",
+        "1": "assets/pets/poses/cp_dinosaur_01_egg.webp",
+        "2": "assets/pets/poses/cp_dinosaur_01_egg.webp",
+        "3": "assets/pets/poses/cp_dinosaur_01_egg.webp",
+        "4": "assets/pets/poses/cp_dinosaur_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_dinosaur_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_trex_01",
@@ -8786,7 +8957,16 @@
       "base_hp": 114,
       "base_atk": 11,
       "base_def": 6,
-      "base_spd": 7
+      "base_spd": 7,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_trex_01_egg.webp",
+        "1": "assets/pets/poses/cp_trex_01_egg.webp",
+        "2": "assets/pets/poses/cp_trex_01_egg.webp",
+        "3": "assets/pets/poses/cp_trex_01_egg.webp",
+        "4": "assets/pets/poses/cp_trex_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_trex_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_asiandragon_01",
@@ -8799,7 +8979,16 @@
       "base_hp": 114,
       "base_atk": 7,
       "base_def": 7,
-      "base_spd": 8
+      "base_spd": 8,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_asiandragon_01_egg.webp",
+        "1": "assets/pets/poses/cp_asiandragon_01_egg.webp",
+        "2": "assets/pets/poses/cp_asiandragon_01_egg.webp",
+        "3": "assets/pets/poses/cp_asiandragon_01_egg.webp",
+        "4": "assets/pets/poses/cp_asiandragon_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_asiandragon_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_bat_01",
@@ -8812,7 +9001,16 @@
       "base_hp": 119,
       "base_atk": 14,
       "base_def": 9,
-      "base_spd": 11
+      "base_spd": 11,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_bat_01_egg.webp",
+        "1": "assets/pets/poses/cp_bat_01_egg.webp",
+        "2": "assets/pets/poses/cp_bat_01_egg.webp",
+        "3": "assets/pets/poses/cp_bat_01_egg.webp",
+        "4": "assets/pets/poses/cp_bat_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_bat_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_ghost_01",
@@ -8825,7 +9023,16 @@
       "base_hp": 118,
       "base_atk": 10,
       "base_def": 9,
-      "base_spd": 10
+      "base_spd": 10,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_ghost_01_egg.webp",
+        "1": "assets/pets/poses/cp_ghost_01_egg.webp",
+        "2": "assets/pets/poses/cp_ghost_01_egg.webp",
+        "3": "assets/pets/poses/cp_ghost_01_egg.webp",
+        "4": "assets/pets/poses/cp_ghost_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_ghost_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_skeleton_dragon",
@@ -8838,7 +9045,16 @@
       "base_hp": 134,
       "base_atk": 11,
       "base_def": 13,
-      "base_spd": 14
+      "base_spd": 14,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_skeleton_dragon_egg.webp",
+        "1": "assets/pets/poses/cp_skeleton_dragon_egg.webp",
+        "2": "assets/pets/poses/cp_skeleton_dragon_egg.webp",
+        "3": "assets/pets/poses/cp_skeleton_dragon_egg.webp",
+        "4": "assets/pets/poses/cp_skeleton_dragon_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_skeleton_dragon_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_robot_01",
@@ -8851,7 +9067,16 @@
       "base_hp": 112,
       "base_atk": 7,
       "base_def": 3,
-      "base_spd": 5
+      "base_spd": 5,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_robot_01_egg.webp",
+        "1": "assets/pets/poses/cp_robot_01_egg.webp",
+        "2": "assets/pets/poses/cp_robot_01_egg.webp",
+        "3": "assets/pets/poses/cp_robot_01_egg.webp",
+        "4": "assets/pets/poses/cp_robot_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_robot_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_alien_01",
@@ -8864,7 +9089,16 @@
       "base_hp": 87,
       "base_atk": 9,
       "base_def": 3,
-      "base_spd": 5
+      "base_spd": 5,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_alien_01_egg.webp",
+        "1": "assets/pets/poses/cp_alien_01_egg.webp",
+        "2": "assets/pets/poses/cp_alien_01_egg.webp",
+        "3": "assets/pets/poses/cp_alien_01_egg.webp",
+        "4": "assets/pets/poses/cp_alien_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_alien_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_rocketpet_01",
@@ -8877,7 +9111,16 @@
       "base_hp": 92,
       "base_atk": 7,
       "base_def": 4,
-      "base_spd": 4
+      "base_spd": 4,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_rocketpet_01_egg.webp",
+        "1": "assets/pets/poses/cp_rocketpet_01_egg.webp",
+        "2": "assets/pets/poses/cp_rocketpet_01_egg.webp",
+        "3": "assets/pets/poses/cp_rocketpet_01_egg.webp",
+        "4": "assets/pets/poses/cp_rocketpet_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_rocketpet_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_ufo_01",
@@ -8890,7 +9133,16 @@
       "base_hp": 131,
       "base_atk": 8,
       "base_def": 6,
-      "base_spd": 7
+      "base_spd": 7,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_ufo_01_egg.webp",
+        "1": "assets/pets/poses/cp_ufo_01_egg.webp",
+        "2": "assets/pets/poses/cp_ufo_01_egg.webp",
+        "3": "assets/pets/poses/cp_ufo_01_egg.webp",
+        "4": "assets/pets/poses/cp_ufo_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_ufo_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_mechpet_01",
@@ -8903,7 +9155,16 @@
       "base_hp": 134,
       "base_atk": 8,
       "base_def": 7,
-      "base_spd": 7
+      "base_spd": 7,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_mechpet_01_egg.webp",
+        "1": "assets/pets/poses/cp_mechpet_01_egg.webp",
+        "2": "assets/pets/poses/cp_mechpet_01_egg.webp",
+        "3": "assets/pets/poses/cp_mechpet_01_egg.webp",
+        "4": "assets/pets/poses/cp_mechpet_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_mechpet_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_energypet_01",
@@ -8916,7 +9177,16 @@
       "base_hp": 145,
       "base_atk": 10,
       "base_def": 10,
-      "base_spd": 10
+      "base_spd": 10,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_energypet_01_egg.webp",
+        "1": "assets/pets/poses/cp_energypet_01_egg.webp",
+        "2": "assets/pets/poses/cp_energypet_01_egg.webp",
+        "3": "assets/pets/poses/cp_energypet_01_egg.webp",
+        "4": "assets/pets/poses/cp_energypet_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_energypet_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_nebula_dragon",
@@ -8929,7 +9199,16 @@
       "base_hp": 145,
       "base_atk": 12,
       "base_def": 9,
-      "base_spd": 11
+      "base_spd": 11,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_nebula_dragon_egg.webp",
+        "1": "assets/pets/poses/cp_nebula_dragon_egg.webp",
+        "2": "assets/pets/poses/cp_nebula_dragon_egg.webp",
+        "3": "assets/pets/poses/cp_nebula_dragon_egg.webp",
+        "4": "assets/pets/poses/cp_nebula_dragon_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_nebula_dragon_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_cyber_dragon",
@@ -8942,7 +9221,16 @@
       "base_hp": 142,
       "base_atk": 11,
       "base_def": 14,
-      "base_spd": 13
+      "base_spd": 13,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_cyber_dragon_egg.webp",
+        "1": "assets/pets/poses/cp_cyber_dragon_egg.webp",
+        "2": "assets/pets/poses/cp_cyber_dragon_egg.webp",
+        "3": "assets/pets/poses/cp_cyber_dragon_egg.webp",
+        "4": "assets/pets/poses/cp_cyber_dragon_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_cyber_dragon_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_bigpanda_01",
@@ -8955,7 +9243,16 @@
       "base_hp": 88,
       "base_atk": 8,
       "base_def": 3,
-      "base_spd": 5
+      "base_spd": 5,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_bigpanda_01_egg.webp",
+        "1": "assets/pets/poses/cp_bigpanda_01_egg.webp",
+        "2": "assets/pets/poses/cp_bigpanda_01_egg.webp",
+        "3": "assets/pets/poses/cp_bigpanda_01_egg.webp",
+        "4": "assets/pets/poses/cp_bigpanda_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_bigpanda_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_chinesedragon_01",
@@ -8968,7 +9265,16 @@
       "base_hp": 96,
       "base_atk": 8,
       "base_def": 3,
-      "base_spd": 5
+      "base_spd": 5,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_chinesedragon_01_egg.webp",
+        "1": "assets/pets/poses/cp_chinesedragon_01_egg.webp",
+        "2": "assets/pets/poses/cp_chinesedragon_01_egg.webp",
+        "3": "assets/pets/poses/cp_chinesedragon_01_egg.webp",
+        "4": "assets/pets/poses/cp_chinesedragon_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_chinesedragon_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_peacock_01",
@@ -8981,7 +9287,16 @@
       "base_hp": 98,
       "base_atk": 8,
       "base_def": 3,
-      "base_spd": 4
+      "base_spd": 4,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_peacock_01_egg.webp",
+        "1": "assets/pets/poses/cp_peacock_01_egg.webp",
+        "2": "assets/pets/poses/cp_peacock_01_egg.webp",
+        "3": "assets/pets/poses/cp_peacock_01_egg.webp",
+        "4": "assets/pets/poses/cp_peacock_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_peacock_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_deer_01",
@@ -8994,7 +9309,16 @@
       "base_hp": 103,
       "base_atk": 7,
       "base_def": 7,
-      "base_spd": 7
+      "base_spd": 7,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_deer_01_egg.webp",
+        "1": "assets/pets/poses/cp_deer_01_egg.webp",
+        "2": "assets/pets/poses/cp_deer_01_egg.webp",
+        "3": "assets/pets/poses/cp_deer_01_egg.webp",
+        "4": "assets/pets/poses/cp_deer_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_deer_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_luckybeast_01",
@@ -9007,7 +9331,16 @@
       "base_hp": 103,
       "base_atk": 10,
       "base_def": 6,
-      "base_spd": 8
+      "base_spd": 8,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_luckybeast_01_egg.webp",
+        "1": "assets/pets/poses/cp_luckybeast_01_egg.webp",
+        "2": "assets/pets/poses/cp_luckybeast_01_egg.webp",
+        "3": "assets/pets/poses/cp_luckybeast_01_egg.webp",
+        "4": "assets/pets/poses/cp_luckybeast_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_luckybeast_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_operapet_01",
@@ -9020,7 +9353,16 @@
       "base_hp": 136,
       "base_atk": 9,
       "base_def": 10,
-      "base_spd": 10
+      "base_spd": 10,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_operapet_01_egg.webp",
+        "1": "assets/pets/poses/cp_operapet_01_egg.webp",
+        "2": "assets/pets/poses/cp_operapet_01_egg.webp",
+        "3": "assets/pets/poses/cp_operapet_01_egg.webp",
+        "4": "assets/pets/poses/cp_operapet_01_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_operapet_01_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_sakura_dragon",
@@ -9033,7 +9375,16 @@
       "base_hp": 130,
       "base_atk": 10,
       "base_def": 9,
-      "base_spd": 11
+      "base_spd": 11,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_sakura_dragon_egg.webp",
+        "1": "assets/pets/poses/cp_sakura_dragon_egg.webp",
+        "2": "assets/pets/poses/cp_sakura_dragon_egg.webp",
+        "3": "assets/pets/poses/cp_sakura_dragon_egg.webp",
+        "4": "assets/pets/poses/cp_sakura_dragon_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_sakura_dragon_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "cp_golden_dragon",
@@ -9046,7 +9397,16 @@
       "base_hp": 142,
       "base_atk": 15,
       "base_def": 13,
-      "base_spd": 14
+      "base_spd": 14,
+      "imageStages": {
+        "0": "assets/pets/poses/cp_golden_dragon_egg.webp",
+        "1": "assets/pets/poses/cp_golden_dragon_egg.webp",
+        "2": "assets/pets/poses/cp_golden_dragon_egg.webp",
+        "3": "assets/pets/poses/cp_golden_dragon_egg.webp",
+        "4": "assets/pets/poses/cp_golden_dragon_egg.webp"
+      },
+      "imageUrl": "assets/pets/poses/cp_golden_dragon_egg.webp",
+      "imageStyle": "classpet"
     },
     {
       "id": "mc_wolf",
