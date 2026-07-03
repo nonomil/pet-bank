@@ -31,6 +31,8 @@
         combo: 0,
         maxCombo: 0,
         correctCount: 0,
+        answered: 0,          // 实际答题数（Bug2 守卫：0 题不入榜）
+        asked: null,          // 本局已出 itemId 集合（Bug1：局内去重）
         roundClosing: false,
         currentQ: null        // { char, pinyin, emoji, example, answer, opts, mode }
     };
@@ -46,6 +48,20 @@
         return a;
     }
     function _pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    // ---------- 学习记忆（HanziProgress）itemId 工具 ----------
+    // itemId 规范："{level}:{type}:{key}"  type∈{char,word}
+    //   有 word 字段 → 词组填空用 word；否则 char（启蒙关 + HSK 单字）
+    function _itemIdFor(level, item) {
+        if (!item) return String(level) + ':char:';
+        if (item.word) return level + ':word:' + item.word;
+        const key = item.char || item.answer || '';
+        return level + ':char:' + key;
+    }
+    function _levelPool(level) {
+        const bucket = (state.bank && state.bank.levels && state.bank.levels[level]) || [];
+        return bucket.map(it => _itemIdFor(level, it));
+    }
 
     async function _loadBank() {
         if (state.bankLoaded) return state.bank;
@@ -89,11 +105,29 @@
         return { before: s, target: '', after: '' };
     }
 
-    // 取一道题：在所选 level 桶里随机挑一条，再从它的 modes ∩ IMPL_MODES 里挑一个
+    // 取一道题：先让 HanziProgress.pickNext 按「错题>新字>learning>mastered」权重
+    //   决定目标 itemId（学习记忆驱动，传 state.asked 做局内去重），再从桶里取对应条目；兜底随机。
     function _genQuestion() {
         const bucket = (state.bank && state.bank.levels && state.bank.levels[state.level]) || [];
         if (!bucket.length) return null;
-        const item = _pick(bucket);
+        let item = null;
+        if (window.HanziProgress && typeof window.HanziProgress.pickNext === 'function') {
+            try {
+                const pool = _levelPool(state.level);
+                const targetId = window.HanziProgress.pickNext(pool, state.asked);
+                if (targetId) item = bucket.find(it => _itemIdFor(state.level, it) === targetId) || null;
+            } catch (_) {}
+        }
+        if (!item) {
+            // 兜底随机：同样尊重本局去重（state.asked）
+            let cand = bucket;
+            if (state.asked && state.asked.size) {
+                const f = bucket.filter(it => !state.asked.has(_itemIdFor(state.level, it)));
+                if (f.length) cand = f;
+            }
+            item = _pick(cand);
+        }
+        if (item && state.asked) state.asked.add(_itemIdFor(state.level, item));
         const usable = (item.modes || []).filter(m => CONFIG.IMPL_MODES.indexOf(m) >= 0);
         const mode = usable.length ? _pick(usable) : CONFIG.IMPL_MODES[0];
         // opts 打乱，保持 answer 在内
@@ -116,12 +150,23 @@
                     </div>
                     <div class="hz-level-grid">
                         ${LEVEL_CARDS.map(c => {
-                            const cnt = (state.bank && state.bank.levels && state.bank.levels[c.lv] || []).length;
+                            const bucket = (state.bank && state.bank.levels && state.bank.levels[c.lv]) || [];
+                            const cnt = bucket.length;
+                            let progHtml = `<div class="hz-level-sub">${cnt} 题</div>`;
+                            if (cnt && window.HanziProgress && typeof window.HanziProgress.stats === 'function') {
+                                try {
+                                    const s = window.HanziProgress.stats(c.lv, _levelPool(c.lv));
+                                    progHtml = `
+                                        <div class="hz-level-sub">${cnt} 题</div>
+                                        <div class="hz-level-prog"><span>已学</span> <b>${s.learned}/${s.total}</b></div>
+                                        <div class="hz-level-prog"><span>掌握</span> <b>${s.mastered}</b> · 待复习 <b>${s.toReview}</b></div>`;
+                                } catch (_) {}
+                            }
                             return `
                             <div class="hz-level-card ${String(state.level) === String(c.lv) ? 'active' : ''}" data-lv="${c.lv}" onclick="HanziGame.chooseLevel('${c.lv}')">
                                 <div class="hz-level-num">${c.lv === 'hsk1' ? 'HSK' : 'Lv.' + c.lv}</div>
                                 <div class="hz-level-label">${c.tag}</div>
-                                <div class="hz-level-sub">${cnt} 题</div>
+                                ${progHtml}
                             </div>`;
                         }).join('')}
                     </div>
@@ -201,6 +246,19 @@
                 }
             }
             card.innerHTML = bodyHtml;
+            // 学习记忆角标：新字「新」/ 待复习「复习」
+            if (window.HanziProgress && typeof window.HanziProgress.getStatus === 'function') {
+                let badge = '';
+                try {
+                    const st = window.HanziProgress.getStatus(_itemIdFor(state.level, q));
+                    if (!st.seen) badge = '<span class="hz-badge hz-badge-new">新</span>';
+                    else if (st.wrong > 0 && st.status !== 'mastered') badge = '<span class="hz-badge hz-badge-review">复习</span>';
+                } catch (_) {}
+                if (badge) {
+                    const tag = card.querySelector('.hz-mode-tag');
+                    if (tag) tag.insertAdjacentHTML('afterend', badge);
+                }
+            }
             card.classList.remove('fading');
 
             optsEl.innerHTML = q.opts.map((o, i) =>
@@ -273,12 +331,21 @@
     async function start() {
         await _loadBank();
         if (!state.bank) { alert('题库加载失败，请稍后再试'); return; }
+        // Bug2 守卫：空等级不允许开始（避免不出题直接结算写假 0 分）
+        const pool = _levelPool(state.level);
+        if (!pool.length) {
+            if (typeof showToast === 'function') showToast('该等级暂无题目，请稍后再试');
+            else alert('该等级暂无题目，请稍后再试');
+            return;
+        }
         state.isPlaying = true;
         state.round = 0;
         state.score = 0;
         state.combo = 0;
         state.maxCombo = 0;
         state.correctCount = 0;
+        state.answered = 0;
+        state.asked = new Set();   // Bug1：本局已出 itemId 集合
         render._overlay();
         render._scorePill();
         _next();
@@ -299,9 +366,14 @@
     function _answer(btnEl, selected) {
         if (!state.isPlaying || state.roundClosing) return;
         state.roundClosing = true;
+        state.answered++;   // Bug2：累计实际答题数
         render._disableOpts();
         const q = state.currentQ;
         const ok = selected === q.answer;
+        // 学习记忆：记录本题对错（不阻塞主流程）
+        if (window.HanziProgress && typeof window.HanziProgress.record === 'function') {
+            try { window.HanziProgress.record(_itemIdFor(state.level, q), ok); } catch (_) {}
+        }
         if (ok) {
             state.correctCount++;
             state.combo++;
@@ -334,8 +406,8 @@
             if (typeof window.saveAppState === 'function') window.saveAppState();
             if (typeof window.updateStats === 'function') window.updateStats();
         }
-        // 入榜
-        if (window.Leaderboard && typeof window.Leaderboard.record === 'function') {
+        // 入榜（Bug2 守卫：实际答题数=0 时不入榜，避免假 0 分记录）
+        if (state.answered > 0 && window.Leaderboard && typeof window.Leaderboard.record === 'function') {
             window.Leaderboard.record('hanzi', state.score, {
                 correct: state.correctCount,
                 total: CONFIG.TOTAL_ROUNDS

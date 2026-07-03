@@ -491,7 +491,7 @@ const PAGE_TO_TAB = {
     leaderboard: 'playground',                                  // 排行榜 → 游乐场
     pet: 'pet', home: 'pet', card: 'pet', walk: 'pet',          // 宠物
     explore: 'explore',                                         // 探索（含成长地图）
-    works: 'playground', tools: 'works', settings: 'works'      // 作品/工具/设置：works 归游乐场 tab
+    works: 'playground', tools: 'playground', settings: 'playground' // 作品/工具/设置都继续归游乐场 tab
 };
 
 function switchPage(page) {
