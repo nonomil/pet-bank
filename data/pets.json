@@ -9604,7 +9604,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_cherrybomb_idle.webp",
+        "0": "assets/pets/poses/pvz_cherrybomb_egg.webp",
         "1": "assets/pets/poses/pvz_cherrybomb_idle.webp",
         "2": "assets/pets/poses/pvz_cherrybomb_idle.webp",
         "3": "assets/pets/poses/pvz_cherrybomb_idle.webp",
@@ -9627,7 +9627,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_potatomine_idle.webp",
+        "0": "assets/pets/poses/pvz_potatomine_egg.webp",
         "1": "assets/pets/poses/pvz_potatomine_idle.webp",
         "2": "assets/pets/poses/pvz_potatomine_idle.webp",
         "3": "assets/pets/poses/pvz_potatomine_idle.webp",
@@ -9673,7 +9673,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_chomper_idle.webp",
+        "0": "assets/pets/poses/pvz_chomper_egg.webp",
         "1": "assets/pets/poses/pvz_chomper_idle.webp",
         "2": "assets/pets/poses/pvz_chomper_idle.webp",
         "3": "assets/pets/poses/pvz_chomper_idle.webp",
@@ -9719,7 +9719,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_jalapeno_idle.webp",
+        "0": "assets/pets/poses/pvz_jalapeno_egg.webp",
         "1": "assets/pets/poses/pvz_jalapeno_idle.webp",
         "2": "assets/pets/poses/pvz_jalapeno_idle.webp",
         "3": "assets/pets/poses/pvz_jalapeno_idle.webp",
@@ -9995,7 +9995,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_magnetshroom_idle.webp",
+        "0": "assets/pets/poses/pvz_magnetshroom_egg.webp",
         "1": "assets/pets/poses/pvz_magnetshroom_idle.webp",
         "2": "assets/pets/poses/pvz_magnetshroom_idle.webp",
         "3": "assets/pets/poses/pvz_magnetshroom_idle.webp",
@@ -10018,7 +10018,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_hypnoshroom_idle.webp",
+        "0": "assets/pets/poses/pvz_hypnoshroom_egg.webp",
         "1": "assets/pets/poses/pvz_hypnoshroom_idle.webp",
         "2": "assets/pets/poses/pvz_hypnoshroom_idle.webp",
         "3": "assets/pets/poses/pvz_hypnoshroom_idle.webp",
@@ -10041,7 +10041,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_iceshroom_idle.webp",
+        "0": "assets/pets/poses/pvz_iceshroom_egg.webp",
         "1": "assets/pets/poses/pvz_iceshroom_idle.webp",
         "2": "assets/pets/poses/pvz_iceshroom_idle.webp",
         "3": "assets/pets/poses/pvz_iceshroom_idle.webp",
@@ -10064,7 +10064,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_sunshroom_idle.webp",
+        "0": "assets/pets/poses/pvz_sunshroom_egg.webp",
         "1": "assets/pets/poses/pvz_sunshroom_idle.webp",
         "2": "assets/pets/poses/pvz_sunshroom_idle.webp",
         "3": "assets/pets/poses/pvz_sunshroom_idle.webp",
@@ -10087,7 +10087,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_zombie_idle.webp",
+        "0": "assets/pets/poses/pvz_zombie_egg.webp",
         "1": "assets/pets/poses/pvz_zombie_idle.webp",
         "2": "assets/pets/poses/pvz_zombie_idle.webp",
         "3": "assets/pets/poses/pvz_zombie_idle.webp",
@@ -10110,7 +10110,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_coneheadzombie_idle.webp",
+        "0": "assets/pets/poses/pvz_coneheadzombie_egg.webp",
         "1": "assets/pets/poses/pvz_coneheadzombie_idle.webp",
         "2": "assets/pets/poses/pvz_coneheadzombie_idle.webp",
         "3": "assets/pets/poses/pvz_coneheadzombie_idle.webp",
@@ -10133,7 +10133,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_bucketheadzombie_idle.webp",
+        "0": "assets/pets/poses/pvz_bucketheadzombie_egg.webp",
         "1": "assets/pets/poses/pvz_bucketheadzombie_idle.webp",
         "2": "assets/pets/poses/pvz_bucketheadzombie_idle.webp",
         "3": "assets/pets/poses/pvz_bucketheadzombie_idle.webp",
@@ -10156,7 +10156,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_flagzombie_idle.webp",
+        "0": "assets/pets/poses/pvz_flagzombie_egg.webp",
         "1": "assets/pets/poses/pvz_flagzombie_idle.webp",
         "2": "assets/pets/poses/pvz_flagzombie_idle.webp",
         "3": "assets/pets/poses/pvz_flagzombie_idle.webp",
@@ -10179,7 +10179,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_polevaultingzombie_idle.webp",
+        "0": "assets/pets/poses/pvz_polevaultingzombie_egg.webp",
         "1": "assets/pets/poses/pvz_polevaultingzombie_idle.webp",
         "2": "assets/pets/poses/pvz_polevaultingzombie_idle.webp",
         "3": "assets/pets/poses/pvz_polevaultingzombie_idle.webp",
@@ -10202,7 +10202,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_dancingzombie_idle.webp",
+        "0": "assets/pets/poses/pvz_dancingzombie_egg.webp",
         "1": "assets/pets/poses/pvz_dancingzombie_idle.webp",
         "2": "assets/pets/poses/pvz_dancingzombie_idle.webp",
         "3": "assets/pets/poses/pvz_dancingzombie_idle.webp",
@@ -10225,7 +10225,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_backupdancer_idle.webp",
+        "0": "assets/pets/poses/pvz_backupdancer_egg.webp",
         "1": "assets/pets/poses/pvz_backupdancer_idle.webp",
         "2": "assets/pets/poses/pvz_backupdancer_idle.webp",
         "3": "assets/pets/poses/pvz_backupdancer_idle.webp",
@@ -10248,7 +10248,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_footballzombie_idle.webp",
+        "0": "assets/pets/poses/pvz_footballzombie_egg.webp",
         "1": "assets/pets/poses/pvz_footballzombie_idle.webp",
         "2": "assets/pets/poses/pvz_footballzombie_idle.webp",
         "3": "assets/pets/poses/pvz_footballzombie_idle.webp",
@@ -10271,7 +10271,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_gargantuar_idle.webp",
+        "0": "assets/pets/poses/pvz_gargantuar_egg.webp",
         "1": "assets/pets/poses/pvz_gargantuar_idle.webp",
         "2": "assets/pets/poses/pvz_gargantuar_idle.webp",
         "3": "assets/pets/poses/pvz_gargantuar_idle.webp",
@@ -10294,7 +10294,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_imp_idle.webp",
+        "0": "assets/pets/poses/pvz_imp_egg.webp",
         "1": "assets/pets/poses/pvz_imp_idle.webp",
         "2": "assets/pets/poses/pvz_imp_idle.webp",
         "3": "assets/pets/poses/pvz_imp_idle.webp",
@@ -10317,7 +10317,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_balloonzombie_idle.webp",
+        "0": "assets/pets/poses/pvz_balloonzombie_egg.webp",
         "1": "assets/pets/poses/pvz_balloonzombie_idle.webp",
         "2": "assets/pets/poses/pvz_balloonzombie_idle.webp",
         "3": "assets/pets/poses/pvz_balloonzombie_idle.webp",
@@ -10340,7 +10340,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_screendoorzombie_idle.webp",
+        "0": "assets/pets/poses/pvz_screendoorzombie_egg.webp",
         "1": "assets/pets/poses/pvz_screendoorzombie_idle.webp",
         "2": "assets/pets/poses/pvz_screendoorzombie_idle.webp",
         "3": "assets/pets/poses/pvz_screendoorzombie_idle.webp",
@@ -10363,7 +10363,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_gigagargantuar_idle.webp",
+        "0": "assets/pets/poses/pvz_gigagargantuar_egg.webp",
         "1": "assets/pets/poses/pvz_gigagargantuar_idle.webp",
         "2": "assets/pets/poses/pvz_gigagargantuar_idle.webp",
         "3": "assets/pets/poses/pvz_gigagargantuar_idle.webp",
@@ -10386,7 +10386,7 @@
       "source": "pvz",
       "imageStyle": "pvz",
       "imageStages": {
-        "0": "assets/pets/poses/pvz_drzomboss_idle.webp",
+        "0": "assets/pets/poses/pvz_drzomboss_egg.webp",
         "1": "assets/pets/poses/pvz_drzomboss_idle.webp",
         "2": "assets/pets/poses/pvz_drzomboss_idle.webp",
         "3": "assets/pets/poses/pvz_drzomboss_idle.webp",
