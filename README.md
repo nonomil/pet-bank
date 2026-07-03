@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.6.0](https://img.shields.io/badge/Version-v0.6.0-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.1](https://img.shields.io/badge/Version-v0.7.1-brightgreen.svg)](CHANGELOG.md)
 
 📖 **结构化文档**：[文档总索引](docs/README.md) ｜ [需求规格书](docs/规格/需求规格书.md) ｜ [技术架构](docs/设计/技术架构.md) ｜ [开发路线图](docs/路线/差距清单与开发路线图.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,16 +27,15 @@
 
 ---
 
-## 🎉 最近更新（v0.6.0）
+## 🎉 最近更新（v0.7.1）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
-- 🃏 **宠物图鉴卡牌系统**：PVZ 风格卡牌 + 战斗数值，**198 种宠物**收集，两级瀑布流浏览
-- ⚔️ **竞技场对战**（宠物训练营）：宝可梦式 3v3 PvE 闯关（10 关 / 5 章）+ PvP 本地热座
-- 🎟️ **训练券经济**：每日登录送券，挑战关卡消耗，图鉴奖励收口
-- ⭐ **积分奖惩弹窗**：积分页点宠物 → 加分/扣分双 tab，预设项 + 自定义项
-- 🐾 **战斗与小屋**：战斗 UI 重构（左右对峙 + 浮动伤害）+ 宠物小屋多主题背景
-- 🚀 **性能**：图片转 webp，资源 234MB → 16MB（93% 减小）
+- 🎨 **4 界面自然场景绘本风 v2**：游乐场/汉字/排行榜/首页统一为 Agnes 生图自然场景背景 + 玻璃态 UI，告别纯色块
+- 🖼️ **35 张汉字手绘插图**：汉字答题题卡配手绘插图（`assets/ui/hanzi-img/`），无图 emoji fallback
+- 🎡 **游乐场 Hub 重设计**：童趣卡通风（Agnes 背景 + 玻璃态卡 + 主题色边框），柴犬吉祥物 + 金币徽章
+- 🏆 **汉字/排行榜 UI 统一**：各自主题背景（黄绿森林 / 金橙颁奖台）+ 圆润按钮 + 胶囊 tab
+- 🐛 **CSS 修复**：`::before` 全屏背景层挡住地图板 bug 修复
 
 ---
 

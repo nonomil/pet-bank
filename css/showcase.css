@@ -1,4 +1,4 @@
-/* 首页功能展示轮播 */
+/* 首页功能展示 — Lottie 动画背景 + HTML 文字同步 */
 .showcase {
     position: relative;
     border-radius: 16px;
@@ -19,23 +19,10 @@
     inset: 0;
 }
 
-.showcase-slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity .6s ease;
-}
-
-.showcase-slide.active {
-    opacity: 1;
-}
-
-.showcase-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(30,20,15,.78) 0%, rgba(30,20,15,.35) 55%, rgba(30,20,15,.1) 100%);
+/* Lottie SVG 填满容器 */
+.showcase-track svg {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .showcase-copy {
@@ -45,6 +32,7 @@
     color: #fff;
     max-width: 70%;
     z-index: 2;
+    pointer-events: none;
 }
 
 .showcase-icon {
