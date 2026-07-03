@@ -408,7 +408,7 @@ const HomeSystem = (function () {
     function onFeed() {
         const s = PetSystem.getState();
         if (!s.species) { _toast('请先选择一只宠物'); return; }
-        if (s.hp <= 0) { _toast('宠物倒下了，请先救援'); return; }
+        if (s.hp <= 0) { _toast('宠物倒下了，请先救援'); window.sfx && sfx.error(); return; }
         // 先预检积分（feed 内部也会调 spendPoints，这里提前给反馈）
         if (typeof window.spendPoints !== 'function') { _toast('积分系统未就绪'); return; }
         if (typeof window.totalPoints !== 'undefined' && window.totalPoints < 10) {
@@ -418,6 +418,7 @@ const HomeSystem = (function () {
         // 走新语义：扣 10 分 + 饱食/exp/happiness
         const res = PetSystem.feed(null, { homeContext: true });
         _toast(res.msg || (res.success ? '喂食成功' : '喂食失败'));
+        window.sfx && sfx.click();
         if (window.updateStats) window.updateStats();
         renderUI(_lastContainer);
     }
@@ -428,6 +429,7 @@ const HomeSystem = (function () {
         if (s.hp <= 0) { _toast('宠物倒下了，请先救援'); return; }
         const res = PetSystem.play();
         _toast(res.msg || (res.success ? '玩耍成功' : '玩耍失败'));
+        window.sfx && sfx.click();
         renderUI(_lastContainer);
     }
 
@@ -437,6 +439,7 @@ const HomeSystem = (function () {
         if (s.hp <= 0) { _toast('宠物倒下了，请先救援'); return; }
         const res = PetSystem.bath();
         _toast(res.msg || (res.success ? '洗澡成功' : '洗澡失败'));
+        window.sfx && sfx.click();
         renderUI(_lastContainer);
     }
 
@@ -446,6 +449,7 @@ const HomeSystem = (function () {
         if (s.hp <= 0) { _toast('宠物倒下了，请先救援'); return; }
         const res = PetSystem.rest();
         _toast(res.msg || (res.success ? '治疗成功' : '治疗失败'));
+        window.sfx && sfx.click();
         renderUI(_lastContainer);
     }
 

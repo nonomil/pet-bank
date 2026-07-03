@@ -122,6 +122,7 @@ const TreasureChest = (function () {
         // 动画
         showChestAnimation(reward, () => {
             applyReward(reward);
+            window.sfx && sfx.coin();
         });
     }
 

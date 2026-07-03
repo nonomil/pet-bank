@@ -452,6 +452,7 @@
                 if (disp) { disp.classList.add('shake'); setTimeout(() => disp.classList.remove('shake'), 350); }
                 state.currentInput = '';
                 this._refreshDisplay();
+                window.sfx && sfx.error();
                 return;
             }
             // 答对：人在机器人之前完成 → 人赢本轮
@@ -459,6 +460,7 @@
             if (state.robotTimer) clearTimeout(state.robotTimer);
             const humanMs = Date.now() - state.roundStartTs;
             this._resolveRound('human', humanMs);
+            window.sfx && sfx.click();
         },
 
         _resolveRound(winner, humanMs) {
@@ -525,6 +527,7 @@
             }
 
             render._setRoundPill(win ? '🏆 胜利' : '对战结束');
+            window.sfx && sfx.levelup();
             render.result({
                 humanWins: state.humanWins,
                 robotWins: state.robotWins,

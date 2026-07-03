@@ -155,7 +155,8 @@ const WalkSystem = (function() {
 
         // 展示事件弹窗
         showEventModal(result.msg);
-        
+        window.sfx && sfx.notice();
+
         // 更新全局 UI (例如 HP 栏)
         // 注意：由于 index.html 里的 UI 是动态渲染的，通常需要重新调用渲染逻辑
         // 这里假设调用 app.js 中的刷新逻辑，如果没有，我们手动触发一下

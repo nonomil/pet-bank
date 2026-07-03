@@ -178,6 +178,7 @@ const ShopSystem = (function () {
     }
 
     adjustGrowthPoints(-item.price);
+    window.sfx && sfx.coin();
     // 对战道具进背包（InventorySystem），奖励券类仍走历史记录（不进背包保持原行为）
     if (item.toInventory && window.InventorySystem && typeof window.InventorySystem.addItem === 'function') {
       const res = window.InventorySystem.addItem(item.id, 1);
@@ -310,6 +311,7 @@ const ShopSystem = (function () {
           window.InventorySystem.addItem(result.value);
         }
       }
+      window.sfx && sfx.notice();
 
       saveHistory('petbank_blindbox_history', { name: result.name, type: 'blindbox_result' });
 

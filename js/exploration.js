@@ -468,6 +468,7 @@ const ExplorationSystem = (function () {
             chapter: arenaChapter
         };
         currentBattle.log.push({ type: 'system', text: `⚔️ 遭遇战：${pet.species_data?.name || '宠物'} vs ${monster.name} (Lv.${scene.danger_level})` });
+        window.sfx && sfx.hit();
         return currentBattle;
     }
 
@@ -556,6 +557,7 @@ const ExplorationSystem = (function () {
                 text: `⚔️ 你攻击 ${battle.monster.name}，造成 ${playerDmg} 伤害 (${Math.max(0, battle.monster.current_hp)}/${battle.monster.hp})`
             });
         }
+        window.sfx && sfx.hit();
 
         // ---- 判定胜利 ----
         if (battle.monster.current_hp <= 0) {
@@ -567,6 +569,7 @@ const ExplorationSystem = (function () {
                 type: 'reward',
                 text: `🎉 胜利！获得 ${expGain} EXP${result.leveled_up ? `，升级 Lv.${result.new_level}！` : ''}`
             });
+            window.sfx && sfx.levelup();
 
             for (const drop of battle.monster.drops || []) {
                 if (Math.random() < drop.rate) {

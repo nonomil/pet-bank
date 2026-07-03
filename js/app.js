@@ -526,6 +526,7 @@ function switchPage(page) {
     if (page === 'home' && window.HomeSystem) HomeSystem.renderUI('home-container');
     if (page === 'settings' && window.SettingsPage) SettingsPage.render();
     if (page === 'settings' && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') MathPKGame.renderDifficultySetting('settings-math-diff');
+    window.sfx && sfx.click();
 }
 
 window.switchPage = switchPage;

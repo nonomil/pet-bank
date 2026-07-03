@@ -327,6 +327,13 @@
         _initAutoPlayObserver();
         _initPanelObserver();
         console.log('[VoiceSystem] boot, enabled=' + settings.enabled + ', autoPlay=' + settings.autoPlay + ', prefetchMap=' + (_prefetchMap === null ? 'loading' : 'ready'));
+        // 自动加载音效系统
+        var _zzfx = document.createElement('script');
+        _zzfx.src = 'js/zzfx.js';
+        document.body.appendChild(_zzfx);
+        var _sfx = document.createElement('script');
+        _sfx.src = 'js/sfx.js';
+        document.body.appendChild(_sfx);
     }
 
     // ===== 暴露 API =====
