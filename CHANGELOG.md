@@ -2,6 +2,44 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.0] - 2026-07-02
+### 🎡 游乐场 Hub + 🏆 通用排行榜 + 📝 汉字答题玩法 + 📚 HSK 3.0 词库 + 🧠 学习记忆系统
+
+**🎡 游乐场 Hub（导航收口）**
+- 顶部新增「🎡 游乐场」tab（替换「⋯更多」，works 降级为子页），收拢数学 PK / 汉字游戏 / 卡牌对战 / 排行榜 四大游戏入口，单一入口
+- 首页 dash-card 瘦身（移除数学PK/汉字/排行榜卡）；其他页游戏类快捷按钮同步清理（积分页数学PK、兑换页宠物对战、宠物页训练营），保留非游戏类（背包/商店/工具箱/设置/每周复盘/奖励兑换/宠物小屋/卡片图鉴）
+- 新建 `css/playground.css`（2×2 大卡 grid）+ `page-playground` hub 页
+
+**🏆 通用本地排行榜**
+- 跨玩法、按孩子隔离的进步记录（key `petbank_lb_{gameId}_{profileId}`），「与自己赛跑」
+- 每玩法显示个人最高分 + 最近 ≤10 次战绩 + sparkline 趋势（emoji 八档 ▁▂▃▄▅▆▇█，零依赖）
+- 接入 math-pk + 汉字两个玩法；旧 `petbank_math_high_score` 幂等迁移
+- 新建 `js/leaderboard.js` + `css/leaderboard.css`
+
+**📝 汉字答题玩法**
+- 看拼音选字（choose-char-by-pinyin）+ 例句填空（fill-blank）双模式；启蒙关 30 题种子
+- 复用 math-pk 结算骨架（计分/连击/写成长积分/入榜）；gameId='hanzi'
+- 新建 `js/hanzi-game.js` + `css/hanzi-game.css` + `data/hanzi-questions.json`
+
+**📚 HSK 3.0 Level 1 词库（594 题）**
+- 词源 ivankra/hsk30（清洗后 500 词），生成 594 题：294 词组填空 + 300 单字选字
+- 单字例句 + pinyin 由 LLM 补全（300/300 成功，opencode.ai/zen deepseek-v4-flash，含多音字校准）
+- 二段加载：启蒙关 + HSK1 并存；输出 `data/hanzi-hsk.json`，生成脚本 `scripts/generators/`
+
+**🧠 汉字学习记忆系统**
+- 状态机 new → learning → mastered（连对 2 次掌握，答错回 learning）；按 profileId 隔离持久化
+- 错题优先出题（加权 5/3/1.5/0.3 = 错题/新字/学习中/已掌握），避免连续重复
+- 大厅进度 UI（已学/掌握/待复习）+ 题卡角标（新/复习）；新建 `js/hanzi-progress.js`（155 行）
+- 真机 9/9 通过（含持久化、切孩子隔离、启蒙关与 HSK1 独立）
+
+**🐛 修复**
+- `index.html` 加 `<link rel="icon" href="data:,">`，消除控制台 /favicon.ico 404
+
+**📄 文档**
+- 专题文档归档至 `docs/汉字游乐场/`（设计稿 + 实施计划 + README）
+
+---
+
 ## [v0.6.0] - 2026-07-01
 ### 🃏 卡牌图鉴 + ⚔️ 竞技场对战 + 🎟️ 训练券经济 + ⭐ 积分奖惩弹窗
 
