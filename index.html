@@ -254,34 +254,74 @@
                 </div>
             </div>
 
-            <!-- PAGE: 游乐场 Hub -->
+            <!-- PAGE: 游乐场 Hub（童趣卡通风 v3） -->
             <div class="page" id="page-playground">
-                <div class="hub-nav">
-                    <span class="hub-nav-label">游乐场</span>
-                    <button class="hub-nav-btn" onclick="switchPage('works')">⋯ 更多</button>
+                <!-- 背景童趣装饰：星星 + 云朵 -->
+                <span class="pg-deco star d1">✨</span>
+                <span class="pg-deco cloud d2">☁️</span>
+                <span class="pg-deco star d3">⭐</span>
+                <span class="pg-deco cloud d4">☁️</span>
+                <span class="pg-deco star d5">✨</span>
+                <span class="pg-deco cloud d6">☁️</span>
+
+                <!-- Header：柴犬吉祥物 + 金币徽章 -->
+                <div class="pg-header">
+                    <div class="pg-mascot emoji" aria-label="柴犬吉祥物">🐕</div>
+                    <div class="pg-coin-badge" title="我的积分">
+                        <span class="coin-icon">🪙</span>
+                        <span class="coin-num" id="pg-points">1280</span>
+                    </div>
                 </div>
+
+                <!-- 欢迎语 -->
+                <div class="pg-welcome">来玩吧！</div>
+
+                <!-- 2×2 游戏入口 -->
                 <section class="playground-grid">
                     <button class="pg-card pg-mathpk" onclick="switchPage('mathpk')">
-                        <span class="pg-emoji">🔢</span>
+                        <span class="pg-emoji">⚽</span>
                         <span class="pg-title">数学 PK</span>
-                        <span class="pg-sub">人机竞技台</span>
+                        <span class="pg-sub">趣味算术 巅峰对决</span>
+                        <span class="pg-watermark">⚽</span>
                     </button>
                     <button class="pg-card pg-hanzi" onclick="switchPage('hanzi')">
-                        <span class="pg-emoji">📝</span>
+                        <span class="pg-emoji">✏️</span>
                         <span class="pg-title">汉字游戏</span>
-                        <span class="pg-sub">看拼音选字 / 填空</span>
+                        <span class="pg-sub">快乐识字 轻松学习</span>
+                        <span class="pg-watermark">📖</span>
                     </button>
                     <button class="pg-card pg-card-arena" onclick="CardArenaUI.openStages()">
                         <span class="pg-emoji">🃏</span>
                         <span class="pg-title">卡牌对战</span>
-                        <span class="pg-sub">宠物训练营 · 2v2</span>
+                        <span class="pg-sub">策略比拼 智勇双全</span>
+                        <span class="pg-watermark">🃏</span>
                     </button>
                     <button class="pg-card pg-leaderboard" onclick="switchPage('leaderboard')">
                         <span class="pg-emoji">🏆</span>
                         <span class="pg-title">排行榜</span>
-                        <span class="pg-sub">和自己赛跑</span>
+                        <span class="pg-sub">高手云集 荣誉之巅</span>
+                        <span class="pg-watermark">🏆</span>
                     </button>
                 </section>
+
+                <!-- 读取 localStorage petbank_points 实时刷新金币徽章 -->
+                <script>
+                (function () {
+                    var badge = document.getElementById('pg-points');
+                    function refresh() {
+                        var p = parseInt(localStorage.getItem('petbank_points') || '0', 10);
+                        if (badge) badge.textContent = isNaN(p) ? 0 : p;
+                    }
+                    refresh();
+                    document.addEventListener('visibilitychange', refresh);
+                    // 进入游乐场页时刷新（active 类切换）
+                    var page = document.getElementById('page-playground');
+                    if (page && window.MutationObserver) {
+                        new MutationObserver(refresh).observe(page, { attributes: true, attributeFilter: ['class'] });
+                    }
+                    window.addEventListener('storage', refresh);
+                })();
+                </script>
             </div>
 
             <!-- PAGE: 成长作品 -->
