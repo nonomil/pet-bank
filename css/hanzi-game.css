@@ -1,23 +1,39 @@
 /* ============================================================
    css/hanzi-game.css
-   汉字答题玩法：卡片网格、圆角阴影「呼吸感」、正误动效、淡入淡出
-   对齐 math-pk 全屏覆盖层调性，零依赖
+   汉字答题玩法（童趣卡通风）：Agnes 生图背景 + 玻璃态卡片
+   + 深色字 + 圆润字体，与 playground 统一调性，零依赖
    ============================================================ */
+
+/* ---- 页面背景：童趣卡通图（云朵/绿丘）---- */
+#page-hanzi {
+    background: url('../assets/ui/hanzi-bg.png') center top / cover no-repeat;
+    background-color: #FFEEAA; /* 图加载前/底部填充兜底 */
+    font-family: "Comic Sans MS", "Baloo 2", "Nunito", system-ui, sans-serif;
+}
 
 /* ---- 大厅：等级选择 + 开始按钮 ---- */
 .hz-lobby {
     max-width: 760px;
     margin: 0 auto;
     padding: 20px 16px 40px;
+    /* 玻璃态大厅面板 */
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.20),
+                0 8px 22px rgba(0, 0, 0, 0.12);
 }
 .hz-lobby-head {
     text-align: center;
     margin-bottom: 18px;
 }
 .hz-lobby-head h2 {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 800;
     margin: 0 0 4px;
+    color: #2C3E50;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 .hz-lobby-head p {
     font-size: 12px;
@@ -31,37 +47,54 @@
     margin: 18px 0 22px;
 }
 .hz-level-card {
-    background: #fff;
-    border: 2px solid #e2e8f0;
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2.5px solid #fdba74;            /* 启蒙关：暖橙 */
+    border-radius: 13px;
     padding: 16px 12px;
     text-align: center;
     cursor: pointer;
-    transition: transform .18s, box-shadow .18s, border-color .18s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
+    color: #2C3E50;
+    transition: transform .18s, box-shadow .18s, border-color .18s, background .18s;
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.22),
+                0 6px 14px rgba(0, 0, 0, 0.12);
 }
+.hz-level-card[data-lv="hsk1"] { border-color: #32CD32; }   /* HSK：亮绿 */
 .hz-level-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.28),
+                0 10px 20px rgba(0, 0, 0, 0.18);
 }
+.hz-level-card:active { transform: translateY(0) scale(.97); }
 .hz-level-card.active {
-    border-color: var(--sage-green, #84cc16);
-    box-shadow: 0 0 0 3px rgba(132, 204, 22, .18);
+    border-color: #f97316;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, .25),
+                0 8px 18px rgba(0, 0, 0, 0.16);
+}
+.hz-level-card.active[data-lv="hsk1"] {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, .28),
+                0 8px 18px rgba(0, 0, 0, 0.16);
 }
 .hz-level-num {
     font-size: 26px;
-    font-weight: 700;
-    color: var(--sage-green, #65a30d);
+    font-weight: 800;
+    color: #C2410C;                          /* 启蒙关暖橙深色 */
     line-height: 1;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
+.hz-level-card[data-lv="hsk1"] .hz-level-num { color: #15803D; }
 .hz-level-label {
     font-size: 13px;
     margin-top: 6px;
     color: #475569;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 .hz-level-sub {
     font-size: 11px;
-    color: #94a3b8;
+    color: #64748b;
     margin-top: 2px;
 }
 .hz-start-btn {
@@ -94,7 +127,9 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
-    background: linear-gradient(160deg, #fef9e7, #f0fdf4);
+    background: url('../assets/ui/hanzi-bg.png') center top / cover no-repeat fixed;
+    background-color: #FFEEAA;
+    font-family: "Comic Sans MS", "Baloo 2", "Nunito", system-ui, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -104,9 +139,14 @@
 .hz-stage {
     width: 100%;
     max-width: 640px;
-    background: #fff;
+    /* 玻璃态答题大卡 */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, .15);
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.22),
+                0 20px 60px rgba(0, 0, 0, 0.18);
     padding: 20px 18px 24px;
     animation: hz-pop .3s ease;
 }
@@ -125,11 +165,12 @@
     font-size: 13px;
 }
 .hz-pill {
-    background: #f1f5f9;
-    color: #475569;
-    padding: 4px 12px;
+    background: linear-gradient(135deg, #84cc16, #65a30d);
+    color: #fff;
+    padding: 5px 14px;
     border-radius: 999px;
-    font-weight: 600;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(101, 163, 13, 0.3);
 }
 .hz-score-pill {
     background: linear-gradient(135deg, #fef3c7, #fde68a);
@@ -149,7 +190,12 @@
 /* ---- 题目卡片：四要素展示 ---- */
 .hz-card {
     text-align: center;
-    padding: 18px 12px 8px;
+    padding: 18px 14px 10px;
+    margin: 4px 2px 0;
+    /* 内嵌半透明白面板：大字/例句可读性兜底 */
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.22);
     transition: opacity .35s ease;
 }
 .hz-card.fading { opacity: 0; }
@@ -174,10 +220,11 @@
 }
 .hz-char {
     font-size: 84px;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.1;
     color: #1e293b;
     margin: 4px 0;
+    text-shadow: 0 2px 3px rgba(255, 255, 255, 0.7);
 }
 .hz-pinyin {
     font-size: 22px;
@@ -215,18 +262,28 @@
     margin: 16px 8px 8px;
 }
 .hz-opt {
-    background: #fff;
-    border: 2px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2.5px solid #f59e0b;
     border-radius: 14px;
     padding: 16px 12px;
     font-size: 26px;
-    font-weight: 600;
+    font-weight: 700;
     color: #1e293b;
     cursor: pointer;
-    transition: transform .12s, border-color .12s, background .12s;
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.25),
+                0 4px 10px rgba(0, 0, 0, 0.10);
+    transition: transform .12s, border-color .12s, background .12s, box-shadow .12s;
 }
-.hz-opt:hover { transform: translateY(-2px); border-color: #cbd5e1; }
-.hz-opt:active { transform: translateY(0); }
+.hz-opt:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.85);
+    border-color: #d97706;
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.30),
+                0 8px 16px rgba(0, 0, 0, 0.16);
+}
+.hz-opt:active { transform: scale(.96); }
 .hz-opt.correct {
     background: #ecfccb;
     border-color: #84cc16;
@@ -285,6 +342,10 @@
 .hz-result {
     text-align: center;
     padding: 24px 16px;
+    /* 玻璃态结算卡 */
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.22);
 }
 .hz-result-emoji { font-size: 60px; line-height: 1; }
 .hz-result-title {
@@ -310,13 +371,17 @@
     flex-wrap: wrap;
 }
 .hz-result-actions button {
-    padding: 10px 22px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
     cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    transition: transform .14s;
 }
+.hz-result-actions button:hover { transform: translateY(-2px); }
+.hz-result-actions button:active { transform: scale(.96); }
 .hz-btn-primary {
     background: linear-gradient(135deg, #84cc16, #65a30d);
     color: #fff;
