@@ -65,14 +65,17 @@ _load_dotenv_manual()
 API_URL = os.environ.get("HFLLM_BASE_URL", "").strip()
 MODEL = os.environ.get("HFLLM_MODEL", "deepseek-v4-flash").strip()
 
-PROMPT_TMPL = """你是小学语文启蒙老师。给定一个汉字，产出它的标准拼音与一句适合小学低年级的例句。
+PROMPT_TMPL = """给定汉字「{ch}」，输出它的标准拼音和一句启蒙例句。
 
-要求：
-1) pinyin：带声调符号的标准拼音（如 shān, hǎo, nǚ, yī）。多音字按【日常最常用读音】给单字读音，不要给词级读音（例如「好」单字应 hǎo，不是 hào）。
-2) example：10-20 字的简短中文例句，必须包含目标字【恰好一次】，且目标字前后用 ** 包裹，如「我们一起去爬**山**看日出。」。例句要口语化、积极、适合小学生。
-3) 只返回一行严格 JSON，不要 markdown、不要解释。格式：{{"pinyin":"...","example":"..."}}
+直接输出一行 JSON，不要思考、不要解释：
+{{"pinyin":"带声调拼音","example":"含目标字恰一次、目标字用**包裹的8-30字例句"}}
 
-目标汉字：{ch}"""
+规则：
+- pinyin：带声调符号的单字拼音（如 shān, hǎo, nǚ, yī）。多音字取最常用单字读音（好→hǎo）。
+- example：口语化、积极、适合小学生；目标字在例句中只出现一次，前后用 ** 包裹。
+- 只输出 JSON 本身，无 markdown、无前缀。
+
+汉字：{ch}"""
 
 
 # ---------------- 配置 ----------------
@@ -114,7 +117,7 @@ def call_llm(char: str, cfg: dict, retries: int = 2, sleep: float = 0.5) -> dict
         "model": cfg["model"],
         "messages": [{"role": "user", "content": PROMPT_TMPL.format(ch=char)}],
         "temperature": 0.7,
-        "max_tokens": 200,
+        "max_tokens": 1024,
     }
     headers = {
         "Authorization": f"Bearer {cfg['token']}",
@@ -130,16 +133,24 @@ def call_llm(char: str, cfg: dict, retries: int = 2, sleep: float = 0.5) -> dict
                 continue
             resp.raise_for_status()
             data = resp.json()
-            content = data["choices"][0]["message"]["content"]
+            msg = data["choices"][0]["message"]
+            content = msg.get("content") or ""
             obj = _extract_json(content)
+            # 思维链模型兜底：content 空时从 reasoning_content 抠 JSON
+            if obj is None and not content:
+                rc = msg.get("reasoning_content") or ""
+                obj = _extract_json(rc)
             if obj and "example" in obj and "pinyin" in obj:
                 return obj
-            last_err = f"bad_json:{content[:60]}"
+            last_err = f"bad_json:content_empty={not content}"
         except Exception as e:
             last_err = f"{type(e).__name__}:{str(e)[:80]}"
         time.sleep(sleep * (2 ** attempt))
     sys.stderr.write(f"  [{char}] 失败: {last_err[:80]}\n")
     return None
+
+
+_HARD_FAIL_MARKERS = ("带声调拼音", "目标字", "8-30字", "example")
 
 
 def validate(obj: dict, char: str) -> tuple[str, str, list[str]]:
@@ -150,10 +161,13 @@ def validate(obj: dict, char: str) -> tuple[str, str, list[str]]:
     if not ex or not py:
         issues.append("空字段")
         return ex, py, issues
+    # 复制模板/占位符 → 硬失败
+    if any(m in ex for m in _HARD_FAIL_MARKERS) or any(m in py for m in _HARD_FAIL_MARKERS):
+        issues.append("复制模板")
+        return ex, py, issues
     # 目标字包裹检测
     wrapped = f"**{char}**"
     if wrapped not in ex:
-        # 是否含目标字
         if char in ex:
             issues.append("含目标字但未用**包裹")
         else:
@@ -163,7 +177,7 @@ def validate(obj: dict, char: str) -> tuple[str, str, list[str]]:
     if plain.count(char) > 1:
         issues.append(f"目标字出现>1次({plain.count(char)})")
     # 长度
-    if len(plain) < 8 or len(plain) > 30:
+    if len(plain) < 6 or len(plain) > 30:
         issues.append(f"长度异常({len(plain)})")
     return ex, py, issues
 
@@ -218,12 +232,22 @@ def main():
     fail_list, sample = [], []
     t0 = time.time()
 
+    _HARD = {"复制模板", "不含目标字", "空字段"}
+
     def worker(it):
         ch = it["char"]
         obj = call_llm(ch, cfg, retries=args.retries, sleep=args.sleep)
         if obj is None:
             return it, None, ["llm_failed"]
         ex, py, issues = validate(obj, ch)
+        # 硬失败 → 再补一次（重新调，换随机性）
+        if issues and any(i in _HARD for i in issues):
+            obj2 = call_llm(ch, cfg, retries=1, sleep=args.sleep)
+            if obj2 is not None:
+                ex2, py2, issues2 = validate(obj2, ch)
+                if not issues2 or not any(i in _HARD for i in issues2):
+                    return it, {"example": ex2, "pinyin": py2, "issues": issues2}, issues2
+            return it, None, issues  # 仍硬失败
         return it, {"example": ex, "pinyin": py, "issues": issues}, issues
 
     with ThreadPoolExecutor(max_workers=args.workers) as ex_pool:
