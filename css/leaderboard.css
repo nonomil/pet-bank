@@ -4,13 +4,23 @@
    与 playground.css 统一（半透明白 + blur + 深色字 + 圆润字体）
    ============================================================ */
 
-/* 页面背景：Agnes 童趣生图，兜底色统一 #E6F4F1 浅青绿 */
+/* 页面背景：Agnes 童趣生图，兜底色统一 #E6F4F1 浅青绿。
+   背景图改由 ::before fixed 全屏铺设，突破 .page 父级 max-width 限制，覆盖整个视口，
+   完全挡住 body 的 home-bg.webp 地图板（机制同 playground.css，详见其注释）。 */
 #page-leaderboard {
     position: relative;
     min-height: 100vh;
-    background: url('../assets/ui/leaderboard-bg.png') center top / cover no-repeat, #E6F4F1 !important; /* 兜底色统一；!important 覆盖 style.css 的 .map-page-bg .page 透明规则 */
+    background: #E6F4F1 !important; /* 纯色兜底；!important 覆盖 style.css 的 .map-page-bg .page 透明规则 */
     font-family: "Comic Sans MS", "Baloo 2", "Nunito", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
     padding: 16px 0 24px;
+}
+#page-leaderboard::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url('../assets/ui/leaderboard-bg.png') center top / cover no-repeat, #E6F4F1;
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* 自然元素装饰（☁️🌸✨）：HTML 加 <span class="lb-deco cloud">☁️</span> 等，

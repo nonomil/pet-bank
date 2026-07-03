@@ -6,11 +6,26 @@
 #page-playground {
     position: relative;
     min-height: 100vh;
-    /* 暖黄→金橙渐变换为 Agnes 生成的童趣卡通风背景图（云朵/绿丘/气球，中间留白叠卡片） */
-    background: url('../assets/ui/playground-bg.png') center top / cover no-repeat, #E6F4F1 !important; /* 兜底色统一：浅青绿（自然场景主色）；!important 覆盖 style.css 的 .map-page-bg .page 透明规则 */
+    /* 兜底色统一：浅青绿（自然场景主色）；!important 覆盖 style.css 的 .map-page-bg .page 透明规则。
+       自然场景背景图改由 ::before fixed 全屏铺设（见下），避免 .page 盒子受父级 max-width 限制
+       只盖中间区域、与全屏层 cover 比例不一致产生接缝。 */
+    background: #E6F4F1 !important;
     font-family: "Comic Sans MS", "Baloo 2", "Nunito", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
     overflow: hidden;
     padding: 16px 0 24px;
+}
+/* 自然场景全局背景层：fixed 突破 .page 父级盒模型，覆盖整个视口，完全挡住 body 的 home-bg.webp 地图板。
+   z-index:-1 让此层在 .page 内容（.pg-header/.pg-deco/卡片等默认 z-index:auto/0/1）之下；
+   安全性：父链 main-content 有 z-index:2 建立层叠上下文，::before 随其整体在 body 背景之上渲染，
+   故 z-index:-1 仍可靠盖住 body 地图板。overflow:hidden 的 #page-playground 无 transform/filter，
+   不构成 fixed 元素的包含块，不会裁剪 ::before。 */
+#page-playground::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url('../assets/ui/playground-bg.png') center top / cover no-repeat, #E6F4F1;
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* === 背景童趣装饰（星星 / 云朵） === */

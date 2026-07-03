@@ -4,10 +4,22 @@
    + 深色字 + 圆润字体，与 playground 统一调性，零依赖
    ============================================================ */
 
-/* ---- 页面背景：童趣卡通图（云朵/绿丘）---- */
+/* ---- 页面背景：童趣卡通图（云朵/绿丘）----
+   背景图改由 ::before fixed 全屏铺设，突破 .page 父级 max-width 限制，覆盖整个视口，
+   完全挡住 body 的 home-bg.webp 地图板（机制同 playground.css，详见其注释）。 */
 #page-hanzi {
-    background: url('../assets/ui/hanzi-bg.png') center top / cover no-repeat, #E6F4F1 !important; /* 兜底色统一：浅青绿；!important 覆盖 style.css 的 .map-page-bg .page 透明规则 */
+    position: relative;
+    min-height: 100vh;
+    background: #E6F4F1 !important; /* 纯色兜底；!important 覆盖 style.css 的 .map-page-bg .page 透明规则 */
     font-family: "Comic Sans MS", "Baloo 2", "Nunito", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+}
+#page-hanzi::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url('../assets/ui/hanzi-bg.png') center top / cover no-repeat, #E6F4F1;
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* ---- 大厅：等级选择 + 开始按钮 ---- */
