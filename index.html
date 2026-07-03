@@ -256,12 +256,9 @@
 
             <!-- PAGE: 游乐场 Hub（童趣卡通风 v3） -->
             <div class="page" id="page-playground">
-                <!-- 背景童趣装饰：星星 + 云朵 -->
+                <!-- 背景童趣装饰：星星 + 云朵（精简，避开 2×2 卡片区） -->
                 <span class="pg-deco star d1">✨</span>
                 <span class="pg-deco cloud d2">☁️</span>
-                <span class="pg-deco star d3">⭐</span>
-                <span class="pg-deco cloud d4">☁️</span>
-                <span class="pg-deco star d5">✨</span>
                 <span class="pg-deco cloud d6">☁️</span>
 
                 <!-- Header：柴犬吉祥物 + 金币徽章 -->
@@ -470,6 +467,12 @@
 
             <!-- PAGE: 排行榜 -->
             <div class="page" id="page-leaderboard">
+                <!-- 自然场景背景装饰：☁️🌸✨ 散落背景层，不挡主卡 -->
+                <span class="lb-deco cloud" style="top:5%;left:5%;">☁️</span>
+                <span class="lb-deco bloom" style="top:9%;right:6%;">🌸</span>
+                <span class="lb-deco spark" style="top:20%;left:46%;">✨</span>
+                <span class="lb-deco bloom" style="bottom:7%;left:4%;">🌸</span>
+                <span class="lb-deco cloud" style="bottom:5%;right:6%;">☁️</span>
                 <div class="hz-lb-tabs">
                     <button class="hz-lb-tab active" data-game="mathpk" onclick="switchLeaderboardTab('mathpk')">🔢 数学 PK</button>
                     <button class="hz-lb-tab" data-game="hanzi" onclick="switchLeaderboardTab('hanzi')">📝 汉字挑战</button>

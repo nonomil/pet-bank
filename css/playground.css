@@ -7,9 +7,8 @@
     position: relative;
     min-height: 100vh;
     /* 暖黄→金橙渐变换为 Agnes 生成的童趣卡通风背景图（云朵/绿丘/气球，中间留白叠卡片） */
-    background: url('../assets/ui/playground-bg.png') center top / cover no-repeat;
-    background-color: #FFD27A; /* 图加载前/底部填充兜底 */
-    font-family: "Comic Sans MS", "Baloo 2", "Nunito", system-ui, sans-serif;
+    background: url('../assets/ui/playground-bg.png') center top / cover no-repeat, #E6F4F1 !important; /* 兜底色统一：浅青绿（自然场景主色）；!important 覆盖 style.css 的 .map-page-bg .page 透明规则 */
+    font-family: "Comic Sans MS", "Baloo 2", "Nunito", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
     overflow: hidden;
     padding: 16px 0 24px;
 }
@@ -112,14 +111,12 @@
     gap: 8px;
     padding: 26px 22px;
     min-height: 150px;
-    border-radius: 13px;
-    /* 玻璃态：半透明白底 + 模糊，去掉单色填充（low 感来源） */
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    /* 兜底：背景图鲜艳处文字不清时，内阴影再铺一层白 */
-    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.25),
-                0 6px 16px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 14px; /* 中卡档（游戏入口卡） */
+    /* 偏白白底（替玻璃态过透）：0.88 白 + 6px blur，接近参考清爽白卡 */
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(6px) saturate(1.1);
+    -webkit-backdrop-filter: blur(6px) saturate(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     text-align: left;
     transition: transform 0.16s, box-shadow 0.18s, background 0.18s;
@@ -128,9 +125,8 @@
 }
 .pg-card:hover {
     transform: translateY(-3px);
-    background: rgba(255, 255, 255, 0.68);
-    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.30),
-                0 10px 22px rgba(0, 0, 0, 0.22), 0 3px 6px rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22), 0 3px 6px rgba(0, 0, 0, 0.12);
 }
 .pg-card:active { transform: translateY(0) scale(0.96); }
 /* 卡片超大半透明主题 emoji 水印 */
@@ -165,11 +161,12 @@
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
-/* 4 卡主题色改作边框点缀（原纯色填充已移除，统一玻璃底） */
-.pg-card.pg-mathpk { border: 2.5px solid #00BFFF; }
-.pg-card.pg-hanzi { border: 2.5px solid #32CD32; }
-.pg-card.pg-card-arena { border: 2.5px solid #9370DB; }
-.pg-card.pg-leaderboard { border: 2.5px solid #FF8C00; }
+/* 4 卡边框：2.5px 实色主题色（收敛到全局调色板，按语义取色）
+   数学=信息青 / 汉字=主品牌绿 / 卡牌=竞技红 / 排行榜=提醒橙 */
+.pg-card.pg-mathpk { border: 2.5px solid #20B2AA; }
+.pg-card.pg-hanzi { border: 2.5px solid #65A30D; }
+.pg-card.pg-card-arena { border: 2.5px solid #FF6B6B; }
+.pg-card.pg-leaderboard { border: 2.5px solid #FFA500; }
 
 /* 窄屏单列 */
 @media (max-width: 560px) {

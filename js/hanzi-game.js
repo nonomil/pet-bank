@@ -105,6 +105,19 @@
         return { before: s, target: '', after: '' };
     }
 
+    // ---------- 手绘插图（UI v2 P2）----------
+    // 有图字集合：命中则渲染 assets/ui/hanzi-img/{char}.png，否则 fallback emoji。
+    // 题库确认此 30 字作为单字出现（启蒙关 q.char / HSK 关 q.answer）。
+    const HANZI_IMG_CHARS = new Set('山水日月花木火雨云星树草果风河鸟马牛鸡车书桌门杯茶田石笔船海'.split(''));
+    // 返回题图区域 html：单字命中 manifest → <img>；否则保留原 emoji（HSK 关 emoji 空 → 空串，不报错）。
+    function _renderEmoji(q) {
+        const char = (q && (q.char || q.answer)) || '';
+        if (char && HANZI_IMG_CHARS.has(char)) {
+            return `<img src="assets/ui/hanzi-img/${char}.png" class="hz-emoji-img" alt="${char}">`;
+        }
+        return (q && q.emoji) || '';
+    }
+
     // 取一道题：先让 HanziProgress.pickNext 按「错题>新字>learning>mastered」权重
     //   决定目标 itemId（学习记忆驱动，传 state.asked 做局内去重），再从桶里取对应条目；兜底随机。
     function _genQuestion() {
@@ -222,7 +235,7 @@
                 // 看拼音 + emoji，选汉字（不显示汉字大字）
                 bodyHtml = `
                     <span class="hz-mode-tag">🔊 看拼音选字</span>
-                    <div class="hz-emoji">${q.emoji || ''}</div>
+                    <div class="hz-emoji">${_renderEmoji(q)}</div>
                     <div class="hz-pinyin">${q.pinyin}</div>
                     <div class="hz-example" style="color:#94a3b8;font-size:13px;">从下方选出这个拼音对应的汉字</div>`;
             } else {
@@ -233,14 +246,14 @@
                 if (!ex) {
                     bodyHtml = `
                         <span class="hz-mode-tag">✏️ 例句填空</span>
-                        <div class="hz-emoji">${q.emoji || ''}</div>
+                        <div class="hz-emoji">${_renderEmoji(q)}</div>
                         <div class="hz-pinyin">${q.pinyin}</div>
                         <div class="hz-example" style="color:#94a3b8;font-size:13px;">选出这个拼音对应的汉字</div>`;
                 } else {
                     const parts = _parseExample(ex, q.answer);
                     bodyHtml = `
                         <span class="hz-mode-tag">✏️ 例句填空</span>
-                        <div class="hz-emoji">${q.emoji || ''}</div>
+                        <div class="hz-emoji">${_renderEmoji(q)}</div>
                         <div class="hz-pinyin">${q.pinyin}</div>
                         <div class="hz-example">${parts.before}<span class="hz-blank">？</span>${parts.after}</div>`;
                 }
