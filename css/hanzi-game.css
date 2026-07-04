@@ -1,58 +1,54 @@
 /* ============================================================
    css/hanzi-game.css
-   汉字答题玩法（自然绘本风）：ChatGPT 生图背景 + 玻璃态卡片
-   + 深色字 + 圆润字体，与 playground 统一调性，零依赖
+   汉字答题玩法：复用首页地图背景 + 暖色半透卡片
+   与游乐场 / 首页统一调性，不再切换到独立背景风格
    ============================================================ */
 
-/* ---- 页面背景：童趣卡通图（云朵/绿丘）----
-   背景图改由 ::before fixed 全屏铺设，突破 .page 父级 max-width 限制，覆盖整个视口，
-   完全挡住 body 的 home-bg.webp 地图板（机制同 playground.css，详见其注释）。 */
+/* ---- 页面背景：复用首页地图底图 ---- */
 #page-hanzi {
     position: relative;
     min-height: 100vh;
-    background: #E6F4F1 !important; /* 纯色兜底；!important 覆盖 style.css 的 .map-page-bg .page 透明规则 */
+    background: transparent !important;
     font-family: "Comic Sans MS", "Baloo 2", "Nunito", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+    isolation: isolate;
 }
 #page-hanzi::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: url('../assets/ui/hanzi-bg.webp') center top / cover no-repeat, #E6F4F1;
-    z-index: -1;
+    background: url('../assets/home-bg.webp') center top / cover no-repeat;
+    z-index: 0;
     pointer-events: none;
 }
 
-/* ---- 大厅：等级选择 + 开始按钮 ---- */
+#hanzi-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* ---- 大厅：等级选择 ---- */
 .hz-lobby {
     max-width: 760px;
     margin: 0 auto;
-    padding: 10px 16px 16px;
-    /* 偏白白底（0.88 白 + 6px blur），替玻璃态过透 */
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(6px) saturate(1.1);
-    -webkit-backdrop-filter: blur(6px) saturate(1.1);
+    padding: 14px 16px 20px;
+    /* 暖色半透卡片：仿羊皮纸色调，轻盈不遮背景 */
+    background: rgba(245, 235, 210, 0.55);
+    backdrop-filter: blur(8px) saturate(1.1);
+    -webkit-backdrop-filter: blur(8px) saturate(1.1);
     border-radius: 20px;
-    border: 2.5px solid #65A30D;   /* 主品牌绿描边 */
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    border: 1.5px solid rgba(180, 140, 80, 0.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    color: #3a2a10;
 }
-.hz-lobby-head {
-    text-align: center;
-    margin-bottom: 18px;
-}
+.hz-lobby-head { text-align: center; margin-bottom: 14px; }
 .hz-lobby-head h2 {
-    font-size: 24px;
-    font-weight: 800;
-    margin: 0 0 4px;
-    color: #2C3E50;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
-    /* 标题：前部加中文字体保证清晰 */
+    font-size: 24px; font-weight: 800; margin: 0 0 4px;
+    color: #3a2a10;
+    text-shadow: 0 1px 2px rgba(255, 245, 220, 0.6);
     font-family: "Noto Sans SC", "PingFang SC", "Comic Sans MS", "Baloo 2", "Nunito", system-ui, sans-serif;
 }
-.hz-lobby-head p {
-    font-size: 12px;
-    color: var(--text-muted, #94a3b8);
-    margin: 0;
-}
+.hz-lobby-head p { font-size: 12px; color: #6a5530; margin: 0; }
+
 .hz-level-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -60,403 +56,172 @@
     margin: 12px 0 14px;
 }
 .hz-level-card {
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(6px) saturate(1.1);
-    -webkit-backdrop-filter: blur(6px) saturate(1.1);
-    border: 2.5px solid #FFA500;            /* 启蒙关：提醒橙 */
-    border-radius: 14px;                    /* 中卡档 */
+    background: rgba(245, 235, 210, 0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 2px solid rgba(200, 160, 80, 0.55);
+    border-radius: 14px;
     padding: 16px 12px;
     text-align: center;
     cursor: pointer;
-    color: #2C3E50;
-    transition: transform .18s, box-shadow .18s, border-color .18s, background .18s;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    color: #3a2a10;
+    transition: transform .18s, box-shadow .18s, border-color .18s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.hz-level-card[data-lv="hsk1"] { border-color: #65A30D; }   /* HSK：主品牌绿 */
 .hz-level-card:hover {
     transform: translateY(-3px);
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    border-color: rgba(200, 140, 50, 0.75);
 }
 .hz-level-card:active { transform: translateY(0) scale(.97); }
 .hz-level-card.active {
-    border-color: #FFA500;
-    box-shadow: 0 0 0 3px rgba(255, 165, 0, .25),
-                0 8px 18px rgba(0, 0, 0, 0.16);
+    border-color: #b87828;
+    box-shadow: 0 0 0 3px rgba(184,120,40,.25), 0 8px 18px rgba(0,0,0,.16);
 }
-.hz-level-card.active[data-lv="hsk1"] {
-    border-color: #65A30D;
-    box-shadow: 0 0 0 3px rgba(101, 163, 13, .28),
-                0 8px 18px rgba(0, 0, 0, 0.16);
-}
-.hz-level-num {
-    font-size: 26px;
-    font-weight: 800;
-    color: #C2410C;                          /* 启蒙关暖橙深色 */
-    line-height: 1;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
-}
-.hz-level-card[data-lv="hsk1"] .hz-level-num { color: #15803D; }
-.hz-level-label {
-    font-size: 13px;
-    margin-top: 6px;
-    color: #475569;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
-}
-.hz-level-sub {
-    font-size: 11px;
-    color: #64748b;
-    margin-top: 2px;
-}
+
+.hz-level-num { font-size: 26px; font-weight: 800; color: #8b5e3c; line-height: 1; }
+.hz-level-label { font-size: 13px; margin-top: 6px; color: #6a4a2a; }
+.hz-level-sub { font-size: 11px; color: #8a6a4a; margin-top: 2px; }
+
 .hz-start-btn {
-    display: block;
-    width: 100%;
-    max-width: 320px;
-    margin: 8px auto 0;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 24px;          /* 胶囊按钮档 */
-    background: linear-gradient(135deg, #84cc16, #65A30D);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 700;
+    display: block; width: 100%; max-width: 320px;
+    margin: 8px auto 0; padding: 14px 20px;
+    border: none; border-radius: 24px;
+    background: linear-gradient(135deg, #c8943e, #a07028);
+    color: #fff; font-size: 16px; font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(101, 163, 13, .3);
+    box-shadow: 0 6px 16px rgba(160, 112, 40, .35);
     transition: transform .15s;
 }
 .hz-start-btn:hover { transform: translateY(-1px); }
 .hz-start-btn:active { transform: translateY(1px); }
-.hz-best-hint {
-    text-align: center;
-    font-size: 12px;
-    color: #94a3b8;
-    margin-top: 12px;
-}
+.hz-best-hint { text-align: center; font-size: 12px; color: #8a6a4a; margin-top: 12px; }
 
-/* ---- 全屏覆盖层（对齐 math-pk：fixed;inset:0;z-index:1000） ---- */
+/* ---- 全屏覆盖层（答题界面）---- */
 .hz-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    background: url('../assets/ui/hanzi-bg.png') center top / cover no-repeat fixed;
-    background-color: #E6F4F1;
+    position: fixed; inset: 0; z-index: 1000;
+    background: url('../assets/home-bg.webp') center top / cover no-repeat fixed;
     font-family: "Comic Sans MS", "Baloo 2", "Nunito", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    overflow-y: auto;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px; overflow-y: auto;
 }
 .hz-stage {
-    width: 100%;
-    max-width: 640px;
-    /* 题台大卡：偏白白底 + 主品牌绿实色描边 */
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(6px) saturate(1.1);
-    -webkit-backdrop-filter: blur(6px) saturate(1.1);
-    border: 2.5px solid #65A30D;
-    border-radius: 20px;          /* 大卡档（主容器/题台） */
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+    position: relative; z-index: 1;
+    width: 100%; max-width: 640px;
+    background: rgba(245, 235, 210, 0.6);
+    backdrop-filter: blur(10px) saturate(1.15);
+    -webkit-backdrop-filter: blur(10px) saturate(1.15);
+    border: 1.5px solid rgba(180, 140, 80, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.22);
     padding: 20px 18px 24px;
     animation: hz-pop .3s ease;
 }
-@keyframes hz-pop {
-    from { opacity: 0; transform: scale(.94); }
-    to { opacity: 1; transform: scale(1); }
-}
+@keyframes hz-pop { from{opacity:0;transform:scale(.94);} to{opacity:1;transform:scale(1);} }
 
-/* ---- 顶栏：进度 / 分数 / 退出 ---- */
-.hz-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 12px;
-    font-size: 13px;
-}
+/* ---- 顶栏 ---- */
+.hz-topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; font-size: 13px; }
 .hz-pill {
-    background: linear-gradient(135deg, #84cc16, #65A30D);
-    color: #fff;
-    padding: 5px 14px;
-    border-radius: 999px;   /* 胶囊 */
-    font-weight: 700;
-    box-shadow: 0 2px 6px rgba(101, 163, 13, 0.3);
+    background: linear-gradient(135deg, #c8943e, #a07028);
+    color: #fff; padding: 5px 14px; border-radius: 999px;
+    font-weight: 700; box-shadow: 0 2px 6px rgba(160,112,40,.35);
 }
-.hz-score-pill {
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
-    color: #92400e;
-}
+.hz-score-pill { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #6a3a08; }
 .hz-exit-btn {
-    background: transparent;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 4px 12px;
-    font-size: 12px;
-    color: #64748b;
-    cursor: pointer;
+    background: transparent; border: 1px solid rgba(160,120,60,.4);
+    border-radius: 10px; padding: 4px 12px; font-size: 12px;
+    color: #6a4a2a; cursor: pointer;
 }
-.hz-exit-btn:hover { background: #f8fafc; }
+.hz-exit-btn:hover { background: rgba(245,235,210,.5); }
 
-/* ---- 题目卡片：四要素展示 ---- */
+/* ---- 题目卡片 ---- */
 .hz-card {
-    text-align: center;
-    padding: 18px 14px 10px;
-    margin: 4px 2px 0;
-    /* 内嵌白面板：大字/例句可读性兜底 */
-    background: rgba(255, 255, 255, 0.88);
-    border-radius: 14px;          /* 中卡档（题卡） */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: relative;
+    text-align: center; padding: 18px 14px 10px; margin: 4px 2px 0;
+    background: rgba(245, 235, 210, 0.5);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
     transition: opacity .35s ease;
+    border: 1px solid rgba(180, 140, 80, 0.3);
 }
 .hz-card.fading { opacity: 0; }
-.hz-mode-tag {
-    display: inline-block;
-    background: #ecfccb;
-    color: #4d7c0f;
-    font-size: 11px;
-    padding: 2px 10px;
-    border-radius: 999px;
-    margin-bottom: 10px;
-}
-.hz-emoji {
-    font-size: 54px;
-    line-height: 1.1;
-    margin-bottom: 4px;
-    animation: hz-breathe 2.4s ease-in-out infinite;
-}
-/* 手绘插图（UI v2 P2）：比 emoji 大且更突出，轻投影 + 入场动画复用 hz-pop */
-.hz-emoji-img {
-    width: 110px;
-    height: 110px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 4px;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .15));
-    animation: hz-pop .3s ease;
-    pointer-events: none;
-    user-select: none;
-}
-@keyframes hz-breathe {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.06); }
-}
-.hz-char {
-    font-size: 84px;
-    font-weight: 800;
-    line-height: 1.1;
-    color: #1e293b;
-    margin: 4px 0;
-    text-shadow: 0 2px 3px rgba(255, 255, 255, 0.7);
-    /* 大号汉字：前部加中文字体提升清晰度 */
-    font-family: "Noto Sans SC", "PingFang SC", "Comic Sans MS", "Baloo 2", "Nunito", system-ui, sans-serif;
-}
-.hz-pinyin {
-    font-size: 22px;
-    color: #65A30D;
-    font-style: italic;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-}
-.hz-example {
-    font-size: 18px;
-    line-height: 1.7;
-    color: #334155;
-    margin: 10px 12px;
-}
-.hz-example .hz-blank {
-    display: inline-block;
-    min-width: 28px;
-    padding: 0 6px;
-    margin: 0 2px;
-    border-bottom: 3px solid #FFA500;   /* 提醒橙 */
-    color: transparent;
-    background: #fffbeb;
-    border-radius: 4px 4px 0 0;
-}
-.hz-example .hz-target {
-    color: #FF6B6B;                      /* 错误/强调红 */
-    font-weight: 700;
-}
+.hz-mode-tag { display: inline-block; background: rgba(200,160,80,.25); color: #6a4a18; font-size: 11px; padding: 2px 10px; border-radius: 999px; margin-bottom: 10px; }
+.hz-emoji { font-size: 54px; line-height: 1.1; margin-bottom: 4px; animation: hz-breathe 2.4s ease-in-out infinite; }
+.hz-emoji-img { width: 110px; height: 110px; object-fit: contain; display: block; margin: 0 auto 4px; filter: drop-shadow(0 4px 8px rgba(0,0,0,.15)); animation: hz-pop .3s ease; pointer-events: none; user-select: none; }
+@keyframes hz-breathe { 0%,100%{transform:scale(1);} 50%{transform:scale(1.06);} }
+.hz-char { font-size: 84px; font-weight: 800; line-height: 1.1; color: #3a2a10; margin: 4px 0; text-shadow: 0 2px 3px rgba(255,245,220,.7); font-family: "Noto Sans SC","PingFang SC","Comic Sans MS","Baloo 2","Nunito",system-ui,sans-serif; }
+.hz-pinyin { font-size: 22px; color: #8b5e3c; font-style: italic; letter-spacing: 2px; margin-bottom: 8px; }
+.hz-example { font-size: 18px; line-height: 1.7; color: #4a3a20; margin: 10px 12px; }
+.hz-example .hz-blank { display: inline-block; min-width: 28px; padding: 0 6px; margin: 0 2px; border-bottom: 3px solid #b87828; color: transparent; background: rgba(200,160,80,.15); border-radius: 4px 4px 0 0; }
+.hz-example .hz-target { color: #c04020; font-weight: 700; }
 
-/* ---- 选项网格 ---- */
-.hz-opts {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 16px 8px 8px;
-}
+/* ---- 选项按钮 ---- */
+.hz-opts { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin: 16px 8px 8px; }
 .hz-opt {
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(6px) saturate(1.1);
-    -webkit-backdrop-filter: blur(6px) saturate(1.1);
-    border: 2.5px solid #FFA500;
-    border-radius: 10px;           /* 小卡档（选项） */
-    padding: 16px 12px;
-    font-size: 26px;
-    font-weight: 700;
-    color: #1e293b;
+    background: rgba(245, 235, 210, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid rgba(200, 160, 80, 0.5);
+    border-radius: 10px; padding: 16px 12px;
+    font-size: 26px; font-weight: 700;
+    color: #3a2a10;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
-    transition: transform .12s, border-color .12s, background .12s, box-shadow .12s;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    transition: transform .12s, border-color .12s, background .12s;
 }
-.hz-opt:hover {
-    transform: translateY(-3px);
-    background: rgba(255, 255, 255, 0.92);
-    border-color: #FFA500;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
-}
+.hz-opt:hover { transform: translateY(-3px); border-color: rgba(200,140,50,.75); box-shadow: 0 8px 16px rgba(0,0,0,.16); }
 .hz-opt:active { transform: scale(.96); }
-.hz-opt.correct {
-    background: #ecfccb;
-    border-color: #4CAF50;         /* 成功/正确绿 */
-    color: #4d7c0f;
-    animation: hz-correct .5s ease;
-}
-.hz-opt.wrong {
-    background: #fee2e2;
-    border-color: #FF6B6B;         /* 错误/警告红 */
-    color: #b91c1c;
-    animation: hz-wrong .45s ease;
-}
+.hz-opt.correct { background: rgba(160,200,100,.5); border-color: #6a9a3a; color: #3a5a10; animation: hz-correct .5s ease; }
+.hz-opt.wrong { background: rgba(220,160,140,.5); border-color: #c06040; color: #7a2a18; animation: hz-wrong .45s ease; }
 .hz-opt.disabled { pointer-events: none; opacity: .6; }
-@keyframes hz-correct {
-    0% { transform: scale(1); }
-    40% { transform: scale(1.12); }
-    100% { transform: scale(1); }
-}
-@keyframes hz-wrong {
-    0%, 100% { transform: translateX(0); }
-    20% { transform: translateX(-6px); }
-    40% { transform: translateX(6px); }
-    60% { transform: translateX(-4px); }
-    80% { transform: translateX(4px); }
-}
+@keyframes hz-correct { 0%{transform:scale(1);} 40%{transform:scale(1.12);} 100%{transform:scale(1);} }
+@keyframes hz-wrong { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
 
-/* ---- toast 反馈 ---- */
+/* ---- toast ---- */
 .hz-toast {
-    position: fixed;
-    top: 18%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    background: rgba(15, 23, 42, .9);
-    color: #fff;
-    padding: 10px 22px;
-    border-radius: 14px;
-    font-size: 16px;
-    font-weight: 600;
-    z-index: 1100;
-    opacity: 0;
-    pointer-events: none;
+    position: fixed; top: 18%; left: 50%; transform: translateX(-50%) translateY(-10px);
+    background: rgba(60,30,10,.9); color: #fff; padding: 10px 22px;
+    border-radius: 14px; font-size: 16px; font-weight: 600;
+    z-index: 1100; opacity: 0; pointer-events: none;
     transition: opacity .25s, transform .25s;
 }
 .hz-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .hz-toast.win { background: linear-gradient(135deg, #84cc16, #65A30D); }
 .hz-toast.lose { background: linear-gradient(135deg, #FF6B6B, #dc2626); }
-.hz-toast small {
-    display: block;
-    font-size: 12px;
-    font-weight: 400;
-    opacity: .9;
-    margin-top: 2px;
-}
+.hz-toast small { display: block; font-size: 12px; font-weight: 400; opacity: .9; margin-top: 2px; }
 
-/* ---- 结算页 ---- */
+/* ---- 结算 ---- */
 .hz-result {
-    text-align: center;
-    padding: 24px 16px;
-    /* 结算大卡：偏白白底 */
-    background: rgba(255, 255, 255, 0.88);
-    border-radius: 20px;           /* 大卡档（结算主卡） */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    text-align: center; padding: 24px 16px;
+    background: rgba(245, 235, 210, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
 }
 .hz-result-emoji { font-size: 60px; line-height: 1; }
-.hz-result-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin: 8px 0 4px;
-    font-family: "Noto Sans SC", "PingFang SC", "Comic Sans MS", "Baloo 2", "Nunito", system-ui, sans-serif;
-}
-.hz-result-score {
-    font-size: 40px;
-    font-weight: 700;
-    color: #65A30D;
-    margin: 6px 0;
-}
-.hz-result-meta {
-    font-size: 13px;
-    color: #64748b;
-    margin-bottom: 16px;
-}
-.hz-result-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-.hz-result-actions button {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 24px;          /* 胶囊按钮档 */
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-    transition: transform .14s;
-}
+.hz-result-title { font-size: 22px; font-weight: 700; margin: 8px 0 4px; color: #3a2a10; font-family: "Noto Sans SC","PingFang SC","Comic Sans MS","Baloo 2","Nunito",system-ui,sans-serif; }
+.hz-result-score { font-size: 40px; font-weight: 700; color: #8b5e3c; margin: 6px 0; }
+.hz-result-meta { font-size: 13px; color: #8a6a4a; margin-bottom: 16px; }
+.hz-result-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.hz-result-actions button { padding: 12px 24px; border: none; border-radius: 24px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,.12); transition: transform .14s; }
 .hz-result-actions button:hover { transform: translateY(-2px); }
 .hz-result-actions button:active { transform: scale(.96); }
-.hz-btn-primary {
-    background: linear-gradient(135deg, #84cc16, #65A30D);
-    color: #fff;
-}
-.hz-btn-secondary {
-    background: #f1f5f9;
-    color: #475569;
-}
+.hz-btn-primary { background: linear-gradient(135deg, #c8943e, #a07028); color: #fff; }
+.hz-btn-secondary { background: rgba(245,235,210,.7); color: #6a4a2a; }
 
-/* ---- 排行榜页 tab（mathpk / 汉字） ---- */
-.hz-lb-tabs {
-    display: flex;
-    gap: 8px;
-    max-width: 760px;
-    margin: 0 auto 8px;
-    padding: 12px 16px 0;
-}
+/* ---- 排行榜 tab ---- */
+.hz-lb-tabs { display: flex; gap: 8px; max-width: 760px; margin: 0 auto 8px; padding: 12px 16px 0; }
 .hz-lb-tab {
-    padding: 8px 18px;
-    border: 1px solid #e2e8f0;
-    background: #fff;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #64748b;
-    cursor: pointer;
-    transition: all .15s;
+    padding: 8px 18px; border: 1px solid rgba(180,140,80,.4);
+    background: rgba(245,235,210,.45); border-radius: 999px;
+    font-size: 13px; font-weight: 600; color: #6a4a2a; cursor: pointer; transition: all .15s;
 }
-.hz-lb-tab:hover { background: #f8fafc; }
-.hz-lb-tab.active {
-    background: linear-gradient(135deg, #84cc16, #65A30D);
-    color: #fff;
-    border-color: transparent;
-}
+.hz-lb-tab:hover { background: rgba(245,235,210,.7); }
+.hz-lb-tab.active { background: linear-gradient(135deg, #c8943e, #a07028); color: #fff; border-color: transparent; }
 
-/* ---------- 学习记忆：等级卡进度 + 题卡角标 ---------- */
-.hz-level-prog {
-    font-size: 11px;
-    line-height: 1.4;
-    color: #64748b;
-}
-.hz-level-prog b { color: #334155; font-weight: 600; }
-.hz-level-prog span { color: #94a3b8; }
-.hz-badge {
-    display: inline-block;
-    margin-left: 6px;
-    padding: 1px 7px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    vertical-align: middle;
-    line-height: 1.6;
-}
+/* ---- 学习记忆角标 ---- */
+.hz-level-prog { font-size: 11px; line-height: 1.4; color: #8a6a4a; }
+.hz-level-prog b { color: #5a3a18; font-weight: 600; }
+.hz-level-prog span { color: #aaa088; }
+.hz-badge { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; vertical-align: middle; line-height: 1.6; }
 .hz-badge-new { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
 .hz-badge-review { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; }

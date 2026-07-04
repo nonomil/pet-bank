@@ -1181,6 +1181,16 @@ function appendBattleLog(battle) {
     setTimeout(() => { if (bubble.parentNode) bubble.remove(); }, 2200);
 }
 
+function getSpeciesDisplayName(speciesId, fallbackName) {
+    if (fallbackName) return fallbackName;
+    try {
+        const allSpecies = (typeof PetSystem?.getAllSpecies === 'function') ? PetSystem.getAllSpecies() : [];
+        const matched = allSpecies.find((species) => species.id === speciesId);
+        if (matched && matched.name) return matched.name;
+    } catch (e) {}
+    return speciesId || '未知伙伴';
+}
+
 function battleAction(action) {
     // 战斗结束态或 UI 锁定：忽略
     const cur = ExplorationSystem.getCurrentBattle();
@@ -1228,11 +1238,20 @@ function battleAction(action) {
                 try { firstWon = JSON.parse(localStorage.getItem(FW_KEY) || '[]'); } catch (e) {}
                 const isFirst = !firstWon.includes(enemySpeciesId);
                 if (Math.random() < (isFirst ? 1.0 : 0.1)) {
-                    CardCollection.addCard(enemySpeciesId);
+                    const speciesName = getSpeciesDisplayName(enemySpeciesId, curBattle.monster.baseName);
+                    const addedNewCard = CardCollection.addCard(enemySpeciesId);
                     if (isFirst) {
                         firstWon.push(enemySpeciesId);
                         localStorage.setItem(FW_KEY, JSON.stringify(firstWon));
-                        if (typeof showToast === 'function') showToast(`🃏 首胜定向掉卡：${curBattle.monster.baseName || enemySpeciesId}`);
+                    }
+                    if (typeof showToast === 'function') {
+                        if (addedNewCard) {
+                            showToast(`📘 登记完成：${speciesName} 已加入图鉴馆收藏`);
+                        } else if (isFirst) {
+                            showToast(`📘 调查完成：${speciesName} 的现场档案已登记，图鉴卡原本就在馆藏中`);
+                        } else {
+                            showToast(`📘 图鉴复核：${speciesName} 的现场资料又补完了一页`);
+                        }
                     }
                 }
             } else if (Math.random() < 0.25) {
@@ -1243,7 +1262,12 @@ function battleAction(action) {
                     const weighted = [];
                     petSpecies.forEach(p => { const pw = rw[p.rarity] || 10; for (let i = 0; i < pw; i++) weighted.push(p); });
                     const picked = weighted[Math.floor(Math.random() * weighted.length)];
-                    CardCollection.addCard(picked.id);
+                    const addedNewCard = CardCollection.addCard(picked.id);
+                    if (typeof showToast === 'function') {
+                        showToast(addedNewCard
+                            ? `🃏 图鉴补完：意外收录了 ${picked.name}`
+                            : `📘 额外线索：${picked.name} 的图鉴卡已经在馆藏中了`);
+                    }
                 }
             }
         }
@@ -1369,7 +1393,7 @@ function closeBattleModal() {
         if (status === 'won' && ExplorationDetail.showEnding) {
             ExplorationDetail.showEnding();   // 样板场景：胜利后显示结束叙事，点 ▶ 回列表
         } else {
-            if (status === 'won') showToast('🎉 击败敌人！场景探索完成，已获得战利品');
+            if (status === 'won') showToast('🎉 调查完成，图鉴馆已记录这次冒险结果');
             ExplorationDetail.exit();
         }
     } else {

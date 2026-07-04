@@ -1,25 +1,24 @@
 /* ============================================================
    css/leaderboard.css
-   童趣卡通风排行榜：Agnes 生图背景 + 玻璃态卡片 + 深色圆润字
-   与 playground.css 统一（半透明白 + blur + 深色字 + 圆润字体）
+   排行榜：复用首页地图背景 + 玻璃态卡片 + 深色圆润字
+   与首页 / 游乐场 / 汉字游戏统一视觉语言
    ============================================================ */
 
-/* 页面背景：Agnes 童趣生图，兜底色统一 #E6F4F1 浅青绿。
-   背景图改由 ::before fixed 全屏铺设，突破 .page 父级 max-width 限制，覆盖整个视口，
-   完全挡住 body 的 home-bg.webp 地图板（机制同 playground.css，详见其注释）。 */
+/* 页面背景：复用首页地图底图，不再使用单页生图背景。 */
 #page-leaderboard {
     position: relative;
     min-height: 100vh;
-    background: #E6F4F1 !important; /* 纯色兜底；!important 覆盖 style.css 的 .map-page-bg .page 透明规则 */
+    background: transparent !important;
     font-family: "Comic Sans MS", "Baloo 2", "Nunito", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+    isolation: isolate;
     padding: 16px 0 24px;
 }
 #page-leaderboard::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: url('../assets/ui/leaderboard-bg.png') center top / cover no-repeat, #E6F4F1;
-    z-index: -1;
+    background: url('../assets/home-bg.webp') center top / cover no-repeat;
+    z-index: 0;
     pointer-events: none;
 }
 
@@ -29,7 +28,7 @@
     position: absolute;
     pointer-events: none;
     user-select: none;
-    z-index: 0;
+    z-index: 1;
     opacity: 0.5;
 }
 .lb-deco.cloud { font-size: 40px; }
@@ -39,7 +38,7 @@
 /* 排行榜主容器：偏白白底 + blur（替玻璃态过透） */
 .lb-page.card {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     max-width: 720px;
     margin: 12px auto;
     padding: 20px;
@@ -50,6 +49,12 @@
     box-shadow: 0 6px 24px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.08);
     animation: lb-breath 4.5s ease-in-out infinite;
     color: #2C3E50;
+}
+
+#page-leaderboard .hz-lb-tabs,
+#leaderboard-container {
+    position: relative;
+    z-index: 2;
 }
 
 @keyframes lb-breath {

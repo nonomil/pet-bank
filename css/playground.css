@@ -1,27 +1,27 @@
-/* playground.css - 自然绘本风游乐场 Hub
- * 自然场景绘本插画背景（ChatGPT 生图）+ 玻璃态 2×2 卡片
- * 4 个大板块入口卡：数学PK / 汉字 / 卡牌 / 排行榜
+/* playground.css - 游乐场 Hub
+ * 复用首页地图背景，保留人物 + 4 图片卡片的透明层表现
  */
 
 #page-playground {
     position: relative;
     min-height: 100vh;
-    background: #E6F4F1 !important;
+    background: transparent !important;
     font-family: "Comic Sans MS", "Baloo 2", "Nunito", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+    isolation: isolate;
     overflow: hidden;
-    padding: 8px 0 12px;
+    padding: 6px 0 12px;
 }
-/* 自然场景全局背景层：fixed 全屏铺设，由 ChatGPT 生图绘本风自然场景，中央区域简洁方便叠放卡片 */
+/* 全屏背景：复用首页地图底图，保持全站视觉一致 */
 #page-playground::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: url('../assets/ui/playground-bg.webp') center top / cover no-repeat, #E6F4F1;
-    z-index: -1;
+    background: url('../assets/home-bg.webp') center top / cover no-repeat;
+    z-index: 0;
     pointer-events: none;
 }
 
-/* === 顶部 Header：吉祥物 + 金币徽章 + 欢迎语 === */
+/* === 顶部 Header === */
 .pg-header {
     position: relative;
     z-index: 1;
@@ -30,25 +30,11 @@
     justify-content: space-between;
     padding: 4px 20px 0;
 }
-.pg-mascot {
-    width: 72px;
-    height: 72px;
+.pg-mascot-img {
+    width: 84px;
+    height: auto;
     object-fit: contain;
-    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.15));
-}
-.pg-mascot.emoji {
-    font-size: 80px;
-    line-height: 1;
-    text-align: center;
-    width: 80px;
-    height: 80px;
-    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.2));
-    transform-origin: 50% 85%;
-    animation: mascot-wave 3s ease-in-out infinite;
-}
-@keyframes mascot-wave {
-    0%, 100% { transform: translateY(0) rotate(-4deg); }
-    50% { transform: translateY(-4px) rotate(4deg); }
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
 }
 .pg-coin-badge {
     display: flex;
@@ -72,143 +58,40 @@
     border-radius: 8px;
 }
 
-.pg-welcome {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    font-size: 26px;
-    font-weight: 800;
-    color: #fff;
-    /* 生图背景色彩丰富，用更深的描边保证「来玩吧」清晰 */
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35), 0 0 2px rgba(0, 0, 0, 0.25);
-    padding: 2px 0 6px;
-}
-
-/* === 装饰色条（分解图 part-05 绿丘 + part-07 大地） === */
-.pg-deco-strips {
-    position: relative;
-    z-index: 0;
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    margin: 0 16px;
-    pointer-events: none;
-    opacity: 0.65;
-}
-.pg-strip-green {
-    width: 100%;
-    max-width: 519px;
-    height: auto;
-    object-fit: contain;
-}
-.pg-strip-earth {
-    width: 100%;
-    max-width: 517px;
-    height: auto;
-    object-fit: contain;
-}
-
-/* === 主体 2×2 卡片网格 === */
+/* === 2×2 图片卡片网格（无遮罩，图片透明底直贴背景） === */
 .playground-grid {
     position: relative;
     z-index: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
-    padding: 10px 20px 16px;
+    padding: 12px 20px 16px;
 }
-/* 分解图 part-06 卡片面板装饰（网格背景层） */
-.pg-card-panel-top,
-.pg-card-panel-bot {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 508px;
-    height: auto;
-    opacity: 0.25;
-    pointer-events: none;
-    z-index: 0;
-}
-.pg-card-panel-top { top: 0; }
-.pg-card-panel-bot { bottom: 0; }
-/* 让卡片在面板装饰之上 */
-.playground-grid > .pg-card { position: relative; z-index: 1; }
-
-.pg-card {
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 26px 22px;
-    min-height: 150px;
-    border-radius: 14px;
-    /* 深色半透明玻璃态：轻盈通透，不遮背景自然场景 */
-    background: rgba(10, 18, 30, 0.32);
-    backdrop-filter: blur(12px) saturate(1.3);
-    -webkit-backdrop-filter: blur(12px) saturate(1.3);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28), 0 1px 3px rgba(0, 0, 0, 0.18);
+.pg-img-card {
+    border: none;
+    background: none;
+    padding: 0;
     cursor: pointer;
-    text-align: left;
-    transition: transform 0.16s, box-shadow 0.18s, background 0.18s, border-color 0.18s;
-    color: #f1f5f9;
-    font-family: inherit;
+    outline: none;
+    transition: transform 0.18s, filter 0.18s;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
 }
-.pg-card:hover {
+.pg-img-card:hover {
     transform: translateY(-3px);
-    background: rgba(10, 18, 30, 0.42);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38), 0 3px 8px rgba(0, 0, 0, 0.22);
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,0.38));
 }
-.pg-card:active { transform: translateY(0) scale(0.96); }
-/* 卡片超大半透明主题 emoji 水印 */
-.pg-card .pg-watermark {
-    position: absolute;
-    right: -10px;
-    bottom: -20px;
-    font-size: 120px;
-    opacity: 0.08;
-    pointer-events: none;
-    line-height: 1;
-    user-select: none;
-    z-index: 0;
+.pg-img-card:active {
+    transform: translateY(0) scale(0.96);
 }
-.pg-card > *:not(.pg-watermark) { position: relative; z-index: 1; }
-
-.pg-card .pg-emoji {
-    font-size: 40px;
-    line-height: 1;
-    margin-bottom: 4px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+.pg-img-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
 }
-.pg-card .pg-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: #fff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-.pg-card .pg-sub {
-    font-size: 16px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.82);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-}
-
-/* 4 卡边框：3px 主题色实色边框 + 外发光（深色玻璃态上更醒目）
-   数学=信息青 / 汉字=主品牌绿 / 卡牌=竞技红 / 排行榜=提醒橙 */
-.pg-card.pg-mathpk { border: 3px solid #20B2AA; box-shadow: 0 0 12px rgba(32,178,170,.35), 0 6px 20px rgba(0,0,0,.28); }
-.pg-card.pg-hanzi { border: 3px solid #65A30D; box-shadow: 0 0 12px rgba(101,163,13,.35), 0 6px 20px rgba(0,0,0,.28); }
-.pg-card.pg-card-arena { border: 3px solid #FF6B6B; box-shadow: 0 0 12px rgba(255,107,107,.35), 0 6px 20px rgba(0,0,0,.28); }
-.pg-card.pg-leaderboard { border: 3px solid #FFA500; box-shadow: 0 0 12px rgba(255,165,0,.35), 0 6px 20px rgba(0,0,0,.28); }
-.pg-card.pg-mathpk:hover { box-shadow: 0 0 20px rgba(32,178,170,.5), 0 10px 30px rgba(0,0,0,.38); }
-.pg-card.pg-hanzi:hover { box-shadow: 0 0 20px rgba(101,163,13,.5), 0 10px 30px rgba(0,0,0,.38); }
-.pg-card.pg-card-arena:hover { box-shadow: 0 0 20px rgba(255,107,107,.5), 0 10px 30px rgba(0,0,0,.38); }
-.pg-card.pg-leaderboard:hover { box-shadow: 0 0 20px rgba(255,165,0,.5), 0 10px 30px rgba(0,0,0,.38); }
 
 /* 窄屏单列 */
 @media (max-width: 560px) {
     .playground-grid { grid-template-columns: 1fr; gap: 14px; padding: 14px; }
-    .pg-mascot, .pg-mascot.emoji { width: 60px; height: 60px; font-size: 56px; line-height: 60px; }
-    .pg-welcome { font-size: 22px; }
+    .pg-mascot-img { width: 64px; }
 }

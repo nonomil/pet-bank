@@ -9,15 +9,15 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/playground.css?v=5">
+    <link rel="stylesheet" href="css/playground.css?v=8">
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/walk.css">
     <link rel="stylesheet" href="css/card-collection.css">
     <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/arena.css">
-    <link rel="stylesheet" href="css/leaderboard.css">
-    <link rel="stylesheet" href="css/hanzi-game.css?v=2">
+    <link rel="stylesheet" href="css/leaderboard.css?v=2">
+    <link rel="stylesheet" href="css/hanzi-game.css?v=4">
 </head>
 <body class="map-page-bg">
     <!-- TOP NAV -->
@@ -254,11 +254,11 @@
                 </div>
             </div>
 
-            <!-- PAGE: 游乐场 Hub（童趣卡通风 v3） -->
+            <!-- PAGE: 游乐场 Hub（分解图还原 v4） -->
             <div class="page" id="page-playground">
-                <!-- Header：柴犬吉祥物 + 金币徽章 -->
+                <!-- Header：IP人物 + 金币徽章 -->
                 <div class="pg-header">
-                    <div class="pg-mascot emoji" aria-label="柴犬吉祥物">🐕</div>
+                    <img class="pg-mascot-img" src="assets/ui/pg-mascot.webp" alt="吉祥物">
                     <div class="pg-coin-badge" title="我的积分">
                         <svg class="coin-svg" viewBox="0 0 286 132" width="143" height="66">
                             <defs>
@@ -289,42 +289,19 @@
                     </div>
                 </div>
 
-                <!-- 欢迎语 -->
-                <div class="pg-welcome">来玩吧！</div>
-
-                <!-- 装饰色条（来自分解图 part-05/07/06） -->
-                <div class="pg-deco-strips">
-                    <img class="pg-strip-green" src="assets/ui/playground-parts/clean/part-05_519x202_577757_clean.png" alt="">
-                    <img class="pg-strip-earth" src="assets/ui/playground-parts/clean/part-07_517x207_6e5e47_clean.png" alt="">
-                </div>
-
-                <!-- 2×2 游戏入口（含分解图卡片面板装饰） -->
+                <!-- 2×2 游戏入口 — 图片卡片（透明底，直接贴背景上） -->
                 <section class="playground-grid">
-                    <img class="pg-card-panel-top" src="assets/ui/playground-parts/clean/part-06_top_clean.png" alt="">
-                    <img class="pg-card-panel-bot" src="assets/ui/playground-parts/clean/part-06_bot_clean.png" alt="">
-                    <button class="pg-card pg-mathpk" onclick="switchPage('mathpk')">
-                        <span class="pg-emoji">⚽</span>
-                        <span class="pg-title">数学 PK</span>
-                        <span class="pg-sub">趣味算术 巅峰对决</span>
-                        <span class="pg-watermark">⚽</span>
+                    <button class="pg-img-card" onclick="switchPage('mathpk')">
+                        <img src="assets/ui/pg-card-mathpk.webp?v=20260704b" alt="数学PK">
                     </button>
-                    <button class="pg-card pg-hanzi" onclick="switchPage('hanzi')">
-                        <span class="pg-emoji">✏️</span>
-                        <span class="pg-title">汉字游戏</span>
-                        <span class="pg-sub">快乐识字 轻松学习</span>
-                        <span class="pg-watermark">📖</span>
+                    <button class="pg-img-card" onclick="switchPage('hanzi')">
+                        <img src="assets/ui/pg-card-hanzi.webp?v=20260704b" alt="汉字游戏">
                     </button>
-                    <button class="pg-card pg-card-arena" onclick="CardArenaUI.openStages()">
-                        <span class="pg-emoji">🃏</span>
-                        <span class="pg-title">卡牌对战</span>
-                        <span class="pg-sub">策略比拼 智勇双全</span>
-                        <span class="pg-watermark">🃏</span>
+                    <button class="pg-img-card" onclick="CardArenaUI.openStages()">
+                        <img src="assets/ui/pg-card-arena.webp?v=20260704b" alt="卡牌对战">
                     </button>
-                    <button class="pg-card pg-leaderboard" onclick="switchPage('leaderboard')">
-                        <span class="pg-emoji">🏆</span>
-                        <span class="pg-title">排行榜</span>
-                        <span class="pg-sub">高手云集 荣誉之巅</span>
-                        <span class="pg-watermark">🏆</span>
+                    <button class="pg-img-card" onclick="switchPage('leaderboard')">
+                        <img src="assets/ui/pg-card-lb.webp?v=20260704b" alt="排行榜">
                     </button>
                 </section>
 

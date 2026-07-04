@@ -575,14 +575,14 @@ const ExplorationSystem = (function () {
                 if (Math.random() < drop.rate) {
                     InventorySystem.addItem(drop.item_id, 1);
                     const itemData = InventorySystem.getItemData(drop.item_id);
-                    battle.log.push({ type: 'reward', text: `📦 掉落: ${itemData?.name || drop.item_id} x1` });
+                    battle.log.push({ type: 'reward', text: `📦 发现补给：${itemData?.name || drop.item_id} x1` });
                 }
             }
             for (const rare of battle.scene.rare_drops || []) {
                 if (Math.random() < rare.rate) {
                     InventorySystem.addItem(rare.item_id, 1);
                     const itemData = InventorySystem.getItemData(rare.item_id);
-                    battle.log.push({ type: 'reward', text: `💎 稀有掉落: ${itemData?.name || rare.item_id} x1` });
+                    battle.log.push({ type: 'reward', text: `💎 发现稀有线索：${itemData?.name || rare.item_id} x1` });
                 }
             }
             // 回合结束：CD 递减

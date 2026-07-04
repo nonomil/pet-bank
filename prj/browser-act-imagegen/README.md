@@ -37,6 +37,14 @@ browser-act get-skills core --skill-version 2.0.2
   → 分段取 base64（40KB/段）→ 解码 → 抠图（白→透明）→ 存
 ```
 
+### 页面级背景资产治理（本项目新增约定）
+
+- 首页 `assets/home-bg.webp` / `assets/home-bg.jpg` 是全站路线地图视觉锚点。
+- `游乐场`、`汉字游戏`、`排行榜` 这类页面，**默认复用首页背景**，不要再为每个页面单独生成一张全屏大背景。
+- 需要新生图时，优先生成 `卡片`、`按钮`、`徽章`、`插图`、`角色`、`局部装饰`，不要生成会替代整页背景的独立大场景。
+- 如果未来确实要扩展背景，也必须保持“中心留空、图案放外围、整体色调贴近首页”的规则，不能让页面切成另一套画风。
+- 素材发布前仍然走透明化和边界 alpha 校验；但页面背景本身属于站点级资源治理，不属于常规局部素材替换范围。
+
 ### B. Fandom 抓官方图（Python，不耗 ChatGPT 额度）
 - `Special:FilePath/{Name}.png?format=original`
 - 必须 header：**Referer（具体 wiki 页面）+ Sec-Fetch-* + UA**（curl 会拿空 body）
@@ -44,6 +52,7 @@ browser-act get-skills core --skill-version 2.0.2
 
 ### C. 抠图（白→透明）
 - Python PIL：`ImageChops.difference(图, 纯白)` → `point(阈值<22 → alpha 0)` → putalpha
+- 如果素材最后要直接进入项目 UI，抠图后不要手工拷中间产物；统一再走 `publish_transparent_assets.py`，重新导出 PNG / WebP 并校验最外圈 alpha
 
 ---
 
@@ -87,11 +96,13 @@ browser-act get-skills core --skill-version 2.0.2
 
 10. **白底 vs 透明**：ChatGPT 默认生白底，Fandom 原图是透明 PNG。要统一透明，ChatGPT 图需抠图（PIL ImageChops，白色 → alpha 0）。
 
-11. **Fandom 反爬（curl 拿空 body）**：curl 拿到 HTTP 200 + Content-Type 但 SIZE=0。**解法**：Python `urllib` + `Referer`（具体 wiki 页面，不是根域名）+ `Sec-Fetch-Dest/Mode/Site` header。
+11. **页面背景风格漂移**：给游乐场、汉字、排行榜各生一张独立大背景，最终会让站内视觉断裂。**解法**：页面级背景默认继续使用首页 `home-bg`，生图只负责局部素材。
 
-12. **Fandom 文件名不规则**：`Special:FilePath/Wall-nut.png` 可能 404（实际文件名 `Wallnut.png` 或带版本号）。**解法**：试 `_HD` / `_PvZ2` / 数字 / 去连字符 / `in-game` 等变体；部分角色 Fandom 只有 96×96 小 sprite，无 HD 版。
+12. **Fandom 反爬（curl 拿空 body）**：curl 拿到 HTTP 200 + Content-Type 但 SIZE=0。**解法**：Python `urllib` + `Referer`（具体 wiki 页面，不是根域名）+ `Sec-Fetch-Dest/Mode/Site` header。
 
-13. **ChatGPT 额度**：免费版 ~5 张/天就到顶，Plus 额度高但批量上百张仍要分天/换号。
+13. **Fandom 文件名不规则**：`Special:FilePath/Wall-nut.png` 可能 404（实际文件名 `Wallnut.png` 或带版本号）。**解法**：试 `_HD` / `_PvZ2` / 数字 / 去连字符 / `in-game` 等变体；部分角色 Fandom 只有 96×96 小 sprite，无 HD 版。
+
+14. **ChatGPT 额度**：免费版 ~5 张/天就到顶，Plus 额度高但批量上百张仍要分天/换号。
 
 ---
 
@@ -108,6 +119,9 @@ A: 轮询 bug。记录生图前的 img 数 `N0`，轮询条件 `arr.length > N0`
 
 **Q: ChatGPT 生的是白底，项目要透明？**
 A: Python 抠图：`ImageChops.difference(img, white)` → `point(lambda x: 0 if x<22 else 255)` → `putalpha`。简单阈值，角色纯白高光可能误删（不满意就用 ChatGPT 重生时 prompt 加 `transparent background`）。
+
+**Q: 游乐场 / 汉字 / 排行榜要不要各自再生一张整页背景？**
+A: 不要默认这么做。本项目这三页现在统一复用首页 `home-bg`；生图优先做卡片、按钮、角色、局部装饰。只有用户明确批准新增整页背景，才进入背景类生图。
 
 **Q: Fandom 图 curl 报 403 或拿空 body？**
 A: 别用 curl。Python `urllib` 加 `Referer`（具体角色页面 URL）+ `Sec-Fetch-*` header。

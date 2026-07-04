@@ -24,8 +24,18 @@
 |---|---|---|---|---|
 | galgame 场景背景 | 12 | `assets/scenes-vn/` | Agnes API 批量 | agnes-image-2.1-flash |
 | galgame 角色立绘 | 12 | `assets/characters/` | Agnes API 批量 | agnes-image-2.1-flash |
+| 宠物图鉴分馆封面底图 | 4 | `assets/pokedex-halls/` | Agnes API 批量 | agnes-image-2.1-flash |
+| 宠物图鉴分馆封面合成图 | 4 | `assets/pokedex-halls/` | Agnes 背景 + 本地代表卡叠加 | 本地合成 |
+| 宠物卡牌 V2 底图 | 4 | `assets/cards/v2/` | Agnes API 批量 | agnes-image-2.1-flash |
+| 宠物卡牌 V2 合成图 | 198 | `assets/cards/composed-v2/` | Agnes 底图 + 本地脚本叠中文属性 | 本地合成 |
 
 > v0.5.3 用 Agnes 新 key（`sk-Dt1UZ...`）批量生成 24 张 galgame 素材。提示词见 [探索 galgame 提示词](../plans/2026-06-29-探索故事galgame重设计.md) §4。
+>
+> v0.5.4 新增图鉴分馆封面流程：
+> 先用 `scripts/generators/gen_gallery_covers.py` 生成 4 张分馆底图，再用 `scripts/generators/compose_gallery_cover_collages.py` 把代表宠物卡直接烘进背景图，最终供图鉴首页 4 张分馆卡复用。
+>
+> v0.5.5 新增宠物卡牌 V2 流程：
+> 先用 `scripts/generators/gen_card_frames_v2.py` 生成 4 张卡牌底图，再用 `scripts/generators/compose_cards_v2.py` 批量叠加宠物立绘、中文名称和 `生命 / 攻击 / 防御 / 速度` 属性，输出到 `assets/cards/composed-v2/`。
 
 ---
 
