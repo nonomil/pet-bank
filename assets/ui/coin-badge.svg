@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 286 132" width="286" height="132">
+  <defs>
+    <!-- 金币主体渐变：参考part-03配色 -->
+    <linearGradient id="coin-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8ebc2"/>
+      <stop offset="18%" stop-color="#c9a44d"/>
+      <stop offset="40%" stop-color="#b78c34"/>
+      <stop offset="65%" stop-color="#8a6a28"/>
+      <stop offset="85%" stop-color="#a08020"/>
+      <stop offset="100%" stop-color="#50442a"/>
+    </linearGradient>
+    <!-- 顶部高光 -->
+    <linearGradient id="coin-shine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdf5d6" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#f8ebc2" stop-opacity="0"/>
+    </linearGradient>
+    <!-- 内发光边框 -->
+    <linearGradient id="coin-border" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c9a44d"/>
+      <stop offset="50%" stop-color="#8a6a28"/>
+      <stop offset="100%" stop-color="#50442a"/>
+    </linearGradient>
+    <!-- 硬币图标渐变 -->
+    <radialGradient id="icon-coin" cx="0.4" cy="0.35">
+      <stop offset="0%" stop-color="#ffe680"/>
+      <stop offset="60%" stop-color="#daa520"/>
+      <stop offset="100%" stop-color="#8a6a28"/>
+    </radialGradient>
+    <!-- 数字文字阴影 -->
+    <filter id="text-shadow">
+      <feDropShadow dx="0" dy="0.5" stdDeviation="0.3" flood-color="#3a2a10" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- 外层阴影 -->
+  <rect x="3" y="5" width="280" height="124" rx="28" ry="28"
+        fill="rgba(0,0,0,0.25)"/>
+
+  <!-- 主体圆角矩形 -->
+  <rect x="0" y="2" width="280" height="124" rx="26" ry="26"
+        fill="url(#coin-grad)" stroke="url(#coin-border)" stroke-width="1.5"/>
+
+  <!-- 顶部高光条 -->
+  <rect x="8" y="4" width="264" height="40" rx="20" ry="20"
+        fill="url(#coin-shine)"/>
+
+  <!-- 内边框刻痕 -->
+  <rect x="5" y="7" width="270" height="114" rx="23" ry="23"
+        fill="none" stroke="#5a4420" stroke-width="0.8" stroke-opacity="0.4"/>
+
+  <!-- 硬币 emoji 圆形背景 -->
+  <circle cx="50" cy="63" r="36" fill="url(#icon-coin)"
+          stroke="#8a6a28" stroke-width="1.2"/>
+  <!-- 硬币高光 -->
+  <ellipse cx="40" cy="48" rx="16" ry="10" fill="#fff" opacity="0.3"/>
+  <!-- 硬币符号 ¥ -->
+  <text x="50" y="72" text-anchor="middle" font-size="32" font-weight="900"
+        fill="#5a3a08" font-family="sans-serif">¥</text>
+
+  <!-- 分隔竖线 -->
+  <line x1="92" y1="30" x2="92" y2="98" stroke="#5a4420" stroke-width="1.2" stroke-opacity="0.5"/>
+
+  <!-- 积分数字 -->
+  <text x="185" y="78" text-anchor="middle" font-size="36" font-weight="900"
+        fill="#2a1a08" font-family="'Noto Sans SC', sans-serif"
+        filter="url(#text-shadow)">1280</text>
+
+  <!-- 文字：分 -->
+  <text x="240" y="60" text-anchor="middle" font-size="12" font-weight="600"
+        fill="#4a3a18" font-family="'Noto Sans SC', sans-serif">分</text>
+  <!-- 文字：成长分 -->
+  <text x="240" y="85" text-anchor="middle" font-size="10" font-weight="500"
+        fill="#6a5a28" font-family="'Noto Sans SC', sans-serif">成长分</text>
+</svg>

@@ -1,6 +1,6 @@
 /* ============================================================
    css/hanzi-game.css
-   汉字答题玩法（童趣卡通风）：Agnes 生图背景 + 玻璃态卡片
+   汉字答题玩法（自然绘本风）：ChatGPT 生图背景 + 玻璃态卡片
    + 深色字 + 圆润字体，与 playground 统一调性，零依赖
    ============================================================ */
 
@@ -17,7 +17,7 @@
     content: '';
     position: fixed;
     inset: 0;
-    background: url('../assets/ui/hanzi-bg.png') center top / cover no-repeat, #E6F4F1;
+    background: url('../assets/ui/hanzi-bg.webp') center top / cover no-repeat, #E6F4F1;
     z-index: -1;
     pointer-events: none;
 }
@@ -26,7 +26,7 @@
 .hz-lobby {
     max-width: 760px;
     margin: 0 auto;
-    padding: 20px 16px 40px;
+    padding: 10px 16px 16px;
     /* 偏白白底（0.88 白 + 6px blur），替玻璃态过透 */
     background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(6px) saturate(1.1);
@@ -57,7 +57,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
-    margin: 18px 0 22px;
+    margin: 12px 0 14px;
 }
 .hz-level-card {
     background: rgba(255, 255, 255, 0.88);

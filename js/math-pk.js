@@ -121,7 +121,7 @@
                         .arena-side { grid-area:auto; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; transition:filter .3s; }
                         .arena-side.human { grid-area:human; }
                         .arena-side.robot { grid-area:robot; }
-                        .arena-avatar { width:150px; height:150px; object-fit:contain; filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); transition:filter .3s; }
+                        .arena-avatar { width:200px; height:200px; object-fit:contain; filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); transition:filter .3s; }
                         .arena-side.dim .arena-avatar { filter:grayscale(.7) brightness(.55); }
                         .arena-side.win .arena-avatar { filter:drop-shadow(0 0 20px rgba(110,231,183,.95)); }
                         .arena-name { font-size:18px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,.5); }
@@ -157,7 +157,7 @@
                         @keyframes arena-shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-7px);} 75%{transform:translateX(7px);} }
                         @media (max-width:760px){
                             .arena-stage { grid-template-columns:1fr 1fr; grid-template-areas:'human robot' 'center center'; }
-                            .arena-avatar { width:84px; height:84px; }
+                            .arena-avatar { width:120px; height:120px; }
                             .arena-name { font-size:14px; } .arena-status { font-size:11px; }
                             .arena-thinkbar { width:90px; }
                             .arena-question { font-size:2.4rem; } .arena-question.word { font-size:1rem; }
@@ -173,14 +173,14 @@
                     </div>
                     <div class="arena-stage">
                         <div class="arena-side human" id="arena-side-human">
-                            <img class="arena-avatar" src="assets/arena/human-kid.webp" alt="你">
+                            <img class="arena-avatar" src="assets/arena/human-kid.png" alt="你">
                             <div class="arena-name">你</div>
                             <div class="arena-status" id="arena-human-status">准备就绪</div>
                             <div class="arena-time" id="arena-human-time"></div>
                         </div>
                         <div class="arena-center" id="arena-center"></div>
                         <div class="arena-side robot" id="arena-side-robot">
-                            <img class="arena-avatar" src="assets/arena/robot-rival.webp" alt="机器人">
+                            <img class="arena-avatar" src="assets/arena/robot-rival.png" alt="机器人">
                             <div class="arena-name">机器人</div>
                             <div class="arena-status" id="arena-robot-status">准备就绪</div>
                             <div class="arena-time" id="arena-robot-time"></div>
