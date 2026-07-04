@@ -1008,14 +1008,51 @@ function renderScenePreview(scene) {
     `;
 }
 
+function getExploreMapShellHTML() {
+    return `
+        <section class="explore-hero">
+            <div class="explore-hero-copy" style="grid-column:1/-1">
+                <p class="map-eyebrow">探索冒险 / 场景路线</p>
+                <h2>沿着星光路线，一站站探索冒险</h2>
+                <p>点击地图上的场景卡片即可出发。金色星点已开放，灰色尚未解锁，发光路线把场景串成一条旅程。</p>
+            </div>
+        </section>
+        <section class="map-board-shell">
+            <div class="map-board-surface">
+                <div class="map-board-texture"></div>
+                <div id="sceneGrid" class="map-board"><!-- 由 exploration.js 渲染路线地图 --></div>
+            </div>
+        </section>
+    `;
+}
+
+function ensureExploreMapShell() {
+    const pageExplore = document.getElementById('page-explore');
+    if (!pageExplore) return null;
+
+    let grid = pageExplore.querySelector('#sceneGrid');
+    if (grid) return grid;
+
+    const activeGalgame = pageExplore.querySelector('.galgame-stage')
+        && window.ExplorationDetail
+        && typeof ExplorationDetail.isActive === 'function'
+        && ExplorationDetail.isActive();
+    if (activeGalgame) return null;
+
+    pageExplore.innerHTML = getExploreMapShellHTML();
+    return pageExplore.querySelector('#sceneGrid');
+}
+
 async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
+    const grid = ensureExploreMapShell();
+    if (!grid) return;
+
     // 宠物小屋 R5 渲染层兜底（F1 第二道）：hp<=0 且已选宠 → 探索页不渲染场景网格
     if (window.PetSystem) {
         try {
             const s = PetSystem.getState();
             if (s.species && s.hp <= 0) {
-                const grid0 = document.getElementById('sceneGrid');
-                if (grid0) grid0.innerHTML = '<div style="padding:24px;text-align:center;color:#888;">宠物倒下了，请先去宠物小屋救援 🆘</div>';
+                grid.innerHTML = '<div style="padding:24px;text-align:center;color:#888;">宠物倒下了，请先去宠物小屋救援 🆘</div>';
                 return;
             }
         } catch (e) {}
@@ -1039,6 +1076,7 @@ function startExplorationUI(sceneId) {
 window.focusExploreScene = focusExploreScene;
 window.startExplorationUI = startExplorationUI;
 window.renderExplorePage = renderExplorePage;
+window.ensureExploreMapShell = ensureExploreMapShell;
 function darken(hex, percent) {
     const num = parseInt(hex.replace('#', ''), 16);
     const r = Math.max(0, (num >> 16) - percent);

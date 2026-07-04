@@ -668,14 +668,9 @@ const CardCollection = (function() {
                     <div class="card-gallery-card-media" style="background:${gallery.gradient}">
                         <img class="card-gallery-cover-image" src="${gallery.coverImage}" alt="${gallery.name}" loading="lazy" style="object-position:${gallery.coverPosition || 'center 42%'}">
                         <div class="card-gallery-cover-scrim"></div>
-                        <div class="card-gallery-cover-badge">
-                            ${getGalleryIconMarkup(gallery.accent)}
-                        </div>
                         <div class="card-gallery-cover-progress">${collected} / ${pets.length}</div>
                         <div class="card-gallery-card-body">
-                            <div class="card-gallery-kicker">${gallery.cardLabel || '分馆入口'}</div>
                             <div class="card-gallery-name">${gallery.name}</div>
-                            <div class="card-gallery-subtitle">${gallery.subtitle}</div>
                             <div class="card-gallery-blurb">${gallery.cardIntro || gallery.summary}</div>
                             <div class="card-gallery-bar"><div class="card-gallery-fill" style="width:${percent}%"></div></div>
                         </div>

@@ -38,6 +38,9 @@ def main() -> None:
     require(js, "植物镇", "向日葵样板故事必须落到植物镇世界观")
     require(js, "晨光学堂", "向日葵样板故事必须包含学习背景")
     require(js, "见习培育师", "向日葵样板故事必须包含当前角色设定")
+    require(css, "card-modal-content-book .close-btn", "detail modal should keep the close button sticky inside the scroll container")
+    require(css, "max-height: calc(100vh - 40px);", "detail modal should have a viewport-based max height")
+    require(css, "overflow-y: auto;", "detail modal should be vertically scrollable")
 
 
 if __name__ == "__main__":

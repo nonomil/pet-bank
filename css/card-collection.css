@@ -230,9 +230,9 @@
 
 .card-gallery-card-media {
     position: relative;
-    min-height: 228px;
+    min-height: 208px;
     height: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 2 / 1;
     overflow: hidden;
 }
 
@@ -251,13 +251,6 @@
     background:
         radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent 26%),
         linear-gradient(180deg, rgba(32, 23, 15, 0.04) 0%, rgba(32, 23, 15, 0.12) 44%, rgba(32, 23, 15, 0.6) 100%);
-}
-
-.card-gallery-cover-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    z-index: 2;
 }
 
 .card-gallery-cover-progress {
@@ -358,20 +351,16 @@
 
 .card-gallery-card-body {
     position: absolute;
-    left: 12px;
-    top: 64px;
-    width: min(46%, 220px);
-    bottom: 12px;
+    left: 14px;
+    top: 14px;
+    width: min(46%, 236px);
     z-index: 2;
-    padding: 12px 14px 14px;
+    padding: 12px 14px 12px;
     border-radius: 18px;
     background: rgba(255, 249, 241, 0.9);
     border: 1px solid rgba(255,255,255,0.72);
     backdrop-filter: blur(12px) saturate(1.08);
     box-shadow: 0 10px 22px rgba(63, 45, 18, 0.14);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
 }
 
 .card-gallery-kicker {
@@ -410,10 +399,10 @@
 .card-gallery-icon-blocky { color: #4d8a4a; }
 
 .card-gallery-name {
-    font-size: 1.12rem;
+    font-size: 1.18rem;
     font-weight: 900;
     color: rgba(50,34,18,0.82);
-    margin-top: 3px;
+    margin-top: 0;
 }
 
 .card-gallery-subtitle {
@@ -427,15 +416,15 @@
 
 .card-gallery-blurb {
     margin-top: 6px;
-    min-height: 2.8em;
-    font-size: 0.77rem;
-    line-height: 1.42;
+    min-height: 0;
+    font-size: 0.8rem;
+    line-height: 1.48;
     color: rgba(72, 51, 29, 0.8);
     font-weight: 600;
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
 }
 
 .card-gallery-count {
@@ -446,7 +435,7 @@
 }
 
 .card-gallery-bar {
-    margin-top: 10px;
+    margin-top: 9px;
     height: 7px;
     background: rgba(90,70,35,0.12);
     border-radius: 999px;
@@ -1089,9 +1078,10 @@
     inset: 0;
     z-index: 1000;
     display: none;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding: 1rem;
+    padding: 20px 16px;
+    overflow-y: auto;
 }
 
 #cardDetailModal.show {
@@ -1108,14 +1098,19 @@
     position: relative;
     width: 100%;
     max-width: 320px;
+    max-height: calc(100vh - 40px);
     background: #1e293b;
     border-radius: 1rem;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     animation: card-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .card-modal-content-book {
+    width: min(100%, 1180px);
     max-width: 1180px;
     background: linear-gradient(180deg, rgba(255, 248, 235, 0.98), rgba(247, 238, 221, 0.98));
     border-radius: 32px;
@@ -1165,6 +1160,27 @@
     position: relative;
     padding: 28px;
     color: #3d3120;
+}
+
+.card-modal-content-book .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid rgba(188, 166, 128, 0.28);
+    background: rgba(255, 250, 241, 0.94);
+    color: #7a6643;
+    box-shadow: 0 10px 24px rgba(63, 45, 18, 0.12);
+    z-index: 4;
+}
+
+.card-modal-content-book .close-btn:hover {
+    background: rgba(255, 246, 232, 1);
 }
 
 .card-detail-main {
@@ -1559,11 +1575,11 @@
     }
     .card-gallery-card,
     .card-gallery-card-media {
-        min-height: 246px;
+        min-height: 224px;
     }
     .card-gallery-card-body {
-        top: 60px;
-        width: min(48%, 214px);
+        top: 12px;
+        width: min(48%, 226px);
     }
     .card-gallery-preview-stack {
         left: 16px;
@@ -1598,6 +1614,7 @@
     }
     .card-modal-content-book {
         max-width: calc(100vw - 24px);
+        max-height: calc(100vh - 24px);
     }
     .card-detail-shell {
         padding: 18px;
@@ -1615,7 +1632,7 @@
     .card-gallery-card,
     .card-gallery-card-media,
     .card-hall-hero-cover {
-        min-height: 232px;
+        min-height: 214px;
     }
     .card-gallery-preview-stack.large {
         left: 20px;
@@ -1636,11 +1653,11 @@
     }
     .card-gallery-card-body {
         left: 10px;
-        top: auto;
+        top: 10px;
         right: 10px;
-        width: auto;
-        bottom: 10px;
-        padding: 12px 13px 14px;
+        width: min(58%, 250px);
+        bottom: auto;
+        padding: 11px 12px 12px;
     }
     .card-gallery-blurb {
         min-height: 0;

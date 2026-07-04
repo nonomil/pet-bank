@@ -26,16 +26,25 @@ const ExplorationDetail = (function () {
     // 探索故事事件（数据驱动 data/stories/ 文件夹，每场景一个 json；fetch 失败回退硬编码 sceneEvents 兜底）
     const STORY_SCENE_IDS = ['forest', 'beach', 'mountain', 'space', 'candy', 'cave', 'waterfall', 'desert', 'underwater', 'castle', 'volcano', 'stargarden'];
     let _storiesLoaded = false;
+    let _storiesLoadingPromise = null;
     async function _loadStories() {
         if (_storiesLoaded) return;
-        _storiesLoaded = true;
-        try {
-            const results = await Promise.all(STORY_SCENE_IDS.map(id => fetch(`data/stories/${id}.json`).then(r => r.json())));
-            results.forEach((s, i) => {
-                if (s && s.events) sceneEvents[STORY_SCENE_IDS[i]] = s.events;
-                if (s && s.ending_text) SCENE_ENDING[STORY_SCENE_IDS[i]] = s.ending_text;
-            });
-        } catch (e) { console.warn('stories folder load failed', e); }
+        if (_storiesLoadingPromise) return _storiesLoadingPromise;
+        _storiesLoadingPromise = (async () => {
+            try {
+                const results = await Promise.all(STORY_SCENE_IDS.map(id => fetch(`data/stories/${id}.json`).then(r => r.json())));
+                results.forEach((s, i) => {
+                    if (s && s.events) sceneEvents[STORY_SCENE_IDS[i]] = s.events;
+                    if (s && s.ending_text) SCENE_ENDING[STORY_SCENE_IDS[i]] = s.ending_text;
+                });
+                _storiesLoaded = true;
+            } catch (e) {
+                console.warn('stories folder load failed', e);
+            } finally {
+                _storiesLoadingPromise = null;
+            }
+        })();
+        return _storiesLoadingPromise;
     }
 
     // 每个场景的探索事件序列（R1 单一源：data/stories/*.json 唯一正式源，_loadStories 加载填充）
@@ -58,7 +67,7 @@ const ExplorationDetail = (function () {
     };
 
     // 显示探索页（galgame 风格：背景 + 左右立绘 + 底部对话框 + 推进）
-    function show(sceneId) {
+    async function show(sceneId) {
         // 宠物小屋 R5 第二守卫（F1 兜底）：hp<=0 且已选宠 → 拦截
         if (window.PetSystem) {
             try {
@@ -72,11 +81,13 @@ const ExplorationDetail = (function () {
         const scenes = ExplorationSystem.getAllScenes();
         currentScene = scenes.find(s => s.id === sceneId);
         if (!currentScene) return;
+        await _loadStories();
         // 故事未加载(file://协议或fetch失败) → 明确提示，不再静默回退兜底（R1 单一源）
         if (!sceneEvents[currentScene.id]) {
             switchPage('explore');
             const pe = document.getElementById('page-explore');
             if (pe) pe.innerHTML = '<div style="padding:60px;text-align:center;color:#fbbf24;font-size:18px;line-height:1.8;">📖 故事加载失败<br><span style="font-size:14px;color:#888;">请用本地服务器打开：<code>python -m http.server 8000</code><br>然后访问 http://localhost:8000/</span></div>';
+            currentScene = null;
             return;
         }
         eventIndex = 0;
@@ -175,16 +186,26 @@ const ExplorationDetail = (function () {
         }
         return [...opts].sort(() => Math.random() - 0.5);
     }
-    function answerMath(correct, exp, msg) {
+    function answerMath(correct, exp, msg, hint, explanation) {
         const textEl = document.getElementById('galgameText');
         const choicesEl = document.getElementById('galgameChoices');
         const box = document.getElementById('galgameBox');
         if (!textEl) return;
         if (correct) {
             if (exp && window.PetSystem) PetSystem.addExp(exp);
-            textEl.innerHTML = `<span class="galgame-found">${msg || '答对了！'}</span>`;
+            const parts = [`<span class="galgame-found">${msg || '答对了！'}</span>`];
+            if (explanation) {
+                parts.push(`<span class="galgame-explanation">解析：${explanation}</span>`);
+            }
+            textEl.innerHTML = parts.join('<br>');
         } else {
-            textEl.innerHTML = `<span class="galgame-warn">答错了……继续探索吧。</span>`;
+            const parts = ['<span class="galgame-warn">这次记录还差一点点。</span>'];
+            if (hint) {
+                parts.push(`<span class="galgame-hint">提示：${hint}</span>`);
+            } else {
+                parts.push('<span class="galgame-warn">答错了……继续探索吧。</span>');
+            }
+            textEl.innerHTML = parts.join('<br>');
         }
         choicesEl.innerHTML = '';
         box.onclick = () => ExplorationDetail.next();
@@ -231,10 +252,14 @@ const ExplorationDetail = (function () {
             nameEl.textContent = '🔢 谜题';
             // R3: 固定场景题(长题面)用 galgame-word 样式, 仅裸算式保留 galgame-math
             const useWordStyle = !!event.question || event.mathType === 'word';
-            const qHtml = `${event.text}<br><span class="${useWordStyle ? 'galgame-word' : 'galgame-math'}">${q.text}</span>`;
+            const skillHtml = event.skill ? `<span class="galgame-skill">能力点：${event.skill}</span>` : '';
+            const qHtml = `${event.text}${skillHtml ? `<br>${skillHtml}` : ''}<br><span class="${useWordStyle ? 'galgame-word' : 'galgame-math'}">${q.text}</span>`;
+            const rewardMsg = JSON.stringify(event.reward?.msg || '');
+            const hint = JSON.stringify(event.hint || '');
+            const explanation = JSON.stringify(event.explanation || '');
             textEl.innerHTML = qHtml;
             choicesEl.innerHTML = opts.map(o =>
-                `<button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.answerMath(${o === q.answer}, ${event.reward?.exp || 0}, '${(event.reward?.msg || '').replace(/'/g, "\\'")}')">${o}</button>`
+                `<button class="galgame-choice" onclick='event.stopPropagation();ExplorationDetail.answerMath(${o === q.answer}, ${event.reward?.exp || 0}, ${rewardMsg}, ${hint}, ${explanation})'>${o}</button>`
             ).join('');
             box.onclick = null;  // 等答题
             return;
@@ -294,7 +319,11 @@ const ExplorationDetail = (function () {
 
         const pageExplore = document.getElementById('page-explore');
         if (pageExplore) {
-            pageExplore.innerHTML = EXPLORE_SHELL_HTML;
+            if (window.ensureExploreMapShell) {
+                window.ensureExploreMapShell();
+            } else {
+                pageExplore.innerHTML = EXPLORE_SHELL_HTML;
+            }
             void renderExplorePage(sceneId);
             window.scrollTo(0, 0);
         }

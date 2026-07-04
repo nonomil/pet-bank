@@ -26,40 +26,26 @@ HALLS = {
     "sunshine": {
         "accent": "#E8B94C",
         "pet_ids": ["pvz_peashooter", "pvz_sunflower", "pvz_cherrybomb"],
-        "cards": [
-            {"x": 468, "y": 236, "angle": -12, "scale": 0.72},
-            {"x": 596, "y": 108, "angle": -2, "scale": 0.84},
-            {"x": 792, "y": 242, "angle": 11, "scale": 0.72},
-        ],
     },
     "adventure": {
         "accent": "#D58BA7",
         "pet_ids": ["4413441b-af1", "2cd112b5-025", "35a035d7-972"],
-        "cards": [
-            {"x": 476, "y": 228, "angle": -11, "scale": 0.72},
-            {"x": 594, "y": 104, "angle": -1, "scale": 0.84},
-            {"x": 790, "y": 234, "angle": 11, "scale": 0.72},
-        ],
     },
     "classroom": {
         "accent": "#7FB6E8",
         "pet_ids": ["cp_cat_01", "cp_unicorn_01", "cp_robot_01"],
-        "cards": [
-            {"x": 470, "y": 234, "angle": -10, "scale": 0.72},
-            {"x": 592, "y": 110, "angle": -1, "scale": 0.84},
-            {"x": 786, "y": 238, "angle": 10, "scale": 0.72},
-        ],
     },
     "blocky": {
         "accent": "#86C06F",
         "pet_ids": ["mc_wolf", "mc_allay", "mc_enderman"],
-        "cards": [
-            {"x": 470, "y": 228, "angle": -10, "scale": 0.74},
-            {"x": 594, "y": 100, "angle": -2, "scale": 0.86},
-            {"x": 788, "y": 232, "angle": 10, "scale": 0.74},
-        ],
     },
 }
+
+RIGHT_ROW_LAYOUT = [
+    {"x": 462, "y": 178, "angle": -10, "scale": 0.72},
+    {"x": 630, "y": 178, "angle": 0, "scale": 0.72},
+    {"x": 798, "y": 178, "angle": 10, "scale": 0.72},
+]
 
 
 def load_pets(repo_root: Path) -> dict[str, dict]:
@@ -199,8 +185,9 @@ def main() -> int:
         out_path = hall_dir / f"{slug}.png"
         base_path = ensure_base_copy(out_path, base_dir)
         background = Image.open(base_path).convert("RGBA")
+        cards_layout = config.get("cards") or RIGHT_ROW_LAYOUT
 
-        for pet_id, placement in zip(config["pet_ids"], config["cards"]):
+        for pet_id, placement in zip(config["pet_ids"], cards_layout):
             pet = pets[pet_id]
             card_asset = resolve_card_asset(repo_root, pet_id, args.card_dir)
             if card_asset:
