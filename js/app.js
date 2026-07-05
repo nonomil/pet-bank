@@ -884,6 +884,17 @@ function runPageActivation(page) {
         const settingsMathDiff = document.getElementById('settings-math-diff');
         if (settingsMathDiff) settingsMathDiff.innerHTML = '';
     }
+    if (page === 'settings' && !window.MathPKGame && window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function') {
+        void window.PetBankRuntime.ensurePage('playground')
+            .then(function () {
+                const settingsPage = document.getElementById('page-settings');
+                if (!settingsPage || !settingsPage.classList.contains('active')) return;
+                if (showDiagnostics && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') {
+                    MathPKGame.renderDifficultySetting('settings-math-diff');
+                }
+            })
+            .catch(function () {});
+    }
 }
 
 async function preparePage(page) {

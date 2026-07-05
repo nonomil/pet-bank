@@ -277,9 +277,10 @@ async function smokeBlindBox(page) {
     window.addGrowthPoints(5000); // 同步更新 totalPoints + localStorage
     const before = parseInt(localStorage.getItem('petbank_points') || '0', 10);
     const invBefore = (window.InventorySystem.getAllItems() || []).length;
+    const expBefore = window.PetSystem.getState().exp;
     window.ShopSystem.openBox('box_normal', 'shop-ui');
     const afterSync = parseInt(localStorage.getItem('petbank_points') || '0', 10);
-    return { before, afterSync, deducted: before - afterSync, invBefore };
+    return { before, afterSync, deducted: before - afterSync, invBefore, expBefore };
   });
   check('3.1 box_normal 同步扣 20 分', r1.deducted === 20, `before=${r1.before} afterSync=${r1.afterSync}`);
   await sleep(BLINDBOX_WAIT); // 等异步结果结算
@@ -291,11 +292,12 @@ async function smokeBlindBox(page) {
     try { h = JSON.parse(localStorage.getItem('petbank_blindbox_history') || '[]'); } catch {}
     const pts = parseInt(localStorage.getItem('petbank_points') || '0', 10);
     const invCount = (window.InventorySystem.getAllItems() || []).length;
-    return { historyCount: h.length, pts, invCount };
+    const exp = window.PetSystem.getState().exp;
+    return { historyCount: h.length, pts, invCount, exp };
   });
   // 异步结果生效：要么返利（积分回升 > afterSync），要么道具入背包，要么 exp（不影响积分）
-  const r1RewardOk = (r2.pts > r1.afterSync) || (r2.invCount > r1.invBefore);
-  check('3.2 box_normal 异步结果结算（返利/道具/exp 之一）', r2.historyCount > 0 && r1RewardOk, `history=${r2.historyCount} pts=${r1.afterSync}->${r2.pts} invCount=${r1.invBefore}->${r2.invCount}`);
+  const r1RewardOk = (r2.pts > r1.afterSync) || (r2.invCount > r1.invBefore) || (r2.exp > r1.expBefore);
+  check('3.2 box_normal 异步结果结算（返利/道具/exp 之一）', r2.historyCount > 0 && r1RewardOk, `history=${r2.historyCount} pts=${r1.afterSync}->${r2.pts} invCount=${r1.invBefore}->${r2.invCount} exp=${r1.expBefore}->${r2.exp}`);
 
   // 3.3 豪华盲盒：同步扣 50
   const r3 = await page.evaluate(() => {
@@ -303,19 +305,21 @@ async function smokeBlindBox(page) {
     window.addGrowthPoints(5000);
     const before = parseInt(localStorage.getItem('petbank_points') || '0', 10);
     const invBefore = (window.InventorySystem.getAllItems() || []).length;
+    const expBefore = window.PetSystem.getState().exp;
     window.ShopSystem.openBox('box_luxury', 'shop-ui');
     const afterSync = parseInt(localStorage.getItem('petbank_points') || '0', 10);
-    return { before, afterSync, deducted: before - afterSync, invBefore };
+    return { before, afterSync, deducted: before - afterSync, invBefore, expBefore };
   });
   check('3.3 box_luxury 同步扣 50 分', r3.deducted === 50, `before=${r3.before} afterSync=${r3.afterSync}`);
   await sleep(BLINDBOX_WAIT);
   await page.evaluate(() => document.querySelectorAll('.overlay').forEach(el => el.remove()));
   const r3After = await page.evaluate(() => ({
     pts: parseInt(localStorage.getItem('petbank_points') || '0', 10),
-    invCount: (window.InventorySystem.getAllItems() || []).length
+    invCount: (window.InventorySystem.getAllItems() || []).length,
+    exp: window.PetSystem.getState().exp
   }));
-  const r3RewardOk = (r3After.pts > r3.afterSync) || (r3After.invCount > r3.invBefore);
-  check('3.3b box_luxury 异步结果结算', r3RewardOk, `pts=${r3.afterSync}->${r3After.pts} invCount=${r3.invBefore}->${r3After.invCount}`);
+  const r3RewardOk = (r3After.pts > r3.afterSync) || (r3After.invCount > r3.invBefore) || (r3After.exp > r3.expBefore);
+  check('3.3b box_luxury 异步结果结算', r3RewardOk, `pts=${r3.afterSync}->${r3After.pts} invCount=${r3.invBefore}->${r3After.invCount} exp=${r3.expBefore}->${r3After.exp}`);
 
   // 3.4 积分不足拦截（openBox 同步守卫，不扣分）
   const r4 = await page.evaluate(() => {

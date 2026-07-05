@@ -335,8 +335,6 @@
                 await ensureCloudFeature();
                 return true;
             case 'settings':
-                await ensureLearnFeature();
-                await ensurePlaygroundFeature();
                 await ensureCloudFeature();
                 return true;
             case 'home-visit':
