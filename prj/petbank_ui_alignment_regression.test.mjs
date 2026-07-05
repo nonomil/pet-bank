@@ -37,11 +37,12 @@ await page.addInitScript(() => {
 });
 
 await page.goto(`${BASE}/index.html`, { waitUntil: 'domcontentloaded', timeout: 60000 });
-await page.waitForFunction(() => typeof window.switchPage === 'function', { timeout: 15000 });
+await page.waitForFunction(() => typeof window.switchPage === 'function', undefined, { timeout: 15000 });
 
 await page.evaluate(() => window.switchPage('card'));
 await page.waitForFunction(
   () => document.querySelectorAll('.card-gallery-card').length >= 4,
+  undefined,
   { timeout: IS_LOCAL_BASE ? 8000 : 45000 }
 );
 
@@ -74,7 +75,7 @@ if (IS_LOCAL_BASE) {
 }
 
 await page.evaluate(() => window.switchPage('playground'));
-await page.waitForFunction(() => typeof window.openCardArenaEntry === 'function', { timeout: 15000 });
+await page.waitForFunction(() => typeof window.openCardArenaEntry === 'function', undefined, { timeout: 15000 });
 await page.evaluate(() => window.openCardArenaEntry());
 await page.waitForSelector('#arenaStagesModal.show #arenaStagesGrid .arena-stage-card', { timeout: 60000 });
 await page.evaluate(() => window.CardArenaUI.openFreePlay());
@@ -169,7 +170,7 @@ await page.evaluate(() => {
   window.switchPage('hanzi');
 });
 let hanziReady = true;
-await page.waitForFunction(() => window.HanziGame && typeof window.HanziGame.start === 'function', { timeout: 15000 })
+await page.waitForFunction(() => window.HanziGame && typeof window.HanziGame.start === 'function', undefined, { timeout: 15000 })
   .catch(() => { hanziReady = false; });
 if (hanziReady) {
   let started = false;
@@ -181,9 +182,9 @@ if (hanziReady) {
     } catch (error) {
       if (!/Execution context was destroyed|navigation/i.test(String(error))) throw error;
       await page.waitForLoadState('domcontentloaded', { timeout: 5000 }).catch(() => {});
-      await page.waitForFunction(() => typeof window.switchPage === 'function', { timeout: 10000 });
+      await page.waitForFunction(() => typeof window.switchPage === 'function', undefined, { timeout: 10000 });
       await page.evaluate(() => window.switchPage('hanzi'));
-      await page.waitForFunction(() => window.HanziGame && typeof window.HanziGame.start === 'function', { timeout: 15000 });
+      await page.waitForFunction(() => window.HanziGame && typeof window.HanziGame.start === 'function', undefined, { timeout: 15000 });
     }
   }
   hanziReady = started;
@@ -216,7 +217,7 @@ if (homeBgReady) {
   await page.waitForFunction(() => {
   const img = document.querySelector('.home-bg-img');
   return img && img.complete && img.naturalWidth > 0;
-  }, { timeout: 15000 }).catch(() => { homeBgReady = false; });
+  }, undefined, { timeout: 15000 }).catch(() => { homeBgReady = false; });
 }
 
 const homeProbe = await page.evaluate(() => {
