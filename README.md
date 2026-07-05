@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.4](https://img.shields.io/badge/Version-v0.7.4-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.5](https://img.shields.io/badge/Version-v0.7.5-brightgreen.svg)](CHANGELOG.md)
 
 📖 **结构化文档**：[文档总索引](docs/README.md) ｜ [需求规格书](docs/规格/需求规格书.md) ｜ [技术架构](docs/设计/技术架构.md) ｜ [开发路线图](docs/路线/差距清单与开发路线图.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,17 +27,16 @@
 
 ---
 
-## 🎉 最近更新（v0.7.4）
+## 🎉 最近更新（v0.7.5）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
-- 📚 **学习中心与暑假中文资料包**：主站新增 `学习` 一级入口，上线“幼小衔接暑假中文”资料包，支持进度、奖励和打印页
+- 📚 **学习页入口重排**：学习卡片入口上移到页面更靠前的位置，中文包、英语包、学习网站入口包都改成更醒目的卡片式展示，并补上图片背景与学习网站截图
+- 🧩 **学习资料扩展成通用模块**：在原有暑假中文资料包之外，新增 `幼小衔接英语启蒙资料包` 与 `幼小衔接学习网站入口包`，学习中心不再只是打卡页，而是可持续扩展的资料包平台
+- ✅ **积分页轻量学习单**：学习页负责“找资料、进课程”，积分页负责“今日学习单打勾”；默认启用更适合幼小衔接的 `模板 A`，`模板 B/C` 放到设置页作为进阶模式
+- 📝 **学习单只记录，不再额外发管理奖励**：主积分继续由 lesson 完成、中文组合奖励、英语连续学习奖励结算，学习单重点负责总时长、卡点、睡前复盘与打印联动
 - 👨‍👩‍👧 **家庭账号社交最小版**：补齐可选 Supabase 云端接入、家长账号、注册邀请码、多孩子隔离、家庭协作、好友串门与异步 PK 骨架
-- 🛠️ **轻后台骨架**：新增 `admin.html`、管理员角色表、审计日志表和后台查询函数骨架，先把后台入口与权限底座接通
-- 🤖 **Hermes 部署描述**：新增 `supabase/config.toml`、`.env.production.example`、`ops/hermes.yaml`，让 AI / CI / 人都能读同一套部署约定
-- 🔐 **升级不覆盖数据**：明确前端发布与数据库发布分离，数据库演进统一走 migration，默认采用 additive-first 策略
-- 🧭 **首页与导航收口**：首页去掉“路线地图”栏目，`宝箱宝库` 改为更宽布局；`积分` / `宠物` / `游乐场` 的子页入口合入顶部导航下拉，同时保留页面内快捷按钮
-- 🆘 **救援提示更像游戏**：探索页“宠物倒下了，需要去宠物小屋救援”升级为更醒目的游戏提示框，并修复顶部下拉会被误关闭的问题，箭头也改成更明确的图标按钮
+- 🛠️ **轻后台骨架与部署约定**：新增 `admin.html`、管理员角色表、审计日志表、`supabase/config.toml`、`.env.production.example`、`ops/hermes.yaml`，把后台入口与自动部署描述先接通
 
 ---
 

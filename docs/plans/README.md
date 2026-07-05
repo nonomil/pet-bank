@@ -34,6 +34,10 @@
 | `TOPIC-HANZI-PARK` | [../汉字游乐场/README](../汉字游乐场/README.md) | 专题索引 | 当前活跃 | 汉字游乐场（排行榜 + 汉字玩法 + HSK词库 + 游乐场hub）设计稿/实施计划/参考案例已移入专题目录统一维护 |
 | `DESIGN-2026-07-05-01` | [2026-07-05-learning-center-summer-chinese-design](./2026-07-05-learning-center-summer-chinese-design.md) | 设计稿 | 已落地(v0.7.3) | 学习中心一级入口 + 资料包平台 + 幼小衔接暑假中文资料包的产品设计，明确页面、数据目录、进度与计分边界 |
 | `PLAN-2026-07-05-01` | [2026-07-05-learning-center-summer-chinese-implementation](./2026-07-05-learning-center-summer-chinese-implementation.md) | 实施计划 | 已落地(v0.7.3) | 学习中心与暑假中文资料包的分步实施计划，含数据合同、页面壳、进度发分、打印页与冒烟验证 |
+| `DESIGN-2026-07-05-EN-01` | [2026-07-05-learning-center-english-hybrid-design](./2026-07-05-learning-center-english-hybrid-design.md) | 设计稿 | 已落地(v0.7.5) | 英语混合资料包设计：当前项目负责计划 / 进度 / 计分，外部点读站负责章节阅读，同时预留自定义资料入口位 |
+| `PLAN-2026-07-05-EN-01` | [2026-07-05-learning-center-english-hybrid-implementation](./2026-07-05-learning-center-english-hybrid-implementation.md) | 实施计划 | 已落地(v0.7.5) | 英语混合资料包的数据文件、入口卡、外链 lesson、连续学习奖励与回归验证计划 |
+| `DESIGN-2026-07-05-LEARN-SHEET-A` | [2026-07-05-daily-learning-sheet-template-a](./2026-07-05-daily-learning-sheet-template-a.md) | 设计稿 | 已落地(v0.7.5) | 幼小衔接优先的学习单模板 A：4 个核心小项、总时长、卡点和睡前一句话，默认展示在积分页 |
+| `DECISION-2026-07-05-LEARN-SHEET` | [2026-07-05-scheme-b-points-vs-learn](./2026-07-05-scheme-b-points-vs-learn.md) | 收口结论 | 已收口 | 明确学习页负责资料入口、积分页负责学习打勾，设置页选择模板 A/B/C 的最终方案 |
 | `DESIGN-2026-07-05-02` | [2026-07-05-family-account-social-design](./2026-07-05-family-account-social-design.md) | 设计稿 | 实施中 | 家长账号、家庭、多孩子、串门与数学/汉字异步 PK 的正式设计稿 |
 | `PLAN-2026-07-05-02` | [2026-07-05-family-account-social-implementation](./2026-07-05-family-account-social-implementation.md) | 实施计划 | 主干已落地，待联调 | 基于 Supabase 轻后端的家庭账号社交体系分任务实施计划 |
 | `TASK-2026-07-05-02` | [2026-07-05-family-account-social-task-list](./2026-07-05-family-account-social-task-list.md) | 任务清单 | 进行中 | 扁平推进清单，当前重点转向 P6 联调上线 |
@@ -69,3 +73,7 @@
   直接去 [../路线地图大富翁融合/README.md](../路线地图大富翁融合/README.md)
 - 想看“学习中心是怎么设计并落地的”：
   先读 [2026-07-05-learning-center-summer-chinese-design](./2026-07-05-learning-center-summer-chinese-design.md) → [2026-07-05-learning-center-summer-chinese-implementation](./2026-07-05-learning-center-summer-chinese-implementation.md)
+- 想看“英语资料包怎么接进来、后面怎么继续扩”：
+  先读 [2026-07-05-learning-center-english-hybrid-design](./2026-07-05-learning-center-english-hybrid-design.md) → [2026-07-05-learning-center-english-hybrid-implementation](./2026-07-05-learning-center-english-hybrid-implementation.md)
+- 想看“学习单到底放学习页还是积分页、默认该给孩子哪种模板”：
+  先读 [2026-07-05-scheme-b-points-vs-learn](./2026-07-05-scheme-b-points-vs-learn.md) → [2026-07-05-daily-learning-sheet-template-a](./2026-07-05-daily-learning-sheet-template-a.md)

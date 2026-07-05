@@ -268,9 +268,15 @@
         let bodyHtml = '';
         if (!metrics.householdState.primaryHouseholdId) {
             bodyHtml = `
-                <div class="family-review-empty">
-                    先登录家长账号并创建家庭，后面多个孩子、好友串门和异步 PK 的复盘都会集中展示在这里。
-                </div>
+                <section class="family-review-panel">
+                    <div class="family-review-panel-head">
+                        <h4>家庭互动复盘</h4>
+                        <span>未连接家庭</span>
+                    </div>
+                    <div class="family-review-empty">
+                        先登录家长账号并创建家庭，后面多个孩子、好友串门和异步 PK 的复盘会继续集中展示在这里。
+                    </div>
+                </section>
             `;
         } else {
             bodyHtml = `
@@ -298,7 +304,7 @@
             <section class="family-review-shell">
                 <div class="family-review-hero">
                     <div>
-                        <p class="auth-eyebrow">家庭复盘 / 社交与坚持度</p>
+                        <p class="auth-eyebrow">家庭复盘 / 社交互动</p>
                         <h3>${escapeHtml(householdName)}</h3>
                         <p class="auth-copy">把“家庭账号、好友互动、宠物串门、同题 PK”放到同一张复盘卡里，家长能更快看清孩子有没有真的玩在一起。</p>
                     </div>
@@ -322,18 +328,40 @@
         state.error = '';
         render(containerId);
 
+        function rememberError(error, fallback) {
+            if (!state.error) {
+                state.error = error && error.message ? error.message : fallback;
+            }
+        }
+
         try {
             if (window.HouseholdSystem && typeof window.HouseholdSystem.refresh === 'function') {
-                await window.HouseholdSystem.refresh('household-root');
+                try {
+                    await window.HouseholdSystem.refresh('household-root');
+                } catch (error) {
+                    rememberError(error, '家庭数据刷新失败');
+                }
             }
             if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
-                await window.SocialSystem.refresh();
+                try {
+                    await window.SocialSystem.refresh();
+                } catch (error) {
+                    rememberError(error, '社交数据刷新失败');
+                }
             }
             if (window.PKService && typeof window.PKService.refresh === 'function') {
-                await window.PKService.refresh();
+                try {
+                    await window.PKService.refresh();
+                } catch (error) {
+                    rememberError(error, 'PK 数据刷新失败');
+                }
             }
             if (window.ActivityFeedSystem && typeof window.ActivityFeedSystem.refresh === 'function') {
-                await window.ActivityFeedSystem.refresh();
+                try {
+                    await window.ActivityFeedSystem.refresh();
+                } catch (error) {
+                    rememberError(error, '动态流刷新失败');
+                }
             }
             state.lastRefreshedAt = new Date().toISOString();
         } catch (error) {

@@ -15,7 +15,36 @@
         catalogState: 'petbank_learning_catalog_state',
         progress: 'petbank_learning_progress',
         rewards: 'petbank_learning_rewards',
-        printPrefs: 'petbank_learning_print_prefs'
+        printPrefs: 'petbank_learning_print_prefs',
+        dailySheet: 'petbank_learning_daily_sheet',
+        dailySheetMode: 'petbank_learning_sheet_mode'
+    };
+
+    const DAILY_SHEET_MODES = {
+        'template-a': {
+            id: 'template-a',
+            badge: '模板 A',
+            title: '幼小衔接超轻量版',
+            desc: '4 个核心小项，先让暑假节奏跑顺，不给记录负担。',
+            meta: '4 项任务 · 总时长 + 卡点 + 睡前一句话',
+            recommended: true
+        },
+        'template-b': {
+            id: 'template-b',
+            badge: '模板 B',
+            title: '轻量标准版',
+            desc: '加上拓展入口和“明天先做什么”，更像一张轻量学习单。',
+            meta: '5 项任务 · 适合节奏稳定后再升级',
+            recommended: false
+        },
+        'template-c': {
+            id: 'template-c',
+            badge: '模板 C',
+            title: '错题加强版',
+            desc: '加入状态、错题整理和复盘字段，适合后续更完整管理。',
+            meta: '5 项任务 · 更完整，也更偏小学阶段',
+            recommended: false
+        }
     };
 
     function readStorage(key, fallback) {
@@ -31,6 +60,15 @@
         try {
             localStorage.setItem(key, JSON.stringify(value));
         } catch (err) {}
+    }
+
+    function escapeHtml(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 
     async function fetchJson(url) {
@@ -144,6 +182,89 @@
         writeStorage(STORAGE_KEYS.printPrefs, next);
     }
 
+    function getDateKey(date) {
+        const target = date instanceof Date ? date : new Date();
+        const year = target.getFullYear();
+        const month = String(target.getMonth() + 1).padStart(2, '0');
+        const day = String(target.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    function parseDateKey(dateKey) {
+        const match = String(dateKey || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (!match) return null;
+        const target = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+        return Number.isNaN(target.getTime()) ? null : target;
+    }
+
+    function getDailySheetState() {
+        return readStorage(STORAGE_KEYS.dailySheet, {});
+    }
+
+    function saveDailySheetState(next) {
+        writeStorage(STORAGE_KEYS.dailySheet, next);
+    }
+
+    function normalizeDailySheetMode(modeId) {
+        return DAILY_SHEET_MODES[modeId] ? modeId : 'template-a';
+    }
+
+    function getDailySheetModes() {
+        return Object.values(DAILY_SHEET_MODES);
+    }
+
+    function getDailySheetMode() {
+        return normalizeDailySheetMode(readStorage(STORAGE_KEYS.dailySheetMode, 'template-a'));
+    }
+
+    function setDailySheetMode(modeId) {
+        const nextMode = normalizeDailySheetMode(modeId);
+        writeStorage(STORAGE_KEYS.dailySheetMode, nextMode);
+        const todayContainer = document.getElementById('today-learning-checkin');
+        if (todayContainer) {
+            void renderDailyCheckin('today-learning-checkin');
+        }
+        return nextMode;
+    }
+
+    function getDefaultDailySheetEntry(dateKey) {
+        return {
+            date: dateKey,
+            modeId: '',
+            totalMinutes: '',
+            stuckPoint: '',
+            reviewText: '',
+            parentNote: '',
+            nextStep: '',
+            extensionCompleted: false,
+            energyLevel: '',
+            reviewBest: '',
+            reviewHard: '',
+            errorItems: '',
+            errorReviewCompleted: false,
+            updatedAt: 0
+        };
+    }
+
+    function getDailySheetEntry(dateKey) {
+        const key = dateKey || getDateKey();
+        const state = getDailySheetState();
+        return Object.assign(getDefaultDailySheetEntry(key), state?.[key] || {});
+    }
+
+    function updateDailySheetEntry(dateKey, patch) {
+        const key = dateKey || getDateKey();
+        const state = getDailySheetState();
+        const prev = getDailySheetEntry(key);
+        state[key] = Object.assign({}, prev, patch || {}, {
+            modeId: patch && patch.modeId ? patch.modeId : (prev.modeId || getDailySheetMode()),
+            date: key,
+            updatedAt: Date.now()
+        });
+        saveDailySheetState(state);
+        return state[key];
+    }
+
     function getLessonKey(lesson) {
         if (!lesson) return '';
         if (lesson.id) return String(lesson.id);
@@ -206,6 +327,53 @@
         return rules[moduleId] || rules.default || 1;
     }
 
+    function resolvePackCapabilities(manifest) {
+        const packType = manifest?.packType || 'internal';
+        return {
+            packType,
+            sourceAdapter: manifest?.sourceAdapter || null,
+            customPackEnabled: !!manifest?.customPackEnabled,
+            hasExternalLessons: packType === 'hybrid' || packType === 'external-gateway' || !!manifest?.sourceAdapter,
+            hasStreakRule: !!manifest?.streakRule
+        };
+    }
+
+    function resolveLessonSource(pack, module, lesson) {
+        const manifest = pack?.manifest || null;
+        const lessonSource = lesson?.source || null;
+        const moduleSource = module?.source || null;
+        if (!lessonSource && !moduleSource && module?.type !== 'external-reader') return null;
+        return {
+            kind: lessonSource?.kind || moduleSource?.kind || (module?.type === 'external-reader' ? 'external-chapter' : 'internal-content'),
+            adapterId: lessonSource?.adapterId || module?.adapterId || manifest?.sourceAdapter || null,
+            provider: lessonSource?.provider || moduleSource?.provider || null,
+            chapterSlug: lessonSource?.chapterSlug || null,
+            url: lessonSource?.url || null,
+            baseUrl: moduleSource?.baseUrl || null,
+            routePattern: moduleSource?.routePattern || null,
+            label: lessonSource?.label || null
+        };
+    }
+
+    function resolveLessonLaunchUrl(pack, module, lesson) {
+        const source = resolveLessonSource(pack, module, lesson);
+        if (!source) return '';
+        if (source.url) return source.url;
+        if (source.routePattern && source.chapterSlug) {
+            return source.routePattern.replace('{chapterSlug}', source.chapterSlug);
+        }
+        return source.baseUrl || '';
+    }
+
+    function resolveLessonReward(manifest, moduleId, lesson) {
+        const rules = manifest?.rewardRules || {};
+        const lessonPoints = Number(lesson?.completion?.points);
+        if (lessonPoints > 0) return lessonPoints;
+        const rewardKeyPoints = Number(lesson?.rewardKey ? rules[lesson.rewardKey] : 0);
+        if (rewardKeyPoints > 0) return rewardKeyPoints;
+        return rewardForModule(manifest, moduleId);
+    }
+
     function getDailyBundlePoints(manifest) {
         return Number(manifest?.rewardRules?.dailyBundle) || 0;
     }
@@ -219,7 +387,9 @@
             return '这一页已经打过勾了，完成记录和成长分都已经存好，可以直接继续下一节。';
         }
 
-        const actionLead = module?.type === 'resource-hub'
+        const actionLead = module?.type === 'external-reader'
+            ? '打开外部点读页读完后'
+            : module?.type === 'resource-hub'
             ? '看完今天的网站入口后'
             : module?.type === 'review'
                 ? '做完这一页复盘后'
@@ -236,6 +406,13 @@
         if (completed) {
             return '进度已经保存，下次回来也会继续累计到“我的进度”和积分系统里。';
         }
+        if (module?.type === 'external-reader') {
+            const streakRule = manifest?.streakRule;
+            if (Number(streakRule?.points) > 0 && Number(streakRule?.every) > 0) {
+                return `先打开点读页，学完回来打勾；连续完成 ${streakRule.every} 节英语章节，还会再送 ${streakRule.points} 分连读奖励。`;
+            }
+            return '先打开点读页，学完回来点这里，也能把进度和成长分记回当前项目。';
+        }
         if (module?.type === 'resource-hub') {
             return '如果跳去外部网站学习，学完回来再点这里，也能把进度和积分记回当前项目。';
         }
@@ -247,7 +424,7 @@
     }
 
     function getLessonCompletionToast(result) {
-        if (result.totalPoints > 0 && result.bundleGranted) {
+        if (result.totalPoints > 0 && (result.bundleGranted || result.streakGranted)) {
             return `✅ 读完打勾成功，成长分 +${result.totalPoints}（含连读奖励）`;
         }
         if (result.totalPoints > 0) {
@@ -257,7 +434,7 @@
     }
 
     function getLessonCompletionSuccessNote(result) {
-        if (result.totalPoints > 0 && result.bundleGranted) {
+        if (result.totalPoints > 0 && (result.bundleGranted || result.streakGranted)) {
             return `已打勾完成，成长分 +${result.totalPoints} 已到账，今天的连读奖励也一起记上了。`;
         }
         if (result.totalPoints > 0) {
@@ -299,6 +476,41 @@
         `;
     }
 
+    function renderPortalCard(options) {
+        const badges = Array.isArray(options?.badges) ? options.badges : [];
+        return `
+            <button class="learn-portal-card ${options?.theme ? `learn-portal-card-${options.theme}` : ''}" type="button" data-learn-portal-card="${options?.id || ''}" onclick="${options?.onclick || ''}">
+                <div class="learn-portal-media ${options?.imageSrc ? 'has-image' : ''}">
+                    ${options?.imageSrc
+                        ? `
+                            <img src="${options.imageSrc}" alt="${options?.title || '学习入口'}" ${options?.imageStyle ? `style="${options.imageStyle}"` : ''}>
+                            ${badges.length ? `<div class="learn-portal-badges learn-portal-badges-overlay">${badges.map(item => `<span>${item}</span>`).join('')}</div>` : ''}
+                        `
+                        : `
+                            <div class="learn-portal-art">
+                                <div class="learn-portal-art-top">
+                                    <span>${options?.emoji || '📚'}</span>
+                                    ${options?.chip ? `<b>${options.chip}</b>` : ''}
+                                </div>
+                                <strong>${options?.artTitle || ''}</strong>
+                                <p>${options?.artText || ''}</p>
+                                ${badges.length ? `<div class="learn-portal-badges">${badges.map(item => `<span>${item}</span>`).join('')}</div>` : ''}
+                            </div>
+                        `}
+                </div>
+                <div class="learn-portal-copy">
+                    <span class="learn-portal-kicker">${options?.kicker || '快速入口'}</span>
+                    <strong>${options?.title || '学习入口'}</strong>
+                    <p>${options?.desc || ''}</p>
+                    <div class="learn-portal-foot">
+                        <span>${options?.cta || '点击进入'}</span>
+                        <i aria-hidden="true">→</i>
+                    </div>
+                </div>
+            </button>
+        `;
+    }
+
     function getLessonById(module, lessonId) {
         const lessons = Array.isArray(module?.lessons) ? module.lessons : [];
         return lessons.find(lesson => getLessonKey(lesson) === lessonId) || null;
@@ -330,8 +542,8 @@
         return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
     }
 
-    function getTodayLearningPlan(summerRecord, siteRecord) {
-        const today = new Date();
+    function getTodayLearningPlan(summerRecord, siteRecord, targetDate) {
+        const today = targetDate instanceof Date ? targetDate : new Date();
         const normalizedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
         const plan = summerRecord?.pack?.plan;
         const weekCount = Array.isArray(plan?.weeks) ? plan.weeks.length : 9;
@@ -379,6 +591,697 @@
         };
     }
 
+    function getPoemLessonForDay(poemsModule, day) {
+        const lessons = Array.isArray(poemsModule?.lessons) ? poemsModule.lessons : [];
+        if (!lessons.length) return null;
+        const index = Math.max(0, Math.min(lessons.length - 1, (Number(day) || 1) - 1));
+        return lessons[index] || lessons[0] || null;
+    }
+
+    function renderDailyTaskAction(action) {
+        if (!action) return '';
+        return `<button class="learn-btn ${action.kind === 'secondary' ? 'learn-btn-secondary' : 'learn-btn-primary'}" ${action.attrs || ''}>${action.label}</button>`;
+    }
+
+    function getDailySheetCompletionStats(tasks) {
+        const list = Array.isArray(tasks) ? tasks : [];
+        const requiredTasks = list.filter(item => !item.optional);
+        const optionalTasks = list.filter(item => !!item.optional);
+        const requiredCompleted = requiredTasks.filter(item => item.completed).length;
+        const optionalCompleted = optionalTasks.filter(item => item.completed).length;
+        return {
+            requiredCount: requiredTasks.length,
+            requiredCompleted,
+            optionalCount: optionalTasks.length,
+            optionalCompleted,
+            allRequiredCompleted: requiredTasks.length > 0 && requiredCompleted === requiredTasks.length
+        };
+    }
+
+    function buildDailyTaskRow(task) {
+        const actions = Array.isArray(task?.actions)
+            ? task.actions.filter(Boolean)
+            : (task?.action ? [task.action] : []);
+        const stateText = task?.completed
+            ? '✅ 已完成'
+            : (task?.optional ? '✨ 可选加做' : '🕒 待打勾');
+        const stateClass = task?.completed
+            ? 'is-completed'
+            : (task?.optional ? 'is-optional' : '');
+        const metaChips = Array.isArray(task?.metaChips) && task.metaChips.length
+            ? `<div class="learn-daily-task-meta">${task.metaChips.map(item => `<span>${item}</span>`).join('')}</div>`
+            : '';
+        return `
+            <article class="learn-daily-task ${task?.completed ? 'is-completed' : ''}" data-daily-task-row="${task?.id || ''}">
+                <div class="learn-daily-task-top">
+                    <span class="learn-daily-task-tag">${task?.label || '任务'}</span>
+                    <span class="learn-daily-task-state ${stateClass}">${stateText}</span>
+                </div>
+                <h4>${task?.title || '今日任务'}</h4>
+                <p>${task?.desc || ''}</p>
+                ${metaChips}
+                ${actions.length ? `<div class="learn-card-actions">${actions.map(renderDailyTaskAction).join('')}</div>` : ''}
+            </article>
+        `;
+    }
+
+    function renderMinuteButtons(entry, dateKey, minuteOptions) {
+        return minuteOptions.map(item => `
+            <button class="learn-daily-minute-chip ${Number(entry.totalMinutes) === item ? 'is-active' : ''}" data-daily-set-minutes="${item}" data-daily-date-key="${dateKey}">${item} 分钟</button>
+        `).join('');
+    }
+
+    function renderEnergyButtons(entry, dateKey) {
+        const options = [
+            { id: 'great', label: '精神好' },
+            { id: 'okay', label: '一般' },
+            { id: 'tired', label: '累了' }
+        ];
+        return options.map(item => `
+            <button class="learn-daily-minute-chip ${entry.energyLevel === item.id ? 'is-active' : ''}" data-daily-set-energy="${item.id}" data-daily-date-key="${dateKey}">${item.label}</button>
+        `).join('');
+    }
+
+    function renderDailySheetHeader(config) {
+        return `
+            <div class="learn-daily-sheet-head">
+                <div>
+                    <span class="learn-card-kicker">${config.kicker}</span>
+                    <h3>${config.title || '今日学习单'}</h3>
+                    <p>${config.desc || ''}</p>
+                </div>
+                <div class="learn-daily-sheet-score ${config.completed ? 'is-completed' : ''}">
+                    <strong>${config.scoreText}</strong>
+                    <span>${config.scoreHint}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderDailySheetTemplateA(options) {
+        const dateKey = options?.dateKey || getDateKey();
+        const entry = getDailySheetEntry(dateKey);
+        const readingDay = Number(options?.readingDay) || 1;
+        const readingCompleted = !!options?.readingCompleted;
+        const literacyCompleted = !!options?.literacyCompleted;
+        const reviewCompleted = !!String(entry.reviewText || '').trim();
+        const tasks = [
+            {
+                id: 'reading',
+                label: '晨读',
+                title: options?.readingTitle || '今天晨读',
+                desc: readingCompleted ? '今天的晨读已经打勾，可以再顺一遍。' : '先打开今天晨读，读顺就可以，不用拖太久。',
+                completed: readingCompleted,
+                metaChips: ['建议 5 分', '主线任务'],
+                action: options?.readingLessonId ? {
+                    label: readingCompleted ? '再看晨读' : '打开晨读',
+                    attrs: `data-daily-open-lesson="1" data-pack-id="${options.packId}" data-module-id="morning-reading" data-lesson-id="${options.readingLessonId}"`,
+                    kind: readingCompleted ? 'secondary' : 'primary'
+                } : null
+            },
+            {
+                id: 'poem',
+                label: '今日古诗',
+                title: options?.poemTitle || '今天的古诗',
+                desc: readingCompleted
+                    ? `今天的古诗《${options?.poemTitle || '今日古诗'}》已经跟晨读一起完成了。`
+                    : `今天读《${options?.poemTitle || '今日古诗'}》，一句拼音一句中文，跟晨读一起走。`,
+                completed: readingCompleted,
+                metaChips: ['跟晨读联动', '一句拼音一句中文'],
+                action: options?.readingLessonId ? {
+                    label: readingCompleted ? '再读古诗' : '去晨读里读',
+                    attrs: `data-daily-open-lesson="1" data-pack-id="${options.packId}" data-module-id="morning-reading" data-lesson-id="${options.readingLessonId}"`,
+                    kind: 'secondary'
+                } : null
+            },
+            {
+                id: 'literacy',
+                label: '识字',
+                title: options?.literacyTitle || '今天识字',
+                desc: literacyCompleted ? '今天的识字已经完成，可以轻轻回看一遍。' : '今天先认字、指读短句，重在开口，不追求写很多。',
+                completed: literacyCompleted,
+                metaChips: ['建议 8 分', '认读为主'],
+                action: options?.literacyLessonId ? {
+                    label: literacyCompleted ? '再看识字' : '打开识字',
+                    attrs: `data-daily-open-lesson="1" data-pack-id="${options.packId}" data-module-id="literacy-45days" data-lesson-id="${options.literacyLessonId}"`,
+                    kind: literacyCompleted ? 'secondary' : 'primary'
+                } : null
+            },
+            {
+                id: 'review',
+                label: '睡前复盘',
+                title: reviewCompleted ? '今晚一句话已经写好了' : '睡前说一句今天最顺的一项',
+                desc: reviewCompleted
+                    ? `今晚的小复盘已经保存：${escapeHtml(entry.reviewText)}`
+                    : '睡前花 1 分钟，说一句今天最顺的地方，帮助孩子把一天轻轻收住。',
+                completed: reviewCompleted,
+                metaChips: ['建议 1 分', '睡前收口'],
+                action: {
+                    label: reviewCompleted ? '修改一句话' : '写一句话',
+                    attrs: 'data-daily-focus-field="review-text"',
+                    kind: 'secondary'
+                }
+            }
+        ];
+        const stats = getDailySheetCompletionStats(tasks);
+        const summaryText = stats.allRequiredCompleted
+            ? '今天这张学习单已经完成啦，晚上轻轻收尾就好。'
+            : '今天先把 4 个核心小项慢慢走完，建议总时长控制在 15 到 20 分钟。';
+        const minuteButtons = renderMinuteButtons(entry, dateKey, [10, 15, 20, 30]);
+
+        return `
+            <section class="learn-daily-sheet" data-learn-daily-sheet>
+                ${renderDailySheetHeader({
+                    kicker: '模板 A · 幼小衔接超轻量版',
+                    title: '今日学习单',
+                    desc: `${formatDateText(new Date())} · 第 ${readingDay} 天。${summaryText}`,
+                    scoreText: `${stats.requiredCompleted}/${stats.requiredCount}`,
+                    scoreHint: stats.allRequiredCompleted ? '今天收口完成' : '今天慢慢完成',
+                    completed: stats.allRequiredCompleted
+                })}
+                <div class="learn-daily-task-grid">
+                    ${tasks.map(buildDailyTaskRow).join('')}
+                </div>
+                <div class="learn-daily-sheet-meta">
+                    <section class="learn-daily-meta-card">
+                        <h4>今天用了多久？</h4>
+                        <p>幼小衔接先看总时长，不急着逐行记时间。</p>
+                        <div class="learn-daily-minute-row">${minuteButtons}</div>
+                        <div class="learn-daily-minute-note">${entry.totalMinutes ? `当前已记：大约 ${entry.totalMinutes} 分钟` : '还没记总时长，学完后点一个最接近的就行。'}</div>
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>今天卡住的 1 个点</h4>
+                        <p>只记 1 个最需要明天再看一眼的点，不做重错题本。</p>
+                        <textarea class="learn-daily-textarea" data-daily-stuck-note placeholder="比如：&ldquo;雀&rdquo;还不太熟，或者这一句读快了会卡。">${escapeHtml(entry.stuckPoint)}</textarea>
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>睡前一句话</h4>
+                        <p>睡前说一句今天最顺的一项，写上去就算完成复盘。</p>
+                        <textarea class="learn-daily-textarea" data-daily-review-text placeholder="比如：今天古诗读得最顺。">${escapeHtml(entry.reviewText)}</textarea>
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>家长一句话</h4>
+                        <p>这一项可选，后面做打印版时也能复用。</p>
+                        <input class="learn-daily-input" data-daily-parent-note type="text" value="${escapeHtml(entry.parentNote)}" placeholder="比如：今天状态不错，愿意开口读。" />
+                    </section>
+                </div>
+                <div class="learn-card-actions learn-daily-sheet-actions">
+                    <button class="learn-btn learn-btn-primary" data-daily-save-summary="1" data-daily-date-key="${dateKey}">${reviewCompleted ? '更新今天的小结' : '保存今天的小结'}</button>
+                    <button class="learn-btn learn-btn-secondary" data-daily-focus-field="review-text">${reviewCompleted ? '查看睡前一句话' : '去写睡前一句话'}</button>
+                </div>
+            </section>
+        `;
+    }
+
+    function renderDailySheetTemplateB(options) {
+        const dateKey = options?.dateKey || getDateKey();
+        const entry = getDailySheetEntry(dateKey);
+        const reviewCompleted = !!String(entry.reviewText || '').trim() && !!String(entry.nextStep || '').trim();
+        const extensionCompleted = !!entry.extensionCompleted;
+        const tasks = [
+            {
+                id: 'reading',
+                label: '晨读',
+                title: options?.readingTitle || '今天晨读',
+                desc: options?.readingCompleted ? '晨读已经打勾，今天可以直接复看。' : '先把晨读顺一遍，完成后积分会自动同步。',
+                completed: !!options?.readingCompleted,
+                metaChips: ['建议 5 分', '自动同步'],
+                action: options?.readingLessonId ? {
+                    label: options?.readingCompleted ? '再看晨读' : '打开晨读',
+                    attrs: `data-daily-open-lesson="1" data-pack-id="${options.packId}" data-module-id="morning-reading" data-lesson-id="${options.readingLessonId}"`,
+                    kind: options?.readingCompleted ? 'secondary' : 'primary'
+                } : null
+            },
+            {
+                id: 'poem',
+                label: '古诗',
+                title: options?.poemTitle || '今日古诗',
+                desc: options?.readingCompleted ? '古诗已跟晨读一起完成。' : '古诗继续跟晨读走，不额外拆开一大页。',
+                completed: !!options?.readingCompleted,
+                metaChips: ['建议 3 分', '晨读联动'],
+                action: options?.readingLessonId ? {
+                    label: options?.readingCompleted ? '再读古诗' : '去晨读里读',
+                    attrs: `data-daily-open-lesson="1" data-pack-id="${options.packId}" data-module-id="morning-reading" data-lesson-id="${options.readingLessonId}"`,
+                    kind: 'secondary'
+                } : null
+            },
+            {
+                id: 'literacy',
+                label: '识字',
+                title: options?.literacyTitle || '今天识字',
+                desc: options?.literacyCompleted ? '识字已经完成，今天的主线任务基本收住了。' : '识字继续以认读和短句开口为主，不追求写很多。',
+                completed: !!options?.literacyCompleted,
+                metaChips: ['建议 8 分', '自动同步'],
+                action: options?.literacyLessonId ? {
+                    label: options?.literacyCompleted ? '再看识字' : '打开识字',
+                    attrs: `data-daily-open-lesson="1" data-pack-id="${options.packId}" data-module-id="literacy-45days" data-lesson-id="${options.literacyLessonId}"`,
+                    kind: options?.literacyCompleted ? 'secondary' : 'primary'
+                } : null
+            },
+            {
+                id: 'extension',
+                label: '拓展',
+                title: options?.siteTitle ? `拓展：${options.siteTitle}` : '拓展：学习网站 / 打印讲义',
+                desc: extensionCompleted
+                    ? '今天的拓展入口已经打勾，做一个就够。'
+                    : '有余力时再做一项拓展：看看学习网站入口，或者打开打印讲义。',
+                completed: extensionCompleted,
+                optional: true,
+                metaChips: ['可选', '网站 / 讲义 二选一'],
+                actions: [
+                    options?.siteLessonId
+                        ? {
+                            label: '打开拓展入口',
+                            attrs: `data-daily-open-lesson="1" data-pack-id="${options.sitePackId}" data-module-id="guided-sites" data-lesson-id="${options.siteLessonId}"`,
+                            kind: extensionCompleted ? 'secondary' : 'primary'
+                        }
+                        : {
+                            label: '打开打印讲义',
+                            attrs: `data-daily-open-print="1" data-pack-id="${options.packId}"`,
+                            kind: extensionCompleted ? 'secondary' : 'primary'
+                        },
+                    {
+                        label: extensionCompleted ? '取消拓展打勾' : '标记拓展完成',
+                        attrs: `data-daily-toggle-flag="extensionCompleted" data-daily-date-key="${dateKey}"`,
+                        kind: 'secondary'
+                    }
+                ]
+            },
+            {
+                id: 'review',
+                label: '复盘',
+                title: reviewCompleted ? '今晚复盘和明日提醒都写好了' : '睡前写一句今天最顺的，再写明天先做什么',
+                desc: reviewCompleted
+                    ? `今晚复盘：${escapeHtml(entry.reviewText)} 明天先做：${escapeHtml(entry.nextStep)}`
+                    : '先轻轻收尾，再给明天留一个起步提示，第二天更容易开始。',
+                completed: reviewCompleted,
+                metaChips: ['建议 2 分', '睡前收口'],
+                action: {
+                    label: reviewCompleted ? '修改复盘' : '去写复盘',
+                    attrs: 'data-daily-focus-field="review-text"',
+                    kind: 'secondary'
+                }
+            }
+        ];
+        const stats = getDailySheetCompletionStats(tasks);
+        const minuteButtons = renderMinuteButtons(entry, dateKey, [15, 18, 20, 25, 30]);
+        const summaryText = stats.allRequiredCompleted
+            ? `今天 4 项核心已经收口${stats.optionalCompleted ? '，拓展也完成了。' : '，有余力的话可以顺手加一个拓展。'}`
+            : '今天先完成 4 项核心，小拓展有余力再加，不需要硬塞满。';
+
+        return `
+            <section class="learn-daily-sheet learn-daily-sheet-b" data-learn-daily-sheet>
+                ${renderDailySheetHeader({
+                    kicker: '模板 B · 轻量标准版',
+                    title: '今日学习单',
+                    desc: `${formatDateText(new Date())} · 第 ${Number(options?.readingDay) || 1} 天。${summaryText}`,
+                    scoreText: `${stats.requiredCompleted}/${stats.requiredCount}`,
+                    scoreHint: stats.allRequiredCompleted ? '核心任务收口' : '先做核心 4 项',
+                    completed: stats.allRequiredCompleted
+                })}
+                <div class="learn-daily-task-grid">
+                    ${tasks.map(buildDailyTaskRow).join('')}
+                </div>
+                <div class="learn-daily-sheet-meta">
+                    <section class="learn-daily-meta-card">
+                        <h4>今日总时长</h4>
+                        <p>这版开始记总时长，但还不用拆到每一项。</p>
+                        <div class="learn-daily-minute-row">${minuteButtons}</div>
+                        <div class="learn-daily-minute-note">${entry.totalMinutes ? `当前已记：大约 ${entry.totalMinutes} 分钟` : '学完后点一个最接近的时间就行。'}</div>
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>今天卡住的点</h4>
+                        <p>只抓一个最需要明天回看的点，保持轻量。</p>
+                        <textarea class="learn-daily-textarea" data-daily-stuck-note placeholder="比如：&ldquo;欲穷千里目&rdquo;读快了会卡。">${escapeHtml(entry.stuckPoint)}</textarea>
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>睡前一句话</h4>
+                        <p>写一句今天最顺的一项，帮助孩子把成就感留住。</p>
+                        <textarea class="learn-daily-textarea" data-daily-review-text placeholder="比如：今天晨读状态最顺。">${escapeHtml(entry.reviewText)}</textarea>
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>明天先做什么</h4>
+                        <p>只写一句启动动作，第二天就更容易开场。</p>
+                        <input class="learn-daily-input" data-daily-next-step type="text" value="${escapeHtml(entry.nextStep)}" placeholder="比如：先读晨读，再接古诗。" />
+                    </section>
+                </div>
+                <div class="learn-card-actions learn-daily-sheet-actions">
+                    <button class="learn-btn learn-btn-primary" data-daily-save-summary="1" data-daily-date-key="${dateKey}">${reviewCompleted ? '更新今天学习单' : '保存今天学习单'}</button>
+                    <button class="learn-btn learn-btn-secondary" data-daily-focus-field="next-step">${String(entry.nextStep || '').trim() ? '查看明天先做什么' : '去写明天先做什么'}</button>
+                </div>
+            </section>
+        `;
+    }
+
+    function renderDailySheetTemplateC(options) {
+        const dateKey = options?.dateKey || getDateKey();
+        const entry = getDailySheetEntry(dateKey);
+        const reviewCompleted = !!String(entry.reviewBest || '').trim()
+            && !!String(entry.reviewHard || '').trim()
+            && !!String(entry.nextStep || '').trim();
+        const errorReviewCompleted = !!entry.errorReviewCompleted;
+        const hasErrorItems = !!String(entry.errorItems || entry.stuckPoint || '').trim();
+        const tasks = [
+            {
+                id: 'reading',
+                label: '晨读',
+                title: options?.readingTitle || '今天晨读',
+                desc: options?.readingCompleted ? '晨读已经完成，可以顺着今天的卡点再看一遍。' : '先把晨读完成，今天主线的第一格就能自动打勾。',
+                completed: !!options?.readingCompleted,
+                metaChips: ['计划 5 分', '主线'],
+                action: options?.readingLessonId ? {
+                    label: options?.readingCompleted ? '再看晨读' : '打开晨读',
+                    attrs: `data-daily-open-lesson="1" data-pack-id="${options.packId}" data-module-id="morning-reading" data-lesson-id="${options.readingLessonId}"`,
+                    kind: options?.readingCompleted ? 'secondary' : 'primary'
+                } : null
+            },
+            {
+                id: 'poem',
+                label: '古诗',
+                title: options?.poemTitle || '今日古诗',
+                desc: options?.readingCompleted ? '古诗已经跟晨读同步完成。' : '保持一句拼音一句中文，重在读顺和节奏。',
+                completed: !!options?.readingCompleted,
+                metaChips: ['计划 3 分', '交替朗读'],
+                action: options?.readingLessonId ? {
+                    label: options?.readingCompleted ? '再读古诗' : '去晨读里读',
+                    attrs: `data-daily-open-lesson="1" data-pack-id="${options.packId}" data-module-id="morning-reading" data-lesson-id="${options.readingLessonId}"`,
+                    kind: 'secondary'
+                } : null
+            },
+            {
+                id: 'literacy',
+                label: '识字',
+                title: options?.literacyTitle || '今天识字',
+                desc: options?.literacyCompleted ? '识字完成后，今天的中文主线就差不多收住了。' : '识字这格仍然以认读和短句开口为主。',
+                completed: !!options?.literacyCompleted,
+                metaChips: ['计划 8 分', '认读为主'],
+                action: options?.literacyLessonId ? {
+                    label: options?.literacyCompleted ? '再看识字' : '打开识字',
+                    attrs: `data-daily-open-lesson="1" data-pack-id="${options.packId}" data-module-id="literacy-45days" data-lesson-id="${options.literacyLessonId}"`,
+                    kind: options?.literacyCompleted ? 'secondary' : 'primary'
+                } : null
+            },
+            {
+                id: 'error-review',
+                label: '错题整理',
+                title: hasErrorItems ? '把今天卡住的字句顺手整理一下' : '今天如果有卡点，就顺手整理一下',
+                desc: errorReviewCompleted
+                    ? '今天的错题整理已经打勾。'
+                    : (hasErrorItems
+                        ? '今天已经记下卡点了，顺手整理一下，明天就更容易回看。'
+                        : '没有明显卡点也没关系，这一项可以留空。'),
+                completed: errorReviewCompleted,
+                optional: true,
+                metaChips: ['计划 5 分', hasErrorItems ? '建议整理' : '可选'],
+                actions: [
+                    {
+                        label: hasErrorItems ? '去整理卡点' : '先写卡点',
+                        attrs: 'data-daily-focus-field="error-items"',
+                        kind: errorReviewCompleted ? 'secondary' : 'primary'
+                    },
+                    {
+                        label: errorReviewCompleted ? '取消整理打勾' : '标记整理完成',
+                        attrs: `data-daily-toggle-flag="errorReviewCompleted" data-daily-date-key="${dateKey}"`,
+                        kind: 'secondary'
+                    }
+                ]
+            },
+            {
+                id: 'review',
+                label: '睡前复盘',
+                title: reviewCompleted ? '今晚复盘三小项已经写好' : '写下今天最顺、最难，以及明天先做什么',
+                desc: reviewCompleted
+                    ? `最顺：${escapeHtml(entry.reviewBest)}；最难：${escapeHtml(entry.reviewHard)}；明天先做：${escapeHtml(entry.nextStep)}`
+                    : '这版更接近小学学习单，但先写短句就够，不需要长段落。',
+                completed: reviewCompleted,
+                metaChips: ['计划 3 分', '睡前收口'],
+                action: {
+                    label: reviewCompleted ? '修改复盘' : '去写复盘',
+                    attrs: 'data-daily-focus-field="review-best"',
+                    kind: 'secondary'
+                }
+            }
+        ];
+        const stats = getDailySheetCompletionStats(tasks);
+        const minuteButtons = renderMinuteButtons(entry, dateKey, [15, 20, 25, 30, 35]);
+        const energyButtons = renderEnergyButtons(entry, dateKey);
+        const summaryText = stats.allRequiredCompleted
+            ? `${hasErrorItems && !errorReviewCompleted ? '核心任务已完成，卡点整理有空再补。' : '核心任务已经收口，今天这张学习单可以安心结束。'}`
+            : '这版更完整，但也不用全写满，先把核心四项完成最重要。';
+
+        return `
+            <section class="learn-daily-sheet learn-daily-sheet-c" data-learn-daily-sheet>
+                ${renderDailySheetHeader({
+                    kicker: '模板 C · 错题加强版',
+                    title: '今日学习单',
+                    desc: `${formatDateText(new Date())} · 第 ${Number(options?.readingDay) || 1} 天。${summaryText}`,
+                    scoreText: `${stats.requiredCompleted}/${stats.requiredCount}`,
+                    scoreHint: stats.allRequiredCompleted ? '核心任务收口' : '先做核心 4 项',
+                    completed: stats.allRequiredCompleted
+                })}
+                <div class="learn-daily-task-grid">
+                    ${tasks.map(buildDailyTaskRow).join('')}
+                </div>
+                <div class="learn-daily-sheet-meta">
+                    <section class="learn-daily-meta-card">
+                        <h4>今日状态</h4>
+                        <p>记录一下今天的精力，后面更容易看出哪种节奏最合适。</p>
+                        <div class="learn-daily-minute-row">${energyButtons}</div>
+                        <div class="learn-daily-minute-note">${entry.energyLevel === 'great' ? '今天状态：精神好' : entry.energyLevel === 'okay' ? '今天状态：一般' : entry.energyLevel === 'tired' ? '今天状态：累了' : '还没记录今天状态。'}</div>
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>今日总时长</h4>
+                        <p>这版开始更稳定地看时长，但仍然先记总量。</p>
+                        <div class="learn-daily-minute-row">${minuteButtons}</div>
+                        <div class="learn-daily-minute-note">${entry.totalMinutes ? `当前已记：大约 ${entry.totalMinutes} 分钟` : '还没记时长，学完后点一个最接近的就行。'}</div>
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>卡点 / 错题整理</h4>
+                        <p>把今天最卡的字、句或节奏写下来，明天回看就更精准。</p>
+                        <textarea class="learn-daily-textarea" data-daily-error-items placeholder="比如：&ldquo;雀&rdquo;容易忘，或者“欲穷千里目”的节奏还不稳。">${escapeHtml(entry.errorItems || entry.stuckPoint)}</textarea>
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>今天最顺的一项</h4>
+                        <p>不需要长篇，写清楚是哪一项就可以。</p>
+                        <input class="learn-daily-input" data-daily-review-best type="text" value="${escapeHtml(entry.reviewBest)}" placeholder="比如：古诗最顺。" />
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>今天最难的一项</h4>
+                        <p>后面做周复盘时，这里会特别有用。</p>
+                        <input class="learn-daily-input" data-daily-review-hard type="text" value="${escapeHtml(entry.reviewHard)}" placeholder="比如：识字里“雀”还不太稳。" />
+                    </section>
+                    <section class="learn-daily-meta-card">
+                        <h4>明天先做什么</h4>
+                        <p>给明天留一个最容易启动的动作。</p>
+                        <input class="learn-daily-input" data-daily-next-step type="text" value="${escapeHtml(entry.nextStep)}" placeholder="比如：先回看“雀”，再开始晨读。" />
+                    </section>
+                </div>
+                <div class="learn-card-actions learn-daily-sheet-actions">
+                    <button class="learn-btn learn-btn-primary" data-daily-save-summary="1" data-daily-date-key="${dateKey}">${reviewCompleted ? '更新今天学习单' : '保存今天学习单'}</button>
+                    <button class="learn-btn learn-btn-secondary" data-daily-focus-field="${hasErrorItems ? 'error-items' : 'review-best'}">${hasErrorItems ? '查看卡点整理' : '去写复盘'}</button>
+                </div>
+            </section>
+        `;
+    }
+
+    function bindDailySheetInteractions(container, rerender) {
+        if (!container) return;
+
+        container.querySelectorAll('[data-daily-open-lesson]').forEach(button => {
+            button.addEventListener('click', () => {
+                openLesson(
+                    button.dataset.packId,
+                    button.dataset.moduleId,
+                    button.dataset.lessonId
+                );
+            });
+        });
+
+        container.querySelectorAll('[data-daily-open-print]').forEach(button => {
+            button.addEventListener('click', () => {
+                openPrint(button.dataset.packId || 'summer-chinese-bridge-2026');
+            });
+        });
+
+        container.querySelectorAll('[data-daily-set-minutes]').forEach(button => {
+            button.addEventListener('click', () => {
+                const dateKey = button.dataset.dailyDateKey || getDateKey();
+                updateDailySheetEntry(dateKey, {
+                    totalMinutes: Number(button.dataset.dailySetMinutes) || ''
+                });
+                if (typeof window.showToast === 'function') {
+                    window.showToast(`🕒 已记今天大约 ${button.dataset.dailySetMinutes} 分钟`);
+                }
+                if (typeof rerender === 'function') rerender();
+            });
+        });
+
+        container.querySelectorAll('[data-daily-set-energy]').forEach(button => {
+            button.addEventListener('click', () => {
+                updateDailySheetEntry(button.dataset.dailyDateKey || getDateKey(), {
+                    energyLevel: button.dataset.dailySetEnergy || ''
+                });
+                if (typeof window.showToast === 'function') {
+                    window.showToast(`🧭 已记录今天状态：${button.textContent.trim()}`);
+                }
+                if (typeof rerender === 'function') rerender();
+            });
+        });
+
+        container.querySelectorAll('[data-daily-toggle-flag]').forEach(button => {
+            button.addEventListener('click', () => {
+                const dateKey = button.dataset.dailyDateKey || getDateKey();
+                const field = button.dataset.dailyToggleFlag || '';
+                if (!field) return;
+                const entry = getDailySheetEntry(dateKey);
+                const nextValue = !entry[field];
+                updateDailySheetEntry(dateKey, {
+                    [field]: nextValue
+                });
+                if (typeof window.showToast === 'function') {
+                    window.showToast(nextValue ? '✅ 已标记完成' : '↩️ 已取消这一项打勾');
+                }
+                if (typeof rerender === 'function') rerender();
+            });
+        });
+
+        container.querySelectorAll('[data-daily-focus-field]').forEach(button => {
+            button.addEventListener('click', () => {
+                const selectorMap = {
+                    'review-text': '[data-daily-review-text]',
+                    'next-step': '[data-daily-next-step]',
+                    'review-best': '[data-daily-review-best]',
+                    'error-items': '[data-daily-error-items]'
+                };
+                const selector = selectorMap[button.dataset.dailyFocusField];
+                const target = selector ? container.querySelector(selector) : null;
+                if (target && typeof target.focus === 'function') {
+                    target.focus();
+                }
+            });
+        });
+
+        const saveDailySummaryBtn = container.querySelector('[data-daily-save-summary]');
+        if (saveDailySummaryBtn) {
+            saveDailySummaryBtn.addEventListener('click', () => {
+                const dateKey = saveDailySummaryBtn.dataset.dailyDateKey || getDateKey();
+                const stuckField = container.querySelector('[data-daily-stuck-note]');
+                const reviewField = container.querySelector('[data-daily-review-text]');
+                const parentField = container.querySelector('[data-daily-parent-note]');
+                const nextStepField = container.querySelector('[data-daily-next-step]');
+                const reviewBestField = container.querySelector('[data-daily-review-best]');
+                const reviewHardField = container.querySelector('[data-daily-review-hard]');
+                const errorItemsField = container.querySelector('[data-daily-error-items]');
+                const patch = {};
+
+                if (stuckField) patch.stuckPoint = stuckField.value.trim();
+                if (reviewField) patch.reviewText = reviewField.value.trim();
+                if (parentField) patch.parentNote = parentField.value.trim();
+                if (nextStepField) patch.nextStep = nextStepField.value.trim();
+                if (reviewBestField) patch.reviewBest = reviewBestField.value.trim();
+                if (reviewHardField) patch.reviewHard = reviewHardField.value.trim();
+                if (errorItemsField) {
+                    patch.errorItems = errorItemsField.value.trim();
+                    if (!stuckField) patch.stuckPoint = errorItemsField.value.trim();
+                }
+
+                updateDailySheetEntry(dateKey, patch);
+                if (typeof window.showToast === 'function') {
+                    const hasSummaryText = Object.values(patch).some(value => !!String(value || '').trim());
+                    window.showToast(hasSummaryText ? '✅ 今天的小结已保存' : '✅ 学习单已保存');
+                }
+                if (typeof rerender === 'function') rerender();
+            });
+        }
+    }
+
+    async function buildDailySheetOptions(dateKey) {
+        const summerId = 'summer-chinese-bridge-2026';
+        const siteId = 'learning-sites-gateway-2026';
+        const targetDate = parseDateKey(dateKey) || new Date();
+        const [summerPack, sitePack] = await Promise.all([
+            getPack(summerId),
+            getPack(siteId)
+        ]);
+        if (!summerPack?.manifest) return null;
+        const [modulesById, siteModulesById] = await Promise.all([
+            loadAllModules(summerId),
+            sitePack?.manifest ? loadAllModules(siteId) : Promise.resolve({})
+        ]);
+        const summerRecord = {
+            id: summerId,
+            pack: summerPack,
+            modulesById
+        };
+        const siteRecord = sitePack?.manifest ? {
+            id: siteId,
+            pack: sitePack,
+            modulesById: siteModulesById
+        } : null;
+        const readingModule = modulesById?.['morning-reading'] || null;
+        const literacyModule = modulesById?.['literacy-45days'] || null;
+        const poemsModule = modulesById?.['poems'] || null;
+        const guidedSitesModule = siteModulesById?.['guided-sites'] || null;
+        if (!readingModule || !literacyModule) return null;
+
+        const todayPlan = getTodayLearningPlan(summerRecord, siteRecord, targetDate);
+        const readingContinueId = getContinueLessonId(summerId, readingModule) || '';
+        const literacyContinueId = getContinueLessonId(summerId, literacyModule) || '';
+        const siteContinueId = siteRecord && guidedSitesModule ? getContinueLessonId(siteId, guidedSitesModule) || '' : '';
+        const readingTodayId = getRecommendedLessonIdForDay(summerId, readingModule, todayPlan.readingDay) || readingContinueId;
+        const literacyTodayId = getRecommendedLessonIdForDay(summerId, literacyModule, todayPlan.literacyDay) || literacyContinueId;
+        const siteTodayId = guidedSitesModule
+            ? (todayPlan.mode === 'calendar'
+                ? getRecommendedLessonIdForDay(siteId, guidedSitesModule, parseLessonDay(todayPlan.siteLessonId))
+                : todayPlan.siteLessonId || siteContinueId)
+            : siteContinueId;
+        const readingSheetId = todayPlan.mode === 'calendar' && todayPlan.readingDay
+            ? `day-${String(todayPlan.readingDay).padStart(2, '0')}`
+            : readingTodayId;
+        const literacySheetId = todayPlan.mode === 'calendar' && todayPlan.literacyDay
+            ? `day-${String(todayPlan.literacyDay).padStart(2, '0')}`
+            : literacyTodayId;
+        const readingLesson = getLessonById(readingModule, readingSheetId) || getLessonById(readingModule, readingTodayId);
+        const literacyLesson = getLessonById(literacyModule, literacySheetId) || getLessonById(literacyModule, literacyTodayId);
+        const poemLesson = getPoemLessonForDay(poemsModule, parseLessonDay(readingSheetId) || todayPlan.readingDay || 1);
+        const siteLesson = siteTodayId ? getLessonById(guidedSitesModule, siteTodayId) : null;
+
+        return {
+            dateKey: dateKey || getDateKey(targetDate),
+            packId: summerId,
+            readingDay: parseLessonDay(readingSheetId) || todayPlan.readingDay || 1,
+            readingTitle: readingLesson?.title || '今天晨读',
+            readingLessonId: readingSheetId || readingTodayId || readingContinueId,
+            readingCompleted: !!(readingSheetId && isLessonCompleted(summerId, 'morning-reading', readingSheetId)),
+            poemTitle: poemLesson?.title || '今日古诗',
+            literacyTitle: literacyLesson?.title || '今天识字',
+            literacyLessonId: literacySheetId || literacyTodayId || literacyContinueId,
+            literacyCompleted: !!(literacySheetId && isLessonCompleted(summerId, 'literacy-45days', literacySheetId)),
+            sitePackId: siteRecord?.id || '',
+            siteLessonId: siteTodayId || '',
+            siteTitle: siteLesson?.title || '学习网站 / 打印讲义'
+        };
+    }
+
+    async function renderDailyCheckin(containerId) {
+        const container = document.getElementById(containerId || 'today-learning-checkin');
+        if (!container) return;
+        const options = await buildDailySheetOptions();
+        if (!options) {
+            container.innerHTML = '';
+            return;
+        }
+        const mode = getDailySheetMode();
+        if (mode === 'template-b') {
+            container.innerHTML = renderDailySheetTemplateB(options);
+        } else if (mode === 'template-c') {
+            container.innerHTML = renderDailySheetTemplateC(options);
+        } else {
+            container.innerHTML = renderDailySheetTemplateA(options);
+        }
+        bindDailySheetInteractions(container, () => void renderDailyCheckin(containerId || 'today-learning-checkin'));
+    }
+
     function sumRewardPoints(rewards) {
         return Object.values(rewards || {}).reduce((total, item) => total + (Number(item?.points) || 0), 0);
     }
@@ -394,12 +1297,16 @@
                 const module = packRecord?.modulesById?.[moduleId];
                 const lesson = getLessonById(module, lessonId);
                 const isBundle = moduleId === 'daily-bundle';
+                const isStreak = moduleId === 'streak';
+                const streakRule = packRecord?.pack?.manifest?.streakRule || null;
                 return {
                     key,
                     claimedAt: Number(value?.claimedAt) || 0,
                     points: Number(value?.points) || 0,
                     title: isBundle
                         ? '晨读 + 识字同日完成'
+                        : isStreak
+                            ? (streakRule?.title || '连续学习奖励')
                         : `${moduleMeta?.title || moduleId || '学习记录'} · ${lesson?.title || lessonId || '已完成'}`,
                     packTitle: packRecord?.packMeta?.title || packId
                 };
@@ -442,7 +1349,11 @@
             '经典短句': 'jing dian duan ju',
             '新字': 'xin zi',
             '例句': 'li ju',
-            '复盘': 'fu pan'
+            '复盘': 'fu pan',
+            '目标词': 'mu biao ci',
+            '家长提示': 'jia zhang ti shi',
+            '打开点读': 'da kai dian du',
+            '完成目标': 'wan cheng mu biao'
         };
         return map[label] || '';
     }
@@ -636,6 +1547,421 @@
                 <div class="learn-print-chapter-range">
                     <span>从第 ${day} 天开始</span>
                     <strong>建议范围：第 ${rangeStart} - ${rangeEnd} 天</strong>
+                </div>
+            </section>
+        `;
+    }
+
+    function getDailySheetModeGuide(modeId) {
+        const normalized = normalizeDailySheetMode(modeId);
+        if (normalized === 'template-b') {
+            return {
+                stage: '适合节奏稳定后',
+                duration: '建议 18 到 25 分钟',
+                note: '比超轻量版多一点管理能力，但仍然不做重表格。'
+            };
+        }
+        if (normalized === 'template-c') {
+            return {
+                stage: '适合更稳定阶段',
+                duration: '建议 20 到 30 分钟',
+                note: '加入错题整理和复盘字段，更接近小学学习单。'
+            };
+        }
+        return {
+            stage: '适合幼小衔接起步',
+            duration: '建议 15 到 20 分钟',
+            note: '先让每天学习节奏跑顺，不被记录负担拖住。'
+        };
+    }
+
+    function formatStoredMultilineText(value) {
+        return escapeHtml(String(value || '')).replace(/\r?\n/g, '<br>');
+    }
+
+    function renderPrintDailyModeStrip(activeMode) {
+        const current = normalizeDailySheetMode(activeMode);
+        return `
+            <div class="learn-print-daily-mode-strip">
+                ${getDailySheetModes().map(mode => `
+                    <article class="learn-print-daily-mode-card ${mode.id === current ? 'is-active' : ''}">
+                        <span>${mode.badge}</span>
+                        <strong>${mode.title}</strong>
+                        <p>${mode.id === current ? '当前打印跟随这一档。' : mode.desc}</p>
+                    </article>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function renderPrintDailyTaskTable(rows) {
+        return `
+            <div class="learn-print-daily-table">
+                <div class="learn-print-daily-row is-head">
+                    <span>勾选</span>
+                    <span>类型</span>
+                    <span>今日任务</span>
+                    <span>建议时长</span>
+                    <span>备注</span>
+                </div>
+                ${rows.map(row => `
+                    <div class="learn-print-daily-row ${row.completed ? 'is-completed' : ''}">
+                        <span class="learn-print-daily-check">${row.completed ? '☑' : '□'}</span>
+                        <span class="learn-print-daily-type">${row.type}</span>
+                        <div class="learn-print-daily-task">
+                            <strong>${row.title}</strong>
+                            ${row.sub ? `<small>${row.sub}</small>` : ''}
+                        </div>
+                        <span class="learn-print-daily-plan">${row.plan || '—'}</span>
+                        <span class="learn-print-daily-note">${row.note || '—'}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function renderPrintDailyFieldCard(field) {
+        const hasPrefill = !!String(field?.value || '').trim();
+        const chips = Array.isArray(field?.chips) ? field.chips : [];
+        return `
+            <article class="learn-print-daily-note-card ${field?.wide ? 'is-wide' : ''}">
+                <div class="learn-print-daily-note-head">
+                    <h3>${field?.label || '记录项'}</h3>
+                    <span>${hasPrefill ? '网页已记' : '打印后手写'}</span>
+                </div>
+                <p>${field?.hint || ''}</p>
+                ${chips.length ? `
+                    <div class="learn-print-daily-chip-row">
+                        ${chips.map(item => `<span class="${item.active ? 'is-active' : ''}">${item.label}</span>`).join('')}
+                    </div>
+                ` : ''}
+                <div class="learn-print-daily-writebox">
+                    ${hasPrefill
+                        ? `<div class="learn-print-daily-prefill">${formatStoredMultilineText(field.value)}</div>`
+                        : `
+                            <div class="learn-print-daily-write-line"></div>
+                            <div class="learn-print-daily-write-line"></div>
+                            ${field?.wide ? '<div class="learn-print-daily-write-line"></div>' : ''}
+                        `}
+                </div>
+            </article>
+        `;
+    }
+
+    function renderPrintDailyFieldGrid(fields) {
+        return `
+            <div class="learn-print-daily-field-grid">
+                ${(fields || []).map(renderPrintDailyFieldCard).join('')}
+            </div>
+        `;
+    }
+
+    function buildPrintDailySheetModel(modeId, options) {
+        const normalized = normalizeDailySheetMode(modeId);
+        const entry = getDailySheetEntry(options?.dateKey || getDateKey());
+        const readingDay = Number(options?.readingDay) || 1;
+        const guide = getDailySheetModeGuide(normalized);
+        const reviewCompleted = !!String(entry.reviewText || '').trim();
+        const reviewPlusNextCompleted = reviewCompleted && !!String(entry.nextStep || '').trim();
+        const advancedReviewCompleted = !!String(entry.reviewBest || '').trim()
+            && !!String(entry.reviewHard || '').trim()
+            && !!String(entry.nextStep || '').trim();
+        let rows = [];
+        let fields = [];
+        let scoreText = '';
+        let scoreNote = '';
+        let completed = false;
+
+        if (normalized === 'template-b') {
+            rows = [
+                {
+                    type: '晨读',
+                    title: options?.readingTitle || '今天晨读',
+                    sub: options?.readingCompleted ? '网页已打勾' : '网页未打勾',
+                    plan: '5 分',
+                    note: '先顺一遍，不拖太久',
+                    completed: !!options?.readingCompleted
+                },
+                {
+                    type: '古诗',
+                    title: options?.poemTitle || '今日古诗',
+                    sub: '一句拼音一句中文',
+                    plan: '3 分',
+                    note: '跟晨读一起走',
+                    completed: !!options?.readingCompleted
+                },
+                {
+                    type: '识字',
+                    title: options?.literacyTitle || '今天识字',
+                    sub: options?.literacyCompleted ? '网页已打勾' : '网页未打勾',
+                    plan: '8 分',
+                    note: '认读为主',
+                    completed: !!options?.literacyCompleted
+                },
+                {
+                    type: '拓展',
+                    title: options?.siteTitle || '学习网站 / 打印讲义',
+                    sub: entry.extensionCompleted ? '网页已标记' : '按状态可选',
+                    plan: '可选',
+                    note: '有余力再加做一项',
+                    completed: !!entry.extensionCompleted
+                },
+                {
+                    type: '复盘',
+                    title: '睡前复盘 + 明天先做什么',
+                    sub: reviewPlusNextCompleted ? '网页已填写' : '睡前完成',
+                    plan: '2 分',
+                    note: '写一句今天最顺的，再留明天起步动作',
+                    completed: reviewPlusNextCompleted
+                }
+            ];
+            const stats = getDailySheetCompletionStats(rows.map(row => Object.assign({ optional: row.type === '拓展' }, row)));
+            scoreText = `${stats.requiredCompleted}/${stats.requiredCount}`;
+            scoreNote = stats.allRequiredCompleted ? '核心任务已收口' : '先做核心 4 项';
+            completed = stats.allRequiredCompleted;
+            fields = [
+                {
+                    label: '今日总时长',
+                    hint: '先记总时长，不需要逐项细记。',
+                    chips: [15, 18, 20, 25, 30].map(item => ({ label: `${item} 分`, active: Number(entry.totalMinutes) === item })),
+                    value: entry.totalMinutes ? `已记录：约 ${entry.totalMinutes} 分钟` : '',
+                    wide: false
+                },
+                {
+                    label: '今天卡住的点',
+                    hint: '只抓一个最需要明天回看的点。',
+                    value: entry.stuckPoint,
+                    wide: false
+                },
+                {
+                    label: '睡前一句话',
+                    hint: '写一句今天最顺的一项，帮助孩子收口。',
+                    value: entry.reviewText,
+                    wide: true
+                },
+                {
+                    label: '明天先做什么',
+                    hint: '只写一个最容易启动的动作。',
+                    value: entry.nextStep,
+                    wide: true
+                }
+            ];
+        } else if (normalized === 'template-c') {
+            rows = [
+                {
+                    type: '晨读',
+                    title: options?.readingTitle || '今天晨读',
+                    sub: options?.readingCompleted ? '网页已打勾' : '网页未打勾',
+                    plan: '5 分',
+                    note: '主线学习',
+                    completed: !!options?.readingCompleted
+                },
+                {
+                    type: '古诗',
+                    title: options?.poemTitle || '今日古诗',
+                    sub: '一句拼音一句中文',
+                    plan: '3 分',
+                    note: '重在节奏和读顺',
+                    completed: !!options?.readingCompleted
+                },
+                {
+                    type: '识字',
+                    title: options?.literacyTitle || '今天识字',
+                    sub: options?.literacyCompleted ? '网页已打勾' : '网页未打勾',
+                    plan: '8 分',
+                    note: '认读 + 短句开口',
+                    completed: !!options?.literacyCompleted
+                },
+                {
+                    type: '整理',
+                    title: '错题 / 卡点整理',
+                    sub: entry.errorReviewCompleted ? '网页已标记' : '按状态整理',
+                    plan: '5 分',
+                    note: '把今天最卡的字句留住',
+                    completed: !!entry.errorReviewCompleted
+                },
+                {
+                    type: '复盘',
+                    title: '最顺 / 最难 / 明天先做什么',
+                    sub: advancedReviewCompleted ? '网页已填写' : '睡前完成',
+                    plan: '3 分',
+                    note: '更接近小学学习单',
+                    completed: advancedReviewCompleted
+                }
+            ];
+            const stats = getDailySheetCompletionStats(rows.map(row => Object.assign({ optional: row.type === '整理' }, row)));
+            scoreText = `${stats.requiredCompleted}/${stats.requiredCount}`;
+            scoreNote = stats.allRequiredCompleted ? '核心任务已收口' : '先做核心 4 项';
+            completed = stats.allRequiredCompleted;
+            fields = [
+                {
+                    label: '今日状态',
+                    hint: '看一眼今天精力，后面更容易找到合适节奏。',
+                    chips: [
+                        { label: '精神好', active: entry.energyLevel === 'great' },
+                        { label: '一般', active: entry.energyLevel === 'okay' },
+                        { label: '累了', active: entry.energyLevel === 'tired' }
+                    ],
+                    value: '',
+                    wide: false
+                },
+                {
+                    label: '今日总时长',
+                    hint: '先记总量，逐项拆分可以以后再加。',
+                    chips: [15, 20, 25, 30, 35].map(item => ({ label: `${item} 分`, active: Number(entry.totalMinutes) === item })),
+                    value: entry.totalMinutes ? `已记录：约 ${entry.totalMinutes} 分钟` : '',
+                    wide: false
+                },
+                {
+                    label: '错题 / 卡点整理',
+                    hint: '把今天最卡的字、句或节奏记下来。',
+                    value: entry.errorItems || entry.stuckPoint,
+                    wide: true
+                },
+                {
+                    label: '今天最顺的一项',
+                    hint: '写清楚是哪一项就够。',
+                    value: entry.reviewBest,
+                    wide: false
+                },
+                {
+                    label: '今天最难的一项',
+                    hint: '后面做周复盘时会特别有用。',
+                    value: entry.reviewHard,
+                    wide: false
+                },
+                {
+                    label: '明天先做什么',
+                    hint: '给明天留一个最容易启动的动作。',
+                    value: entry.nextStep,
+                    wide: true
+                }
+            ];
+        } else {
+            rows = [
+                {
+                    type: '晨读',
+                    title: options?.readingTitle || '今天晨读',
+                    sub: options?.readingCompleted ? '网页已打勾' : '网页未打勾',
+                    plan: '5 分',
+                    note: '读顺就可以',
+                    completed: !!options?.readingCompleted
+                },
+                {
+                    type: '古诗',
+                    title: options?.poemTitle || '今日古诗',
+                    sub: '一句拼音一句中文',
+                    plan: '3 分',
+                    note: '跟晨读一起走',
+                    completed: !!options?.readingCompleted
+                },
+                {
+                    type: '识字',
+                    title: options?.literacyTitle || '今天识字',
+                    sub: options?.literacyCompleted ? '网页已打勾' : '网页未打勾',
+                    plan: '8 分',
+                    note: '认读为主',
+                    completed: !!options?.literacyCompleted
+                },
+                {
+                    type: '复盘',
+                    title: '睡前说一句今天最顺的一项',
+                    sub: reviewCompleted ? '网页已填写' : '睡前完成',
+                    plan: '1 分',
+                    note: '帮助一天轻轻收住',
+                    completed: reviewCompleted
+                }
+            ];
+            const stats = getDailySheetCompletionStats(rows);
+            scoreText = `${stats.requiredCompleted}/${stats.requiredCount}`;
+            scoreNote = stats.allRequiredCompleted ? '今天已收口' : '今天慢慢完成';
+            completed = stats.allRequiredCompleted;
+            fields = [
+                {
+                    label: '今天用了多久？',
+                    hint: '幼小衔接先看总时长，不用逐项填写。',
+                    chips: [10, 15, 20, 30].map(item => ({ label: `${item} 分`, active: Number(entry.totalMinutes) === item })),
+                    value: entry.totalMinutes ? `已记录：约 ${entry.totalMinutes} 分钟` : '',
+                    wide: false
+                },
+                {
+                    label: '今天卡住的 1 个点',
+                    hint: '只记一个明天要再看一眼的点。',
+                    value: entry.stuckPoint,
+                    wide: false
+                },
+                {
+                    label: '睡前一句话',
+                    hint: '说一句今天最顺的一项，写上去就算完成。',
+                    value: entry.reviewText,
+                    wide: true
+                },
+                {
+                    label: '家长一句话',
+                    hint: '这一项可选，适合简单留个观察。',
+                    value: entry.parentNote,
+                    wide: true
+                }
+            ];
+        }
+
+        return {
+            modeMeta: getDailySheetModeMeta(normalized),
+            guide,
+            readingDay,
+            entry,
+            rows,
+            fields,
+            scoreText,
+            scoreNote,
+            completed
+        };
+    }
+
+    function getDailySheetModeMeta(modeId) {
+        return DAILY_SHEET_MODES[normalizeDailySheetMode(modeId)] || DAILY_SHEET_MODES['template-a'];
+    }
+
+    function renderPrintDailySheet(modeId, options) {
+        const model = buildPrintDailySheetModel(modeId, options);
+        const dateText = formatDateText(new Date());
+        return `
+            <section class="learn-print-daily-sheet learn-print-paper">
+                <div class="learn-print-daily-eyebrow">daily learning sheet</div>
+                <div class="learn-print-daily-head">
+                    <div>
+                        <h2>今日学习单 · ${model.modeMeta.badge}</h2>
+                        <p>${dateText} · 第 ${model.readingDay} 天 · ${model.modeMeta.title}</p>
+                    </div>
+                    <div class="learn-print-daily-score ${model.completed ? 'is-completed' : ''}">
+                        <strong>${model.scoreText}</strong>
+                        <span>${model.scoreNote}</span>
+                    </div>
+                </div>
+                ${renderPrintDailyModeStrip(modeId)}
+                <div class="learn-print-daily-overview">
+                    <article>
+                        <span>适合阶段</span>
+                        <strong>${model.guide.stage}</strong>
+                        <p>${model.guide.note}</p>
+                    </article>
+                    <article>
+                        <span>建议节奏</span>
+                        <strong>${model.guide.duration}</strong>
+                        <p>可先在积分页勾选，再决定是否打印纸面记录。</p>
+                    </article>
+                    <article>
+                        <span>切换入口</span>
+                        <strong>设置页</strong>
+                        <p>路径：设置 → 学习打勾模式。积分页和打印页会一起跟随。</p>
+                    </article>
+                </div>
+                ${renderPrintDailyTaskTable(model.rows)}
+                ${renderPrintDailyFieldGrid(model.fields)}
+                <div class="learn-print-page-foot">
+                    <span>daily sheet</span>
+                    <strong>${model.modeMeta.title}</strong>
+                    <span>网页和打印共用同一套字段</span>
                 </div>
             </section>
         `;
@@ -850,6 +2176,83 @@
         `;
     }
 
+    function renderExternalReaderWorksheet(pack, module, lesson) {
+        const support = lesson?.support || {};
+        const source = resolveLessonSource(pack, module, lesson);
+        const launchUrl = resolveLessonLaunchUrl(pack, module, lesson);
+        const keywords = Array.isArray(support?.keywords) ? support.keywords : [];
+        const objectives = Array.isArray(lesson?.objectives) ? lesson.objectives : [];
+        const checklist = Array.isArray(lesson?.checklist) ? lesson.checklist : [];
+        return `
+            <article class="learn-study-sheet learn-study-sheet-external">
+                <header class="learn-study-head">
+                    <span class="learn-study-head-left">英语点读</span>
+                    <span class="learn-study-head-right">${lesson?.duration || '约 10 分钟'}</span>
+                </header>
+                <div class="learn-study-title-wrap">
+                    <h3 class="learn-study-title">${lesson?.title || '英语章节'}</h3>
+                    <p class="learn-study-summary">${lesson?.summary || lesson?.focus || '先在当前项目里看目标词，再去外部章节里轻轻听读一遍。'}</p>
+                </div>
+                <section class="learn-study-block">
+                    <div class="learn-study-block-head">
+                        <span class="learn-study-block-pinyin">${getLabelPinyin('完成目标')}</span>
+                        <h4 class="learn-study-block-label">完成目标</h4>
+                    </div>
+                    <p class="learn-study-text learn-study-text-review">${lesson?.focus || '先听一遍，再跟读一遍，最后回到当前项目打勾。'}</p>
+                    ${objectives.length ? `
+                        <ul class="learn-checklist">
+                            ${objectives.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    ` : ''}
+                </section>
+                ${keywords.length ? `
+                    <section class="learn-study-block learn-external-support-block">
+                        <div class="learn-study-block-head">
+                            <span class="learn-study-block-pinyin">${getLabelPinyin('目标词')}</span>
+                            <h4 class="learn-study-block-label">目标词</h4>
+                        </div>
+                        <div class="learn-external-keywords">
+                            ${keywords.map(item => `<span class="learn-external-keyword">${item}</span>`).join('')}
+                        </div>
+                    </section>
+                ` : ''}
+                <section class="learn-study-block learn-external-launch-block">
+                    <div class="learn-study-block-head">
+                        <span class="learn-study-block-pinyin">${getLabelPinyin('打开点读')}</span>
+                        <h4 class="learn-study-block-label">打开点读</h4>
+                    </div>
+                    <div class="learn-external-launch-card">
+                        <p class="learn-resource-desc">${source?.provider === 'mayihaoke' ? '这节会跳到 mayihaoke 的对应章节阅读页，读完再回到当前项目打勾。' : '打开外部章节页后，学完再回到当前项目打勾。'}</p>
+                        ${launchUrl ? `<p class="learn-resource-url">${launchUrl}</p>` : ''}
+                        <div class="learn-resource-actions">
+                            <a class="learn-btn learn-btn-primary" data-learn-action="open-external" href="${launchUrl || '#'}" target="_blank" rel="noopener noreferrer">打开点读页</a>
+                        </div>
+                    </div>
+                </section>
+                ${support?.parentTip ? `
+                    <section class="learn-study-block learn-external-support-block">
+                        <div class="learn-study-block-head">
+                            <span class="learn-study-block-pinyin">${getLabelPinyin('家长提示')}</span>
+                            <h4 class="learn-study-block-label">家长提示</h4>
+                        </div>
+                        <p class="learn-study-explanation">${support.parentTip}</p>
+                    </section>
+                ` : ''}
+                ${checklist.length ? `
+                    <section class="learn-study-block">
+                        <div class="learn-study-block-head">
+                            <h4 class="learn-study-block-label">使用步骤</h4>
+                        </div>
+                        <ul class="learn-checklist">
+                            ${checklist.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </section>
+                ` : ''}
+                ${buildCheckGrid(lesson?.completionNote || '外部章节读完后，回到当前项目点“读完打勾”就能记录英语进度。', '读完打勾')}
+            </article>
+        `;
+    }
+
     function renderReviewWorksheet(lesson) {
         const checklist = Array.isArray(lesson?.checklist) ? lesson.checklist : [];
         return `
@@ -923,7 +2326,8 @@
         `;
     }
 
-    function renderLessonBody(module, lesson, showPinyin, context) {
+    function renderLessonBody(pack, module, lesson, showPinyin, context) {
+        if (module?.type === 'external-reader') return renderExternalReaderWorksheet(pack, module, lesson);
         if (module?.type === 'resource-hub') return renderResourceHubWorksheet(module, lesson);
         if (module?.type === 'literacy') return renderLiteracyWorksheet(lesson, showPinyin, context);
         if (module?.type === 'review') return renderReviewWorksheet(lesson);
@@ -994,26 +2398,32 @@
 
         const summerRecord = packRecords.find(record => record.id === 'summer-chinese-bridge-2026') || packRecords[0];
         const siteRecord = packRecords.find(record => record.id === 'learning-sites-gateway-2026') || packRecords[1] || null;
+        const englishRecord = packRecords.find(record => record.id === 'english-mc-hybrid-2026') || null;
 
         const readingModule = summerRecord?.modulesById?.['morning-reading'] || null;
         const literacyModule = summerRecord?.modulesById?.['literacy-45days'] || null;
+        const poemsModule = summerRecord?.modulesById?.['poems'] || null;
         const reviewModule = summerRecord?.modulesById?.['weekly-review'] || null;
         const guidedSitesModule = siteRecord?.modulesById?.['guided-sites'] || null;
+        const englishStoryModule = englishRecord?.modulesById?.['mcbook56-story'] || null;
 
         const readingContinueId = readingModule ? getContinueLessonId(summerRecord.id, readingModule) : null;
         const literacyContinueId = literacyModule ? getContinueLessonId(summerRecord.id, literacyModule) : null;
         const reviewContinueId = reviewModule ? getContinueLessonId(summerRecord.id, reviewModule) : null;
         const siteContinueId = guidedSitesModule ? getContinueLessonId(siteRecord.id, guidedSitesModule) : null;
+        const englishContinueId = englishStoryModule ? getContinueLessonId(englishRecord.id, englishStoryModule) : null;
 
         const readingMeta = getModuleMeta(summerRecord?.pack?.manifest, 'morning-reading');
         const literacyMeta = getModuleMeta(summerRecord?.pack?.manifest, 'literacy-45days');
         const reviewMeta = getModuleMeta(summerRecord?.pack?.manifest, 'weekly-review');
         const siteMeta = getModuleMeta(siteRecord?.pack?.manifest, 'guided-sites');
+        const englishMeta = getModuleMeta(englishRecord?.pack?.manifest, 'mcbook56-story');
 
         const readingProgress = readingModule ? getModuleProgress(summerRecord.id, readingModule) : { completed: 0, total: 0, percent: 0 };
         const literacyProgress = literacyModule ? getModuleProgress(summerRecord.id, literacyModule) : { completed: 0, total: 0, percent: 0 };
         const reviewProgress = reviewModule ? getModuleProgress(summerRecord.id, reviewModule) : { completed: 0, total: 0, percent: 0 };
         const siteProgress = guidedSitesModule ? getModuleProgress(siteRecord.id, guidedSitesModule) : { completed: 0, total: 0, percent: 0 };
+        const englishProgress = englishStoryModule ? getModuleProgress(englishRecord.id, englishStoryModule) : { completed: 0, total: 0, percent: 0 };
         const todayPlan = getTodayLearningPlan(summerRecord, siteRecord);
         const readingTodayId = readingModule ? getRecommendedLessonIdForDay(summerRecord.id, readingModule, todayPlan.readingDay) : readingContinueId;
         const literacyTodayId = literacyModule ? getRecommendedLessonIdForDay(summerRecord.id, literacyModule, todayPlan.literacyDay) : literacyContinueId;
@@ -1025,10 +2435,93 @@
         const reviewTodayId = reviewModule && todayPlan.reviewLessonId ? todayPlan.reviewLessonId : null;
         const reviewTodayLesson = reviewTodayId ? getLessonById(reviewModule, reviewTodayId) : null;
         const showReviewToday = !!(reviewTodayId && !isLessonCompleted(summerRecord.id, 'weekly-review', reviewTodayId));
+        const readingTodayLesson = readingTodayId ? getLessonById(readingModule, readingTodayId) : null;
+        const literacyTodayLesson = literacyTodayId ? getLessonById(literacyModule, literacyTodayId) : null;
+        const englishTodayLesson = englishContinueId ? getLessonById(englishStoryModule, englishContinueId) : null;
+        const readingSheetId = todayPlan.mode === 'calendar' && todayPlan.readingDay
+            ? `day-${String(todayPlan.readingDay).padStart(2, '0')}`
+            : (readingTodayId || readingContinueId || '');
+        const literacySheetId = todayPlan.mode === 'calendar' && todayPlan.literacyDay
+            ? `day-${String(todayPlan.literacyDay).padStart(2, '0')}`
+            : (literacyTodayId || literacyContinueId || '');
+        const readingSheetLesson = readingSheetId ? getLessonById(readingModule, readingSheetId) : readingTodayLesson;
+        const literacySheetLesson = literacySheetId ? getLessonById(literacyModule, literacySheetId) : literacyTodayLesson;
+        const readingCompanions = readingModule && readingSheetLesson
+            ? getReadingCompanions(summerRecord?.modulesById, readingSheetLesson)
+            : { poem: null, classic: null };
+        const poemTodayLesson = readingCompanions?.poem || getPoemLessonForDay(poemsModule, parseLessonDay(readingSheetId) || todayPlan.readingDay || 1);
+        const readingDoneToday = !!(readingSheetId && isLessonCompleted(summerRecord.id, 'morning-reading', readingSheetId));
+        const literacyDoneToday = !!(literacySheetId && isLessonCompleted(summerRecord.id, 'literacy-45days', literacySheetId));
         const rewards = getRewardState();
         const totalPointsEarned = sumRewardPoints(rewards);
         const overallPercent = totalProgress.total ? Math.round((totalProgress.completed / totalProgress.total) * 100) : 0;
         const recentRewardItems = getRecentRewardItems(rewards, packRecords);
+        const portalSiteImage = 'assets/learn/portal-smartedu-home-20260705.png';
+        const portalCards = [
+            summerRecord ? renderPortalCard({
+                id: 'chinese',
+                theme: 'chinese',
+                imageSrc: 'assets/decor/book_stack.webp',
+                imageStyle: 'object-fit:contain;padding:22px;background:linear-gradient(180deg, #fff6d8 0%, #fffef8 100%);',
+                badges: ['晨读', '古诗', '识字'],
+                kicker: '中文学习',
+                title: summerRecord.packMeta?.title || '中文资料包',
+                desc: '先从这里进中文学习，最快能找到晨读、古诗和识字。',
+                cta: '进入中文学习',
+                onclick: `LearnCenter.openPack('${summerRecord.id}')`
+            }) : '',
+            englishRecord ? renderPortalCard({
+                id: 'english',
+                theme: 'english',
+                emoji: '🔤',
+                chip: '英语启蒙',
+                artTitle: 'Story · Starters · Review',
+                artText: '英语启蒙入口',
+                badges: ['故事', '单词', '复盘'],
+                kicker: '英语学习',
+                title: englishRecord.packMeta?.title || '英语启蒙资料包',
+                desc: '目标词、故事点读、每周回看都从这里进，不再藏太深。',
+                cta: '进入英语学习',
+                onclick: `LearnCenter.openPack('${englishRecord.id}')`
+            }) : '',
+            renderPortalCard({
+                id: 'hanzi',
+                theme: 'hanzi',
+                imageSrc: 'assets/ui/pg-card-hanzi.webp?v=20260704b',
+                badges: ['认字', '闯关', '快速进入'],
+                kicker: '汉字学习',
+                title: '汉字挑战',
+                desc: '直接进入汉字练习，不用先绕到游乐场里找入口。',
+                cta: '开始汉字练习',
+                onclick: `switchPage('hanzi')`
+            }),
+            siteRecord ? renderPortalCard({
+                id: 'sites',
+                theme: 'sites',
+                imageSrc: portalSiteImage,
+                imageStyle: 'object-position:center top;',
+                badges: ['官网', '工具站', '阅读站'],
+                kicker: '学习网站',
+                title: siteRecord.packMeta?.title || '学习网站入口包',
+                desc: '先在这里挑入口，再出去学，回来仍然能记进度和积分。',
+                cta: '查看网站入口',
+                onclick: `LearnCenter.openPack('${siteRecord.id}')`
+            }) : '',
+            renderPortalCard({
+                id: 'prints',
+                theme: 'prints',
+                emoji: '🖨️',
+                chip: '纸面讲义',
+                artTitle: 'A4 讲义 · 打印页',
+                artText: '一键打印',
+                badges: ['A4', '讲义', '入口单'],
+                kicker: '打印讲义',
+                title: '打印中心',
+                desc: '需要纸面讲义或入口单时，直接从这里进打印页。',
+                cta: '打开打印中心',
+                onclick: `LearnCenter.openPrint('${summerRecord?.id || ''}')`
+            })
+        ].filter(Boolean).join('');
 
         const quickCards = [
             readingModule ? renderHubEntryCard({
@@ -1058,6 +2551,20 @@
                 meta: `识字进度 ${literacyProgress.completed}/${literacyProgress.total} · ${literacyProgress.percent}%`,
                 primaryAction: `<button class="learn-btn learn-btn-primary" onclick="LearnCenter.openLesson('${summerRecord.id}', 'literacy-45days', '${literacyTodayId || literacyContinueId || ''}')">打开今天识字</button>`,
                 secondaryAction: `<button class="learn-btn learn-btn-secondary" onclick="LearnCenter.openPack('${summerRecord.id}')">查看资料包</button>`
+            }) : '',
+            englishStoryModule ? renderHubEntryCard({
+                theme: 'english',
+                chip: '英语启蒙',
+                artTitle: englishProgress.completed ? `已完成 ${englishProgress.completed} 节` : '先听再跟读',
+                artText: '外部点读 + 站内打勾计分',
+                kicker: '今日英语',
+                title: englishContinueId && getLessonById(englishStoryModule, englishContinueId)?.title
+                    ? `今天读：${getLessonById(englishStoryModule, englishContinueId)?.title}`
+                    : '幼小衔接英语启蒙资料包',
+                desc: englishMeta?.summary || englishRecord?.packMeta?.summary || '在当前项目看目标词，再打开外部点读页轻量学习。',
+                meta: `英语进度 ${englishProgress.completed}/${englishProgress.total} · ${englishProgress.percent}%`,
+                primaryAction: `<button class="learn-btn learn-btn-primary" onclick="LearnCenter.openLesson('${englishRecord.id}', 'mcbook56-story', '${englishContinueId || ''}')">打开今日英语</button>`,
+                secondaryAction: `<button class="learn-btn learn-btn-secondary" onclick="LearnCenter.openPack('${englishRecord.id}')">查看英语资料包</button>`
             }) : '',
             (showReviewToday && reviewModule) ? renderHubEntryCard({
                 theme: 'review',
@@ -1202,12 +2709,38 @@
                 ? `<button class="learn-btn learn-btn-secondary" onclick="LearnCenter.openLesson('${summerRecord.id}', 'weekly-review', '${reviewTodayId}')">打开本周复盘</button>`
                 : (siteTodayId ? `<button class="learn-btn learn-btn-secondary" onclick="LearnCenter.openLesson('${siteRecord?.id || ''}', 'guided-sites', '${siteTodayId}')">打开今日加餐</button>` : '')
         ].filter(Boolean).join('');
+        const summaryCards = `
+            <article class="learn-progress-stat-card">
+                <span>今天推荐</span>
+                <strong>${todayPlan.todayLabel}</strong>
+                <p>${todayPlan.mode === 'calendar' ? '今天按暑假节奏继续往前学。' : '今天按当前进度继续学。'}</p>
+            </article>
+            <article class="learn-progress-stat-card">
+                <span>资料包数量</span>
+                <strong>${packRecords.length}</strong>
+                <p>中文、英语、网站入口都已经汇到同一个学习页里。</p>
+            </article>
+            <article class="learn-progress-stat-card">
+                <span>已完成</span>
+                <strong>${totalProgress.completed}/${totalProgress.total}</strong>
+                <p>所有学习资料合并后的当前完成节数。</p>
+            </article>
+            <article class="learn-progress-stat-card">
+                <span>累计学习分</span>
+                <strong>${totalPointsEarned}</strong>
+                <p>学习中心累计发出的成长分，继续统一回到积分系统。</p>
+            </article>
+        `;
 
         const activeHubTab = ['today', 'packs', 'sites', 'prints', 'progress'].includes(state.activeHubTab) ? state.activeHubTab : 'today';
         const tabPanelMap = {
             today: `
+                <div class="learn-stage-head learn-stage-head-tight">
+                    <h3 class="learn-section-title">今日推荐入口</h3>
+                    ${buildBadges(['📚 晨读', '✏️ 识字', '🔤 英语', '🌐 网站加餐'])}
+                </div>
                 <div class="learn-hub-grid">${quickCards}</div>
-                <div class="learn-soft-note">${todayPlan.note}。推荐先从晨读或识字开始，再视状态穿插“学习网站入口”。</div>
+                <div class="learn-soft-note">${todayPlan.note}。学习页现在优先负责“快速找到入口”，今日学习打卡已经移到积分页。</div>
             `,
             packs: `
                 <div class="learn-stage-head learn-stage-head-tight">
@@ -1281,70 +2814,25 @@
             <div class="learn-shell">
                 <section class="learn-hero learn-hub-hero">
                     <div class="learn-hub-hero-copy">
-                        <p class="learn-hub-eyebrow">学习主页</p>
-                        <h2>今天先学什么？</h2>
-                        <p>这里直接进入幼小衔接暑假中文资料包、学习网站入口和打印讲义，不再先放宣传封面。${todayPlan.note}</p>
+                        <p class="learn-hub-eyebrow">学习入口大厅</p>
+                        <h2>先找到要学什么，再一键进去</h2>
+                        <p>学习入口先放到最上面，中文、英语、汉字、学习网站、打印讲义都尽量首屏可见，不再把关键入口藏深。${todayPlan.note}</p>
                         ${buildBadges([
-                            `📅 ${todayPlan.todayLabel}`,
-                            `📚 ${packRecords.length} 套资料包`,
-                            `✅ 已完成 ${totalProgress.completed}/${totalProgress.total || 0} · ${overallPercent}%`,
-                            `⭐ 累计学习分 ${totalPointsEarned}`,
-                            '🌐 学习网站入口',
-                            '🖨️ 打印讲义可用'
+                            '📚 中文主线',
+                            '🔤 英语启蒙',
+                            '📝 汉字练习',
+                            '🌐 网站入口',
+                            '🖨️ 打印讲义'
                         ])}
                     </div>
-                    <div class="learn-hub-visuals">
-                        <article class="learn-hub-visual learn-hub-visual-reading">
-                            <div class="learn-hub-visual-art learn-hub-visual-art-reading">
-                                <div class="learn-illus-sun"></div>
-                                <div class="learn-illus-book">
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                                <div class="learn-illus-lines">
-                                    <i></i><i></i><i></i>
-                                </div>
-                            </div>
-                            <div class="learn-hub-visual-copy">
-                                <span>晨读入口</span>
-                                <strong>短句 · 唐诗 · 经典短句</strong>
-                                <p>像翻讲义一样，轻轻开始。</p>
-                            </div>
-                        </article>
-                        <article class="learn-hub-visual learn-hub-visual-literacy">
-                            <div class="learn-hub-visual-art learn-hub-visual-art-literacy">
-                                <div class="learn-illus-tile">字</div>
-                                <div class="learn-illus-tile">词</div>
-                                <div class="learn-illus-pencil"></div>
-                            </div>
-                            <div class="learn-hub-visual-copy">
-                                <span>识字入口</span>
-                                <strong>45 天识字</strong>
-                                <p>拼音、新字、短句一起推进。</p>
-                            </div>
-                        </article>
-                        <article class="learn-hub-visual learn-hub-visual-sites">
-                            <div class="learn-hub-visual-art learn-hub-visual-art-sites">
-                                <div class="learn-illus-window">
-                                    <b></b><b></b><b></b>
-                                    <span></span>
-                                </div>
-                                <div class="learn-illus-card learn-illus-card-left"></div>
-                                <div class="learn-illus-card learn-illus-card-right"></div>
-                            </div>
-                            <div class="learn-hub-visual-copy">
-                                <span>学习网站</span>
-                                <strong>官方平台 + 工具站 + 阅读站</strong>
-                                <p>先在站内选入口，再出去学。</p>
-                            </div>
-                        </article>
-                    </div>
+                    <div class="learn-portal-grid learn-portal-grid-hero">${portalCards}</div>
                 </section>
+                <div class="learn-progress-overview learn-hub-summary-overview">${summaryCards}</div>
                 <section class="learn-stage-panel learn-hub-panel-wrap">
                     <div class="learn-stage-head learn-hub-tabs-head">
                         <h3 class="learn-section-title">学习选项卡</h3>
                         <div class="learn-hub-tabs">
-                            <button class="learn-hub-tab ${activeHubTab === 'today' ? 'is-active' : ''}" data-learn-hub-tab="today">今日学习</button>
+                            <button class="learn-hub-tab ${activeHubTab === 'today' ? 'is-active' : ''}" data-learn-hub-tab="today">快速入口</button>
                             <button class="learn-hub-tab ${activeHubTab === 'packs' ? 'is-active' : ''}" data-learn-hub-tab="packs">资料包</button>
                             <button class="learn-hub-tab ${activeHubTab === 'sites' ? 'is-active' : ''}" data-learn-hub-tab="sites">学习网站</button>
                             <button class="learn-hub-tab ${activeHubTab === 'prints' ? 'is-active' : ''}" data-learn-hub-tab="prints">打印讲义</button>
@@ -1362,6 +2850,7 @@
                 void renderHub(containerId || 'learn-container');
             });
         });
+        bindDailySheetInteractions(container, () => void renderHub(containerId || 'learn-container'));
     }
 
     async function renderPack(containerId) {
@@ -1491,7 +2980,7 @@
         const prefs = getPrintPrefs();
         const completed = isLessonCompleted(packId, moduleId, lessonId);
         const nav = getLessonNav(module, lessonId);
-        const rewardPoints = rewardForModule(manifest, moduleId);
+        const rewardPoints = resolveLessonReward(manifest, moduleId, lesson);
         const modulesById = moduleId === 'morning-reading'
             ? await loadAllModules(packId)
             : null;
@@ -1505,6 +2994,10 @@
             : null;
         const completionIntro = getLessonCompletionIntro(manifest, moduleId, module, rewardPoints, completed);
         const completionHint = getLessonCompletionHint(manifest, moduleId, module, completed);
+        const showPinyinToggle = module?.type !== 'external-reader';
+        const actionNote = module?.type === 'external-reader'
+            ? '先打开点读页，读完回来打勾，然后继续下一节或返回资料包。'
+            : '打完勾后，可以继续下一节、返回资料包，或者切换拼音显示。';
 
         container.innerHTML = `
             <div class="learn-shell">
@@ -1519,7 +3012,7 @@
                     ])}
                     <div class="learn-lesson-state ${completed ? 'is-completed' : ''}" data-learn-completion-badge>${getLessonCompletionBadge(completed)}</div>
                 </section>
-                ${renderLessonBody(module, lesson, prefs.showPinyin, lessonContext)}
+                ${renderLessonBody(pack, module, lesson, prefs.showPinyin, lessonContext)}
                 <section class="learn-card learn-complete-card ${completed ? 'is-completed' : ''}" data-learn-complete-card>
                     <div class="learn-complete-copy">
                         <span class="learn-complete-kicker">${completed ? '本页已打勾' : '本页读完就点这里'}</span>
@@ -1534,13 +3027,13 @@
                 <section class="learn-card learn-lesson-actions">
                     <div class="learn-lesson-actions-copy">
                         <h3 class="learn-section-title">继续学习</h3>
-                        <p class="learn-lesson-actions-note">打完勾后，可以继续下一节、返回资料包，或者切换拼音显示。</p>
+                        <p class="learn-lesson-actions-note">${actionNote}</p>
                     </div>
                     <div class="learn-card-actions">
                         <button class="learn-btn learn-btn-secondary" onclick="LearnCenter.openPack('${packId}')">返回资料包</button>
                         <button class="learn-btn learn-btn-secondary" ${nav.prevLessonId ? '' : 'disabled'} data-learn-action="prev-lesson">上一节</button>
                         <button class="learn-btn learn-btn-secondary" ${nav.nextLessonId ? '' : 'disabled'} data-learn-action="next-lesson">下一节</button>
-                        <button class="learn-btn learn-btn-secondary" data-learn-action="toggle-pinyin">${prefs.showPinyin ? '隐藏拼音' : '显示拼音'}</button>
+                        ${showPinyinToggle ? `<button class="learn-btn learn-btn-secondary" data-learn-action="toggle-pinyin">${prefs.showPinyin ? '隐藏拼音' : '显示拼音'}</button>` : ''}
                     </div>
                 </section>
             </div>
@@ -1605,6 +3098,9 @@
         const plan = pack && pack.plan;
         const modulesById = await loadAllModules(packId);
         const prefs = getPrintPrefs();
+        const dailyPrintMode = getDailySheetMode();
+        const showDailyPrintSheet = packId === 'summer-chinese-bridge-2026';
+        const dailyPrintOptions = showDailyPrintSheet ? await buildDailySheetOptions() : null;
 
         const moduleSections = (manifest?.modules || []).map((moduleMeta, moduleIndex) => {
             const module = modulesById[moduleMeta.id];
@@ -1657,6 +3153,13 @@
                     ribbon: lesson?.title || '网站入口',
                     footer: '网站学习结束后，回到当前项目点完成'
                 })).join('');
+            } else if (module?.type === 'external-reader') {
+                body = lessons.map((lesson, index) => enhancePrintPaper(renderExternalReaderWorksheet(pack, module, lesson), {
+                    moduleTitle: moduleMeta.title,
+                    pageLabel: lesson?.duration || `第 ${index + 1} 节`,
+                    ribbon: lesson?.title || '英语点读',
+                    footer: '点读结束后回到当前项目领取成长分'
+                })).join('');
             } else if (module?.type === 'review') {
                 body = lessons.map((lesson, index) => enhancePrintPaper(renderReviewWorksheet(lesson), {
                     moduleTitle: moduleMeta.title,
@@ -1686,9 +3189,10 @@
                 <section class="learn-hero learn-print-hero">
                     <div>
                         <h2>🖨️ A4 讲义预览</h2>
-                        <p>可以先在网页里看效果，再直接用浏览器打印或导出 PDF。</p>
+                        <p>${showDailyPrintSheet ? '支持“每日一页学习单 + 讲义正文”一起预览，也可以直接用浏览器打印或导出 PDF。' : '可以先在网页里看效果，再直接用浏览器打印或导出 PDF。'}</p>
                     </div>
                     <div class="learn-card-actions">
+                        <button class="learn-btn learn-btn-primary" data-learn-action="print-page">打印 / 导出 PDF</button>
                         <button class="learn-btn learn-btn-secondary" data-learn-action="toggle-print-pinyin">${prefs.showPinyin ? '打印时隐藏拼音' : '打印时显示拼音'}</button>
                     </div>
                 </section>
@@ -1697,10 +3201,23 @@
                         ${renderPrintCover(manifest, plan)}
                         ${renderPrintWorkbookMap(manifest, plan, modulesById)}
                     </section>
+                    ${showDailyPrintSheet && dailyPrintOptions ? `
+                        <section class="learn-print-section">
+                            <div class="learn-print-section-heading">🗓️ 每日学习单</div>
+                            ${renderPrintDailySheet(dailyPrintMode, dailyPrintOptions)}
+                        </section>
+                    ` : ''}
                     ${moduleSections}
                 </div>
             </div>
         `;
+
+        const printBtn = container.querySelector('[data-learn-action="print-page"]');
+        if (printBtn) {
+            printBtn.addEventListener('click', () => {
+                if (typeof window.print === 'function') window.print();
+            });
+        }
 
         const toggleBtn = container.querySelector('[data-learn-action="toggle-print-pinyin"]');
         if (toggleBtn) {
@@ -1728,6 +3245,39 @@
             return { bundleGranted: true, bundlePoints: 1 };
         }
         return { bundleGranted: false, bundlePoints: 0 };
+    }
+
+    function maybeGrantPackStreak(packId, moduleId, progress, rewards) {
+        const manifest = state.packCache?.[packId]?.manifest || null;
+        const streakRule = manifest?.streakRule || null;
+        const moduleIds = Array.isArray(streakRule?.moduleIds) ? streakRule.moduleIds : [];
+        if (!moduleIds.length || !moduleIds.includes(moduleId)) {
+            return { streakGranted: false, streakPoints: 0 };
+        }
+        const every = Number(streakRule?.every) || 0;
+        const streakPoints = Number(streakRule?.points) || Number(manifest?.rewardRules?.[streakRule?.rewardKey]) || 0;
+        if (!every || !streakPoints) {
+            return { streakGranted: false, streakPoints: 0 };
+        }
+        const completedCount = moduleIds.reduce((total, id) => {
+            const completedLessons = progress?.[packId]?.modules?.[id]?.completedLessons || [];
+            return total + completedLessons.length;
+        }, 0);
+        if (!completedCount || completedCount % every !== 0) {
+            return { streakGranted: false, streakPoints: 0 };
+        }
+        const streakKey = `${packId}:streak:${completedCount}`;
+        if (rewards[streakKey]) {
+            return { streakGranted: false, streakPoints: 0 };
+        }
+        rewards[streakKey] = {
+            points: streakPoints,
+            claimedAt: Date.now()
+        };
+        if (typeof window.addGrowthPoints === 'function') {
+            window.addGrowthPoints(streakPoints);
+        }
+        return { streakGranted: true, streakPoints };
     }
 
     function completeLesson(packId, moduleId, lessonId, rewardPoints) {
@@ -1763,11 +3313,14 @@
         }
 
         const bundle = maybeGrantDailyBundle(packId, lessonId, rewards);
+        const streak = maybeGrantPackStreak(packId, moduleId, progress, rewards);
         totalPoints += bundle.bundlePoints;
+        totalPoints += streak.streakPoints;
         saveRewardState(rewards);
         return {
             rewardGranted,
             bundleGranted: bundle.bundleGranted,
+            streakGranted: streak.streakGranted,
             totalPoints
         };
     }
@@ -1821,6 +3374,10 @@
         getModule,
         loadAllModules,
         renderHub,
+        renderDailyCheckin,
+        getDailySheetMode,
+        setDailySheetMode,
+        getDailySheetModes,
         renderPack,
         renderPlan,
         renderLesson,
@@ -1829,6 +3386,10 @@
         openLesson,
         openPlan,
         openPrint,
+        resolvePackCapabilities,
+        resolveLessonSource,
+        resolveLessonLaunchUrl,
+        resolveLessonReward,
         completeLesson
     };
 })();

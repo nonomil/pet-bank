@@ -19,6 +19,32 @@
     const META_KEY = 'petbank_profiles_meta';
     const ACTIVE_KEY = 'petbank_active_profile';
     const DATA_PREFIX = 'petbank_profile_data_';
+    const FALLBACK_LEARNING_MODES = [
+        {
+            id: 'template-a',
+            badge: '模板 A',
+            title: '幼小衔接超轻量版',
+            desc: '4 个核心小项，最适合刚开始的暑假学习节奏。',
+            meta: '4 项任务 · 总时长 + 卡点 + 睡前一句话',
+            recommended: true
+        },
+        {
+            id: 'template-b',
+            badge: '模板 B',
+            title: '轻量标准版',
+            desc: '保留轻量感，再加一个拓展入口和“明天先做什么”。',
+            meta: '5 项任务 · 适合节奏稳定后再加一点管理',
+            recommended: false
+        },
+        {
+            id: 'template-c',
+            badge: '模板 C',
+            title: '错题加强版',
+            desc: '加入状态、错题整理和复盘字段，更像小学学习单。',
+            meta: '5 项任务 · 更完整，但每天填写会更重',
+            recommended: false
+        }
+    ];
 
     // 全局共享键前缀（不属于任何 profile，切换时不搬动）
     const RESERVED_KEYS = new Set([META_KEY, ACTIVE_KEY]);
@@ -451,6 +477,7 @@
 
     // ---------- SettingsPage：账号管理页渲染 ----------
     const SettingsPage = {
+        learningModeAdvancedExpanded: false,
         render() {
             const container = document.getElementById('settings-account-list');
             if (!container) return;
@@ -474,6 +501,116 @@
                 <button onclick="SettingsPage.create()" style="margin-top:8px;width:100%;padding:12px;border:1px dashed rgba(126,182,108,0.5);border-radius:12px;background:transparent;color:var(--text-primary);cursor:pointer;font-size:14px;font-weight:600;transition:background 0.12s;" onmouseover="this.style.background='rgba(126,182,108,0.08)'" onmouseout="this.style.background='transparent'">➕ 新建孩子</button>
             `;
             container.innerHTML = html + footer;
+            this.renderLearningMode();
+        },
+        renderLearningMode() {
+            const container = document.getElementById('settings-learning-mode');
+            if (!container) return;
+
+            const modeList = window.LearnCenter && typeof window.LearnCenter.getDailySheetModes === 'function'
+                ? window.LearnCenter.getDailySheetModes()
+                : FALLBACK_LEARNING_MODES;
+            const currentMode = window.LearnCenter && typeof window.LearnCenter.getDailySheetMode === 'function'
+                ? window.LearnCenter.getDailySheetMode()
+                : 'template-a';
+            const primaryMode = modeList.find(mode => mode.recommended) || modeList[0] || FALLBACK_LEARNING_MODES[0];
+            const advancedModes = modeList.filter(mode => mode.id !== primaryMode?.id);
+            const advancedExpanded = currentMode !== primaryMode?.id || this.learningModeAdvancedExpanded;
+
+            container.innerHTML = `
+                <section class="settings-panel settings-learning-panel">
+                    <div class="settings-panel-head">
+                        <div>
+                            <span class="settings-panel-kicker">学习打勾模式</span>
+                            <h3>积分页显示哪种学习单</h3>
+                            <p>推荐先用幼小衔接超轻量版，等孩子节奏稳了，再切到更完整的记录模板。</p>
+                        </div>
+                        <div class="settings-panel-tip">按孩子账号分别记住</div>
+                    </div>
+                    <div class="settings-learning-default">
+                        <div class="settings-learning-default-copy">
+                            <strong>默认先用超轻量版</strong>
+                            <span>先把每天 4 个核心小项跑顺，后面再决定要不要升级记录强度。</span>
+                        </div>
+                        ${advancedModes.length ? `
+                            <button
+                                class="settings-learning-advanced-toggle ${advancedExpanded ? 'is-open' : ''}"
+                                type="button"
+                                data-learning-mode-advanced-toggle="1">
+                                ${advancedExpanded ? '收起进阶模式' : `显示进阶模式（${advancedModes.length} 个）`}
+                            </button>
+                        ` : ''}
+                    </div>
+                    <div class="settings-mode-grid settings-mode-grid-primary">
+                        ${primaryMode ? `
+                            <button
+                                class="settings-mode-card settings-mode-card-primary ${primaryMode.id === currentMode ? 'is-active' : ''}"
+                                type="button"
+                                data-learning-sheet-mode="${primaryMode.id}">
+                                <div class="settings-mode-top">
+                                    <span class="settings-mode-badge">${primaryMode.badge || '模板'}</span>
+                                    <span class="settings-mode-pill">默认推荐</span>
+                                </div>
+                                <strong>${primaryMode.title || primaryMode.id}</strong>
+                                <p>${primaryMode.desc || ''}</p>
+                                <div class="settings-mode-meta">${primaryMode.meta || ''}</div>
+                            </button>
+                        ` : ''}
+                    </div>
+                    ${advancedModes.length ? `
+                        <div class="settings-learning-advanced ${advancedExpanded ? 'is-open' : ''}" data-learning-mode-advanced-panel="1">
+                            <div class="settings-learning-advanced-head">
+                                <strong>进阶模式</strong>
+                                <span>家长觉得孩子节奏稳定后，再考虑切到这里。</span>
+                            </div>
+                            <div class="settings-mode-grid settings-mode-grid-advanced">
+                                ${advancedModes.map(mode => `
+                                    <button
+                                        class="settings-mode-card ${mode.id === currentMode ? 'is-active' : ''}"
+                                        type="button"
+                                        data-learning-sheet-mode="${mode.id}">
+                                        <div class="settings-mode-top">
+                                            <span class="settings-mode-badge">${mode.badge || '模板'}</span>
+                                            <span class="settings-mode-pill">进阶</span>
+                                        </div>
+                                        <strong>${mode.title || mode.id}</strong>
+                                        <p>${mode.desc || ''}</p>
+                                        <div class="settings-mode-meta">${mode.meta || ''}</div>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    <div class="settings-learning-foot">切换后，积分页的“今日学习单”会立即按新模式显示；lesson 的原有积分规则继续沿用。</div>
+                </section>
+            `;
+
+            const advancedToggle = container.querySelector('[data-learning-mode-advanced-toggle]');
+            if (advancedToggle) {
+                advancedToggle.addEventListener('click', () => {
+                    this.learningModeAdvancedExpanded = !advancedExpanded;
+                    this.renderLearningMode();
+                });
+            }
+            container.querySelectorAll('[data-learning-sheet-mode]').forEach(button => {
+                button.addEventListener('click', () => {
+                    this.selectLearningMode(button.dataset.learningSheetMode || 'template-a');
+                });
+            });
+        },
+        selectLearningMode(modeId) {
+            const nextMode = window.LearnCenter && typeof window.LearnCenter.setDailySheetMode === 'function'
+                ? window.LearnCenter.setDailySheetMode(modeId)
+                : (modeId || 'template-a');
+            this.learningModeAdvancedExpanded = nextMode !== 'template-a';
+            this.renderLearningMode();
+            if (typeof window.showToast === 'function') {
+                const mode = (window.LearnCenter && typeof window.LearnCenter.getDailySheetModes === 'function'
+                    ? window.LearnCenter.getDailySheetModes()
+                    : FALLBACK_LEARNING_MODES
+                ).find(item => item.id === nextMode);
+                window.showToast(`📘 已切换为${mode ? `「${mode.title}」` : '新的学习单模式'}`);
+            }
         },
         create() {
             const name = prompt('新孩子的名字：', '');
