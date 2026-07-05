@@ -157,7 +157,7 @@ const TreasureChest = (function () {
         const dailyBtnStyle = inventory.daily > 0 ? '' : 'opacity:0.5;';
 
         container.innerHTML = `
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
                 <div class="chest-card" style="text-align:center;padding:16px;border-radius:12px;background:#f8f6f0;border:2px solid #e8e0c8;cursor:pointer;${dailyBtnStyle}" onclick="TreasureChest.openChest('daily')">
                     <div style="font-size:32px;">🎁</div>
                     <div style="font-size:12px;font-weight:bold;margin-top:4px;">日常宝箱</div>

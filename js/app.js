@@ -496,7 +496,135 @@ const PAGE_TO_TAB = {
     works: 'playground', tools: 'playground', settings: 'playground' // 作品/工具/设置都继续归游乐场 tab
 };
 
+const TOP_HUB_MENU_CONFIG = {
+    today: [
+        { page: 'today', label: '今日打卡' },
+        { page: 'review', label: '每周复盘' },
+        { page: 'reward', label: '奖励兑换' },
+        { page: 'shop', label: '兑换商店' },
+        { page: 'inventory', label: '背包' }
+    ],
+    pet: [
+        { page: 'pet', label: '我的宠物' },
+        { page: 'home', label: '宠物小屋' },
+        { page: 'card', label: '卡片图鉴' },
+        { action: 'walk', label: '遛弯' }
+    ],
+    playground: [
+        { page: 'playground', label: '游乐场首页' },
+        { page: 'works', label: '成长作品' },
+        { page: 'tools', label: '工具箱' },
+        { page: 'settings', label: '设置' }
+    ]
+};
+
+function getCurrentPageId() {
+    const activePage = document.querySelector('.page.active');
+    return activePage ? activePage.id.replace('page-', '') : 'map';
+}
+
+function closeTopHubMenus() {
+    document.querySelectorAll('.nav-hub').forEach((hub) => hub.classList.remove('is-open'));
+    const menu = document.getElementById('topHubMenu');
+    if (!menu) return;
+    menu.hidden = true;
+    menu.innerHTML = '';
+    menu.style.left = '';
+}
+
+function renderTopHubMenu(page) {
+    const items = TOP_HUB_MENU_CONFIG[page];
+    const menu = document.getElementById('topHubMenu');
+    const trigger = document.querySelector(`.nav-hub[data-page="${page}"] .nav-tab`);
+    const container = document.querySelector('.top-nav-inner');
+    const hub = document.querySelector(`.nav-hub[data-page="${page}"]`);
+    if (!items || !menu || !trigger || !container || !hub) return;
+
+    const currentPage = getCurrentPageId();
+    menu.innerHTML = items.map((item) => {
+        const isCurrent = item.page ? currentPage === item.page : false;
+        const handler = item.action
+            ? `handleTopHubMenuAction('${item.action}')`
+            : `handleTopHubMenuSelect('${item.page}')`;
+        return `<button class="nav-tab-menu-item${isCurrent ? ' is-current' : ''}" type="button" onclick="${handler}">${item.label}</button>`;
+    }).join('');
+
+    const triggerRect = trigger.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const preferredLeft = triggerRect.left - containerRect.left + triggerRect.width / 2;
+    const clampedLeft = Math.min(Math.max(preferredLeft, 132), containerRect.width - 132);
+
+    menu.style.left = `${clampedLeft}px`;
+    menu.hidden = false;
+    hub.classList.add('is-open');
+}
+
+function handlePrimaryNavClick(page) {
+    const tab = document.querySelector(`.nav-tab[data-page="${page}"]`);
+    const hub = document.querySelector(`.nav-hub[data-page="${page}"]`);
+    if (!tab || !hub) {
+        closeTopHubMenus();
+        switchPage(page);
+        return;
+    }
+
+    if (!tab.classList.contains('active')) {
+        closeTopHubMenus();
+        switchPage(page);
+        return;
+    }
+
+    if (hub.classList.contains('is-open')) {
+        closeTopHubMenus();
+        return;
+    }
+
+    closeTopHubMenus();
+    renderTopHubMenu(page);
+}
+
+function handleTopHubMenuSelect(page) {
+    closeTopHubMenus();
+    switchPage(page);
+}
+
+function handleTopHubMenuAction(action) {
+    closeTopHubMenus();
+    if (action === 'walk') {
+        openPetWalk();
+    }
+}
+
+function closeSectionMenus() {
+    document.querySelectorAll('.section-menu[open]').forEach((menu) => {
+        menu.removeAttribute('open');
+    });
+}
+
+function openPetWalk() {
+    closeSectionMenus();
+    switchPage('pet');
+    requestAnimationFrame(() => {
+        if (window.WalkSystem && typeof WalkSystem.renderUI === 'function') {
+            WalkSystem.renderUI('walkArea');
+        }
+    });
+}
+
+document.addEventListener('click', (event) => {
+    if (!event.target.closest('.section-menu')) closeSectionMenus();
+    if (!event.target.closest('.nav-hub') && !event.target.closest('#topHubMenu')) closeTopHubMenus();
+});
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        closeSectionMenus();
+        closeTopHubMenus();
+    }
+});
+
 function switchPage(page) {
+    closeSectionMenus();
+    closeTopHubMenus();
     // 离开宠物小屋：标记 exit（写 last_home_ts，下次进入结算）
     const prevPageEl = document.querySelector('.page.active');
     const prevPage = prevPageEl ? prevPageEl.id.replace('page-', '') : null;
@@ -510,15 +638,20 @@ function switchPage(page) {
     const target = document.getElementById(`page-${page}`);
     if (target) target.classList.add('active');
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-hub').forEach(h => h.classList.remove('active'));
     // 叶子页（如 today/review/mathpk/shop…）没有独立 tab，按 PAGE_TO_TAB 高亮其父 tab
     const tabPage = (PAGE_TO_TAB[page] || page);
     const tab = document.querySelector(`.nav-tab[data-page="${tabPage}"]`);
-    if (tab) tab.classList.add('active');
+    if (tab) {
+        tab.classList.add('active');
+        const hub = tab.closest('.nav-hub');
+        if (hub) hub.classList.add('active');
+    }
     // sidebar 只在积分首页(map)显示，其他页面全宽独占 → 每个 tab 都是独立完整页面
     document.body.classList.toggle('no-sidebar', page !== 'map');
     document.body.classList.toggle('learn-mode', page === 'learn' || page.startsWith('learn-'));
     // 切换到特定页面时执行特定渲染
-    if (page === 'map' && window.ExplorationSystem) ExplorationSystem.renderSceneGridMap();
+    if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     if (page === 'pet') renderPetPage();
     if (page === 'explore') void renderExplorePage();
     if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
@@ -548,6 +681,9 @@ function switchPage(page) {
     if (page === 'learn-plan' && window.LearnCenter) void LearnCenter.renderPlan('learn-plan-container');
     if (page === 'learn-lesson' && window.LearnCenter) void LearnCenter.renderLesson('learn-lesson-container');
     if (page === 'learn-print' && window.LearnCenter) void LearnCenter.renderPrint('learn-print-container');
+    if (page === 'today' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
+        void window.LearnCenter.renderDailyCheckin('today-learning-checkin');
+    }
     if (page === 'inventory') renderInventoryPage();
     if (page === 'today') updateRewardPetCard();
     if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
@@ -1073,6 +1209,81 @@ function renderScenePreview(scene) {
     `;
 }
 
+function getExploreRescueCardHTML(petState) {
+    const petName = petState && petState.species_data && petState.species_data.name
+        ? petState.species_data.name
+        : '宠物伙伴';
+
+    return `
+        <div class="explore-rescue-shell">
+            <section class="explore-rescue-card" role="alert" aria-live="polite">
+                <div class="explore-rescue-header">
+                    <span class="explore-rescue-header-icon" aria-hidden="true">!</span>
+                    <div class="explore-rescue-header-copy">
+                        <span class="explore-rescue-header-kicker">任务中断</span>
+                        <strong>探索紧急提示框</strong>
+                    </div>
+                </div>
+                <div class="explore-rescue-body">
+                    <div class="explore-rescue-illustration" aria-hidden="true">
+                        <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="exploreRescueBg" x1="38" y1="24" x2="214" y2="190" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#FFF7D8"/>
+                                    <stop offset="1" stop-color="#FFD9B3"/>
+                                </linearGradient>
+                                <linearGradient id="exploreRescueFloor" x1="78" y1="154" x2="198" y2="188" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#FFD7C6"/>
+                                    <stop offset="1" stop-color="#F8B27D"/>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="130" cy="110" r="92" fill="url(#exploreRescueBg)"/>
+                            <circle cx="70" cy="74" r="24" fill="#FFFFFF" fill-opacity="0.85"/>
+                            <path d="M70 58l8 12 14 3-10 9 1 14-13-7-13 7 1-14-10-9 14-3 8-12z" fill="#F2B53A"/>
+                            <g transform="translate(30 116)">
+                                <path d="M18 30 42 10 66 30v28H18V30z" fill="#7AB27B"/>
+                                <path d="M12 30 42 4l30 26" stroke="#5A8F61" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="35" y="34" width="14" height="24" rx="7" fill="#FFF4DA"/>
+                                <path d="M42 42c2-4 8-4 10 0-2 5-7 7-10 10-3-3-8-5-10-10 2-4 8-4 10 0z" fill="#F28AA9"/>
+                            </g>
+                            <ellipse cx="148" cy="176" rx="72" ry="22" fill="url(#exploreRescueFloor)"/>
+                            <ellipse cx="148" cy="173" rx="58" ry="16" fill="#FFF3EE"/>
+                            <ellipse cx="120" cy="146" rx="38" ry="28" fill="#E8A764" transform="rotate(-12 120 146)"/>
+                            <circle cx="163" cy="128" r="28" fill="#EDB36C"/>
+                            <path d="M143 113 150 92l14 16" fill="#D08D4E"/>
+                            <path d="M176 106 188 90l6 20" fill="#D08D4E"/>
+                            <circle cx="153" cy="128" r="4" fill="#5B3E2C"/>
+                            <circle cx="171" cy="128" r="4" fill="#5B3E2C"/>
+                            <path d="M153 141c6 6 16 6 22 0" stroke="#5B3E2C" stroke-width="4" stroke-linecap="round"/>
+                            <rect x="154" y="108" width="20" height="16" rx="5" fill="#FFF7F2" transform="rotate(-10 154 108)"/>
+                            <path d="M164 111v10M159 116h10" stroke="#F08D8D" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M96 155c16 8 33 10 52 8" stroke="#C68446" stroke-width="8" stroke-linecap="round"/>
+                            <circle cx="205" cy="72" r="24" fill="#FFFDF6"/>
+                            <circle cx="205" cy="72" r="18" fill="#FF8F7B"/>
+                            <path d="M205 61v22M194 72h22" stroke="#FFF9F4" stroke-width="6" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="explore-rescue-copy">
+                        <span class="explore-rescue-badge">探索暂停中</span>
+                        <h3>宠物倒下了，先去宠物小屋救援</h3>
+                        <p>${petName} 现在没有力气继续探索了。先回宠物小屋点击“救援宠物”，恢复后再回来继续冒险。</p>
+                        <div class="explore-rescue-status">
+                            <span class="explore-rescue-status-label">当前状态</span>
+                            <strong>${petName} 需要立即救援</strong>
+                            <span>回到宠物小屋完成救援后，这条探索路线会继续保留，不用重新找路。</span>
+                        </div>
+                        <div class="explore-rescue-note">建议先处理救援，再回来继续主线探索。</div>
+                        <div class="explore-rescue-actions">
+                            <button class="btn-primary" type="button" onclick="switchPage('home')">去宠物小屋救援</button>
+                            <span class="explore-rescue-action-note">当前进度会保留</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    `;
+}
+
 function getExploreMapShellHTML() {
     return `
         <section class="explore-hero">
@@ -1117,7 +1328,7 @@ async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
         try {
             const s = PetSystem.getState();
             if (s.species && s.hp <= 0) {
-                grid.innerHTML = '<div style="padding:24px;text-align:center;color:#888;">宠物倒下了，请先去宠物小屋救援 🆘</div>';
+                grid.innerHTML = getExploreRescueCardHTML(s);
                 return;
             }
         } catch (e) {}
@@ -1619,9 +1830,12 @@ function renderAll() {
     renderTaskGrid();
     renderSidebarTasks();
     updateStats();
+    if (window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
+        void window.LearnCenter.renderDailyCheckin('today-learning-checkin');
+    }
     renderPetPage();
     void renderExplorePage();
-    if (window.ExplorationSystem) ExplorationSystem.renderSceneGridMap();  // 首页路线地图（双入口）
+    if (window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     renderInventoryPage();
     if (window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (window.lucide) lucide.createIcons();
@@ -1639,6 +1853,10 @@ window.switchPiMode = switchPiMode;
 window.filterPointItems = filterPointItems;
 window.applyCustomItem = applyCustomItem;
 window.updateRewardPetCard = updateRewardPetCard;
+window.openPetWalk = openPetWalk;
+window.handlePrimaryNavClick = handlePrimaryNavClick;
+window.handleTopHubMenuSelect = handleTopHubMenuSelect;
+window.handleTopHubMenuAction = handleTopHubMenuAction;
 window.renderAll = renderAll;
 window.saveAppState = saveAppState;
 

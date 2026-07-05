@@ -23,32 +23,50 @@
 <body class="map-page-bg">
     <!-- TOP NAV -->
     <div class="top-nav">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-6">
-            <div class="flex items-center gap-3">
-                <div class="logo-circle">萌</div>
-                <div>
-                    <h1 class="text-base font-bold">成长伙伴 · 萌宠冒险岛</h1>
-                    <p class="text-xs text-muted">任务 · 积分 · 宠物养成 · 探索冒险</p>
+        <div class="top-nav-inner max-w-7xl mx-auto">
+            <div class="top-nav-row flex items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="logo-circle">萌</div>
+                    <div>
+                        <h1 class="text-base font-bold">成长伙伴 · 萌宠冒险岛</h1>
+                        <p class="text-xs text-muted">任务 · 积分 · 宠物养成 · 探索冒险</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1 primary-nav">
+                    <div class="nav-tab active" data-page="map" onclick="switchPage('map')">🏠 首页</div>
+                    <div class="nav-hub" data-page="today">
+                        <button class="nav-tab nav-tab-parent" data-page="today" type="button" onclick="handlePrimaryNavClick('today')">
+                            <span>⭐ 积分</span>
+                            <span class="nav-tab-caret" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="nav-tab" data-page="learn" onclick="switchPage('learn')">📚 学习</div>
+                    <div class="nav-hub" data-page="pet">
+                        <button class="nav-tab nav-tab-parent" data-page="pet" type="button" onclick="handlePrimaryNavClick('pet')">
+                            <span>🐾 宠物</span>
+                            <span class="nav-tab-caret" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="nav-tab" data-page="explore" onclick="switchPage('explore')">🗺️ 探索</div>
+                    <div class="nav-hub" data-page="playground">
+                        <button class="nav-tab nav-tab-parent" data-page="playground" type="button" onclick="handlePrimaryNavClick('playground')">
+                            <span>🎡 游乐场</span>
+                            <span class="nav-tab-caret" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="profile-switcher" id="profileSwitcher" onclick="ProfileUI.toggle(event)" title="切换孩子">
+                    <span id="profileCurEmoji">🧒</span>
+                    <span id="profileCurName">默认孩子</span>
+                    <span class="profile-caret">▾</span>
+                </div>
+                <div class="point-capsule">
+                    <span>分</span>
+                    <span class="num" id="topPoints">0</span>
+                    <span>成长分</span>
                 </div>
             </div>
-            <div class="flex items-center gap-1 primary-nav">
-                <div class="nav-tab active" data-page="map" onclick="switchPage('map')">🏠 首页</div>
-                <div class="nav-tab" data-page="today" onclick="switchPage('today')">⭐ 积分</div>
-                <div class="nav-tab" data-page="learn" onclick="switchPage('learn')">📚 学习</div>
-                <div class="nav-tab" data-page="pet" onclick="switchPage('pet')">🐾 宠物</div>
-                <div class="nav-tab" data-page="explore" onclick="switchPage('explore')">🗺️ 探索</div>
-                <div class="nav-tab" data-page="playground" onclick="switchPage('playground')">🎡 游乐场</div>
-            </div>
-            <div class="profile-switcher" id="profileSwitcher" onclick="ProfileUI.toggle(event)" title="切换孩子">
-                <span id="profileCurEmoji">🧒</span>
-                <span id="profileCurName">默认孩子</span>
-                <span class="profile-caret">▾</span>
-            </div>
-            <div class="point-capsule">
-                <span>分</span>
-                <span class="num" id="topPoints">0</span>
-                <span>成长分</span>
-            </div>
+            <div class="nav-tab-menu" id="topHubMenu" hidden></div>
         </div>
     </div>
 
@@ -140,45 +158,43 @@
                     </div>
                 </section>
 
-                <section class="map-layout">
-                    <div class="map-stage-panel">
-                        <div class="map-panel-head">
-                            <div>
-                                <h3 class="text-sm font-bold">路线地图</h3>
-                                <p class="text-xs text-muted mt-1">像绘本一样点选场景，优先从已经点亮的地点出发</p>
-                            </div>
-                            <div class="map-panel-head-right">
-                                <span class="map-count" id="mapUnlockedCount">0/12 场景已解锁</span>
-                                <span class="map-ribbon">12 个停靠点</span>
-                            </div>
+                <section class="map-warehouse-panel" id="treasureWarehouseCard">
+                    <div class="map-panel-head">
+                        <div>
+                            <p class="map-warehouse-kicker">首页 / 宝箱仓库</p>
+                            <h3 class="text-lg font-bold">宝箱仓库</h3>
+                            <p class="map-warehouse-note">把常用宝箱都收进这一块，大一点、好点开，路线地图则继续放在「探索」页。</p>
                         </div>
-                        <div class="progress-bar map-progress mb-3">
-                            <div class="progress-fill progress-fill-gold" id="mapProgressBar" style="width: 0%;"></div>
-                        </div>
-                        <div class="map-board-shell">
-                            <div class="map-board-surface">
-                                <div class="map-board-texture"></div>
-                                <div id="sceneGridMap" class="map-board">
-                                    <!-- 由 exploration.js 渲染 -->
-                                </div>
-                            </div>
+                        <div class="map-panel-head-right">
+                            <span class="map-ribbon">奖励集中收纳</span>
+                            <span class="map-count" id="chestDailyStatus">今日未领取</span>
                         </div>
                     </div>
-
-                    <aside class="map-side-rail">
-                        <section class="map-side-panel" id="treasureWarehouseCard">
-                            <div class="map-side-title-row">
-                                <h3 class="text-sm font-bold">宝箱仓库</h3>
-                                <span class="text-xs text-muted" id="chestDailyStatus">今日未领取</span>
-                            </div>
-                            <div class="warehouse-grid" id="treasureWarehouseGrid"></div>
-                        </section>
-                    </aside>
+                    <div class="warehouse-grid warehouse-grid-expanded" id="treasureWarehouseGrid"></div>
                 </section>
             </div>
 
             <!-- PAGE: 设置 / 账号管理 -->
             <div class="page" id="page-settings">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">更多导航</span>
+                            <span class="section-menu-current">当前：设置</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('works')">成长作品</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('tools')">工具箱</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('settings')">设置</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="更多快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('works')">成长作品</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('tools')">工具箱</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('settings')">设置</button>
+                </div>
                 <section class="map-hero" style="margin-bottom:16px;">
                     <div class="map-hero-copy">
                         <p class="map-eyebrow">设置 / 账号管理</p>
@@ -192,18 +208,35 @@
                     <div id="social-root"></div>
                     <div id="diagnostics-root"></div>
                     <div id="settings-account-list"></div>
+                    <div id="settings-learning-mode"></div>
                     <div id="settings-math-diff"></div>
                 </section>
             </div>
 
             <!-- PAGE: 今日打卡 -->
             <div class="page" id="page-today">
-                <div class="hub-nav">
-                    <span class="hub-nav-label">积分</span>
-                    <button class="hub-nav-btn" onclick="switchPage('review')">📅 每周复盘</button>
-                    <button class="hub-nav-btn" onclick="switchPage('reward')">🎁 奖励兑换</button>
-                    <button class="hub-nav-btn" onclick="switchPage('shop')">🏪 兑换商店</button>
-                    <button class="hub-nav-btn" onclick="switchPage('inventory')">🎒 背包</button>
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：今日打卡</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
                 </div>
                 <!-- 可点击宠物形象卡：点击弹出加分/扣分项目弹窗 -->
                 <div class="reward-pet-card" id="rewardPetCard" onclick="openPointItemModal()" role="button" tabindex="0" title="点击给 TA 加分或扣分">
@@ -219,6 +252,7 @@
                         <span class="reward-pet-cta-btn">＋ － 积分</span>
                     </div>
                 </div>
+                <div id="today-learning-checkin"></div>
                 <div class="card">
                     <div class="card-header flex items-center justify-between">
                         <div><h2 class="text-lg font-bold">今日成长任务</h2><p class="text-xs mt-1 text-muted">完成即得分，每一分都算数</p></div>
@@ -232,6 +266,29 @@
 
             <!-- PAGE: 每周复盘 -->
             <div class="page" id="page-review">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：每周复盘</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">每周家庭复盘</h2><p class="text-xs mt-1 text-muted">5-10 分钟，看清进度，下周再调整节奏</p></div>
                     <div class="card-body">
@@ -273,10 +330,28 @@
 
             <!-- PAGE: 奖励兑换 -->
             <div class="page" id="page-reward">
-                <div class="hub-nav">
-                    <span class="hub-nav-label">兑换</span>
-                    <button class="hub-nav-btn" onclick="switchPage('shop')">🏪 兑换商店</button>
-                    <button class="hub-nav-btn" onclick="switchPage('inventory')">🎒 背包</button>
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：奖励兑换</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
                 </div>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">我的奖励兑换</h2></div>
@@ -361,10 +436,24 @@
 
             <!-- PAGE: 成长作品 -->
             <div class="page" id="page-works">
-                <div class="hub-nav">
-                    <span class="hub-nav-label">更多</span>
-                    <button class="hub-nav-btn" onclick="switchPage('tools')">🧰 工具箱</button>
-                    <button class="hub-nav-btn" onclick="switchPage('settings')">⚙️ 设置</button>
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">更多导航</span>
+                            <span class="section-menu-current">当前：成长作品</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('works')">成长作品</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('tools')">工具箱</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('settings')">设置</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="更多快捷导航">
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('works')">成长作品</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('tools')">工具箱</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('settings')">设置</button>
                 </div>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">成长作品收集</h2></div>
@@ -378,11 +467,26 @@
 
             <!-- PAGE: 宠物养成 -->
             <div class="page" id="page-pet">
-                <div class="hub-nav">
-                    <span class="hub-nav-label">宠物</span>
-                    <button class="hub-nav-btn" onclick="switchPage('home')">🏠 宠物小屋</button>
-                    <button class="hub-nav-btn" onclick="switchPage('card')">🃏 卡片图鉴</button>
-                    <button class="hub-nav-btn" onclick="WalkSystem.renderUI('walkArea')">🚶 遛弯</button>
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">宠物导航</span>
+                            <span class="section-menu-current">当前：我的宠物</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('pet')">我的宠物</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                        <button class="section-menu-item" type="button" onclick="openPetWalk()">遛弯</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('pet')">我的宠物</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                    <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
                 </div>
                 <div class="grid grid-cols-3 gap-4 mb-4">
                     <div class="card col-span-2">
@@ -473,6 +577,27 @@
 
             <!-- PAGE: 宠物小屋 -->
             <div class="page" id="page-home">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">宠物导航</span>
+                            <span class="section-menu-current">当前：宠物小屋</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('pet')">我的宠物</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                        <button class="section-menu-item" type="button" onclick="openPetWalk()">遛弯</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('pet')">我的宠物</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                    <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
+                </div>
                 <div id="home-container"></div>
             </div>
 
@@ -520,6 +645,29 @@
 
             <!-- PAGE: 背包 -->
             <div class="page" id="page-inventory">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：背包</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">🎒 我的背包</h2><p class="text-xs mt-1 text-muted">点击物品查看详情</p></div>
                     <div class="card-body">
@@ -530,16 +678,79 @@
 
             <!-- PAGE: 卡片图鉴 -->
             <div class="page" id="page-card">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">宠物导航</span>
+                            <span class="section-menu-current">当前：卡片图鉴</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('pet')">我的宠物</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                        <button class="section-menu-item" type="button" onclick="openPetWalk()">遛弯</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('pet')">我的宠物</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                    <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
+                </div>
                 <div id="card-collection-container"></div>
             </div>
 
             <!-- PAGE: 兑换商店 -->
             <div class="page" id="page-shop">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：兑换商店</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
                 <div id="shop-ui"></div>
             </div>
 
             <!-- PAGE: 工具箱 -->
             <div class="page" id="page-tools">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">更多导航</span>
+                            <span class="section-menu-current">当前：工具箱</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('works')">成长作品</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('tools')">工具箱</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('settings')">设置</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="更多快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('works')">成长作品</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('tools')">工具箱</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('settings')">设置</button>
+                </div>
                 <div id="tools-ui"></div>
             </div>
 
