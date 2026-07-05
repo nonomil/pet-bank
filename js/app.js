@@ -479,13 +479,15 @@ function completeRecommended() {
 
 // ============ 一级导航映射（首页 Tab 收口，M0.6） ============
 // tab 名称 -> 默认落地页（单一事实源，对应 docs/plans/2026-06-29-home-tab-navigation-*）
-const HOME_TAB_MAP = { '首页': 'map', '积分': 'today', '宠物': 'pet', '探索': 'explore', '更多': 'works' };
+const HOME_TAB_MAP = { '首页': 'map', '积分': 'today', '学习': 'learn', '宠物': 'pet', '探索': 'explore', '更多': 'works' };
 function getHomeTabMap() { return Object.assign({}, HOME_TAB_MAP); }
 // 叶子页 / hub 页 -> 所属一级 tab 的 data-page（switchPage 时据此高亮父 tab）
 const PAGE_TO_TAB = {
     map: 'map',                                                 // 首页（dashboard）
     today: 'today', review: 'today', reward: 'today',           // 积分（核心任务/复盘/奖励）
     shop: 'today', inventory: 'today',                          // 兑换并入积分
+    learn: 'learn', 'learn-pack': 'learn', 'learn-plan': 'learn',   // 学习中心
+    'learn-lesson': 'learn', 'learn-print': 'learn',
     playground: 'playground',                                   // 游乐场（hub）
     mathpk: 'playground', hanzi: 'playground',                  // 数学PK/汉字 → 游乐场
     leaderboard: 'playground',                                  // 排行榜 → 游乐场
@@ -500,6 +502,9 @@ function switchPage(page) {
     const prevPage = prevPageEl ? prevPageEl.id.replace('page-', '') : null;
     if (prevPage === 'home' && page !== 'home' && window.PetSystem && typeof PetSystem.markHomeExit === 'function') {
         PetSystem.markHomeExit();
+        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
+            window.CloudSync.scheduleSync('home_exit');
+        }
     }
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(`page-${page}`);
@@ -511,13 +516,38 @@ function switchPage(page) {
     if (tab) tab.classList.add('active');
     // sidebar 只在积分首页(map)显示，其他页面全宽独占 → 每个 tab 都是独立完整页面
     document.body.classList.toggle('no-sidebar', page !== 'map');
+    document.body.classList.toggle('learn-mode', page === 'learn' || page.startsWith('learn-'));
     // 切换到特定页面时执行特定渲染
     if (page === 'map' && window.ExplorationSystem) ExplorationSystem.renderSceneGridMap();
     if (page === 'pet') renderPetPage();
     if (page === 'explore') void renderExplorePage();
     if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
     if (page === 'hanzi' && window.HanziGame) HanziGame.renderUI('hanzi-container');
-    if (page === 'leaderboard' && window.Leaderboard) switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
+    if (page === 'review' && window.FamilyReview && typeof window.FamilyReview.refresh === 'function') void FamilyReview.refresh('family-review-root');
+    if (page === 'leaderboard' && window.Leaderboard) {
+        switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
+        if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
+            void window.SocialSystem.refresh()
+                .then(function () {
+                    if (window.PKService && typeof window.PKService.refresh === 'function') {
+                        return window.PKService.refresh();
+                    }
+                    return null;
+                })
+                .then(function () {
+                    const leaderboardPage = document.getElementById('page-leaderboard');
+                    if (leaderboardPage && leaderboardPage.classList.contains('active')) {
+                        switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
+                    }
+                })
+                .catch(function () {});
+        }
+    }
+    if (page === 'learn' && window.LearnCenter) void LearnCenter.renderHub('learn-container');
+    if (page === 'learn-pack' && window.LearnCenter) void LearnCenter.renderPack('learn-pack-container');
+    if (page === 'learn-plan' && window.LearnCenter) void LearnCenter.renderPlan('learn-plan-container');
+    if (page === 'learn-lesson' && window.LearnCenter) void LearnCenter.renderLesson('learn-lesson-container');
+    if (page === 'learn-print' && window.LearnCenter) void LearnCenter.renderPrint('learn-print-container');
     if (page === 'inventory') renderInventoryPage();
     if (page === 'today') updateRewardPetCard();
     if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
@@ -525,7 +555,27 @@ function switchPage(page) {
     if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
     if (page === 'home' && window.HomeSystem) HomeSystem.renderUI('home-container');
     if (page === 'settings' && window.SettingsPage) SettingsPage.render();
-    if (page === 'settings' && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') MathPKGame.renderDifficultySetting('settings-math-diff');
+    if (page === 'settings' && window.AuthSystem && typeof window.AuthSystem.render === 'function') AuthSystem.render('auth-root');
+    if (page === 'settings' && window.HouseholdSystem && typeof window.HouseholdSystem.refresh === 'function') void HouseholdSystem.refresh('household-root');
+    if (page === 'settings' && window.SocialSystem && typeof window.SocialSystem.refresh === 'function') void SocialSystem.refresh();
+    const showDiagnostics = !window.FamilySocialScope
+        || typeof window.FamilySocialScope.shouldShowDiagnostics !== 'function'
+        || window.FamilySocialScope.shouldShowDiagnostics();
+    if (page === 'settings' && showDiagnostics && window.CloudDiagnostics && typeof window.CloudDiagnostics.render === 'function') {
+        CloudDiagnostics.render('diagnostics-root');
+        if (typeof window.CloudDiagnostics.refresh === 'function') {
+            void CloudDiagnostics.refresh('diagnostics-root');
+        }
+    } else if (page === 'settings') {
+        const diagnosticsRoot = document.getElementById('diagnostics-root');
+        if (diagnosticsRoot) diagnosticsRoot.innerHTML = '';
+    }
+    if (page === 'settings' && showDiagnostics && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') {
+        MathPKGame.renderDifficultySetting('settings-math-diff');
+    } else if (page === 'settings') {
+        const settingsMathDiff = document.getElementById('settings-math-diff');
+        if (settingsMathDiff) settingsMathDiff.innerHTML = '';
+    }
     window.sfx && sfx.click();
 }
 
@@ -924,6 +974,9 @@ function choosePetFromModal(speciesId) {
         if (window.CardCollection && typeof CardCollection.addCard === 'function') {
             CardCollection.addCard(speciesId);
         }
+        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
+            window.CloudSync.scheduleSync('pet_choose_species');
+        }
         closeAdoptModal();
         renderPetPage();
     }
@@ -937,6 +990,9 @@ function closeAdoptModal() {
 function choosePetSpecies(speciesId) {
     if (confirm('确定选择这只宠物吗？选择后可以重新选择，但等级会重置。')) {
         PetSystem.chooseSpecies(speciesId);
+        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
+            window.CloudSync.scheduleSync('pet_choose_species');
+        }
         renderPetPage();
     }
 }
@@ -954,16 +1010,25 @@ function feedPet() {
         const result = PetSystem.feed({ effect: { hp: 10 } });
         alert('背包中没有宠物粮，简单恢复 10 HP（探索获得宠物粮可喂食更多）');
     }
+    if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
+        window.CloudSync.scheduleSync('pet_feed_page');
+    }
     renderPetPage();
 }
 function playWithPet() {
     const result = PetSystem.play();
     alert(result.msg);
+    if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
+        window.CloudSync.scheduleSync('pet_play_page');
+    }
     renderPetPage();
 }
 function restPet() {
     const result = PetSystem.rest();
     alert(result.msg);
+    if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
+        window.CloudSync.scheduleSync('pet_rest_page');
+    }
     renderPetPage();
 }
 
@@ -1585,12 +1650,33 @@ async function init() {
     if (window.ProfileUI && typeof ProfileUI.render === 'function') {
         ProfileUI.render();
     }
+    if (window.AuthSystem && typeof window.AuthSystem.boot === 'function') {
+        await AuthSystem.boot();
+    }
+    if (window.HouseholdSystem && typeof window.HouseholdSystem.refresh === 'function') {
+        await HouseholdSystem.refresh('household-root');
+    }
+    if (window.CloudRestore && typeof window.CloudRestore.hydrateFromCloud === 'function') {
+        await CloudRestore.hydrateFromCloud().catch(function () {});
+    }
+    if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
+        await SocialSystem.refresh();
+    }
+    if (window.PKService && typeof window.PKService.refresh === 'function') {
+        await PKService.refresh();
+    }
+    if (window.ActivityFeedSystem && typeof window.ActivityFeedSystem.refresh === 'function') {
+        await ActivityFeedSystem.refresh();
+    }
     loadAppState();
     PetSystem.load();
     InventorySystem.load();
     await InventorySystem.loadItemsData();
     await loadPointItems();
     updateRewardPetCard();
+    if (window.LearnCenter && typeof LearnCenter.init === 'function') {
+        await LearnCenter.init();
+    }
     await ExplorationSystem.loadScenes();
     // 战斗深化：预加载技能定义表 data/skills.json
     if (typeof PetSystem.loadSkills === 'function') {
@@ -1627,6 +1713,9 @@ async function init() {
         }
     }
     renderAll();
+    if (window.FamilyReview && typeof window.FamilyReview.render === 'function') {
+        window.FamilyReview.render('family-review-root');
+    }
     // 初始化宝箱系统
     if (window.TreasureChest) TreasureChest.init();
     // 初始化商店和工具箱

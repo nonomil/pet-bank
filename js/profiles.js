@@ -57,6 +57,13 @@
         try { return JSON.parse(raw); } catch (e) { return fallback; }
     }
 
+    function hasSnapshotData(snapshot) {
+        if (!snapshot || typeof snapshot !== 'object') return false;
+        return Object.keys(snapshot).some(function (key) {
+            return isBusinessKey(key) || (key && key.startsWith('petbank_'));
+        });
+    }
+
     const ProfileManager = {
         // ---------- 元数据读写 ----------
         _readMeta() {
@@ -250,6 +257,107 @@
                     hasSnapshot: localStorage.getItem(DATA_PREFIX + p.id) !== null
                 }))
             };
+        },
+
+        getSnapshotKey(id) {
+            return DATA_PREFIX + id;
+        },
+
+        getProfileSnapshot(id) {
+            if (!id) return {};
+            if (id === this.getActiveId()) {
+                const liveSnapshot = {};
+                getBusinessKeys().forEach(k => {
+                    liveSnapshot[k] = localStorage.getItem(k);
+                });
+                return liveSnapshot;
+            }
+            return safeParse(localStorage.getItem(DATA_PREFIX + id), {});
+        },
+
+        exportProfiles() {
+            const activeId = this.getActiveId();
+            return this.list().map(profile => {
+                const snapshot = this.getProfileSnapshot(profile.id);
+                return {
+                    id: profile.id,
+                    name: profile.name,
+                    emoji: profile.emoji,
+                    createdAt: profile.createdAt,
+                    isActive: profile.id === activeId,
+                    snapshotKey: this.getSnapshotKey(profile.id),
+                    snapshot
+                };
+            });
+        },
+
+        upsertImportedProfile(input) {
+            const importedId = String(input && input.id || '').trim();
+            if (!importedId) return null;
+
+            const normalized = {
+                id: importedId,
+                name: String(input && input.name || '').trim() || '云端孩子',
+                emoji: String(input && input.emoji || '').trim() || '🧒',
+                createdAt: Number(input && input.createdAt) || Date.now()
+            };
+
+            const list = this._readMeta();
+            const existing = list.find(function (profile) {
+                return profile.id === importedId;
+            });
+            if (existing) {
+                existing.name = normalized.name;
+                existing.emoji = normalized.emoji;
+                if (!existing.createdAt) existing.createdAt = normalized.createdAt;
+                this._writeMeta(list);
+                return existing;
+            }
+
+            const activeId = this.getActiveId();
+            const placeholder = list.length === 1 && list[0] && list[0].id === 'p_default'
+                ? list[0]
+                : null;
+            const placeholderSnapshot = placeholder ? this.getProfileSnapshot(placeholder.id) : {};
+            if (placeholder && activeId === 'p_default' && !hasSnapshotData(placeholderSnapshot)) {
+                list[0] = normalized;
+                this._writeMeta(list);
+                this._setActiveId(importedId);
+                localStorage.removeItem(DATA_PREFIX + 'p_default');
+                return normalized;
+            }
+
+            list.push(normalized);
+            this._writeMeta(list);
+            return normalized;
+        },
+
+        applySnapshotForProfile(id, snapshot, options) {
+            const profileId = String(id || '').trim();
+            if (!profileId) return {};
+
+            const config = Object.assign({
+                activate: false
+            }, options || {});
+            const nextSnapshot = snapshot && typeof snapshot === 'object'
+                ? snapshot
+                : {};
+
+            localStorage.setItem(DATA_PREFIX + profileId, JSON.stringify(nextSnapshot));
+
+            if (config.activate) {
+                getBusinessKeys().forEach(function (key) {
+                    localStorage.removeItem(key);
+                });
+                Object.keys(nextSnapshot).forEach(function (key) {
+                    if (nextSnapshot[key] !== null && nextSnapshot[key] !== undefined) {
+                        localStorage.setItem(key, nextSnapshot[key]);
+                    }
+                });
+                this._setActiveId(profileId);
+            }
+
+            return nextSnapshot;
         },
 
         // 暴露给测试用

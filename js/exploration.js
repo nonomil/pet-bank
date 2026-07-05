@@ -400,6 +400,9 @@ const ExplorationSystem = (function () {
 
         PetSystem.takeDamage(scene.hp_cost);
         PetSystem.addExploration();
+        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
+            window.CloudSync.scheduleSync('exploration_start');
+        }
 
         if (scene.monsters.length > 0) {
             // 章末精英区（danger>=4）40% 概率遇 species 敌人（图鉴宠物，首胜定向掉卡）
@@ -584,6 +587,9 @@ const ExplorationSystem = (function () {
                     const itemData = InventorySystem.getItemData(rare.item_id);
                     battle.log.push({ type: 'reward', text: `💎 发现稀有线索：${itemData?.name || rare.item_id} x1` });
                 }
+            }
+            if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
+                window.CloudSync.scheduleSync('exploration_win');
             }
             // 回合结束：CD 递减
             if (typeof PetSystem.tickCooldowns === 'function') PetSystem.tickCooldowns(cdStartedThisTurn);

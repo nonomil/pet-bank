@@ -10,6 +10,15 @@
 (function() {
     'use strict';
 
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     // ============ 配置与状态 ============
     const CONFIG = {
         TOTAL_ROUNDS: 5,         // 每局轮数
@@ -20,12 +29,23 @@
         STORAGE_KEY_DIFFICULTY: 'petbank_math_difficulty'
     };
 
+    const DIFFICULTY_LABELS = {
+        easy: '简单',
+        medium: '中等',
+        hard: '困难'
+    };
+
     let state = {
         isPlaying: false,
         roundClosing: false,     // 轮次结算等待期，锁输入
+        mode: 'robot',
         mathDifficulty: 'easy',
         currentQuestion: null,
         currentInput: '',
+        asyncMatch: null,
+        asyncQuestions: null,
+        matchStartTs: 0,
+        asyncSummary: null,
         // 竞速
         round: 0,
         humanWins: 0,
@@ -54,6 +74,16 @@
     }
 
     let _lastDiffContainer = null;
+
+    function isAsyncMode() {
+        return state.mode === 'async';
+    }
+
+    function getRoundTotal() {
+        return isAsyncMode() && Array.isArray(state.asyncQuestions) && state.asyncQuestions.length
+            ? state.asyncQuestions.length
+            : CONFIG.TOTAL_ROUNDS;
+    }
 
     // ============ 工具函数 ============
     const utils = {
@@ -207,9 +237,16 @@
                     <p>和机器人同题竞速，${CONFIG.TOTAL_ROUNDS} 局定胜负！</p>
                     <p>当前难度：<b style="color:#ffd166;">${diffNames[state.mathDifficulty] || '简单'}</b>（在「设置」中修改）</p>
                     <button class="arena-btn" onclick="MathPKGame.start()">开始对战</button>
+                    <div id="mathpk-async-root" style="margin-top:14px;"></div>
                     <p style="margin-top:14px;font-size:.8rem;opacity:.7;">历史最高分：${high}</p>
                 </div>
             `;
+            if (window.PKService && typeof window.PKService.renderBanner === 'function') {
+                window.PKService.renderBanner('mathpk');
+                if (typeof window.PKService.refresh === 'function') {
+                    void window.PKService.refresh();
+                }
+            }
             // 大厅态：隐藏机器人思考条、重置双方状态
             const bar = document.getElementById('arena-robot-bar'); if (bar) bar.style.display = 'none';
             this._setSide('human', { status: '准备就绪', time: '' });
@@ -254,6 +291,11 @@
             if (cls) el.classList.add(cls);
         },
         _setScore() {
+            const pill = document.getElementById('arena-score-pill');
+            if (isAsyncMode()) {
+                if (pill) pill.innerHTML = `好友异步挑战 · <b id="arena-human-score">${state.score}</b> 分`;
+                return;
+            }
             const h = document.getElementById('arena-human-score');
             const r = document.getElementById('arena-robot-score');
             if (h) h.textContent = state.humanWins;
@@ -293,6 +335,18 @@
             const center = document.getElementById('arena-center');
             if (!center) return;
             const bar = document.getElementById('arena-robot-bar'); if (bar) bar.style.display = 'none';
+            if (data.mode === 'async') {
+                center.innerHTML = `
+                    <div class="arena-lobby">
+                        <h2 style="font-size:2rem;">${escapeHtml(data.title || '好友异步挑战完成')}</h2>
+                        <p style="font-size:1.1rem;">你的得分 <b style="color:#ffd166;">${data.score}</b></p>
+                        <p style="opacity:.8;">答对 ${data.correctCount}/${data.total}</p>
+                        <p style="margin-top:8px;opacity:.92;">${escapeHtml(data.note || '成绩已提交。')}</p>
+                        <button class="arena-btn" onclick="MathPKGame.renderUI('math-pk-container')">返回大厅</button>
+                    </div>
+                `;
+                return;
+            }
             const win = data.humanWins > data.robotWins;
             center.innerHTML = `
                 <div class="arena-lobby">
@@ -367,6 +421,10 @@
         start() {
             state.isPlaying = true;
             state.roundClosing = false;
+            state.mode = 'robot';
+            state.asyncMatch = null;
+            state.asyncQuestions = null;
+            state.asyncSummary = null;
             state.round = 0;
             state.humanWins = 0;
             state.robotWins = 0;
@@ -374,6 +432,28 @@
             state.combo = 0;
             state.maxCombo = 0;
             state.correctCount = 0;
+            state.matchStartTs = Date.now();
+            render._setScore();
+            this._nextRound();
+        },
+
+        startAsyncMatch(match) {
+            if (!match || !match.questionSetPayload || !Array.isArray(match.questionSetPayload.questions)) return;
+            state.isPlaying = true;
+            state.roundClosing = false;
+            state.mode = 'async';
+            state.asyncMatch = match;
+            state.asyncQuestions = match.questionSetPayload.questions.slice();
+            state.asyncSummary = null;
+            state.round = 0;
+            state.humanWins = 0;
+            state.robotWins = 0;
+            state.score = 0;
+            state.combo = 0;
+            state.maxCombo = 0;
+            state.correctCount = 0;
+            state.currentInput = '';
+            state.matchStartTs = Date.now();
             render._setScore();
             this._nextRound();
         },
@@ -401,17 +481,29 @@
         },
 
         _nextRound() {
-            if (state.round >= CONFIG.TOTAL_ROUNDS) { this._endMatch(); return; }
+            if (state.round >= getRoundTotal()) { void this._endMatch(); return; }
             state.round++;
             state.roundResolved = false;
             state.roundClosing = false;
             state.currentInput = '';
-            state.currentQuestion = this._genQuestion();
-            state.robotThinkMs = this._robotThinkMs(state.mathDifficulty);
+            state.currentQuestion = isAsyncMode()
+                ? state.asyncQuestions[state.round - 1]
+                : this._genQuestion();
+            if (!state.currentQuestion) { void this._endMatch(); return; }
             state.roundStartTs = Date.now();
-            render._setRoundPill(`第 ${state.round} / ${CONFIG.TOTAL_ROUNDS} 轮`);
+            render._setRoundPill(`${isAsyncMode() ? '好友异步挑战' : '第'} ${state.round} / ${getRoundTotal()} ${isAsyncMode() ? '题' : '轮'}`);
             render.match(state.currentQuestion);
             render.hideToast();
+            if (isAsyncMode()) {
+                const bar = document.getElementById('arena-robot-bar');
+                if (bar) bar.style.display = 'none';
+                render._setSide('human', { status: '你的回合', time: '' });
+                render._setSide('robot', { status: '好友稍后作答', time: '' });
+                render._setSideClass('human', '');
+                render._setSideClass('robot', '');
+                return;
+            }
+            state.robotThinkMs = this._robotThinkMs(state.mathDifficulty);
             render.startRobotBar();
             if (state.robotTimer) clearTimeout(state.robotTimer);
             state.robotTimer = setTimeout(() => this._robotAnswer(), state.robotThinkMs);
@@ -446,6 +538,31 @@
             if (state.currentInput === '') return;
             const selected = parseInt(state.currentInput, 10);
             const correct = selected === state.currentQuestion.answer;
+            if (isAsyncMode()) {
+                state.roundResolved = true;
+                state.roundClosing = true;
+                if (correct) {
+                    state.correctCount++;
+                    state.combo++;
+                    if (state.combo > state.maxCombo) state.maxCombo = state.combo;
+                    const gain = CONFIG.BASE_SCORE + Math.min(state.combo * 2, 20);
+                    state.score += gain;
+                    render._setSide('human', { status: '✓ 答对！', time: '' });
+                    render._setSide('robot', { status: '好友稍后作答', time: '' });
+                    render.toast(`✨ 本题得 ${gain} 分<small>好友也会做同一题</small>`, 'win');
+                } else {
+                    state.combo = 0;
+                    render._setSide('human', { status: '答错了', time: '' });
+                    render._setSide('robot', { status: '好友稍后作答', time: '' });
+                    render.toast(`✗ 正确答案：${state.currentQuestion.answer}<small>下一题继续加油</small>`, 'lose');
+                }
+                render._setScore();
+                setTimeout(() => {
+                    render.hideToast();
+                    this._nextRound();
+                }, 1200);
+                return;
+            }
             if (!correct) {
                 // 答错：不结束本轮，扣时间继续抢答（机器人仍在计时）
                 const disp = document.getElementById('arena-display');
@@ -496,8 +613,9 @@
             }, 1500);
         },
 
-        _endMatch() {
+        async _endMatch() {
             state.isPlaying = false;
+            if (state.robotTimer) clearTimeout(state.robotTimer);
             const win = state.humanWins > state.robotWins;
             const earnedPoints = state.score + (win ? CONFIG.WIN_BONUS : 0);
 
@@ -521,9 +639,42 @@
                 }
                 window.Leaderboard.record('mathpk', state.score, {
                     correct: state.correctCount,
-                    total: CONFIG.TOTAL_ROUNDS,
-                    win: win
+                    total: getRoundTotal(),
+                    win: win,
+                    asyncMatch: isAsyncMode()
                 });
+            }
+
+            if (isAsyncMode()) {
+                let summaryNote = '成绩已提交，等待好友完成同题挑战。';
+                try {
+                    if (window.PKService && typeof window.PKService.submitAttempt === 'function' && state.asyncMatch) {
+                        const submitResult = await window.PKService.submitAttempt(state.asyncMatch.id, {
+                            gameType: 'mathpk',
+                            score: state.score,
+                            correctCount: state.correctCount,
+                            total: getRoundTotal(),
+                            durationMs: Date.now() - state.matchStartTs,
+                            payloadJson: {
+                                total: getRoundTotal(),
+                                questions: state.asyncQuestions
+                            }
+                        });
+                        summaryNote = submitResult && submitResult.message ? submitResult.message : summaryNote;
+                    }
+                } catch (error) {
+                    summaryNote = error && error.message ? error.message : '成绩提交失败，请稍后重试。';
+                }
+                render._setRoundPill('好友挑战完成');
+                render.result({
+                    mode: 'async',
+                    title: '好友异步挑战完成',
+                    score: state.score,
+                    correctCount: state.correctCount,
+                    total: getRoundTotal(),
+                    note: summaryNote
+                });
+                return;
             }
 
             render._setRoundPill(win ? '🏆 胜利' : '对战结束');
@@ -540,6 +691,38 @@
     };
 
     // 暴露给全局
+    async function buildAsyncQuestionSet() {
+        const diff = localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty || 'easy';
+        const questions = [];
+        for (let i = 0; i < CONFIG.TOTAL_ROUNDS; i++) {
+            if (diff === 'medium' && CMATH_POOL && Math.random() < CONFIG.WORD_RATIO) {
+                const word = utils.generateWordQuestion(diff);
+                questions.push(word || utils.generateQuestion(diff));
+            } else {
+                questions.push(utils.generateQuestion(diff));
+            }
+        }
+        return {
+            gameType: 'mathpk',
+            difficulty: diff,
+            totalRounds: CONFIG.TOTAL_ROUNDS,
+            questions: questions
+        };
+    }
+
+    function describeAsyncQuestionSet(payload) {
+        const difficulty = payload && payload.difficulty ? payload.difficulty : (state.mathDifficulty || 'easy');
+        const totalRounds = payload && payload.totalRounds ? payload.totalRounds : CONFIG.TOTAL_ROUNDS;
+        const difficultyLabel = DIFFICULTY_LABELS[difficulty] || '简单';
+        return {
+            difficulty: difficulty,
+            difficultyLabel: difficultyLabel,
+            totalRounds: totalRounds,
+            modeLabel: difficultyLabel,
+            summaryText: difficultyLabel + ' · ' + totalRounds + ' 题同题挑战'
+        };
+    }
+
     window.MathPKGame = {
         start: () => Game.start(),
         renderUI: (id) => Game.renderUI(id),
@@ -548,7 +731,11 @@
         renderDifficultySetting: (id) => render.renderDifficultySetting(id),
         _inputDigit: (d) => Game._inputDigit(d),
         _clearInput: () => Game._clearInput(),
-        _submitAnswer: () => Game._submitAnswer()
+        _submitAnswer: () => Game._submitAnswer(),
+        startAsyncMatch: (match) => Game.startAsyncMatch(match),
+        buildAsyncQuestionSet: buildAsyncQuestionSet,
+        describeAsyncQuestionSet: describeAsyncQuestionSet,
+        getDifficulty: () => (localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty || 'easy')
     };
 
     // 物理键盘支持（仅对战中）

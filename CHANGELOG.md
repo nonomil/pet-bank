@@ -2,6 +2,65 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.4] - 2026-07-05
+### 👨‍👩‍👧 家庭账号社交最小版 + 🛠️ 轻后台骨架 + 🤖 Hermes 部署描述
+
+**👨‍👩‍👧 家庭账号社交最小版**
+- 主站补上可选 Supabase 云端配置入口与家长账号登录 / 注册壳，仍保留“本地即可运行”的轻量模式
+- 接入注册邀请码、家庭关系、多孩子隔离与同步、好友码 / 串门 / 互动 feed 的最小闭环
+- 数学 PK 与识字 PK 收口为“同题组异步对战”骨架，一期默认隐藏复杂诊断和重运营控件
+- 宠物小屋补上可切换主题背景与访客位，便于多个孩子、多个家庭互相串门
+
+**🛠️ 轻后台骨架**
+- 新增 `admin.html`，复用家长账号登录态作为轻后台入口
+- 新增 `public.user_roles`、`public.admin_audit_logs` 与 `public.is_admin()`，为管理员角色与审计留出正式数据底座
+- 新增 `admin-search-entities` 与 `admin-list-invites` Edge Functions 骨架，先打通后台查询链路
+
+**🤖 部署与数据安全**
+- 新增 `supabase/config.toml`、`.env.production.example`、`ops/hermes.yaml`，统一人类、AI 与 CI 可读的部署约定
+- 明确前端发布与数据库发布分离，数据库结构演进统一走 `supabase/migrations/*.sql`
+- 默认采用 additive-first 升级策略，强调生产环境先备份、浏览器端禁止持有 `service_role`
+
+**🧪 验证与文档**
+- 补齐家庭账号社交专题文档、后台 / Hermes 设计稿与实施计划
+- 新增管理员后台、云端配置、家庭社交与部署约定的合同测试与联调说明
+
+---
+
+## [v0.7.3] - 2026-07-05
+### 📚 学习中心上线 + 幼小衔接暑假中文资料包
+
+**📚 学习中心（当前仓库内的新产品域）**
+- 顶部导航新增 `学习` 一级入口，学习中心仍保持在当前 `pet-bank` SPA 内，不拆新仓库、不拆新站点
+- 新增 5 个页面壳：`learn` / `learn-pack` / `learn-plan` / `learn-lesson` / `learn-print`
+- 新增 `js/learn-center.js` + `css/learn-center.css`，形成通用资料包平台而不是一次性静态页面
+
+**🧒 幼小衔接暑假中文资料包**
+- 新增 `data/learn/` 资料包目录与首套 `summer-chinese-bridge-2026`
+- 首套资料包完整接入：
+  - `60 天晨读`
+  - `45 天识字`
+  - `每周复盘`
+  - `古诗积累`
+  - `经典短句`
+- 新增 `scripts/generators/gen_summer_chinese_pack.py`，可批量重建暑假中文资料包内容
+
+**⭐ 进度、发分与打印**
+- 学习中心新增 `petbank_learning_catalog_state` / `petbank_learning_progress` / `petbank_learning_rewards` / `petbank_learning_print_prefs`
+- lesson 完成统一通过 `window.addGrowthPoints(delta)` 发放成长分，并用唯一奖励键防重复刷分
+- 同一天完成晨读与识字可额外领取组合奖励
+- 新增浏览器 A4 打印友好页，可直接预览后原生打印 / 导出 PDF
+
+**👨‍👩‍👧 多孩子隔离**
+- 学习中心沿用 `petbank_*` 前缀，自动纳入 `ProfileManager` 快照切换
+- 每个孩子的学习资料进度、奖励记录和打印偏好彼此隔离
+
+**🧪 验证与文档**
+- 新增 `scripts/learning-center-smoke.mjs`，覆盖导航、资料包加载、lesson 完成、一次性发分、组合奖励、打印页和多孩子隔离
+- 更新技术架构、模块清单、项目总览与计划索引，补齐学习中心的架构口径
+
+---
+
 ## [v0.7.2] - 2026-07-05
 ### 🗺️ 图鉴探索体验升级 + 场景数学任务反馈
 

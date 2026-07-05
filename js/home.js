@@ -404,6 +404,12 @@ const HomeSystem = (function () {
         else tab.classList.remove('home-nav-disabled');
     }
 
+    function _scheduleCloudSync(reason, options) {
+        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
+            window.CloudSync.scheduleSync(reason || 'home_runtime', options || {});
+        }
+    }
+
     // ---------- 互动按钮处理 ----------
     function onFeed() {
         const s = PetSystem.getState();
@@ -421,6 +427,7 @@ const HomeSystem = (function () {
         window.sfx && sfx.click();
         if (window.updateStats) window.updateStats();
         renderUI(_lastContainer);
+        _scheduleCloudSync('home_feed');
     }
 
     function onPlay() {
@@ -431,6 +438,7 @@ const HomeSystem = (function () {
         _toast(res.msg || (res.success ? '玩耍成功' : '玩耍失败'));
         window.sfx && sfx.click();
         renderUI(_lastContainer);
+        _scheduleCloudSync('home_play');
     }
 
     function onBath() {
@@ -441,6 +449,7 @@ const HomeSystem = (function () {
         _toast(res.msg || (res.success ? '洗澡成功' : '洗澡失败'));
         window.sfx && sfx.click();
         renderUI(_lastContainer);
+        _scheduleCloudSync('home_bath');
     }
 
     function onRest() {
@@ -451,6 +460,7 @@ const HomeSystem = (function () {
         _toast(res.msg || (res.success ? '治疗成功' : '治疗失败'));
         window.sfx && sfx.click();
         renderUI(_lastContainer);
+        _scheduleCloudSync('home_rest');
     }
 
     // 救援 CTA
@@ -473,6 +483,7 @@ const HomeSystem = (function () {
                 });
             }
             setTimeout(() => _toast('🎉 宠物苏醒了！又可以一起去冒险啦～'), 400);
+            _scheduleCloudSync('home_rescue');
             return;
         }
         renderUI(_lastContainer);
@@ -508,6 +519,7 @@ const HomeSystem = (function () {
         _saveHomeState();
         _selectedFurniture = null; // 摆放后清空选中
         renderUI(_lastContainer);
+        _scheduleCloudSync('home_place_furniture');
         return true;
     }
 
@@ -516,6 +528,7 @@ const HomeSystem = (function () {
         homeState.slots[slot] = null;
         _saveHomeState();
         renderUI(_lastContainer);
+        _scheduleCloudSync('home_remove_furniture');
     }
 
     function addFurniture(furnId) {
@@ -542,9 +555,9 @@ const HomeSystem = (function () {
     // 背景主题表：渐变兜底 + ChatGPT 生图 img（assets/home-bg/room-{theme}.webp）
     const BG_THEMES = {
         cozy_night: { name: '深夜温馨卧室', desc: '默认小屋，温馨的星空卧室，免费入住。', gradient: 'linear-gradient(180deg,#2a2350 0%,#3b2f63 45%,#5b4b8a 100%)', img: 'assets/home-bg/room-starter.webp', price: 0 },
-        dawn: { name: '清晨阳光房', desc: '清晨阳光洒满的温暖房间，元气满满。', gradient: 'linear-gradient(180deg,#f6c68b 0%,#f3a8a2 38%,#8ecae6 100%)', img: '', price: 60 },
+        dawn: { name: '清晨阳光房', desc: '清晨阳光洒满的温暖房间，元气满满。', gradient: 'linear-gradient(180deg,#f6c68b 0%,#f3a8a2 38%,#8ecae6 100%)', img: 'assets/background/dawn.webp', price: 60 },
         starry: { name: '星空阁楼', desc: '满天星斗的安静阁楼，适合许愿。', gradient: 'radial-gradient(circle at 30% 20%,#1a1f4d 0%,#0d1130 60%,#000018 100%)', img: 'assets/home-bg/room-starry.webp', price: 80 },
-        garden_balcony: { name: '花园阳台', desc: '鲜花环绕的小阳台，蝴蝶常来做客。', gradient: 'linear-gradient(180deg,#b7e4c7 0%,#8fd3c8 45%,#f6d7a7 100%)', img: '', price: 60 },
+        garden_balcony: { name: '花园阳台', desc: '鲜花环绕的小阳台，蝴蝶常来做客。', gradient: 'linear-gradient(180deg,#b7e4c7 0%,#8fd3c8 45%,#f6d7a7 100%)', img: 'assets/background/garden_balcony.webp', price: 60 },
         underwater_aquarium: { name: '海底水族房', desc: '海底世界水族房，和鱼儿一起游泳。', gradient: 'linear-gradient(180deg,#7ad7f0 0%,#4ca7d8 45%,#1f5d8f 100%)', img: 'assets/home-bg/room-ocean.webp', price: 100 },
         candy_cottage: { name: '糖果甜梦屋', desc: '甜蜜糖果色的梦幻小屋，甜到心里。', gradient: 'linear-gradient(180deg,#ffd6e7 0%,#ffc4a3 45%,#fff1b8 100%)', img: 'assets/home-bg/room-candy.webp', price: 80 },
         forest_treehouse: { name: '森林树屋', desc: '森林深处的秘密树屋，鸟语花香。', gradient: 'linear-gradient(180deg,#7fb77e 0%,#4f8f6b 45%,#d6b37a 100%)', img: 'assets/home-bg/room-forest.webp', price: 100 },
@@ -581,6 +594,7 @@ const HomeSystem = (function () {
             setHomeBg(theme);
             _toast('🎉 解锁「' + t.name + '」！');
             _renderManageBgGrid();
+            _scheduleCloudSync('home_unlock_theme');
             return true;
         } catch (e) { return false; }
     }
@@ -599,6 +613,7 @@ const HomeSystem = (function () {
             if (bg) {
                 _applyBg(bg, t);
             }
+            _scheduleCloudSync('home_theme_change');
             return true;
         } catch (e) { return false; }
     }
@@ -874,10 +889,22 @@ const HomeSystem = (function () {
                         ${vitHtml}
                     </div>
                     ${actionsHtml}
+                    <div id="home-visit-slot"></div>
+                    <div id="home-social-panel"></div>
                     ${trayHtml}
                 </div>
             </div>
         `;
+        if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
+            void window.SocialSystem.refresh();
+        } else if (window.SocialSystem) {
+            if (typeof window.SocialSystem.renderHomeVisitSlot === 'function') {
+                window.SocialSystem.renderHomeVisitSlot('home-visit-slot');
+            }
+            if (typeof window.SocialSystem.renderHomePanel === 'function') {
+                window.SocialSystem.renderHomePanel('home-social-panel');
+            }
+        }
     }
 
     // ---------- init ----------
@@ -917,6 +944,11 @@ const HomeSystem = (function () {
         loadCatalog,
         getFurnitureCatalog,
         getUnplacedFurniture,
+        getThemeMeta: (theme) => {
+            const key = theme || ((homeState && homeState.theme) || 'cozy_night');
+            const meta = BG_THEMES[key];
+            return meta ? Object.assign({ id: key }, meta) : null;
+        },
         getHomeState: () => homeState,
         getFurniture: () => furniture
     };

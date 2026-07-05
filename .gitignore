@@ -11,6 +11,10 @@ prj/*
 !prj/tts/
 !prj/tts-portable/
 !prj/browser-act-imagegen/
+!prj/*.test.py
+!prj/*.test.mjs
+!prj/test_*.py
+!prj/test_*.mjs
 # docs/参考案例/ 含 12MB mp4 与视频抽帧图片，整体不入库
 docs/参考案例/
 *.zip
@@ -29,6 +33,7 @@ docs/参考案例/
 
 # --- 环境配置（本地，不入库；示例见 .env.example）---
 .env
+cloud-config.local.js
 # Agnes 生图 API 密钥（含 key，严禁入库；调用方式见 memory/agnes-image-api）
 docs/GPT生图/Agnes生图.md
 

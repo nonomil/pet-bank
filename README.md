@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.2](https://img.shields.io/badge/Version-v0.7.2-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.4](https://img.shields.io/badge/Version-v0.7.4-brightgreen.svg)](CHANGELOG.md)
 
 📖 **结构化文档**：[文档总索引](docs/README.md) ｜ [需求规格书](docs/规格/需求规格书.md) ｜ [技术架构](docs/设计/技术架构.md) ｜ [开发路线图](docs/路线/差距清单与开发路线图.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,15 +27,15 @@
 
 ---
 
-## 🎉 最近更新（v0.7.2）
+## 🎉 最近更新（v0.7.4）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
-- 🧩 **12 场景数学任务升级**：每道题都绑定现场线索、能力点、答错提示和答对解析，不再是换皮算术
-- 🗺️ **探索页加载稳定性**：进入 galgame 前等待故事 JSON 加载，返回地图时复用探索地图壳，减少误判失败和空白页
-- 🃏 **图鉴分馆封面优化**：4 张分馆封面重新排版，入口卡片更紧凑，分馆故事信息更聚焦
-- 📖 **图鉴详情弹窗修复**：详情页支持视口内滚动，关闭按钮固定在弹窗内，移动端不再被内容高度卡住
-- ✅ **文档与测试同步**：探索剧情设计、12 场景故事稿和验收清单同步补齐数学任务标准
+- 📚 **学习中心与暑假中文资料包**：主站新增 `学习` 一级入口，上线“幼小衔接暑假中文”资料包，支持进度、奖励和打印页
+- 👨‍👩‍👧 **家庭账号社交最小版**：补齐可选 Supabase 云端接入、家长账号、注册邀请码、多孩子隔离、家庭协作、好友串门与异步 PK 骨架
+- 🛠️ **轻后台骨架**：新增 `admin.html`、管理员角色表、审计日志表和后台查询函数骨架，先把后台入口与权限底座接通
+- 🤖 **Hermes 部署描述**：新增 `supabase/config.toml`、`.env.production.example`、`ops/hermes.yaml`，让 AI / CI / 人都能读同一套部署约定
+- 🔐 **升级不覆盖数据**：明确前端发布与数据库发布分离，数据库演进统一走 migration，默认采用 additive-first 策略
 
 ---
 
@@ -44,7 +44,7 @@
 - 🎮 **游戏化设计**：积分 = 银行账户余额，余额可视化、可累积，孩子有动力
 - 📊 **多维度成长**：不止是"学习"，而是覆盖孩子成长的 6 大维度
 - 🐶 **养宠物机制**：把"长期主义"具象化为一只看得见摸得着的小生命
-- 👨‍👩‍👧‍👦 **家长友好**：无需账号、无需登录，浏览器打开即用，跨设备同步靠云端链接
+- 👨‍👩‍👧‍👦 **家长友好**：默认仍可本地即开即用，也可按需升级到云端账号、家庭协作与多孩子同步
 - 💻 **极致轻量**：静态 HTML + 模块化 JS，部署在 GitHub Pages / Cloudflare Tunnel
 
 ---
@@ -159,8 +159,10 @@ pet-bank 采用**最朴素的现代前端方案**——静态 HTML + 模块化 J
 | **样式** | Tailwind CSS (CDN) | 实用优先的 CSS 框架 |
 | **图标** | Lucide Icons | 优雅统一的 SVG 图标库 |
 | **结构** | 静态 HTML + 模块化 JS | 一个 `index.html` 入口 + 多个 JS 模块协作 |
-| **部署** | GitHub Pages / Cloudflare Tunnel | 推送 `main` 后自动发布，也可保留云端映射 |
-| **数据** | 浏览器本地存储 | 所有数据保存在用户浏览器中 |
+| **部署** | GitHub Pages / Cloudflare Tunnel / Supabase | 静态前端独立发布，云端数据库与函数单独部署 |
+| **数据** | 浏览器本地存储 + Supabase（可选） | 默认可离线本地运行，接入云端后支持账号、家庭、多孩子与互动数据 |
+
+> 当前主站仍保持静态前端形态；配置 Supabase 后，可以渐进开启家长账号、家庭社交、后台管理壳和真实环境部署。
 
 ### 为什么保持静态站点？
 
@@ -168,7 +170,7 @@ pet-bank 采用**最朴素的现代前端方案**——静态 HTML + 模块化 J
 - ✅ **跨平台**：Windows / macOS / Linux / iPad / 手机都能开
 - ✅ **易维护**：多个 JS 模块分工明确，扩展时不用引入打包链路
 - ✅ **可定制**：家长可以随意修改任务、积分、宠物属性
-- ✅ **隐私安全**：数据完全本地，不上云端
+- ✅ **渐进升级**：本地模式与云端模式可以共存，页面发布和数据库发布分开，便于安全升级
 
 ---
 

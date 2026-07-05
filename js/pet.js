@@ -350,10 +350,13 @@ const PetSystem = (function () {
         if (skillsData) return skillsData;
         try {
             const resp = await fetch('data/skills.json');
+            if (!resp.ok) {
+                throw new Error(`HTTP ${resp.status}`);
+            }
             skillsData = await resp.json();
             return skillsData;
         } catch (e) {
-            console.error('Failed to load skills.json:', e);
+            console.warn('Failed to load skills.json:', e);
             return { version: '1.0', skills: [] };
         }
     }

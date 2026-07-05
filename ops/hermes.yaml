@@ -1,0 +1,70 @@
+version: 1
+project:
+  name: pet-bank
+  type: static-site-with-supabase
+  workspaceRoot: .
+  primaryBranch: main
+
+frontend:
+  publicDir: .
+  entryHtml: index.html
+  adminEntryHtml: admin.html
+  adminStatus: planned
+  localServeCommand: python -m http.server 8765 --bind 127.0.0.1
+  localBaseUrl: http://127.0.0.1:8765
+  deploy:
+    provider: github-pages
+    workflow: .github/workflows/deploy.yml
+
+supabase:
+  enabled: true
+  configFile: supabase/config.toml
+  migrationsDir: supabase/migrations
+  functionsDir: supabase/functions
+  deployOrder:
+    - supabase link --project-ref ${SUPABASE_PROJECT_ID}
+    - supabase db push
+    - supabase config push
+    - supabase functions deploy validate-registration-invite
+    - supabase functions deploy claim-registration-invite
+    - supabase functions deploy issue-registration-invite
+    - supabase functions deploy list-registration-invites
+    - supabase functions deploy revoke-registration-invite
+    - supabase functions deploy issue-household-invite
+    - supabase functions deploy revoke-household-invite
+    - supabase functions deploy accept-household-invite
+    - supabase functions deploy redeem-friend-code
+    - supabase functions deploy issue-pk-match
+    - supabase functions deploy submit-pk-attempt
+  requiredSecrets:
+    - APP_SUPABASE_URL
+    - APP_SUPABASE_ANON_KEY
+    - APP_SUPABASE_SITE_URL
+    - SUPABASE_PROJECT_ID
+    - SUPABASE_ACCESS_TOKEN
+    - SUPABASE_DB_PASSWORD
+    - SUPABASE_SERVICE_ROLE_KEY
+
+admin:
+  authModel: shared-auth-shared-users
+  roleSource: public.user_roles
+  bootstrapMode: manual-role-grant
+  auditLogTable: public.admin_audit_logs
+  browserMayUseServiceRole: false
+
+verification:
+  commands:
+    - python -m pytest (Get-ChildItem 'prj' -Filter 'test_*.py' | Sort-Object Name | ForEach-Object { $_.FullName }) -q
+    - node scripts/family-social-ops.mjs pilot:doctor --json
+    - node --check js/auth.js
+    - node --check js/social.js
+
+policies:
+  migrationStrategy: additive-first
+  destructiveMigrationsRequireSeparateRelease: true
+  requireBackupBeforeProductionDbPush: true
+  forbidServiceRoleInBrowser: true
+
+rollback:
+  frontend: redeploy-previous-github-pages-artifact
+  database: restore-from-supabase-backup-or-pitr

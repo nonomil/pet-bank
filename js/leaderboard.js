@@ -89,6 +89,128 @@
         } catch (_) { return ''; }
     }
 
+    function _getHouseholdState() {
+        return window.HouseholdSystem && typeof window.HouseholdSystem.getState === 'function'
+            ? window.HouseholdSystem.getState()
+            : null;
+    }
+
+    function _getSocialState() {
+        return window.SocialSystem && typeof window.SocialSystem.getState === 'function'
+            ? window.SocialSystem.getState()
+            : null;
+    }
+
+    function _getPKState() {
+        return window.PKService && typeof window.PKService.getState === 'function'
+            ? window.PKService.getState()
+            : null;
+    }
+
+    function _cloudOutcome(match) {
+        if (!match) return '进行中';
+        if (match.pendingForMe) return '待应战';
+        if (match.awaitingPeer) return '等好友提交';
+        if (match.outcome === 'win') return '获胜';
+        if (match.outcome === 'lose') return '惜败';
+        if (match.outcome === 'draw') return '平局';
+        if (match.expired) return '已过期';
+        return match.statusText || '进行中';
+    }
+
+    function _dedupePeers(householdPeers, friends) {
+        const peerMap = new Map();
+        (householdPeers || []).concat(friends || []).forEach(function (peer) {
+            if (!peer || !peer.id || peerMap.has(peer.id)) return;
+            peerMap.set(peer.id, peer);
+        });
+        return Array.from(peerMap.values());
+    }
+
+    function _renderCloudSummary(gameId) {
+        const householdState = _getHouseholdState();
+        const socialState = _getSocialState();
+        const pkState = _getPKState();
+
+        if (!householdState || !householdState.primaryHouseholdId) {
+            return `
+                <div class="lb-cloud-card">
+                    <div class="lb-cloud-head">
+                        <h3>好友与云端战绩</h3>
+                        <span>未连接家庭</span>
+                    </div>
+                    <div class="lb-cloud-empty">登录并同步家庭后，这里会显示好友数量、待应战场次，以及这项玩法的异步 PK 结果。</div>
+                </div>
+            `;
+        }
+
+        const householdPeers = socialState && Array.isArray(socialState.householdPeers) ? socialState.householdPeers : [];
+        const friends = socialState && Array.isArray(socialState.friends) ? socialState.friends : [];
+        const peers = _dedupePeers(householdPeers, friends);
+        const visits = socialState && Array.isArray(socialState.visits) ? socialState.visits : [];
+        const matches = pkState && Array.isArray(pkState.matches)
+            ? pkState.matches.filter(function (match) { return match.gameType === gameId; })
+            : [];
+        const pending = matches.filter(function (match) { return match.pendingForMe; });
+        const completed = matches.filter(function (match) { return match.myAttempt && match.peerAttempt; });
+        const wins = completed.filter(function (match) { return match.outcome === 'win'; });
+
+        const recentHtml = matches.length
+            ? matches.slice(0, 3).map(function (match) {
+                return `
+                    <div class="lb-cloud-match">
+                        <div class="lb-cloud-match-top">
+                            <strong>${match.peerChild && match.peerChild.emoji ? match.peerChild.emoji : '🐾'} ${match.peerChild && match.peerChild.display_name ? match.peerChild.display_name : '好友'}</strong>
+                            <span>${_cloudOutcome(match)}</span>
+                        </div>
+                        <div class="lb-cloud-match-body">
+                            ${match.myAttempt ? `你 ${match.myAttempt.score} 分` : '你未提交'}
+                            ·
+                            ${match.peerAttempt ? `好友 ${match.peerAttempt.score} 分` : '好友未提交'}
+                        </div>
+                        <div class="lb-cloud-match-time">${_fmtDate((match.peerAttempt && match.peerAttempt.completedAt) || (match.myAttempt && match.myAttempt.completedAt) || match.createdAt)}</div>
+                    </div>
+                `;
+            }).join('')
+            : '<div class="lb-cloud-empty">这项玩法还没有云端异步 PK 记录，先去给好友发起一场同题挑战吧。</div>';
+
+        return `
+            <div class="lb-cloud-card">
+                <div class="lb-cloud-head">
+                    <h3>好友与云端战绩</h3>
+                    <span>${householdState.primaryHousehold && householdState.primaryHousehold.name ? householdState.primaryHousehold.name : '家庭已连接'}</span>
+                </div>
+                <div class="lb-cloud-grid">
+                    <div class="lb-cloud-metric">
+                        <span>互动同伴</span>
+                        <strong>${peers.length}</strong>
+                    </div>
+                    <div class="lb-cloud-metric">
+                        <span>家庭同伴</span>
+                        <strong>${householdPeers.length}</strong>
+                    </div>
+                    <div class="lb-cloud-metric">
+                        <span>待应战</span>
+                        <strong>${pending.length}</strong>
+                    </div>
+                    <div class="lb-cloud-metric">
+                        <span>已完赛</span>
+                        <strong>${completed.length}</strong>
+                    </div>
+                    <div class="lb-cloud-metric">
+                        <span>胜场</span>
+                        <strong>${wins.length}</strong>
+                    </div>
+                </div>
+                <div class="lb-cloud-subhead">
+                    <span>最近串门 ${visits.length} 次</span>
+                    <span>异步 PK ${matches.length} 场</span>
+                </div>
+                <div class="lb-cloud-list">${recentHtml}</div>
+            </div>
+        `;
+    }
+
     // 渲染：最高分卡片 + 进步趋势 + 最近列表
     function renderUI(containerId, gameId, opts) {
         opts = opts || {};
@@ -138,6 +260,7 @@
                 <p class="text-xs mt-1 text-muted">和自己赛跑 · 记录最高分与最近 ${RECENT_MAX} 局</p>
             </div>
             <div class="lb-body">
+                ${_renderCloudSummary(gameId)}
                 <div class="lb-best-card">
                     <div class="lb-best-label">最高分</div>
                     <div class="lb-best-num">${data.best}</div>

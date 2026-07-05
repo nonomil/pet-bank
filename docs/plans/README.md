@@ -32,6 +32,18 @@
 | `TOPIC-CARD-SYSTEM` | [../卡牌系统/README](../卡牌系统/README.md) | 专题索引 | 当前活跃 | 卡牌系统相关设计稿、实施计划、方案、调研已移入专题目录统一维护 |
 | `TOPIC-ROUTE-MAP` | [../路线地图大富翁融合/README](../路线地图大富翁融合/README.md) | 专题索引 | 当前活跃 | 路线地图专题已收口为轻量多圈层重构，执行入口与 CC 提示词统一维护 |
 | `TOPIC-HANZI-PARK` | [../汉字游乐场/README](../汉字游乐场/README.md) | 专题索引 | 当前活跃 | 汉字游乐场（排行榜 + 汉字玩法 + HSK词库 + 游乐场hub）设计稿/实施计划/参考案例已移入专题目录统一维护 |
+| `DESIGN-2026-07-05-01` | [2026-07-05-learning-center-summer-chinese-design](./2026-07-05-learning-center-summer-chinese-design.md) | 设计稿 | 已落地(v0.7.3) | 学习中心一级入口 + 资料包平台 + 幼小衔接暑假中文资料包的产品设计，明确页面、数据目录、进度与计分边界 |
+| `PLAN-2026-07-05-01` | [2026-07-05-learning-center-summer-chinese-implementation](./2026-07-05-learning-center-summer-chinese-implementation.md) | 实施计划 | 已落地(v0.7.3) | 学习中心与暑假中文资料包的分步实施计划，含数据合同、页面壳、进度发分、打印页与冒烟验证 |
+| `DESIGN-2026-07-05-02` | [2026-07-05-family-account-social-design](./2026-07-05-family-account-social-design.md) | 设计稿 | 实施中 | 家长账号、家庭、多孩子、串门与数学/汉字异步 PK 的正式设计稿 |
+| `PLAN-2026-07-05-02` | [2026-07-05-family-account-social-implementation](./2026-07-05-family-account-social-implementation.md) | 实施计划 | 主干已落地，待联调 | 基于 Supabase 轻后端的家庭账号社交体系分任务实施计划 |
+| `TASK-2026-07-05-02` | [2026-07-05-family-account-social-task-list](./2026-07-05-family-account-social-task-list.md) | 任务清单 | 进行中 | 扁平推进清单，当前重点转向 P6 联调上线 |
+| `PLAN-2026-07-05-03` | [2026-07-05-family-account-social-live-validation-plan](./2026-07-05-family-account-social-live-validation-plan.md) | 实施计划 | 当前活跃 | 家庭账号社交体系的真实环境部署、双设备联调、灰度与回滚计划 |
+| `DESIGN-2026-07-05-03` | [2026-07-05-admin-backoffice-hermes-design](./2026-07-05-admin-backoffice-hermes-design.md) | 设计稿 | 当前活跃 | 轻后台、数据库安全升级与 Hermes 自动部署的正式设计稿 |
+| `PLAN-2026-07-05-04` | [2026-07-05-admin-backoffice-hermes-implementation](./2026-07-05-admin-backoffice-hermes-implementation.md) | 实施计划 | 当前活跃 | 轻后台、admin 角色模型、Hermes 配置与部署约定的实施计划 |
+| `TOPIC-FAMILY-ACCOUNT-SOCIAL` | [../家庭账号社交体系/README](../家庭账号社交体系/README.md) | 专题索引 | 当前活跃 | 账号体系、家庭关系、好友串门与异步 PK 的专题目录 |
+| `ROLL-2026-07-05-01` | [../家庭账号社交体系/联调上线/manual-run-template](../家庭账号社交体系/联调上线/manual-run-template.md) | 联调模板 | 当前活跃 | 双家长 / 双设备 / 双家庭联调记录模板，可由 ops 脚本生成当天文档 |
+| `ROLL-2026-07-05-02` | [../家庭账号社交体系/联调上线/deploy-log-template](../家庭账号社交体系/联调上线/deploy-log-template.md) | 部署模板 | 当前活跃 | Supabase 部署日志模板，可由 ops 脚本生成当天文档 |
+| `ROLL-2026-07-05-03` | [../家庭账号社交体系/联调上线/go-no-go-template](../家庭账号社交体系/联调上线/go-no-go-template.md) | 决策模板 | 当前活跃 | 上线决策模板，可由 ops 脚本沉淀 go / no-go 结论 |
 
 ---
 
@@ -47,7 +59,13 @@
   回到 [../进度/README.md](../进度/README.md)
 - 想看“为什么范围变了、之前发生了什么”：
   回到 [../方案/README.md](../方案/README.md)
+- 想看“家庭账号、多孩子、多家庭互动到底怎么做”：
+  先读 [../家庭账号社交体系/README.md](../家庭账号社交体系/README.md)
+- 想看“后台管理、升级不丢数据、Hermes 自动部署怎么做”：
+  先读 [2026-07-05-admin-backoffice-hermes-design](./2026-07-05-admin-backoffice-hermes-design.md) → [2026-07-05-admin-backoffice-hermes-implementation](./2026-07-05-admin-backoffice-hermes-implementation.md)
 - 想看“卡牌系统这一轮该怎么执行”：
   直接去 [../卡牌系统/README.md](../卡牌系统/README.md)
 - 想看“路线地图这一轮到底按什么边界执行”：
   直接去 [../路线地图大富翁融合/README.md](../路线地图大富翁融合/README.md)
+- 想看“学习中心是怎么设计并落地的”：
+  先读 [2026-07-05-learning-center-summer-chinese-design](./2026-07-05-learning-center-summer-chinese-design.md) → [2026-07-05-learning-center-summer-chinese-implementation](./2026-07-05-learning-center-summer-chinese-implementation.md)

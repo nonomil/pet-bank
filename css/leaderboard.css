@@ -69,6 +69,81 @@
     gap: 16px;
 }
 
+.lb-cloud-card {
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(229, 214, 175, 0.88);
+    box-shadow: 0 4px 12px rgba(123, 105, 64, 0.08);
+}
+.lb-cloud-head,
+.lb-cloud-subhead,
+.lb-cloud-match-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.lb-cloud-head h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #5a3a08;
+    font-weight: 800;
+}
+.lb-cloud-head span,
+.lb-cloud-subhead span,
+.lb-cloud-match-top span,
+.lb-cloud-match-body,
+.lb-cloud-match-time,
+.lb-cloud-empty {
+    font-size: 12px;
+    color: #8a7349;
+}
+.lb-cloud-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+.lb-cloud-metric {
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: #fffaf0;
+    border: 1px solid rgba(229, 214, 175, 0.78);
+}
+.lb-cloud-metric span {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    color: #8a7349;
+}
+.lb-cloud-metric strong {
+    font-size: 22px;
+    color: #7A5A00;
+}
+.lb-cloud-subhead {
+    margin-top: 12px;
+}
+.lb-cloud-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+}
+.lb-cloud-match {
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.78);
+    border: 1px solid rgba(229, 214, 175, 0.7);
+}
+.lb-cloud-match-top strong {
+    font-size: 13px;
+    color: #2C3E50;
+}
+.lb-cloud-match-body {
+    margin: 6px 0 4px;
+    line-height: 1.5;
+}
+
 /* 最高分卡：偏白白底 + 成就黄实色描边 */
 .lb-best-card {
     display: flex;
@@ -177,6 +252,9 @@
 .lb-empty { text-align: center; color: #8a7349; padding: 24px 0; list-style: none; }
 
 @media (max-width: 480px) {
+    .lb-cloud-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
     .lb-best-num { font-size: 38px; }
     .lb-row { grid-template-columns: 30px 52px 1fr auto; font-size: 13px; }
 }
