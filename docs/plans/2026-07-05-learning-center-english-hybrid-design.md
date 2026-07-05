@@ -123,7 +123,7 @@ english-mc-hybrid-2026
 ### 5.2 用户可见名称
 
 ```text
-幼小衔接英语启蒙资料包
+Minecraft我的世界英语故事
 ```
 
 ### 5.3 模块设计
@@ -131,7 +131,7 @@ english-mc-hybrid-2026
 建议先做 4 个模块：
 
 1. `mcbook56-story`
-   - 我的世界英语故事
+   - Minecraft我的世界英语故事
    - 外链章节型
 2. `mcbookstarters-reader`
    - Starters 启蒙阅读

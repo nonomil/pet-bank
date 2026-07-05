@@ -27,7 +27,7 @@
 Add checks such as:
 
 ```javascript
-check('英语资料包出现在学习中心目录', /英语启蒙资料包/.test(learnRuntime.pageText));
+check('英语资料包出现在学习中心目录', /Minecraft我的世界英语故事/.test(learnRuntime.pageText));
 check('英语资料包 manifest 使用 hybrid 类型', manifest.packType === 'hybrid');
 check('英语故事模块至少存在 1 节', storyModule.lessons.length > 0);
 ```
@@ -129,7 +129,7 @@ Expected: source-resolution checks PASS without breaking existing packs.
 Add checks such as:
 
 ```javascript
-check('学习中心首页显示英语资料包入口', /英语启蒙资料包/.test(learnPageText));
+check('学习中心首页显示英语资料包入口', /Minecraft我的世界英语故事/.test(learnPageText));
 check('英语资料包页显示故事模块和复盘模块', /我的世界英语故事/.test(packText) && /每周英语复盘/.test(packText));
 ```
 

@@ -225,6 +225,7 @@
                     </summary>
                     <div class="section-menu-panel">
                         <button class="section-menu-item is-current" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -233,6 +234,7 @@
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -252,7 +254,6 @@
                         <span class="reward-pet-cta-btn">＋ － 积分</span>
                     </div>
                 </div>
-                <div id="today-learning-checkin"></div>
                 <div class="card">
                     <div class="card-header flex items-center justify-between">
                         <div><h2 class="text-lg font-bold">今日成长任务</h2><p class="text-xs mt-1 text-muted">完成即得分，每一分都算数</p></div>
@@ -260,6 +261,42 @@
                     </div>
                     <div class="card-body">
                         <div class="grid grid-cols-2 gap-3" id="taskGrid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: 学习单 -->
+            <div class="page" id="page-learning-sheet">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：学习单</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
+                <div id="points-learning-sheet-container"></div>
+                <div class="card">
+                    <div class="card-header flex items-center justify-between">
+                        <div><h2 class="text-lg font-bold">继续学习</h2><p class="text-xs mt-1 text-muted">先去学习入口大厅选内容，学完再回来这里打勾收口。</p></div>
+                        <button class="btn-secondary" onclick="switchPage('learn')">去学习入口</button>
                     </div>
                 </div>
             </div>
@@ -276,6 +313,7 @@
                     </summary>
                     <div class="section-menu-panel">
                         <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                         <button class="section-menu-item is-current" type="button" onclick="switchPage('review')">每周复盘</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -284,6 +322,7 @@
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('review')">每周复盘</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -340,6 +379,7 @@
                     </summary>
                     <div class="section-menu-panel">
                         <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
                         <button class="section-menu-item is-current" type="button" onclick="switchPage('reward')">奖励兑换</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -348,6 +388,7 @@
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('reward')">奖励兑换</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -727,6 +768,7 @@
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('card')">卡片图鉴</button>
                     <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
                 </div>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                 <div id="card-collection-container"></div>
             </div>
 
@@ -735,6 +777,7 @@
                 <details class="section-menu">
                     <summary class="section-menu-trigger">
                         <div class="section-menu-copy">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                             <span class="section-menu-label">积分导航</span>
                             <span class="section-menu-current">当前：兑换商店</span>
                         </div>
@@ -786,6 +829,7 @@
             <div id="cardDetailModal" class="modal">
                 <div class="modal-content" style="max-width: 400px;">
                     <div id="cardDetailContent"></div>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                 </div>
             </div>
         </main>
@@ -794,6 +838,7 @@
     <!-- Battle Modal -->
     <div id="battleModal" class="modal">
         <div class="modal-content" style="max-width: 600px;">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold">⚔️ 战斗</h3>
                 <button onclick="closeBattleModal()" class="text-gray-400 hover:text-gray-600">✕</button>

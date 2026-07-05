@@ -58,7 +58,8 @@ async function main() {
         'page-learn-pack',
         'page-learn-plan',
         'page-learn-lesson',
-        'page-learn-print'
+        'page-learn-print',
+        'page-learning-sheet'
       ].map(id => !!document.getElementById(id));
       return {
         hasLearnTab: !!nav,
@@ -72,6 +73,7 @@ async function main() {
     check('page-learn-plan 存在', routeShell.pages[2]);
     check('page-learn-lesson 存在', routeShell.pages[3]);
     check('page-learn-print 存在', routeShell.pages[4]);
+    check('page-learning-sheet 存在', routeShell.pages[5]);
 
     const learnRuntime = await page.evaluate(async () => {
       localStorage.removeItem('petbank_learning_catalog_state');
@@ -84,7 +86,8 @@ async function main() {
         hasRenderHub: typeof window.LearnCenter?.renderHub === 'function',
         pageActive: !!learnPage?.classList.contains('active'),
         pageText: learnPage?.innerText || '',
-        portalCards
+        portalCards,
+        englishPortalImage: learnPage?.querySelector('[data-learn-portal-card="english"] img')?.getAttribute('src') || ''
       };
     });
 
@@ -94,26 +97,40 @@ async function main() {
     check('学习首页展示入口大厅卡片', learnRuntime.portalCards >= 5, `cards=${learnRuntime.portalCards}`);
     check('学习中心首页显示暑假中文资料包入口', /暑假中文|幼小衔接/.test(learnRuntime.pageText), learnRuntime.pageText.slice(0, 60));
     check('学习中心首页显示网站入口型资料包', /网站入口|学习网站/.test(learnRuntime.pageText), learnRuntime.pageText.slice(0, 120));
-    check('学习中心首页显示英语资料包入口', /英语启蒙资料包|英语学习/.test(learnRuntime.pageText), learnRuntime.pageText.slice(0, 180));
+    check('学习中心首页显示英语资料包入口', /Minecraft我的世界英语故事|Minecraft英语/.test(learnRuntime.pageText), learnRuntime.pageText.slice(0, 180));
+    check('学习中心首页英语入口已换成 Minecraft 封面图', /portal-minecraft-english-cover-20260705\.png/.test(learnRuntime.englishPortalImage), learnRuntime.englishPortalImage);
     check('学习首页首屏可直接看到汉字学习入口', /汉字/.test(learnRuntime.pageText), learnRuntime.pageText.slice(0, 220));
 
     const todayRuntime = await page.evaluate(async () => {
       if (typeof window.switchPage === 'function') window.switchPage('today');
       await new Promise(resolve => setTimeout(resolve, 350));
       const todayPage = document.getElementById('page-today');
-      const dailyRows = todayPage?.querySelectorAll('[data-daily-task-row]').length || 0;
       return {
         pageActive: !!todayPage?.classList.contains('active'),
         hasDailySheet: !!todayPage?.querySelector('[data-learn-daily-sheet]'),
-        pageText: todayPage?.innerText || '',
+        pageText: todayPage?.innerText || ''
+      };
+    });
+
+    const learningSheetRuntime = await page.evaluate(async () => {
+      if (typeof window.switchPage === 'function') window.switchPage('learning-sheet');
+      await new Promise(resolve => setTimeout(resolve, 350));
+      const sheetPage = document.getElementById('page-learning-sheet');
+      const dailyRows = sheetPage?.querySelectorAll('[data-daily-task-row]').length || 0;
+      return {
+        pageActive: !!sheetPage?.classList.contains('active'),
+        hasDailySheet: !!sheetPage?.querySelector('[data-learn-daily-sheet]'),
+        pageText: sheetPage?.innerText || '',
         dailyRows
       };
     });
 
     check('积分页激活成功', todayRuntime.pageActive);
-    check('积分页出现今日学习打卡总控', todayRuntime.hasDailySheet);
-    check('积分页学习打卡默认展示 4 个轻量任务', todayRuntime.dailyRows === 4, `rows=${todayRuntime.dailyRows}`);
-    check('积分页学习打卡包含晨读/古诗/识字/睡前复盘', /晨读/.test(todayRuntime.pageText) && /古诗/.test(todayRuntime.pageText) && /识字/.test(todayRuntime.pageText) && /睡前复盘/.test(todayRuntime.pageText), todayRuntime.pageText.slice(0, 220));
+    check('今日打卡页不再直接显示学习单', !todayRuntime.hasDailySheet, todayRuntime.pageText.slice(0, 220));
+    check('学习单页激活成功', learningSheetRuntime.pageActive);
+    check('学习单页出现学习打卡总控', learningSheetRuntime.hasDailySheet);
+    check('学习单页默认展示 4 个轻量任务', learningSheetRuntime.dailyRows === 4, `rows=${learningSheetRuntime.dailyRows}`);
+    check('学习单页包含晨读/古诗/识字/睡前复盘', /晨读/.test(learningSheetRuntime.pageText) && /古诗/.test(learningSheetRuntime.pageText) && /识字/.test(learningSheetRuntime.pageText) && /睡前复盘/.test(learningSheetRuntime.pageText), learningSheetRuntime.pageText.slice(0, 220));
 
     const modeSwitchRuntime = await page.evaluate(async () => {
       const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -129,10 +146,10 @@ async function main() {
       const advancedPanelOpenAfter = !!settingsPage?.querySelector('[data-learning-mode-advanced-panel].is-open');
       settingsPage?.querySelector('[data-learning-sheet-mode="template-b"]')?.click();
       await sleep(180);
-      if (typeof window.switchPage === 'function') window.switchPage('today');
+      if (typeof window.switchPage === 'function') window.switchPage('learning-sheet');
       await sleep(350);
-      const templateBRows = document.getElementById('page-today')?.querySelectorAll('[data-daily-task-row]').length || 0;
-      const templateBText = document.getElementById('page-today')?.innerText || '';
+      const templateBRows = document.getElementById('page-learning-sheet')?.querySelectorAll('[data-daily-task-row]').length || 0;
+      const templateBText = document.getElementById('page-learning-sheet')?.innerText || '';
 
       if (typeof window.switchPage === 'function') window.switchPage('settings');
       await sleep(250);
@@ -140,18 +157,18 @@ async function main() {
       await sleep(180);
       document.getElementById('page-settings')?.querySelector('[data-learning-sheet-mode="template-c"]')?.click();
       await sleep(180);
-      if (typeof window.switchPage === 'function') window.switchPage('today');
+      if (typeof window.switchPage === 'function') window.switchPage('learning-sheet');
       await sleep(350);
-      const templateCRows = document.getElementById('page-today')?.querySelectorAll('[data-daily-task-row]').length || 0;
-      const templateCText = document.getElementById('page-today')?.innerText || '';
+      const templateCRows = document.getElementById('page-learning-sheet')?.querySelectorAll('[data-daily-task-row]').length || 0;
+      const templateCText = document.getElementById('page-learning-sheet')?.innerText || '';
 
       if (typeof window.switchPage === 'function') window.switchPage('settings');
       await sleep(250);
       document.getElementById('page-settings')?.querySelector('[data-learning-sheet-mode="template-a"]')?.click();
       await sleep(180);
-      if (typeof window.switchPage === 'function') window.switchPage('today');
+      if (typeof window.switchPage === 'function') window.switchPage('learning-sheet');
       await sleep(350);
-      const templateARowsAgain = document.getElementById('page-today')?.querySelectorAll('[data-daily-task-row]').length || 0;
+      const templateARowsAgain = document.getElementById('page-learning-sheet')?.querySelectorAll('[data-daily-task-row]').length || 0;
 
       return {
         primaryCards,
@@ -246,11 +263,11 @@ async function main() {
       localStorage.removeItem('petbank_learning_rewards');
       localStorage.removeItem('petbank_learning_daily_sheet');
 
-      if (typeof window.switchPage === 'function') window.switchPage('today');
+      if (typeof window.switchPage === 'function') window.switchPage('learning-sheet');
       await sleep(300);
-      const learnPageBefore = document.getElementById('page-today');
-      const readingDailyBtn = learnPageBefore?.querySelector('[data-daily-task-row="reading"] [data-daily-open-lesson]');
-      const literacyDailyBtn = learnPageBefore?.querySelector('[data-daily-task-row="literacy"] [data-daily-open-lesson]');
+      const learnSheetBefore = document.getElementById('page-learning-sheet');
+      const readingDailyBtn = learnSheetBefore?.querySelector('[data-daily-task-row="reading"] [data-daily-open-lesson]');
+      const literacyDailyBtn = learnSheetBefore?.querySelector('[data-daily-task-row="literacy"] [data-daily-open-lesson]');
       const readingLessonId = readingDailyBtn?.dataset.lessonId || 'day-01';
       const literacyLessonId = literacyDailyBtn?.dataset.lessonId || 'day-01';
 
@@ -276,7 +293,13 @@ async function main() {
       const pointsAfterSecond = parseInt(localStorage.getItem('petbank_points') || '0', 10);
       if (typeof window.switchPage === 'function') window.switchPage('today');
       await sleep(300);
-      const readingRowText = document.getElementById('page-today')?.querySelector('[data-daily-task-row="reading"]')?.innerText || '';
+      if (typeof window.switchPage === 'function') window.switchPage('learning-sheet');
+      let readingRowText = '';
+      for (let i = 0; i < 8; i += 1) {
+        await sleep(120);
+        readingRowText = document.getElementById('page-learning-sheet')?.querySelector('[data-daily-task-row="reading"]')?.innerText || '';
+        if (/已完成|已打勾/.test(readingRowText)) break;
+      }
 
       const pack = await window.LearnCenter.getPack('summer-chinese-bridge-2026');
       const morning = await window.LearnCenter.getModule('summer-chinese-bridge-2026', 'morning-reading');
@@ -331,7 +354,7 @@ async function main() {
     check('学习内容页存在 拼音切换按钮', packAndLesson.hasToggle);
     check('学习内容页存在 完成按钮', packAndLesson.hasComplete);
     check('学习内容页完成按钮使用“读完打勾”文案', /读完打勾/.test(packAndLesson.completeBtnTextBefore), packAndLesson.completeBtnTextBefore);
-    check('晨读完成后今日学习单同步显示已完成', /已完成|已打勾/.test(packAndLesson.readingRowText), packAndLesson.readingRowText);
+    check('晨读完成后学习单页同步显示已完成', /已完成|已打勾/.test(packAndLesson.readingRowText), packAndLesson.readingRowText);
     check('完成 lesson 后写入 learning_progress', !!packAndLesson.progressKey);
     check('完成 lesson 后写入 learning_rewards', !!packAndLesson.rewardsKey);
     check('晨读模块共有 60 天', packAndLesson.morningCount === 60, `count=${packAndLesson.morningCount}`);
@@ -371,12 +394,12 @@ async function main() {
       document.getElementById('page-settings')?.querySelector('[data-learning-sheet-mode="template-b"]')?.click();
       await sleep(180);
 
-      if (typeof window.switchPage === 'function') window.switchPage('today');
+      if (typeof window.switchPage === 'function') window.switchPage('learning-sheet');
       await sleep(350);
-      document.getElementById('page-today')?.querySelector('[data-daily-set-minutes="20"]')?.click();
+      document.getElementById('page-learning-sheet')?.querySelector('[data-daily-set-minutes="20"]')?.click();
       await sleep(250);
 
-      const todayPage = document.getElementById('page-today');
+      const todayPage = document.getElementById('page-learning-sheet');
       const reviewText = todayPage?.querySelector('[data-daily-review-text]');
       const nextStep = todayPage?.querySelector('[data-daily-next-step]');
       if (reviewText) reviewText.value = '今天晨读和识字都完成了。';

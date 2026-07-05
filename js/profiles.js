@@ -522,7 +522,7 @@
                     <div class="settings-panel-head">
                         <div>
                             <span class="settings-panel-kicker">学习打勾模式</span>
-                            <h3>积分页显示哪种学习单</h3>
+                            <h3>积分区学习单显示哪种模式</h3>
                             <p>推荐先用幼小衔接超轻量版，等孩子节奏稳了，再切到更完整的记录模板。</p>
                         </div>
                         <div class="settings-panel-tip">按孩子账号分别记住</div>
@@ -581,7 +581,7 @@
                             </div>
                         </div>
                     ` : ''}
-                    <div class="settings-learning-foot">切换后，积分页的“今日学习单”会立即按新模式显示；lesson 的原有积分规则继续沿用。</div>
+                    <div class="settings-learning-foot">切换后，积分区的“学习单”子页会立即按新模式显示；lesson 的原有积分规则继续沿用。</div>
                 </section>
             `;
 

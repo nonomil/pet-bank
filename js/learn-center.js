@@ -220,9 +220,9 @@
     function setDailySheetMode(modeId) {
         const nextMode = normalizeDailySheetMode(modeId);
         writeStorage(STORAGE_KEYS.dailySheetMode, nextMode);
-        const todayContainer = document.getElementById('today-learning-checkin');
-        if (todayContainer) {
-            void renderDailyCheckin('today-learning-checkin');
+        const pointsContainer = document.getElementById('points-learning-sheet-container');
+        if (pointsContainer) {
+            void renderDailyCheckin('points-learning-sheet-container');
         }
         return nextMode;
     }
@@ -1264,7 +1264,8 @@
     }
 
     async function renderDailyCheckin(containerId) {
-        const container = document.getElementById(containerId || 'today-learning-checkin');
+        const resolvedContainerId = containerId || 'points-learning-sheet-container';
+        const container = document.getElementById(resolvedContainerId);
         if (!container) return;
         const options = await buildDailySheetOptions();
         if (!options) {
@@ -1279,7 +1280,7 @@
         } else {
             container.innerHTML = renderDailySheetTemplateA(options);
         }
-        bindDailySheetInteractions(container, () => void renderDailyCheckin(containerId || 'today-learning-checkin'));
+        bindDailySheetInteractions(container, () => void renderDailyCheckin(resolvedContainerId));
     }
 
     function sumRewardPoints(rewards) {
@@ -2457,6 +2458,7 @@
         const overallPercent = totalProgress.total ? Math.round((totalProgress.completed / totalProgress.total) * 100) : 0;
         const recentRewardItems = getRecentRewardItems(rewards, packRecords);
         const portalSiteImage = 'assets/learn/portal-smartedu-home-20260705.png';
+        const portalEnglishImage = 'assets/learn/portal-minecraft-english-cover-20260705.png';
         const portalCards = [
             summerRecord ? renderPortalCard({
                 id: 'chinese',
@@ -2473,14 +2475,12 @@
             englishRecord ? renderPortalCard({
                 id: 'english',
                 theme: 'english',
-                emoji: '🔤',
-                chip: '英语启蒙',
-                artTitle: 'Story · Starters · Review',
-                artText: '英语启蒙入口',
-                badges: ['故事', '单词', '复盘'],
-                kicker: '英语学习',
-                title: englishRecord.packMeta?.title || '英语启蒙资料包',
-                desc: '目标词、故事点读、每周回看都从这里进，不再藏太深。',
+                imageSrc: portalEnglishImage,
+                imageStyle: 'object-position:center top;',
+                badges: ['5-6岁', '500+词', 'RAZ风格'],
+                kicker: '英语故事',
+                title: englishRecord.packMeta?.title || 'Minecraft我的世界英语故事',
+                desc: '从 Minecraft 英语故事这里进，先听再跟读，学完回来继续打勾计分。',
                 cta: '进入英语学习',
                 onclick: `LearnCenter.openPack('${englishRecord.id}')`
             }) : '',
@@ -2554,14 +2554,14 @@
             }) : '',
             englishStoryModule ? renderHubEntryCard({
                 theme: 'english',
-                chip: '英语启蒙',
+                chip: 'Minecraft英语',
                 artTitle: englishProgress.completed ? `已完成 ${englishProgress.completed} 节` : '先听再跟读',
-                artText: '外部点读 + 站内打勾计分',
+                artText: 'Minecraft故事点读 + 站内打勾计分',
                 kicker: '今日英语',
                 title: englishContinueId && getLessonById(englishStoryModule, englishContinueId)?.title
                     ? `今天读：${getLessonById(englishStoryModule, englishContinueId)?.title}`
-                    : '幼小衔接英语启蒙资料包',
-                desc: englishMeta?.summary || englishRecord?.packMeta?.summary || '在当前项目看目标词，再打开外部点读页轻量学习。',
+                    : 'Minecraft我的世界英语故事',
+                desc: englishMeta?.summary || englishRecord?.packMeta?.summary || '在当前项目看目标词，再打开 Minecraft 外部点读页轻量学习。',
                 meta: `英语进度 ${englishProgress.completed}/${englishProgress.total} · ${englishProgress.percent}%`,
                 primaryAction: `<button class="learn-btn learn-btn-primary" onclick="LearnCenter.openLesson('${englishRecord.id}', 'mcbook56-story', '${englishContinueId || ''}')">打开今日英语</button>`,
                 secondaryAction: `<button class="learn-btn learn-btn-secondary" onclick="LearnCenter.openPack('${englishRecord.id}')">查看英语资料包</button>`
@@ -2819,7 +2819,7 @@
                         <p>学习入口先放到最上面，中文、英语、汉字、学习网站、打印讲义都尽量首屏可见，不再把关键入口藏深。${todayPlan.note}</p>
                         ${buildBadges([
                             '📚 中文主线',
-                            '🔤 英语启蒙',
+                            '🔤 Minecraft英语',
                             '📝 汉字练习',
                             '🌐 网站入口',
                             '🖨️ 打印讲义'
@@ -3081,6 +3081,9 @@
                 }
                 if (completeNote) {
                     completeNote.textContent = getLessonCompletionSuccessNote(result);
+                }
+                if (document.getElementById('points-learning-sheet-container')) {
+                    void renderDailyCheckin('points-learning-sheet-container');
                 }
                 if (typeof window.showToast === 'function') {
                     window.showToast(getLessonCompletionToast(result));

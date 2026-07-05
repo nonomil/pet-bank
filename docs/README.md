@@ -22,7 +22,7 @@ docs/
 │   ├── 混合式英语学习资料包方案.md      为什么英语走“当前项目学习壳 + 外部阅读源”
 │   └── 外链与自定义资料包接口草案.md    英语外链 / 自定义资料的扩展接口
 ├── 积分学习打勾方案/
-│   ├── README.md                      学习单最终口径：学习页负责入口、积分页负责打勾
+│   ├── README.md                      学习单最终口径：学习页负责入口、积分区学习单子页负责打勾
 │   ├── 01-参考图拆解与当前差距.md      参考图拆解与当前实现差距
 │   ├── 02-每日学习单与打勾方案.md      每日学习单字段与落位方案
 │   ├── 03-积分规则与防刷分设计.md      学习单与 lesson 发分边界
@@ -96,7 +96,7 @@ docs/
 | [changes/README](changes/README.md) | 版本变更、change-request、进度文档之间的关系索引 | 查“改了什么、为什么改、去哪看详情” |
 | [plans/README](plans/README.md) | 设计稿与实施计划索引，已包含学习中心与暑假中文资料包落地文档 | 查“下一步准备怎么做” |
 | [英语学习/README](英语学习/README.md) | 英语混合资料包专题索引，说明已落地的英语入口、模块、计分与后续扩展位 | 查英语学习现在怎么接进学习中心 |
-| [积分学习打勾方案/README](积分学习打勾方案/README.md) | 学习打勾最终口径：学习页负责入口，积分页负责学习单，设置页切模式 | 查轻量学习单应该放哪、怎么和积分系统配合 |
+| [积分学习打勾方案/README](积分学习打勾方案/README.md) | 学习打勾最终口径：学习页负责入口，积分区学习单子页负责学习单，设置页切模式 | 查轻量学习单应该放哪、怎么和积分系统配合 |
 | [进度/README](进度/README.md) | 进度索引，按阶段回看每轮会话做了什么 | 查 progress 记录 |
 | [方案/README](方案/README.md) | 方案与 change-request 索引，带文档编号 | 查变更原因、查 CR |
 | [家庭账号社交体系/README](家庭账号社交体系/README.md) | 家长账号 / 家庭 / 多孩子 / 串门 / 数学汉字异步 PK 的专题入口 | 准备把产品升级成多家庭互动体系 |
@@ -133,7 +133,7 @@ docs/
 - 查当前最高优先执行包 → [叙事收口与文案优化-需求](plans/2026-06-30-叙事收口与文案优化-需求.md)、[设计稿](plans/2026-06-30-叙事收口与文案优化-设计稿.md)、[实施计划](plans/2026-06-30-叙事收口与文案优化-实施计划.md)、[任务清单](plans/2026-06-30-叙事收口与文案优化-任务清单.md)
 - 查学习中心 / 幼小衔接暑假中文资料包 → [设计稿](plans/2026-07-05-learning-center-summer-chinese-design.md)、[实施计划](plans/2026-07-05-learning-center-summer-chinese-implementation.md)
 - 查英语学习资料包 / 外链扩展 → [英语学习/README](英语学习/README.md)、[设计稿](plans/2026-07-05-learning-center-english-hybrid-design.md)、[实施计划](plans/2026-07-05-learning-center-english-hybrid-implementation.md)
-- 查学习单该放学习页还是积分页 / 模板怎么选 → [积分学习打勾方案/README](积分学习打勾方案/README.md)、[模板 A 设计稿](plans/2026-07-05-daily-learning-sheet-template-a.md)、[收口结论](plans/2026-07-05-scheme-b-points-vs-learn.md)
+- 查学习单该放学习页还是积分页 / 模板怎么选 → [积分学习打勾方案/README](积分学习打勾方案/README.md)、[模板 A 设计稿](plans/2026-07-05-daily-learning-sheet-template-a.md)、[收口结论](plans/2026-07-05-scheme-b-points-vs-learn.md)、[积分区学习单子页设计稿](plans/2026-07-05-points-learning-sheet-subtab-design.md)、[实施计划](plans/2026-07-05-points-learning-sheet-subtab-implementation.md)
 - 查版本变更 / CR / 进度关系 → [changes/README](changes/README.md)
 - 查架构 / 技术栈 / 部署 → [设计/技术架构](设计/技术架构.md)
 - 查模块 API / 数据结构 / localStorage 键 → [设计/模块清单与接口](设计/模块清单与接口.md)

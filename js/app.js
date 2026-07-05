@@ -484,7 +484,7 @@ function getHomeTabMap() { return Object.assign({}, HOME_TAB_MAP); }
 // 叶子页 / hub 页 -> 所属一级 tab 的 data-page（switchPage 时据此高亮父 tab）
 const PAGE_TO_TAB = {
     map: 'map',                                                 // 首页（dashboard）
-    today: 'today', review: 'today', reward: 'today',           // 积分（核心任务/复盘/奖励）
+    today: 'today', 'learning-sheet': 'today', review: 'today', reward: 'today',           // 积分（核心任务/学习单/复盘/奖励）
     shop: 'today', inventory: 'today',                          // 兑换并入积分
     learn: 'learn', 'learn-pack': 'learn', 'learn-plan': 'learn',   // 学习中心
     'learn-lesson': 'learn', 'learn-print': 'learn',
@@ -499,6 +499,7 @@ const PAGE_TO_TAB = {
 const TOP_HUB_MENU_CONFIG = {
     today: [
         { page: 'today', label: '今日打卡' },
+        { page: 'learning-sheet', label: '学习单' },
         { page: 'review', label: '每周复盘' },
         { page: 'reward', label: '奖励兑换' },
         { page: 'shop', label: '兑换商店' },
@@ -687,8 +688,8 @@ function switchPage(page) {
     if (page === 'learn-plan' && window.LearnCenter) void LearnCenter.renderPlan('learn-plan-container');
     if (page === 'learn-lesson' && window.LearnCenter) void LearnCenter.renderLesson('learn-lesson-container');
     if (page === 'learn-print' && window.LearnCenter) void LearnCenter.renderPrint('learn-print-container');
-    if (page === 'today' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
-        void window.LearnCenter.renderDailyCheckin('today-learning-checkin');
+    if (page === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
+        void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
     }
     if (page === 'inventory') renderInventoryPage();
     if (page === 'today') updateRewardPetCard();
@@ -1837,7 +1838,7 @@ function renderAll() {
     renderSidebarTasks();
     updateStats();
     if (window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
-        void window.LearnCenter.renderDailyCheckin('today-learning-checkin');
+        void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
     }
     renderPetPage();
     void renderExplorePage();
