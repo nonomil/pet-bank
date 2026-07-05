@@ -77,6 +77,7 @@
             const script = document.createElement('script');
             script.src = src;
             script.async = false;
+            script.fetchPriority = 'high';
             script.dataset.petbankSrc = src;
             script.onload = function () { resolve(script); };
             script.onerror = function () { reject(new Error('[runtime-loader] failed to load script: ' + src)); };
@@ -102,6 +103,7 @@
             const link = document.createElement('link');
             link.rel = 'stylesheet';
             link.href = href;
+            link.fetchPriority = 'high';
             link.dataset.petbankHref = href;
             link.onload = function () { resolve(link); };
             link.onerror = function () { reject(new Error('[runtime-loader] failed to load style: ' + href)); };
@@ -176,9 +178,11 @@
 
     async function ensureCardFeature() {
         return once('feature-card', async function () {
-            await ensurePetCatalog();
-            await loadSeries(STYLE_BUNDLES.card, loadStyle);
-            await loadSeries(SCRIPT_BUNDLES.cardCollection, loadScript);
+            await Promise.all([
+                ensurePetCatalog(),
+                loadSeries(STYLE_BUNDLES.card, loadStyle),
+                loadSeries(SCRIPT_BUNDLES.cardCollection, loadScript)
+            ]);
             if (!initFlags.cardInit && window.CardCollection && typeof window.CardCollection.init === 'function') {
                 window.CardCollection.init();
                 initFlags.cardInit = true;

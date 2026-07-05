@@ -7,6 +7,9 @@
     <link rel="icon" href="data:,">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preload" href="js/pet.js" as="script" fetchpriority="high">
+    <link rel="preload" href="js/runtime-loader.js" as="script" fetchpriority="high">
+    <link rel="preload" href="js/app.js" as="script" fetchpriority="high">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/animations.css">
@@ -130,7 +133,7 @@
 
                             <div class="map-home-companion-inline">
                                 <div class="map-home-companion-avatar">
-                                    <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物">
+                                    <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物" decoding="async">
                                 </div>
                                 <div class="map-home-companion-copy">
                                     <p class="map-home-companion-kicker">今天同行</p>
@@ -167,7 +170,7 @@
                     <section class="map-entry-grid" aria-label="首页快捷入口">
                         <button class="map-entry-card" type="button" onclick="switchPage('today')">
                             <span class="map-entry-art">
-                                <img src="assets/scenes/stargarden.webp" alt="今日打卡">
+                                <img src="assets/scenes/stargarden.webp" alt="今日打卡" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="map-entry-copy">
                                 <span class="map-entry-kicker">先完成</span>
@@ -177,7 +180,7 @@
                         </button>
                         <button class="map-entry-card" type="button" onclick="switchPage('learn')">
                             <span class="map-entry-art">
-                                <img src="assets/learn/portal-smartedu-home-20260705.png" alt="学习中心">
+                                <img src="assets/learn/portal-smartedu-home-20260705.png" alt="学习中心" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="map-entry-copy">
                                 <span class="map-entry-kicker">轻松学习</span>
@@ -187,7 +190,7 @@
                         </button>
                         <button class="map-entry-card" type="button" onclick="switchPage('pet')">
                             <span class="map-entry-art">
-                                <img src="assets/pets/poses/cat_happy.webp" alt="我的宠物">
+                                <img src="assets/pets/poses/cat_happy.webp" alt="我的宠物" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="map-entry-copy">
                                 <span class="map-entry-kicker">一起玩</span>
@@ -197,7 +200,7 @@
                         </button>
                         <button class="map-entry-card" type="button" onclick="switchPage('playground')">
                             <span class="map-entry-art">
-                                <img src="assets/ui/pg-card-lb.webp?v=20260704b" alt="游乐场">
+                                <img src="assets/ui/pg-card-lb.webp?v=20260704b" alt="游乐场" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="map-entry-copy">
                                 <span class="map-entry-kicker">想放松时</span>
@@ -278,7 +281,7 @@
                 <!-- 可点击宠物形象卡：点击弹出加分/扣分项目弹窗 -->
                 <div class="reward-pet-card" id="rewardPetCard" onclick="openPointItemModal()" role="button" tabindex="0" title="点击给 TA 加分或扣分">
                     <div class="reward-pet-avatar">
-                        <img id="rewardPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物立绘">
+                        <img id="rewardPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物立绘" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="reward-pet-copy">
                         <p class="reward-pet-kicker">给 <span id="rewardChildName">宝贝</span> 加分 / 扣分</p>
@@ -443,7 +446,7 @@
             <div class="page" id="page-playground">
                 <!-- Header：IP人物 + 金币徽章 -->
                 <div class="pg-header">
-                    <img class="pg-mascot-img" src="assets/ui/pg-mascot.webp" alt="吉祥物">
+                    <img class="pg-mascot-img" src="assets/ui/pg-mascot.webp" alt="吉祥物" loading="lazy" decoding="async" fetchpriority="low">
                     <div class="pg-coin-badge" title="我的积分">
                         <svg class="coin-svg" viewBox="0 0 286 132" width="143" height="66">
                             <defs>
@@ -477,16 +480,16 @@
                 <!-- 2×2 游戏入口 — 图片卡片（透明底，直接贴背景上） -->
                 <section class="playground-grid">
                     <button class="pg-img-card" onclick="switchPage('mathpk')">
-                        <img src="assets/ui/pg-card-mathpk.webp?v=20260704b" alt="数学PK">
+                        <img src="assets/ui/pg-card-mathpk.webp?v=20260704b" alt="数学PK" loading="lazy" decoding="async" fetchpriority="low">
                     </button>
                     <button class="pg-img-card" onclick="switchPage('hanzi')">
-                        <img src="assets/ui/pg-card-hanzi.webp?v=20260704b" alt="汉字游戏">
+                        <img src="assets/ui/pg-card-hanzi.webp?v=20260704b" alt="汉字游戏" loading="lazy" decoding="async" fetchpriority="low">
                     </button>
                     <button class="pg-img-card" onclick="openCardArenaEntry()">
-                        <img src="assets/ui/pg-card-arena.webp?v=20260704b" alt="卡牌对战">
+                        <img src="assets/ui/pg-card-arena.webp?v=20260704b" alt="卡牌对战" loading="lazy" decoding="async" fetchpriority="low">
                     </button>
                     <button class="pg-img-card" onclick="switchPage('leaderboard')">
-                        <img src="assets/ui/pg-card-lb.webp?v=20260704b" alt="排行榜">
+                        <img src="assets/ui/pg-card-lb.webp?v=20260704b" alt="排行榜" loading="lazy" decoding="async" fetchpriority="low">
                     </button>
                 </section>
 
@@ -570,7 +573,7 @@
                             <p class="text-xs text-muted tracking-wide mb-2">成长档案 / 形态预览</p>
                             <h2 class="text-lg font-bold mb-3">🐾 我的宠物成长档案</h2>
                             <div class="pet-display-area" id="petDisplayArea">
-                                <img id="petDisplayImg" class="pet-sprite" src="assets/pets/poses/dog_idle.webp" alt="宠物" onclick="onPetSpriteClick()" style="width:160px;height:160px;object-fit:contain;image-rendering:pixelated;cursor:pointer;">
+                                <img id="petDisplayImg" class="pet-sprite" src="assets/pets/poses/dog_idle.webp" alt="宠物" onclick="onPetSpriteClick()" loading="lazy" decoding="async" fetchpriority="low" style="width:160px;height:160px;object-fit:contain;image-rendering:pixelated;cursor:pointer;">
                                 <div class="pet-pose-btns" id="petPoseBtns" style="display:none; margin-top:8px;">
                                     <button class="btn-tiny" onclick="setPetPose('idle')">😊 待机</button>
                                     <button class="btn-tiny" onclick="setPetPose('happy')">😄 开心</button>
@@ -987,7 +990,7 @@
         <div class="modal-content pi-modal">
             <div class="pi-header">
                 <button class="pi-close" onclick="closePointItemModal()" aria-label="关闭">&times;</button>
-                <div class="pi-pet"><img id="piPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物"></div>
+                <div class="pi-pet"><img id="piPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物" loading="lazy" decoding="async" fetchpriority="low"></div>
                 <h3 class="pi-title">选择项目</h3>
                 <p class="pi-sub">给 <span class="pi-child" id="piChildName">宝贝</span> <span id="piModeText">加分</span></p>
             </div>

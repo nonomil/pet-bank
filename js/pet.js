@@ -534,7 +534,7 @@ const PetSystem = (function () {
         if (PET_DB_LOAD_PROMISE) return PET_DB_LOAD_PROMISE;
         PET_DB_LOAD_PROMISE = (async function() {
             try {
-                const resp = await fetch('data/pets.json');
+                const resp = await fetch('data/pets.json', { priority: 'high' });
                 if (!resp.ok) return false;
                 const db = await resp.json();
                 if (db.flat && db.flat.length > SPECIES_FALLBACK.length) {

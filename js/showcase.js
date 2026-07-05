@@ -39,6 +39,7 @@
   ];
 
   const INTERVAL = 4200;
+  const START_DELAY = 14000;
   const track = document.getElementById('showcaseTrack');
   const dotsBox = document.getElementById('showcaseDots');
   const prevBtn = document.getElementById('showcasePrev');
@@ -48,17 +49,30 @@
 
   let current = 0;
   let timer = null;
+  let startTimer = null;
 
   function openSlide(slide) {
     if (!slide || !slide.page || typeof window.switchPage !== 'function') return;
     window.switchPage(slide.page);
   }
 
+  function ensureSlideBg(index) {
+    const slide = track.querySelector(`.showcase-slide[data-index="${index}"]`);
+    if (!slide || slide.dataset.bgLoaded === '1') return;
+    slide.style.backgroundImage = `url("${slide.dataset.bg}")`;
+    slide.dataset.bgLoaded = '1';
+  }
+
   SLIDES.forEach((slideData, index) => {
     const slide = document.createElement('button');
     slide.className = `showcase-slide${index === 0 ? ' active' : ''}`;
     slide.type = 'button';
-    slide.style.backgroundImage = `url("${slideData.img}")`;
+    slide.dataset.index = String(index);
+    slide.dataset.bg = slideData.img;
+    if (index === 0) {
+      slide.style.backgroundImage = `url("${slideData.img}")`;
+      slide.dataset.bgLoaded = '1';
+    }
     slide.setAttribute('aria-label', `打开${slideData.title}`);
     slide.innerHTML = `
       <span class="showcase-overlay"></span>
@@ -80,6 +94,7 @@
 
   function go(index) {
     current = (index + SLIDES.length) % SLIDES.length;
+    ensureSlideBg(current);
     track.querySelectorAll('.showcase-slide').forEach((slide, slideIndex) => {
       slide.classList.toggle('active', slideIndex === current);
     });
@@ -98,6 +113,10 @@
   }
 
   function stop() {
+    if (startTimer) {
+      clearTimeout(startTimer);
+      startTimer = null;
+    }
     if (timer) {
       clearInterval(timer);
       timer = null;
@@ -106,8 +125,16 @@
 
   function start() {
     if (SLIDES.length <= 1) return;
-    stop();
+    if (timer) clearInterval(timer);
     timer = setInterval(next, INTERVAL);
+  }
+
+  function scheduleStart() {
+    if (SLIDES.length <= 1 || startTimer || timer) return;
+    startTimer = setTimeout(() => {
+      startTimer = null;
+      start();
+    }, START_DELAY);
   }
 
   function restart() {
@@ -124,7 +151,7 @@
   if (prevBtn) prevBtn.addEventListener('click', prev);
   if (nextBtn) nextBtn.addEventListener('click', next);
   root.addEventListener('mouseenter', stop);
-  root.addEventListener('mouseleave', start);
+  root.addEventListener('mouseleave', scheduleStart);
 
-  start();
+  scheduleStart();
 })();
