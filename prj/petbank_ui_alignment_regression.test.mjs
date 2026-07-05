@@ -2,6 +2,7 @@ import { chromium } from 'playwright';
 import { browserLaunchOpts } from '../scripts/playwright-browser.mjs';
 
 const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765';
+const IS_LOCAL_BASE = /(?:127\.0\.0\.1|localhost)/i.test(BASE);
 
 const results = [];
 function check(name, condition, detail = '') {
@@ -23,6 +24,14 @@ await page.route('**/data/pets.json', async (route) => {
   await route.continue();
 });
 
+const slowBattleEngineRoute = async (route) => {
+  await new Promise((resolve) => setTimeout(resolve, 12000));
+  await route.continue();
+};
+if (IS_LOCAL_BASE) {
+  await page.route('**/js/battle-engine.js', slowBattleEngineRoute);
+}
+
 await page.addInitScript(() => {
   localStorage.clear();
 });
@@ -33,13 +42,15 @@ await page.waitForFunction(() => typeof window.switchPage === 'function', { time
 await page.evaluate(() => window.switchPage('card'));
 await page.waitForFunction(
   () => document.querySelectorAll('.card-gallery-card').length >= 4,
-  { timeout: 20000 }
+  { timeout: IS_LOCAL_BASE ? 8000 : 45000 }
 );
 
 const cardCatalogProbe = await page.evaluate(() => ({
   speciesCount: window.PetSystem?.getAllSpecies?.().length || 0,
   galleryCards: document.querySelectorAll('.card-gallery-card').length,
-  galleryCoverSources: Array.from(document.querySelectorAll('.card-gallery-cover-image')).map((img) => img.getAttribute('src') || '')
+  galleryCoverSources: Array.from(document.querySelectorAll('.card-gallery-cover-image')).map((img) => img.getAttribute('src') || ''),
+  hasBattleEngine: Boolean(window.BattleEngine),
+  hasCardCollection: Boolean(window.CardCollection)
 }));
 
 check(
@@ -52,6 +63,44 @@ check(
   cardCatalogProbe.galleryCoverSources.length >= 4 && cardCatalogProbe.galleryCoverSources.every((src) => /\.webp(?:$|\?)/i.test(src)),
   cardCatalogProbe.galleryCoverSources.join(', ')
 );
+check(
+  'card catalog renders without waiting for battle engine bundle',
+  cardCatalogProbe.hasCardCollection && (!IS_LOCAL_BASE || !cardCatalogProbe.hasBattleEngine),
+  JSON.stringify(cardCatalogProbe)
+);
+
+if (IS_LOCAL_BASE) {
+  await page.unroute('**/js/battle-engine.js', slowBattleEngineRoute);
+}
+
+await page.evaluate(() => window.switchPage('playground'));
+await page.waitForFunction(() => typeof window.openCardArenaEntry === 'function', { timeout: 15000 });
+await page.evaluate(() => window.openCardArenaEntry());
+await page.waitForSelector('#arenaStagesModal.show #arenaStagesGrid .arena-stage-card', { timeout: 60000 });
+await page.evaluate(() => window.CardArenaUI.openFreePlay());
+await page.waitForSelector('#arenaTeamModal.show #arenaTeamGrid .arena-pick-card', { timeout: 20000 });
+await page.evaluate(() => {
+  const ids = Array.from(document.querySelectorAll('#arenaTeamGrid .arena-pick-card'))
+    .map((el) => el.dataset.id)
+    .filter(Boolean)
+    .slice(0, 2);
+  ids.forEach((id) => window.CardArenaUI.togglePick(id));
+  window.CardArenaUI.confirmTeam();
+});
+await page.waitForSelector('#arenaBattleModal.show .arena-tactics-board', { timeout: 20000 });
+const arenaProbe = await page.evaluate(() => ({
+  combatCards: document.querySelectorAll('#arenaBattleModal.show .arena-combat-card').length,
+  tacticsBoards: document.querySelectorAll('#arenaBattleModal.show .arena-tactics-board').length,
+  skillChips: document.querySelectorAll('#arenaBattleModal.show .arena-skill-chip').length,
+  actionButtons: document.querySelectorAll('#arenaBattleModal.show .arena-act-btn').length,
+  switchButtons: document.querySelectorAll('#arenaBattleModal.show .arena-switch-btn').length
+}));
+check(
+  'card arena battle screen includes richer combat cards and tactics board',
+  arenaProbe.combatCards >= 2 && arenaProbe.tacticsBoards >= 1 && arenaProbe.skillChips >= 2 && arenaProbe.actionButtons >= 2,
+  JSON.stringify(arenaProbe)
+);
+await page.evaluate(() => window.CardArenaUI.closeBattleModal());
 
 await page.evaluate(() => window.CardCollection.showDetail('dog'));
 await page.waitForSelector('#cardDetailModal.show .card-detail-stage', { timeout: 10000 });
