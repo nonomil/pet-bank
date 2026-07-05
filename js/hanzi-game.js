@@ -86,7 +86,8 @@
         const ov = document.getElementById('hz-overlay');
         if (!ov) return;
         const bg = _backgroundForRound(round);
-        ov.style.setProperty('--hz-bg', `url("${bg}")`);
+        const bgUrl = new URL(bg, document.baseURI).href;
+        ov.style.setProperty('--hz-bg', `url("${bgUrl}")`);
         ov.dataset.hzBg = bg;
     }
 

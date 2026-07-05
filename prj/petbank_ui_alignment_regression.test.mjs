@@ -3,6 +3,7 @@ import { browserLaunchOpts } from '../scripts/playwright-browser.mjs';
 
 const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765';
 const IS_LOCAL_BASE = /(?:127\.0\.0\.1|localhost)/i.test(BASE);
+const BASE_HOST = new URL(BASE).host;
 
 const results = [];
 function check(name, condition, detail = '') {
@@ -235,7 +236,7 @@ check(
 
 check(
   'no missing local runtime image/data requests during alignment flow',
-  failedRequests.filter((item) => /127\.0\.0\.1|localhost/i.test(item)).length === 0,
+  failedRequests.filter((item) => item.includes(BASE_HOST) && /\.(?:webp|png|jpe?g|bmp|json|js|css)(?:\?| |$)/i.test(item)).length === 0,
   failedRequests.join(' | ')
 );
 
