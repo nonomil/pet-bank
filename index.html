@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/walk.css">
     <link rel="stylesheet" href="css/card-collection.css">
-    <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/arena.css">
     <link rel="stylesheet" href="css/leaderboard.css?v=2">
@@ -95,8 +94,9 @@
             </div>
             <div class="card">
                 <div class="card-body">
-                    <label class="text-xs font-medium block mb-2">孩子姓名</label>
+                    <label class="text-xs font-medium block mb-2">孩子信息</label>
                     <input type="text" class="text-input" placeholder="例如：小树苗" id="childName">
+                    <p class="text-xs text-muted mt-3">首页先告诉孩子今天先做什么，再让宠物和入口来吸引继续点开。</p>
                 </div>
             </div>
         </aside>
@@ -105,20 +105,27 @@
         <main class="main-content">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
-                <section class="showcase" id="showcase" aria-label="项目功能展示">
-                    <div class="showcase-track" id="showcaseTrack"></div>
-                    <button class="showcase-arrow showcase-prev" id="showcasePrev" type="button" aria-label="上一个">‹</button>
-                    <button class="showcase-arrow showcase-next" id="showcaseNext" type="button" aria-label="下一个">›</button>
-                    <div class="showcase-dots" id="showcaseDots"></div>
-                </section>
-                <section class="map-hero">
-                    <div class="map-hero-copy">
-                        <p class="map-eyebrow">首页 / 成长概览</p>
-                        <h2>今天，从哪里开始冒险？</h2>
-                        <p>下面几个大卡片一键跳转，或点顶部标签切换。路线地图在「探索」里。</p>
+                <section class="map-home-hero">
+                    <div class="map-home-main">
+                        <div class="map-home-copy">
+                            <p class="map-eyebrow">首页 / 成长概览</p>
+                            <h2>今天，先完成一件小事再出发</h2>
+                            <p>首页不用先铺一堆模块。先完成今天最重要的一件任务，再带上宠物去下一站冒险。</p>
+                        </div>
+                        <button class="map-focus-card" type="button" onclick="switchPage('today')">
+                            <span class="map-focus-kicker">今天先做这一件</span>
+                            <strong>阅读 20 分钟</strong>
+                            <p>读完今天的故事页，再把最喜欢的一句读给家长听，完成后就能解锁宠物冒险。</p>
+                            <div class="map-focus-meta">
+                                <span class="map-focus-badge">完成后解锁宠物冒险</span>
+                                <span class="map-focus-points">+1 星</span>
+                            </div>
+                            <span class="map-focus-cta">开始今天任务</span>
+                        </button>
                     </div>
-                    <div class="map-hero-side">
-                        <div class="map-hero-stats">
+
+                    <div class="map-home-side">
+                        <div class="map-hero-stats map-home-stats">
                             <div class="map-hero-stat">
                                 <span class="label">总积分</span>
                                 <strong id="mapPoints">0</strong>
@@ -132,29 +139,31 @@
                                 <strong id="mapWins">0</strong>
                             </div>
                         </div>
-                        <div class="map-companion-card">
-                            <div class="map-companion-avatar">
+                        <div class="map-companion-card map-home-companion">
+                            <div class="map-companion-avatar map-home-companion-avatar">
                                 <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物">
                             </div>
-                            <div class="map-companion-copy">
+                            <div class="map-companion-copy map-home-companion-copy">
                                 <p class="map-companion-kicker">今日同行伙伴</p>
                                 <h3 id="mapCompanionName">还没有领养宠物</h3>
                                 <p id="mapCompanionStage">去宠物养成页挑一位伙伴一起冒险</p>
+                                <p class="map-companion-story" id="mapCompanionStory">完成今天的小任务，它就会陪你去发光小路的下一站。</p>
+                                <div class="map-companion-tags">
+                                    <span class="map-companion-tag" id="mapCompanionMood">今天很适合轻松出发</span>
+                                    <span class="map-companion-tag" id="mapCompanionRoute">晨读后解锁路线</span>
+                                </div>
                                 <div class="map-companion-chip" id="mapNextSceneHint">下一站会显示在这里</div>
-                                <button class="map-companion-link" type="button" onclick="switchPage('pet')">前往宠物养成</button>
+                                <button class="map-companion-cta" type="button" onclick="switchPage('pet')">前往宠物养成</button>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section class="dash-launcher">
-                    <div class="dash-cards">
+                <section class="dash-launcher map-home-launcher">
+                    <div class="dash-cards map-home-cards">
                         <button class="dash-card c-today" onclick="switchPage('today')"><span class="dash-emoji">📝</span><span class="dash-title">今日打卡</span><span class="dash-sub">完成任务赚积分</span></button>
-                        <button class="dash-card c-playground" onclick="switchPage('playground')"><span class="dash-emoji">🎡</span><span class="dash-title">游乐场</span><span class="dash-sub">数学/汉字/卡牌/排行</span></button>
+                        <button class="dash-card c-playground" onclick="switchPage('playground')"><span class="dash-emoji">🎡</span><span class="dash-title">游乐场</span><span class="dash-sub">数学 / 汉字 / 卡牌 / 排行</span></button>
                         <button class="dash-card c-pet" onclick="switchPage('pet')"><span class="dash-emoji">🐾</span><span class="dash-title">我的宠物</span><span class="dash-sub">养成陪伴</span></button>
-                        <button class="dash-card c-explore" onclick="switchPage('explore')"><span class="dash-emoji">🗺️</span><span class="dash-title">探索冒险</span><span class="dash-sub">成长地图路线</span></button>
-                        <button class="dash-card c-shop" onclick="switchPage('shop')"><span class="dash-emoji">🎁</span><span class="dash-title">兑换商店</span><span class="dash-sub">花积分换奖励</span></button>
-                        <button class="dash-card c-more" onclick="switchPage('works')"><span class="dash-emoji">⋯</span><span class="dash-title">更多</span><span class="dash-sub">作品/工具/设置</span></button>
                     </div>
                 </section>
 
@@ -1017,7 +1026,6 @@
     <script src="js/family-review.js"></script>
     <script src="js/learn-center.js?v=2"></script>
     <script src="js/app.js"></script>
-    <script src="js/showcase.js"></script>
     <script src="js/voice.js"></script>
 </body>
 </html>

@@ -245,6 +245,9 @@ function updateMapCompanionCard() {
     const companionImg = document.getElementById('mapCompanionImg');
     const companionName = document.getElementById('mapCompanionName');
     const companionStage = document.getElementById('mapCompanionStage');
+    const companionStory = document.getElementById('mapCompanionStory');
+    const companionMood = document.getElementById('mapCompanionMood');
+    const companionRoute = document.getElementById('mapCompanionRoute');
     const nextSceneHint = document.getElementById('mapNextSceneHint');
 
     if (!companionImg || !companionName || !companionStage || !nextSceneHint || !window.PetSystem) return;
@@ -260,9 +263,23 @@ function updateMapCompanionCard() {
         const petName = pet.species_data?.name || pet.species || '我的伙伴';
         companionName.textContent = petName;
         companionStage.textContent = `${pet.stage?.name || '成长'}阶段 · Lv.${pet.level} · ❤️ ${pet.hp}/${pet.total_max_hp}`;
+        if (companionStory) {
+            companionStory.textContent = `${petName} 今天状态不错，先把最重要的一件学习任务做完，它就会陪你去下一站继续冒险。`;
+        }
+        if (companionMood) {
+            companionMood.textContent = pet.hp > Math.max(20, Math.round((pet.total_max_hp || 0) * 0.5))
+                ? '今天很适合轻松出发'
+                : '先补状态再去冒险';
+        }
     } else {
         companionName.textContent = '还没有领养宠物';
         companionStage.textContent = '去宠物养成页挑一位伙伴一起冒险';
+        if (companionStory) {
+            companionStory.textContent = '先去领养一位伙伴，首页就会变成真正的同行入口。';
+        }
+        if (companionMood) {
+            companionMood.textContent = '先领养再开启冒险';
+        }
     }
 
     const recommendedScene = getRecommendedScene();
@@ -271,8 +288,16 @@ function updateMapCompanionCard() {
         nextSceneHint.textContent = unlocked
             ? `推荐下一站：${recommendedScene.emoji} ${recommendedScene.name}`
             : `下一站目标：Lv.${recommendedScene.min_level} 解锁 ${recommendedScene.name}`;
+        if (companionRoute) {
+            companionRoute.textContent = unlocked
+                ? `已解锁 ${recommendedScene.name}`
+                : `晨读后朝 ${recommendedScene.name} 前进`;
+        }
     } else {
         nextSceneHint.textContent = '下一站会显示在这里';
+        if (companionRoute) {
+            companionRoute.textContent = '晨读后解锁路线';
+        }
     }
 }
 
