@@ -133,6 +133,7 @@ docs/
 - 查当前最高优先执行包 → [叙事收口与文案优化-需求](plans/2026-06-30-叙事收口与文案优化-需求.md)、[设计稿](plans/2026-06-30-叙事收口与文案优化-设计稿.md)、[实施计划](plans/2026-06-30-叙事收口与文案优化-实施计划.md)、[任务清单](plans/2026-06-30-叙事收口与文案优化-任务清单.md)
 - 查学习中心 / 幼小衔接暑假中文资料包 → [设计稿](plans/2026-07-05-learning-center-summer-chinese-design.md)、[实施计划](plans/2026-07-05-learning-center-summer-chinese-implementation.md)
 - 查 `班宠乐园2` 动物导入 / `萌爪伙伴册` / 图鉴 `.webp` 资源 → [设计稿](plans/2026-07-05-banchong2-animal-import-design.md)、[实施计划](plans/2026-07-05-banchong2-animal-import-implementation.md)
+- 查温暖陪伴型首页仪表盘示例工程 / Codex UI 输入包怎么组织 → [设计稿](plans/2026-07-05-warm-home-dashboard-demo-design.md)、[实施计划](plans/2026-07-05-warm-home-dashboard-demo-implementation.md)
 - 查英语学习资料包 / 外链扩展 → [英语学习/README](英语学习/README.md)、[设计稿](plans/2026-07-05-learning-center-english-hybrid-design.md)、[实施计划](plans/2026-07-05-learning-center-english-hybrid-implementation.md)
 - 查学习单该放学习页还是积分页 / 模板怎么选 → [积分学习打勾方案/README](积分学习打勾方案/README.md)、[模板 A 设计稿](plans/2026-07-05-daily-learning-sheet-template-a.md)、[收口结论](plans/2026-07-05-scheme-b-points-vs-learn.md)、[积分区学习单子页设计稿](plans/2026-07-05-points-learning-sheet-subtab-design.md)、[实施计划](plans/2026-07-05-points-learning-sheet-subtab-implementation.md)
 - 查版本变更 / CR / 进度关系 → [changes/README](changes/README.md)
