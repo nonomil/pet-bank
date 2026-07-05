@@ -28,6 +28,12 @@ jobs:
           mkdir -p _site
           cp index.html admin.html cloud-config.local.js _site/
           cp -R css js assets data _site/
+          # Keep source-only art out of the Pages artifact. Runtime pet images
+          # are still shipped from assets/pets/poses, assets/banchong*, etc.
+          rm -rf _site/assets/pets/originals
+          rm -rf _site/assets/pets/poses-originals
+          rm -rf _site/assets/pets-originals
+          rm -rf _site/assets/references
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
