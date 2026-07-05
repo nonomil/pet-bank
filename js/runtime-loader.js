@@ -8,21 +8,23 @@
 
     const STYLE_BUNDLES = {
         walk: ['css/walk.css'],
-        card: ['css/card-collection.css', 'css/arena.css'],
-        playground: ['css/playground.css?v=8', 'css/arena.css', 'css/leaderboard.css?v=2', 'css/hanzi-game.css?v=4'],
+        card: ['css/card-collection.css'],
+        arena: ['css/arena.css'],
+        playground: ['css/playground.css?v=8', 'css/leaderboard.css?v=2', 'css/hanzi-game.css?v=4'],
         learn: ['css/learn-center.css?v=2']
     };
 
     const SCRIPT_BUNDLES = {
         home: ['js/home.js'],
         walk: ['js/walk.js'],
-        card: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js', 'js/card-collection.js'],
+        cardCollection: ['js/card-collection.js'],
+        cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
         explore: ['js/battle-engine.js', 'js/exploration.js', 'js/exploration-detail.js'],
         playground: ['js/math-pk.js?v=2', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
         learn: ['js/learn-center.js?v=2'],
         shop: ['js/shop.js'],
         cloud: [
-            'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
+            'js/vendor/supabase-js.js',
             'js/cloud-config-loader.js',
             'js/cloud-client.js',
             'js/profile-sync.js',
@@ -38,7 +40,7 @@
             'js/family-review.js'
         ],
         admin: [
-            'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
+            'js/vendor/supabase-js.js',
             'js/cloud-config-loader.js',
             'js/cloud-client.js',
             'js/family-social-scope.js',
@@ -176,11 +178,20 @@
         return once('feature-card', async function () {
             await ensurePetCatalog();
             await loadSeries(STYLE_BUNDLES.card, loadStyle);
-            await loadSeries(SCRIPT_BUNDLES.card, loadScript);
+            await loadSeries(SCRIPT_BUNDLES.cardCollection, loadScript);
             if (!initFlags.cardInit && window.CardCollection && typeof window.CardCollection.init === 'function') {
                 window.CardCollection.init();
                 initFlags.cardInit = true;
             }
+            return true;
+        });
+    }
+
+    async function ensureCardArenaFeature() {
+        return once('feature-card-arena', async function () {
+            await ensureCardFeature();
+            await loadSeries(STYLE_BUNDLES.arena, loadStyle);
+            await loadSeries(SCRIPT_BUNDLES.cardArena, loadScript);
             return true;
         });
     }
@@ -205,6 +216,11 @@
                 window.ToolboxSystem.init();
                 initFlags.toolboxInit = true;
             }
+            window.setTimeout(function () {
+                ensureCardArenaFeature().catch(function (error) {
+                    console.warn('[runtime-loader] card arena prefetch failed:', error);
+                });
+            }, 400);
             return true;
         });
     }
@@ -307,7 +323,18 @@
                 return ensurePetCatalog();
             case 'home':
                 await ensureHomeFeature();
-                await ensureCloudFeature();
+                window.setTimeout(function () {
+                    ensureCloudFeature()
+                        .then(function () {
+                            const homePage = document.getElementById('page-home');
+                            if (homePage && homePage.classList.contains('active') && window.HomeSystem && typeof window.HomeSystem.renderUI === 'function') {
+                                window.HomeSystem.renderUI('home-container');
+                            }
+                        })
+                        .catch(function (error) {
+                            console.warn('[runtime-loader] home cloud background load failed:', error);
+                        });
+                }, 0);
                 return true;
             case 'walk':
                 await ensureWalkFeature();
@@ -353,13 +380,35 @@
         }, wait);
     }
 
+    async function openCardArenaEntry() {
+        if (typeof window.showToast === 'function') {
+            window.showToast('正在加载卡牌对战...');
+        }
+        try {
+            await ensureCardArenaFeature();
+            if (window.CardArenaUI && typeof window.CardArenaUI.openStages === 'function') {
+                window.CardArenaUI.openStages();
+                return true;
+            }
+            throw new Error('CardArenaUI.openStages is unavailable');
+        } catch (error) {
+            console.warn('[runtime-loader] card arena entry failed:', error);
+            if (typeof window.showToast === 'function') {
+                window.showToast('卡牌对战加载失败，请稍后再试');
+            }
+            return false;
+        }
+    }
+
     window.PetBankRuntime = {
         ensurePage: ensurePage,
         ensureAdminPage: ensureAdminPage,
         ensurePetCatalog: ensurePetCatalog,
         ensureCloudFeature: ensureCloudFeature,
+        ensureCardArenaFeature: ensureCardArenaFeature,
         prefetch: prefetch,
         _loadScript: loadScript,
         _loadStyle: loadStyle
     };
+    window.openCardArenaEntry = openCardArenaEntry;
 })();

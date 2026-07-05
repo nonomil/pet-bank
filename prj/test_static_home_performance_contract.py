@@ -38,3 +38,9 @@ def test_settings_runtime_prioritizes_cloud_without_learn_bundle():
     body = match.group("body")
     assert "ensureCloudFeature" in body
     assert "ensureLearnFeature" not in body
+
+
+def test_runtime_loader_vendors_supabase_browser_bundle():
+    js = Path("js/runtime-loader.js").read_text(encoding="utf-8")
+    assert "js/vendor/supabase-js.js" in js
+    assert "cdn.jsdelivr.net/npm/@supabase/supabase-js@2" not in js

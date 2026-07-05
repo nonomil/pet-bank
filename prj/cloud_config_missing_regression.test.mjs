@@ -71,6 +71,11 @@ check(
     JSON.stringify(settingsProbe)
 );
 check(
+    'settings page does not request external supabase browser bundle',
+    requestUrls.every((url) => !/cdn\.jsdelivr\.net\/npm\/@supabase\/supabase-js/i.test(url)),
+    requestUrls.filter((url) => /cdn\.jsdelivr\.net\/npm\/@supabase\/supabase-js/i.test(url)).join(' | ')
+);
+check(
     'missing local cloud config does not emit console 404 errors',
     consoleErrors.every((text) => !/cloud-config\.local\.js|404/i.test(text)),
     consoleErrors.join(' | ')
