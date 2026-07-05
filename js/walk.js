@@ -360,7 +360,6 @@ const WalkSystem = (function() {
         const pet = PetSystem.getState();
         const route = getActiveRoute();
         const remaining = getRemainingWalks();
-        const disabled = !pet.species || pet.hp <= 0 ? 'disabled' : '';
         const bubble = stageBubbleText || getDefaultBubble(pet, route);
         const routeTabs = ROUTES.map(function(item) {
             const active = item.id === route.id ? ' is-current' : '';
@@ -384,21 +383,14 @@ const WalkSystem = (function() {
             + '        </div>'
             + '        <div class="walk-stage-bubble">' + escapeHtml(bubble) + '</div>'
             + '        <div class="walk-stage-pet" onclick="WalkSystem.onPetSceneTap()">' + getPetSpriteMarkup(pet) + '</div>'
-            + '        <div class="walk-stage-copy">'
-            + '            <p class="walk-stage-kicker">户外遛弯系统 / 场景互动</p>'
-            + '            <h3>' + escapeHtml(route.sceneTitle) + '</h3>'
-            + '            <p>' + escapeHtml(route.desc) + '</p>'
+            + '        <div class="walk-stage-scene-tag">'
+            + '            <strong>' + escapeHtml(route.sceneTitle) + '</strong>'
+            + '            <span>' + escapeHtml(route.desc) + '</span>'
             + '        </div>'
             + '        <div class="walk-stage-route-tabs" id="walkStageRouteTabs">' + routeTabs + '</div>'
-            + '        <div class="walk-stage-actions">'
-            + '            <button class="walk-stage-action feed" type="button" ' + disabled + ' onclick="WalkSystem.handleAdventureAction(\'feed\')"><span>🍪</span>喂点零食</button>'
-            + '            <button class="walk-stage-action play" type="button" ' + disabled + ' onclick="WalkSystem.handleAdventureAction(\'play\')"><span>🎾</span>一起玩耍</button>'
-            + '            <button class="walk-stage-action rest" type="button" ' + disabled + ' onclick="WalkSystem.handleAdventureAction(\'rest\')"><span>🪑</span>坐下休息</button>'
-            + '            <button class="walk-stage-action walk" type="button" ' + disabled + ' onclick="WalkSystem.handleAdventureAction(\'walk\')"><span>🚶</span>立即出发</button>'
-            + '        </div>'
             + '    </div>'
             + (!pet.species ? '<div class="walk-stage-tip">先去认养宠物，这里就会变成真正的户外互动场景。</div>' : '')
-            + (pet.hp <= 0 ? '<div class="walk-stage-tip is-danger">宠物倒下了，请先回宠物小屋救援，再继续户外遛弯。</div>' : '<div class="walk-stage-tip">点一下宠物会冒泡说话；选好路线后可以直接在这里喂食、玩耍、休息和出发。</div>')
+            + (pet.hp <= 0 ? '<div class="walk-stage-tip is-danger">宠物倒下了，请先回宠物小屋救援，再继续户外遛弯。</div>' : '<div class="walk-stage-tip">点一下宠物会冒泡说话；底部切路线，右侧卡片负责互动、好友和记录。</div>')
             + '</section>';
     }
 
@@ -412,15 +404,8 @@ const WalkSystem = (function() {
         const remaining = getRemainingWalks();
 
         container.innerHTML = ''
-            + '<div class="walk-panel walk-route-panel-shell">'
-            + '    <div class="walk-header">'
-            + '        <div>'
-            + '            <h3 class="text-sm font-bold">🗺️ 选择遛弯系统</h3>'
-            + '            <p class="walk-panel-sub">切换不同户外环境，让同一只宠物在不同场景里互动和散步。</p>'
-            + '        </div>'
-            + '        <span class="walk-limit">今日剩余：' + remaining + '/' + MAX_WALKS_PER_DAY + '</span>'
-            + '    </div>'
-            + '    <div class="walk-route-grid">'
+            + '<div class="walk-route-panel-shell is-compact">'
+            + '    <div class="walk-route-grid is-compact">'
             +         ROUTES.map(function(route) {
                         const activeClass = route.id === active.id ? ' is-current' : '';
                         return ''
@@ -431,18 +416,15 @@ const WalkSystem = (function() {
                             + '</button>';
                     }).join('')
             + '    </div>'
-            + '    <div class="walk-route-detail">'
+            + '    <div class="walk-route-detail is-compact">'
             + '        <div class="walk-route-detail-preview"><img src="' + escapeHtml(active.sceneImage) + '" alt="' + escapeHtml(active.sceneTitle) + '"></div>'
             + '        <div class="walk-route-detail-copy">'
             + '            <strong>' + escapeHtml(active.sceneTitle) + '</strong>'
             + '            <p>' + escapeHtml(active.desc) + '</p>'
-            + '            <div class="walk-route-detail-actions">'
-            + '                <button class="btn-primary" type="button" onclick="WalkSystem.handleAdventureAction(\'walk\')">立即出发</button>'
-            + '                <button class="btn-secondary" type="button" onclick="switchPage(\'home\')">回宠物小屋</button>'
-            + '            </div>'
+            + '            <span class="walk-route-detail-note">今日剩余 ' + remaining + '/' + MAX_WALKS_PER_DAY + ' 次。选好路线后，可在上方状态卡里直接出发。</span>'
             + '        </div>'
             + '    </div>'
-            + '    <div class="walk-logs">'
+            + '    <div class="walk-logs is-compact">'
             + '        <h4 class="text-xs font-bold text-muted mb-2">📜 最近遛弯日志</h4>'
             + '        <ul class="walk-log-list">'
             +             (logs.length === 0

@@ -951,12 +951,53 @@ function renderWalkPage() {
     if (!root) return;
 
     const pet = PetSystem.getState();
-    const species = PetSystem.getAllSpecies();
-    const sp = pet.species ? species.find(function(item) { return item.id === pet.species; }) : null;
     const socialState = window.SocialSystem && typeof window.SocialSystem.getState === 'function'
         ? window.SocialSystem.getState()
         : { loading: false, info: '', error: '', activeCloudChild: null, householdPeers: [], friends: [], visits: [] };
     const walkSummary = getWalkDaySummary();
+    const walkRoutes = window.WalkSystem && typeof WalkSystem.getRoutes === 'function'
+        ? WalkSystem.getRoutes()
+        : [];
+    const activeRouteId = window.WalkSystem && typeof WalkSystem.getActiveRouteId === 'function'
+        ? WalkSystem.getActiveRouteId()
+        : '';
+    const activeRoute = walkRoutes.find(function(route) {
+        return route.id === activeRouteId;
+    }) || walkRoutes[0] || null;
+    const petMaxHp = pet.total_max_hp || pet.max_hp || 0;
+    const walkActionDisabled = pet.hp <= 0 ? 'disabled' : '';
+    const hpPct = petMaxHp ? Math.max(0, Math.min(100, Math.round((pet.hp / petMaxHp) * 100))) : 0;
+    const hungerVal = pet.hunger != null ? pet.hunger : null;
+    const happyVal = pet.happiness != null ? pet.happiness : null;
+    const intimacyVal = pet.intimacy != null ? pet.intimacy : null;
+    const expNeed = (window.PetSystem && PetSystem.EXP_TABLE && PetSystem.EXP_TABLE[pet.level]) || 30;
+    const expPct = expNeed ? Math.max(0, Math.min(100, Math.round(((pet.exp || 0) / expNeed) * 100))) : 100;
+    const vitalsMarkup = `
+        <div class="walk-home-vitals">
+            <div class="walk-home-vit-row">
+                <div class="walk-home-vit-head"><span>❤️ HP</span><span>${escapeAppHtml(pet.hp)}/${escapeAppHtml(petMaxHp)}</span></div>
+                <div class="walk-home-vit-bar"><div class="walk-home-vit-fill hp" style="width:${hpPct}%"></div></div>
+                ${pet.hp > 0 && hpPct < 40 ? '<div class="walk-home-vit-warn is-danger">⚠️ 体力偏低，建议先休息或回小屋救援。</div>' : ''}
+            </div>
+            <div class="walk-home-vit-row">
+                <div class="walk-home-vit-head"><span>🍽️ 饱食</span><span>${hungerVal != null ? escapeAppHtml(hungerVal) : '--'}</span></div>
+                <div class="walk-home-vit-bar"><div class="walk-home-vit-fill hunger" style="width:${hungerVal != null ? hungerVal : 0}%"></div></div>
+                ${hungerVal != null && hungerVal < 20 ? '<div class="walk-home-vit-warn">⚠️ 有点饿了，先喂点零食会更舒服。</div>' : ''}
+            </div>
+            <div class="walk-home-vit-row">
+                <div class="walk-home-vit-head"><span>😊 快乐</span><span>${happyVal != null ? escapeAppHtml(happyVal) : '--'}</span></div>
+                <div class="walk-home-vit-bar"><div class="walk-home-vit-fill happy" style="width:${happyVal != null ? happyVal : 0}%"></div></div>
+            </div>
+            <div class="walk-home-vit-row">
+                <div class="walk-home-vit-head"><span>💖 亲密</span><span>${intimacyVal != null ? escapeAppHtml(intimacyVal) : '--'}</span></div>
+                <div class="walk-home-vit-bar"><div class="walk-home-vit-fill intimacy" style="width:${Math.min(100, intimacyVal != null ? intimacyVal : 0)}%"></div></div>
+            </div>
+            <div class="walk-home-vit-row">
+                <div class="walk-home-vit-head"><span>✨ EXP</span><span>Lv.${escapeAppHtml(pet.level)} · ${escapeAppHtml(pet.exp || 0)}/${escapeAppHtml(expNeed)}</span></div>
+                <div class="walk-home-vit-bar"><div class="walk-home-vit-fill exp" style="width:${expPct}%"></div></div>
+            </div>
+        </div>
+    `;
 
     if (!pet.species) {
         pendingWalkRouteId = '';
@@ -983,12 +1024,47 @@ function renderWalkPage() {
     const pendingInvites = (socialState.visits || []).filter(function(visit) {
         return visit && visit.pendingWalkInvite;
     });
+    const walkStatusMarkup = `
+        <div class="card walk-home-card">
+            <div class="card-body walk-home-status">
+                <p class="walk-home-kicker">遛弯中心 / 户外版宠物小屋</p>
+                <h3>带着 ${escapeAppHtml(pet.species_data?.name || '小伙伴')} 去 ${escapeAppHtml(activeRoute ? activeRoute.sceneTitle : '户外')} 散步</h3>
+                <p class="walk-home-summary">左边保留大场景，右边只留互动、好友和路线信息，整个结构和宠物小屋保持一致。</p>
+                ${vitalsMarkup}
+                <div class="walk-home-metrics">
+                    <div class="walk-home-metric">
+                        <span>今日剩余</span>
+                        <strong>${walkSummary.remaining}/${walkSummary.max}</strong>
+                    </div>
+                    <div class="walk-home-metric">
+                        <span>当前路线</span>
+                        <strong>${escapeAppHtml(activeRoute ? activeRoute.shortName : '--')}</strong>
+                    </div>
+                    <div class="walk-home-metric">
+                        <span>当前等级</span>
+                        <strong>Lv.${escapeAppHtml(pet.level)}</strong>
+                    </div>
+                </div>
+                ${pet.hp <= 0 ? '<div class="walk-home-rescue-note">宠物倒下了，先回宠物小屋救援，再回来继续户外遛弯。</div>' : ''}
+                <div class="walk-home-actions">
+                    <button class="walk-home-action feed" type="button" ${walkActionDisabled} onclick="WalkSystem.handleAdventureAction('feed')"><span>🍪</span>喂点零食</button>
+                    <button class="walk-home-action play" type="button" ${walkActionDisabled} onclick="WalkSystem.handleAdventureAction('play')"><span>🎾</span>一起玩耍</button>
+                    <button class="walk-home-action rest" type="button" ${walkActionDisabled} onclick="WalkSystem.handleAdventureAction('rest')"><span>🪑</span>坐下休息</button>
+                    <button class="walk-home-action walk" type="button" ${walkActionDisabled} onclick="WalkSystem.handleAdventureAction('walk')"><span>🚶</span>立即出发</button>
+                </div>
+                <div class="walk-home-links">
+                    <button class="btn-secondary social-mini-btn" type="button" onclick="switchPage('home')">🏠 回宠物小屋</button>
+                    <button class="btn-secondary social-mini-btn" type="button" onclick="switchPage('pet')">📘 看成长档案</button>
+                </div>
+            </div>
+        </div>
+    `;
     const walkBuddyMarkup = socialState.loading
-        ? '<div class="social-empty">正在刷新可一起遛弯的家庭成员和好友…</div>'
+        ? '<div class="walk-side-empty">正在刷新可一起遛弯的家庭成员和好友…</div>'
         : !socialState.activeCloudChild
             ? `
-                <div class="social-empty">先在设置里登录家长账号并同步当前孩子，好友遛弯列表才会亮起来。</div>
-                <div class="social-cta-row">
+                <div class="walk-side-empty">先在设置里登录家长账号并同步当前孩子，好友遛弯列表才会亮起来。</div>
+                <div class="social-cta-row walk-side-cta">
                     <button class="btn-primary social-main-btn" type="button" onclick="switchPage('settings')">去设置连接账号</button>
                 </div>
             `
@@ -998,112 +1074,87 @@ function renderWalkPage() {
                     const homeSummary = peer.home_summary_json || {};
                     const peerId = escapeAppHtml(peer.id);
                     return `
-                        <div class="social-friend-card walk-buddy-card">
-                            <div class="social-friend-main">
-                                <div class="social-friend-emoji">${escapeAppHtml(peer.emoji || '🐾')}</div>
-                                <div class="social-friend-copy">
+                        <div class="walk-peer-item">
+                            <div class="walk-peer-main">
+                                <div class="walk-peer-emoji">${escapeAppHtml(peer.emoji || '🐾')}</div>
+                                <div class="walk-peer-copy">
                                     <strong>${escapeAppHtml(peer.display_name || '未命名好友')}</strong>
-                                    <span>${escapeAppHtml(getWalkPeerSourceLabel(peer))} · ${escapeAppHtml(peer.home_visibility === 'private' ? '仅家庭可见' : '好友可见')}</span>
+                                    <span>${escapeAppHtml(getWalkPeerSourceLabel(peer))} · ${escapeAppHtml(petSummary.species_name || '还没同步宠物')}</span>
                                 </div>
                             </div>
-                            <div class="social-house-preview">
-                                <div class="social-house-grid">
-                                    <div class="social-house-chip">🐾 ${escapeAppHtml(petSummary.species_name || '还没同步宠物')}</div>
-                                    <div class="social-house-chip">🏠 ${escapeAppHtml(homeSummary.theme_name || '默认小屋')}</div>
-                                    <div class="social-house-chip">✨ 胜场 ${escapeAppHtml(petSummary.wins || 0)}</div>
-                                    <div class="social-house-chip">🧭 探索 ${escapeAppHtml(petSummary.explorations || 0)}</div>
-                                </div>
+                            <div class="walk-peer-chips">
+                                <span class="walk-peer-chip">🏠 ${escapeAppHtml(homeSummary.theme_name || '默认小屋')}</span>
+                                <span class="walk-peer-chip">👀 ${escapeAppHtml(peer.home_visibility === 'private' ? '仅家庭可见' : '好友可见')}</span>
+                                <span class="walk-peer-chip">✨ ${escapeAppHtml(petSummary.wins || 0)} 胜</span>
                             </div>
-                            <div class="social-friend-actions">
+                            <div class="walk-peer-actions">
                                 <button class="btn-primary social-mini-btn" type="button" onclick="SocialSystem.openWalkInvite('${peerId}')">🚶 约一起遛弯</button>
                                 <button class="btn-secondary social-mini-btn" type="button" onclick="SocialSystem.openPeerHome('${peerId}')" ${canOpenPeerHome(peer) ? '' : 'disabled'}>🏠 去小屋看看</button>
                             </div>
                         </div>
                     `;
                 }).join('')
-                : '<div class="social-empty">还没有可一起遛弯的好友。先把多个孩子同步到同一个家庭，或去设置里兑换好友码。</div>';
+                : '<div class="walk-side-empty">还没有可一起遛弯的好友。先把多个孩子同步到同一个家庭，或去设置里兑换好友码。</div>';
     const inviteMarkup = pendingInvites.length
         ? pendingInvites.map(function(visit) {
             const peerId = escapeAppHtml(visit.peerChildId);
             const visitId = escapeAppHtml(visit.id);
             return `
-                <div class="social-visit-item walk-invite-card">
-                    <div class="social-visit-title">📨 ${escapeAppHtml(visit.peerEmoji || '🐾')} ${escapeAppHtml(visit.peerName || '好友')} 邀请你一起遛弯</div>
-                    <div class="social-visit-body">同一路线：${escapeAppHtml(visit.routeName || '好友推荐路线')}</div>
-                    <div class="social-friend-actions">
+                <div class="walk-invite-item">
+                    <div class="walk-invite-title">📨 ${escapeAppHtml(visit.peerEmoji || '🐾')} ${escapeAppHtml(visit.peerName || '好友')} 邀请你一起遛弯</div>
+                    <div class="walk-invite-body">同一路线：${escapeAppHtml(visit.routeName || '好友推荐路线')}</div>
+                    <div class="walk-peer-actions">
                         <button class="btn-primary social-mini-btn" type="button" onclick="SocialSystem.acceptWalkInvite('${visitId}')">按同路线遛弯</button>
                         <button class="btn-secondary social-mini-btn" type="button" onclick="SocialSystem.openPeerHome('${peerId}')">先去看看小屋</button>
                     </div>
                 </div>
             `;
         }).join('')
-        : '<div class="social-empty">暂时还没有收到一起遛弯邀请。你可以先从左边好友列表发起邀请。</div>';
+        : '<div class="walk-side-note">暂时还没有收到一起遛弯邀请。</div>';
+    const socialNoticeMarkup = `
+        ${socialState.error ? `<div class="auth-notice auth-error">${escapeAppHtml(socialState.error)}</div>` : ''}
+        ${socialState.info ? `<div class="auth-notice auth-info">${escapeAppHtml(socialState.info)}</div>` : ''}
+    `;
 
     root.innerHTML = `
-        <section class="walk-page-shell">
-            <div class="walk-scene-stage-wrap">
-                <div id="walk-scene-stage"></div>
-            </div>
-            <div class="walk-page-hero card">
-                <div class="card-body walk-page-hero-body">
-                    <div class="walk-page-copy">
-                        <p class="walk-page-kicker">遛弯中心 / 户外版宠物小屋</p>
-                        <h2>带着 ${escapeAppHtml(pet.species_data?.name || '小伙伴')} 去不同户外场景里散步</h2>
-                        <p>这页现在更像宠物小屋的户外版本：上面是大场景舞台，下面保留好友邀请、路线记录和社交入口。</p>
-                        <div class="walk-page-metrics">
-                            <div class="walk-page-metric">
-                                <span>今日剩余</span>
-                                <strong>${walkSummary.remaining}/${walkSummary.max}</strong>
-                            </div>
-                            <div class="walk-page-metric">
-                                <span>当前等级</span>
-                                <strong>Lv.${escapeAppHtml(pet.level)}</strong>
-                            </div>
-                            <div class="walk-page-metric">
-                                <span>当前体力</span>
-                                <strong>${escapeAppHtml(pet.hp)}/${escapeAppHtml(pet.total_max_hp)}</strong>
-                            </div>
-                        </div>
-                        <div class="walk-page-links">
-                            <button class="btn-secondary social-mini-btn" type="button" onclick="switchPage('home')">🏠 回宠物小屋互动</button>
-                            <button class="btn-secondary social-mini-btn" type="button" onclick="switchPage('pet')">📘 看成长档案</button>
-                        </div>
-                    </div>
+        <section class="walk-home-shell">
+            <div class="walk-home-main">
+                <div class="walk-scene-stage-wrap">
+                    <div id="walk-scene-stage"></div>
                 </div>
             </div>
-            ${socialState.error ? `<div class="auth-notice auth-error">${escapeAppHtml(socialState.error)}</div>` : ''}
-            ${socialState.info ? `<div class="auth-notice auth-info">${escapeAppHtml(socialState.info)}</div>` : ''}
-            <div class="walk-page-grid">
-                <div class="card">
+            <aside class="walk-home-side">
+                ${walkStatusMarkup}
+                <div class="card walk-home-card">
                     <div class="card-header flex items-center justify-between">
-                        <h3 class="text-sm font-bold">👫 可约一起遛弯的伙伴</h3>
+                        <h3 class="text-sm font-bold">👫 好友遛弯</h3>
                         <span class="text-xs text-muted">${availablePeers.length} 位</span>
                     </div>
-                    <div class="card-body walk-page-list">
-                        ${walkBuddyMarkup}
+                    <div class="card-body walk-home-social">
+                        ${socialNoticeMarkup}
+                        <div class="walk-home-social-block">
+                            <div class="walk-home-block-title">待回应邀请</div>
+                            <div class="walk-home-invites is-compact">${inviteMarkup}</div>
+                        </div>
+                        <div class="walk-home-social-block">
+                            <div class="walk-home-block-title">可约伙伴</div>
+                            <div class="walk-home-peer-list is-compact">${walkBuddyMarkup}</div>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card walk-home-card">
                     <div class="card-header flex items-center justify-between">
-                        <h3 class="text-sm font-bold">📬 待回应邀请</h3>
-                        <span class="text-xs text-muted">${pendingInvites.length} 条</span>
+                        <div>
+                            <h3 class="text-sm font-bold">🗺️ 路线与记录</h3>
+                            <p class="text-xs text-muted mt-1">在右侧挑路线，在左边大场景里直接互动和出发。</p>
+                        </div>
+                        <span class="text-xs text-muted">${walkSummary.remaining}/${walkSummary.max}</span>
                     </div>
-                    <div class="card-body walk-page-list">
-                        ${inviteMarkup}
-                    </div>
-                </div>
-            </div>
-            <div class="card walk-route-shell">
-                <div class="card-header flex items-center justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold">🗺️ 选择路线出发</h3>
-                        <p class="text-xs text-muted mt-1">这里负责真正的路线选择、遛弯结算和最近记录。</p>
+                    <div class="card-body">
+                        <div id="walk-route-panel"></div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div id="walk-route-panel"></div>
-                </div>
-            </div>
+            </aside>
         </section>
     `;
 
@@ -1324,7 +1375,7 @@ function openAdoptModal() {
         if (!sources[src]) sources[src] = 0;
         sources[src]++;
     }
-    const sourceNames = { original: '🌿 PVZ 原版', banchong: '🐹 仓鼠冒险', classpet: '🎨 classpet', minecraft: '⛏️ 我的世界' };
+    const sourceNames = { original: '🌿 PVZ 原版', banchong: '🐹 仓鼠冒险', banchong2: '🐾 萌爪伙伴', classpet: '🎨 classpet', minecraft: '⛏️ 我的世界' };
     const sourceEl = document.getElementById('adoptSourceTabs');
     sourceEl.innerHTML = `<div class="adopt-tab adopt-tab-all ${adoptFilter.source === 'all' ? 'active' : ''}" onclick="setAdoptFilter('source','all')">全部 (${species.length})</div>`;
     for (const [src, cnt] of Object.entries(sources)) {
