@@ -1,0 +1,282 @@
+[
+  {
+    "id": 1,
+    "name": "阿拉斯加",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/阿拉斯加/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 2,
+    "name": "比熊",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/比熊/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 3,
+    "name": "冰晶恐龙",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/冰晶恐龙/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 4,
+    "name": "布偶",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/布偶/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 6,
+    "name": "仓鼠",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/仓鼠/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 7,
+    "name": "刺猬",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/刺猬/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 10,
+    "name": "海豚",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/海豚/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 11,
+    "name": "狐狸",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/狐狸/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 12,
+    "name": "蝴蝶",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/蝴蝶/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 13,
+    "name": "金毛",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/金毛/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 14,
+    "name": "金丝猴",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/金丝猴/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 15,
+    "name": "锦鲤",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/锦鲤/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 16,
+    "name": "橘猫",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/橘猫/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 17,
+    "name": "柯基",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/柯基/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 18,
+    "name": "蓝猫",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/蓝猫/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 19,
+    "name": "企鹅",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/企鹅/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 20,
+    "name": "狮子",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/狮子/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 21,
+    "name": "兔子",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/兔子/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 22,
+    "name": "乌龟",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/乌龟/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 23,
+    "name": "熊猫",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/熊猫/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 24,
+    "name": "羊驼",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/羊驼/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 25,
+    "name": "银渐层",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/银渐层/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1000,
+    "name": "白蛇",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/白蛇/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1001,
+    "name": "边牧",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/边牧/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1002,
+    "name": "博美",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/博美/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1003,
+    "name": "大象",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/大象/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1004,
+    "name": "德牧",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/德牧/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1005,
+    "name": "凤凰",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/凤凰/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1006,
+    "name": "金渐层",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/金渐层/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1007,
+    "name": "九尾狐",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/九尾狐/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1008,
+    "name": "卡皮巴拉",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/卡皮巴拉/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1009,
+    "name": "狸花猫",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/狸花猫/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1010,
+    "name": "美短",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/美短/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1011,
+    "name": "奶牛猫",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/奶牛猫/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1012,
+    "name": "萨摩耶",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/萨摩耶/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1013,
+    "name": "三花猫",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/三花猫/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1014,
+    "name": "蜗牛",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/蜗牛/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1015,
+    "name": "蜥蜴",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/蜥蜴/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1016,
+    "name": "雪纳瑞",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/雪纳瑞/1.png",
+    "maxLevel": 10
+  },
+  {
+    "id": 1017,
+    "name": "鹦鹉",
+    "category": "ANIMAL",
+    "baseAssetUrl": "/pet_assets/动物/鹦鹉/1.png",
+    "maxLevel": 10
+  }
+]

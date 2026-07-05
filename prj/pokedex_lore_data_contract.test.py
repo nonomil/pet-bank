@@ -7,6 +7,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CARD_JS = REPO_ROOT / "js" / "card-collection.js"
 LORE_JSON = REPO_ROOT / "data" / "pokedex-lore-draft.json"
+PETS_JSON = REPO_ROOT / "data" / "pets.json"
 
 
 def require(condition: bool, message: str) -> None:
@@ -19,7 +20,9 @@ def main() -> None:
 
     data = json.loads(LORE_JSON.read_text(encoding="utf-8"))
     pets = data.get("pets") or []
-    require(len(pets) == 198, "lore draft json must cover all 198 pets")
+    pets_db = json.loads(PETS_JSON.read_text(encoding="utf-8"))
+    species = pets_db.get("flat") or []
+    require(len(pets) == len(species), f"lore draft json must cover all {len(species)} pets")
 
     sunflower = next((pet for pet in pets if pet.get("name") == "向日葵"), None)
     require(sunflower is not None, "lore draft json must include 向日葵")

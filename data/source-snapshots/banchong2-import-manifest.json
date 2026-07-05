@@ -1,0 +1,2162 @@
+[
+  {
+    "id": "bc2_alaskan",
+    "sourcePetId": 1,
+    "name": "阿拉斯加",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%98%BF%E6%8B%89%E6%96%AF%E5%8A%A0/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/阿拉斯加-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%98%BF%E6%8B%89%E6%96%AF%E5%8A%A0/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/阿拉斯加-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%98%BF%E6%8B%89%E6%96%AF%E5%8A%A0/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/阿拉斯加-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%98%BF%E6%8B%89%E6%96%AF%E5%8A%A0/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/阿拉斯加-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%98%BF%E6%8B%89%E6%96%AF%E5%8A%A0/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/阿拉斯加-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%98%BF%E6%8B%89%E6%96%AF%E5%8A%A0/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/阿拉斯加-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_bichon",
+    "sourcePetId": 2,
+    "name": "比熊",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%AF%94%E7%86%8A/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/比熊-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%AF%94%E7%86%8A/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/比熊-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%AF%94%E7%86%8A/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/比熊-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%AF%94%E7%86%8A/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/比熊-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%AF%94%E7%86%8A/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/比熊-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%AF%94%E7%86%8A/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/比熊-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_crystal_dino",
+    "sourcePetId": 3,
+    "name": "冰晶恐龙",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%86%B0%E6%99%B6%E6%81%90%E9%BE%99/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/冰晶恐龙-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%86%B0%E6%99%B6%E6%81%90%E9%BE%99/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/冰晶恐龙-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%86%B0%E6%99%B6%E6%81%90%E9%BE%99/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/冰晶恐龙-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%86%B0%E6%99%B6%E6%81%90%E9%BE%99/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/冰晶恐龙-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%86%B0%E6%99%B6%E6%81%90%E9%BE%99/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/冰晶恐龙-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%86%B0%E6%99%B6%E6%81%90%E9%BE%99/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/冰晶恐龙-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_ragdoll",
+    "sourcePetId": 4,
+    "name": "布偶",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%B8%83%E5%81%B6/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/布偶-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%B8%83%E5%81%B6/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/布偶-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%B8%83%E5%81%B6/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/布偶-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%B8%83%E5%81%B6/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/布偶-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%B8%83%E5%81%B6/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/布偶-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%B8%83%E5%81%B6/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/布偶-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_hamster",
+    "sourcePetId": 6,
+    "name": "仓鼠",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BB%93%E9%BC%A0/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/仓鼠-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BB%93%E9%BC%A0/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/仓鼠-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BB%93%E9%BC%A0/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/仓鼠-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BB%93%E9%BC%A0/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/仓鼠-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BB%93%E9%BC%A0/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/仓鼠-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BB%93%E9%BC%A0/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/仓鼠-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_hedgehog",
+    "sourcePetId": 7,
+    "name": "刺猬",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%88%BA%E7%8C%AC/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/刺猬-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%88%BA%E7%8C%AC/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/刺猬-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%88%BA%E7%8C%AC/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/刺猬-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%88%BA%E7%8C%AC/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/刺猬-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%88%BA%E7%8C%AC/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/刺猬-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%88%BA%E7%8C%AC/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/刺猬-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_dolphin",
+    "sourcePetId": 10,
+    "name": "海豚",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%B5%B7%E8%B1%9A/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/海豚-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%B5%B7%E8%B1%9A/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/海豚-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%B5%B7%E8%B1%9A/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/海豚-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%B5%B7%E8%B1%9A/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/海豚-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%B5%B7%E8%B1%9A/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/海豚-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%B5%B7%E8%B1%9A/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/海豚-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_fox",
+    "sourcePetId": 11,
+    "name": "狐狸",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%90%E7%8B%B8/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狐狸-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%90%E7%8B%B8/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狐狸-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%90%E7%8B%B8/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狐狸-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%90%E7%8B%B8/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狐狸-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%90%E7%8B%B8/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狐狸-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%90%E7%8B%B8/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狐狸-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_butterfly",
+    "sourcePetId": 12,
+    "name": "蝴蝶",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9D%B4%E8%9D%B6/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蝴蝶-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9D%B4%E8%9D%B6/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蝴蝶-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9D%B4%E8%9D%B6/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蝴蝶-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9D%B4%E8%9D%B6/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蝴蝶-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9D%B4%E8%9D%B6/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蝴蝶-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9D%B4%E8%9D%B6/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蝴蝶-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_golden",
+    "sourcePetId": 13,
+    "name": "金毛",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%AF%9B/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金毛-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%AF%9B/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金毛-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%AF%9B/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金毛-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%AF%9B/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金毛-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%AF%9B/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金毛-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%AF%9B/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金毛-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_golden_monkey",
+    "sourcePetId": 14,
+    "name": "金丝猴",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E4%B8%9D%E7%8C%B4/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金丝猴-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E4%B8%9D%E7%8C%B4/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金丝猴-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E4%B8%9D%E7%8C%B4/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金丝猴-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E4%B8%9D%E7%8C%B4/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金丝猴-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E4%B8%9D%E7%8C%B4/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金丝猴-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E4%B8%9D%E7%8C%B4/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金丝猴-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_koi",
+    "sourcePetId": 15,
+    "name": "锦鲤",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%94%A6%E9%B2%A4/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/锦鲤-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%94%A6%E9%B2%A4/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/锦鲤-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%94%A6%E9%B2%A4/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/锦鲤-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%94%A6%E9%B2%A4/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/锦鲤-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%94%A6%E9%B2%A4/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/锦鲤-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%94%A6%E9%B2%A4/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/锦鲤-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_orange_cat",
+    "sourcePetId": 16,
+    "name": "橘猫",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%A9%98%E7%8C%AB/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/橘猫-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%A9%98%E7%8C%AB/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/橘猫-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%A9%98%E7%8C%AB/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/橘猫-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%A9%98%E7%8C%AB/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/橘猫-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%A9%98%E7%8C%AB/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/橘猫-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%A9%98%E7%8C%AB/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/橘猫-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_corgi",
+    "sourcePetId": 17,
+    "name": "柯基",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%9F%AF%E5%9F%BA/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/柯基-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%9F%AF%E5%9F%BA/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/柯基-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%9F%AF%E5%9F%BA/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/柯基-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%9F%AF%E5%9F%BA/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/柯基-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%9F%AF%E5%9F%BA/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/柯基-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E6%9F%AF%E5%9F%BA/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/柯基-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_blue_cat",
+    "sourcePetId": 18,
+    "name": "蓝猫",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%93%9D%E7%8C%AB/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蓝猫-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%93%9D%E7%8C%AB/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蓝猫-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%93%9D%E7%8C%AB/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蓝猫-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%93%9D%E7%8C%AB/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蓝猫-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%93%9D%E7%8C%AB/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蓝猫-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%93%9D%E7%8C%AB/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蓝猫-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_penguin",
+    "sourcePetId": 19,
+    "name": "企鹅",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BC%81%E9%B9%85/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/企鹅-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BC%81%E9%B9%85/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/企鹅-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BC%81%E9%B9%85/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/企鹅-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BC%81%E9%B9%85/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/企鹅-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BC%81%E9%B9%85/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/企鹅-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%BC%81%E9%B9%85/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/企鹅-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_lion",
+    "sourcePetId": 20,
+    "name": "狮子",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%AE%E5%AD%90/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狮子-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%AE%E5%AD%90/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狮子-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%AE%E5%AD%90/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狮子-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%AE%E5%AD%90/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狮子-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%AE%E5%AD%90/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狮子-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%AE%E5%AD%90/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狮子-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_bunny",
+    "sourcePetId": 21,
+    "name": "兔子",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%85%94%E5%AD%90/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/兔子-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%85%94%E5%AD%90/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/兔子-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%85%94%E5%AD%90/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/兔子-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%85%94%E5%AD%90/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/兔子-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%85%94%E5%AD%90/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/兔子-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%85%94%E5%AD%90/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/兔子-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_turtle",
+    "sourcePetId": 22,
+    "name": "乌龟",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%8C%E9%BE%9F/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/乌龟-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%8C%E9%BE%9F/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/乌龟-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%8C%E9%BE%9F/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/乌龟-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%8C%E9%BE%9F/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/乌龟-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%8C%E9%BE%9F/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/乌龟-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%8C%E9%BE%9F/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/乌龟-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_panda",
+    "sourcePetId": 23,
+    "name": "熊猫",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%86%8A%E7%8C%AB/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/熊猫-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%86%8A%E7%8C%AB/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/熊猫-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%86%8A%E7%8C%AB/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/熊猫-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%86%8A%E7%8C%AB/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/熊猫-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%86%8A%E7%8C%AB/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/熊猫-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%86%8A%E7%8C%AB/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/熊猫-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_alpaca",
+    "sourcePetId": 24,
+    "name": "羊驼",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8A%E9%A9%BC/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/羊驼-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8A%E9%A9%BC/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/羊驼-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8A%E9%A9%BC/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/羊驼-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8A%E9%A9%BC/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/羊驼-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8A%E9%A9%BC/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/羊驼-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8A%E9%A9%BC/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/羊驼-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_silver_shaded",
+    "sourcePetId": 25,
+    "name": "银渐层",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%93%B6%E6%B8%90%E5%B1%82/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/银渐层-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%93%B6%E6%B8%90%E5%B1%82/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/银渐层-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%93%B6%E6%B8%90%E5%B1%82/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/银渐层-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%93%B6%E6%B8%90%E5%B1%82/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/银渐层-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%93%B6%E6%B8%90%E5%B1%82/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/银渐层-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%93%B6%E6%B8%90%E5%B1%82/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/银渐层-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_white_snake",
+    "sourcePetId": 1000,
+    "name": "白蛇",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%99%BD%E8%9B%87/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/白蛇-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%99%BD%E8%9B%87/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/白蛇-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%99%BD%E8%9B%87/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/白蛇-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%99%BD%E8%9B%87/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/白蛇-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%99%BD%E8%9B%87/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/白蛇-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%99%BD%E8%9B%87/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/白蛇-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_border_collie",
+    "sourcePetId": 1001,
+    "name": "边牧",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%BE%B9%E7%89%A7/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/边牧-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%BE%B9%E7%89%A7/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/边牧-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%BE%B9%E7%89%A7/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/边牧-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%BE%B9%E7%89%A7/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/边牧-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%BE%B9%E7%89%A7/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/边牧-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%BE%B9%E7%89%A7/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/边牧-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_pomeranian",
+    "sourcePetId": 1002,
+    "name": "博美",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%9A%E7%BE%8E/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/博美-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%9A%E7%BE%8E/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/博美-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%9A%E7%BE%8E/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/博美-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%9A%E7%BE%8E/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/博美-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%9A%E7%BE%8E/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/博美-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%9A%E7%BE%8E/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/博美-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_elephant",
+    "sourcePetId": 1003,
+    "name": "大象",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A4%A7%E8%B1%A1/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/大象-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A4%A7%E8%B1%A1/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/大象-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A4%A7%E8%B1%A1/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/大象-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A4%A7%E8%B1%A1/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/大象-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A4%A7%E8%B1%A1/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/大象-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A4%A7%E8%B1%A1/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/大象-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_german_shepherd",
+    "sourcePetId": 1004,
+    "name": "德牧",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%BE%B7%E7%89%A7/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/德牧-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%BE%B7%E7%89%A7/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/德牧-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%BE%B7%E7%89%A7/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/德牧-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%BE%B7%E7%89%A7/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/德牧-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%BE%B7%E7%89%A7/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/德牧-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%BE%B7%E7%89%A7/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/德牧-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_phoenix",
+    "sourcePetId": 1005,
+    "name": "凤凰",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%87%A4%E5%87%B0/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/凤凰-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%87%A4%E5%87%B0/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/凤凰-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%87%A4%E5%87%B0/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/凤凰-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%87%A4%E5%87%B0/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/凤凰-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%87%A4%E5%87%B0/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/凤凰-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%87%A4%E5%87%B0/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/凤凰-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_golden_shaded",
+    "sourcePetId": 1006,
+    "name": "金渐层",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%B8%90%E5%B1%82/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金渐层-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%B8%90%E5%B1%82/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金渐层-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%B8%90%E5%B1%82/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金渐层-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%B8%90%E5%B1%82/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金渐层-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%B8%90%E5%B1%82/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金渐层-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%87%91%E6%B8%90%E5%B1%82/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/金渐层-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_nine_tailed_fox",
+    "sourcePetId": 1007,
+    "name": "九尾狐",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%9D%E5%B0%BE%E7%8B%90/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/九尾狐-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%9D%E5%B0%BE%E7%8B%90/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/九尾狐-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%9D%E5%B0%BE%E7%8B%90/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/九尾狐-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%9D%E5%B0%BE%E7%8B%90/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/九尾狐-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%9D%E5%B0%BE%E7%8B%90/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/九尾狐-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B9%9D%E5%B0%BE%E7%8B%90/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/九尾狐-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_capybara",
+    "sourcePetId": 1008,
+    "name": "卡皮巴拉",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%A1%E7%9A%AE%E5%B7%B4%E6%8B%89/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/卡皮巴拉-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%A1%E7%9A%AE%E5%B7%B4%E6%8B%89/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/卡皮巴拉-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%A1%E7%9A%AE%E5%B7%B4%E6%8B%89/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/卡皮巴拉-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%A1%E7%9A%AE%E5%B7%B4%E6%8B%89/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/卡皮巴拉-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%A1%E7%9A%AE%E5%B7%B4%E6%8B%89/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/卡皮巴拉-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%8D%A1%E7%9A%AE%E5%B7%B4%E6%8B%89/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/卡皮巴拉-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_tabby_cat",
+    "sourcePetId": 1009,
+    "name": "狸花猫",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%B8%E8%8A%B1%E7%8C%AB/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狸花猫-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%B8%E8%8A%B1%E7%8C%AB/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狸花猫-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%B8%E8%8A%B1%E7%8C%AB/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狸花猫-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%B8%E8%8A%B1%E7%8C%AB/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狸花猫-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%B8%E8%8A%B1%E7%8C%AB/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狸花猫-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%8B%B8%E8%8A%B1%E7%8C%AB/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/狸花猫-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_american_shorthair",
+    "sourcePetId": 1010,
+    "name": "美短",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8E%E7%9F%AD/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/美短-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8E%E7%9F%AD/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/美短-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8E%E7%9F%AD/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/美短-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8E%E7%9F%AD/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/美短-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8E%E7%9F%AD/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/美短-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E7%BE%8E%E7%9F%AD/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/美短-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_cow_cat",
+    "sourcePetId": 1011,
+    "name": "奶牛猫",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A5%B6%E7%89%9B%E7%8C%AB/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/奶牛猫-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A5%B6%E7%89%9B%E7%8C%AB/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/奶牛猫-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A5%B6%E7%89%9B%E7%8C%AB/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/奶牛猫-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A5%B6%E7%89%9B%E7%8C%AB/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/奶牛猫-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A5%B6%E7%89%9B%E7%8C%AB/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/奶牛猫-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E5%A5%B6%E7%89%9B%E7%8C%AB/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/奶牛猫-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_samoyed",
+    "sourcePetId": 1012,
+    "name": "萨摩耶",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%90%A8%E6%91%A9%E8%80%B6/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/萨摩耶-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%90%A8%E6%91%A9%E8%80%B6/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/萨摩耶-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%90%A8%E6%91%A9%E8%80%B6/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/萨摩耶-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%90%A8%E6%91%A9%E8%80%B6/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/萨摩耶-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%90%A8%E6%91%A9%E8%80%B6/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/萨摩耶-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%90%A8%E6%91%A9%E8%80%B6/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/萨摩耶-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_calico_cat",
+    "sourcePetId": 1013,
+    "name": "三花猫",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B8%89%E8%8A%B1%E7%8C%AB/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/三花猫-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B8%89%E8%8A%B1%E7%8C%AB/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/三花猫-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B8%89%E8%8A%B1%E7%8C%AB/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/三花猫-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B8%89%E8%8A%B1%E7%8C%AB/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/三花猫-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B8%89%E8%8A%B1%E7%8C%AB/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/三花猫-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E4%B8%89%E8%8A%B1%E7%8C%AB/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/三花猫-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_snail",
+    "sourcePetId": 1014,
+    "name": "蜗牛",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%97%E7%89%9B/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜗牛-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%97%E7%89%9B/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜗牛-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%97%E7%89%9B/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜗牛-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%97%E7%89%9B/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜗牛-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%97%E7%89%9B/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜗牛-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%97%E7%89%9B/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜗牛-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_lizard",
+    "sourcePetId": 1015,
+    "name": "蜥蜴",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%A5%E8%9C%B4/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜥蜴-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%A5%E8%9C%B4/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜥蜴-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%A5%E8%9C%B4/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜥蜴-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%A5%E8%9C%B4/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜥蜴-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%A5%E8%9C%B4/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜥蜴-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E8%9C%A5%E8%9C%B4/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/蜥蜴-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_schnauzer",
+    "sourcePetId": 1016,
+    "name": "雪纳瑞",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%9B%AA%E7%BA%B3%E7%91%9E/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/雪纳瑞-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%9B%AA%E7%BA%B3%E7%91%9E/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/雪纳瑞-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%9B%AA%E7%BA%B3%E7%91%9E/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/雪纳瑞-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%9B%AA%E7%BA%B3%E7%91%9E/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/雪纳瑞-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%9B%AA%E7%BA%B3%E7%91%9E/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/雪纳瑞-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%9B%AA%E7%BA%B3%E7%91%9E/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/雪纳瑞-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2_parrot",
+    "sourcePetId": 1017,
+    "name": "鹦鹉",
+    "series": "萌爪伙伴族",
+    "source": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%B9%A6%E9%B9%89/1.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/鹦鹉-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%B9%A6%E9%B9%89/2.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/鹦鹉-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%B9%A6%E9%B9%89/4.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/鹦鹉-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%B9%A6%E9%B9%89/6.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/鹦鹉-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%B9%A6%E9%B9%89/8.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/鹦鹉-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E5%8A%A8%E7%89%A9/%E9%B9%A6%E9%B9%89/10.png",
+        "localPath": "assets/banchong2/萌爪伙伴族/鹦鹉-5.webp"
+      }
+    ]
+  }
+]

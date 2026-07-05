@@ -22,9 +22,17 @@ const CardCollection = (function() {
         original: '阳光花园馆 · 经典植物',
         pvz: '阳光花园馆 · 写实实验',
         banchong: '奇趣冒险馆 · 多族冒险',
+        banchong2: '奇趣冒险馆 · 萌爪伙伴',
         classpet: '创想课堂馆 · 风格练习',
         minecraft: '方块生态馆 · 原版生态'
     };
+    function escapeHtmlAttr(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
     const SERIES_DISPLAY_LABELS = {
         PVZ: '经典植物线',
         'pvz真实': '写实实验线'
@@ -40,7 +48,7 @@ const CardCollection = (function() {
             sourceKeys: ['original', 'pvz'],
             accent: 'sun',
             gradient: 'linear-gradient(135deg, #fff0b8 0%, #f7c95f 100%)',
-            coverImage: 'assets/pokedex-halls/sunshine.png',
+            coverImage: 'assets/pokedex-halls/sunshine.webp',
             coverPosition: 'center 42%',
             heroPetIds: ['pvz_sunflower', 'pvz_peashooter', 'pvz_cherrybomb'],
             hallIntro: '这里收录《植物大战僵尸》主题植物卡，以及写实实验线里的植物伙伴。翻开这一馆，可以从阳光补给、远程攻击、防线守护和特殊技能四条路线慢慢认识每一种植物。',
@@ -57,10 +65,10 @@ const CardCollection = (function() {
             summary: '收录冒险路上遇见的多族群成长伙伴。',
             cardLabel: '冒险伙伴入口',
             cardIntro: '收着灵兽、守护兽与旅行伙伴，适合按神话、陪伴感和旅途故事来记忆角色。',
-            sourceKeys: ['banchong'],
+            sourceKeys: ['banchong', 'banchong2'],
             accent: 'adventure',
             gradient: 'linear-gradient(135deg, #ffd7e8 0%, #f6a4bf 100%)',
-            coverImage: 'assets/pokedex-halls/adventure.png',
+            coverImage: 'assets/pokedex-halls/adventure.webp',
             coverPosition: 'center 52%',
             heroPetIds: ['4413441b-af1', '2cd112b5-025', '35a035d7-972'],
             hallIntro: '这里像一整层冒险故事馆，收着山海灵兽、旅行伙伴、梦境萌宠和守护型异兽。适合一边翻图鉴，一边按神话、旅途、生肖与守护四种气质去记忆角色。',
@@ -80,7 +88,7 @@ const CardCollection = (function() {
             sourceKeys: ['classpet'],
             accent: 'classroom',
             gradient: 'linear-gradient(135deg, #dff2ff 0%, #8bc7ff 100%)',
-            coverImage: 'assets/pokedex-halls/classroom.png',
+            coverImage: 'assets/pokedex-halls/classroom.webp',
             coverPosition: 'center 46%',
             heroPetIds: ['cp_cat_01', 'cp_unicorn_01', 'cp_robot_01'],
             hallIntro: '这里像一本课堂创作集，收着萌宠练习、幻想角色、像素生物、科幻机械和国潮灵感。最适合用来练“风格辨认”和“形象联想”。',
@@ -100,7 +108,7 @@ const CardCollection = (function() {
             sourceKeys: ['minecraft'],
             accent: 'blocky',
             gradient: 'linear-gradient(135deg, #ddf5dd 0%, #97d488 100%)',
-            coverImage: 'assets/pokedex-halls/blocky.png',
+            coverImage: 'assets/pokedex-halls/blocky.webp',
             coverPosition: 'center 50%',
             heroPetIds: ['mc_wolf', 'mc_allay', 'mc_ender_dragon'],
             hallIntro: '这里是一整本《我的世界》生态观察册，从温顺生物到夜行怪物都按方块世界的生境与危险度收录。整体更像儿童版的生态手账。',
@@ -121,6 +129,7 @@ const CardCollection = (function() {
             { id: 'adv-myth', name: '神话瑞兽册', subtitle: '瑞兽与山海', series: ['灵兽族', '瑞兽族', '山海族', '敦煌族'] },
             { id: 'adv-star', name: '星梦奇旅册', subtitle: '星瞳与旅途', series: ['星瞳族', '绮梦族', '旅行族'] },
             { id: 'adv-cute', name: '萌宠搭档册', subtitle: '生肖与绒爪', series: ['萌肖族', '酷肖族', '绒爪族'] },
+            { id: 'adv-banchong2', name: '萌爪伙伴册', subtitle: '班宠乐园2 · 软萌同行', series: ['萌爪伙伴族'] },
             { id: 'adv-guard', name: '守护异兽册', subtitle: '守护与双钳', series: ['守护系', '双钳族'] }
         ],
         classroom: [
@@ -344,6 +353,32 @@ const CardCollection = (function() {
             _selectedBooklet = source || 'all';
         }
         renderUI(_lastContainerId);
+    }
+
+    function setComposedCardFallbackArt(fallbackEl, fallbackSrc, fallbackAlt, fallbackEmoji) {
+        if (!fallbackEl) return;
+        const portrait = fallbackEl.querySelector('.card-portrait');
+        if (!portrait) return;
+        const emoji = fallbackEmoji || '🐾';
+        if (fallbackSrc) {
+            portrait.innerHTML = `<img src="${escapeHtmlAttr(fallbackSrc)}" alt="${escapeHtmlAttr(fallbackAlt || '宠物')}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'card-emoji-big\\'>${emoji}</span>'">`;
+            return;
+        }
+        portrait.innerHTML = `<span class="card-emoji-big">${emoji}</span>`;
+    }
+
+    function handleComposedCardImageError(imgEl) {
+        if (!imgEl) return;
+        const shell = imgEl.parentElement;
+        const fallback = shell ? shell.querySelector('.card-composed-v2-fallback') : null;
+        setComposedCardFallbackArt(
+            fallback,
+            imgEl.dataset.fallbackSrc || '',
+            imgEl.dataset.fallbackAlt || '',
+            imgEl.dataset.fallbackEmoji || '🐾'
+        );
+        imgEl.style.display = 'none';
+        shell?.classList.add('is-fallback');
     }
 
     function getSceneDisplayName(sceneId, fallbackName) {
@@ -751,9 +786,7 @@ const CardCollection = (function() {
             const isCollected = _cards.includes(s.id);
             const rarityClass = `card-rarity-${s.rarity || 'common'}`;
             const img2 = (s.imageStages && s.imageStages['2']) || s.imageUrl;
-            const portrait = (img2
-                ? `<img src="${img2}" alt="${s.name}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'card-emoji-big\\'>${s.emoji||'🐾'}</span>'">`
-                : `<span class="card-emoji-big">${s.emoji || '🐾'}</span>`);
+            const portrait = `<span class="card-emoji-big">${s.emoji || '🐾'}</span>`;
             const sv = (v) => (v != null && v !== undefined) ? v : '-';
             const statsHtml = `
                 <div class="card-stat card-stat-hp">❤${sv(s.base_hp)}</div>
@@ -780,7 +813,7 @@ const CardCollection = (function() {
                     <div class="card-composed-v2-fallback">
                         ${legacyCardHtml}
                     </div>
-                    <img class="card-composed-v2-img" src="${composedSrc}" alt="${s.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('is-fallback');">
+                    <img class="card-composed-v2-img" src="${composedSrc}" alt="${s.name}" loading="lazy" data-fallback-src="${escapeHtmlAttr(img2 || '')}" data-fallback-alt="${escapeHtmlAttr(s.name)}" data-fallback-emoji="${escapeHtmlAttr(s.emoji || '🐾')}" onerror="CardCollection.handleComposedCardImageError(this)">
                 </div>
             </div>`;
         });
@@ -919,7 +952,7 @@ const CardCollection = (function() {
         }
     }
 
-    return { init, renderUI, addCard, showDetail, closeDetail, setView, openSceneInvestigation };
+    return { init, renderUI, addCard, showDetail, closeDetail, setView, openSceneInvestigation, handleComposedCardImageError };
 })();
 
 window.CardCollection = CardCollection;

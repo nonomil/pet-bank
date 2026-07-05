@@ -94,7 +94,7 @@ docs/
 | [项目现状总览](项目现状总览.md) | 当前项目快照：整体方案、已完成、未完成、准备做、延后项 | 想先搞清楚项目现在是什么 |
 | [项目收口建议-v1](项目收口建议-v1.md) | 回答“项目是不是做复杂了、该停什么、下一步只做什么” | 想收口范围、判断优先级 |
 | [changes/README](changes/README.md) | 版本变更、change-request、进度文档之间的关系索引 | 查“改了什么、为什么改、去哪看详情” |
-| [plans/README](plans/README.md) | 设计稿与实施计划索引，已包含学习中心与暑假中文资料包落地文档 | 查“下一步准备怎么做” |
+| [plans/README](plans/README.md) | 设计稿与实施计划索引，已包含学习中心与 `班宠乐园2 -> 萌爪伙伴册` 导入文档 | 查“下一步准备怎么做” |
 | [英语学习/README](英语学习/README.md) | 英语混合资料包专题索引，说明已落地的英语入口、模块、计分与后续扩展位 | 查英语学习现在怎么接进学习中心 |
 | [积分学习打勾方案/README](积分学习打勾方案/README.md) | 学习打勾最终口径：学习页负责入口，积分区学习单子页负责学习单，设置页切模式 | 查轻量学习单应该放哪、怎么和积分系统配合 |
 | [进度/README](进度/README.md) | 进度索引，按阶段回看每轮会话做了什么 | 查 progress 记录 |
@@ -132,6 +132,7 @@ docs/
 - 查项目是否跑偏 / 该停什么 / 下一阶段怎么收口 → [项目收口建议-v1](项目收口建议-v1.md)
 - 查当前最高优先执行包 → [叙事收口与文案优化-需求](plans/2026-06-30-叙事收口与文案优化-需求.md)、[设计稿](plans/2026-06-30-叙事收口与文案优化-设计稿.md)、[实施计划](plans/2026-06-30-叙事收口与文案优化-实施计划.md)、[任务清单](plans/2026-06-30-叙事收口与文案优化-任务清单.md)
 - 查学习中心 / 幼小衔接暑假中文资料包 → [设计稿](plans/2026-07-05-learning-center-summer-chinese-design.md)、[实施计划](plans/2026-07-05-learning-center-summer-chinese-implementation.md)
+- 查 `班宠乐园2` 动物导入 / `萌爪伙伴册` / 图鉴 `.webp` 资源 → [设计稿](plans/2026-07-05-banchong2-animal-import-design.md)、[实施计划](plans/2026-07-05-banchong2-animal-import-implementation.md)
 - 查英语学习资料包 / 外链扩展 → [英语学习/README](英语学习/README.md)、[设计稿](plans/2026-07-05-learning-center-english-hybrid-design.md)、[实施计划](plans/2026-07-05-learning-center-english-hybrid-implementation.md)
 - 查学习单该放学习页还是积分页 / 模板怎么选 → [积分学习打勾方案/README](积分学习打勾方案/README.md)、[模板 A 设计稿](plans/2026-07-05-daily-learning-sheet-template-a.md)、[收口结论](plans/2026-07-05-scheme-b-points-vs-learn.md)、[积分区学习单子页设计稿](plans/2026-07-05-points-learning-sheet-subtab-design.md)、[实施计划](plans/2026-07-05-points-learning-sheet-subtab-implementation.md)
 - 查版本变更 / CR / 进度关系 → [changes/README](changes/README.md)
@@ -170,4 +171,4 @@ docs/
 - **模块现状**以代码为第一真相。文档中标注的「✅ 已修复 / ⏳ 待办」会随补丁演进，差距清单的 P0/P1/P2 是当前快照。
 - **文档编号**统一使用 `PROGRESS-*`（进度）、`CR-*`（变更）、`DESIGN-*`（设计稿）、`PLAN-*`（实施计划）四类前缀；版本发布记录统一归口仓库根目录 `CHANGELOG.md`。
 - 修改代码后，请同步更新 [模块清单与接口](设计/模块清单与接口.md) 的 init 接入状态与 [差距清单](路线/差距清单与开发路线图.md) 的对应条目。
-- 角色数量口径：需求规格书采用「139 种（PVZ8+MC8+banchong91+original8）」，仓库评估曾用「147」口径（含 classpet 系列），差异已在规格书角色体系章说明。
+- 角色数量口径：历史文档曾出现 `139 / 147 / 198` 等阶段性口径；当前运行时以 `data/pets.json` 的 `total = 238` 为准，其中已包含 `banchong2` 的 `40` 只 `班宠乐园2` 动物宠物。

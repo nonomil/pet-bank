@@ -34,6 +34,8 @@
 | `TOPIC-HANZI-PARK` | [../汉字游乐场/README](../汉字游乐场/README.md) | 专题索引 | 当前活跃 | 汉字游乐场（排行榜 + 汉字玩法 + HSK词库 + 游乐场hub）设计稿/实施计划/参考案例已移入专题目录统一维护 |
 | `DESIGN-2026-07-05-01` | [2026-07-05-learning-center-summer-chinese-design](./2026-07-05-learning-center-summer-chinese-design.md) | 设计稿 | 已落地(v0.7.3) | 学习中心一级入口 + 资料包平台 + 幼小衔接暑假中文资料包的产品设计，明确页面、数据目录、进度与计分边界 |
 | `PLAN-2026-07-05-01` | [2026-07-05-learning-center-summer-chinese-implementation](./2026-07-05-learning-center-summer-chinese-implementation.md) | 实施计划 | 已落地(v0.7.3) | 学习中心与暑假中文资料包的分步实施计划，含数据合同、页面壳、进度发分、打印页与冒烟验证 |
+| `DESIGN-2026-07-05-BC2-01` | [2026-07-05-banchong2-animal-import-design](./2026-07-05-banchong2-animal-import-design.md) | 设计稿 | 已落地(v0.7.6) | `班宠乐园2` 动物导入设计：不新开顶层分馆，统一并入 `奇趣冒险馆 -> 萌爪伙伴册`，并明确 `banchong2` 来源与 `.webp` 资源策略 |
+| `PLAN-2026-07-05-BC2-01` | [2026-07-05-banchong2-animal-import-implementation](./2026-07-05-banchong2-animal-import-implementation.md) | 实施计划 | 已落地(v0.7.6) | `班宠乐园2` 动物导入的实施计划，覆盖来源快照、本地素材落盘、图鉴故事补齐、运行时接线与回归验证 |
 | `DESIGN-2026-07-05-EN-01` | [2026-07-05-learning-center-english-hybrid-design](./2026-07-05-learning-center-english-hybrid-design.md) | 设计稿 | 已落地(v0.7.5) | 英语混合资料包设计：当前项目负责计划 / 进度 / 计分，外部点读站负责章节阅读，同时预留自定义资料入口位 |
 | `PLAN-2026-07-05-EN-01` | [2026-07-05-learning-center-english-hybrid-implementation](./2026-07-05-learning-center-english-hybrid-implementation.md) | 实施计划 | 已落地(v0.7.5) | 英语混合资料包的数据文件、入口卡、外链 lesson、连续学习奖励与回归验证计划 |
 | `DESIGN-2026-07-05-LEARN-SHEET-A` | [2026-07-05-daily-learning-sheet-template-a](./2026-07-05-daily-learning-sheet-template-a.md) | 设计稿 | 已落地(v0.7.5) | 幼小衔接优先的学习单模板 A：4 个核心小项、总时长、卡点和睡前一句话，当前默认展示在积分区学习单子页 |
@@ -77,6 +79,8 @@
   直接去 [../路线地图大富翁融合/README.md](../路线地图大富翁融合/README.md)
 - 想看“学习中心是怎么设计并落地的”：
   先读 [2026-07-05-learning-center-summer-chinese-design](./2026-07-05-learning-center-summer-chinese-design.md) → [2026-07-05-learning-center-summer-chinese-implementation](./2026-07-05-learning-center-summer-chinese-implementation.md)
+- 想看“`班宠乐园2` 动物是怎么并到 `萌爪伙伴册` 的”：
+  先读 [2026-07-05-banchong2-animal-import-design](./2026-07-05-banchong2-animal-import-design.md) → [2026-07-05-banchong2-animal-import-implementation](./2026-07-05-banchong2-animal-import-implementation.md)
 - 想看“英语资料包怎么接进来、后面怎么继续扩”：
   先读 [2026-07-05-learning-center-english-hybrid-design](./2026-07-05-learning-center-english-hybrid-design.md) → [2026-07-05-learning-center-english-hybrid-implementation](./2026-07-05-learning-center-english-hybrid-implementation.md)
 - 想看“学习单到底放学习页还是积分页、默认该给孩子哪种模板”：

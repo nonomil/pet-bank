@@ -491,7 +491,7 @@ const PetSystem = (function () {
             mappedBySignature.set(signature, {
                 imageUrl: pet.imageUrl,
                 imageStages: pet.imageStages,
-                imageStyle: pet.imageStyle || (pet.source === 'banchong' ? 'banchong' : '')
+                imageStyle: pet.imageStyle || ((pet.source === 'banchong' || pet.source === 'banchong2') ? 'banchong' : '')
             });
         }
 
@@ -514,7 +514,7 @@ const PetSystem = (function () {
                 imageStyle: pet.imageStyle || ''
             };
 
-            if ((!normalized.imageUrl || !normalized.imageStages) && normalized.source === 'banchong') {
+            if ((!normalized.imageUrl || !normalized.imageStages) && (normalized.source === 'banchong' || normalized.source === 'banchong2')) {
                 const inherited = mappedBySignature.get(getStageSignature(pet));
                 if (inherited) {
                     normalized.imageUrl = normalized.imageUrl || inherited.imageUrl;

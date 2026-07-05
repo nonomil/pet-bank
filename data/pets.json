@@ -1,11 +1,12 @@
 {
   "version": "2.0",
-  "total": 198,
+  "total": 238,
   "sources": {
     "original": "pet-bank 原生 8 种",
     "banchong": "仓鼠大冒险 91 种",
     "classpet": "classpet-pro1.0 40 种",
-    "minecraft": "我的世界原版生物"
+    "minecraft": "我的世界原版生物",
+    "banchong2": "班宠乐园2 动物 40 种"
   },
   "rarity_config": {
     "common": {
@@ -3950,6 +3951,1492 @@
       "desc": "Minecraft 原版生物，像素方块风格",
       "source": "minecraft",
       "icon": "⛏️"
+    },
+    "萌爪伙伴族": {
+      "name": "萌爪伙伴族",
+      "count": 40,
+      "pets": [
+        {
+          "id": "bc2_alaskan",
+          "name": "阿拉斯加",
+          "emoji": "🐺",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 118,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_bichon",
+          "name": "比熊",
+          "emoji": "🐶",
+          "series": "萌爪伙伴族",
+          "rarity": "common",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_crystal_dino",
+          "name": "冰晶恐龙",
+          "emoji": "🦖",
+          "series": "萌爪伙伴族",
+          "rarity": "legendary",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 132,
+          "base_atk": 11,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_ragdoll",
+          "name": "布偶",
+          "emoji": "🐱",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 102,
+          "base_atk": 6,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_hamster",
+          "name": "仓鼠",
+          "emoji": "🐹",
+          "series": "萌爪伙伴族",
+          "rarity": "common",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 84,
+          "base_atk": 5,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_hedgehog",
+          "name": "刺猬",
+          "emoji": "🦔",
+          "series": "萌爪伙伴族",
+          "rarity": "common",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 86,
+          "base_atk": 5,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_dolphin",
+          "name": "海豚",
+          "emoji": "🐬",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 108,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_fox",
+          "name": "狐狸",
+          "emoji": "🦊",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 114,
+          "base_atk": 8,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_butterfly",
+          "name": "蝴蝶",
+          "emoji": "🦋",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 98,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_golden",
+          "name": "金毛",
+          "emoji": "🐕",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 112,
+          "base_atk": 6,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_golden_monkey",
+          "name": "金丝猴",
+          "emoji": "🐒",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 114,
+          "base_atk": 8,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_koi",
+          "name": "锦鲤",
+          "emoji": "🐟",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 108,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_orange_cat",
+          "name": "橘猫",
+          "emoji": "🐈",
+          "series": "萌爪伙伴族",
+          "rarity": "common",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 98,
+          "base_atk": 6,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_corgi",
+          "name": "柯基",
+          "emoji": "🐕",
+          "series": "萌爪伙伴族",
+          "rarity": "common",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 100,
+          "base_atk": 6,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_blue_cat",
+          "name": "蓝猫",
+          "emoji": "🐈",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 104,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_penguin",
+          "name": "企鹅",
+          "emoji": "🐧",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 108,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_lion",
+          "name": "狮子",
+          "emoji": "🦁",
+          "series": "萌爪伙伴族",
+          "rarity": "epic",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 120,
+          "base_atk": 9,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_bunny",
+          "name": "兔子",
+          "emoji": "🐇",
+          "series": "萌爪伙伴族",
+          "rarity": "common",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 90,
+          "base_atk": 5,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_turtle",
+          "name": "乌龟",
+          "emoji": "🐢",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 108,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_panda",
+          "name": "熊猫",
+          "emoji": "🐼",
+          "series": "萌爪伙伴族",
+          "rarity": "epic",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 120,
+          "base_atk": 9,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_alpaca",
+          "name": "羊驼",
+          "emoji": "🦙",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 114,
+          "base_atk": 8,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_silver_shaded",
+          "name": "银渐层",
+          "emoji": "🐈",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 101,
+          "base_atk": 6,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_white_snake",
+          "name": "白蛇",
+          "emoji": "🐍",
+          "series": "萌爪伙伴族",
+          "rarity": "epic",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 108,
+          "base_atk": 8,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_border_collie",
+          "name": "边牧",
+          "emoji": "🐕",
+          "series": "萌爪伙伴族",
+          "rarity": "epic",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 108,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_pomeranian",
+          "name": "博美",
+          "emoji": "🐶",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 108,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/博美-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/博美-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/博美-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/博美-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/博美-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/博美-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_elephant",
+          "name": "大象",
+          "emoji": "🐘",
+          "series": "萌爪伙伴族",
+          "rarity": "epic",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 120,
+          "base_atk": 9,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/大象-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/大象-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/大象-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/大象-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/大象-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/大象-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_german_shepherd",
+          "name": "德牧",
+          "emoji": "🐕",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 108,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_phoenix",
+          "name": "凤凰",
+          "emoji": "🪽",
+          "series": "萌爪伙伴族",
+          "rarity": "legendary",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 132,
+          "base_atk": 11,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_golden_shaded",
+          "name": "金渐层",
+          "emoji": "🐈",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 104,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_nine_tailed_fox",
+          "name": "九尾狐",
+          "emoji": "🦊",
+          "series": "萌爪伙伴族",
+          "rarity": "legendary",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 132,
+          "base_atk": 11,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_capybara",
+          "name": "卡皮巴拉",
+          "emoji": "🦫",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 120,
+          "base_atk": 5,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_tabby_cat",
+          "name": "狸花猫",
+          "emoji": "🐈",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 104,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_american_shorthair",
+          "name": "美短",
+          "emoji": "🐈",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 104,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/美短-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/美短-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/美短-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/美短-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/美短-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/美短-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_cow_cat",
+          "name": "奶牛猫",
+          "emoji": "🐈",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 104,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_samoyed",
+          "name": "萨摩耶",
+          "emoji": "🐕",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 106,
+          "base_atk": 6,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_calico_cat",
+          "name": "三花猫",
+          "emoji": "🐈",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 104,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_snail",
+          "name": "蜗牛",
+          "emoji": "🐌",
+          "series": "萌爪伙伴族",
+          "rarity": "common",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 86,
+          "base_atk": 5,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_lizard",
+          "name": "蜥蜴",
+          "emoji": "🦎",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 102,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_schnauzer",
+          "name": "雪纳瑞",
+          "emoji": "🐕",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 108,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2_parrot",
+          "name": "鹦鹉",
+          "emoji": "🦜",
+          "series": "萌爪伙伴族",
+          "rarity": "rare",
+          "desc": "萌爪伙伴册宠物",
+          "base_hp": 98,
+          "base_atk": 7,
+          "source": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-5.webp"
+            }
+          ]
+        }
+      ]
     }
   },
   "flat": [
@@ -10756,6 +12243,1966 @@
       "base_def": 28,
       "base_spd": 6,
       "price": 2000
+    },
+    {
+      "id": "bc2_alaskan",
+      "name": "阿拉斯加",
+      "emoji": "🐺",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 118,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/阿拉斯加-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/阿拉斯加-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/阿拉斯加-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/阿拉斯加-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/阿拉斯加-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/阿拉斯加-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/阿拉斯加-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_bichon",
+      "name": "比熊",
+      "emoji": "🐶",
+      "series": "萌爪伙伴族",
+      "rarity": "common",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-5.webp"
+        }
+      ],
+      "base_def": 4,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/比熊-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/比熊-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/比熊-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/比熊-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/比熊-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/比熊-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/比熊-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_crystal_dino",
+      "name": "冰晶恐龙",
+      "emoji": "🦖",
+      "series": "萌爪伙伴族",
+      "rarity": "legendary",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 132,
+      "base_atk": 11,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-5.webp"
+        }
+      ],
+      "base_def": 8,
+      "base_spd": 9,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/冰晶恐龙-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/冰晶恐龙-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/冰晶恐龙-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/冰晶恐龙-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/冰晶恐龙-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/冰晶恐龙-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/冰晶恐龙-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_ragdoll",
+      "name": "布偶",
+      "emoji": "🐱",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 102,
+      "base_atk": 6,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-5.webp"
+        }
+      ],
+      "base_def": 4,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/布偶-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/布偶-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/布偶-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/布偶-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/布偶-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/布偶-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/布偶-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_hamster",
+      "name": "仓鼠",
+      "emoji": "🐹",
+      "series": "萌爪伙伴族",
+      "rarity": "common",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 84,
+      "base_atk": 5,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 7,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/仓鼠-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/仓鼠-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/仓鼠-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/仓鼠-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/仓鼠-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/仓鼠-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/仓鼠-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_hedgehog",
+      "name": "刺猬",
+      "emoji": "🦔",
+      "series": "萌爪伙伴族",
+      "rarity": "common",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 86,
+      "base_atk": 5,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 7,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/刺猬-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/刺猬-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/刺猬-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/刺猬-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/刺猬-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/刺猬-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/刺猬-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_dolphin",
+      "name": "海豚",
+      "emoji": "🐬",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 108,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/海豚-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/海豚-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/海豚-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/海豚-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/海豚-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/海豚-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/海豚-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_fox",
+      "name": "狐狸",
+      "emoji": "🦊",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 114,
+      "base_atk": 8,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-5.webp"
+        }
+      ],
+      "base_def": 7,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/狐狸-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/狐狸-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/狐狸-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/狐狸-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/狐狸-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/狐狸-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/狐狸-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_butterfly",
+      "name": "蝴蝶",
+      "emoji": "🦋",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 98,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 8,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/蝴蝶-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/蝴蝶-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/蝴蝶-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/蝴蝶-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/蝴蝶-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/蝴蝶-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/蝴蝶-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_golden",
+      "name": "金毛",
+      "emoji": "🐕",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 112,
+      "base_atk": 6,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/金毛-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/金毛-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/金毛-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/金毛-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/金毛-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/金毛-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/金毛-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_golden_monkey",
+      "name": "金丝猴",
+      "emoji": "🐒",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 114,
+      "base_atk": 8,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-5.webp"
+        }
+      ],
+      "base_def": 7,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/金丝猴-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/金丝猴-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/金丝猴-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/金丝猴-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/金丝猴-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/金丝猴-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/金丝猴-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_koi",
+      "name": "锦鲤",
+      "emoji": "🐟",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 108,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/锦鲤-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/锦鲤-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/锦鲤-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/锦鲤-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/锦鲤-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/锦鲤-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/锦鲤-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_orange_cat",
+      "name": "橘猫",
+      "emoji": "🐈",
+      "series": "萌爪伙伴族",
+      "rarity": "common",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 98,
+      "base_atk": 6,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-5.webp"
+        }
+      ],
+      "base_def": 4,
+      "base_spd": 4,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/橘猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/橘猫-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/橘猫-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/橘猫-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/橘猫-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/橘猫-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/橘猫-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_corgi",
+      "name": "柯基",
+      "emoji": "🐕",
+      "series": "萌爪伙伴族",
+      "rarity": "common",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 100,
+      "base_atk": 6,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-5.webp"
+        }
+      ],
+      "base_def": 4,
+      "base_spd": 7,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/柯基-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/柯基-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/柯基-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/柯基-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/柯基-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/柯基-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/柯基-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_blue_cat",
+      "name": "蓝猫",
+      "emoji": "🐈",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 104,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/蓝猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/蓝猫-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/蓝猫-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/蓝猫-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/蓝猫-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/蓝猫-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/蓝猫-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_penguin",
+      "name": "企鹅",
+      "emoji": "🐧",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 108,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/企鹅-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/企鹅-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/企鹅-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/企鹅-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/企鹅-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/企鹅-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/企鹅-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_lion",
+      "name": "狮子",
+      "emoji": "🦁",
+      "series": "萌爪伙伴族",
+      "rarity": "epic",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 120,
+      "base_atk": 9,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-5.webp"
+        }
+      ],
+      "base_def": 8,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/狮子-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/狮子-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/狮子-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/狮子-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/狮子-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/狮子-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/狮子-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_bunny",
+      "name": "兔子",
+      "emoji": "🐇",
+      "series": "萌爪伙伴族",
+      "rarity": "common",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 90,
+      "base_atk": 5,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 8,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/兔子-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/兔子-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/兔子-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/兔子-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/兔子-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/兔子-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/兔子-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_turtle",
+      "name": "乌龟",
+      "emoji": "🐢",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 108,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/乌龟-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/乌龟-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/乌龟-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/乌龟-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/乌龟-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/乌龟-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/乌龟-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_panda",
+      "name": "熊猫",
+      "emoji": "🐼",
+      "series": "萌爪伙伴族",
+      "rarity": "epic",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 120,
+      "base_atk": 9,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-5.webp"
+        }
+      ],
+      "base_def": 8,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/熊猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/熊猫-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/熊猫-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/熊猫-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/熊猫-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/熊猫-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/熊猫-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_alpaca",
+      "name": "羊驼",
+      "emoji": "🦙",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 114,
+      "base_atk": 8,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-5.webp"
+        }
+      ],
+      "base_def": 7,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/羊驼-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/羊驼-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/羊驼-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/羊驼-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/羊驼-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/羊驼-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/羊驼-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_silver_shaded",
+      "name": "银渐层",
+      "emoji": "🐈",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 101,
+      "base_atk": 6,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-5.webp"
+        }
+      ],
+      "base_def": 4,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/银渐层-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/银渐层-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/银渐层-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/银渐层-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/银渐层-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/银渐层-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/银渐层-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_white_snake",
+      "name": "白蛇",
+      "emoji": "🐍",
+      "series": "萌爪伙伴族",
+      "rarity": "epic",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 108,
+      "base_atk": 8,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-5.webp"
+        }
+      ],
+      "base_def": 7,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/白蛇-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/白蛇-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/白蛇-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/白蛇-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/白蛇-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/白蛇-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/白蛇-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_border_collie",
+      "name": "边牧",
+      "emoji": "🐕",
+      "series": "萌爪伙伴族",
+      "rarity": "epic",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 108,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 8,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/边牧-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/边牧-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/边牧-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/边牧-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/边牧-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/边牧-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/边牧-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_pomeranian",
+      "name": "博美",
+      "emoji": "🐶",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 108,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/博美-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/博美-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/博美-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/博美-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/博美-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/博美-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/博美-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/博美-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/博美-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/博美-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/博美-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/博美-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/博美-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_elephant",
+      "name": "大象",
+      "emoji": "🐘",
+      "series": "萌爪伙伴族",
+      "rarity": "epic",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 120,
+      "base_atk": 9,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/大象-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/大象-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/大象-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/大象-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/大象-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/大象-5.webp"
+        }
+      ],
+      "base_def": 8,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/大象-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/大象-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/大象-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/大象-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/大象-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/大象-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/大象-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_german_shepherd",
+      "name": "德牧",
+      "emoji": "🐕",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 108,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/德牧-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/德牧-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/德牧-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/德牧-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/德牧-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/德牧-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/德牧-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_phoenix",
+      "name": "凤凰",
+      "emoji": "🪽",
+      "series": "萌爪伙伴族",
+      "rarity": "legendary",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 132,
+      "base_atk": 11,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-5.webp"
+        }
+      ],
+      "base_def": 8,
+      "base_spd": 9,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/凤凰-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/凤凰-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/凤凰-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/凤凰-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/凤凰-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/凤凰-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/凤凰-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_golden_shaded",
+      "name": "金渐层",
+      "emoji": "🐈",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 104,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/金渐层-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/金渐层-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/金渐层-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/金渐层-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/金渐层-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/金渐层-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/金渐层-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_nine_tailed_fox",
+      "name": "九尾狐",
+      "emoji": "🦊",
+      "series": "萌爪伙伴族",
+      "rarity": "legendary",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 132,
+      "base_atk": 11,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-5.webp"
+        }
+      ],
+      "base_def": 8,
+      "base_spd": 9,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/九尾狐-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/九尾狐-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/九尾狐-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/九尾狐-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/九尾狐-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/九尾狐-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/九尾狐-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_capybara",
+      "name": "卡皮巴拉",
+      "emoji": "🦫",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 120,
+      "base_atk": 5,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 4,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/卡皮巴拉-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/卡皮巴拉-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/卡皮巴拉-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/卡皮巴拉-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/卡皮巴拉-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/卡皮巴拉-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/卡皮巴拉-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_tabby_cat",
+      "name": "狸花猫",
+      "emoji": "🐈",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 104,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/狸花猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/狸花猫-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/狸花猫-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/狸花猫-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/狸花猫-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/狸花猫-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/狸花猫-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_american_shorthair",
+      "name": "美短",
+      "emoji": "🐈",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 104,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/美短-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/美短-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/美短-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/美短-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/美短-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/美短-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/美短-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/美短-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/美短-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/美短-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/美短-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/美短-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/美短-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_cow_cat",
+      "name": "奶牛猫",
+      "emoji": "🐈",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 104,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/奶牛猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/奶牛猫-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/奶牛猫-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/奶牛猫-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/奶牛猫-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/奶牛猫-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/奶牛猫-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_samoyed",
+      "name": "萨摩耶",
+      "emoji": "🐕",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 106,
+      "base_atk": 6,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/萨摩耶-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/萨摩耶-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/萨摩耶-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/萨摩耶-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/萨摩耶-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/萨摩耶-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/萨摩耶-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_calico_cat",
+      "name": "三花猫",
+      "emoji": "🐈",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 104,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/三花猫-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/三花猫-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/三花猫-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/三花猫-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/三花猫-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/三花猫-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/三花猫-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_snail",
+      "name": "蜗牛",
+      "emoji": "🐌",
+      "series": "萌爪伙伴族",
+      "rarity": "common",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 86,
+      "base_atk": 5,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 7,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/蜗牛-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/蜗牛-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/蜗牛-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/蜗牛-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/蜗牛-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/蜗牛-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/蜗牛-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_lizard",
+      "name": "蜥蜴",
+      "emoji": "🦎",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 102,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/蜥蜴-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/蜥蜴-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/蜥蜴-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/蜥蜴-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/蜥蜴-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/蜥蜴-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/蜥蜴-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_schnauzer",
+      "name": "雪纳瑞",
+      "emoji": "🐕",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 108,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/雪纳瑞-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/雪纳瑞-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/雪纳瑞-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/雪纳瑞-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/雪纳瑞-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/雪纳瑞-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/雪纳瑞-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2_parrot",
+      "name": "鹦鹉",
+      "emoji": "🦜",
+      "series": "萌爪伙伴族",
+      "rarity": "rare",
+      "desc": "萌爪伙伴册宠物",
+      "base_hp": 98,
+      "base_atk": 7,
+      "source": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 8,
+      "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/萌爪伙伴族/鹦鹉-0.webp",
+        "1": "assets/banchong2/萌爪伙伴族/鹦鹉-1.webp",
+        "2": "assets/banchong2/萌爪伙伴族/鹦鹉-2.webp",
+        "3": "assets/banchong2/萌爪伙伴族/鹦鹉-3.webp",
+        "4": "assets/banchong2/萌爪伙伴族/鹦鹉-4.webp",
+        "5": "assets/banchong2/萌爪伙伴族/鹦鹉-5.webp"
+      },
+      "imageStyle": "banchong"
     }
   ]
 }
