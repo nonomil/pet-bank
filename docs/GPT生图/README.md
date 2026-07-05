@@ -28,6 +28,7 @@
 | 宠物图鉴分馆封面合成图 | 4 | `assets/pokedex-halls/` | Agnes 背景 + 本地代表卡叠加 | 本地合成 |
 | 宠物卡牌 V2 底图 | 4 | `assets/cards/v2/` | Agnes API 批量 | agnes-image-2.1-flash |
 | 宠物卡牌 V2 合成图 | 198 | `assets/cards/composed-v2/` | Agnes 底图 + 本地脚本叠中文属性 | 本地合成 |
+| 学习中心中文资料包入口封面 | 1 | `assets/learn/` | Agnes API 单张生成 | agnes-image-2.1-flash |
 
 > v0.5.3 用 Agnes 新 key（`sk-Dt1UZ...`）批量生成 24 张 galgame 素材。提示词见 [探索 galgame 提示词](../plans/2026-06-29-探索故事galgame重设计.md) §4。
 >
@@ -36,6 +37,9 @@
 >
 > v0.5.5 新增宠物卡牌 V2 流程：
 > 先用 `scripts/generators/gen_card_frames_v2.py` 生成 4 张卡牌底图，再用 `scripts/generators/compose_cards_v2.py` 批量叠加宠物立绘、中文名称和 `生命 / 攻击 / 防御 / 速度` 属性，输出到 `assets/cards/composed-v2/`。
+>
+> v0.7.5 新增学习中心中文资料包入口封面流程：
+> 使用 `scripts/generators/gen_learning_portal_covers.py` 生成 `assets/learn/portal-chinese-summer-classroom-20260705.png`，风格为 `暖黄绘本课堂`，用于学习入口大厅的中文资料包封面。
 
 ---
 

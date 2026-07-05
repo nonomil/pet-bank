@@ -2457,14 +2457,15 @@
         const totalPointsEarned = sumRewardPoints(rewards);
         const overallPercent = totalProgress.total ? Math.round((totalProgress.completed / totalProgress.total) * 100) : 0;
         const recentRewardItems = getRecentRewardItems(rewards, packRecords);
+        const portalChineseImage = 'assets/learn/portal-chinese-summer-classroom-20260705.png';
         const portalSiteImage = 'assets/learn/portal-smartedu-home-20260705.png';
         const portalEnglishImage = 'assets/learn/portal-minecraft-english-cover-20260705.png';
         const portalCards = [
             summerRecord ? renderPortalCard({
                 id: 'chinese',
                 theme: 'chinese',
-                imageSrc: 'assets/decor/book_stack.webp',
-                imageStyle: 'object-fit:contain;padding:22px;background:linear-gradient(180deg, #fff6d8 0%, #fffef8 100%);',
+                imageSrc: portalChineseImage,
+                imageStyle: 'object-position:center 56%;',
                 badges: ['晨读', '古诗', '识字'],
                 kicker: '中文学习',
                 title: summerRecord.packMeta?.title || '中文资料包',

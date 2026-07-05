@@ -87,6 +87,7 @@ async function main() {
         pageActive: !!learnPage?.classList.contains('active'),
         pageText: learnPage?.innerText || '',
         portalCards,
+        chinesePortalImage: learnPage?.querySelector('[data-learn-portal-card="chinese"] img')?.getAttribute('src') || '',
         englishPortalImage: learnPage?.querySelector('[data-learn-portal-card="english"] img')?.getAttribute('src') || ''
       };
     });
@@ -98,6 +99,7 @@ async function main() {
     check('学习中心首页显示暑假中文资料包入口', /暑假中文|幼小衔接/.test(learnRuntime.pageText), learnRuntime.pageText.slice(0, 60));
     check('学习中心首页显示网站入口型资料包', /网站入口|学习网站/.test(learnRuntime.pageText), learnRuntime.pageText.slice(0, 120));
     check('学习中心首页显示英语资料包入口', /Minecraft我的世界英语故事|Minecraft英语/.test(learnRuntime.pageText), learnRuntime.pageText.slice(0, 180));
+    check('学习中心首页中文入口已换成暖黄绘本封面', /portal-chinese-summer-classroom-20260705\.png/.test(learnRuntime.chinesePortalImage), learnRuntime.chinesePortalImage);
     check('学习中心首页英语入口已换成 Minecraft 封面图', /portal-minecraft-english-cover-20260705\.png/.test(learnRuntime.englishPortalImage), learnRuntime.englishPortalImage);
     check('学习首页首屏可直接看到汉字学习入口', /汉字/.test(learnRuntime.pageText), learnRuntime.pageText.slice(0, 220));
 

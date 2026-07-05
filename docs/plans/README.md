@@ -40,6 +40,8 @@
 | `DECISION-2026-07-05-LEARN-SHEET` | [2026-07-05-scheme-b-points-vs-learn](./2026-07-05-scheme-b-points-vs-learn.md) | 收口结论 | 已收口 | 明确学习页负责资料入口、积分区学习单子页负责学习打勾，设置页选择模板 A/B/C 的最终方案 |
 | `DESIGN-2026-07-05-LEARN-SHEET-B` | [2026-07-05-points-learning-sheet-subtab-design](./2026-07-05-points-learning-sheet-subtab-design.md) | 设计稿 | 已落地(v0.7.5) | 方案 B 设计稿：把学习单从 `积分 -> 今日打卡` 拆成 `积分` 大 tab 下独立的 `学习单` 子页 |
 | `PLAN-2026-07-05-LEARN-SHEET-B` | [2026-07-05-points-learning-sheet-subtab-implementation](./2026-07-05-points-learning-sheet-subtab-implementation.md) | 实施计划 | 已落地(v0.7.5) | 方案 B 的具体落地步骤、回归点与文档回填要求 |
+| `DESIGN-2026-07-05-LEARN-PORTAL-CN` | [2026-07-05-learning-center-chinese-portal-cover-design](./2026-07-05-learning-center-chinese-portal-cover-design.md) | 设计稿 | 已落地(v0.7.5) | 中文资料包入口封面改造：暖黄绘本课堂 + 课桌学习角 Agnes 主视觉 |
+| `PLAN-2026-07-05-LEARN-PORTAL-CN` | [2026-07-05-learning-center-chinese-portal-cover-implementation](./2026-07-05-learning-center-chinese-portal-cover-implementation.md) | 实施计划 | 已落地(v0.7.5) | 中文资料包入口封面图的 Agnes 生成、接图与 smoke 校验计划 |
 | `DESIGN-2026-07-05-02` | [2026-07-05-family-account-social-design](./2026-07-05-family-account-social-design.md) | 设计稿 | 实施中 | 家长账号、家庭、多孩子、串门与数学/汉字异步 PK 的正式设计稿 |
 | `PLAN-2026-07-05-02` | [2026-07-05-family-account-social-implementation](./2026-07-05-family-account-social-implementation.md) | 实施计划 | 主干已落地，待联调 | 基于 Supabase 轻后端的家庭账号社交体系分任务实施计划 |
 | `TASK-2026-07-05-02` | [2026-07-05-family-account-social-task-list](./2026-07-05-family-account-social-task-list.md) | 任务清单 | 进行中 | 扁平推进清单，当前重点转向 P6 联调上线 |
