@@ -77,7 +77,7 @@
 - 旧句子“首页不用先铺一堆模块...”不再出现在页面正文
 - 轮播存在，渲染 5 张 slide
 - 下方入口卡渲染 4 张
-- 点击当前轮播图后进入 `page-learn`，顶部导航高亮 `learn`
+- 逐张点击 5 张轮播图，分别进入 `page-learn`、`page-pet`、`page-explore`、`page-playground`、`page-today`
 - 390px 手机宽度下无横向溢出
 
 截图产物位于：
