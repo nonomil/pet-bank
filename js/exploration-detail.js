@@ -73,7 +73,12 @@ const ExplorationDetail = (function () {
             try {
                 const s = PetSystem.getState();
                 if (s.species && s.hp <= 0) {
-                    alert('宠物倒下了，请先去宠物小屋救援！');
+                    if (typeof window.switchPage === 'function') window.switchPage('explore');
+                    if (typeof window.showToast === 'function') {
+                        window.showToast('宠物倒下了，先去宠物小屋救援吧');
+                    } else {
+                        alert('宠物倒下了，请先去宠物小屋救援！');
+                    }
                     return;
                 }
             } catch (e) {}
