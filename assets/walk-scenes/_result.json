@@ -1,0 +1,39 @@
+{
+  "model": "agnes-image-2.1-flash",
+  "size": "1024x1024",
+  "results": [
+    {
+      "ok": true,
+      "slug": "park",
+      "title": "晨光花园",
+      "path": "G:\\StudyCode\\宠物积分系统\\assets\\walk-scenes\\park.png",
+      "size_kb": 2074.1,
+      "skipped": true
+    },
+    {
+      "ok": true,
+      "slug": "river",
+      "title": "溪流步道",
+      "path": "G:\\StudyCode\\宠物积分系统\\assets\\walk-scenes\\river.png",
+      "size_kb": 1960.2,
+      "skipped": true
+    },
+    {
+      "ok": true,
+      "slug": "mall",
+      "title": "林间草坡",
+      "path": "G:\\StudyCode\\宠物积分系统\\assets\\walk-scenes\\mall.png",
+      "size_kb": 2155.3,
+      "skipped": true
+    },
+    {
+      "ok": true,
+      "slug": "school",
+      "title": "花园阳台",
+      "path": "G:\\StudyCode\\宠物积分系统\\assets\\walk-scenes\\school.png",
+      "size_kb": 2006.1,
+      "skipped": true
+    }
+  ],
+  "total_elapsed": 0.0
+}

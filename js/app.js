@@ -508,8 +508,8 @@ const TOP_HUB_MENU_CONFIG = {
     pet: [
         { page: 'pet', label: '我的宠物' },
         { page: 'home', label: '宠物小屋' },
-        { page: 'card', label: '卡片图鉴' },
-        { action: 'walk', label: '遛弯' }
+        { page: 'walk', label: '遛弯' },
+        { page: 'card', label: '卡片图鉴' }
     ],
     playground: [
         { page: 'playground', label: '游乐场首页' },
@@ -602,17 +602,12 @@ function closeSectionMenus() {
     });
 }
 
+let pendingWalkRouteId = '';
+
 function openPetWalk(routeId) {
     closeSectionMenus();
-    switchPage('pet');
-    requestAnimationFrame(() => {
-        if (window.WalkSystem && typeof WalkSystem.renderUI === 'function') {
-            WalkSystem.renderUI('walkArea');
-            if (routeId && typeof WalkSystem.startWalk === 'function') {
-                WalkSystem.startWalk(routeId);
-            }
-        }
-    });
+    pendingWalkRouteId = routeId || '';
+    switchPage('walk');
 }
 
 document.addEventListener('click', (event) => {
@@ -657,6 +652,17 @@ function switchPage(page) {
     // 切换到特定页面时执行特定渲染
     if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     if (page === 'pet') renderPetPage();
+    if (page === 'walk') {
+        renderWalkPage();
+        if (!pendingWalkRouteId && window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
+            void window.SocialSystem.refresh()
+                .then(function () {
+                    const walkPage = document.getElementById('page-walk');
+                    if (walkPage && walkPage.classList.contains('active')) renderWalkPage();
+                })
+                .catch(function () {});
+        }
+    }
     if (page === 'home-visit' && window.SocialSystem && typeof window.SocialSystem.renderFriendHomeVisit === 'function') {
         window.SocialSystem.renderFriendHomeVisit('friend-home-visit-root');
     }
@@ -898,9 +904,230 @@ window.showToast = showToast;
         if (overlay) overlay.style.display = 'none';
     };
 
+function escapeAppHtml(value) {
+    return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function getPetStageImageForStage(speciesData, stageIdx) {
+    if (!speciesData) return '';
+    const key = String(stageIdx || 0);
+    if (speciesData.imageStages && speciesData.imageStages[key]) {
+        return speciesData.imageStages[key];
+    }
+    return speciesData.imageUrl || '';
+}
+
+function getWalkDaySummary() {
+    const today = new Date().toDateString();
+    const raw = JSON.parse(localStorage.getItem('petbank_walk_data') || '{}');
+    const count = raw.date === today ? Number(raw.count || 0) : 0;
+    const max = 3;
+    return {
+        count: count,
+        max: max,
+        remaining: Math.max(0, max - count)
+    };
+}
+
+function canWalkWithPeer(peer) {
+    return Boolean(peer) && (peer.peerType === 'household' || peer.visit_access !== 'private');
+}
+
+function canOpenPeerHome(peer) {
+    return Boolean(peer) && (peer.peerType === 'household' || peer.home_visibility !== 'private');
+}
+
+function getWalkPeerSourceLabel(peer) {
+    return peer && peer.peerType === 'household' ? '家庭成员' : '好友';
+}
+
+function renderWalkPage() {
+    const root = document.getElementById('walk-page-root');
+    if (!root) return;
+
+    const pet = PetSystem.getState();
+    const species = PetSystem.getAllSpecies();
+    const sp = pet.species ? species.find(function(item) { return item.id === pet.species; }) : null;
+    const socialState = window.SocialSystem && typeof window.SocialSystem.getState === 'function'
+        ? window.SocialSystem.getState()
+        : { loading: false, info: '', error: '', activeCloudChild: null, householdPeers: [], friends: [], visits: [] };
+    const walkSummary = getWalkDaySummary();
+
+    if (!pet.species) {
+        pendingWalkRouteId = '';
+        root.innerHTML = `
+            <div class="card walk-empty-card">
+                <div class="card-body text-center">
+                    <h2 class="text-lg font-bold">🚶 遛弯还没开始</h2>
+                    <p class="text-sm text-muted mt-2">先去我的宠物里认养伙伴，再来这里挑路线、看好友、发起一起遛弯。</p>
+                    <button class="btn-primary mt-4" type="button" onclick="switchPage('pet')">先去认养宠物</button>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    const combinedPeers = [];
+    const seen = new Set();
+    socialState.householdPeers.concat(socialState.friends).forEach(function(peer) {
+        if (!peer || seen.has(peer.id)) return;
+        seen.add(peer.id);
+        combinedPeers.push(peer);
+    });
+    const availablePeers = combinedPeers.filter(canWalkWithPeer);
+    const pendingInvites = (socialState.visits || []).filter(function(visit) {
+        return visit && visit.pendingWalkInvite;
+    });
+    const walkBuddyMarkup = socialState.loading
+        ? '<div class="social-empty">正在刷新可一起遛弯的家庭成员和好友…</div>'
+        : !socialState.activeCloudChild
+            ? `
+                <div class="social-empty">先在设置里登录家长账号并同步当前孩子，好友遛弯列表才会亮起来。</div>
+                <div class="social-cta-row">
+                    <button class="btn-primary social-main-btn" type="button" onclick="switchPage('settings')">去设置连接账号</button>
+                </div>
+            `
+            : availablePeers.length
+                ? availablePeers.map(function(peer) {
+                    const petSummary = peer.pet_summary_json || {};
+                    const homeSummary = peer.home_summary_json || {};
+                    const peerId = escapeAppHtml(peer.id);
+                    return `
+                        <div class="social-friend-card walk-buddy-card">
+                            <div class="social-friend-main">
+                                <div class="social-friend-emoji">${escapeAppHtml(peer.emoji || '🐾')}</div>
+                                <div class="social-friend-copy">
+                                    <strong>${escapeAppHtml(peer.display_name || '未命名好友')}</strong>
+                                    <span>${escapeAppHtml(getWalkPeerSourceLabel(peer))} · ${escapeAppHtml(peer.home_visibility === 'private' ? '仅家庭可见' : '好友可见')}</span>
+                                </div>
+                            </div>
+                            <div class="social-house-preview">
+                                <div class="social-house-grid">
+                                    <div class="social-house-chip">🐾 ${escapeAppHtml(petSummary.species_name || '还没同步宠物')}</div>
+                                    <div class="social-house-chip">🏠 ${escapeAppHtml(homeSummary.theme_name || '默认小屋')}</div>
+                                    <div class="social-house-chip">✨ 胜场 ${escapeAppHtml(petSummary.wins || 0)}</div>
+                                    <div class="social-house-chip">🧭 探索 ${escapeAppHtml(petSummary.explorations || 0)}</div>
+                                </div>
+                            </div>
+                            <div class="social-friend-actions">
+                                <button class="btn-primary social-mini-btn" type="button" onclick="SocialSystem.openWalkInvite('${peerId}')">🚶 约一起遛弯</button>
+                                <button class="btn-secondary social-mini-btn" type="button" onclick="SocialSystem.openPeerHome('${peerId}')" ${canOpenPeerHome(peer) ? '' : 'disabled'}>🏠 去小屋看看</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('')
+                : '<div class="social-empty">还没有可一起遛弯的好友。先把多个孩子同步到同一个家庭，或去设置里兑换好友码。</div>';
+    const inviteMarkup = pendingInvites.length
+        ? pendingInvites.map(function(visit) {
+            const peerId = escapeAppHtml(visit.peerChildId);
+            const visitId = escapeAppHtml(visit.id);
+            return `
+                <div class="social-visit-item walk-invite-card">
+                    <div class="social-visit-title">📨 ${escapeAppHtml(visit.peerEmoji || '🐾')} ${escapeAppHtml(visit.peerName || '好友')} 邀请你一起遛弯</div>
+                    <div class="social-visit-body">同一路线：${escapeAppHtml(visit.routeName || '好友推荐路线')}</div>
+                    <div class="social-friend-actions">
+                        <button class="btn-primary social-mini-btn" type="button" onclick="SocialSystem.acceptWalkInvite('${visitId}')">按同路线遛弯</button>
+                        <button class="btn-secondary social-mini-btn" type="button" onclick="SocialSystem.openPeerHome('${peerId}')">先去看看小屋</button>
+                    </div>
+                </div>
+            `;
+        }).join('')
+        : '<div class="social-empty">暂时还没有收到一起遛弯邀请。你可以先从左边好友列表发起邀请。</div>';
+
+    root.innerHTML = `
+        <section class="walk-page-shell">
+            <div class="walk-scene-stage-wrap">
+                <div id="walk-scene-stage"></div>
+            </div>
+            <div class="walk-page-hero card">
+                <div class="card-body walk-page-hero-body">
+                    <div class="walk-page-copy">
+                        <p class="walk-page-kicker">遛弯中心 / 户外版宠物小屋</p>
+                        <h2>带着 ${escapeAppHtml(pet.species_data?.name || '小伙伴')} 去不同户外场景里散步</h2>
+                        <p>这页现在更像宠物小屋的户外版本：上面是大场景舞台，下面保留好友邀请、路线记录和社交入口。</p>
+                        <div class="walk-page-metrics">
+                            <div class="walk-page-metric">
+                                <span>今日剩余</span>
+                                <strong>${walkSummary.remaining}/${walkSummary.max}</strong>
+                            </div>
+                            <div class="walk-page-metric">
+                                <span>当前等级</span>
+                                <strong>Lv.${escapeAppHtml(pet.level)}</strong>
+                            </div>
+                            <div class="walk-page-metric">
+                                <span>当前体力</span>
+                                <strong>${escapeAppHtml(pet.hp)}/${escapeAppHtml(pet.total_max_hp)}</strong>
+                            </div>
+                        </div>
+                        <div class="walk-page-links">
+                            <button class="btn-secondary social-mini-btn" type="button" onclick="switchPage('home')">🏠 回宠物小屋互动</button>
+                            <button class="btn-secondary social-mini-btn" type="button" onclick="switchPage('pet')">📘 看成长档案</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ${socialState.error ? `<div class="auth-notice auth-error">${escapeAppHtml(socialState.error)}</div>` : ''}
+            ${socialState.info ? `<div class="auth-notice auth-info">${escapeAppHtml(socialState.info)}</div>` : ''}
+            <div class="walk-page-grid">
+                <div class="card">
+                    <div class="card-header flex items-center justify-between">
+                        <h3 class="text-sm font-bold">👫 可约一起遛弯的伙伴</h3>
+                        <span class="text-xs text-muted">${availablePeers.length} 位</span>
+                    </div>
+                    <div class="card-body walk-page-list">
+                        ${walkBuddyMarkup}
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header flex items-center justify-between">
+                        <h3 class="text-sm font-bold">📬 待回应邀请</h3>
+                        <span class="text-xs text-muted">${pendingInvites.length} 条</span>
+                    </div>
+                    <div class="card-body walk-page-list">
+                        ${inviteMarkup}
+                    </div>
+                </div>
+            </div>
+            <div class="card walk-route-shell">
+                <div class="card-header flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold">🗺️ 选择路线出发</h3>
+                        <p class="text-xs text-muted mt-1">这里负责真正的路线选择、遛弯结算和最近记录。</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="walk-route-panel"></div>
+                </div>
+            </div>
+        </section>
+    `;
+
+    if (window.WalkSystem && typeof WalkSystem.renderUI === 'function') {
+        if (typeof WalkSystem.renderAdventureStage === 'function') {
+            WalkSystem.renderAdventureStage('walk-scene-stage');
+        }
+        WalkSystem.renderUI('walk-route-panel');
+        if (pendingWalkRouteId && typeof WalkSystem.startWalk === 'function') {
+            const routeId = pendingWalkRouteId;
+            pendingWalkRouteId = '';
+            requestAnimationFrame(function() {
+                WalkSystem.startWalk(routeId);
+            });
+        }
+    }
+}
+
+window.renderWalkPage = renderWalkPage;
+
 function renderPetPage() {
     const pet = PetSystem.getState();
     const species = PetSystem.getAllSpecies();
+    const currentSpecies = pet.species ? species.find(function(item) { return item.id === pet.species; }) : null;
 
     // 渲染宠物图片（替代emoji）
     const displayImg = document.getElementById('petDisplayImg');
@@ -908,7 +1135,7 @@ function renderPetPage() {
     const nameDisplay = document.getElementById('petNameDisplay');
     const stageDisplay = document.getElementById('petStageDisplay');
     if (pet.species) {
-        const sp = species.find(s => s.id === pet.species);
+        const sp = currentSpecies;
         // 默认按成长阶段(stage)显示(蛋→幼崽→…→终极)；仅 PVZ/minecraft 的 happy/attack 动作才用动作图
         const isPosePet = sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft');
         const isEgg = pet.level < 3;
@@ -956,6 +1183,78 @@ function renderPetPage() {
     document.getElementById('petItemsDisplay').textContent = `${InventorySystem.getAllItems().length} 件`;
     document.getElementById('petWeaponDisplay').textContent = pet.weapon?.name || '无';
     document.getElementById('petArmorDisplay').textContent = pet.armor?.name || '无';
+
+    const levelForecast = document.getElementById('petLevelForecast');
+    if (levelForecast) {
+        if (!pet.species) {
+            levelForecast.textContent = '先认养宠物，成长预测和升级路线就会在这里出现。';
+        } else if (pet.level >= PetSystem.MAX_LEVEL) {
+            levelForecast.textContent = '已经到达最高等级，现在更适合去宠物小屋互动，或去遛弯页积累冒险记录。';
+        } else {
+            const needExp = Math.max(0, (PetSystem.EXP_TABLE[pet.level] || 0) - pet.exp);
+            levelForecast.textContent = `距离下一等级还差 ${needExp} EXP，升级后会额外提升 HP 和攻击力。`;
+        }
+    }
+
+    const nextStagePreview = document.getElementById('petNextStagePreview');
+    const nextStage = (PetSystem.STAGES || []).find(function(stage) {
+        return pet.level < stage.min_level;
+    });
+    if (nextStagePreview) {
+        if (!pet.species) {
+            nextStagePreview.innerHTML = '<div class="text-sm text-muted">认养宠物后，这里会显示下一个阶段的形态和解锁等级。</div>';
+        } else if (!nextStage) {
+            nextStagePreview.innerHTML = `
+                <div class="pet-next-stage-card">
+                    <div class="pet-next-stage-copy">
+                        <strong>👑 已到终极体</strong>
+                        <p>现在已经解锁所有成长阶段，可以专心去宠物小屋互动，或者去遛弯页找好友一起冒险。</p>
+                    </div>
+                </div>
+            `;
+        } else {
+            const previewImage = getPetStageImageForStage(currentSpecies, nextStage.stageIdx);
+            nextStagePreview.innerHTML = `
+                <div class="pet-next-stage-card">
+                    <div class="pet-next-stage-art">
+                        ${previewImage
+                            ? `<img src="${escapeAppHtml(previewImage)}" alt="${escapeAppHtml(nextStage.name)}">`
+                            : `<div class="pet-next-stage-emoji">${escapeAppHtml(nextStage.emoji || '🐾')}</div>`}
+                    </div>
+                    <div class="pet-next-stage-copy">
+                        <strong>${escapeAppHtml(nextStage.emoji || '✨')} ${escapeAppHtml(nextStage.name)}</strong>
+                        <p>达到 Lv.${escapeAppHtml(nextStage.min_level)} 后解锁这个阶段，适合提前看看后面的样子。</p>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    const roadmap = document.getElementById('petGrowthRoadmap');
+    if (roadmap) {
+        if (!pet.species) {
+            roadmap.innerHTML = '<div class="text-sm text-muted">认养宠物后，蛋、幼崽、成长期到终极体的路线会显示在这里。</div>';
+        } else {
+            roadmap.innerHTML = (PetSystem.STAGES || []).map(function(stage) {
+                const isUnlocked = pet.level >= stage.min_level;
+                const isCurrent = pet.stage && pet.stage.name === stage.name;
+                const stageImage = getPetStageImageForStage(currentSpecies, stage.stageIdx);
+                return `
+                    <div class="pet-stage-pill${isUnlocked ? ' is-unlocked' : ''}${isCurrent ? ' is-current' : ''}">
+                        <div class="pet-stage-pill-art">
+                            ${stageImage
+                                ? `<img src="${escapeAppHtml(stageImage)}" alt="${escapeAppHtml(stage.name)}">`
+                                : `<span>${escapeAppHtml(stage.emoji || '🐾')}</span>`}
+                        </div>
+                        <div class="pet-stage-pill-copy">
+                            <strong>${escapeAppHtml(stage.name)}</strong>
+                            <span>${isCurrent ? '当前阶段' : isUnlocked ? '已解锁' : `Lv.${escapeAppHtml(stage.min_level)} 解锁`}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
 
     // 渲染地图页的宠物状态
     const mapEmoji = document.getElementById('mapPetEmoji');
@@ -1147,11 +1446,11 @@ function feedPet() {
     if (foodCount > 0) {
         const food = InventorySystem.getItemData('pet_food_basic');
         const result = PetSystem.feed(food);
-        alert(result.msg);
+        showToast(result.msg);
     } else {
         // 没有宠物粮就回血
-        const result = PetSystem.feed({ effect: { hp: 10 } });
-        alert('背包中没有宠物粮，简单恢复 10 HP（探索获得宠物粮可喂食更多）');
+        PetSystem.feed({ effect: { hp: 10 } });
+        showToast('背包中没有宠物粮，先简单恢复 10 HP');
     }
     if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
         window.CloudSync.scheduleSync('pet_feed_page');
@@ -1160,7 +1459,7 @@ function feedPet() {
 }
 function playWithPet() {
     const result = PetSystem.play();
-    alert(result.msg);
+    showToast(result.msg);
     if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
         window.CloudSync.scheduleSync('pet_play_page');
     }
@@ -1168,7 +1467,7 @@ function playWithPet() {
 }
 function restPet() {
     const result = PetSystem.rest();
-    alert(result.msg);
+    showToast(result.msg);
     if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
         window.CloudSync.scheduleSync('pet_rest_page');
     }
@@ -1178,6 +1477,10 @@ function restPet() {
 // 暴露给全局以支持 WalkSystem 刷新
 window.refreshPetUI = function() {
     renderPetPage();
+    const walkPage = document.getElementById('page-walk');
+    if (walkPage && walkPage.classList.contains('active')) {
+        renderWalkPage();
+    }
 };
 
 // ============ 探索页面渲染 ============

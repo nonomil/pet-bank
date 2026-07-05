@@ -753,6 +753,12 @@
         renderSettingsPanel('social-root');
         renderFriendHomeVisit('friend-home-visit-root');
         renderWalkInviteModal();
+        if (typeof window.renderWalkPage === 'function') {
+            const walkPage = document.getElementById('page-walk');
+            if (walkPage && walkPage.classList.contains('active')) {
+                window.renderWalkPage();
+            }
+        }
     }
 
     function openPeerHome(peerChildId) {

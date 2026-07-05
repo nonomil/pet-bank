@@ -519,20 +519,21 @@
                     <div class="section-menu-panel">
                         <button class="section-menu-item is-current" type="button" onclick="switchPage('pet')">我的宠物</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('walk')">遛弯</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('card')">卡片图鉴</button>
-                        <button class="section-menu-item" type="button" onclick="openPetWalk()">遛弯</button>
                     </div>
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('pet')">我的宠物</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('walk')">遛弯</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('card')">卡片图鉴</button>
-                    <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
                 </div>
                 <div class="grid grid-cols-3 gap-4 mb-4">
                     <div class="card col-span-2">
                         <div class="card-body text-center">
-                            <h2 class="text-lg font-bold mb-3">🐾 我的宠物</h2>
+                            <p class="text-xs text-muted tracking-wide mb-2">成长档案 / 形态预览</p>
+                            <h2 class="text-lg font-bold mb-3">🐾 我的宠物成长档案</h2>
                             <div class="pet-display-area" id="petDisplayArea">
                                 <img id="petDisplayImg" class="pet-sprite" src="assets/pets/poses/dog_idle.webp" alt="宠物" onclick="onPetSpriteClick()" style="width:160px;height:160px;object-fit:contain;image-rendering:pixelated;cursor:pointer;">
                                 <div class="pet-pose-btns" id="petPoseBtns" style="display:none; margin-top:8px;">
@@ -558,17 +559,17 @@
                                 <div><div class="text-xs text-muted">攻击力</div><div class="font-bold text-lg text-hp-red" id="petATKDisplay">5</div></div>
                                 <div><div class="text-xs text-muted">探索次数</div><div class="font-bold text-lg stat-gold" id="petExploreDisplay">0</div></div>
                             </div>
-                            <div class="grid grid-cols-4 gap-2 mt-4">
-                                <button class="btn-secondary text-xs" onclick="feedPet()">🍖 喂食</button>
-                                <button class="btn-secondary text-xs" onclick="playWithPet()">🎾 玩耍</button>
-                                <button class="btn-secondary text-xs" onclick="restPet()">💤 休息</button>
-                                <button class="btn-secondary text-xs" onclick="WalkSystem.renderUI('walkArea')">🚶 遛弯</button>
+                            <div class="pet-archive-note mt-4">
+                                互动喂养已经放到宠物小屋，好友遛弯也单独拆到了遛弯页。这里专门看成长、统计和后续升级后的样子。
                             </div>
-                            <div id="walkArea" class="mt-3"></div>
+                            <div class="pet-archive-links mt-4">
+                                <button class="btn-secondary text-xs" type="button" onclick="switchPage('home')">🏠 去宠物小屋互动</button>
+                                <button class="btn-secondary text-xs" type="button" onclick="switchPage('walk')">🚶 去遛弯页找好友</button>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header"><h3 class="text-sm font-bold">📊 宠物数据</h3></div>
+                        <div class="card-header"><h3 class="text-sm font-bold">📊 成长统计</h3></div>
                         <div class="card-body space-y-3 text-sm">
                             <div class="flex justify-between"><span class="text-secondary">种类</span><span id="petSpeciesDisplay" class="font-bold">未选择</span></div>
                             <div class="flex justify-between"><span class="text-secondary">陪伴天数</span><span class="font-bold" id="petDaysDisplay">0 天</span></div>
@@ -576,6 +577,23 @@
                             <div class="flex justify-between"><span class="text-secondary">收集道具</span><span class="font-bold" id="petItemsDisplay">0 件</span></div>
                             <div class="flex justify-between"><span class="text-secondary">装备武器</span><span class="font-bold" id="petWeaponDisplay">无</span></div>
                             <div class="flex justify-between"><span class="text-secondary">装备护甲</span><span class="font-bold" id="petArmorDisplay">无</span></div>
+                            <div class="pet-level-forecast" id="petLevelForecast">距离下一等级还差 30 EXP</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="card">
+                        <div class="card-header"><h3 class="text-sm font-bold">✨ 下一阶段预览</h3></div>
+                        <div class="card-body" id="petNextStagePreview">
+                            <div class="text-sm text-muted">认养宠物后，这里会显示下一个阶段的形态和解锁等级。</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3 class="text-sm font-bold">🪜 成长路线</h3></div>
+                        <div class="card-body">
+                            <div class="pet-growth-roadmap" id="petGrowthRoadmap">
+                                <div class="text-sm text-muted">成长档案会在这里展示蛋、幼崽、成长期到终极体的路线。</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -614,6 +632,32 @@
                         <div class="adopt-grid" id="adoptGrid"></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- PAGE: 遛弯 -->
+            <div class="page" id="page-walk">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">宠物导航</span>
+                            <span class="section-menu-current">当前：遛弯</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('pet')">我的宠物</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('walk')">遛弯</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('pet')">我的宠物</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('walk')">遛弯</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                </div>
+                <div id="walk-page-root"></div>
             </div>
 
             <!-- PAGE: 宠物小屋 -->
@@ -724,6 +768,7 @@
                     </summary>
                     <div class="section-menu-panel">
                         <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -732,6 +777,7 @@
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -768,7 +814,6 @@
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('card')">卡片图鉴</button>
                     <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
                 </div>
-                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                 <div id="card-collection-container"></div>
             </div>
 
@@ -777,7 +822,6 @@
                 <details class="section-menu">
                     <summary class="section-menu-trigger">
                         <div class="section-menu-copy">
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                             <span class="section-menu-label">积分导航</span>
                             <span class="section-menu-current">当前：兑换商店</span>
                         </div>
@@ -785,6 +829,7 @@
                     </summary>
                     <div class="section-menu-panel">
                         <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
                         <button class="section-menu-item is-current" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -793,6 +838,7 @@
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('shop')">兑换商店</button>
@@ -829,7 +875,6 @@
             <div id="cardDetailModal" class="modal">
                 <div class="modal-content" style="max-width: 400px;">
                     <div id="cardDetailContent"></div>
-                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
                 </div>
             </div>
         </main>
@@ -838,7 +883,6 @@
     <!-- Battle Modal -->
     <div id="battleModal" class="modal">
         <div class="modal-content" style="max-width: 600px;">
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold">⚔️ 战斗</h3>
                 <button onclick="closeBattleModal()" class="text-gray-400 hover:text-gray-600">✕</button>
@@ -955,7 +999,6 @@
     <script src="js/walk.js"></script>
     <script src="js/card-collection.js"></script>
     <script src="js/shop.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
     <script src="js/tools.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="cloud-config.local.js"></script>
