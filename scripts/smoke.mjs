@@ -14,7 +14,7 @@
 import { chromium } from 'playwright';
 import { browserLaunchOpts } from './playwright-browser.mjs';
 
-const BASE = 'http://127.0.0.1:8000';
+const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8000';
 const NAV_TIMEOUT = 20000;
 const BLINDBOX_WAIT = 3500; // openBlindBox 内部 setTimeout 2200ms + 缓冲
 
@@ -45,37 +45,41 @@ async function setupPage(page) {
     }
   });
   await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: NAV_TIMEOUT });
-  // 等 PetSystem / ExplorationSystem 等核心模块就绪
-  await page.waitForFunction(() => !!(window.PetSystem && window.ExplorationSystem && window.InventorySystem && window.ShopSystem), { timeout: 15000 });
-  // 等 DB 异步加载（pets.json / scenes.json / items.json / skills.json）
-  await page.waitForFunction(() => {
-    return window.ExplorationSystem.getAllScenes().length > 0
-      && window.PetSystem.getAllSpecies().length > 0
-      && !!window.PetSystem.getSkill('power_strike');
-  }, { timeout: 15000 }).catch(() => {});
+  await page.waitForFunction(() => !!(window.PetSystem && window.InventorySystem && window.TreasureChest && window.PetBankRuntime), { timeout: 15000 });
   return pageErrors;
 }
 
 // ============ 1. 探索冒烟 ============
 async function smokeExploration(page) {
   console.log('\n=== 1. 探索冒烟 ===');
+  await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('card');
+    await window.PetBankRuntime.ensurePage('explore');
+  });
+  await page.waitForFunction(() => !!window.CardCollection && !!window.ExplorationSystem && window.ExplorationSystem.getAllScenes().length > 0 && !!window.PetSystem.getSkill('power_strike'), { timeout: 20000 });
 
-  // 1.1 startExploration 返回结构正常（强制无遭遇：篡改 random）
+  // 1.1 startExploration 基本链路：扣 HP、记探索次数、返回 success
   const r1 = await page.evaluate(() => {
     const scenes = window.ExplorationSystem.getAllScenes();
     const scene = scenes.find(s => s.id === 'forest') || scenes[0];
     if (!scene) return { ok: false, msg: 'no scene' };
-    // 恢复满 HP
-    const st = window.PetSystem.getState();
-    window.PetSystem.heal(st.max_hp);
-    // 强制走「无遭遇」分支（random -> 1）
+    const before = window.PetSystem.getState();
+    window.PetSystem.heal(before.max_hp);
+    const beforeExplore = window.PetSystem.getState().explorations || 0;
     const orig = Math.random;
-    Math.random = () => 1;
+    Math.random = () => 0;
     let res;
     try { res = window.ExplorationSystem.startExploration(scene.id); } finally { Math.random = orig; }
-    return { ok: !!res?.success, res, sceneName: scene.name };
+    const after = window.PetSystem.getState();
+    return {
+      ok: !!res?.success,
+      hpDrop: after.hp < before.max_hp,
+      exploreDelta: (after.explorations || 0) - beforeExplore,
+      sceneName: scene.name,
+      monsterName: res?.battle?.monster?.name || ''
+    };
   });
-  check('1.1 startExploration 安全通过分支返回 success', r1.ok, r1.msg || r1.sceneName);
+  check('1.1 startExploration 会扣 HP 并记录探索次数', r1.ok && r1.hpDrop && r1.exploreDelta === 1, `${r1.sceneName} / ${r1.monsterName}`);
 
   // 1.2 遭遇分支返回 battle 对象（强制遭遇：random -> 0）
   const r2 = await page.evaluate(() => {
@@ -262,6 +266,10 @@ async function smokeBattle(page) {
 // 冒烟策略：验证 ①同步扣分正确 + ②动画结束后历史记录写入 + 积分/物品/exp 之一变化
 async function smokeBlindBox(page) {
   console.log('\n=== 3. 盲盒冒烟 ===');
+  await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('shop');
+  });
+  await page.waitForFunction(() => !!window.ShopSystem, { timeout: 15000 });
 
   // 3.1 普通盲盒：同步扣 20
   const r1 = await page.evaluate(() => {
@@ -389,6 +397,10 @@ async function smokeTreasure(page) {
 // ============ 5. 全局检查 ============
 async function smokeGlobal(page, pageErrors) {
   console.log('\n=== 5. 全局检查 ===');
+  await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('explore');
+    await window.PetBankRuntime.ensurePage('shop');
+  });
 
   // 5.1 无 pageerror
   const realErrors = pageErrors.filter(e =>
@@ -475,7 +487,6 @@ async function main() {
       } else {
         localStorage.setItem('petbank_points', '2000');
       }
-      if (typeof window.CardCollection?.init === 'function') window.CardCollection.init();
     });
 
     await smokeExploration(page);

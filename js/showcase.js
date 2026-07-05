@@ -1,68 +1,130 @@
-// 首页功能展示轮播 —— 自动播放 + 手动切换 + 悬停暂停
-// 每栏目一张代表性图片做背景（file:// 协议下用 <div background-image> 加载本地 webp，不走 XHR，不会被浏览器拦截）
+// 首页栏目轮播：自动切换、手动切换、整张图点击跳转到对应栏目
 (function () {
   const SLIDES = [
-    { icon: '🗺️', title: '场景探索冒险', desc: '12大奇幻场景，点亮路线解锁剧情与宝藏', img: 'assets/scenes/forest.webp' },
-    { icon: '🐾', title: '宠物养成', desc: '领养10族伙伴，喂食互动陪它一起成长', img: 'assets/banchong/灵兽族/岚纹麒麟-0.webp' },
-    { icon: '⚔️', title: '热血战斗', desc: '回合对战掉装备，越级挑战赢取稀有奖励', img: 'assets/characters/volcano-phoenix.webp' },
-    { icon: '🔢', title: '数学PK', desc: '趣味数学挑战，烧脑对答赚取积分', img: 'assets/scenes/stargarden.webp' },
-    { icon: '🎁', title: '积分兑换', desc: '积分开盲盒，抽出稀有道具与宠物', img: 'assets/scenes/castle.webp' },
-    { icon: '📖', title: '宠物图鉴', desc: '收集147只宠物，点亮全族图鉴', img: 'assets/banchong/灵兽族/岚纹麒麟-0.webp' },
+    {
+      icon: '📚',
+      title: '学习中心',
+      desc: '先进入今天的学习内容，打开就能继续读、练、看。',
+      img: 'assets/learn/portal-smartedu-home-20260705.png',
+      page: 'learn',
+    },
+    {
+      icon: '🐾',
+      title: '宠物伙伴',
+      desc: '去看看今天的同行伙伴，喂食、互动，再一起继续成长。',
+      img: 'assets/home-bg/room-forest.webp',
+      page: 'pet',
+    },
+    {
+      icon: '🗺️',
+      title: '探索冒险',
+      desc: '沿着发光路线去下一站，点亮新的场景和故事。',
+      img: 'assets/scenes/forest.webp',
+      page: 'explore',
+    },
+    {
+      icon: '🎡',
+      title: '游乐场',
+      desc: '想轻松一点时，就去数学、汉字和卡牌小游戏里玩一会儿。',
+      img: 'assets/ui/playground-bg.webp',
+      page: 'playground',
+    },
+    {
+      icon: '⭐',
+      title: '今日打卡',
+      desc: '把今天最重要的一件小事做完，积分就会马上加进来。',
+      img: 'assets/scenes/stargarden.webp',
+      page: 'today',
+    },
   ];
-  const INTERVAL = 4000;
+
+  const INTERVAL = 4200;
   const track = document.getElementById('showcaseTrack');
   const dotsBox = document.getElementById('showcaseDots');
   const prevBtn = document.getElementById('showcasePrev');
   const nextBtn = document.getElementById('showcaseNext');
   const root = document.getElementById('showcase');
-  if (!track || !SLIDES.length) return;
+  if (!root || !track || !dotsBox || !SLIDES.length) return;
+
   let current = 0;
   let timer = null;
 
-  // 渲染 slides
-  SLIDES.forEach((s, i) => {
-    const slide = document.createElement('div');
-    slide.className = 'showcase-slide' + (i === 0 ? ' active' : '');
-    slide.style.backgroundImage = `url("${s.img}")`;
+  function openSlide(slide) {
+    if (!slide || !slide.page || typeof window.switchPage !== 'function') return;
+    window.switchPage(slide.page);
+  }
+
+  SLIDES.forEach((slideData, index) => {
+    const slide = document.createElement('button');
+    slide.className = `showcase-slide${index === 0 ? ' active' : ''}`;
+    slide.type = 'button';
+    slide.style.backgroundImage = `url("${slideData.img}")`;
+    slide.setAttribute('aria-label', `打开${slideData.title}`);
     slide.innerHTML = `
-      <div class="showcase-overlay"></div>
-      <div class="showcase-copy">
-        <div class="showcase-icon">${s.icon}</div>
-        <div class="showcase-title">${s.title}</div>
-        <div class="showcase-desc">${s.desc}</div>
-      </div>`;
+      <span class="showcase-overlay"></span>
+      <span class="showcase-copy">
+        <span class="showcase-icon">${slideData.icon}</span>
+        <span class="showcase-title">${slideData.title}</span>
+        <span class="showcase-desc">${slideData.desc}</span>
+      </span>`;
+    slide.addEventListener('click', () => openSlide(slideData));
     track.appendChild(slide);
 
     const dot = document.createElement('button');
-    dot.className = 'showcase-dot' + (i === 0 ? ' active' : '');
+    dot.className = `showcase-dot${index === 0 ? ' active' : ''}`;
     dot.type = 'button';
-    dot.dataset.index = i;
-    dot.setAttribute('aria-label', `第${i + 1}屏`);
+    dot.dataset.index = String(index);
+    dot.setAttribute('aria-label', `切换到第${index + 1}张`);
     dotsBox.appendChild(dot);
   });
-  dotsBox.addEventListener('click', e => {
-    const dot = e.target.closest('.showcase-dot');
-    if (dot) go(+dot.dataset.index);
-  });
 
-  function go(i) {
-    current = (i + SLIDES.length) % SLIDES.length;
-    track.querySelectorAll('.showcase-slide').forEach((el, idx) =>
-      el.classList.toggle('active', idx === current));
-    dotsBox.querySelectorAll('.showcase-dot').forEach((el, idx) =>
-      el.classList.toggle('active', idx === current));
+  function go(index) {
+    current = (index + SLIDES.length) % SLIDES.length;
+    track.querySelectorAll('.showcase-slide').forEach((slide, slideIndex) => {
+      slide.classList.toggle('active', slideIndex === current);
+    });
+    dotsBox.querySelectorAll('.showcase-dot').forEach((dot, dotIndex) => {
+      dot.classList.toggle('active', dotIndex === current);
+    });
     restart();
   }
-  function next() { go(current + 1); }
-  function prev() { go(current - 1); }
-  function start() { stop(); timer = setInterval(next, INTERVAL); }
-  function stop() { if (timer) { clearInterval(timer); timer = null; } }
-  function restart() { if (root && root.matches(':hover')) return; start(); }
 
-  prevBtn && prevBtn.addEventListener('click', prev);
-  nextBtn && nextBtn.addEventListener('click', next);
-  root && root.addEventListener('mouseenter', stop);
-  root && root.addEventListener('mouseleave', start);
+  function next() {
+    go(current + 1);
+  }
+
+  function prev() {
+    go(current - 1);
+  }
+
+  function stop() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  function start() {
+    if (SLIDES.length <= 1) return;
+    stop();
+    timer = setInterval(next, INTERVAL);
+  }
+
+  function restart() {
+    if (root.matches(':hover')) return;
+    start();
+  }
+
+  dotsBox.addEventListener('click', (event) => {
+    const dot = event.target.closest('.showcase-dot');
+    if (!dot) return;
+    go(Number(dot.dataset.index || 0));
+  });
+
+  if (prevBtn) prevBtn.addEventListener('click', prev);
+  if (nextBtn) nextBtn.addEventListener('click', next);
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
 
   start();
 })();

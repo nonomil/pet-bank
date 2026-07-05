@@ -12,12 +12,14 @@
 <body class="map-page-bg admin-page-bg">
     <main id="admin-root"></main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="cloud-config.local.js"></script>
-    <script src="js/cloud-client.js"></script>
-    <script src="js/family-social-scope.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/admin-auth.js"></script>
-    <script src="js/admin-console.js"></script>
+    <script src="js/runtime-loader.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            if (!window.PetBankRuntime || typeof window.PetBankRuntime.ensureAdminPage !== 'function') return;
+            window.PetBankRuntime.ensureAdminPage().catch(function (error) {
+                console.error('[admin] runtime boot failed:', error);
+            });
+        });
+    </script>
 </body>
 </html>

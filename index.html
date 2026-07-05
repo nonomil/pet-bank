@@ -6,20 +6,12 @@
     <title>成长伙伴 · 萌宠冒险岛</title>
     <link rel="icon" href="data:,">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/playground.css?v=8">
     <link rel="stylesheet" href="css/treasure.css">
-    <link rel="stylesheet" href="css/walk.css">
-    <link rel="stylesheet" href="css/card-collection.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/arena.css">
-    <link rel="stylesheet" href="css/leaderboard.css?v=2">
-    <link rel="stylesheet" href="css/hanzi-game.css?v=4">
-    <link rel="stylesheet" href="css/learn-center.css?v=2">
 </head>
-<body class="map-page-bg">
+<body class="map-page-bg no-sidebar">
     <!-- TOP NAV -->
     <div class="top-nav">
         <div class="top-nav-inner max-w-7xl mx-auto">
@@ -105,81 +97,115 @@
         <main class="main-content">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
-                <section class="map-home-hero">
-                    <div class="map-home-main">
-                        <div class="map-home-copy">
-                            <p class="map-eyebrow">首页 / 成长概览</p>
-                            <h2>今天，先完成一件小事再出发</h2>
-                            <p>首页不用先铺一堆模块。先完成今天最重要的一件任务，再带上宠物去下一站冒险。</p>
-                        </div>
-                        <button class="map-focus-card" type="button" onclick="switchPage('today')">
-                            <span class="map-focus-kicker">今天先做这一件</span>
-                            <strong>阅读 20 分钟</strong>
-                            <p>读完今天的故事页，再把最喜欢的一句读给家长听，完成后就能解锁宠物冒险。</p>
-                            <div class="map-focus-meta">
-                                <span class="map-focus-badge">完成后解锁宠物冒险</span>
-                                <span class="map-focus-points">+1 星</span>
+                <section class="map-home-shell">
+                    <div class="map-home-top">
+                        <div class="map-home-intro">
+                            <div class="map-home-copy">
+                                <p class="map-eyebrow">首页 / 今日出发</p>
+                                <h2>先选一件开始，剩下的路就会亮起来。</h2>
+                                <p class="map-home-lead">首页先保留最值得点开的入口：今天任务、喜欢的栏目，还有陪你一起玩的宠物伙伴。</p>
                             </div>
-                            <span class="map-focus-cta">开始今天任务</span>
-                        </button>
-                    </div>
 
-                    <div class="map-home-side">
-                        <div class="map-hero-stats map-home-stats">
-                            <div class="map-hero-stat">
-                                <span class="label">总积分</span>
-                                <strong id="mapPoints">0</strong>
-                            </div>
-                            <div class="map-hero-stat">
-                                <span class="label">宠物等级</span>
-                                <strong id="mapPetLevel">Lv.1</strong>
-                            </div>
-                            <div class="map-hero-stat">
-                                <span class="label">战斗胜场</span>
-                                <strong id="mapWins">0</strong>
-                            </div>
-                        </div>
-                        <div class="map-companion-card map-home-companion">
-                            <div class="map-companion-avatar map-home-companion-avatar">
-                                <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物">
-                            </div>
-                            <div class="map-companion-copy map-home-companion-copy">
-                                <p class="map-companion-kicker">今日同行伙伴</p>
-                                <h3 id="mapCompanionName">还没有领养宠物</h3>
-                                <p id="mapCompanionStage">去宠物养成页挑一位伙伴一起冒险</p>
-                                <p class="map-companion-story" id="mapCompanionStory">完成今天的小任务，它就会陪你去发光小路的下一站。</p>
-                                <div class="map-companion-tags">
-                                    <span class="map-companion-tag" id="mapCompanionMood">今天很适合轻松出发</span>
-                                    <span class="map-companion-tag" id="mapCompanionRoute">晨读后解锁路线</span>
+                            <div class="map-home-priority-row">
+                                <button class="map-home-priority" type="button" onclick="switchPage('today')">
+                                    <span class="map-home-priority-kicker">今天先做</span>
+                                    <strong id="mapHomeFocusTitle">阅读 20 分钟</strong>
+                                    <span class="map-home-priority-meta" id="mapHomeFocusMeta">完成后拿 1 分，马上继续冒险。</span>
+                                </button>
+                                <div class="map-home-stat-grid">
+                                    <div class="map-home-stat-card">
+                                        <span>成长分</span>
+                                        <strong id="mapHomePoints">0</strong>
+                                    </div>
+                                    <div class="map-home-stat-card">
+                                        <span>今天的小主人</span>
+                                        <strong id="mapHomeChildName">默认孩子</strong>
+                                    </div>
+                                    <div class="map-home-stat-card">
+                                        <span>宠物等级</span>
+                                        <strong id="mapPetLevel">Lv.1</strong>
+                                    </div>
                                 </div>
-                                <div class="map-companion-chip" id="mapNextSceneHint">下一站会显示在这里</div>
-                                <button class="map-companion-cta" type="button" onclick="switchPage('pet')">前往宠物养成</button>
+                            </div>
+
+                            <div class="map-home-companion-inline">
+                                <div class="map-home-companion-avatar">
+                                    <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物">
+                                </div>
+                                <div class="map-home-companion-copy">
+                                    <p class="map-home-companion-kicker">今天同行</p>
+                                    <h3 id="mapCompanionName">还没有领养宠物</h3>
+                                    <p id="mapCompanionStage">去宠物养成页挑一位伙伴一起冒险</p>
+                                    <div class="map-home-pill-row">
+                                        <span class="map-home-pill" id="mapCompanionMood">今天很适合轻松出发</span>
+                                        <span class="map-home-pill" id="mapNextSceneHint">下一站会显示在这里</span>
+                                    </div>
+                                </div>
+                                <button class="map-home-secondary-btn" type="button" onclick="switchPage('pet')">看看宠物</button>
                             </div>
                         </div>
-                    </div>
-                </section>
 
-                <section class="dash-launcher map-home-launcher">
-                    <div class="dash-cards map-home-cards">
-                        <button class="dash-card c-today" onclick="switchPage('today')"><span class="dash-emoji">📝</span><span class="dash-title">今日打卡</span><span class="dash-sub">完成任务赚积分</span></button>
-                        <button class="dash-card c-playground" onclick="switchPage('playground')"><span class="dash-emoji">🎡</span><span class="dash-title">游乐场</span><span class="dash-sub">数学 / 汉字 / 卡牌 / 排行</span></button>
-                        <button class="dash-card c-pet" onclick="switchPage('pet')"><span class="dash-emoji">🐾</span><span class="dash-title">我的宠物</span><span class="dash-sub">养成陪伴</span></button>
+                        <section class="showcase map-home-showcase" id="showcase" aria-label="首页栏目轮播">
+                            <div class="showcase-toolbar">
+                                <div>
+                                    <p class="showcase-kicker">点击图片直接进入</p>
+                                    <strong class="showcase-heading">今天想先去哪里？</strong>
+                                </div>
+                                <div class="showcase-controls">
+                                    <button class="showcase-arrow" id="showcasePrev" type="button" aria-label="上一张">‹</button>
+                                    <button class="showcase-arrow" id="showcaseNext" type="button" aria-label="下一张">›</button>
+                                </div>
+                            </div>
+                            <div class="showcase-track" id="showcaseTrack"></div>
+                            <div class="showcase-footer">
+                                <div class="showcase-dots" id="showcaseDots"></div>
+                                <span class="showcase-hint">轮播会自动切换，也可以手动点进想去的栏目。</span>
+                            </div>
+                        </section>
                     </div>
-                </section>
 
-                <section class="map-warehouse-panel" id="treasureWarehouseCard">
-                    <div class="map-panel-head">
-                        <div>
-                            <p class="map-warehouse-kicker">首页 / 宝箱仓库</p>
-                            <h3 class="text-lg font-bold">宝箱仓库</h3>
-                            <p class="map-warehouse-note">把常用宝箱都收进这一块，大一点、好点开，路线地图则继续放在「探索」页。</p>
-                        </div>
-                        <div class="map-panel-head-right">
-                            <span class="map-ribbon">奖励集中收纳</span>
-                            <span class="map-count" id="chestDailyStatus">今日未领取</span>
-                        </div>
-                    </div>
-                    <div class="warehouse-grid warehouse-grid-expanded" id="treasureWarehouseGrid"></div>
+                    <section class="map-entry-grid" aria-label="首页快捷入口">
+                        <button class="map-entry-card" type="button" onclick="switchPage('today')">
+                            <span class="map-entry-art">
+                                <img src="assets/scenes/stargarden.webp" alt="今日打卡">
+                            </span>
+                            <span class="map-entry-copy">
+                                <span class="map-entry-kicker">先完成</span>
+                                <strong>今日打卡</strong>
+                                <span>做完任务就能赚积分</span>
+                            </span>
+                        </button>
+                        <button class="map-entry-card" type="button" onclick="switchPage('learn')">
+                            <span class="map-entry-art">
+                                <img src="assets/learn/portal-smartedu-home-20260705.png" alt="学习中心">
+                            </span>
+                            <span class="map-entry-copy">
+                                <span class="map-entry-kicker">轻松学习</span>
+                                <strong>学习中心</strong>
+                                <span>打开就能进今天的内容</span>
+                            </span>
+                        </button>
+                        <button class="map-entry-card" type="button" onclick="switchPage('pet')">
+                            <span class="map-entry-art">
+                                <img src="assets/pets/poses/cat_happy.webp" alt="我的宠物">
+                            </span>
+                            <span class="map-entry-copy">
+                                <span class="map-entry-kicker">一起玩</span>
+                                <strong>我的宠物</strong>
+                                <span>喂食互动，带着伙伴成长</span>
+                            </span>
+                        </button>
+                        <button class="map-entry-card" type="button" onclick="switchPage('playground')">
+                            <span class="map-entry-art">
+                                <img src="assets/ui/pg-card-lb.webp?v=20260704b" alt="游乐场">
+                            </span>
+                            <span class="map-entry-copy">
+                                <span class="map-entry-kicker">想放松时</span>
+                                <strong>游乐场</strong>
+                                <span>点开就能玩数学、汉字和卡牌</span>
+                            </span>
+                        </button>
+                    </section>
                 </section>
             </div>
 
@@ -986,46 +1012,14 @@
         </div>
     </div>
 
-    <!-- Scripts: pet.js must load first (PetSystem), then modules, then app.js last -->
+    <!-- Scripts: pet.js must load first (PetSystem), then homepage runtime bootstrap, then app.js -->
     <script src="js/pet.js"></script>
-    <script>
-        PetSystem.loadPetDB().then(() => {
-            console.log('[PetDB] Ready —', PetSystem.getAllSpecies().length, 'pets');
-        });
-    </script>
     <script src="js/inventory.js"></script>
-    <script src="js/battle-engine.js"></script>
-    <script src="js/card-arena.js"></script>
-    <script src="js/card-arena-ui.js"></script>
-    <script src="js/exploration.js"></script>
-    <script src="js/exploration-detail.js"></script>
-    <script src="js/home.js"></script>
-    <script src="js/math-pk.js?v=2"></script>
-    <script src="js/leaderboard.js"></script>
-    <script src="js/hanzi-progress.js"></script>
-    <script src="js/hanzi-game.js"></script>
     <script src="js/treasure.js"></script>
-    <script src="js/walk.js"></script>
-    <script src="js/card-collection.js"></script>
-    <script src="js/shop.js"></script>
-    <script src="js/tools.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/cloud-config-loader.js"></script>
-    <script src="js/cloud-client.js"></script>
     <script src="js/profiles.js"></script>
-    <script src="js/profile-sync.js"></script>
-    <script src="js/family-social-scope.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/household.js"></script>
-    <script src="js/cloud-sync.js"></script>
-    <script src="js/cloud-restore.js"></script>
-    <script src="js/social.js"></script>
-    <script src="js/pk-service.js"></script>
-    <script src="js/activity-feed.js"></script>
-    <script src="js/cloud-diagnostics.js"></script>
-    <script src="js/family-review.js"></script>
-    <script src="js/learn-center.js?v=2"></script>
+    <script src="js/runtime-loader.js"></script>
+    <script src="js/lucide-lite.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/voice.js"></script>
+    <script src="js/showcase.js"></script>
 </body>
 </html>

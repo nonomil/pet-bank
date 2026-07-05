@@ -106,10 +106,17 @@ const DIMENSIONS = {
     }
 };
 
+const HOME_PRIORITY_TASKS = [
+    { dim: 'learning', task: '阅读 20 分钟', pts: 1, hint: '读完就能继续点开喜欢的栏目。' },
+    { dim: 'sports', task: '运动 30 分钟', pts: 1, hint: '活动一下，再去冒险会更有精神。' },
+    { dim: 'selfcontrol', task: '屏幕时间不超过 2 小时', pts: 2, hint: '守住今天的小习惯，也算一次成长。' }
+];
+
 // ============ 应用状态 ============
 let totalPoints = 0;
 let completedTasks = new Set();
 let activeExploreSceneId = null;
+let pageActivationToken = 0;
 
 Object.defineProperty(window, 'totalPoints', {
     configurable: true,
@@ -134,6 +141,11 @@ function loadAppState() {
     if (saved) completedTasks = new Set(JSON.parse(saved));
     localStorage.setItem('petbank_tasks_completed_today', String(completedTasks.size));
     window.totalPoints = totalPoints;
+}
+
+function getActivePageId() {
+    const active = document.querySelector('.page.active');
+    return active ? active.id.replace('page-', '') : 'map';
 }
 
 // ============ 任务系统 ============
@@ -177,12 +189,7 @@ function renderTaskGrid() {
 function renderSidebarTasks() {
     const container = document.getElementById('sidebarTasks');
     if (!container) return;
-    const samples = [
-        { dim: 'learning', task: '阅读 20 分钟', pts: 1 },
-        { dim: 'sports', task: '运动 30 分钟', pts: 1 },
-        { dim: 'selfcontrol', task: '屏幕时间不超过 2 小时', pts: 2 }
-    ];
-    container.innerHTML = samples.map(s => {
+    container.innerHTML = HOME_PRIORITY_TASKS.map(s => {
         const tid = `${s.dim}-${s.task}`;
         const done = completedTasks.has(tid);
         return `
@@ -195,10 +202,42 @@ function renderSidebarTasks() {
     }).join('');
 }
 
+function getHomeFocusTask() {
+    return HOME_PRIORITY_TASKS.find((task) => !completedTasks.has(`${task.dim}-${task.task}`)) || HOME_PRIORITY_TASKS[0];
+}
+
+function updateMapHomeSummary() {
+    const pointsEl = document.getElementById('mapHomePoints');
+    if (pointsEl) pointsEl.textContent = totalPoints;
+
+    const childEl = document.getElementById('mapHomeChildName');
+    if (childEl) {
+        const profile = (window.ProfileManager && typeof ProfileManager.getActive === 'function')
+            ? ProfileManager.getActive()
+            : null;
+        childEl.textContent = (profile && profile.name) ? profile.name : '默认孩子';
+    }
+
+    const focusTitle = document.getElementById('mapHomeFocusTitle');
+    const focusMeta = document.getElementById('mapHomeFocusMeta');
+    const focusTask = getHomeFocusTask();
+    const taskId = `${focusTask.dim}-${focusTask.task}`;
+    const done = completedTasks.has(taskId);
+
+    if (focusTitle) focusTitle.textContent = focusTask.task;
+    if (focusMeta) {
+        focusMeta.textContent = done
+            ? '这件已经完成，可以继续去宠物、学习或游乐场。'
+            : `完成后拿 ${focusTask.pts} 分，${focusTask.hint}`;
+    }
+}
+
 function updateStats() {
     window.totalPoints = totalPoints;
-    document.getElementById('topPoints').textContent = totalPoints;
-    document.getElementById('accountPoints').textContent = totalPoints;
+    const topPoints = document.getElementById('topPoints');
+    const accountPoints = document.getElementById('accountPoints');
+    if (topPoints) topPoints.textContent = totalPoints;
+    if (accountPoints) accountPoints.textContent = totalPoints;
     const sc = document.getElementById('statCompleted');
     const sd = document.getElementById('statDeposited');
     const sh = document.getElementById('statHighlight');
@@ -211,6 +250,7 @@ function updateStats() {
         });
         sh.textContent = `${litDims}/6`;
     }
+    updateMapHomeSummary();
     updateMapCompanionCard();
 }
 
@@ -264,7 +304,7 @@ function updateMapCompanionCard() {
         companionName.textContent = petName;
         companionStage.textContent = `${pet.stage?.name || '成长'}阶段 · Lv.${pet.level} · ❤️ ${pet.hp}/${pet.total_max_hp}`;
         if (companionStory) {
-            companionStory.textContent = `${petName} 今天状态不错，先把最重要的一件学习任务做完，它就会陪你去下一站继续冒险。`;
+            companionStory.textContent = `${petName} 正在等你，做完一件任务就能继续一起出发。`;
         }
         if (companionMood) {
             companionMood.textContent = pet.hp > Math.max(20, Math.round((pet.total_max_hp || 0) * 0.5))
@@ -286,8 +326,8 @@ function updateMapCompanionCard() {
     if (recommendedScene) {
         const unlocked = ExplorationSystem.isSceneUnlocked(recommendedScene);
         nextSceneHint.textContent = unlocked
-            ? `推荐下一站：${recommendedScene.emoji} ${recommendedScene.name}`
-            : `下一站目标：Lv.${recommendedScene.min_level} 解锁 ${recommendedScene.name}`;
+            ? `下一站：${recommendedScene.emoji} ${recommendedScene.name}`
+            : `Lv.${recommendedScene.min_level} 解锁 ${recommendedScene.name}`;
         if (companionRoute) {
             companionRoute.textContent = unlocked
                 ? `已解锁 ${recommendedScene.name}`
@@ -485,12 +525,7 @@ function updateRewardPetCard() {
 }
 
 function completeRecommended() {
-    const samples = [
-        { dim: 'learning', task: '阅读 20 分钟', pts: 1 },
-        { dim: 'sports', task: '运动 30 分钟', pts: 1 },
-        { dim: 'selfcontrol', task: '屏幕时间不超过 2 小时', pts: 2 }
-    ];
-    samples.forEach(s => {
+    HOME_PRIORITY_TASKS.forEach(s => {
         const tid = `${s.dim}-${s.task}`;
         if (!completedTasks.has(tid)) {
             completedTasks.add(tid);
@@ -671,10 +706,11 @@ function switchPage(page) {
         const hub = tab.closest('.nav-hub');
         if (hub) hub.classList.add('active');
     }
-    // sidebar 只在积分首页(map)显示，其他页面全宽独占 → 每个 tab 都是独立完整页面
-    document.body.classList.toggle('no-sidebar', page !== 'map');
+    // 首页也改成全宽入口页，所有 tab 统一不显示左侧 sidebar。
+    document.body.classList.add('no-sidebar');
     document.body.classList.toggle('learn-mode', page === 'learn' || page.startsWith('learn-'));
-    // 切换到特定页面时执行特定渲染
+    void preparePage(page);
+    /* legacy eager page activation kept disabled after runtime-loader migration
     if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     if (page === 'pet') renderPetPage();
     if (page === 'walk') {
@@ -750,10 +786,120 @@ function switchPage(page) {
         const settingsMathDiff = document.getElementById('settings-math-diff');
         if (settingsMathDiff) settingsMathDiff.innerHTML = '';
     }
+    */
     window.sfx && sfx.click();
 }
 
 window.switchPage = switchPage;
+
+function maybeSeedStarterCards() {
+    if (!window.CardCollection || typeof window.CardCollection.addCard !== 'function') return;
+    try {
+        if (localStorage.getItem('petbank_starter_cards') || typeof PetSystem.getAllSpecies !== 'function') return;
+        const commons = PetSystem.getAllSpecies().filter(function (species) {
+            return species.rarity === 'common';
+        });
+        if (commons.length < 3) return;
+        commons.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 3)
+            .forEach(function (card) {
+                window.CardCollection.addCard(card.id);
+            });
+        localStorage.setItem('petbank_starter_cards', '1');
+    } catch (error) {}
+}
+
+function runPageActivation(page) {
+    if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
+    if (page === 'pet') renderPetPage();
+    if (page === 'walk') {
+        renderWalkPage();
+        if (!pendingWalkRouteId && window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
+            void window.SocialSystem.refresh()
+                .then(function () {
+                    const walkPage = document.getElementById('page-walk');
+                    if (walkPage && walkPage.classList.contains('active')) renderWalkPage();
+                })
+                .catch(function () {});
+        }
+    }
+    if (page === 'home-visit' && window.SocialSystem && typeof window.SocialSystem.renderFriendHomeVisit === 'function') {
+        window.SocialSystem.renderFriendHomeVisit('friend-home-visit-root');
+    }
+    if (page === 'explore' && window.ExplorationSystem) void renderExplorePage();
+    if (page === 'mathpk' && window.MathPKGame) MathPKGame.renderUI('math-pk-container');
+    if (page === 'hanzi' && window.HanziGame) HanziGame.renderUI('hanzi-container');
+    if (page === 'review' && window.FamilyReview && typeof window.FamilyReview.refresh === 'function') void FamilyReview.refresh('family-review-root');
+    if (page === 'leaderboard' && window.Leaderboard) {
+        switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
+        if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
+            void window.SocialSystem.refresh()
+                .then(function () {
+                    if (window.PKService && typeof window.PKService.refresh === 'function') {
+                        return window.PKService.refresh();
+                    }
+                    return null;
+                })
+                .then(function () {
+                    const leaderboardPage = document.getElementById('page-leaderboard');
+                    if (leaderboardPage && leaderboardPage.classList.contains('active')) {
+                        switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
+                    }
+                })
+                .catch(function () {});
+        }
+    }
+    if (page === 'learn' && window.LearnCenter) void LearnCenter.renderHub('learn-container');
+    if (page === 'learn-pack' && window.LearnCenter) void LearnCenter.renderPack('learn-pack-container');
+    if (page === 'learn-plan' && window.LearnCenter) void LearnCenter.renderPlan('learn-plan-container');
+    if (page === 'learn-lesson' && window.LearnCenter) void LearnCenter.renderLesson('learn-lesson-container');
+    if (page === 'learn-print' && window.LearnCenter) void LearnCenter.renderPrint('learn-print-container');
+    if (page === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
+        void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
+    }
+    if (page === 'inventory') renderInventoryPage();
+    if (page === 'today') updateRewardPetCard();
+    if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
+    if (page === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
+    if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
+    if (page === 'home' && window.HomeSystem) HomeSystem.renderUI('home-container');
+    if (page === 'settings' && window.SettingsPage) SettingsPage.render();
+    if (page === 'settings' && window.AuthSystem && typeof window.AuthSystem.render === 'function') AuthSystem.render('auth-root');
+    if (page === 'settings' && window.HouseholdSystem && typeof window.HouseholdSystem.refresh === 'function') void HouseholdSystem.refresh('household-root');
+    if (page === 'settings' && window.SocialSystem && typeof window.SocialSystem.refresh === 'function') void SocialSystem.refresh();
+    const showDiagnostics = !window.FamilySocialScope
+        || typeof window.FamilySocialScope.shouldShowDiagnostics !== 'function'
+        || window.FamilySocialScope.shouldShowDiagnostics();
+    if (page === 'settings' && showDiagnostics && window.CloudDiagnostics && typeof window.CloudDiagnostics.render === 'function') {
+        CloudDiagnostics.render('diagnostics-root');
+        if (typeof window.CloudDiagnostics.refresh === 'function') {
+            void window.CloudDiagnostics.refresh('diagnostics-root');
+        }
+    } else if (page === 'settings') {
+        const diagnosticsRoot = document.getElementById('diagnostics-root');
+        if (diagnosticsRoot) diagnosticsRoot.innerHTML = '';
+    }
+    if (page === 'settings' && showDiagnostics && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') {
+        MathPKGame.renderDifficultySetting('settings-math-diff');
+    } else if (page === 'settings') {
+        const settingsMathDiff = document.getElementById('settings-math-diff');
+        if (settingsMathDiff) settingsMathDiff.innerHTML = '';
+    }
+}
+
+async function preparePage(page) {
+    const token = ++pageActivationToken;
+    if (window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function') {
+        try {
+            await window.PetBankRuntime.ensurePage(page);
+            maybeSeedStarterCards();
+        } catch (error) {
+            console.warn('[app] page runtime ensure failed:', page, error);
+        }
+    }
+    if (token !== pageActivationToken || getActivePageId() !== page) return;
+    runPageActivation(page);
+    if (window.lucide) lucide.createIcons();
+}
 
 // ============ 排行榜玩法 tab 切换（mathpk / hanzi） ============
 function switchLeaderboardTab(game) {
@@ -804,12 +950,11 @@ window.switchLeaderboardTab = switchLeaderboardTab;
     window.onPetSpriteClick = function() {
         const pet = PetSystem.getState();
         if (!pet.species) return;
-        const idx = poseCycle.indexOf(currentPose);
-        currentPose = poseCycle[(idx + 1) % poseCycle.length];
-        updatePetDisplayImg();
-        updatePoseBtnActive();
-        const labels = { idle: '😊 待机', happy: '😄 开心', attack: '⚔️ 攻击' };
-        showToast(labels[currentPose]);
+        const sp = PetSystem.getAllSpecies().find(function(item) { return item.id === pet.species; });
+        if (sp) {
+            window.showPetLightbox(sp.name, sp.imageStyle || 'banchong');
+            showToast('点击阶段小图可查看大图');
+        }
     };
 
     function updatePetDisplayImg() {
@@ -852,76 +997,144 @@ window.switchLeaderboardTab = switchLeaderboardTab;
 
 window.showToast = showToast;
 
-    // 大图灯箱：展示宠物动作/进化阶段
+    function escapeLightboxHtml(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function escapeLightboxJs(value) {
+        return String(value == null ? '' : value)
+            .replace(/\\/g, '\\\\')
+            .replace(/'/g, "\\'")
+            .replace(/\r/g, '\\r')
+            .replace(/\n/g, '\\n');
+    }
+
+    function getStageLabelForKey(key, index) {
+        const numericKey = Number(key);
+        const stage = (PetSystem.STAGES || []).find(function(item) {
+            return Number(item.stageIdx || 0) === numericKey;
+        });
+        if (stage && stage.name) return stage.name;
+        const fallback = ['初始形态', '幼体阶段', '成长阶段', '成熟阶段', '完全阶段', '终极阶段'];
+        return fallback[index] || `阶段 ${numericKey + 1}`;
+    }
+
+    function getPetStageEntriesForSpecies(sp) {
+        if (!sp) return [];
+        if (sp.imageStages && Object.keys(sp.imageStages).length) {
+            return Object.keys(sp.imageStages)
+                .sort(function(a, b) { return Number(a) - Number(b); })
+                .map(function(key, index) {
+                    return {
+                        key: key,
+                        label: getStageLabelForKey(key, index),
+                        src: sp.imageStages[key]
+                    };
+                })
+                .filter(function(entry) { return !!entry.src; });
+        }
+        if (Array.isArray(sp.stages) && sp.stages.length) {
+            return sp.stages.map(function(stage, index) {
+                return {
+                    key: String(stage.stage != null ? stage.stage : index),
+                    label: stage.stage != null ? `阶段 ${stage.stage}` : getStageLabelForKey(index, index),
+                    src: stage.imageUrl
+                };
+            }).filter(function(entry) { return !!entry.src; });
+        }
+        if (sp.imageUrl) return [{ key: '0', label: '基础形态', src: sp.imageUrl }];
+        return [];
+    }
+
+    function openPetStageImage(src, petName, label, fallbackEmoji) {
+        if (!src) return;
+        let zoom = document.getElementById('petStageZoom');
+        if (!zoom) {
+            zoom = document.createElement('div');
+            zoom.id = 'petStageZoom';
+            zoom.className = 'pet-stage-zoom';
+            document.body.appendChild(zoom);
+        }
+        const safeName = escapeLightboxHtml(petName || '宠物');
+        const safeLabel = escapeLightboxHtml(label || '成长阶段');
+        zoom.innerHTML = `
+            <div class="pet-stage-zoom-backdrop" onclick="closePetStageZoom()"></div>
+            <div class="pet-stage-zoom-panel" role="dialog" aria-modal="true" aria-label="${safeName} ${safeLabel} 大图" onclick="event.stopPropagation()">
+                <button type="button" class="pet-stage-zoom-close" onclick="closePetStageZoom()" aria-label="关闭大图">&times;</button>
+                <div class="pet-stage-zoom-title">
+                    <span>成长阶段</span>
+                    <strong>${safeName}</strong>
+                    <p>${safeLabel}</p>
+                </div>
+                <div class="pet-stage-zoom-frame">
+                    <img src="${escapeLightboxHtml(src)}" alt="${safeName} ${safeLabel}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="pet-stage-zoom-fallback" style="display:none;">${escapeLightboxHtml(fallbackEmoji || '🐾')}</div>
+                </div>
+            </div>`;
+        zoom.classList.add('show');
+    }
+
+    window.openPetStageImage = openPetStageImage;
+
+    window.closePetStageZoom = function() {
+        const zoom = document.getElementById('petStageZoom');
+        if (zoom) zoom.classList.remove('show');
+    };
+
+    // 大图灯箱：展示宠物多阶段图库，点击任意阶段继续放大
     window.showPetLightbox = function(petName, style) {
         const species = PetSystem.getAllSpecies();
-        const sp = species.find(s => s.name === petName);
-        
-        let poses, labels;
-        if (sp && sp.imageStages && style === 'pvz') {
-            // PVZ 宠物：3动作
-            poses = ['idle', 'happy', 'attack'];
-            labels = ['😊 待机', '😄 开心', '⚔️ 攻击'];
-        } else if (sp && sp.imageStages) {
-            // 非 PVZ 宠物：多进化阶段
-            poses = Object.keys(sp.imageStages);
-            labels = poses.map(p => `⭐ 阶段 ${p}`);
-        } else {
-            // 只有一张图
-            poses = ['0'];
-            labels = [''];
-        }
+        const sp = species.find(function(s) { return s.name === petName; });
+        if (!sp) return;
+        const entries = getPetStageEntriesForSpecies(sp);
         let overlay = document.getElementById('petLightbox');
         if (!overlay) {
             overlay = document.createElement('div');
             overlay.id = 'petLightbox';
-            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;';
+            overlay.className = 'pet-lightbox';
             overlay.onclick = function(e) { if (e.target === overlay) closeLightbox(); };
             document.body.appendChild(overlay);
         }
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+        overlay.setAttribute('aria-label', `${petName} 成长阶段图库`);
+        const stageHtml = entries.length
+            ? entries.map(function(entry) {
+                return `
+                    <button type="button" class="pet-lightbox-stage" onclick="openPetStageImage('${escapeLightboxJs(entry.src)}','${escapeLightboxJs(sp.name)}','${escapeLightboxJs(entry.label)}','${escapeLightboxJs(sp.emoji || '🐾')}')">
+                        <span class="pet-lightbox-stage-art">
+                            <img src="${escapeLightboxHtml(entry.src)}" alt="${escapeLightboxHtml(sp.name)} ${escapeLightboxHtml(entry.label)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                            <span class="pet-lightbox-stage-fallback" style="display:none;">${escapeLightboxHtml(sp.emoji || '🐾')}</span>
+                        </span>
+                        <strong>${escapeLightboxHtml(entry.label)}</strong>
+                        <span>点击看大图</span>
+                    </button>`;
+            }).join('')
+            : `<div class="pet-lightbox-empty">${escapeLightboxHtml(sp.emoji || '🐾')} 暂无可展示阶段图</div>`;
         overlay.innerHTML = `
-            <div style="background:white;border-radius:16px;padding:24px;max-width:720px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-                <h2 style="margin:0 0 16px;font-size:18px;">🐾 ${petName} — ${style === 'pvz' ? '动作展示' : '进化阶段'}</h2>
-                <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:800px;">
-                    ${poses.map((pose, i) => {
-                        let imgSrc;
-                        if (sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && ['idle', 'happy', 'attack'].includes(pose)) {
-                            imgSrc = `assets/pets/poses/${sp.id}_${pose}.webp`;
-                        } else if (sp && sp.imageStages && sp.imageStages[pose]) {
-                            imgSrc = sp.imageStages[pose];
-                        } else if (sp && sp.imageUrl) {
-                            imgSrc = sp.imageUrl;
-                        } else {
-                            return '';
-                        }
-                        return `
-                        <div style="text-align:center;cursor:pointer;" onclick="selectLightboxPose('${petName}','${pose}')">
-                            <img src="${imgSrc}" alt="${labels[i]}"
-                                 style="width:180px;height:180px;object-fit:contain;border-radius:12px;border:3px solid #eee;transition:all 0.2s;"
-                                 id="lb_${petName}_${pose}">
-                            <div style="margin-top:8px;font-size:13px;color:#666;">${labels[i]}</div>
-                        </div>`;
-                    }).join('')}
+            <div class="pet-lightbox-panel" onclick="event.stopPropagation()">
+                <button type="button" class="pet-lightbox-close" onclick="closeLightbox()" aria-label="关闭阶段图库">&times;</button>
+                <div class="pet-lightbox-head">
+                    <span>成长图库</span>
+                    <h2>${escapeLightboxHtml(sp.emoji || '🐾')} ${escapeLightboxHtml(petName)}</h2>
+                    <p>${entries.length} 个阶段 · 再点任意小图查看大图</p>
                 </div>
-                <button onclick="closeLightbox()" style="margin-top:20px;padding:8px 24px;border:none;background:var(--sage-green);color:white;border-radius:12px;cursor:pointer;font-size:14px;">✕ 关闭</button>
+                <div class="pet-lightbox-grid">${stageHtml}</div>
             </div>`;
         overlay.style.display = 'flex';
     };
 
     window.selectLightboxPose = function(petName, pose) {
-        // PVZ 宠物：切换动作；banchong 宠物：无动作切换
         const species = PetSystem.getAllSpecies();
-        const sp = species.find(s => s.name === petName);
-        if (sp && (sp.imageStyle === 'pvz' || sp.imageStyle === 'minecraft') && ['idle','happy','attack'].includes(pose)) {
-            const pet = PetSystem.getState();
-            if (pet.species) {
-                window.setPetPose(pose);
-            }
-        }
-        // 高亮选中
-        document.querySelectorAll(`[id^="lb_${petName}_"]`).forEach(el => {
-            el.style.borderColor = el.id === `lb_${petName}_${pose}` ? 'var(--sage-green)' : '#eee';
-        });
+        const sp = species.find(function(s) { return s.name === petName; });
+        if (!sp) return;
+        const src = (sp.imageStages && sp.imageStages[pose]) || getPetImagePath(sp.id, pose) || sp.imageUrl || '';
+        openPetStageImage(src, sp.name, getStageLabelForKey(pose, Number(pose) || 0), sp.emoji || '🐾');
     };
 
     window.closeLightbox = function() {
@@ -936,6 +1149,14 @@ function escapeAppHtml(value) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+}
+
+function escapeAppJs(value) {
+    return String(value == null ? '' : value)
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/\r/g, '\\r')
+        .replace(/\n/g, '\\n');
 }
 
 function getPetStageImageForStage(speciesData, stageIdx) {
@@ -1290,8 +1511,11 @@ function renderPetPage() {
             `;
         } else {
             const previewImage = getPetStageImageForStage(currentSpecies, nextStage.stageIdx);
+            const previewClick = previewImage
+                ? `onclick="openPetStageImage('${escapeAppJs(previewImage)}','${escapeAppJs(currentSpecies?.name || pet.species_data?.name || '宠物')}','${escapeAppJs(nextStage.name)}','${escapeAppJs(nextStage.emoji || currentSpecies?.emoji || '🐾')}')"`
+                : '';
             nextStagePreview.innerHTML = `
-                <div class="pet-next-stage-card">
+                <div class="pet-next-stage-card${previewImage ? ' is-clickable' : ''}" ${previewClick} ${previewImage ? 'role="button" tabindex="0" aria-label="查看下一阶段大图"' : ''}>
                     <div class="pet-next-stage-art">
                         ${previewImage
                             ? `<img src="${escapeAppHtml(previewImage)}" alt="${escapeAppHtml(nextStage.name)}">`
@@ -1315,8 +1539,11 @@ function renderPetPage() {
                 const isUnlocked = pet.level >= stage.min_level;
                 const isCurrent = pet.stage && pet.stage.name === stage.name;
                 const stageImage = getPetStageImageForStage(currentSpecies, stage.stageIdx);
+                const stageClick = stageImage
+                    ? `onclick="openPetStageImage('${escapeAppJs(stageImage)}','${escapeAppJs(currentSpecies?.name || pet.species_data?.name || '宠物')}','${escapeAppJs(stage.name)}','${escapeAppJs(stage.emoji || currentSpecies?.emoji || '🐾')}')"`
+                    : '';
                 return `
-                    <div class="pet-stage-pill${isUnlocked ? ' is-unlocked' : ''}${isCurrent ? ' is-current' : ''}">
+                    <button type="button" class="pet-stage-pill${isUnlocked ? ' is-unlocked' : ''}${isCurrent ? ' is-current' : ''}" ${stageClick} ${stageImage ? '' : 'disabled'}>
                         <div class="pet-stage-pill-art">
                             ${stageImage
                                 ? `<img src="${escapeAppHtml(stageImage)}" alt="${escapeAppHtml(stage.name)}">`
@@ -1326,7 +1553,7 @@ function renderPetPage() {
                             <strong>${escapeAppHtml(stage.name)}</strong>
                             <span>${isCurrent ? '当前阶段' : isUnlocked ? '已解锁' : `Lv.${escapeAppHtml(stage.min_level)} 解锁`}</span>
                         </div>
-                    </div>
+                    </button>
                 `;
             }).join('');
         }
@@ -2213,17 +2440,18 @@ PetSystem.addExp = function(amount) {
 
 // ============ 总体渲染 ============
 function renderAll() {
+    const activePage = getActivePageId();
     renderTaskGrid();
     renderSidebarTasks();
     updateStats();
-    if (window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
+    if (activePage === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
         void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
     }
     renderPetPage();
-    void renderExplorePage();
-    if (window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     renderInventoryPage();
-    if (window.ShopSystem) ShopSystem.renderUI('shop-ui');
+    if (activePage === 'explore' && window.ExplorationSystem) void renderExplorePage();
+    if (activePage === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
+    if (activePage === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (window.lucide) lucide.createIcons();
 }
 
@@ -2248,34 +2476,11 @@ window.saveAppState = saveAppState;
 
 // ============ 初始化 ============
 async function init() {
-    if (window.__PETBANK_OPTIONAL_BOOTSTRAP__ && typeof window.__PETBANK_OPTIONAL_BOOTSTRAP__.then === 'function') {
-        try {
-            await window.__PETBANK_OPTIONAL_BOOTSTRAP__;
-        } catch (error) {}
-    }
     if (window.ProfileManager && typeof ProfileManager.ensureDefault === 'function') {
         ProfileManager.ensureDefault();
     }
     if (window.ProfileUI && typeof ProfileUI.render === 'function') {
         ProfileUI.render();
-    }
-    if (window.AuthSystem && typeof window.AuthSystem.boot === 'function') {
-        await AuthSystem.boot();
-    }
-    if (window.HouseholdSystem && typeof window.HouseholdSystem.refresh === 'function') {
-        await HouseholdSystem.refresh('household-root');
-    }
-    if (window.CloudRestore && typeof window.CloudRestore.hydrateFromCloud === 'function') {
-        await CloudRestore.hydrateFromCloud().catch(function () {});
-    }
-    if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
-        await SocialSystem.refresh();
-    }
-    if (window.PKService && typeof window.PKService.refresh === 'function') {
-        await PKService.refresh();
-    }
-    if (window.ActivityFeedSystem && typeof window.ActivityFeedSystem.refresh === 'function') {
-        await ActivityFeedSystem.refresh();
     }
     loadAppState();
     PetSystem.load();
@@ -2283,53 +2488,14 @@ async function init() {
     await InventorySystem.loadItemsData();
     await loadPointItems();
     updateRewardPetCard();
-    if (window.LearnCenter && typeof LearnCenter.init === 'function') {
-        await LearnCenter.init();
-    }
-    await ExplorationSystem.loadScenes();
-    // 战斗深化：预加载技能定义表 data/skills.json
-    if (typeof PetSystem.loadSkills === 'function') {
-        try { await PetSystem.loadSkills(); } catch (e) { console.warn('skills.json 加载失败:', e); }
-    }
-    if (window.CardCollection && typeof window.CardCollection.init === 'function') {
-        window.CardCollection.init();
-        // 新玩家初始送 3 张 common 卡（修复卡牌可达性：保证能凑够 3 只打卡牌，只送一次）
-        try {
-            if (!localStorage.getItem('petbank_starter_cards') && typeof PetSystem.getAllSpecies === 'function') {
-                const commons = PetSystem.getAllSpecies().filter(s => s.rarity === 'common');
-                if (commons.length >= 3) {
-                    commons.slice().sort(() => Math.random() - 0.5).slice(0, 3)
-                        .forEach(c => window.CardCollection.addCard(c.id));
-                    localStorage.setItem('petbank_starter_cards', '1');
-                }
-            }
-        } catch (e) {}
-    }
-    if (window.ToolboxSystem && typeof window.ToolboxSystem.init === 'function') {
-        window.ToolboxSystem.init();
-    }
     // 宠物小屋 decay 补算（R4：PetSystem 加载后，若 last_home_ts 存在则结算离线衰减）
     // decay() 内部结算后会立即写 last_home_ts=now，保证后续 switchPage('home')→renderUI 再算幂等
     if (typeof PetSystem.decay === 'function' && PetSystem.getState().last_home_ts) {
         PetSystem.decay();
     }
-    // 宠物小屋 HomeSystem 初始化（需在 PetSystem 就绪后）
-    if (window.HomeSystem && typeof window.HomeSystem.init === 'function') {
-        window.HomeSystem.init();
-        // 预加载共享家具目录（商店 + 小屋共用同一份 data/furniture.json）
-        if (typeof window.HomeSystem.loadCatalog === 'function') {
-            try { await window.HomeSystem.loadCatalog(); } catch (e) {}
-        }
-    }
     renderAll();
-    if (window.FamilyReview && typeof window.FamilyReview.render === 'function') {
-        window.FamilyReview.render('family-review-root');
-    }
     // 初始化宝箱系统
     if (window.TreasureChest) TreasureChest.init();
-    // 初始化商店和工具箱
-    if (window.ShopSystem) ShopSystem.renderUI('shop-ui');
-    if (window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
     if (window.lucide) lucide.createIcons();
 }
 
