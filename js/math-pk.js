@@ -4,7 +4,7 @@
  * 全屏竞技台：左=人类选手，右=机器人选手，同题竞速。
  * 每轮同一题，机器人有「思考倒计时」（按难度），人若在机器人之前答对则人赢该轮；
  * 答错不结束（继续抢答但机器人仍在计时）。共 5 轮，比胜场，人赢获成长积分。
- * 难度从「设置」页读取（petbank_math_difficulty），中等档约 30% 出 CMATH 应用题。
+ * 难度从「设置」页读取（petbank_math_difficulty），综合进阶档约 30% 出 CMATH 应用题。
  * 美术：assets/arena/（Agnes 生成：arena-bg / human-kid / robot-rival）。
  */
 (function() {
@@ -24,22 +24,31 @@
         TOTAL_ROUNDS: 5,         // 每局轮数
         BASE_SCORE: 10,          // 赢一轮基础分
         WIN_BONUS: 25,           // 赢得整局额外奖励
-        WORD_RATIO: 0.3,         // medium 出 CMATH 应用题概率
+        WORD_RATIO: 0.3,         // medium_mix 出 CMATH 应用题概率
         STORAGE_KEY_HIGH_SCORE: 'petbank_math_high_score',
         STORAGE_KEY_DIFFICULTY: 'petbank_math_difficulty'
     };
 
     const DIFFICULTY_LABELS = {
-        easy: '简单',
-        medium: '中等',
-        hard: '困难'
+        easy20: '加减起步',
+        easy100: '加减进阶',
+        medium_mul: '乘法启程',
+        medium_mix: '综合闯关',
+        hard: '乘除挑战'
+    };
+
+    const VALID_DIFFICULTIES = Object.keys(DIFFICULTY_LABELS);
+    const LEGACY_DIFFICULTY_MAP = {
+        easy: 'easy20',
+        medium: 'medium_mix',
+        hard: 'hard'
     };
 
     let state = {
         isPlaying: false,
         roundClosing: false,     // 轮次结算等待期，锁输入
         mode: 'robot',
-        mathDifficulty: 'easy',
+        mathDifficulty: 'easy20',
         currentQuestion: null,
         currentInput: '',
         asyncMatch: null,
@@ -85,6 +94,11 @@
             : CONFIG.TOTAL_ROUNDS;
     }
 
+    function normalizeDifficulty(diff) {
+        const mapped = LEGACY_DIFFICULTY_MAP[diff] || diff;
+        return VALID_DIFFICULTIES.includes(mapped) ? mapped : 'easy20';
+    }
+
     // ============ 工具函数 ============
     const utils = {
         getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; },
@@ -114,13 +128,17 @@
             return { text: `${a} ÷ ${b}`, answer, op: '/' };
         },
         generateQuestion(difficulty) {
+            const normalized = normalizeDifficulty(difficulty);
             const r = Math.random();
-            if (difficulty === 'easy') return r < 0.35 ? this._mul(2, 5, 2, 5) : this._addsub(20);
-            if (difficulty === 'medium') return r < 0.35 ? this._mul(2, 9, 2, 9) : this._addsub(100);
+            if (normalized === 'easy20') return this._addsub(20);
+            if (normalized === 'easy100') return this._addsub(100);
+            if (normalized === 'medium_mul') return this._mul(2, 6, 2, 9);
+            if (normalized === 'medium_mix') return r < 0.35 ? this._mul(2, 9, 2, 9) : this._addsub(100);
             return r < 0.5 ? this._mul(2, 12, 2, 9) : this._div();
         },
         generateWordQuestion(difficulty) {
-            const grade = difficulty === 'easy' ? '1' : '2';
+            const normalized = normalizeDifficulty(difficulty);
+            const grade = normalized === 'easy20' || normalized === 'easy100' ? '1' : '2';
             const arr = (CMATH_POOL && CMATH_POOL[grade]) || [];
             if (arr.length === 0) return null;
             const item = arr[this.getRandomInt(0, arr.length - 1)];
@@ -230,12 +248,12 @@
             const center = document.getElementById('arena-center');
             if (!center) return;
             const high = localStorage.getItem(CONFIG.STORAGE_KEY_HIGH_SCORE) || 0;
-            const diffNames = { easy: '简单', medium: '中等', hard: '困难' };
+            const difficultyLabel = DIFFICULTY_LABELS[normalizeDifficulty(state.mathDifficulty)] || '加减起步';
             center.innerHTML = `
                 <div class="arena-lobby">
                     <h2>🔢 数学 PK 竞技台</h2>
                     <p>和机器人同题竞速，${CONFIG.TOTAL_ROUNDS} 局定胜负！</p>
-                    <p>当前难度：<b style="color:#ffd166;">${diffNames[state.mathDifficulty] || '简单'}</b>（在「设置」中修改）</p>
+                    <p>当前难度：<b style="color:#ffd166;">${difficultyLabel}</b>（在「设置」中修改）</p>
                     <button class="arena-btn" onclick="MathPKGame.start()">开始对战</button>
                     <div id="mathpk-async-root" style="margin-top:14px;"></div>
                     <p style="margin-top:14px;font-size:.8rem;opacity:.7;">历史最高分：${high}</p>
@@ -368,18 +386,20 @@
             const container = document.getElementById(containerId);
             if (!container) return;
             _lastDiffContainer = containerId;
-            const cur = state.mathDifficulty || 'easy';
+            const cur = normalizeDifficulty(state.mathDifficulty);
             const opts = [
-                { id: 'easy', label: '简单', desc: '20 以内加减 + 小乘法' },
-                { id: 'medium', label: '中等', desc: '100 以内加减 + 乘法 + 应用题' },
-                { id: 'hard', label: '困难', desc: '乘除（机器人更快）' }
+                { id: 'easy20', label: '加减起步', desc: '20 以内加减' },
+                { id: 'easy100', label: '加减进阶', desc: '100 以内加减' },
+                { id: 'medium_mul', label: '乘法启程', desc: '基础乘法练习' },
+                { id: 'medium_mix', label: '综合闯关', desc: '加减乘 + 应用题' },
+                { id: 'hard', label: '乘除挑战', desc: '乘除（机器人更快）' }
             ];
             container.innerHTML = `
                 <div class="card" style="margin-top:16px;">
                     <div class="card-header"><h3 class="text-sm font-bold">🔢 数学 PK 难度</h3></div>
                     <div class="card-body">
                         <p class="text-xs text-muted" style="margin-bottom:12px;">数学 PK 竞技台每局 ${CONFIG.TOTAL_ROUNDS} 轮，在此选择出题难度（也影响机器人速度）。</p>
-                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;">
                             ${opts.map(o => `
                                 <button data-diff="${o.id}" onclick="MathPKGame._setDifficulty('${o.id}')"
                                     style="padding:14px 10px;border-radius:14px;cursor:pointer;text-align:center;border:2px solid ${cur === o.id ? 'transparent' : '#e5e7eb'};background:${cur === o.id ? 'var(--sage-green, #7BAE8F)' : '#f7f9f8'};color:${cur === o.id ? '#fff' : '#3f5e4a'};transition:all 0.15s;">
@@ -397,14 +417,14 @@
     // ============ 核心逻辑 ============
     const Game = {
         init() {
-            const savedDiff = localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY);
-            if (['easy', 'medium', 'hard'].includes(savedDiff)) state.mathDifficulty = savedDiff;
+            state.mathDifficulty = normalizeDifficulty(localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty);
         },
 
         _setDifficulty(diff) {
-            if (!['easy', 'medium', 'hard'].includes(diff)) return;
-            state.mathDifficulty = diff;
-            try { localStorage.setItem(CONFIG.STORAGE_KEY_DIFFICULTY, diff); } catch (e) {}
+            const normalized = normalizeDifficulty(diff);
+            if (!VALID_DIFFICULTIES.includes(normalized)) return;
+            state.mathDifficulty = normalized;
+            try { localStorage.setItem(CONFIG.STORAGE_KEY_DIFFICULTY, normalized); } catch (e) {}
             if (_lastDiffContainer) render.renderDifficultySetting(_lastDiffContainer);
         },
 
@@ -412,8 +432,7 @@
             const container = document.getElementById(containerId);
             if (!container) return;
             // 先恢复难度，保证大厅显示正确（createContainer 内 _lobby 会用到）
-            const savedDiff = localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY);
-            if (['easy', 'medium', 'hard'].includes(savedDiff)) state.mathDifficulty = savedDiff;
+            state.mathDifficulty = normalizeDifficulty(localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty);
             render.createContainer(containerId);
             this.init();
         },
@@ -466,8 +485,8 @@
         },
 
         _genQuestion() {
-            const diff = state.mathDifficulty || 'easy';
-            if (diff === 'medium' && CMATH_POOL && Math.random() < CONFIG.WORD_RATIO) {
+            const diff = normalizeDifficulty(state.mathDifficulty);
+            if (diff === 'medium_mix' && CMATH_POOL && Math.random() < CONFIG.WORD_RATIO) {
                 const w = utils.generateWordQuestion(diff);
                 if (w) return w;
             }
@@ -475,9 +494,12 @@
         },
 
         _robotThinkMs(diff) {
-            if (diff === 'easy') return 4500 + Math.floor(Math.random() * 3500);   // 4.5-8s
-            if (diff === 'hard') return 2800 + Math.floor(Math.random() * 1700);   // 2.8-4.5s
-            return 3500 + Math.floor(Math.random() * 2500);                          // 3.5-6s (medium)
+            const normalized = normalizeDifficulty(diff);
+            if (normalized === 'easy20') return 5200 + Math.floor(Math.random() * 3800);      // 5.2-9.0s
+            if (normalized === 'easy100') return 4700 + Math.floor(Math.random() * 3300);     // 4.7-8.0s
+            if (normalized === 'medium_mul') return 4000 + Math.floor(Math.random() * 2500);  // 4.0-6.5s
+            if (normalized === 'medium_mix') return 3500 + Math.floor(Math.random() * 2500);  // 3.5-6.0s
+            return 2800 + Math.floor(Math.random() * 1700);                                     // 2.8-4.5s
         },
 
         _nextRound() {
@@ -692,10 +714,10 @@
 
     // 暴露给全局
     async function buildAsyncQuestionSet() {
-        const diff = localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty || 'easy';
+        const diff = normalizeDifficulty(localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty);
         const questions = [];
         for (let i = 0; i < CONFIG.TOTAL_ROUNDS; i++) {
-            if (diff === 'medium' && CMATH_POOL && Math.random() < CONFIG.WORD_RATIO) {
+            if (diff === 'medium_mix' && CMATH_POOL && Math.random() < CONFIG.WORD_RATIO) {
                 const word = utils.generateWordQuestion(diff);
                 questions.push(word || utils.generateQuestion(diff));
             } else {
@@ -711,9 +733,9 @@
     }
 
     function describeAsyncQuestionSet(payload) {
-        const difficulty = payload && payload.difficulty ? payload.difficulty : (state.mathDifficulty || 'easy');
+        const difficulty = normalizeDifficulty(payload && payload.difficulty ? payload.difficulty : state.mathDifficulty);
         const totalRounds = payload && payload.totalRounds ? payload.totalRounds : CONFIG.TOTAL_ROUNDS;
-        const difficultyLabel = DIFFICULTY_LABELS[difficulty] || '简单';
+        const difficultyLabel = DIFFICULTY_LABELS[difficulty] || '加减起步';
         return {
             difficulty: difficulty,
             difficultyLabel: difficultyLabel,
@@ -735,7 +757,7 @@
         startAsyncMatch: (match) => Game.startAsyncMatch(match),
         buildAsyncQuestionSet: buildAsyncQuestionSet,
         describeAsyncQuestionSet: describeAsyncQuestionSet,
-        getDifficulty: () => (localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty || 'easy')
+        getDifficulty: () => normalizeDifficulty(localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty)
     };
 
     // 物理键盘支持（仅对战中）
