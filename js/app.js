@@ -2223,6 +2223,11 @@ window.saveAppState = saveAppState;
 
 // ============ 初始化 ============
 async function init() {
+    if (window.__PETBANK_OPTIONAL_BOOTSTRAP__ && typeof window.__PETBANK_OPTIONAL_BOOTSTRAP__.then === 'function') {
+        try {
+            await window.__PETBANK_OPTIONAL_BOOTSTRAP__;
+        } catch (error) {}
+    }
     if (window.ProfileManager && typeof ProfileManager.ensureDefault === 'function') {
         ProfileManager.ensureDefault();
     }
