@@ -186,6 +186,11 @@ const WalkSystem = (function() {
 
     // --- 公开 API ---
     return {
+        getRoutes: function() {
+            return ROUTES.map(function(route) {
+                return Object.assign({}, route);
+            });
+        },
         startWalk: function(routeId) {
             startWalk(routeId);
         },

@@ -601,6 +601,34 @@
                 <div id="home-container"></div>
             </div>
 
+            <!-- PAGE: 好友小屋 -->
+            <div class="page" id="page-home-visit">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">宠物导航</span>
+                            <span class="section-menu-current">当前：好友小屋</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('pet')">我的宠物</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('home-visit')">好友小屋</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                        <button class="section-menu-item" type="button" onclick="openPetWalk()">遛弯</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('pet')">我的宠物</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('home-visit')">好友小屋</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                    <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
+                </div>
+                <div id="friend-home-visit-root"></div>
+            </div>
+
             <!-- PAGE: 探索冒险（路线地图） -->
             <div class="page" id="page-explore">
                 <section class="explore-hero">

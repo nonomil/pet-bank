@@ -491,7 +491,7 @@ const PAGE_TO_TAB = {
     playground: 'playground',                                   // 游乐场（hub）
     mathpk: 'playground', hanzi: 'playground',                  // 数学PK/汉字 → 游乐场
     leaderboard: 'playground',                                  // 排行榜 → 游乐场
-    pet: 'pet', home: 'pet', card: 'pet', walk: 'pet',          // 宠物
+    pet: 'pet', home: 'pet', 'home-visit': 'pet', card: 'pet', walk: 'pet',          // 宠物
     explore: 'explore',                                         // 探索（含成长地图）
     works: 'playground', tools: 'playground', settings: 'playground' // 作品/工具/设置都继续归游乐场 tab
 };
@@ -601,12 +601,15 @@ function closeSectionMenus() {
     });
 }
 
-function openPetWalk() {
+function openPetWalk(routeId) {
     closeSectionMenus();
     switchPage('pet');
     requestAnimationFrame(() => {
         if (window.WalkSystem && typeof WalkSystem.renderUI === 'function') {
             WalkSystem.renderUI('walkArea');
+            if (routeId && typeof WalkSystem.startWalk === 'function') {
+                WalkSystem.startWalk(routeId);
+            }
         }
     });
 }
@@ -653,6 +656,9 @@ function switchPage(page) {
     // 切换到特定页面时执行特定渲染
     if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     if (page === 'pet') renderPetPage();
+    if (page === 'home-visit' && window.SocialSystem && typeof window.SocialSystem.renderFriendHomeVisit === 'function') {
+        window.SocialSystem.renderFriendHomeVisit('friend-home-visit-root');
+    }
     if (page === 'explore') void renderExplorePage();
     if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
     if (page === 'hanzi' && window.HanziGame) HanziGame.renderUI('hanzi-container');
