@@ -17,6 +17,8 @@ const CardCollection = (function() {
     let _loreByName = {};
     let _loreLoadPromise = null;
     let _loreLoaded = false;
+    let _catalogRenderPromise = null;
+    let _catalogLoadAttempted = false;
 
     const SOURCE_DETAIL_LABELS = {
         original: '阳光花园馆 · 经典植物',
@@ -32,6 +34,13 @@ const CardCollection = (function() {
             .replace(/"/g, '&quot;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
+    }
+    function escapeJsString(value) {
+        return String(value ?? '')
+            .replace(/\\/g, '\\\\')
+            .replace(/'/g, "\\'")
+            .replace(/\r/g, '\\r')
+            .replace(/\n/g, '\\n');
     }
     const SERIES_DISPLAY_LABELS = {
         PVZ: '经典植物线',
@@ -339,6 +348,49 @@ const CardCollection = (function() {
         </span>`;
     }
 
+    function syncSpeciesFromPetSystem() {
+        if (typeof PetSystem !== 'undefined' && typeof PetSystem.getAllSpecies === 'function') {
+            _allSpecies = PetSystem.getAllSpecies() || [];
+        }
+        _calculateSeriesStats();
+    }
+
+    function shouldWaitForPetCatalog() {
+        if (typeof PetSystem === 'undefined' || typeof PetSystem.loadPetDB !== 'function') return false;
+        if (typeof PetSystem.isDBLoaded === 'function' && PetSystem.isDBLoaded()) return false;
+        return !_catalogLoadAttempted;
+    }
+
+    function renderCatalogLoading(container) {
+        container.innerHTML = `
+            <div class="card-collection-shell">
+                <section class="card-overview-panel card-catalog-loading">
+                    <div class="card-overview-kicker">宠物图鉴馆</div>
+                    <h2 class="card-overview-heading">正在整理完整图鉴...</h2>
+                    <p class="card-overview-copy">图鉴会先等完整宠物库加载完成，再展示四座分馆，避免线上慢网络时只出现少量 fallback 卡片。</p>
+                    <div class="card-catalog-loading-bar"><span></span></div>
+                </section>
+            </div>`;
+    }
+
+    function requestCatalogRender(containerId) {
+        if (_catalogRenderPromise || typeof PetSystem === 'undefined' || typeof PetSystem.loadPetDB !== 'function') return;
+        _catalogLoadAttempted = true;
+        _catalogRenderPromise = PetSystem.loadPetDB()
+            .then(() => {
+                syncSpeciesFromPetSystem();
+                renderUI(containerId || _lastContainerId);
+            })
+            .catch((error) => {
+                console.warn('[CardCollection] Pet catalog load failed:', error);
+                syncSpeciesFromPetSystem();
+                renderUI(containerId || _lastContainerId);
+            })
+            .finally(() => {
+                _catalogRenderPromise = null;
+            });
+    }
+
     function setView(view, source) {
         if (view === 'gallery') {
             if ((_selectedGallery || 'all') === (source || 'all')) {
@@ -557,11 +609,43 @@ const CardCollection = (function() {
         return `assets/cards/composed-v2/${petId}.webp`;
     }
 
+    function openStageLightbox(imageUrl, petName, stageLabel) {
+        if (!imageUrl) return;
+        let lightbox = document.getElementById('cardStageLightbox');
+        if (!lightbox) {
+            lightbox = document.createElement('div');
+            lightbox.id = 'cardStageLightbox';
+            lightbox.className = 'card-stage-lightbox';
+            document.body.appendChild(lightbox);
+        }
+        const safeName = escapeHtmlAttr(petName || '宠物');
+        const safeLabel = escapeHtmlAttr(stageLabel || '成长阶段');
+        lightbox.innerHTML = `
+            <div class="card-stage-lightbox-backdrop" onclick="CardCollection.closeStageLightbox()"></div>
+            <div class="card-stage-lightbox-panel" role="dialog" aria-modal="true" aria-label="${safeName} ${safeLabel} 大图" onclick="event.stopPropagation()">
+                <button type="button" class="card-stage-lightbox-close" onclick="CardCollection.closeStageLightbox()" aria-label="关闭大图">&times;</button>
+                <div class="card-stage-lightbox-copy">
+                    <span>成长阶段大图</span>
+                    <strong>${safeName}</strong>
+                    <p>${safeLabel}</p>
+                </div>
+                <div class="card-stage-lightbox-frame">
+                    <img src="${escapeHtmlAttr(imageUrl)}" alt="${safeName} ${safeLabel}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="card-stage-lightbox-fallback" style="display:none;">🐾</div>
+                </div>
+            </div>`;
+        lightbox.classList.add('show');
+    }
+
+    function closeStageLightbox() {
+        const lightbox = document.getElementById('cardStageLightbox');
+        if (lightbox) lightbox.classList.remove('show');
+    }
+
     function init() {
         const saved = localStorage.getItem(STORAGE_KEY);
         _cards = saved ? JSON.parse(saved) : [];
-        if (typeof PetSystem !== 'undefined') _allSpecies = PetSystem.getAllSpecies();
-        _calculateSeriesStats();
+        syncSpeciesFromPetSystem();
         void loadLoreData();
     }
 
@@ -608,8 +692,12 @@ const CardCollection = (function() {
         const container = document.getElementById(containerId);
         if (!container) return;
         _lastContainerId = containerId;
-        if (typeof PetSystem !== 'undefined') _allSpecies = PetSystem.getAllSpecies();
-        _calculateSeriesStats();
+        syncSpeciesFromPetSystem();
+        if (shouldWaitForPetCatalog()) {
+            renderCatalogLoading(container);
+            requestCatalogRender(containerId);
+            return;
+        }
 
         // 统计
         const totalCollected = _cards.length;
@@ -857,12 +945,14 @@ const CardCollection = (function() {
             const activeClass = stage.index === highlightedStage ? ' active' : '';
             const label = detailMeta.stageLabels[index] || stage.label || `阶段 ${index + 1}`;
             return `
-                <div class="card-detail-stage${activeClass}">
+                <button type="button" class="card-detail-stage${activeClass}" onclick="CardCollection.openStageLightbox('${escapeJsString(stage.imageUrl)}','${escapeJsString(pet.name)}','${escapeJsString(label)}')" aria-label="查看 ${escapeHtmlAttr(pet.name)} ${escapeHtmlAttr(label)} 大图">
                     <div class="card-detail-stage-frame">
-                        <img src="${stage.imageUrl}" alt="${pet.name} ${label}" onerror="this.parentElement.innerHTML='<div class=\\'card-detail-stage-fallback\\'>${pet.emoji || '🐾'}</div>'">
+                        <img src="${escapeHtmlAttr(stage.imageUrl)}" alt="${escapeHtmlAttr(pet.name)} ${escapeHtmlAttr(label)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="card-detail-stage-fallback" style="display:none;">${pet.emoji || '🐾'}</div>
                     </div>
-                    <div class="card-detail-stage-label">${label}</div>
-                </div>`;
+                    <div class="card-detail-stage-label">${escapeHtmlAttr(label)}</div>
+                    <div class="card-detail-stage-hint">点击放大</div>
+                </button>`;
         }).join('');
         modal.innerHTML = `
             <div class="card-modal-overlay" onclick="CardCollection.closeDetail()"></div>
@@ -937,6 +1027,7 @@ const CardCollection = (function() {
     }
 
     function closeDetail() {
+        closeStageLightbox();
         const modal = document.getElementById('cardDetailModal');
         if (modal) modal.classList.remove('show');
     }
@@ -952,7 +1043,7 @@ const CardCollection = (function() {
         }
     }
 
-    return { init, renderUI, addCard, showDetail, closeDetail, setView, openSceneInvestigation, handleComposedCardImageError };
+    return { init, renderUI, addCard, showDetail, closeDetail, setView, openStageLightbox, closeStageLightbox, openSceneInvestigation, handleComposedCardImageError };
 })();
 
 window.CardCollection = CardCollection;

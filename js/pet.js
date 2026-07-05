@@ -50,6 +50,7 @@ const PetSystem = (function () {
 
     let SPECIES = [...SPECIES_FALLBACK];
     let PET_DB_LOADED = false;
+    let PET_DB_LOAD_PROMISE = null;
     let ALL_SERIES = {};
 
     // 当前宠物状态
@@ -529,20 +530,28 @@ const PetSystem = (function () {
 
     // 加载外部宠物数据库（data/pets.json）
     async function loadPetDB() {
-        if (PET_DB_LOADED) return;
-        try {
-            const resp = await fetch('data/pets.json');
-            if (!resp.ok) return;
-            const db = await resp.json();
-            if (db.flat && db.flat.length > SPECIES_FALLBACK.length) {
-                SPECIES = normalizeSpeciesMedia(db.flat);
-                ALL_SERIES = db.series || {};
-                PET_DB_LOADED = true;
-                console.log(`[PetDB] Loaded ${SPECIES.length} pets, ${Object.keys(ALL_SERIES).length} series`);
+        if (PET_DB_LOADED) return true;
+        if (PET_DB_LOAD_PROMISE) return PET_DB_LOAD_PROMISE;
+        PET_DB_LOAD_PROMISE = (async function() {
+            try {
+                const resp = await fetch('data/pets.json');
+                if (!resp.ok) return false;
+                const db = await resp.json();
+                if (db.flat && db.flat.length > SPECIES_FALLBACK.length) {
+                    SPECIES = normalizeSpeciesMedia(db.flat);
+                    ALL_SERIES = db.series || {};
+                    PET_DB_LOADED = true;
+                    console.log(`[PetDB] Loaded ${SPECIES.length} pets, ${Object.keys(ALL_SERIES).length} series`);
+                }
+                return PET_DB_LOADED;
+            } catch (e) {
+                console.warn('[PetDB] Failed to load pets.json:', e);
+                return false;
+            } finally {
+                if (!PET_DB_LOADED) PET_DB_LOAD_PROMISE = null;
             }
-        } catch (e) {
-            console.warn('[PetDB] Failed to load pets.json:', e);
-        }
+        })();
+        return PET_DB_LOAD_PROMISE;
     }
 
     // 获取所有种类

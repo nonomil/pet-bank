@@ -405,6 +405,57 @@ const CardArenaUI = (function () {
         return Math.max(0, Math.min(100, (c.hp / c.maxHp) * 100));
     }
 
+    function _teamAliveText(team) {
+        const alive = (team || []).filter(c => c && c.hp > 0).length;
+        return `${alive}/${(team || []).length || 0} 存活`;
+    }
+
+    function _skillChipHtml(c) {
+        const skills = (c && Array.isArray(c.skills)) ? c.skills.slice(0, 3) : [];
+        if (!skills.length) return '<span class="arena-skill-chip muted">基础技能</span>';
+        return skills.map(sk => {
+            const cd = sk.currentCd > 0 ? ` · CD${sk.currentCd}` : '';
+            return `<span class="arena-skill-chip">${sk.name || sk.id || '技能'}${cd}</span>`;
+        }).join('');
+    }
+
+    function _combatCardHtml(c, role, sideClass) {
+        return `
+            <div class="arena-combat-card ${sideClass || ''}">
+                <div class="arena-combat-role">${role}</div>
+                ${_fighterHtml(c)}
+                ${_hpLineHtml(c)}
+                <div class="arena-combat-detail">
+                    <span>ATK <b>${c.atk}</b></span>
+                    <span>DEF <b>${c.def}</b></span>
+                    <span>SPD <b>${c.spd}</b></span>
+                </div>
+                <div class="arena-skill-row">${_skillChipHtml(c)}</div>
+            </div>
+        `;
+    }
+
+    function _tacticsHtml(s, p, e, isPvp) {
+        const faster = (p.spd || 0) >= (e.spd || 0) ? p.name : e.name;
+        const enemyHpPct = Math.round(_hpPct(e));
+        const hint = enemyHpPct <= 35
+            ? `对手 ${e.name} 血量偏低，可以考虑重击收尾。`
+            : ((p.hp / Math.max(1, p.maxHp)) <= 0.35
+                ? `${p.name} 状态危险，防御或换人更稳。`
+                : `${faster} 速度占优，先手节奏很关键。`);
+        return `
+            <div class="arena-tactics-board">
+                <div class="arena-tactics-kicker">${isPvp ? '热座战术板' : '训练战术板'}</div>
+                <strong>${hint}</strong>
+                <div class="arena-tactics-grid">
+                    <span>我方 ${_teamAliveText(s.player)}</span>
+                    <span>${isPvp ? '玩家B' : '对手'} ${_teamAliveText(s.enemy)}</span>
+                    <span>回合 ${s.round}</span>
+                </div>
+            </div>
+        `;
+    }
+
     // ===== 选队 modal =====
     // stageId 可选：闯关模式传关卡 id（敌人用该关 enemies）；不传 = 自由对战（随机敌人）
     function openTeamSelect(stageId) {
@@ -627,15 +678,14 @@ const CardArenaUI = (function () {
             </div>
             <div class="arena-stage-grid">
                 <div class="arena-side arena-side-player" id="arenaFighterP">
-                    ${_fighterHtml(p)}
-                    ${_hpLineHtml(p)}
+                    ${_combatCardHtml(p, isPvp ? '玩家A' : '我方伙伴', 'player')}
                 </div>
                 <div class="arena-center">
                     <div class="arena-move-zone" id="arenaMoveZone">${moveHtml}</div>
+                    ${_tacticsHtml(s, p, e, isPvp)}
                 </div>
                 <div class="arena-side arena-side-enemy" id="arenaFighterE">
-                    ${_fighterHtml(e)}
-                    ${_hpLineHtml(e)}
+                    ${_combatCardHtml(e, isPvp ? '玩家B' : '训练对手', 'enemy')}
                 </div>
                 <div class="arena-vs-watermark">VS</div>
                 <div class="arena-damage-zone" id="arenaDamageZone"></div>

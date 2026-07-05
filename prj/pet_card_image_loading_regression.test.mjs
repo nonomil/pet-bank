@@ -29,11 +29,15 @@ await page.addInitScript(() => {
 
 await page.goto(`${BASE}/index.html`, { waitUntil: 'domcontentloaded', timeout: 60000 });
 await page.waitForFunction(
-    () => window.PetSystem && window.CardCollection && typeof window.switchPage === 'function',
+    () => window.PetSystem && typeof window.switchPage === 'function',
     { timeout: 10000 }
 );
 
 await page.evaluate(() => window.switchPage('card'));
+await page.waitForFunction(
+    () => window.CardCollection && typeof window.CardCollection.setView === 'function',
+    { timeout: 30000 }
+);
 await page.waitForFunction(
     () => document.querySelectorAll('.card-gallery-card').length >= 4,
     { timeout: 10000 }

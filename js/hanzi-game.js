@@ -25,6 +25,13 @@
         'choose-char-by-pinyin': '看拼音选字',
         'fill-blank': '例句填空'
     };
+    const ROUND_BACKGROUNDS = [
+        'assets/scenes/stargarden.webp',
+        'assets/scenes/forest.webp',
+        'assets/scenes/castle.webp',
+        'assets/scenes/waterfall.webp'
+    ];
+    const BG_ROTATE_EVERY = 3;
 
     const state = {
         bank: null,           // { levels: {1:[...],2:[...],3:[...]} }
@@ -68,6 +75,20 @@
         return a;
     }
     function _pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function _backgroundForRound(round) {
+        const safeRound = Math.max(1, Number(round || 1));
+        const idx = Math.floor((safeRound - 1) / BG_ROTATE_EVERY) % ROUND_BACKGROUNDS.length;
+        return ROUND_BACKGROUNDS[idx];
+    }
+
+    function _applyRoundBackground(round) {
+        const ov = document.getElementById('hz-overlay');
+        if (!ov) return;
+        const bg = _backgroundForRound(round);
+        ov.style.setProperty('--hz-bg', `url("${bg}")`);
+        ov.dataset.hzBg = bg;
+    }
 
     // ---------- 学习记忆（HanziProgress）itemId 工具 ----------
     // itemId 规范："{level}:{type}:{key}"  type∈{char,word}
@@ -225,6 +246,7 @@
                 document.body.appendChild(ov);
             }
             ov.style.display = 'flex';
+            _applyRoundBackground(1);
             ov.innerHTML = `
                 <div class="hz-stage">
                     <div class="hz-topbar">
@@ -256,6 +278,7 @@
             const card = document.getElementById('hz-card');
             const optsEl = document.getElementById('hz-opts');
             if (!card || !optsEl) return;
+            _applyRoundBackground(state.round || 1);
 
             let bodyHtml = '';
             if (q.mode === 'choose-char-by-pinyin') {
@@ -333,6 +356,7 @@
         _result() {
             const ov = document.getElementById('hz-overlay');
             if (!ov) return;
+            _applyRoundBackground(state.round || 1);
             const total = getRoundTotal();
             const correct = state.correctCount;
             const acc = total ? Math.round(correct / total * 100) : 0;
