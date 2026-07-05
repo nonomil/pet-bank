@@ -689,6 +689,12 @@ const HomeSystem = (function () {
 
     function renderUI(containerId) {
         _injectStyles();
+        if (!homeState || typeof homeState !== 'object' || !homeState.slots || typeof homeState.slots !== 'object') {
+            _loadHomeState();
+        }
+        if (!Array.isArray(furniture)) {
+            _loadFurniture();
+        }
         const cid = containerId || _lastContainer;
         _lastContainer = cid;
         const container = document.getElementById(cid);
