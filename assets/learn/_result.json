@@ -1,0 +1,16 @@
+{
+  "model": "agnes-image-2.1-flash",
+  "size": "1536x1024",
+  "results": [
+    {
+      "ok": true,
+      "slug": "portal-chinese-summer-classroom-20260705",
+      "title": "幼小衔接暑假中文资料包封面",
+      "path": "G:\\StudyCode\\宠物积分系统\\assets\\learn\\portal-chinese-summer-classroom-20260705.png",
+      "size_kb": 1487.9,
+      "elapsed": 68.7,
+      "prompt": "storybook children's illustration of a warm early-morning Chinese learning desk corner for school readiness, sunny window light, small wooden desk, tidy little schoolbag, blank phonics flash cards with simple colored shapes only, blank tianzig ge handwriting sheet, a rolled cream poem scroll with ribbon and no writing, pencils, gentle children's picture books, cozy yellow and soft orange palette, calm summer reading mood, subject clustered in the center lower area, soft gouache watercolor texture, clean edge details for card crop, no people, no child, no face, absolutely no text, no Chinese characters, no pinyin, no words, no letters, no numbers, no readable symbols on any prop, no interface, no buttons, no icons, no watermark"
+    }
+  ],
+  "total_elapsed": 69.1
+}
