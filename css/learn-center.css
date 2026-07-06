@@ -817,7 +817,7 @@ body.learn-mode .learn-lesson-hero .learn-badge {
 }
 
 .learn-portal-card-sites {
-    --portal-accent: #2b90a8;
+    --portal-accent: #6c9858;
 }
 
 .learn-portal-card-prints {
@@ -833,7 +833,9 @@ body.learn-mode .learn-lesson-hero .learn-badge {
 }
 
 .learn-portal-card-sites .learn-portal-media {
-    background: linear-gradient(180deg, #eaf6ff 0%, #fbfdff 100%);
+    background:
+        radial-gradient(circle at 86% 18%, rgba(236, 215, 155, 0.42), transparent 36%),
+        linear-gradient(180deg, #f3f8ea 0%, #fffdf6 100%);
 }
 
 .learn-portal-card-prints .learn-portal-media {
@@ -1222,7 +1224,9 @@ body.learn-mode .learn-lesson-hero .learn-badge {
 }
 
 .learn-entry-card-sites .learn-entry-art {
-    background: linear-gradient(180deg, #edf4ff 0%, #fbfdff 100%);
+    background:
+        radial-gradient(circle at 86% 18%, rgba(236, 215, 155, 0.42), transparent 36%),
+        linear-gradient(180deg, #f3f8ea 0%, #fffdf6 100%);
 }
 
 .learn-entry-card-english .learn-entry-art {

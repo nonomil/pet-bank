@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>成长伙伴 · 萌宠冒险岛</title>
     <link rel="icon" href="data:,">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="preload" href="js/pet.js" as="script" fetchpriority="high">
     <link rel="preload" href="js/runtime-loader.js" as="script" fetchpriority="high">
     <link rel="preload" href="js/app.js" as="script" fetchpriority="high">
+    <link rel="stylesheet" href="css/vendor/tailwind-lite.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/animations.css">
@@ -106,7 +105,7 @@
                             <div class="map-home-copy">
                                 <p class="map-eyebrow">首页 / 今日出发</p>
                                 <h2>先选一件开始，剩下的路就会亮起来。</h2>
-                                <p class="map-home-lead">首页先保留最值得点开的入口：今天任务、喜欢的栏目，还有陪你一起玩的宠物伙伴。</p>
+                                <p class="map-home-lead">今天先点一个入口就好：做任务、去学习，或看看陪你出发的小伙伴。</p>
                             </div>
 
                             <div class="map-home-priority-row">
@@ -180,7 +179,7 @@
                         </button>
                         <button class="map-entry-card" type="button" onclick="switchPage('learn')">
                             <span class="map-entry-art">
-                                <img src="assets/learn/portal-smartedu-home-20260705.png" alt="学习中心" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="assets/ui/hanzi-new-bg.webp" alt="学习中心" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="map-entry-copy">
                                 <span class="map-entry-kicker">轻松学习</span>
@@ -190,7 +189,7 @@
                         </button>
                         <button class="map-entry-card" type="button" onclick="switchPage('pet')">
                             <span class="map-entry-art">
-                                <img src="assets/pets/poses/cat_happy.webp" alt="我的宠物" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="assets/home-bg/room-forest.webp" alt="我的宠物" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="map-entry-copy">
                                 <span class="map-entry-kicker">一起玩</span>
@@ -200,7 +199,7 @@
                         </button>
                         <button class="map-entry-card" type="button" onclick="switchPage('playground')">
                             <span class="map-entry-art">
-                                <img src="assets/ui/pg-card-lb.webp?v=20260704b" alt="游乐场" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="assets/ui/pg-bg.webp" alt="游乐场" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="map-entry-copy">
                                 <span class="map-entry-kicker">想放松时</span>

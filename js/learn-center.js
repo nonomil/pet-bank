@@ -2458,7 +2458,6 @@
         const overallPercent = totalProgress.total ? Math.round((totalProgress.completed / totalProgress.total) * 100) : 0;
         const recentRewardItems = getRecentRewardItems(rewards, packRecords);
         const portalChineseImage = 'assets/learn/portal-chinese-summer-classroom-20260705.png';
-        const portalSiteImage = 'assets/learn/portal-smartedu-home-20260705.png';
         const portalEnglishImage = 'assets/learn/portal-minecraft-english-cover-20260705.png';
         const portalCards = [
             summerRecord ? renderPortalCard({
@@ -2499,8 +2498,10 @@
             siteRecord ? renderPortalCard({
                 id: 'sites',
                 theme: 'sites',
-                imageSrc: portalSiteImage,
-                imageStyle: 'object-position:center top;',
+                emoji: '站',
+                chip: '外部入口',
+                artTitle: '网站入口包',
+                artText: '官网、工具和阅读站统一收纳',
                 badges: ['官网', '工具站', '阅读站'],
                 kicker: '学习网站',
                 title: siteRecord.packMeta?.title || '学习网站入口包',

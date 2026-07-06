@@ -5,7 +5,7 @@
       icon: '📚',
       title: '学习中心',
       desc: '先进入今天的学习内容，打开就能继续读、练、看。',
-      img: 'assets/learn/portal-smartedu-home-20260705.png',
+      img: 'assets/ui/hanzi-new-bg.webp',
       page: 'learn',
     },
     {
