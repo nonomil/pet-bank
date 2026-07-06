@@ -238,6 +238,13 @@ function updateStats() {
     const accountPoints = document.getElementById('accountPoints');
     if (topPoints) topPoints.textContent = totalPoints;
     if (accountPoints) accountPoints.textContent = totalPoints;
+    const mapPoints = document.getElementById('mapPoints');
+    if (mapPoints) mapPoints.textContent = totalPoints;
+    const petState = (window.PetSystem && typeof PetSystem.getState === 'function') ? PetSystem.getState() : null;
+    const mapPetLevel = document.getElementById('mapPetLevel');
+    const mapWins = document.getElementById('mapWins');
+    if (mapPetLevel) mapPetLevel.textContent = `Lv.${petState?.level || 1}`;
+    if (mapWins) mapWins.textContent = petState?.wins || 0;
     const sc = document.getElementById('statCompleted');
     const sd = document.getElementById('statDeposited');
     const sh = document.getElementById('statHighlight');
@@ -706,8 +713,8 @@ function switchPage(page) {
         const hub = tab.closest('.nav-hub');
         if (hub) hub.classList.add('active');
     }
-    // 首页也改成全宽入口页，所有 tab 统一不显示左侧 sidebar。
-    document.body.classList.add('no-sidebar');
+    // 首页保留侧栏状态感；其他 tab 继续沿用全宽内容页。
+    document.body.classList.toggle('no-sidebar', page !== 'map');
     document.body.classList.toggle('learn-mode', page === 'learn' || page.startsWith('learn-'));
     void preparePage(page);
     /* legacy eager page activation kept disabled after runtime-loader migration

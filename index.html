@@ -10,10 +10,11 @@
     <link rel="preload" href="js/app.js" as="script" fetchpriority="high">
     <link rel="stylesheet" href="css/vendor/tailwind-lite.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/animations.css">
 </head>
-<body class="map-page-bg no-sidebar">
+<body class="map-page-bg">
     <!-- TOP NAV -->
     <div class="top-nav">
         <div class="top-nav-inner max-w-7xl mx-auto">
@@ -90,7 +91,7 @@
                 <div class="card-body">
                     <label class="text-xs font-medium block mb-2">孩子信息</label>
                     <input type="text" class="text-input" placeholder="例如：小树苗" id="childName">
-                    <p class="text-xs text-muted mt-3">首页先告诉孩子今天先做什么，再让宠物和入口来吸引继续点开。</p>
+                    <p class="text-xs text-muted mt-3">填写孩子昵称，首页会同步任务、积分和宠物状态。</p>
                 </div>
             </div>
         </aside>
@@ -99,115 +100,78 @@
         <main class="main-content">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
-                <section class="map-home-shell">
-                    <div class="map-home-top">
-                        <div class="map-home-intro">
-                            <div class="map-home-copy">
-                                <p class="map-eyebrow">首页 / 今日出发</p>
-                                <h2>先选一件开始，剩下的路就会亮起来。</h2>
-                                <p class="map-home-lead">今天先点一个入口就好：做任务、去学习，或看看陪你出发的小伙伴。</p>
-                            </div>
+                <section class="showcase" id="showcase" aria-label="首页栏目轮播">
+                    <div class="showcase-track" id="showcaseTrack"></div>
+                    <button class="showcase-arrow showcase-prev" id="showcasePrev" type="button" aria-label="上一张">‹</button>
+                    <button class="showcase-arrow showcase-next" id="showcaseNext" type="button" aria-label="下一张">›</button>
+                    <div class="showcase-dots" id="showcaseDots"></div>
+                </section>
 
-                            <div class="map-home-priority-row">
-                                <button class="map-home-priority" type="button" onclick="switchPage('today')">
-                                    <span class="map-home-priority-kicker">今天先做</span>
-                                    <strong id="mapHomeFocusTitle">阅读 20 分钟</strong>
-                                    <span class="map-home-priority-meta" id="mapHomeFocusMeta">完成后拿 1 分，马上继续冒险。</span>
-                                </button>
-                                <div class="map-home-stat-grid">
-                                    <div class="map-home-stat-card">
-                                        <span>成长分</span>
-                                        <strong id="mapHomePoints">0</strong>
-                                    </div>
-                                    <div class="map-home-stat-card">
-                                        <span>今天的小主人</span>
-                                        <strong id="mapHomeChildName">默认孩子</strong>
-                                    </div>
-                                    <div class="map-home-stat-card">
-                                        <span>宠物等级</span>
-                                        <strong id="mapPetLevel">Lv.1</strong>
-                                    </div>
-                                </div>
+                <section class="map-hero">
+                    <div class="map-hero-copy">
+                        <p class="map-eyebrow">首页 / 成长概览</p>
+                        <h2>今天，从哪里开始冒险？</h2>
+                        <p>看轮播选栏目，或直接点下面入口。积分、宠物和下一站会自动更新。</p>
+                        <button class="map-hero-focus" type="button" onclick="switchPage('today')">
+                            <span class="map-hero-focus-label">今日建议</span>
+                            <strong id="mapHomeFocusTitle">阅读 20 分钟</strong>
+                            <span id="mapHomeFocusMeta">完成后拿 1 分，读完就能继续点开喜欢的栏目。</span>
+                        </button>
+                    </div>
+                    <div class="map-hero-side">
+                        <div class="map-hero-stats">
+                            <div class="map-hero-stat">
+                                <span class="label">总积分</span>
+                                <strong id="mapPoints">0</strong>
                             </div>
-
-                            <div class="map-home-companion-inline">
-                                <div class="map-home-companion-avatar">
-                                    <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物" decoding="async">
-                                </div>
-                                <div class="map-home-companion-copy">
-                                    <p class="map-home-companion-kicker">今天同行</p>
-                                    <h3 id="mapCompanionName">还没有领养宠物</h3>
-                                    <p id="mapCompanionStage">去宠物养成页挑一位伙伴一起冒险</p>
-                                    <div class="map-home-pill-row">
-                                        <span class="map-home-pill" id="mapCompanionMood">今天很适合轻松出发</span>
-                                        <span class="map-home-pill" id="mapNextSceneHint">下一站会显示在这里</span>
-                                    </div>
-                                </div>
-                                <button class="map-home-secondary-btn" type="button" onclick="switchPage('pet')">看看宠物</button>
+                            <div class="map-hero-stat">
+                                <span class="label">宠物等级</span>
+                                <strong id="mapPetLevel">Lv.1</strong>
+                            </div>
+                            <div class="map-hero-stat">
+                                <span class="label">战斗胜场</span>
+                                <strong id="mapWins">0</strong>
                             </div>
                         </div>
-
-                        <section class="showcase map-home-showcase" id="showcase" aria-label="首页栏目轮播">
-                            <div class="showcase-toolbar">
-                                <div>
-                                    <p class="showcase-kicker">点击图片直接进入</p>
-                                    <strong class="showcase-heading">今天想先去哪里？</strong>
-                                </div>
-                                <div class="showcase-controls">
-                                    <button class="showcase-arrow" id="showcasePrev" type="button" aria-label="上一张">‹</button>
-                                    <button class="showcase-arrow" id="showcaseNext" type="button" aria-label="下一张">›</button>
-                                </div>
+                        <div class="map-companion-card">
+                            <div class="map-companion-avatar">
+                                <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物" decoding="async">
                             </div>
-                            <div class="showcase-track" id="showcaseTrack"></div>
-                            <div class="showcase-footer">
-                                <div class="showcase-dots" id="showcaseDots"></div>
-                                <span class="showcase-hint">轮播会自动切换，也可以手动点进想去的栏目。</span>
+                            <div class="map-companion-copy">
+                                <p class="map-companion-kicker">今日同行伙伴</p>
+                                <h3 id="mapCompanionName">还没有领养宠物</h3>
+                                <p id="mapCompanionStage">去宠物养成页挑一位伙伴一起冒险</p>
+                                <div class="map-companion-chip" id="mapNextSceneHint">下一站会显示在这里</div>
+                                <button class="map-companion-link" type="button" onclick="switchPage('pet')">前往宠物养成</button>
                             </div>
-                        </section>
+                        </div>
                     </div>
+                </section>
 
-                    <section class="map-entry-grid" aria-label="首页快捷入口">
-                        <button class="map-entry-card" type="button" onclick="switchPage('today')">
-                            <span class="map-entry-art">
-                                <img src="assets/scenes/stargarden.webp" alt="今日打卡" loading="lazy" decoding="async" fetchpriority="low">
-                            </span>
-                            <span class="map-entry-copy">
-                                <span class="map-entry-kicker">先完成</span>
-                                <strong>今日打卡</strong>
-                                <span>做完任务就能赚积分</span>
-                            </span>
-                        </button>
-                        <button class="map-entry-card" type="button" onclick="switchPage('learn')">
-                            <span class="map-entry-art">
-                                <img src="assets/ui/hanzi-new-bg.webp" alt="学习中心" loading="lazy" decoding="async" fetchpriority="low">
-                            </span>
-                            <span class="map-entry-copy">
-                                <span class="map-entry-kicker">轻松学习</span>
-                                <strong>学习中心</strong>
-                                <span>打开就能进今天的内容</span>
-                            </span>
-                        </button>
-                        <button class="map-entry-card" type="button" onclick="switchPage('pet')">
-                            <span class="map-entry-art">
-                                <img src="assets/home-bg/room-forest.webp" alt="我的宠物" loading="lazy" decoding="async" fetchpriority="low">
-                            </span>
-                            <span class="map-entry-copy">
-                                <span class="map-entry-kicker">一起玩</span>
-                                <strong>我的宠物</strong>
-                                <span>喂食互动，带着伙伴成长</span>
-                            </span>
-                        </button>
-                        <button class="map-entry-card" type="button" onclick="switchPage('playground')">
-                            <span class="map-entry-art">
-                                <img src="assets/ui/pg-bg.webp" alt="游乐场" loading="lazy" decoding="async" fetchpriority="low">
-                            </span>
-                            <span class="map-entry-copy">
-                                <span class="map-entry-kicker">想放松时</span>
-                                <strong>游乐场</strong>
-                                <span>点开就能玩数学、汉字和卡牌</span>
-                            </span>
-                        </button>
-                    </section>
+                <section class="dash-launcher" aria-label="首页快捷入口">
+                    <div class="dash-cards">
+                        <button class="dash-card c-today" type="button" onclick="switchPage('today')"><span class="dash-emoji">📝</span><span class="dash-title">今日打卡</span><span class="dash-sub">完成任务赚积分</span></button>
+                        <button class="dash-card c-learn" type="button" onclick="switchPage('learn')"><span class="dash-emoji">📚</span><span class="dash-title">学习中心</span><span class="dash-sub">汉字 / 英语 / 计划</span></button>
+                        <button class="dash-card c-playground" type="button" onclick="switchPage('playground')"><span class="dash-emoji">🎡</span><span class="dash-title">游乐场</span><span class="dash-sub">数学 / 汉字 / 排行</span></button>
+                        <button class="dash-card c-pet" type="button" onclick="switchPage('pet')"><span class="dash-emoji">🐾</span><span class="dash-title">我的宠物</span><span class="dash-sub">喂食互动成长</span></button>
+                        <button class="dash-card c-explore" type="button" onclick="switchPage('explore')"><span class="dash-emoji">🗺️</span><span class="dash-title">探索冒险</span><span class="dash-sub">点亮场景故事</span></button>
+                        <button class="dash-card c-shop" type="button" onclick="switchPage('shop')"><span class="dash-emoji">🎁</span><span class="dash-title">兑换商店</span><span class="dash-sub">积分换奖励</span></button>
+                    </div>
+                </section>
+
+                <section class="map-warehouse-panel" id="treasureWarehouseCard">
+                    <div class="map-panel-head">
+                        <div>
+                            <p class="map-warehouse-kicker">首页 / 宝箱仓库</p>
+                            <h3 class="text-lg font-bold">宝箱仓库</h3>
+                            <p class="map-warehouse-note">常用奖励集中放在这里，路线地图继续放在「探索」页。</p>
+                        </div>
+                        <div class="map-panel-head-right">
+                            <span class="map-ribbon">奖励集中收纳</span>
+                            <span class="map-count" id="chestDailyStatus">今日未领取</span>
+                        </div>
+                    </div>
+                    <div class="warehouse-grid warehouse-grid-expanded" id="treasureWarehouseGrid"></div>
                 </section>
             </div>
 
