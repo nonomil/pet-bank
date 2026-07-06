@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.6](https://img.shields.io/badge/Version-v0.7.6-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.7](https://img.shields.io/badge/Version-v0.7.7-brightgreen.svg)](CHANGELOG.md)
 
 📖 **结构化文档**：[文档总索引](docs/README.md) ｜ [需求规格书](docs/规格/需求规格书.md) ｜ [技术架构](docs/设计/技术架构.md) ｜ [开发路线图](docs/路线/差距清单与开发路线图.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,10 +27,13 @@
 
 ---
 
-## 🎉 最近更新（v0.7.6）
+## 🎉 最近更新（v0.7.7）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
+- 🏠 **首页回到均衡仪表盘**：恢复顶部栏目轮播、成长概览、同行宠物、6 个快捷入口和宝箱仓库，不再走“大空框启动页”方向
+- 📌 **成长概览压缩到左侧信息栏**：把总积分、宠物等级、战斗胜场移动到标题区下方，右侧只保留同行宠物，减少空白和大面板感
+- 🎨 **轮播与概览更连贯**：主视觉和成长概览贴近成一组首页舞台，保持当前项目的森林、米色和柔和玻璃质感
 - 🐾 **班宠乐园2 动物并入奇趣冒险馆**：新增独立来源 `banchong2`，把 `班宠乐园2` 的 40 只动物宠物正式接入 `奇趣冒险馆 -> 萌爪伙伴册`，图鉴、来源筛选、主题册入口与卡片档案链路全部打通
 - 🖼️ **新导入宠物素材统一改成本地 `.webp`**：本轮新增 `240` 张成长阶段图全部落在 `assets/banchong2/`，避免继续直接加载外部 `.bmp/.jpg/.png` 带来的慢加载问题，宠物图鉴与卡片详情默认走本地轻量资源
 - 📖 **萌爪伙伴册补齐故事与档案**：新增 40 只宠物的图鉴故事、来源说明、阶段素材映射与快照清单，`萌爪伙伴册` 现在可以作为 `班宠乐园2` 动物主题册独立浏览

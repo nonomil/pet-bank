@@ -100,53 +100,55 @@
         <main class="main-content">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
-                <section class="showcase" id="showcase" aria-label="首页栏目轮播">
-                    <div class="showcase-track" id="showcaseTrack"></div>
-                    <button class="showcase-arrow showcase-prev" id="showcasePrev" type="button" aria-label="上一张">‹</button>
-                    <button class="showcase-arrow showcase-next" id="showcaseNext" type="button" aria-label="下一张">›</button>
-                    <div class="showcase-dots" id="showcaseDots"></div>
-                </section>
+                <div class="home-stage-stack">
+                    <section class="showcase" id="showcase" aria-label="首页栏目轮播">
+                        <div class="showcase-track" id="showcaseTrack"></div>
+                        <button class="showcase-arrow showcase-prev" id="showcasePrev" type="button" aria-label="上一张">‹</button>
+                        <button class="showcase-arrow showcase-next" id="showcaseNext" type="button" aria-label="下一张">›</button>
+                        <div class="showcase-dots" id="showcaseDots"></div>
+                    </section>
 
-                <section class="map-hero">
-                    <div class="map-hero-copy">
-                        <p class="map-eyebrow">首页 / 成长概览</p>
-                        <h2>今天，从哪里开始冒险？</h2>
-                        <p>看轮播选栏目，或直接点下面入口。积分、宠物和下一站会自动更新。</p>
-                        <button class="map-hero-focus" type="button" onclick="switchPage('today')">
-                            <span class="map-hero-focus-label">今日建议</span>
-                            <strong id="mapHomeFocusTitle">阅读 20 分钟</strong>
-                            <span id="mapHomeFocusMeta">完成后拿 1 分，读完就能继续点开喜欢的栏目。</span>
-                        </button>
-                    </div>
-                    <div class="map-hero-side">
-                        <div class="map-hero-stats">
-                            <div class="map-hero-stat">
-                                <span class="label">总积分</span>
-                                <strong id="mapPoints">0</strong>
-                            </div>
-                            <div class="map-hero-stat">
-                                <span class="label">宠物等级</span>
-                                <strong id="mapPetLevel">Lv.1</strong>
-                            </div>
-                            <div class="map-hero-stat">
-                                <span class="label">战斗胜场</span>
-                                <strong id="mapWins">0</strong>
-                            </div>
-                        </div>
-                        <div class="map-companion-card">
-                            <div class="map-companion-avatar">
-                                <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物" decoding="async">
-                            </div>
-                            <div class="map-companion-copy">
-                                <p class="map-companion-kicker">今日同行伙伴</p>
-                                <h3 id="mapCompanionName">还没有领养宠物</h3>
-                                <p id="mapCompanionStage">去宠物养成页挑一位伙伴一起冒险</p>
-                                <div class="map-companion-chip" id="mapNextSceneHint">下一站会显示在这里</div>
-                                <button class="map-companion-link" type="button" onclick="switchPage('pet')">前往宠物养成</button>
+                    <section class="map-hero">
+                        <div class="map-hero-copy">
+                            <p class="map-eyebrow">首页 / 成长概览</p>
+                            <h2>今天，从哪里开始冒险？</h2>
+                            <p>看轮播选栏目，或直接点下面入口。积分、宠物和下一站会自动更新。</p>
+                            <button class="map-hero-focus" type="button" onclick="switchPage('today')">
+                                <span class="map-hero-focus-label">今日建议</span>
+                                <strong id="mapHomeFocusTitle">阅读 20 分钟</strong>
+                                <span id="mapHomeFocusMeta">完成后拿 1 分，读完就能继续点开喜欢的栏目。</span>
+                            </button>
+                            <div class="map-hero-stats">
+                                <div class="map-hero-stat">
+                                    <span class="label">总积分</span>
+                                    <strong id="mapPoints">0</strong>
+                                </div>
+                                <div class="map-hero-stat">
+                                    <span class="label">宠物等级</span>
+                                    <strong id="mapPetLevel">Lv.1</strong>
+                                </div>
+                                <div class="map-hero-stat">
+                                    <span class="label">战斗胜场</span>
+                                    <strong id="mapWins">0</strong>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                        <div class="map-hero-side">
+                            <div class="map-companion-card">
+                                <div class="map-companion-avatar">
+                                    <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物" decoding="async">
+                                </div>
+                                <div class="map-companion-copy">
+                                    <p class="map-companion-kicker">今日同行伙伴</p>
+                                    <h3 id="mapCompanionName">还没有领养宠物</h3>
+                                    <p id="mapCompanionStage">去宠物养成页挑一位伙伴一起冒险</p>
+                                    <div class="map-companion-chip" id="mapNextSceneHint">下一站会显示在这里</div>
+                                    <button class="map-companion-link" type="button" onclick="switchPage('pet')">前往宠物养成</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
 
                 <section class="dash-launcher" aria-label="首页快捷入口">
                     <div class="dash-cards">
@@ -985,6 +987,7 @@
     <script src="js/profiles.js"></script>
     <script src="js/runtime-loader.js"></script>
     <script src="js/lucide-lite.js"></script>
+    <script src="js/battle-fx.js"></script>
     <script src="js/app.js"></script>
     <script src="js/showcase.js"></script>
 </body>
