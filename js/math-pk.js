@@ -224,7 +224,8 @@
             container.innerHTML = `
                 <div class="math-arena" id="math-arena">
                     <style>
-                        .math-arena { position:fixed; inset:0; z-index:1000; color:#fff; font-family:inherit; overflow:hidden;
+                        .main-content:has(#math-arena) { z-index:6000; }
+                        .math-arena { position:fixed; inset:0; z-index:5000; color:#fff; font-family:inherit; overflow:hidden;
                             background:#0f1419 url('assets/arena/arena-bg.webp') center/cover no-repeat; display:flex; flex-direction:column; }
                         .math-arena::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,12,22,.5), rgba(8,12,22,.78)); }
                         .arena-topbar { position:relative; z-index:3; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; padding:14px 22px; gap:10px; }
@@ -239,7 +240,7 @@
                         .math-pk-hp-cell.active.robot { background:linear-gradient(90deg,#f97316,#facc15); box-shadow:0 0 10px rgba(250,204,21,.42); }
                         .arena-exit { background:rgba(255,255,255,.13); border:none; color:#fff; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:18px; }
                         .arena-exit:hover { background:rgba(255,255,255,.24); }
-                        .arena-stage { position:relative; z-index:2; flex:1; display:grid; grid-template-columns:1fr 1.15fr 1fr; grid-template-areas:'human center robot'; gap:10px; padding:4px 20px 18px; min-height:0; }
+                        .arena-stage { position:relative; z-index:2; flex:1; display:grid; grid-template-columns:1fr minmax(250px,.9fr) 1fr; grid-template-areas:'human center robot'; gap:10px; padding:4px 20px 18px; min-height:0; }
                         .arena-side { grid-area:auto; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; transition:filter .3s; isolation:isolate; }
                         .arena-side.human { grid-area:human; }
                         .arena-side.robot { grid-area:robot; }
@@ -248,32 +249,42 @@
                         .arena-avatar { position:relative; z-index:2; width:200px; height:200px; object-fit:contain; filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); transition:filter .3s; }
                         .arena-side.dim .arena-avatar { filter:grayscale(.7) brightness(.55); }
                         .arena-side.win .arena-avatar { filter:drop-shadow(0 0 20px rgba(110,231,183,.95)); }
+                        .arena-side.math-pk-caster.human .arena-avatar { animation:math-pk-cast-human .72s ease both; }
+                        .arena-side.math-pk-caster.robot .arena-avatar { animation:math-pk-cast-robot .72s ease both; }
+                        .arena-side.math-pk-target-hit .arena-avatar { animation:math-pk-target-shake .58s ease both; }
+                        .arena-side.math-pk-target-hit::after { content:''; position:absolute; z-index:1; top:43%; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.95) 0 9%,rgba(255,209,102,.82) 10% 28%,rgba(34,211,238,.28) 29% 52%,transparent 64%); animation:math-pk-impact-burst .62s ease-out forwards; pointer-events:none; }
                         .arena-name { position:relative; z-index:3; font-size:18px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,.5); }
                         .arena-status { position:relative; z-index:3; font-size:13px; background:rgba(255,255,255,.15); padding:5px 14px; border-radius:999px; min-height:26px; display:flex; align-items:center; }
                         .arena-time { position:relative; z-index:3; font-size:13px; color:#ffd166; font-weight:700; min-height:18px; }
                         .arena-thinkbar { width:130px; height:9px; background:rgba(255,255,255,.2); border-radius:999px; overflow:hidden; }
                         .arena-thinkbar > i { display:block; height:100%; width:100%; background:linear-gradient(90deg,#6ee7b7,#22d3ee); }
-                        .arena-center { grid-area:center; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
-                        .arena-qtag { font-size:.72rem; background:rgba(255,255,255,.22); padding:3px 12px; border-radius:999px; }
+                        .arena-center { grid-area:center; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; }
+                        .arena-qtag { font-size:.72rem; background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.12); padding:3px 12px; border-radius:999px; }
                         .arena-question { font-size:3.2rem; font-weight:900; text-shadow:0 3px 12px rgba(0,0,0,.65); text-align:center; line-height:1.1; }
                         .arena-question.word { font-size:1.15rem; font-weight:600; line-height:1.6; max-width:92%; text-shadow:0 2px 6px rgba(0,0,0,.7); }
-                        .arena-display { background:rgba(15,20,29,.85); color:#6ee7b7; font-family:'Noto Sans SC',monospace; font-size:2rem; font-weight:800; padding:10px 22px; border-radius:14px; min-width:170px; text-align:right; letter-spacing:3px; }
+                        .arena-display { background:rgba(9,14,22,.58); color:#b9ead6; font-family:'Noto Sans SC',monospace; font-size:1.7rem; font-weight:800; padding:7px 18px; border-radius:12px; min-width:146px; text-align:right; letter-spacing:2px; border:1px solid rgba(255,255,255,.1); box-shadow:0 10px 22px rgba(0,0,0,.22); }
                         .arena-display.empty { color:rgba(255,255,255,.45); font-size:1rem; letter-spacing:0; font-weight:600; }
                         .arena-display.shake { animation:arena-shake .35s ease; }
-                        .arena-keypad { display:grid; grid-template-columns:repeat(3,62px); gap:8px; }
-                        .arena-key { width:62px; height:54px; font-size:1.35rem; font-weight:800; color:#fff; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.22); border-radius:13px; cursor:pointer; transition:transform .08s, background .15s; user-select:none; }
-                        .arena-key:hover { background:rgba(255,255,255,.26); }
+                        .arena-keypad { display:grid; grid-template-columns:repeat(6,48px); gap:6px; padding:6px; border-radius:14px; background:rgba(7,12,20,.18); border:1px solid rgba(255,255,255,.07); backdrop-filter:blur(6px); }
+                        .arena-key { width:48px; height:42px; font-size:1.06rem; font-weight:800; color:rgba(255,255,255,.9); background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.13); border-radius:10px; cursor:pointer; transition:transform .08s, background .15s, border-color .15s; user-select:none; box-shadow:inset 0 1px 0 rgba(255,255,255,.07); }
+                        .arena-key:hover { background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.22); }
                         .arena-key:active { transform:scale(.92); }
-                        .arena-key.clear { background:rgba(239,68,68,.28); }
-                        .arena-key.confirm { background:var(--sage-green,#7BAE8F); border-color:transparent; font-size:1rem; }
-                        .arena-vs { position:absolute; left:50%; top:40%; transform:translate(-50%,-50%); font-size:2.4rem; font-weight:900; color:rgba(255,255,255,.18); z-index:1; pointer-events:none; }
-                        .arena-toast { position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); z-index:6; font-size:1.5rem; font-weight:900; padding:16px 38px; border-radius:18px; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.5); display:none; }
-                        .arena-toast.show { display:block; animation:arena-pop .3s ease; }
-                        .arena-toast small { display:block; font-size:.85rem; font-weight:600; opacity:.9; margin-top:4px; }
-                        .arena-toast.win { background:linear-gradient(135deg,#10b981,#22d3ee); }
-                        .arena-toast.lose { background:linear-gradient(135deg,#ef4444,#f59e0b); }
-                        .math-pk-attack-cue { position:absolute; left:50%; top:58%; transform:translate(-50%,-50%); z-index:5; display:none; padding:9px 18px; border-radius:999px; background:rgba(15,20,29,.78); border:1px solid rgba(255,255,255,.22); font-weight:900; box-shadow:0 8px 24px rgba(0,0,0,.35); }
+                        .arena-key.clear { background:rgba(120,72,72,.22); font-size:.78rem; line-height:1.05; }
+                        .arena-key.confirm { background:rgba(123,174,143,.7); border-color:rgba(210,236,220,.24); font-size:.78rem; line-height:1.05; }
+                        .arena-vs { position:absolute; left:50%; top:40%; transform:translate(-50%,-50%); font-size:2.1rem; font-weight:900; color:rgba(255,255,255,.11); z-index:1; pointer-events:none; }
+                        .arena-toast.math-pk-battle-caption { position:absolute; left:50%; top:auto; bottom:18px; transform:translateX(-50%); z-index:6; max-width:min(430px,calc(100% - 32px)); color:#eef7f2; font-size:.9rem; font-weight:800; padding:7px 14px; border-radius:999px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,.24); display:none; backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.13); background:rgba(13,20,24,.62); pointer-events:none; }
+                        .arena-toast.show { display:block; animation:math-pk-caption-in .24s ease; }
+                        .arena-toast small { display:inline; font-size:.78rem; font-weight:650; opacity:.78; margin-left:8px; }
+                        .arena-toast.win { background:rgba(20,37,34,.64); border-color:rgba(164,196,184,.22); }
+                        .arena-toast.lose { background:rgba(40,31,29,.64); border-color:rgba(210,176,148,.22); }
+                        .math-pk-attack-cue { position:absolute; left:50%; top:18%; transform:translate(-50%,-50%); z-index:5; display:none; padding:5px 11px; border-radius:999px; background:rgba(15,20,29,.52); border:1px solid rgba(255,255,255,.14); font-size:.86rem; font-weight:800; box-shadow:0 6px 18px rgba(0,0,0,.22); }
                         .math-pk-attack-cue.show { display:block; animation:arena-pop .26s ease; }
+                        .math-pk-skill-shot { position:absolute; top:42%; left:24%; width:58px; height:14px; z-index:5; pointer-events:none; border-radius:999px; background:linear-gradient(90deg,rgba(215,238,232,0),rgba(166,209,197,.38),rgba(211,226,220,.72)); box-shadow:0 0 10px rgba(160,197,190,.32), 0 0 20px rgba(156,211,198,.14); transform:translate(-50%,-50%); opacity:0; }
+                        .math-pk-skill-shot::before { content:''; position:absolute; right:-12px; top:50%; width:22px; height:22px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.86) 0 17%,rgba(225,210,156,.58) 18% 40%,rgba(156,211,198,.28) 41% 62%,transparent 66%); transform:translateY(-50%); }
+                        .math-pk-skill-shot.robot { left:76%; background:linear-gradient(270deg,rgba(236,209,177,0),rgba(190,154,118,.34),rgba(225,215,178,.66)); box-shadow:0 0 10px rgba(226,201,138,.3), 0 0 20px rgba(210,167,118,.14); }
+                        .math-pk-skill-shot.robot::before { left:-12px; right:auto; background:radial-gradient(circle,rgba(255,255,255,.84) 0 17%,rgba(226,201,138,.54) 18% 40%,rgba(210,167,118,.28) 41% 62%,transparent 66%); }
+                        .math-pk-skill-shot.human { animation:math-pk-shot-human .74s cubic-bezier(.2,.85,.2,1) forwards; }
+                        .math-pk-skill-shot.robot { animation:math-pk-shot-robot .74s cubic-bezier(.2,.85,.2,1) forwards; }
                         .arena-lobby { text-align:center; }
                         .arena-lobby h2 { font-size:2.6rem; font-weight:900; text-shadow:0 4px 14px rgba(0,0,0,.6); margin-bottom:6px; }
                         .arena-lobby p { color:rgba(255,255,255,.82); margin-bottom:4px; }
@@ -297,17 +308,28 @@
                         .math-answer-wrong { animation:arena-shake .35s ease; }
                         .math-fx-burst { position:absolute; pointer-events:none; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle,rgba(255,209,102,.8),rgba(110,231,183,.25) 42%,transparent 70%); animation:math-fx-burst .7s ease forwards; }
                         @keyframes arena-pop { 0%{transform:translate(-50%,-50%) scale(.6);opacity:0;} 100%{transform:translate(-50%,-50%) scale(1);opacity:1;} }
+                        @keyframes math-pk-caption-in { from{ transform:translateX(-50%) translateY(8px); opacity:0; } to{ transform:translateX(-50%) translateY(0); opacity:1; } }
                         @keyframes arena-shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-7px);} 75%{transform:translateX(7px);} }
                         @keyframes math-row-reveal { from{ transform:translateY(8px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
                         @keyframes math-correct-spark { 0%{ transform:scale(1); } 45%{ transform:scale(1.18); box-shadow:0 0 16px rgba(255,209,102,.75); } 100%{ transform:scale(1); } }
                         @keyframes math-answer-pop { 0%{ transform:scale(.92); opacity:.7; } 100%{ transform:scale(1); opacity:1; } }
                         @keyframes math-fx-burst { from{ transform:scale(.45); opacity:.9; } to{ transform:scale(1.3); opacity:0; } }
+                        @keyframes math-pk-cast-human { 0%,100%{ transform:translateX(0) scale(1); } 38%{ transform:translateX(22px) scale(1.08); } 62%{ transform:translateX(12px) scale(1.03); } }
+                        @keyframes math-pk-cast-robot { 0%,100%{ transform:translateX(0) scale(1); } 38%{ transform:translateX(-22px) scale(1.08); } 62%{ transform:translateX(-12px) scale(1.03); } }
+                        @keyframes math-pk-target-shake { 0%,100%{ transform:translateX(0) rotate(0); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(12px) rotate(2deg); filter:drop-shadow(0 0 24px rgba(255,209,102,.95)); } 36%{ transform:translateX(-10px) rotate(-2deg); } 56%{ transform:translateX(7px) rotate(1deg); } 76%{ transform:translateX(-4px) rotate(-1deg); } }
+                        @keyframes math-pk-shot-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.55) rotate(-4deg); left:27%; top:43%; } 16%{ opacity:.86; } 68%{ opacity:.9; transform:translate(-50%,-50%) scale(1) rotate(-1deg); left:71%; top:41%; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.18) rotate(0); left:75%; top:40%; } }
+                        @keyframes math-pk-shot-robot { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.55) rotate(4deg); left:73%; top:43%; } 16%{ opacity:.86; } 68%{ opacity:.9; transform:translate(-50%,-50%) scale(1) rotate(1deg); left:29%; top:41%; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.18) rotate(0); left:25%; top:40%; } }
+                        @keyframes math-pk-impact-burst { 0%{ opacity:0; transform:scale(.45); } 32%{ opacity:.82; transform:scale(1.02); } 100%{ opacity:0; transform:scale(1.35); } }
                         @media (prefers-reduced-motion: reduce) {
                             .math-array-row.fx-reveal,
                             .math-array.correct .math-array-dot,
                             .math-answer-correct,
                             .math-answer-wrong,
-                            .math-fx-burst { animation:none !important; transition:none !important; }
+                            .math-fx-burst,
+                            .arena-side.math-pk-caster .arena-avatar,
+                            .arena-side.math-pk-target-hit .arena-avatar,
+                            .arena-side.math-pk-target-hit::after,
+                            .math-pk-skill-shot { animation:none !important; transition:none !important; }
                         }
                         @media (max-width:760px){
                             .math-pk-hp-track { gap:8px; }
@@ -318,7 +340,7 @@
                             .arena-name { font-size:14px; } .arena-status { font-size:11px; }
                             .arena-thinkbar { width:90px; }
                             .arena-question { font-size:2.4rem; } .arena-question.word { font-size:1rem; }
-                            .arena-keypad { grid-template-columns:repeat(3,54px); gap:6px; }
+                            .arena-keypad { grid-template-columns:repeat(3,54px); gap:6px; background:rgba(7,12,20,.22); }
                             .arena-key { width:54px; height:48px; font-size:1.15rem; }
                             .arena-lobby h2 { font-size:1.8rem; }
                         }
@@ -346,7 +368,7 @@
                         </div>
                         <div class="arena-vs">VS</div>
                         <div class="math-pk-attack-cue" id="math-pk-attack-cue"></div>
-                        <div class="arena-toast" id="arena-toast"></div>
+                        <div class="arena-toast math-pk-battle-caption" id="arena-toast"></div>
                     </div>
                 </div>
             `;
@@ -542,6 +564,38 @@
             el.className = `math-pk-attack-cue show ${type || ''}`;
             setTimeout(() => el.classList.remove('show'), 1100);
         },
+        _playAttackFx(winner) {
+            const caster = winner === 'human' ? 'human' : 'robot';
+            const target = winner === 'human' ? 'robot' : 'human';
+            const casterEl = document.getElementById(`arena-side-${caster}`);
+            const targetEl = document.getElementById(`arena-side-${target}`);
+            const stage = document.querySelector('.arena-stage');
+            [casterEl, targetEl].forEach((el) => {
+                if (!el) return;
+                el.classList.remove('math-pk-caster', 'math-pk-target-hit');
+            });
+            const oldShot = stage && stage.querySelector('.math-pk-skill-shot');
+            if (oldShot) oldShot.remove();
+            if (casterEl) {
+                void casterEl.offsetWidth;
+                casterEl.classList.add('math-pk-caster');
+            }
+            if (stage) {
+                const shot = document.createElement('i');
+                shot.className = `math-pk-skill-shot ${caster}`;
+                shot.setAttribute('aria-hidden', 'true');
+                stage.appendChild(shot);
+                setTimeout(() => shot.remove(), 850);
+            }
+            setTimeout(() => {
+                if (!targetEl) return;
+                targetEl.classList.add('math-pk-target-hit');
+            }, 420);
+            setTimeout(() => {
+                if (casterEl) casterEl.classList.remove('math-pk-caster');
+                if (targetEl) targetEl.classList.remove('math-pk-target-hit');
+            }, 980);
+        },
         _setRoundPill(text) {
             const el = document.getElementById('arena-round-pill');
             if (el) el.textContent = text;
@@ -563,7 +617,7 @@
         toast(html, type) {
             const el = document.getElementById('arena-toast');
             if (!el) return;
-            el.className = `arena-toast show ${type}`;
+            el.className = `arena-toast math-pk-battle-caption show ${type}`;
             el.innerHTML = html;
         },
         hideToast() {
@@ -918,7 +972,7 @@
                 render._setSide('human', { status: '✓ 答对！', time: `⚡ ${hs}s` });
                 render._setSide('robot', { status: '被抢先了', time: '' });
                 render._setSideClass('human', 'win'); render._setSideClass('robot', 'dim');
-                render._attackCue('宠物出招', 'human');
+                render._playAttackFx('human');
                 render.toast(`⚡ 宠物出招！<small>用时 ${hs}s · +${CONFIG.BASE_SCORE + Math.min(state.combo * 2, 20)} 分</small>`, 'win');
             } else {
                 state.robotWins++;
@@ -926,7 +980,7 @@
                 render._setSide('robot', { status: '✓ 答对！', time: `⚡ ${robotSec}s` });
                 render._setSide('human', { status: '慢了一步', time: '' });
                 render._setSideClass('robot', 'win'); render._setSideClass('human', 'dim');
-                render._attackCue('机器人反击', 'robot');
+                render._playAttackFx('robot');
                 render.toast(`🤖 机器人反击<small>它用时 ${robotSec}s</small>`, 'lose');
             }
             render._setScore();

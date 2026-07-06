@@ -25,6 +25,14 @@ assert.ok(
     source.includes('.arena-side::before') && source.includes('.arena-side.robot::before'),
     'math PK should render separate glow images behind both side characters'
 );
+assert.ok(
+    source.includes('.math-arena { position:fixed; inset:0; z-index:5000;'),
+    'math PK full-screen arena should cover the app viewport'
+);
+assert.ok(
+    source.includes('.main-content:has(#math-arena) { z-index:6000; }'),
+    'math PK should lift its parent stacking context above the app header/navigation'
+);
 assert.ok(!source.includes('arena-podium-breathe'), 'math PK should not add moving podium effects for this scoped visibility fix');
 
 console.log('PASS math_pk_stage_visibility');

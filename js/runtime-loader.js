@@ -21,7 +21,7 @@
         cardCollection: ['js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
         explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/exploration-detail.js'],
-        playground: ['js/math-pk.js?v=2', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
+        playground: ['js/math-pk.js?v=3', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=6'],
         shop: ['js/shop.js'],
         cloud: [

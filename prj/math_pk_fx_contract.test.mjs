@@ -11,15 +11,32 @@ const source = fs.readFileSync(path.join(repoRoot, 'js', 'math-pk.js'), 'utf8');
     '.math-array-row.fx-reveal',
     '.math-array-dot',
     '.math-fx-burst',
+    '.math-pk-skill-shot',
+    '.math-pk-battle-caption',
+    '.math-pk-caster',
+    '.math-pk-target-hit',
+    '_playAttackFx',
     '.math-answer-correct',
     '.math-answer-wrong',
     '@media (prefers-reduced-motion: reduce)',
     'math-row-reveal',
-    'math-correct-spark'
+    'math-correct-spark',
+    'math-pk-shot-human',
+    'math-pk-shot-robot',
+    'math-pk-target-shake',
+    'math-pk-impact-burst'
 ].forEach((needle) => {
     assert.ok(source.includes(needle), `math-pk.js should contain Math FX marker: ${needle}`);
 });
 
 assert.ok(!/window\.lottie|lottie\.loadAnimation/.test(source), 'P1 Math FX should not depend on Lottie runtime');
+assert.ok(
+    !source.includes('linear-gradient(135deg,#10b981,#22d3ee)'),
+    'math PK battle feedback should not use a high-saturation center toast'
+);
+assert.ok(
+    source.includes('grid-template-columns:repeat(6,48px)'),
+    'desktop Math PK keypad should use a low, non-blocking control strip'
+);
 
 console.log('PASS math_pk_fx_contract');
