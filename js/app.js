@@ -700,6 +700,9 @@ function switchPage(page) {
             window.CloudSync.scheduleSync('home_exit');
         }
     }
+    if (prevPage === 'explore' && page !== 'explore' && window.VoiceSystem && typeof VoiceSystem.stop === 'function') {
+        VoiceSystem.stop();
+    }
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(`page-${page}`);
     if (target) target.classList.add('active');

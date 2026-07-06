@@ -10,6 +10,7 @@
  *
  * 暴露 API：
  *   speak(text, opts)    主动播报（opts.force 忽略 enabled 开关）
+ *   stop()               停止当前语音并清空待播队列
  *   getSettings()        读取当前设置（副本）
  *   setSettings(partial) 局部更新并持久化
  */
@@ -27,11 +28,14 @@
     var PREFETCH_BASE = 'assets/voice';
     var PREFETCH_EXT = '.mp3';
     var _prefetchMap = null;       // null=未加载/失败；{}=已加载（可能为空）
+    var _prefetchReady = false;
+    var _pendingSpeak = null;
 
     var settings = null;
 
     // 节流状态：selector -> lastTimestamp
     var _throttleMap = {};
+    var _throttleTextMap = {};
 
     function _mergeSettings(defaults, stored) {
         var base = {};
@@ -66,6 +70,7 @@
             if (legacyKeys[i] in settings) delete settings[legacyKeys[i]];
         }
         save();
+        if (!settings.enabled || !settings.autoPlay) stop();
         _syncPlayButtonsDisplay();
     }
 
@@ -79,9 +84,16 @@
             .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
             .then(function (m) {
                 _prefetchMap = (m && typeof m === 'object') ? m : {};
+                _prefetchReady = true;
                 console.log('[VoiceSystem] prefetch map loaded:', Object.keys(_prefetchMap).length, 'entries');
+                _flushPendingSpeak();
             })
-            .catch(function () { _prefetchMap = null; /* 静默失败，运行时不降级 */ })
+            .catch(function () {
+                _prefetchMap = {};
+                _prefetchReady = true;
+                _pendingSpeak = null;
+                /* 静默失败，运行时不降级 */
+            })
             .then(cleanup, cleanup);
     }
 
@@ -111,22 +123,56 @@
     // ===== 串行播放队列 + 2s 指纹去重 =====
     var _queue = [];
     var _playing = false;
+    var _currentAudio = null;
+    var _playToken = 0;
     var _lastText = '';
     var _lastTime = 0;
+
+    function stop() {
+        _playToken++;
+        _queue = [];
+        _playing = false;
+        _pendingSpeak = null;
+        _lastText = '';
+        _lastTime = 0;
+        _throttleMap = {};
+        _throttleTextMap = {};
+        if (_currentAudio) {
+            try { _currentAudio.pause(); } catch (e) {}
+            try { _currentAudio.src = ''; } catch (e2) {}
+            _currentAudio = null;
+        }
+    }
 
     function speak(text, opts) {
         if (!settings.enabled && !(opts && opts.force)) return;
         if (typeof text !== 'string' || !text) return;
         var key = text;
+        var now = Date.now();
+        if (key === _lastText && (now - _lastTime) < 2000) return;   // 指纹去重
+        stop(); // 新对话/新场景替换旧语音，避免地图切换后旧旁白继续播。
+        _lastText = key; _lastTime = now;
+        if (!_prefetchReady) {
+            _pendingSpeak = { text: key };
+            return;
+        }
+        _playMappedText(key);
+    }
+
+    function _flushPendingSpeak() {
+        var pending = _pendingSpeak;
+        _pendingSpeak = null;
+        if (!pending || !pending.text) return;
+        _playMappedText(pending.text);
+    }
+
+    function _playMappedText(key) {
         var hit = _prefetchMap ? _prefetchMap[key] : null;
         if (!hit) {
             // 未命中本地预生成：静默（开发者补生成，运行时不走 TTS/WebSpeech）
-            console.warn('[VoiceSystem] no local audio for: ' + text.slice(0, 30));
+            console.warn('[VoiceSystem] no local audio for: ' + key.slice(0, 30));
             return;
         }
-        var now = Date.now();
-        if (key === _lastText && (now - _lastTime) < 2000) return;   // 指纹去重
-        _lastText = key; _lastTime = now;
         _queue.push({ kind: 'prefetch', text: key });
         _playNext();
     }
@@ -136,13 +182,19 @@
         var item = _queue.shift();
         if (!item) return;
         _playing = true;
-        var done = function () { _playing = false; _playNext(); };
+        var token = _playToken;
+        var done = function () {
+            if (token !== _playToken) return;
+            _playing = false;
+            _currentAudio = null;
+            _playNext();
+        };
 
         if (item.kind === 'prefetch') {
             var md5 = _prefetchMap ? _prefetchMap[item.text] : null;
             if (md5) {
                 var url = PREFETCH_BASE + '/' + md5 + PREFETCH_EXT;
-                _playPrefetch(url).then(done).catch(function () { done(); });
+                _playPrefetch(url, token).then(done).catch(function () { done(); });
                 return;
             }
             done();
@@ -153,13 +205,14 @@
 
     // ===== 预生成播放 =====
     // 统一 mp3 格式；播放失败静默跳过（无降级链）。
-    function _playPrefetch(url) {
+    function _playPrefetch(url, token) {
         return new Promise(function (resolve, reject) {
             var settled = false;
             var timer = setTimeout(function () { if (!settled) { settled = true; resolve(); } }, 12000); // 安全兜底
-            function ok() { if (settled) return; settled = true; clearTimeout(timer); resolve(); }
-            function failFinal() { if (settled) return; settled = true; clearTimeout(timer); reject(new Error('prefetch audio error')); }
+            function ok() { if (settled || token !== _playToken) return; settled = true; clearTimeout(timer); resolve(); }
+            function failFinal() { if (settled || token !== _playToken) return; settled = true; clearTimeout(timer); reject(new Error('prefetch audio error')); }
             var audio = new Audio(url);
+            _currentAudio = audio;
             audio.onended = ok;
             audio.onerror = failFinal;
             audio.play().catch(failFinal);
@@ -194,6 +247,24 @@
 
     function _syncPlayButtonsDisplay() {
         // 播放按钮始终显示（点击 force 播放，不受 enabled 影响）；enabled 仅控制自动播报
+    }
+
+    function _hasScript(src) {
+        var scripts = document.scripts || [];
+        for (var i = 0; i < scripts.length; i++) {
+            if (scripts[i].getAttribute('data-petbank-src') === src || scripts[i].getAttribute('src') === src) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function _ensureAuxScript(src) {
+        if (_hasScript(src)) return;
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = false;
+        document.body.appendChild(script);
     }
 
     function _initPlayButtonObserver() {
@@ -235,15 +306,16 @@
                 else if (node.closest && node.closest(rule.sel)) matched = node.closest(rule.sel);
             } catch (e) { /* invalid selector */ }
             if (matched) {
-                if (rule.throttle) {
-                    var last = _throttleMap[rule.sel] || 0;
-                    if (Date.now() - last < rule.throttle) return null;
-                }
                 try {
                     var t = rule.extract(matched);
                     if (t) {
-                        // extract 返回非空才记录 throttle（避免空文本也占用节流窗口）
-                        _throttleMap[rule.sel] = Date.now();
+                        // 只节流同一文本，允许孩子快速点击时新对话立即播报。
+                        var now = Date.now();
+                        var last = _throttleMap[rule.sel] || 0;
+                        var lastText = _throttleTextMap[rule.sel] || '';
+                        if (rule.throttle && t === lastText && (now - last) < rule.throttle) return null;
+                        _throttleMap[rule.sel] = now;
+                        _throttleTextMap[rule.sel] = t;
                         return t;
                     }
                 } catch (e) { /* ignore */ }
@@ -301,9 +373,11 @@
         var elAutoPlay = card.querySelector('#voiceAutoPlay');
 
         elEnabled.addEventListener('change', function () {
-            settings.enabled = elEnabled.checked; save(); _syncPlayButtonsDisplay();
+            setSettings({ enabled: elEnabled.checked });
         });
-        elAutoPlay.addEventListener('change', function () { settings.autoPlay = elAutoPlay.checked; save(); });
+        elAutoPlay.addEventListener('change', function () {
+            setSettings({ autoPlay: elAutoPlay.checked });
+        });
     }
 
     function _initPanelObserver() {
@@ -327,18 +401,15 @@
         _initAutoPlayObserver();
         _initPanelObserver();
         console.log('[VoiceSystem] boot, enabled=' + settings.enabled + ', autoPlay=' + settings.autoPlay + ', prefetchMap=' + (_prefetchMap === null ? 'loading' : 'ready'));
-        // 自动加载音效系统
-        var _zzfx = document.createElement('script');
-        _zzfx.src = 'js/zzfx.js';
-        document.body.appendChild(_zzfx);
-        var _sfx = document.createElement('script');
-        _sfx.src = 'js/sfx.js';
-        document.body.appendChild(_sfx);
+        // 运行时加载器会优先加载音效；这里保留兜底，避免单独引入 voice.js 时缺失 sfx。
+        _ensureAuxScript('js/zzfx.js');
+        _ensureAuxScript('js/sfx.js');
     }
 
     // ===== 暴露 API =====
     window.VoiceSystem = {
         speak: speak,
+        stop: stop,
         getSettings: getSettings,
         setSettings: setSettings
     };

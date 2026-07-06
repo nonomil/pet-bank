@@ -15,11 +15,12 @@
     };
 
     const SCRIPT_BUNDLES = {
+        audio: ['js/zzfx.js', 'js/sfx.js'],
         home: ['js/home.js'],
         walk: ['js/walk.js'],
         cardCollection: ['js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
-        explore: ['js/battle-engine.js', 'js/exploration.js', 'js/exploration-detail.js'],
+        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/exploration-detail.js'],
         playground: ['js/math-pk.js?v=2', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
         learn: ['js/learn-center.js?v=2'],
         shop: ['js/shop.js'],
@@ -149,6 +150,13 @@
         });
     }
 
+    async function ensureAudioFeature() {
+        return once('feature-audio', async function () {
+            await loadSeries(SCRIPT_BUNDLES.audio, loadScript);
+            return true;
+        });
+    }
+
     async function ensureHomeFeature() {
         return once('feature-home', async function () {
             await ensurePetCatalog();
@@ -194,7 +202,10 @@
     async function ensureCardArenaFeature() {
         return once('feature-card-arena', async function () {
             await ensureCardFeature();
-            await loadSeries(STYLE_BUNDLES.arena, loadStyle);
+            await Promise.all([
+                ensureAudioFeature(),
+                loadSeries(STYLE_BUNDLES.arena, loadStyle)
+            ]);
             await loadSeries(SCRIPT_BUNDLES.cardArena, loadScript);
             return true;
         });
@@ -204,6 +215,7 @@
         return once('feature-explore', async function () {
             await ensurePetCatalog();
             await ensurePetSkills();
+            await ensureAudioFeature();
             await loadSeries(SCRIPT_BUNDLES.explore, loadScript);
             if (window.ExplorationSystem && typeof window.ExplorationSystem.loadScenes === 'function') {
                 await window.ExplorationSystem.loadScenes();
@@ -214,7 +226,10 @@
 
     async function ensurePlaygroundFeature() {
         return once('feature-playground', async function () {
-            await loadSeries(STYLE_BUNDLES.playground, loadStyle);
+            await Promise.all([
+                ensureAudioFeature(),
+                loadSeries(STYLE_BUNDLES.playground, loadStyle)
+            ]);
             await loadSeries(SCRIPT_BUNDLES.playground, loadScript);
             if (!initFlags.toolboxInit && window.ToolboxSystem && typeof window.ToolboxSystem.init === 'function') {
                 window.ToolboxSystem.init();
@@ -408,6 +423,7 @@
         ensurePage: ensurePage,
         ensureAdminPage: ensureAdminPage,
         ensurePetCatalog: ensurePetCatalog,
+        ensureAudioFeature: ensureAudioFeature,
         ensureCloudFeature: ensureCloudFeature,
         ensureCardArenaFeature: ensureCardArenaFeature,
         prefetch: prefetch,

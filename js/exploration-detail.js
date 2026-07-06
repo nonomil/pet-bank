@@ -328,6 +328,9 @@ const ExplorationDetail = (function () {
     }
 
     function exit() {
+        if (window.VoiceSystem && typeof VoiceSystem.stop === 'function') {
+            VoiceSystem.stop();
+        }
         const sceneId = currentScene?.id;
         currentScene = null;
         eventIndex = 0;
