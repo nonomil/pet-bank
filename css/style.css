@@ -3210,6 +3210,396 @@ body.no-sidebar .sidebar { display: none; }
 /* === 奖励档位 === */
 .reward-tier { background: white; border-radius: 14px; padding: 18px; border: 1px solid var(--border-light); }
 
+/* === Agnes 风格积分 / 成长 / 兑换卡片 === */
+.points-agnes-dashboard,
+.growth-sticker-report,
+.reward-exchange-deck {
+    margin-bottom: 16px;
+    border-radius: 30px;
+    border: 1px solid rgba(236, 218, 191, 0.95);
+    background:
+        radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 28%),
+        linear-gradient(180deg, #f8ecdd 0%, #f1e2d1 100%);
+    box-shadow: 0 18px 36px rgba(113, 88, 54, 0.12);
+}
+
+.points-agnes-dashboard {
+    padding: 20px;
+}
+
+.points-agnes-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.points-agnes-child {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #fff;
+    box-shadow: 0 8px 18px rgba(68, 48, 25, 0.12);
+}
+
+.points-agnes-balance,
+.reward-exchange-balance,
+.growth-report-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #fff;
+    color: #2388de;
+    font-weight: 900;
+    box-shadow: 0 8px 18px rgba(96, 124, 154, 0.13);
+}
+
+.points-agnes-balance strong,
+.reward-exchange-balance strong,
+.growth-report-badge strong {
+    font-size: 24px;
+}
+
+.points-agnes-message {
+    margin-bottom: 14px;
+    padding: 15px 18px;
+    border-radius: 16px;
+    background: rgba(70, 64, 56, 0.86);
+    color: #fff8ee;
+    font-size: 17px;
+    line-height: 1.55;
+    font-weight: 800;
+}
+
+.agnes-score-card {
+    margin-bottom: 0;
+    background:
+        radial-gradient(circle at 14% 0%, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 42%),
+        linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,248,238,0.95));
+}
+
+.agnes-task-shell {
+    border-radius: 28px;
+    border-color: rgba(236, 218, 191, 0.9);
+    background: rgba(255,255,255,0.9);
+}
+
+.agnes-task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+    gap: 14px;
+}
+
+.task-card.agnes-task-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 8px;
+    min-height: 178px;
+    padding: 14px 12px 12px;
+    border: 0;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 10px 22px rgba(99, 76, 48, 0.1);
+    text-align: center;
+    font-family: inherit;
+}
+
+.task-card.agnes-task-card:nth-child(4n + 2) {
+    background: linear-gradient(180deg, #2d9cef 0%, #268ce0 100%);
+    color: #fff;
+}
+
+.task-card.agnes-task-card:nth-child(4n + 2) .dim-tag,
+.task-card.agnes-task-card:nth-child(4n + 2) .point-capsule {
+    background: rgba(255,255,255,0.22);
+    color: #fff;
+}
+
+.task-card.agnes-task-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(99, 76, 48, 0.15);
+}
+
+.task-card.agnes-task-card.done {
+    opacity: 1;
+    background: linear-gradient(180deg, #f2ffe9 0%, #ffffff 100%);
+    box-shadow: inset 0 0 0 2px rgba(115, 169, 97, 0.35), 0 10px 22px rgba(99, 76, 48, 0.08);
+}
+
+.agnes-task-check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid rgba(120, 132, 113, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: rgba(255,255,255,0.75);
+}
+
+.task-card.done .agnes-task-check {
+    background: #6fb063;
+    border-color: #6fb063;
+}
+
+.agnes-task-art {
+    width: 82px;
+    height: 82px;
+    object-fit: contain;
+    border-radius: 24px;
+}
+
+.agnes-task-title {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1.35;
+}
+
+.agnes-task-points {
+    padding: 4px 12px;
+    font-size: 13px;
+}
+
+.growth-sticker-report {
+    padding: 22px;
+}
+
+.growth-report-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.growth-report-kicker {
+    margin: 0 0 4px;
+    color: #9b8065;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+}
+
+.growth-report-head h2 {
+    margin: 0 0 6px;
+    color: #4f3e2e;
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.growth-report-head p {
+    margin: 0;
+    color: #7a6a58;
+    line-height: 1.6;
+}
+
+.growth-heatmap {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 8px;
+    margin: 16px 0 10px;
+}
+
+.growth-heatmap span,
+.growth-habit-dots i,
+.growth-legend i {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    background: #deddd8;
+}
+
+.growth-heatmap span.is-done,
+.growth-habit-dots i.is-done,
+.growth-legend i.is-done {
+    background: #5e88f2;
+}
+
+.growth-legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    color: #8c7b68;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.growth-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.growth-legend i {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+}
+
+.growth-habit-list {
+    display: grid;
+    gap: 10px;
+}
+
+.growth-habit-row {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.78);
+}
+
+.growth-habit-row img {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    object-fit: contain;
+}
+
+.growth-habit-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+    color: #4f3e2e;
+}
+
+.growth-habit-top span {
+    color: #5e88f2;
+    font-weight: 900;
+}
+
+.growth-habit-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.growth-habit-dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 4px;
+}
+
+.reward-exchange-deck {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
+    gap: 16px;
+    padding: 20px;
+}
+
+.reward-exchange-hero {
+    text-align: center;
+    padding: 22px;
+    border-radius: 26px;
+    background: #fff;
+    box-shadow: inset 0 -8px 18px rgba(238, 219, 194, 0.22);
+}
+
+.reward-exchange-balance {
+    margin-bottom: 12px;
+}
+
+.reward-exchange-hero img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin: 0 auto 12px;
+}
+
+.reward-exchange-hero h2 {
+    margin: 0 0 8px;
+    color: #4f3e2e;
+    font-size: 20px;
+}
+
+.reward-exchange-hero p {
+    margin: 0 0 14px;
+    color: #7a6a58;
+    line-height: 1.6;
+}
+
+.reward-exchange-list {
+    display: grid;
+    gap: 12px;
+}
+
+.agnes-reward-card {
+    position: relative;
+    padding: 18px 18px 16px 86px;
+    border: 0;
+    border-radius: 24px;
+    box-shadow: 0 10px 22px rgba(99, 76, 48, 0.1);
+}
+
+.agnes-reward-card::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
+    background: url("../assets/ui/points-exchange/kidstar-gift-box.webp") center/contain no-repeat, #fff6e8;
+}
+
+.reward-tier-price {
+    display: inline-flex;
+    margin-bottom: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #eaf2ff;
+    color: #2388de;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.agnes-reward-card h3 {
+    margin: 0 0 6px;
+    color: #4f3e2e;
+}
+
+.agnes-reward-card p {
+    margin: 0;
+    color: #7a6a58;
+    line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+    .points-agnes-dashboard,
+    .growth-sticker-report,
+    .reward-exchange-deck {
+        border-radius: 24px;
+    }
+    .reward-exchange-deck {
+        grid-template-columns: 1fr;
+    }
+    .growth-report-head {
+        flex-direction: column;
+    }
+    .growth-heatmap {
+        grid-template-columns: repeat(8, 1fr);
+    }
+}
+
 /* === 页面切换 === */
 .page { display: none; }
 .page.active { display: block; }

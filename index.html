@@ -302,27 +302,40 @@
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
                 </div>
-                <!-- 可点击宠物形象卡：点击弹出加分/扣分项目弹窗 -->
-                <div class="reward-pet-card" id="rewardPetCard" onclick="openPointItemModal()" role="button" tabindex="0" title="点击给 TA 加分或扣分">
-                    <div class="reward-pet-avatar">
-                        <img id="rewardPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物立绘" loading="lazy" decoding="async" fetchpriority="low">
+                <section class="points-agnes-dashboard" aria-label="今日成长积分">
+                    <div class="points-agnes-top">
+                        <img class="points-agnes-child" src="assets/ui/points-exchange/kidstar-guide.webp" alt="星星向导" loading="lazy" decoding="async" fetchpriority="low">
+                        <div class="points-agnes-balance" aria-label="当前成长分">
+                            <span>⭐</span>
+                            <strong id="agnesTodayPoints">0</strong>
+                        </div>
                     </div>
-                    <div class="reward-pet-copy">
-                        <p class="reward-pet-kicker">给 <span id="rewardChildName">宝贝</span> 加分 / 扣分</p>
-                        <h3 id="rewardPetName">点击伙伴开启奖惩</h3>
-                        <p class="reward-pet-hint">当前成长分 <strong id="rewardCurPoints">0</strong> · 轻触立绘即可操作</p>
+                    <div class="points-agnes-message">
+                        <strong id="agnesTodayChild">宝贝</strong>，每天都不缺席，你就是好习惯的守护者！
                     </div>
-                    <div class="reward-pet-cta">
-                        <span class="reward-pet-cta-btn">＋ － 积分</span>
+
+                    <!-- 可点击宠物形象卡：点击弹出加分/扣分项目弹窗 -->
+                    <div class="reward-pet-card agnes-score-card" id="rewardPetCard" onclick="openPointItemModal()" role="button" tabindex="0" title="点击给 TA 加分或扣分">
+                        <div class="reward-pet-avatar">
+                            <img id="rewardPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物立绘" loading="lazy" decoding="async" fetchpriority="low">
+                        </div>
+                        <div class="reward-pet-copy">
+                            <p class="reward-pet-kicker">给 <span id="rewardChildName">宝贝</span> 加分 / 扣分</p>
+                            <h3 id="rewardPetName">点击伙伴开启奖惩</h3>
+                            <p class="reward-pet-hint">当前成长分 <strong id="rewardCurPoints">0</strong> · 轻触立绘即可操作</p>
+                        </div>
+                        <div class="reward-pet-cta">
+                            <span class="reward-pet-cta-btn">＋ － 积分</span>
+                        </div>
                     </div>
-                </div>
-                <div class="card">
+                </section>
+                <div class="card agnes-task-shell">
                     <div class="card-header flex items-center justify-between">
-                        <div><h2 class="text-lg font-bold">今日成长任务</h2><p class="text-xs mt-1 text-muted">完成即得分，每一分都算数</p></div>
+                        <div><h2 class="text-lg font-bold">今日成长卡片</h2><p class="text-xs mt-1 text-muted">点亮一张卡，就收下一颗小星星</p></div>
                         <button class="btn-primary" onclick="completeRecommended()"><i data-lucide="check-check" class="w-4 h-4"></i>完成推荐</button>
                     </div>
                     <div class="card-body">
-                        <div class="grid grid-cols-2 gap-3" id="taskGrid"></div>
+                        <div class="agnes-task-grid" id="taskGrid"></div>
                     </div>
                 </div>
             </div>
@@ -390,6 +403,19 @@
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
                 </div>
+                <section class="growth-sticker-report" aria-label="成长报表">
+                    <div class="growth-report-head">
+                        <div>
+                            <p class="growth-report-kicker">成长报表</p>
+                            <h2>今天点亮了 <span id="growthReportDone">0</span> 张习惯贴纸</h2>
+                            <p>像收集小星星一样，把好习惯一格一格点亮。</p>
+                        </div>
+                        <div class="growth-report-badge"><span>⭐</span><strong id="growthReportPoints">0</strong></div>
+                    </div>
+                    <div class="growth-heatmap" id="growthHeatmap" aria-label="今日打卡热力格"></div>
+                    <div class="growth-legend"><span><i class="is-done"></i>已打卡</span><span><i></i>未打卡</span></div>
+                    <div class="growth-habit-list" id="growthHabitRows"></div>
+                </section>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">每周家庭复盘</h2><p class="text-xs mt-1 text-muted">5-10 分钟，看清进度，下周再调整节奏</p></div>
                     <div class="card-body">
@@ -456,14 +482,35 @@
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
                 </div>
-                <div class="card">
-                    <div class="card-header"><h2 class="text-lg font-bold">我的奖励兑换</h2></div>
-                    <div class="card-body grid grid-cols-3 gap-4">
-                        <div class="reward-tier"><h3 class="font-bold text-sm mb-3">10 分小奖</h3><ul class="text-sm space-y-2 text-secondary"><li>🎬 家庭电影夜</li><li>📖 多讲一个睡前故事</li><li>🍕 晚餐选菜单</li></ul><button class="btn-secondary w-full mt-4 text-xs">兑换</button></div>
-                        <div class="reward-tier"><h3 class="font-bold text-sm mb-3">30 分中奖</h3><ul class="text-sm space-y-2 text-secondary"><li>📚 一本心爱的书</li><li>👫 邀请朋友来家玩</li><li>🌳 一次家庭出游</li></ul><button class="btn-secondary w-full mt-4 text-xs">兑换</button></div>
-                        <div class="reward-tier"><h3 class="font-bold text-sm mb-3">60 分大奖</h3><ul class="text-sm space-y-2 text-secondary"><li>🚄 一次短途旅行</li><li>🎢 主题体验活动</li><li>🎁 一个小心愿</li></ul><button class="btn-secondary w-full mt-4 text-xs">兑换</button></div>
+                <section class="reward-exchange-deck" aria-label="星星兑换">
+                    <div class="reward-exchange-hero">
+                        <div class="reward-exchange-balance"><span>⭐</span><strong id="rewardExchangePoints">0</strong></div>
+                        <img src="assets/ui/points-exchange/kidstar-gift-box.webp" alt="星星兑换礼盒" loading="lazy" decoding="async" fetchpriority="low">
+                        <h2>点击抽盲盒，或换一个家庭小奖励</h2>
+                        <p>攒到足够成长分，就把今天的努力变成看得见的小惊喜。</p>
+                        <button class="btn-primary" type="button" onclick="switchPage('shop')">去盲盒商店</button>
                     </div>
-                </div>
+                    <div class="reward-exchange-list">
+                        <article class="reward-tier agnes-reward-card">
+                            <span class="reward-tier-price">10 分</span>
+                            <h3>睡前故事加一页</h3>
+                            <p>今天多听一个小冒险，带着好心情睡觉。</p>
+                            <button class="btn-secondary w-full mt-4 text-xs" onclick="redeemFamilyReward(10, '睡前故事加一页')">兑换</button>
+                        </article>
+                        <article class="reward-tier agnes-reward-card">
+                            <span class="reward-tier-price">30 分</span>
+                            <h3>家庭小游戏 10 分钟</h3>
+                            <p>和家人玩一局轻松小游戏，把笑声也存进成长表。</p>
+                            <button class="btn-secondary w-full mt-4 text-xs" onclick="redeemFamilyReward(30, '家庭小游戏 10 分钟')">兑换</button>
+                        </article>
+                        <article class="reward-tier agnes-reward-card">
+                            <span class="reward-tier-price">60 分</span>
+                            <h3>周末小心愿</h3>
+                            <p>选一次小出游、小手作或心愿活动，庆祝坚持。</p>
+                            <button class="btn-secondary w-full mt-4 text-xs" onclick="redeemFamilyReward(60, '周末小心愿')">兑换</button>
+                        </article>
+                    </div>
+                </section>
             </div>
 
             <!-- PAGE: 游乐场 Hub（分解图还原 v4） -->

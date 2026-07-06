@@ -112,6 +112,33 @@ const HOME_PRIORITY_TASKS = [
     { dim: 'selfcontrol', task: '屏幕时间不超过 2 小时', pts: 2, hint: '守住今天的小习惯，也算一次成长。' }
 ];
 
+const POINT_TASK_ART = {
+    guide: 'assets/ui/points-exchange/kidstar-guide.webp',
+    reading: 'assets/ui/points-exchange/kidstar-reading.webp',
+    writing: 'assets/ui/points-exchange/kidstar-writing.webp',
+    math: 'assets/ui/points-exchange/kidstar-math.webp',
+    sports: 'assets/ui/points-exchange/kidstar-sports.webp',
+    clock: 'assets/ui/points-exchange/kidstar-clock.webp',
+    tidy: 'assets/ui/points-exchange/kidstar-tidy.webp',
+    explore: 'assets/ui/points-exchange/kidstar-explore.webp',
+    petcare: 'assets/ui/points-exchange/kidstar-petcare.webp',
+    cooking: 'assets/ui/points-exchange/kidstar-cooking.webp'
+};
+
+function getPointTaskArt(task) {
+    const text = `${task.dim || ''} ${task.dimName || ''} ${task.name || task.task || ''}`;
+    if (/数学|算|口算|计算|专项/.test(text)) return POINT_TASK_ART.math;
+    if (/练字|日记|写|听写|抄写/.test(text)) return POINT_TASK_ART.writing;
+    if (/阅读|背诵|古诗|英语|学习力|新书/.test(text)) return POINT_TASK_ART.reading;
+    if (/运动|跳绳|跑步|骑行|球|晨练|户外/.test(text)) return POINT_TASK_ART.sports;
+    if (/起床|屏幕|计划|自控|提醒|赖床|时间|按时|独立完成/.test(text)) return POINT_TASK_ART.clock;
+    if (/整理|家务|房间|书桌|清理|垃圾|玩具|分类|衣物/.test(text)) return POINT_TASK_ART.tidy;
+    if (/做菜|新菜|家常菜|厨房/.test(text)) return POINT_TASK_ART.cooking;
+    if (/宠物|喂食|梳毛|抚摸|遛宠物|宠物窝|清理宠物|陪伴玩耍|健康检查|成长日记|守护力/.test(text)) return POINT_TASK_ART.petcare;
+    if (/探索|观察|植物|地图|路线|好奇|记录/.test(text)) return POINT_TASK_ART.explore;
+    return POINT_TASK_ART.guide;
+}
+
 // ============ 应用状态 ============
 let totalPoints = 0;
 let completedTasks = new Set();
@@ -173,15 +200,54 @@ function renderTaskGrid() {
     container.innerHTML = allTasks.map(t => {
         const tid = `${t.dim}-${t.name}`;
         const done = completedTasks.has(tid);
+        const art = getPointTaskArt(t);
         return `
-            <div class="task-card ${done ? 'done' : ''}" onclick="toggleTask('${t.dim}', '${t.name}', ${t.pts})">
-                <div class="checkbox">${done ? '<i data-lucide="check" class="w-3 h-3"></i>' : ''}</div>
-                <div class="flex-1 min-w-0">
-                    <div class="text-sm">${t.name}</div>
-                    <div class="dim-tag mt-1 inline-block">${t.dimName}</div>
+            <button class="task-card agnes-task-card ${done ? 'done' : ''}" type="button" onclick="toggleTask('${t.dim}', '${t.name}', ${t.pts})">
+                <span class="agnes-task-check">${done ? '<i data-lucide="check" class="w-3 h-3"></i>' : ''}</span>
+                <img class="agnes-task-art" src="${art}" alt="${escapePiHtml(t.name)}" loading="lazy" decoding="async">
+                <div class="agnes-task-copy">
+                    <div class="agnes-task-title">${escapePiHtml(t.name)}</div>
+                    <div class="dim-tag mt-1 inline-block">${escapePiHtml(t.dimName)}</div>
                 </div>
-                <div class="point-capsule"><span>+${t.pts}</span></div>
-            </div>
+                <div class="point-capsule agnes-task-points"><span>+${t.pts}</span></div>
+            </button>
+        `;
+    }).join('');
+}
+
+function renderGrowthStickerReport() {
+    const heatmap = document.getElementById('growthHeatmap');
+    const rows = document.getElementById('growthHabitRows');
+    const doneEl = document.getElementById('growthReportDone');
+    const pointsEl = document.getElementById('growthReportPoints');
+    if (!heatmap || !rows) return;
+
+    const totalTaskCount = Object.values(DIMENSIONS).reduce((sum, dim) => sum + dim.tasks.length, 0);
+    const doneCount = completedTasks.size;
+    if (doneEl) doneEl.textContent = doneCount;
+    if (pointsEl) pointsEl.textContent = totalPoints;
+
+    const heatCells = Math.min(36, Math.max(24, totalTaskCount));
+    heatmap.innerHTML = Array.from({ length: heatCells }, (_, index) => (
+        `<span class="${index < doneCount ? 'is-done' : ''}" aria-hidden="true"></span>`
+    )).join('');
+
+    rows.innerHTML = Object.entries(DIMENSIONS).map(([dimKey, dim]) => {
+        const doneInDim = dim.tasks.filter(task => completedTasks.has(`${dimKey}-${task.name}`)).length;
+        const percent = Math.round((doneInDim / Math.max(1, dim.tasks.length)) * 100);
+        const art = getPointTaskArt({ dim: dimKey, dimName: dim.name, name: dim.tasks[0]?.name || dim.name });
+        const dots = dim.tasks.map(task => {
+            const done = completedTasks.has(`${dimKey}-${task.name}`);
+            return `<i class="${done ? 'is-done' : ''}" aria-hidden="true"></i>`;
+        }).join('');
+        return `
+            <article class="growth-habit-row">
+                <img src="${art}" alt="${escapePiHtml(dim.name)}" loading="lazy" decoding="async">
+                <div class="growth-habit-copy">
+                    <div class="growth-habit-top"><strong>${escapePiHtml(dim.name)}</strong><span>${doneInDim}/${dim.tasks.length}</span></div>
+                    <div class="growth-habit-dots" style="--growth-progress:${percent}%">${dots}</div>
+                </div>
+            </article>
         `;
     }).join('');
 }
@@ -240,6 +306,17 @@ function updateStats() {
     if (accountPoints) accountPoints.textContent = totalPoints;
     const mapPoints = document.getElementById('mapPoints');
     if (mapPoints) mapPoints.textContent = totalPoints;
+    const agnesTodayPoints = document.getElementById('agnesTodayPoints');
+    const rewardExchangePoints = document.getElementById('rewardExchangePoints');
+    if (agnesTodayPoints) agnesTodayPoints.textContent = totalPoints;
+    if (rewardExchangePoints) rewardExchangePoints.textContent = totalPoints;
+    const agnesTodayChild = document.getElementById('agnesTodayChild');
+    if (agnesTodayChild) {
+        const profile = (window.ProfileManager && typeof ProfileManager.getActive === 'function')
+            ? ProfileManager.getActive()
+            : null;
+        agnesTodayChild.textContent = (profile && profile.name) ? profile.name : '宝贝';
+    }
     const petState = (window.PetSystem && typeof PetSystem.getState === 'function') ? PetSystem.getState() : null;
     const mapPetLevel = document.getElementById('mapPetLevel');
     const mapWins = document.getElementById('mapWins');
@@ -364,6 +441,16 @@ function spendPoints(n) {
         return false;
     }
     addGrowthPoints(-n);
+    return true;
+}
+
+function redeemFamilyReward(points, name) {
+    const cost = Math.max(1, Math.floor(Number(points) || 0));
+    if (!spendPoints(cost)) return false;
+    const message = `兑换成功：${name || '家庭小奖励'}，花费 ${cost} 成长分`;
+    if (typeof showToast === 'function') showToast(message);
+    else alert(message);
+    renderAll();
     return true;
 }
 
@@ -2552,6 +2639,7 @@ function renderAll() {
     renderTaskGrid();
     renderSidebarTasks();
     updateStats();
+    renderGrowthStickerReport();
     if (activePage === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
         void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
     }
@@ -2568,6 +2656,7 @@ window.updateStats = updateStats;
 window.updateTopPoints = updateTopPoints;
 window.addGrowthPoints = addGrowthPoints;
 window.spendPoints = spendPoints;
+window.redeemFamilyReward = redeemFamilyReward;
 window.deductGrowthPoints = deductGrowthPoints;
 window.openPointItemModal = openPointItemModal;
 window.closePointItemModal = closePointItemModal;

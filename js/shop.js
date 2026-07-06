@@ -160,6 +160,54 @@ const ShopSystem = (function () {
       .reward-popup { background: white; padding: 30px; border-radius: 20px; text-align: center; max-width: 300px; }
       .reward-emoji { font-size: 4rem; margin-bottom: 15px; display: block; }
       .reward-msg { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; }
+
+      .shop-agnes-shell { max-width: 980px; margin: 0 auto; padding: 18px; color: #3f3528; }
+      .shop-agnes-hero {
+        display: grid; grid-template-columns: minmax(0, 1fr) 170px; gap: 18px; align-items: center;
+        padding: 22px; border-radius: 28px; margin-bottom: 18px;
+        background:
+          radial-gradient(circle at 10% 10%, rgba(255,255,255,.92), transparent 28%),
+          linear-gradient(135deg, #fff8ee 0%, #f4e6d3 100%);
+        box-shadow: 0 16px 34px rgba(126, 98, 64, .12);
+        border: 1px solid rgba(232, 211, 181, .9);
+      }
+      .shop-agnes-hero h2 { margin: 0 0 8px; font-size: 24px; color: #49392a; }
+      .shop-agnes-hero p { margin: 0; color: #7a6a58; line-height: 1.7; }
+      .shop-agnes-balance {
+        display: inline-flex; align-items: center; gap: 8px; width: max-content;
+        margin-bottom: 12px; padding: 8px 16px; border-radius: 999px;
+        background: #fff; color: #2388de; font-size: 20px; font-weight: 900;
+        box-shadow: 0 8px 18px rgba(96, 124, 154, .12);
+      }
+      .shop-agnes-hero img { width: 160px; height: 160px; object-fit: contain; justify-self: center; }
+      .shop-agnes-section-title {
+        margin: 22px 0 12px; font-size: 18px; font-weight: 900; color: #594535;
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      }
+      .shop-agnes-section-title span { font-size: 12px; color: #9b8065; font-weight: 700; }
+      .shop-agnes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+      .shop-agnes-card {
+        position: relative; overflow: hidden; min-height: 196px; padding: 16px; border-radius: 24px;
+        border: 1px solid rgba(232, 211, 181, .9); background: rgba(255,255,255,.94);
+        box-shadow: 0 12px 24px rgba(105, 82, 50, .1); transition: transform .18s ease, box-shadow .18s ease;
+      }
+      .shop-agnes-card:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(105, 82, 50, .14); }
+      .shop-agnes-card .shop-emoji { width: 64px; height: 64px; margin: 0 auto 10px; border-radius: 22px; background: #fff6e7; display: flex; align-items: center; justify-content: center; font-size: 34px; box-shadow: inset 0 -5px 10px rgba(227, 188, 117, .16); }
+      .shop-agnes-card .shop-name { color: #443425; font-size: 16px; }
+      .shop-agnes-card .shop-price { color: #2388de; font-size: 14px; }
+      .shop-agnes-card .shop-desc { min-height: 40px; color: #7a6a58; line-height: 1.5; }
+      .shop-agnes-card .shop-btn { background: #5e88f2; border-radius: 999px; box-shadow: 0 8px 16px rgba(82, 118, 216, .22); }
+      .shop-agnes-card .shop-btn:hover { background: #4d78de; }
+      .shop-agnes-blindbox {
+        cursor: pointer; text-align: center; color: #443425;
+        background: linear-gradient(180deg, #ffffff 0%, #fff6e8 100%);
+      }
+      .shop-agnes-blindbox img { width: 92px; height: 92px; object-fit: contain; margin: 0 auto 8px; }
+      .shop-agnes-history { margin-top: 12px; border-radius: 22px; background: rgba(255,255,255,.88); }
+      @media (max-width: 640px) {
+        .shop-agnes-hero { grid-template-columns: 1fr; text-align: center; }
+        .shop-agnes-balance { margin-left: auto; margin-right: auto; }
+      }
     `;
     document.head.appendChild(style);
   };
@@ -345,54 +393,59 @@ const ShopSystem = (function () {
     const sortedHistory = history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 5);
 
     container.innerHTML = `
-      <div class="shop-container">
-        <div class="shop-header">
-          <div style="font-size: 1.2rem; font-weight: bold;">🛍️ 兑换商店</div>
-          <div style="font-size: 1.1rem; color: #e67e22;">当前积分: <span id="shop-total-points">${getCurrentPoints()}</span></div>
-        </div>
+      <div class="shop-container shop-agnes-shell">
+        <section class="shop-agnes-hero">
+          <div>
+            <div class="shop-agnes-balance">⭐ <span id="shop-total-points">${getCurrentPoints()}</span></div>
+            <h2>星星兑换小铺</h2>
+            <p>把每天点亮的成长分，换成盲盒惊喜、家庭奖励和训练道具。卡片越清楚，孩子越愿意自己来选。</p>
+          </div>
+          <img src="assets/ui/points-exchange/kidstar-gift-box.webp" alt="星星兑换礼盒" loading="lazy" decoding="async">
+        </section>
 
-        <div class="shop-section-title">🎁 盲盒惊喜</div>
-        <div class="blindbox-area">
+        <div class="shop-agnes-section-title">盲盒惊喜 <span>点击礼盒，看看今天开出什么</span></div>
+        <div class="shop-agnes-grid">
           ${BLIND_BOXES.map(box => `
-            <div class="blindbox-card" onclick="ShopSystem.openBox('${box.id}', '${containerId}')">
-              <div style="font-size: 2.5rem;">${box.emoji}</div>
-              <div style="font-weight: bold; margin: 5px 0;">${box.name}</div>
-              <div style="font-size: 0.8rem; opacity: 0.9;">${box.desc}</div>
-              <div style="margin-top: 10px; font-weight: bold; background: rgba(255,255,255,0.2); border-radius: 10px; padding: 3px;">${box.price} 分</div>
-            </div>
+            <article class="shop-card shop-agnes-card shop-agnes-blindbox" onclick="ShopSystem.openBox('${box.id}', '${containerId}')">
+              <img src="assets/ui/points-exchange/kidstar-gift-box.webp" alt="${box.name}" loading="lazy" decoding="async">
+              <span class="shop-name">${box.name}</span>
+              <span class="shop-price">${box.price} 分</span>
+              <div class="shop-desc">${box.desc}</div>
+              <button class="shop-btn" type="button">打开礼盒</button>
+            </article>
           `).join('')}
         </div>
 
-        <div class="shop-section-title">🍕 奖励兑换</div>
-        <div class="shop-grid">
+        <div class="shop-agnes-section-title">家庭奖励卡 <span>选一个马上兑换</span></div>
+        <div class="shop-grid shop-agnes-grid">
           ${ITEMS.map(item => `
-            <div class="shop-card">
+            <article class="shop-card shop-agnes-card">
               <span class="shop-emoji">${item.emoji}</span>
               <span class="shop-name">${item.name}</span>
               <span class="shop-price">${item.price} 分</span>
               <div class="shop-desc">${item.desc}</div>
               <button class="shop-btn" onclick="ShopSystem.buy('${item.id}')">兑换</button>
-            </div>
+            </article>
           `).join('')}
         </div>
 
-        <div class="shop-section-title">🎒 对战道具（训练营专用）</div>
-        <div class="shop-grid">
+        <div class="shop-agnes-section-title">训练营道具 <span>进卡牌对战时使用</span></div>
+        <div class="shop-grid shop-agnes-grid">
           ${BATTLE_ITEMS.map(item => {
             const held = (window.InventorySystem && InventorySystem.getCount) ? InventorySystem.getCount(item.id) : 0;
             return `
-            <div class="shop-card">
+            <article class="shop-card shop-agnes-card">
               <span class="shop-emoji">${item.emoji}</span>
               <span class="shop-name">${item.name}${held > 0 ? ` <span style="color:#888;font-size:.75rem;">(持有 ${held})</span>` : ''}</span>
               <span class="shop-price">${item.price} 分</span>
               <div class="shop-desc">${item.desc}</div>
               <button class="shop-btn" onclick="ShopSystem.buyBattle('${item.id}')">购买</button>
-            </div>`;
+            </article>`;
           }).join('')}
         </div>
 
-        <div class="shop-section-title">🛋️ 家园装饰</div>
-        <div class="shop-grid">
+        <div class="shop-agnes-section-title">小屋装饰 <span>给宠物小屋添一点新惊喜</span></div>
+        <div class="shop-grid shop-agnes-grid">
           ${(() => {
             const catalog = getFurnitureCatalog();
             const owned = getOwnedFurniture();
@@ -404,7 +457,7 @@ const ShopSystem = (function () {
               const isOwned = owned.indexOf(it.id) >= 0;
               const slotLabel = SLOT_LABELS[it.slotType] || it.slotType;
               return `
-                <div class="shop-card">
+                <article class="shop-card shop-agnes-card">
                   <span class="shop-emoji">${it.icon}</span>
                   <span class="shop-name">${it.name}</span>
                   <span class="shop-price">${it.price} 分</span>
@@ -413,14 +466,14 @@ const ShopSystem = (function () {
                   ${isOwned
                     ? '<button class="shop-btn" disabled>已拥有</button>'
                     : `<button class="shop-btn" onclick="ShopSystem.buyFurniture('${it.id}')">购买</button>`}
-                </div>
+                </article>
               `;
             }).join('');
           })()}
         </div>
 
-        <div class="shop-section-title">📜 最近动态</div>
-        <div class="history-list">
+        <div class="shop-agnes-section-title">最近动态 <span>刚刚换到的小开心</span></div>
+        <div class="history-list shop-agnes-history">
           ${sortedHistory.length === 0 ? '<div style="color:#999; text-align:center; padding:10px;">暂无记录</div>' : 
             sortedHistory.map(h => `
               <div class="history-item">
