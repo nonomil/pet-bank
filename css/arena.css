@@ -10,6 +10,30 @@
 /* ===== 选队 modal ===== */
 #arenaTeamModal .modal-content { max-width: 860px; max-height: 90vh; }
 
+.arena-flow-steps {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2px 0 10px;
+    padding: 6px;
+    border-radius: 999px;
+    background: #f4f7f4;
+}
+.arena-flow-steps span {
+    min-width: 58px;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: #58705f;
+    font-size: 12px;
+    font-weight: 800;
+}
+.arena-flow-steps span.active {
+    background: var(--sage-green, #7BA889);
+    color: #fff;
+}
+
 .arena-team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -106,6 +130,11 @@
     font-weight: 700; font-size: 14px; white-space: nowrap;
 }
 .arena-pill.arena-mode { font-size: 15px; }
+.arena-current-actor {
+    background: rgba(255, 215, 64, .9);
+    color: #5c4810;
+    box-shadow: 0 0 0 2px rgba(255,255,255,.18);
+}
 /* PvP 操作方高亮 pill（参考 .arena-pvp-turn-tag 配色）*/
 .arena-pill.pvp-a { background: rgba(219,234,254,.9); color: #1d4ed8; }
 .arena-pill.pvp-b { background: rgba(252,231,243,.9); color: #be185d; }

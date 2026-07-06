@@ -2076,6 +2076,10 @@ function showBattleModal(battle) {
     content.innerHTML = `
         <div class="battle-arena">
             <img class="battle-arena-bg" src="${arenaBg}" alt="" onerror="this.style.display='none'">
+            <div class="battle-encounter-intro">
+                <strong>敌人出现</strong>
+                <span>${battle.monster.name} 挡住了去路</span>
+            </div>
             <div class="battle-fighters">
                 <div class="battle-fighter battle-fighter-left" id="battleFighterPet">
                     <img class="battle-fighter-img" src="${petImg}" alt="${petName}">
@@ -2089,8 +2093,16 @@ function showBattleModal(battle) {
                 </div>
             </div>
             <div class="battle-hp-row">
-                <div class="hp-bar"><div class="hp-fill" style="width:${(pet.hp / pet.total_max_hp) * 100}%"></div></div>
-                <div class="hp-bar"><div class="hp-fill" style="width:${(battle.monster.current_hp / battle.monster.hp) * 100}%"></div></div>
+                <div class="battle-hp-card">
+                    <div class="battle-hp-name">${petName}</div>
+                    <div class="hp-bar"><div class="hp-fill" style="width:${(pet.hp / pet.total_max_hp) * 100}%"></div></div>
+                    <div class="battle-hp-value">${pet.hp}/${pet.total_max_hp}</div>
+                </div>
+                <div class="battle-hp-card">
+                    <div class="battle-hp-name">${battle.monster.name}</div>
+                    <div class="hp-bar"><div class="hp-fill" style="width:${(battle.monster.current_hp / battle.monster.hp) * 100}%"></div></div>
+                    <div class="battle-hp-value">${battle.monster.current_hp}/${battle.monster.hp}</div>
+                </div>
             </div>
             <div class="battle-damage-zone" id="battleDamageZone"></div>
         </div>
@@ -2143,6 +2155,7 @@ function renderBattleActions() {
     const fleeDisabled = battleUILocked;
 
     container.innerHTML = `
+        <div class="battle-action-hint">选择技能，帮宠物突破这一关</div>
         <div class="grid grid-cols-2 gap-2 mb-2" id="battleSkillRow">
             <button class="btn-primary" ${attackDisabled ? 'disabled style="opacity:.5;cursor:not-allowed;"' : ''} onclick="battleAction('attack')">⚔️ 攻击</button>
             ${skillBtns}
@@ -2261,7 +2274,7 @@ function battleAction(action) {
         // 显示结算
         const actionsEl = document.getElementById('battleActions');
         actionsEl.innerHTML = `
-            <button class="btn-primary" onclick="closeBattleModal()">${result.status === 'won' ? '🎉 继续冒险' : result.status === 'lost' ? '回到宠物页' : '继续'}</button>
+            <button class="btn-primary" onclick="closeBattleModal()">${result.status === 'won' ? '🎉 继续探索' : result.status === 'lost' ? '回到宠物页' : '继续探索'}</button>
         `;
         renderPetPage();
     } else {
@@ -2282,6 +2295,13 @@ function updateBattleUI(battle) {
     }
     if (hpBars.length >= 2) {
         hpBars[1].style.width = `${(battle.monster.current_hp / battle.monster.hp) * 100}%`;
+    }
+    const values = modal ? modal.querySelectorAll('.battle-hp-value') : [];
+    if (values.length >= 1) {
+        values[0].textContent = `${pet.hp}/${pet.total_max_hp}`;
+    }
+    if (values.length >= 2) {
+        values[1].textContent = `${battle.monster.current_hp}/${battle.monster.hp}`;
     }
 }
 
@@ -2383,7 +2403,7 @@ function useItemInBattle(itemId) {
     if (battle.status === 'won' || battle.status === 'lost' || battle.status === 'fled') {
         const actionsEl = document.getElementById('battleActions');
         actionsEl.innerHTML = `
-            <button class="btn-primary" onclick="closeBattleModal()">${battle.status === 'won' ? '🎉 继续冒险' : battle.status === 'lost' ? '回到宠物页' : '继续'}</button>
+            <button class="btn-primary" onclick="closeBattleModal()">${battle.status === 'won' ? '🎉 继续探索' : battle.status === 'lost' ? '回到宠物页' : '继续探索'}</button>
         `;
         renderPetPage();
     } else {

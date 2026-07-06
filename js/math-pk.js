@@ -227,10 +227,16 @@
                         .math-arena { position:fixed; inset:0; z-index:1000; color:#fff; font-family:inherit; overflow:hidden;
                             background:#0f1419 url('assets/arena/arena-bg.webp') center/cover no-repeat; display:flex; flex-direction:column; }
                         .math-arena::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,12,22,.5), rgba(8,12,22,.78)); }
-                        .arena-topbar { position:relative; z-index:3; display:flex; justify-content:space-between; align-items:center; padding:14px 22px; gap:10px; }
+                        .arena-topbar { position:relative; z-index:3; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; padding:14px 22px; gap:10px; }
                         .arena-pill { background:rgba(255,255,255,.13); backdrop-filter:blur(8px); padding:8px 16px; border-radius:999px; font-weight:700; font-size:14px; white-space:nowrap; }
                         .arena-score { font-size:20px; letter-spacing:3px; }
                         .arena-score b { color:#ffd166; font-size:24px; }
+                        .math-pk-hp-track { flex-basis:100%; display:flex; justify-content:center; gap:16px; align-items:center; }
+                        .math-pk-hp-side { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:800; color:rgba(255,255,255,.82); }
+                        .math-pk-hp-cells { display:flex; gap:4px; }
+                        .math-pk-hp-cell { width:24px; height:9px; border-radius:999px; background:rgba(255,255,255,.18); box-shadow:inset 0 0 0 1px rgba(255,255,255,.1); }
+                        .math-pk-hp-cell.active.human { background:linear-gradient(90deg,#6ee7b7,#22d3ee); box-shadow:0 0 10px rgba(110,231,183,.45); }
+                        .math-pk-hp-cell.active.robot { background:linear-gradient(90deg,#f97316,#facc15); box-shadow:0 0 10px rgba(250,204,21,.42); }
                         .arena-exit { background:rgba(255,255,255,.13); border:none; color:#fff; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:18px; }
                         .arena-exit:hover { background:rgba(255,255,255,.24); }
                         .arena-stage { position:relative; z-index:2; flex:1; display:grid; grid-template-columns:1fr 1.15fr 1fr; grid-template-areas:'human center robot'; gap:10px; padding:4px 20px 18px; min-height:0; }
@@ -266,6 +272,8 @@
                         .arena-toast small { display:block; font-size:.85rem; font-weight:600; opacity:.9; margin-top:4px; }
                         .arena-toast.win { background:linear-gradient(135deg,#10b981,#22d3ee); }
                         .arena-toast.lose { background:linear-gradient(135deg,#ef4444,#f59e0b); }
+                        .math-pk-attack-cue { position:absolute; left:50%; top:58%; transform:translate(-50%,-50%); z-index:5; display:none; padding:9px 18px; border-radius:999px; background:rgba(15,20,29,.78); border:1px solid rgba(255,255,255,.22); font-weight:900; box-shadow:0 8px 24px rgba(0,0,0,.35); }
+                        .math-pk-attack-cue.show { display:block; animation:arena-pop .26s ease; }
                         .arena-lobby { text-align:center; }
                         .arena-lobby h2 { font-size:2.6rem; font-weight:900; text-shadow:0 4px 14px rgba(0,0,0,.6); margin-bottom:6px; }
                         .arena-lobby p { color:rgba(255,255,255,.82); margin-bottom:4px; }
@@ -302,6 +310,8 @@
                             .math-fx-burst { animation:none !important; transition:none !important; }
                         }
                         @media (max-width:760px){
+                            .math-pk-hp-track { gap:8px; }
+                            .math-pk-hp-cell { width:16px; }
                             .arena-stage { grid-template-columns:1fr 1fr; grid-template-areas:'human robot' 'center center'; }
                             .arena-avatar { width:120px; height:120px; }
                             .arena-side::before { width:170px; height:145px; transform:translateY(-62%); }
@@ -317,6 +327,7 @@
                         <span class="arena-pill" id="arena-round-pill">数学 PK 竞技台</span>
                         <span class="arena-pill arena-score" id="arena-score-pill">宠物 <b id="arena-human-score">0</b> : <b id="arena-robot-score">0</b> 机器人</span>
                         <button class="arena-exit" title="退出" onclick="MathPKGame._exit()">✕</button>
+                        <div class="math-pk-hp-track" id="math-pk-hp-track">${this._hpTrack()}</div>
                     </div>
                     <div class="arena-stage">
                         <div class="arena-side human" id="arena-side-human">
@@ -334,6 +345,7 @@
                             <div class="arena-thinkbar" id="arena-robot-bar" style="display:none;"><i></i></div>
                         </div>
                         <div class="arena-vs">VS</div>
+                        <div class="math-pk-attack-cue" id="math-pk-attack-cue"></div>
                         <div class="arena-toast" id="arena-toast"></div>
                     </div>
                 </div>
@@ -497,12 +509,38 @@
             const pill = document.getElementById('arena-score-pill');
             if (isAsyncMode()) {
                 if (pill) pill.innerHTML = `好友异步挑战 · <b id="arena-human-score">${state.score}</b> 分`;
+                this._renderHpTrack();
                 return;
             }
             const h = document.getElementById('arena-human-score');
             const r = document.getElementById('arena-robot-score');
             if (h) h.textContent = state.humanWins;
             if (r) r.textContent = state.robotWins;
+            this._renderHpTrack();
+        },
+        _hpTrack() {
+            const total = getRoundTotal();
+            const side = (label, score, cls) => `
+                <div class="math-pk-hp-side ${cls}">
+                    <span>${label}</span>
+                    <div class="math-pk-hp-cells">
+                        ${Array(total).fill(0).map((_, index) => `<i class="math-pk-hp-cell ${cls} ${index < score ? 'active' : ''}"></i>`).join('')}
+                    </div>
+                </div>
+            `;
+            return side('宠物', state.humanWins || 0, 'human') + side('机器人', state.robotWins || 0, 'robot');
+        },
+        _renderHpTrack() {
+            const el = document.getElementById('math-pk-hp-track');
+            if (!el) return;
+            el.innerHTML = isAsyncMode() ? '' : this._hpTrack();
+        },
+        _attackCue(text, type) {
+            const el = document.getElementById('math-pk-attack-cue');
+            if (!el) return;
+            el.textContent = text;
+            el.className = `math-pk-attack-cue show ${type || ''}`;
+            setTimeout(() => el.classList.remove('show'), 1100);
         },
         _setRoundPill(text) {
             const el = document.getElementById('arena-round-pill');
@@ -880,14 +918,16 @@
                 render._setSide('human', { status: '✓ 答对！', time: `⚡ ${hs}s` });
                 render._setSide('robot', { status: '被抢先了', time: '' });
                 render._setSideClass('human', 'win'); render._setSideClass('robot', 'dim');
-                render.toast(`⚡ 你赢了！<small>用时 ${hs}s · +${CONFIG.BASE_SCORE + Math.min(state.combo * 2, 20)} 分</small>`, 'win');
+                render._attackCue('宠物出招', 'human');
+                render.toast(`⚡ 宠物出招！<small>用时 ${hs}s · +${CONFIG.BASE_SCORE + Math.min(state.combo * 2, 20)} 分</small>`, 'win');
             } else {
                 state.robotWins++;
                 state.combo = 0;
                 render._setSide('robot', { status: '✓ 答对！', time: `⚡ ${robotSec}s` });
                 render._setSide('human', { status: '慢了一步', time: '' });
                 render._setSideClass('robot', 'win'); render._setSideClass('human', 'dim');
-                render.toast(`🤖 机器人赢了<small>它用时 ${robotSec}s</small>`, 'lose');
+                render._attackCue('机器人反击', 'robot');
+                render.toast(`🤖 机器人反击<small>它用时 ${robotSec}s</small>`, 'lose');
             }
             render._setScore();
             // 停掉机器人思考条动画

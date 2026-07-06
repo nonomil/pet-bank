@@ -182,6 +182,14 @@ const CardArenaUI = (function () {
                 <span style="font-size:12px;color:#8A7240;font-weight:bold;">今日剩余 ${remainToday}/3 · 持有额外券 ${ticketCount}</span>
             </div>
         `;
+        const flowSteps = `
+            <div class="arena-flow-steps" aria-label="卡牌 PK 流程">
+                <span class="active">选关</span>
+                <span>选队</span>
+                <span>对战</span>
+                <span>奖励</span>
+            </div>
+        `;
         // 自由练习入口卡片（置顶）：随机敌人，不计进度不计积分，随时玩
         const freePlayCard = `
             <div class="arena-stage-card open" style="grid-column:1/-1;background:linear-gradient(90deg,#FFF8DC80,#FAF8F2);border-color:#D4B96A;" onclick="CardArenaUI.openFreePlay()">
@@ -243,7 +251,7 @@ const CardArenaUI = (function () {
                 </div>
             `;
         }).join('');
-        grid.innerHTML = ticketBar + freePlayCard + stagesHtml;
+        grid.innerHTML = flowSteps + ticketBar + freePlayCard + stagesHtml;
         modal.classList.add('show');
     }
 
@@ -661,6 +669,10 @@ const CardArenaUI = (function () {
             ? `<span class="arena-pill pvp-${s.operator.toLowerCase()}">🎮 ${s.operator === 'A' ? '玩家A' : '玩家B'} 回合</span>`
             : `<span class="arena-pill">第 ${s.round} 回合</span>`;
         const modePill = `<span class="arena-pill arena-mode">${modeLabel}</span>`;
+        const actorLabel = isPvp
+            ? (s.operator === 'B' ? '玩家B 正在行动' : '玩家A 正在行动')
+            : '我方伙伴正在行动';
+        const actorPill = `<span class="arena-pill arena-current-actor">${actorLabel}</span>`;
 
         // 中间出招提示（大字，参考 math-pk .arena-question）
         // lastMoveText 在 _animateAndRender 里据最新事件更新；为空时显示居中 VS
@@ -673,7 +685,7 @@ const CardArenaUI = (function () {
             <div class="arena-fullscreen-overlay"></div>
             <div class="arena-topbar">
                 <div class="arena-topbar-left">${roundPill}</div>
-                <div class="arena-topbar-center">${modePill}</div>
+                <div class="arena-topbar-center">${modePill}${actorPill}</div>
                 <button class="arena-exit-btn" title="退出" onclick="CardArenaUI.closeBattleModal()">✕</button>
             </div>
             <div class="arena-stage-grid">
