@@ -75,7 +75,8 @@ docs/
 ├── 参考/
 │   ├── 参考索引.md                    原始材料 + 3 个参考项目索引
 │   ├── 精灵乐园设计借鉴分析.md        成功案例深度拆解 + 借鉴建议
-│   └── banchong宠物互动分析与合入方案.md banchong 互动机制实测 + 合入建议
+│   ├── banchong宠物互动分析与合入方案.md banchong 互动机制实测 + 合入建议
+│   └── 班宠乐园2参考借鉴优化方案/       植物已导入与人物后续导入、功能借鉴候选包
 ├── GPT生图/
 │   ├── README.md                      生图提示词与补图素材索引
 │   ├── banchong宠物生图提示词-补全48张.md
@@ -115,6 +116,7 @@ docs/
 | [参考/参考索引](参考/参考索引.md) | 5 份原始材料 + 3 个参考项目 + 1 份补充分析 | 查溯源、查参考蓝本 |
 | [参考/精灵乐园设计借鉴分析](参考/精灵乐园设计借鉴分析.md) | 已完成成功案例的玩法/UI/交互/机制拆解 + 14 条借鉴建议 | 做设计决策、找交互灵感 |
 | [参考/banchong宠物互动分析与合入方案](参考/banchong宠物互动分析与合入方案.md) | banchong 互动机制实测 + 合入建议 | 查装饰经济闭环、查 P2-0 优先级依据 |
+| [参考/班宠乐园2参考借鉴优化方案](参考/班宠乐园2参考借鉴优化方案/README.md) | 班宠乐园2植物已导入、人物后续导入、图鉴子册命名与积分运营功能借鉴方案包 | 查看 `甜芽花园册` 落地口径，选择 `锦缘奇遇册` / 徽章毕业 / 兑换记录等下一步优化 |
 | [GPT生图/README](GPT生图/README.md) | 宠物与动作图的提示词、资源补图说明 | 查缺图补图和素材生成规则 |
 
 ---
@@ -133,6 +135,7 @@ docs/
 - 查当前最高优先执行包 → [叙事收口与文案优化-需求](plans/2026-06-30-叙事收口与文案优化-需求.md)、[设计稿](plans/2026-06-30-叙事收口与文案优化-设计稿.md)、[实施计划](plans/2026-06-30-叙事收口与文案优化-实施计划.md)、[任务清单](plans/2026-06-30-叙事收口与文案优化-任务清单.md)
 - 查学习中心 / 幼小衔接暑假中文资料包 → [设计稿](plans/2026-07-05-learning-center-summer-chinese-design.md)、[实施计划](plans/2026-07-05-learning-center-summer-chinese-implementation.md)
 - 查 `班宠乐园2` 动物导入 / `萌爪伙伴册` / 图鉴 `.webp` 资源 → [设计稿](plans/2026-07-05-banchong2-animal-import-design.md)、[实施计划](plans/2026-07-05-banchong2-animal-import-implementation.md)
+- 查 `班宠乐园2` 植物 `甜芽花园册`、其他/人物 17 个和可借鉴功能 → [参考借鉴优化方案](参考/班宠乐园2参考借鉴优化方案/README.md)
 - 查温暖陪伴型首页仪表盘示例工程 / Codex UI 输入包怎么组织 → [设计稿](plans/2026-07-05-warm-home-dashboard-demo-design.md)、[实施计划](plans/2026-07-05-warm-home-dashboard-demo-implementation.md)
 - 查英语学习资料包 / 外链扩展 → [英语学习/README](英语学习/README.md)、[设计稿](plans/2026-07-05-learning-center-english-hybrid-design.md)、[实施计划](plans/2026-07-05-learning-center-english-hybrid-implementation.md)
 - 查学习单该放学习页还是积分页 / 模板怎么选 → [积分学习打勾方案/README](积分学习打勾方案/README.md)、[模板 A 设计稿](plans/2026-07-05-daily-learning-sheet-template-a.md)、[收口结论](plans/2026-07-05-scheme-b-points-vs-learn.md)、[积分区学习单子页设计稿](plans/2026-07-05-points-learning-sheet-subtab-design.md)、[实施计划](plans/2026-07-05-points-learning-sheet-subtab-implementation.md)
@@ -151,6 +154,7 @@ docs/
 - 查路线地图轻量重构 / CC 执行包 / 历史审查依据 → [路线地图大富翁融合/README](路线地图大富翁融合/README.md)
 - 查原始材料溯源 / 参考项目蓝本 → [参考/参考索引](参考/参考索引.md)
 - 做设计决策 / 找交互灵感 → [参考/精灵乐园设计借鉴分析](参考/精灵乐园设计借鉴分析.md)
+- 查 `甜芽花园册` 落地结果 / 选 `锦缘奇遇册` / 班宠乐园2功能借鉴 → [参考/班宠乐园2参考借鉴优化方案](参考/班宠乐园2参考借鉴优化方案/README.md)
 - 查宠物素材补图 / 生图提示词 → [GPT生图/README](GPT生图/README.md)
 
 ---
@@ -172,4 +176,4 @@ docs/
 - **模块现状**以代码为第一真相。文档中标注的「✅ 已修复 / ⏳ 待办」会随补丁演进，差距清单的 P0/P1/P2 是当前快照。
 - **文档编号**统一使用 `PROGRESS-*`（进度）、`CR-*`（变更）、`DESIGN-*`（设计稿）、`PLAN-*`（实施计划）四类前缀；版本发布记录统一归口仓库根目录 `CHANGELOG.md`。
 - 修改代码后，请同步更新 [模块清单与接口](设计/模块清单与接口.md) 的 init 接入状态与 [差距清单](路线/差距清单与开发路线图.md) 的对应条目。
-- 角色数量口径：历史文档曾出现 `139 / 147 / 198` 等阶段性口径；当前运行时以 `data/pets.json` 的 `total = 238` 为准，其中已包含 `banchong2` 的 `40` 只 `班宠乐园2` 动物宠物。
+- 角色数量口径：历史文档曾出现 `139 / 147 / 198 / 238` 等阶段性口径；当前运行时以 `data/pets.json` 的 `total = 261` 为准，其中已包含 `banchong2` 的 `40` 只 `班宠乐园2` 动物宠物与 `banchong2_plant` 的 `23` 个植物伙伴。

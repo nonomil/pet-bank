@@ -7,12 +7,13 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PETS_JSON = REPO_ROOT / "data" / "pets.json"
 BAD_SUFFIXES = (".bmp", ".jpg", ".jpeg")
+IMPORTED_SOURCES = {"banchong2", "banchong2_plant"}
 
 
 def main() -> None:
     pets_db = json.loads(PETS_JSON.read_text(encoding="utf-8"))
     flat = pets_db.get("flat") or []
-    imported = [pet for pet in flat if pet.get("source") == "banchong2"]
+    imported = [pet for pet in flat if pet.get("source") in IMPORTED_SOURCES]
 
     if not imported:
         raise SystemExit("expected at least one imported banchong2 pet to validate image formats")

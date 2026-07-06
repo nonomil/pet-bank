@@ -1648,7 +1648,7 @@ function openAdoptModal() {
         if (!sources[src]) sources[src] = 0;
         sources[src]++;
     }
-    const sourceNames = { original: '🌿 PVZ 原版', banchong: '🐹 仓鼠冒险', banchong2: '🐾 萌爪伙伴', classpet: '🎨 classpet', minecraft: '⛏️ 我的世界' };
+    const sourceNames = { original: '🌿 PVZ 原版', banchong: '🐹 仓鼠冒险', banchong2: '🐾 萌爪伙伴', banchong2_plant: '🌱 甜芽花园', classpet: '🎨 classpet', minecraft: '⛏️ 我的世界' };
     const sourceEl = document.getElementById('adoptSourceTabs');
     sourceEl.innerHTML = `<div class="adopt-tab adopt-tab-all ${adoptFilter.source === 'all' ? 'active' : ''}" onclick="setAdoptFilter('source','all')">全部 (${species.length})</div>`;
     for (const [src, cnt] of Object.entries(sources)) {

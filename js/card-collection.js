@@ -23,6 +23,7 @@ const CardCollection = (function() {
     const SOURCE_DETAIL_LABELS = {
         original: '阳光花园馆 · 经典植物',
         pvz: '阳光花园馆 · 写实实验',
+        banchong2_plant: '阳光花园馆 · 甜芽花园',
         banchong: '奇趣冒险馆 · 多族冒险',
         banchong2: '奇趣冒险馆 · 萌爪伙伴',
         classpet: '创想课堂馆 · 风格练习',
@@ -50,23 +51,24 @@ const CardCollection = (function() {
     const GALLERY_CONFIG = {
         sunshine: {
             name: '阳光花园馆',
-            subtitle: '经典植物 · 写实实验',
-            summary: '收录植物系、花园系与写实实验线伙伴。',
+            subtitle: '经典植物 · 写实实验 · 甜芽花园',
+            summary: '收录植物系、花园系、写实实验线与花果萌芽伙伴。',
             cardLabel: '植物图鉴入口',
-            cardIntro: '含向日葵、豌豆射手、坚果墙等经典植物，适合按攻击、防守和阳光补给来认识植物。',
-            sourceKeys: ['original', 'pvz'],
+            cardIntro: '含向日葵、豌豆射手、坚果墙，也收着草莓、竹子、银杏等甜芽花园伙伴。',
+            sourceKeys: ['original', 'pvz', 'banchong2_plant'],
             accent: 'sun',
             gradient: 'linear-gradient(135deg, #fff0b8 0%, #f7c95f 100%)',
             coverImage: 'assets/pokedex-halls/sunshine.webp',
             coverPosition: 'center 42%',
-            heroPetIds: ['pvz_sunflower', 'pvz_peashooter', 'pvz_cherrybomb'],
-            hallIntro: '这里收录《植物大战僵尸》主题植物卡，以及写实实验线里的植物伙伴。翻开这一馆，可以从阳光补给、远程攻击、防线守护和特殊技能四条路线慢慢认识每一种植物。',
+            heroPetIds: ['pvz_sunflower', 'bc2p_strawberry', 'bc2p_bamboo'],
+            hallIntro: '这里收录《植物大战僵尸》主题植物卡、写实实验线植物伙伴，以及班宠乐园2来的甜芽花园伙伴。翻开这一馆，可以从阳光补给、自然观察、花果奖励和成长陪伴几条路线慢慢认识每一种植物。',
             hallHighlights: [
                 '经典植物卡：豌豆射手、向日葵、坚果墙、樱桃炸弹等都在这里。',
                 '写实实验线：把 PVZ 植物做成更像自然图鉴的观察对象，更适合慢慢辨认形态。',
+                '甜芽花园册：草莓、竹子、银杏、榴莲等花果伙伴适合做学习打卡和自然观察。',
                 '适合做功能分类记忆：攻击、防守、阳光生产与控制型植物一目了然。'
             ],
-            hallTags: ['PVZ 经典植物', '写实实验线', '阳光补给', '防线守护']
+            hallTags: ['PVZ 经典植物', '写实实验线', '甜芽花园', '阳光补给']
         },
         adventure: {
             name: '奇趣冒险馆',
@@ -132,7 +134,8 @@ const CardCollection = (function() {
     const THEME_BOOKLETS = {
         sunshine: [
             { id: 'sun-classic', name: '经典植物册', subtitle: '豌豆与向日葵', series: ['PVZ'] },
-            { id: 'sun-real', name: '写实实验册', subtitle: '写实观察线', series: ['pvz真实'] }
+            { id: 'sun-real', name: '写实实验册', subtitle: '写实观察线', series: ['pvz真实'] },
+            { id: 'sun-banchong2-plant', name: '甜芽花园册', subtitle: '班宠乐园2 · 花果萌芽', series: ['甜芽花园族'] }
         ],
         adventure: [
             { id: 'adv-myth', name: '神话瑞兽册', subtitle: '瑞兽与山海', series: ['灵兽族', '瑞兽族', '山海族', '敦煌族'] },

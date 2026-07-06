@@ -6,8 +6,9 @@
  *   - pet-bank 原生 8 种（经典系列）
  *   - 仓鼠大冒险 91 种（灵兽族/星瞳族/绮梦族/萌肖族/酷肖族 等 12 系列）
  *   - classpet-pro1.0 40 种（萌宠风/幻想风/像素风/科幻风/国潮风 5 风格）
+ *   - 班宠乐园2 动物与植物扩展（萌爪伙伴族/甜芽花园族）
  * 
- * 数据文件：data/pets.json（147 种宠物）
+ * 数据文件：data/pets.json（以 total 字段为准）
  */
 
 const PetSystem = (function () {
@@ -35,7 +36,7 @@ const PetSystem = (function () {
         legendary: { name: '传说', color: '#f39c12', icon: '🟡' }
     };
 
-    // 宠物种类数据库（147 种，从 data/pets.json 动态加载）
+    // 宠物种类数据库（从 data/pets.json 动态加载）
     // 内置 fallback PVZ 宠物
     const SPECIES_FALLBACK = [
         { id: 'dog', name: '豌豆射手', emoji: '🫛', desc: '发射豌豆攻击，入门级植物', base_hp: 110, base_atk: 7 },
@@ -482,6 +483,8 @@ const PetSystem = (function () {
         return pet.stages.map((stage) => stage?.imageUrl || '').join('|');
     }
 
+    const MULTI_STAGE_IMAGE_SOURCES = new Set(['banchong', 'banchong2', 'banchong2_plant']);
+
     function normalizeSpeciesMedia(pets) {
         const mappedBySignature = new Map();
 
@@ -492,7 +495,7 @@ const PetSystem = (function () {
             mappedBySignature.set(signature, {
                 imageUrl: pet.imageUrl,
                 imageStages: pet.imageStages,
-                imageStyle: pet.imageStyle || ((pet.source === 'banchong' || pet.source === 'banchong2') ? 'banchong' : '')
+                imageStyle: pet.imageStyle || (MULTI_STAGE_IMAGE_SOURCES.has(pet.source) ? 'banchong' : '')
             });
         }
 
@@ -515,7 +518,7 @@ const PetSystem = (function () {
                 imageStyle: pet.imageStyle || ''
             };
 
-            if ((!normalized.imageUrl || !normalized.imageStages) && (normalized.source === 'banchong' || normalized.source === 'banchong2')) {
+            if ((!normalized.imageUrl || !normalized.imageStages) && MULTI_STAGE_IMAGE_SOURCES.has(normalized.source)) {
                 const inherited = mappedBySignature.get(getStageSignature(pet));
                 if (inherited) {
                     normalized.imageUrl = normalized.imageUrl || inherited.imageUrl;

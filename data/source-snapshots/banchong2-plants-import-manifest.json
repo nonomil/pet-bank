@@ -1,0 +1,1290 @@
+[
+  {
+    "id": "bc2p_cosmos",
+    "sourcePetId": 26,
+    "name": "波斯菊",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%B3%A2%E6%96%AF%E8%8F%8A/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/波斯菊-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%B3%A2%E6%96%AF%E8%8F%8A/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/波斯菊-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%B3%A2%E6%96%AF%E8%8F%8A/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/波斯菊-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%B3%A2%E6%96%AF%E8%8F%8A/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/波斯菊-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%B3%A2%E6%96%AF%E8%8F%8A/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/波斯菊-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%B3%A2%E6%96%AF%E8%8F%8A/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/波斯菊-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_strawberry",
+    "sourcePetId": 27,
+    "name": "草莓",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8D%89%E8%8E%93/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/草莓-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8D%89%E8%8E%93/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/草莓-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8D%89%E8%8E%93/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/草莓-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8D%89%E8%8E%93/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/草莓-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8D%89%E8%8E%93/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/草莓-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8D%89%E8%8E%93/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/草莓-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_mimosa",
+    "sourcePetId": 28,
+    "name": "含羞草",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%AB%E7%BE%9E%E8%8D%89/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/含羞草-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%AB%E7%BE%9E%E8%8D%89/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/含羞草-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%AB%E7%BE%9E%E8%8D%89/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/含羞草-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%AB%E7%BE%9E%E8%8D%89/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/含羞草-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%AB%E7%BE%9E%E8%8D%89/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/含羞草-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%AB%E7%BE%9E%E8%8D%89/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/含羞草-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_gourd",
+    "sourcePetId": 29,
+    "name": "葫芦",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%AB%E8%8A%A6/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/葫芦-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%AB%E8%8A%A6/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/葫芦-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%AB%E8%8A%A6/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/葫芦-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%AB%E8%8A%A6/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/葫芦-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%AB%E8%8A%A6/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/葫芦-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%AB%E8%8A%A6/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/葫芦-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_kumquat",
+    "sourcePetId": 30,
+    "name": "金桔",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%87%91%E6%A1%94/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/金桔-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%87%91%E6%A1%94/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/金桔-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%87%91%E6%A1%94/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/金桔-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%87%91%E6%A1%94/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/金桔-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%87%91%E6%A1%94/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/金桔-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%87%91%E6%A1%94/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/金桔-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_peony",
+    "sourcePetId": 31,
+    "name": "牡丹",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%89%A1%E4%B8%B9/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/牡丹-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%89%A1%E4%B8%B9/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/牡丹-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%89%A1%E4%B8%B9/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/牡丹-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%89%A1%E4%B8%B9/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/牡丹-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%89%A1%E4%B8%B9/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/牡丹-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%89%A1%E4%B8%B9/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/牡丹-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_dandelion",
+    "sourcePetId": 32,
+    "name": "蒲公英",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%92%B2%E5%85%AC%E8%8B%B1/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/蒲公英-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%92%B2%E5%85%AC%E8%8B%B1/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/蒲公英-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%92%B2%E5%85%AC%E8%8B%B1/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/蒲公英-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%92%B2%E5%85%AC%E8%8B%B1/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/蒲公英-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%92%B2%E5%85%AC%E8%8B%B1/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/蒲公英-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%92%B2%E5%85%AC%E8%8B%B1/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/蒲公英-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_cherry_tomato",
+    "sourcePetId": 33,
+    "name": "千禧果",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%8D%83%E7%A6%A7%E6%9E%9C/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/千禧果-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%8D%83%E7%A6%A7%E6%9E%9C/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/千禧果-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%8D%83%E7%A6%A7%E6%9E%9C/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/千禧果-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%8D%83%E7%A6%A7%E6%9E%9C/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/千禧果-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%8D%83%E7%A6%A7%E6%9E%9C/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/千禧果-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%8D%83%E7%A6%A7%E6%9E%9C/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/千禧果-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_persimmon_tree",
+    "sourcePetId": 34,
+    "name": "柿子树",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%9F%BF%E5%AD%90%E6%A0%91/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/柿子树-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%9F%BF%E5%AD%90%E6%A0%91/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/柿子树-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%9F%BF%E5%AD%90%E6%A0%91/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/柿子树-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%9F%BF%E5%AD%90%E6%A0%91/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/柿子树-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%9F%BF%E5%AD%90%E6%A0%91/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/柿子树-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%9F%BF%E5%AD%90%E6%A0%91/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/柿子树-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_cactus_ball",
+    "sourcePetId": 35,
+    "name": "仙人球",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E4%BB%99%E4%BA%BA%E7%90%83/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/仙人球-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E4%BB%99%E4%BA%BA%E7%90%83/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/仙人球-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E4%BB%99%E4%BA%BA%E7%90%83/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/仙人球-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E4%BB%99%E4%BA%BA%E7%90%83/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/仙人球-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E4%BB%99%E4%BA%BA%E7%90%83/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/仙人球-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E4%BB%99%E4%BA%BA%E7%90%83/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/仙人球-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_sunflower",
+    "sourcePetId": 36,
+    "name": "向日葵",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%91%E6%97%A5%E8%91%B5/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/向日葵-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%91%E6%97%A5%E8%91%B5/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/向日葵-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%91%E6%97%A5%E8%91%B5/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/向日葵-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%91%E6%97%A5%E8%91%B5/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/向日葵-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%91%E6%97%A5%E8%91%B5/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/向日葵-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E5%90%91%E6%97%A5%E8%91%B5/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/向日葵-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_hydrangea",
+    "sourcePetId": 37,
+    "name": "绣球花",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%BB%A3%E7%90%83%E8%8A%B1/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/绣球花-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%BB%A3%E7%90%83%E8%8A%B1/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/绣球花-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%BB%A3%E7%90%83%E8%8A%B1/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/绣球花-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%BB%A3%E7%90%83%E8%8A%B1/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/绣球花-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%BB%A3%E7%90%83%E8%8A%B1/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/绣球花-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%BB%A3%E7%90%83%E8%8A%B1/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/绣球花-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_cherry",
+    "sourcePetId": 38,
+    "name": "樱桃",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A8%B1%E6%A1%83/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/樱桃-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A8%B1%E6%A1%83/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/樱桃-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A8%B1%E6%A1%83/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/樱桃-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A8%B1%E6%A1%83/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/樱桃-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A8%B1%E6%A1%83/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/樱桃-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A8%B1%E6%A1%83/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/樱桃-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_ginkgo_tree",
+    "sourcePetId": 39,
+    "name": "银杏树",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%93%B6%E6%9D%8F%E6%A0%91/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/银杏树-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%93%B6%E6%9D%8F%E6%A0%91/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/银杏树-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%93%B6%E6%9D%8F%E6%A0%91/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/银杏树-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%93%B6%E6%9D%8F%E6%A0%91/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/银杏树-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%93%B6%E6%9D%8F%E6%A0%91/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/银杏树-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%93%B6%E6%9D%8F%E6%A0%91/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/银杏树-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_bamboo",
+    "sourcePetId": 40,
+    "name": "竹子",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%AB%B9%E5%AD%90/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/竹子-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%AB%B9%E5%AD%90/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/竹子-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%AB%B9%E5%AD%90/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/竹子-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%AB%B9%E5%AD%90/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/竹子-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%AB%B9%E5%AD%90/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/竹子-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%AB%B9%E5%AD%90/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/竹子-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_durian",
+    "sourcePetId": 1020,
+    "name": "榴莲",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A6%B4%E8%8E%B2/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/榴莲-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A6%B4%E8%8E%B2/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/榴莲-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A6%B4%E8%8E%B2/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/榴莲-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A6%B4%E8%8E%B2/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/榴莲-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A6%B4%E8%8E%B2/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/榴莲-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A6%B4%E8%8E%B2/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/榴莲-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_mango",
+    "sourcePetId": 1021,
+    "name": "芒果",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8A%92%E6%9E%9C/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/芒果-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8A%92%E6%9E%9C/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/芒果-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8A%92%E6%9E%9C/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/芒果-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8A%92%E6%9E%9C/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/芒果-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8A%92%E6%9E%9C/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/芒果-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8A%92%E6%9E%9C/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/芒果-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_apple",
+    "sourcePetId": 1022,
+    "name": "苹果",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8B%B9%E6%9E%9C/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/苹果-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8B%B9%E6%9E%9C/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/苹果-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8B%B9%E6%9E%9C/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/苹果-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8B%B9%E6%9E%9C/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/苹果-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8B%B9%E6%9E%9C/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/苹果-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%8B%B9%E6%9E%9C/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/苹果-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_grape",
+    "sourcePetId": 1023,
+    "name": "葡萄",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%A1%E8%90%84/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/葡萄-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%A1%E8%90%84/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/葡萄-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%A1%E8%90%84/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/葡萄-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%A1%E8%90%84/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/葡萄-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%A1%E8%90%84/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/葡萄-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%91%A1%E8%90%84/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/葡萄-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_peach",
+    "sourcePetId": 1024,
+    "name": "桃子",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A1%83%E5%AD%90/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/桃子-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A1%83%E5%AD%90/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/桃子-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A1%83%E5%AD%90/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/桃子-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A1%83%E5%AD%90/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/桃子-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A1%83%E5%AD%90/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/桃子-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E6%A1%83%E5%AD%90/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/桃子-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_watermelon",
+    "sourcePetId": 1025,
+    "name": "西瓜",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%A5%BF%E7%93%9C/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/西瓜-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%A5%BF%E7%93%9C/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/西瓜-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%A5%BF%E7%93%9C/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/西瓜-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%A5%BF%E7%93%9C/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/西瓜-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%A5%BF%E7%93%9C/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/西瓜-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E8%A5%BF%E7%93%9C/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/西瓜-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_banana",
+    "sourcePetId": 1026,
+    "name": "香蕉",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%A6%99%E8%95%89/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/香蕉-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%A6%99%E8%95%89/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/香蕉-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%A6%99%E8%95%89/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/香蕉-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%A6%99%E8%95%89/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/香蕉-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%A6%99%E8%95%89/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/香蕉-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E9%A6%99%E8%95%89/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/香蕉-5.webp"
+      }
+    ]
+  },
+  {
+    "id": "bc2p_corn",
+    "sourcePetId": 1027,
+    "name": "玉米",
+    "category": "PLANT",
+    "series": "甜芽花园族",
+    "source": "banchong2_plant",
+    "originSource": "banchong2",
+    "maxLevel": 10,
+    "mappedLevels": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "stages": [
+      {
+        "stage": 0,
+        "sourceLevel": 1,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%8E%89%E7%B1%B3/1.png",
+        "localPath": "assets/banchong2/甜芽花园族/玉米-0.webp"
+      },
+      {
+        "stage": 1,
+        "sourceLevel": 2,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%8E%89%E7%B1%B3/2.png",
+        "localPath": "assets/banchong2/甜芽花园族/玉米-1.webp"
+      },
+      {
+        "stage": 2,
+        "sourceLevel": 4,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%8E%89%E7%B1%B3/4.png",
+        "localPath": "assets/banchong2/甜芽花园族/玉米-2.webp"
+      },
+      {
+        "stage": 3,
+        "sourceLevel": 6,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%8E%89%E7%B1%B3/6.png",
+        "localPath": "assets/banchong2/甜芽花园族/玉米-3.webp"
+      },
+      {
+        "stage": 4,
+        "sourceLevel": 8,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%8E%89%E7%B1%B3/8.png",
+        "localPath": "assets/banchong2/甜芽花园族/玉米-4.webp"
+      },
+      {
+        "stage": 5,
+        "sourceLevel": 10,
+        "sourceUrl": "https://daydayupjfgl.com/pet_assets/%E6%A4%8D%E7%89%A9/%E7%8E%89%E7%B1%B3/10.png",
+        "localPath": "assets/banchong2/甜芽花园族/玉米-5.webp"
+      }
+    ]
+  }
+]

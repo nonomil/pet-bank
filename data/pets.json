@@ -1,12 +1,13 @@
 {
   "version": "2.0",
-  "total": 238,
+  "total": 261,
   "sources": {
     "original": "pet-bank 原生 8 种",
     "banchong": "仓鼠大冒险 91 种",
     "classpet": "classpet-pro1.0 40 种",
     "minecraft": "我的世界原版生物",
-    "banchong2": "班宠乐园2 动物 40 种"
+    "banchong2": "班宠乐园2 动物 40 种",
+    "banchong2_plant": "班宠乐园2 植物 23 种"
   },
   "rarity_config": {
     "common": {
@@ -5433,6 +5434,886 @@
             {
               "stage": 5,
               "imageUrl": "assets/banchong2/萌爪伙伴族/鹦鹉-5.webp"
+            }
+          ]
+        }
+      ]
+    },
+    "甜芽花园族": {
+      "name": "甜芽花园族",
+      "count": 23,
+      "pets": [
+        {
+          "id": "bc2p_cosmos",
+          "name": "波斯菊",
+          "emoji": "🌸",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 92,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_strawberry",
+          "name": "草莓",
+          "emoji": "🍓",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/草莓-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/草莓-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/草莓-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/草莓-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/草莓-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/草莓-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_mimosa",
+          "name": "含羞草",
+          "emoji": "🌿",
+          "series": "甜芽花园族",
+          "rarity": "rare",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 106,
+          "base_atk": 6,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/含羞草-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/含羞草-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/含羞草-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/含羞草-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/含羞草-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/含羞草-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_gourd",
+          "name": "葫芦",
+          "emoji": "🍈",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 98,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/葫芦-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/葫芦-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/葫芦-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/葫芦-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/葫芦-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/葫芦-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_kumquat",
+          "name": "金桔",
+          "emoji": "🍊",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/金桔-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/金桔-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/金桔-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/金桔-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/金桔-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/金桔-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_peony",
+          "name": "牡丹",
+          "emoji": "🌺",
+          "series": "甜芽花园族",
+          "rarity": "rare",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 100,
+          "base_atk": 6,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/牡丹-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/牡丹-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/牡丹-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/牡丹-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/牡丹-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/牡丹-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_dandelion",
+          "name": "蒲公英",
+          "emoji": "🌼",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 92,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_cherry_tomato",
+          "name": "千禧果",
+          "emoji": "🍅",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/千禧果-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/千禧果-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/千禧果-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/千禧果-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/千禧果-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/千禧果-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_persimmon_tree",
+          "name": "柿子树",
+          "emoji": "🌳",
+          "series": "甜芽花园族",
+          "rarity": "rare",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 120,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/柿子树-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/柿子树-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/柿子树-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/柿子树-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/柿子树-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/柿子树-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_cactus_ball",
+          "name": "仙人球",
+          "emoji": "🌵",
+          "series": "甜芽花园族",
+          "rarity": "rare",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 106,
+          "base_atk": 6,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/仙人球-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/仙人球-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/仙人球-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/仙人球-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/仙人球-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/仙人球-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_sunflower",
+          "name": "向日葵",
+          "emoji": "🌻",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 92,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/向日葵-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/向日葵-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/向日葵-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/向日葵-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/向日葵-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/向日葵-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_hydrangea",
+          "name": "绣球花",
+          "emoji": "💠",
+          "series": "甜芽花园族",
+          "rarity": "rare",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 100,
+          "base_atk": 6,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/绣球花-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/绣球花-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/绣球花-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/绣球花-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/绣球花-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/绣球花-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_cherry",
+          "name": "樱桃",
+          "emoji": "🍒",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/樱桃-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/樱桃-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/樱桃-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/樱桃-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/樱桃-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/樱桃-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_ginkgo_tree",
+          "name": "银杏树",
+          "emoji": "🍂",
+          "series": "甜芽花园族",
+          "rarity": "rare",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 120,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/银杏树-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/银杏树-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/银杏树-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/银杏树-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/银杏树-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/银杏树-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_bamboo",
+          "name": "竹子",
+          "emoji": "🎋",
+          "series": "甜芽花园族",
+          "rarity": "rare",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 120,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/竹子-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/竹子-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/竹子-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/竹子-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/竹子-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/竹子-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_durian",
+          "name": "榴莲",
+          "emoji": "🍈",
+          "series": "甜芽花园族",
+          "rarity": "epic",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 112,
+          "base_atk": 7,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/榴莲-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/榴莲-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/榴莲-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/榴莲-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/榴莲-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/榴莲-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_mango",
+          "name": "芒果",
+          "emoji": "🥭",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/芒果-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/芒果-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/芒果-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/芒果-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/芒果-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/芒果-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_apple",
+          "name": "苹果",
+          "emoji": "🍎",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/苹果-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/苹果-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/苹果-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/苹果-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/苹果-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/苹果-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_grape",
+          "name": "葡萄",
+          "emoji": "🍇",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/葡萄-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/葡萄-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/葡萄-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/葡萄-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/葡萄-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/葡萄-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_peach",
+          "name": "桃子",
+          "emoji": "🍑",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/桃子-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/桃子-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/桃子-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/桃子-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/桃子-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/桃子-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_watermelon",
+          "name": "西瓜",
+          "emoji": "🍉",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/西瓜-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/西瓜-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/西瓜-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/西瓜-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/西瓜-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/西瓜-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_banana",
+          "name": "香蕉",
+          "emoji": "🍌",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 96,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/香蕉-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/香蕉-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/香蕉-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/香蕉-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/香蕉-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/香蕉-5.webp"
+            }
+          ]
+        },
+        {
+          "id": "bc2p_corn",
+          "name": "玉米",
+          "emoji": "🌽",
+          "series": "甜芽花园族",
+          "rarity": "common",
+          "desc": "甜芽花园册伙伴",
+          "base_hp": 104,
+          "base_atk": 5,
+          "source": "banchong2_plant",
+          "originSource": "banchong2",
+          "stages": [
+            {
+              "stage": 0,
+              "imageUrl": "assets/banchong2/甜芽花园族/玉米-0.webp"
+            },
+            {
+              "stage": 1,
+              "imageUrl": "assets/banchong2/甜芽花园族/玉米-1.webp"
+            },
+            {
+              "stage": 2,
+              "imageUrl": "assets/banchong2/甜芽花园族/玉米-2.webp"
+            },
+            {
+              "stage": 3,
+              "imageUrl": "assets/banchong2/甜芽花园族/玉米-3.webp"
+            },
+            {
+              "stage": 4,
+              "imageUrl": "assets/banchong2/甜芽花园族/玉米-4.webp"
+            },
+            {
+              "stage": 5,
+              "imageUrl": "assets/banchong2/甜芽花园族/玉米-5.webp"
             }
           ]
         }
@@ -14201,6 +15082,1156 @@
         "3": "assets/banchong2/萌爪伙伴族/鹦鹉-3.webp",
         "4": "assets/banchong2/萌爪伙伴族/鹦鹉-4.webp",
         "5": "assets/banchong2/萌爪伙伴族/鹦鹉-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_cosmos",
+      "name": "波斯菊",
+      "emoji": "🌸",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 92,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-5.webp"
+        }
+      ],
+      "base_def": 4,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/波斯菊-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/波斯菊-0.webp",
+        "1": "assets/banchong2/甜芽花园族/波斯菊-1.webp",
+        "2": "assets/banchong2/甜芽花园族/波斯菊-2.webp",
+        "3": "assets/banchong2/甜芽花园族/波斯菊-3.webp",
+        "4": "assets/banchong2/甜芽花园族/波斯菊-4.webp",
+        "5": "assets/banchong2/甜芽花园族/波斯菊-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_strawberry",
+      "name": "草莓",
+      "emoji": "🍓",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/草莓-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/草莓-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/草莓-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/草莓-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/草莓-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/草莓-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/草莓-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/草莓-0.webp",
+        "1": "assets/banchong2/甜芽花园族/草莓-1.webp",
+        "2": "assets/banchong2/甜芽花园族/草莓-2.webp",
+        "3": "assets/banchong2/甜芽花园族/草莓-3.webp",
+        "4": "assets/banchong2/甜芽花园族/草莓-4.webp",
+        "5": "assets/banchong2/甜芽花园族/草莓-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_mimosa",
+      "name": "含羞草",
+      "emoji": "🌿",
+      "series": "甜芽花园族",
+      "rarity": "rare",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 106,
+      "base_atk": 6,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/含羞草-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/含羞草-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/含羞草-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/含羞草-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/含羞草-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/含羞草-5.webp"
+        }
+      ],
+      "base_def": 7,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/含羞草-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/含羞草-0.webp",
+        "1": "assets/banchong2/甜芽花园族/含羞草-1.webp",
+        "2": "assets/banchong2/甜芽花园族/含羞草-2.webp",
+        "3": "assets/banchong2/甜芽花园族/含羞草-3.webp",
+        "4": "assets/banchong2/甜芽花园族/含羞草-4.webp",
+        "5": "assets/banchong2/甜芽花园族/含羞草-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_gourd",
+      "name": "葫芦",
+      "emoji": "🍈",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 98,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/葫芦-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/葫芦-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/葫芦-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/葫芦-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/葫芦-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/葫芦-5.webp"
+        }
+      ],
+      "base_def": 6,
+      "base_spd": 5,
+      "imageUrl": "assets/banchong2/甜芽花园族/葫芦-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/葫芦-0.webp",
+        "1": "assets/banchong2/甜芽花园族/葫芦-1.webp",
+        "2": "assets/banchong2/甜芽花园族/葫芦-2.webp",
+        "3": "assets/banchong2/甜芽花园族/葫芦-3.webp",
+        "4": "assets/banchong2/甜芽花园族/葫芦-4.webp",
+        "5": "assets/banchong2/甜芽花园族/葫芦-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_kumquat",
+      "name": "金桔",
+      "emoji": "🍊",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/金桔-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/金桔-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/金桔-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/金桔-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/金桔-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/金桔-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/金桔-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/金桔-0.webp",
+        "1": "assets/banchong2/甜芽花园族/金桔-1.webp",
+        "2": "assets/banchong2/甜芽花园族/金桔-2.webp",
+        "3": "assets/banchong2/甜芽花园族/金桔-3.webp",
+        "4": "assets/banchong2/甜芽花园族/金桔-4.webp",
+        "5": "assets/banchong2/甜芽花园族/金桔-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_peony",
+      "name": "牡丹",
+      "emoji": "🌺",
+      "series": "甜芽花园族",
+      "rarity": "rare",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 100,
+      "base_atk": 6,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/牡丹-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/牡丹-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/牡丹-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/牡丹-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/牡丹-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/牡丹-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 7,
+      "imageUrl": "assets/banchong2/甜芽花园族/牡丹-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/牡丹-0.webp",
+        "1": "assets/banchong2/甜芽花园族/牡丹-1.webp",
+        "2": "assets/banchong2/甜芽花园族/牡丹-2.webp",
+        "3": "assets/banchong2/甜芽花园族/牡丹-3.webp",
+        "4": "assets/banchong2/甜芽花园族/牡丹-4.webp",
+        "5": "assets/banchong2/甜芽花园族/牡丹-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_dandelion",
+      "name": "蒲公英",
+      "emoji": "🌼",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 92,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-5.webp"
+        }
+      ],
+      "base_def": 4,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/蒲公英-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/蒲公英-0.webp",
+        "1": "assets/banchong2/甜芽花园族/蒲公英-1.webp",
+        "2": "assets/banchong2/甜芽花园族/蒲公英-2.webp",
+        "3": "assets/banchong2/甜芽花园族/蒲公英-3.webp",
+        "4": "assets/banchong2/甜芽花园族/蒲公英-4.webp",
+        "5": "assets/banchong2/甜芽花园族/蒲公英-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_cherry_tomato",
+      "name": "千禧果",
+      "emoji": "🍅",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/千禧果-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/千禧果-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/千禧果-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/千禧果-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/千禧果-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/千禧果-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/千禧果-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/千禧果-0.webp",
+        "1": "assets/banchong2/甜芽花园族/千禧果-1.webp",
+        "2": "assets/banchong2/甜芽花园族/千禧果-2.webp",
+        "3": "assets/banchong2/甜芽花园族/千禧果-3.webp",
+        "4": "assets/banchong2/甜芽花园族/千禧果-4.webp",
+        "5": "assets/banchong2/甜芽花园族/千禧果-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_persimmon_tree",
+      "name": "柿子树",
+      "emoji": "🌳",
+      "series": "甜芽花园族",
+      "rarity": "rare",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 120,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/柿子树-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/柿子树-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/柿子树-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/柿子树-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/柿子树-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/柿子树-5.webp"
+        }
+      ],
+      "base_def": 8,
+      "base_spd": 4,
+      "imageUrl": "assets/banchong2/甜芽花园族/柿子树-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/柿子树-0.webp",
+        "1": "assets/banchong2/甜芽花园族/柿子树-1.webp",
+        "2": "assets/banchong2/甜芽花园族/柿子树-2.webp",
+        "3": "assets/banchong2/甜芽花园族/柿子树-3.webp",
+        "4": "assets/banchong2/甜芽花园族/柿子树-4.webp",
+        "5": "assets/banchong2/甜芽花园族/柿子树-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_cactus_ball",
+      "name": "仙人球",
+      "emoji": "🌵",
+      "series": "甜芽花园族",
+      "rarity": "rare",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 106,
+      "base_atk": 6,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/仙人球-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/仙人球-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/仙人球-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/仙人球-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/仙人球-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/仙人球-5.webp"
+        }
+      ],
+      "base_def": 7,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/仙人球-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/仙人球-0.webp",
+        "1": "assets/banchong2/甜芽花园族/仙人球-1.webp",
+        "2": "assets/banchong2/甜芽花园族/仙人球-2.webp",
+        "3": "assets/banchong2/甜芽花园族/仙人球-3.webp",
+        "4": "assets/banchong2/甜芽花园族/仙人球-4.webp",
+        "5": "assets/banchong2/甜芽花园族/仙人球-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_sunflower",
+      "name": "向日葵",
+      "emoji": "🌻",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 92,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/向日葵-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/向日葵-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/向日葵-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/向日葵-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/向日葵-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/向日葵-5.webp"
+        }
+      ],
+      "base_def": 4,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/向日葵-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/向日葵-0.webp",
+        "1": "assets/banchong2/甜芽花园族/向日葵-1.webp",
+        "2": "assets/banchong2/甜芽花园族/向日葵-2.webp",
+        "3": "assets/banchong2/甜芽花园族/向日葵-3.webp",
+        "4": "assets/banchong2/甜芽花园族/向日葵-4.webp",
+        "5": "assets/banchong2/甜芽花园族/向日葵-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_hydrangea",
+      "name": "绣球花",
+      "emoji": "💠",
+      "series": "甜芽花园族",
+      "rarity": "rare",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 100,
+      "base_atk": 6,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/绣球花-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/绣球花-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/绣球花-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/绣球花-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/绣球花-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/绣球花-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 7,
+      "imageUrl": "assets/banchong2/甜芽花园族/绣球花-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/绣球花-0.webp",
+        "1": "assets/banchong2/甜芽花园族/绣球花-1.webp",
+        "2": "assets/banchong2/甜芽花园族/绣球花-2.webp",
+        "3": "assets/banchong2/甜芽花园族/绣球花-3.webp",
+        "4": "assets/banchong2/甜芽花园族/绣球花-4.webp",
+        "5": "assets/banchong2/甜芽花园族/绣球花-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_cherry",
+      "name": "樱桃",
+      "emoji": "🍒",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/樱桃-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/樱桃-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/樱桃-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/樱桃-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/樱桃-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/樱桃-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/樱桃-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/樱桃-0.webp",
+        "1": "assets/banchong2/甜芽花园族/樱桃-1.webp",
+        "2": "assets/banchong2/甜芽花园族/樱桃-2.webp",
+        "3": "assets/banchong2/甜芽花园族/樱桃-3.webp",
+        "4": "assets/banchong2/甜芽花园族/樱桃-4.webp",
+        "5": "assets/banchong2/甜芽花园族/樱桃-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_ginkgo_tree",
+      "name": "银杏树",
+      "emoji": "🍂",
+      "series": "甜芽花园族",
+      "rarity": "rare",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 120,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/银杏树-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/银杏树-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/银杏树-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/银杏树-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/银杏树-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/银杏树-5.webp"
+        }
+      ],
+      "base_def": 8,
+      "base_spd": 4,
+      "imageUrl": "assets/banchong2/甜芽花园族/银杏树-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/银杏树-0.webp",
+        "1": "assets/banchong2/甜芽花园族/银杏树-1.webp",
+        "2": "assets/banchong2/甜芽花园族/银杏树-2.webp",
+        "3": "assets/banchong2/甜芽花园族/银杏树-3.webp",
+        "4": "assets/banchong2/甜芽花园族/银杏树-4.webp",
+        "5": "assets/banchong2/甜芽花园族/银杏树-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_bamboo",
+      "name": "竹子",
+      "emoji": "🎋",
+      "series": "甜芽花园族",
+      "rarity": "rare",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 120,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/竹子-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/竹子-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/竹子-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/竹子-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/竹子-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/竹子-5.webp"
+        }
+      ],
+      "base_def": 8,
+      "base_spd": 4,
+      "imageUrl": "assets/banchong2/甜芽花园族/竹子-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/竹子-0.webp",
+        "1": "assets/banchong2/甜芽花园族/竹子-1.webp",
+        "2": "assets/banchong2/甜芽花园族/竹子-2.webp",
+        "3": "assets/banchong2/甜芽花园族/竹子-3.webp",
+        "4": "assets/banchong2/甜芽花园族/竹子-4.webp",
+        "5": "assets/banchong2/甜芽花园族/竹子-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_durian",
+      "name": "榴莲",
+      "emoji": "🍈",
+      "series": "甜芽花园族",
+      "rarity": "epic",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 112,
+      "base_atk": 7,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/榴莲-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/榴莲-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/榴莲-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/榴莲-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/榴莲-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/榴莲-5.webp"
+        }
+      ],
+      "base_def": 4,
+      "base_spd": 8,
+      "imageUrl": "assets/banchong2/甜芽花园族/榴莲-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/榴莲-0.webp",
+        "1": "assets/banchong2/甜芽花园族/榴莲-1.webp",
+        "2": "assets/banchong2/甜芽花园族/榴莲-2.webp",
+        "3": "assets/banchong2/甜芽花园族/榴莲-3.webp",
+        "4": "assets/banchong2/甜芽花园族/榴莲-4.webp",
+        "5": "assets/banchong2/甜芽花园族/榴莲-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_mango",
+      "name": "芒果",
+      "emoji": "🥭",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/芒果-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/芒果-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/芒果-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/芒果-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/芒果-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/芒果-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/芒果-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/芒果-0.webp",
+        "1": "assets/banchong2/甜芽花园族/芒果-1.webp",
+        "2": "assets/banchong2/甜芽花园族/芒果-2.webp",
+        "3": "assets/banchong2/甜芽花园族/芒果-3.webp",
+        "4": "assets/banchong2/甜芽花园族/芒果-4.webp",
+        "5": "assets/banchong2/甜芽花园族/芒果-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_apple",
+      "name": "苹果",
+      "emoji": "🍎",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/苹果-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/苹果-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/苹果-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/苹果-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/苹果-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/苹果-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/苹果-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/苹果-0.webp",
+        "1": "assets/banchong2/甜芽花园族/苹果-1.webp",
+        "2": "assets/banchong2/甜芽花园族/苹果-2.webp",
+        "3": "assets/banchong2/甜芽花园族/苹果-3.webp",
+        "4": "assets/banchong2/甜芽花园族/苹果-4.webp",
+        "5": "assets/banchong2/甜芽花园族/苹果-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_grape",
+      "name": "葡萄",
+      "emoji": "🍇",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/葡萄-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/葡萄-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/葡萄-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/葡萄-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/葡萄-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/葡萄-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/葡萄-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/葡萄-0.webp",
+        "1": "assets/banchong2/甜芽花园族/葡萄-1.webp",
+        "2": "assets/banchong2/甜芽花园族/葡萄-2.webp",
+        "3": "assets/banchong2/甜芽花园族/葡萄-3.webp",
+        "4": "assets/banchong2/甜芽花园族/葡萄-4.webp",
+        "5": "assets/banchong2/甜芽花园族/葡萄-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_peach",
+      "name": "桃子",
+      "emoji": "🍑",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/桃子-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/桃子-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/桃子-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/桃子-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/桃子-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/桃子-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/桃子-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/桃子-0.webp",
+        "1": "assets/banchong2/甜芽花园族/桃子-1.webp",
+        "2": "assets/banchong2/甜芽花园族/桃子-2.webp",
+        "3": "assets/banchong2/甜芽花园族/桃子-3.webp",
+        "4": "assets/banchong2/甜芽花园族/桃子-4.webp",
+        "5": "assets/banchong2/甜芽花园族/桃子-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_watermelon",
+      "name": "西瓜",
+      "emoji": "🍉",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/西瓜-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/西瓜-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/西瓜-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/西瓜-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/西瓜-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/西瓜-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/西瓜-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/西瓜-0.webp",
+        "1": "assets/banchong2/甜芽花园族/西瓜-1.webp",
+        "2": "assets/banchong2/甜芽花园族/西瓜-2.webp",
+        "3": "assets/banchong2/甜芽花园族/西瓜-3.webp",
+        "4": "assets/banchong2/甜芽花园族/西瓜-4.webp",
+        "5": "assets/banchong2/甜芽花园族/西瓜-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_banana",
+      "name": "香蕉",
+      "emoji": "🍌",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 96,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/香蕉-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/香蕉-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/香蕉-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/香蕉-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/香蕉-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/香蕉-5.webp"
+        }
+      ],
+      "base_def": 3,
+      "base_spd": 6,
+      "imageUrl": "assets/banchong2/甜芽花园族/香蕉-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/香蕉-0.webp",
+        "1": "assets/banchong2/甜芽花园族/香蕉-1.webp",
+        "2": "assets/banchong2/甜芽花园族/香蕉-2.webp",
+        "3": "assets/banchong2/甜芽花园族/香蕉-3.webp",
+        "4": "assets/banchong2/甜芽花园族/香蕉-4.webp",
+        "5": "assets/banchong2/甜芽花园族/香蕉-5.webp"
+      },
+      "imageStyle": "banchong"
+    },
+    {
+      "id": "bc2p_corn",
+      "name": "玉米",
+      "emoji": "🌽",
+      "series": "甜芽花园族",
+      "rarity": "common",
+      "desc": "甜芽花园册伙伴",
+      "base_hp": 104,
+      "base_atk": 5,
+      "source": "banchong2_plant",
+      "originSource": "banchong2",
+      "stages": [
+        {
+          "stage": 0,
+          "imageUrl": "assets/banchong2/甜芽花园族/玉米-0.webp"
+        },
+        {
+          "stage": 1,
+          "imageUrl": "assets/banchong2/甜芽花园族/玉米-1.webp"
+        },
+        {
+          "stage": 2,
+          "imageUrl": "assets/banchong2/甜芽花园族/玉米-2.webp"
+        },
+        {
+          "stage": 3,
+          "imageUrl": "assets/banchong2/甜芽花园族/玉米-3.webp"
+        },
+        {
+          "stage": 4,
+          "imageUrl": "assets/banchong2/甜芽花园族/玉米-4.webp"
+        },
+        {
+          "stage": 5,
+          "imageUrl": "assets/banchong2/甜芽花园族/玉米-5.webp"
+        }
+      ],
+      "base_def": 5,
+      "base_spd": 4,
+      "imageUrl": "assets/banchong2/甜芽花园族/玉米-2.webp",
+      "imageStages": {
+        "0": "assets/banchong2/甜芽花园族/玉米-0.webp",
+        "1": "assets/banchong2/甜芽花园族/玉米-1.webp",
+        "2": "assets/banchong2/甜芽花园族/玉米-2.webp",
+        "3": "assets/banchong2/甜芽花园族/玉米-3.webp",
+        "4": "assets/banchong2/甜芽花园族/玉米-4.webp",
+        "5": "assets/banchong2/甜芽花园族/玉米-5.webp"
       },
       "imageStyle": "banchong"
     }
