@@ -653,6 +653,190 @@
 .map-page-bg .sidebar .task-card .text-xs {
     font-size: 13px;
 }
+.home-summary-card .card-body {
+    display: grid;
+    gap: 12px;
+}
+.home-summary-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+.home-summary-kicker {
+    margin: 0 0 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #b9893a;
+}
+.home-summary-head h3 {
+    margin: 0;
+    color: #365043;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.15;
+}
+.home-summary-child {
+    max-width: 86px;
+    overflow: hidden;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.7);
+    color: #657469;
+    font-size: 11px;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.home-summary-focus {
+    display: grid;
+    gap: 5px;
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid rgba(226, 214, 178, 0.9);
+    border-radius: 17px;
+    background:
+        radial-gradient(circle at top right, rgba(255, 232, 167, 0.42), rgba(255, 232, 167, 0) 38%),
+        rgba(255, 255, 255, 0.64);
+    color: #365043;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.74);
+    transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+}
+.home-summary-focus:hover,
+.home-summary-pet:hover {
+    transform: translateY(-1px);
+    border-color: rgba(200, 188, 145, 0.95);
+    box-shadow: 0 12px 24px rgba(86, 105, 88, 0.12);
+}
+.home-summary-focus-label {
+    width: fit-content;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(245, 201, 120, 0.26);
+    color: #8a6427;
+    font-size: 10px;
+    font-weight: 900;
+}
+.home-summary-focus strong {
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.home-summary-focus span:last-child {
+    display: -webkit-box;
+    overflow: hidden;
+    color: #6d7663;
+    font-size: 12px;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+.home-summary-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+}
+.home-summary-stats div {
+    min-width: 0;
+    padding: 8px 7px;
+    border: 1px solid rgba(220, 211, 180, 0.82);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.58);
+}
+.home-summary-stats span {
+    display: block;
+    margin-bottom: 3px;
+    color: #8e8e77;
+    font-size: 10px;
+    white-space: nowrap;
+}
+.home-summary-stats strong {
+    display: block;
+    overflow: hidden;
+    color: #476352;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.12;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.home-summary-pet {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(214, 225, 209, 0.9);
+    border-radius: 17px;
+    background:
+        radial-gradient(circle at top left, rgba(255, 248, 220, 0.82), rgba(255, 248, 220, 0) 42%),
+        rgba(255, 255, 255, 0.58);
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+}
+.home-summary-avatar {
+    width: 54px;
+    height: 54px;
+    padding: 7px;
+    border-radius: 15px;
+    background:
+        radial-gradient(circle at top, rgba(255, 241, 196, 0.88), rgba(255, 241, 196, 0) 58%),
+        linear-gradient(180deg, #ffffff, #eef8f1);
+    box-shadow: inset 0 0 0 1px rgba(221, 229, 216, 0.9);
+}
+.home-summary-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 12px rgba(56, 80, 66, 0.12));
+}
+.home-summary-pet-copy {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+}
+.home-summary-pet-kicker {
+    color: #b9893a;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+}
+.home-summary-pet-copy strong,
+.home-summary-pet-copy span,
+.home-summary-pet-copy small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.home-summary-pet-copy strong {
+    color: #3b5548;
+    font-size: 14px;
+    font-weight: 900;
+}
+.home-summary-pet-copy span {
+    color: #6f7b69;
+    font-size: 11px;
+}
+.home-summary-pet-copy small {
+    width: fit-content;
+    max-width: 100%;
+    padding: 4px 7px;
+    border-radius: 999px;
+    background: rgba(245, 201, 120, 0.22);
+    color: #8a6427;
+    font-size: 10px;
+    font-weight: 800;
+}
 .map-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.45fr) 300px;
@@ -2439,6 +2623,30 @@ body.no-sidebar .sidebar { display: none; }
 
 /* 首页 dashboard 大卡片启动器 */
 .dash-launcher { margin-bottom: 18px; }
+.dash-launcher-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 0 2px 10px;
+}
+.dash-launcher-head h2 {
+    margin: 0;
+    color: #365043;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.15;
+}
+.dash-launcher-head > span {
+    padding: 6px 10px;
+    border: 1px solid rgba(220, 226, 219, 0.88);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.62);
+    color: #6b7e72;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
 .dash-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .dash-card { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 18px 20px; border-radius: 18px; border: 1px solid var(--border-light); background: #fff; cursor: pointer; transition: transform 0.12s, box-shadow 0.15s; text-align: left; box-shadow: 0 2px 8px rgba(45,62,54,0.05); }
 .dash-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(45,62,54,0.12); }
@@ -2719,6 +2927,12 @@ body.no-sidebar .sidebar { display: none; }
 
     #page-map .dash-cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #page-map .dash-launcher-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
     }
 
     #page-map .dash-card {
