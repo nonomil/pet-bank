@@ -3616,6 +3616,123 @@ body.no-sidebar .sidebar { display: none; }
 }
 .profile-new:hover { background: rgba(126, 182, 108, 0.08); }
 
+/* ===== 家长设置分区 ===== */
+.parent-settings-panel {
+    background:
+        radial-gradient(circle at 8% 4%, rgba(245, 206, 129, 0.2), transparent 24%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(245, 249, 246, 0.86));
+}
+.parent-settings-shell {
+    display: grid;
+    gap: 16px;
+}
+.parent-settings-section {
+    position: relative;
+    overflow: hidden;
+    padding: 18px;
+    border-radius: 22px;
+    border: 1px solid rgba(220, 228, 221, 0.9);
+    background:
+        radial-gradient(circle at top right, rgba(126, 182, 108, 0.1), transparent 34%),
+        rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 24px rgba(73, 84, 74, 0.08);
+}
+.parent-settings-section::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: linear-gradient(180deg, #8fbf78, #e5c06b);
+    opacity: 0.78;
+}
+.parent-settings-section-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+.parent-settings-kicker {
+    margin: 0 0 5px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: #9a7340;
+}
+.parent-settings-section h3 {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.25;
+    color: var(--text-primary);
+}
+.parent-settings-tag {
+    flex: 0 0 auto;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(111, 168, 147, 0.12);
+    color: #4f7565;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+.parent-settings-copy {
+    margin: 0 0 14px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.7;
+}
+.parent-settings-module-stack {
+    display: grid;
+    gap: 12px;
+}
+.parent-settings-module-stack > div:empty,
+.parent-settings-inline-grid > div:empty,
+.parent-settings-section > div:empty {
+    display: none;
+}
+.parent-settings-inline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+.parent-settings-note {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 16px;
+    border: 1px dashed rgba(185, 137, 58, 0.32);
+    background: rgba(255, 248, 226, 0.72);
+    color: #7a6741;
+    font-size: 13px;
+    line-height: 1.65;
+}
+.parent-settings-note code {
+    padding: 2px 6px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.78);
+    color: #805b20;
+    font-weight: 800;
+}
+.parent-settings-section-muted {
+    background:
+        radial-gradient(circle at top right, rgba(245, 206, 129, 0.13), transparent 34%),
+        rgba(255, 255, 255, 0.82);
+}
+.parent-settings-section-muted::before {
+    background: linear-gradient(180deg, #dec17b, #a9c69d);
+}
+.parent-settings-section-danger {
+    background:
+        radial-gradient(circle at top right, rgba(205, 100, 80, 0.1), transparent 34%),
+        rgba(255, 255, 255, 0.9);
+}
+.parent-settings-section-danger::before {
+    background: linear-gradient(180deg, #c87d62, #e0bf74);
+}
+.parent-settings-section-danger .parent-settings-tag {
+    background: rgba(205, 100, 80, 0.12);
+    color: #9a5646;
+}
+
 .sfx-settings-card .card-header { padding: 12px 14px 8px; }
 .sfx-settings-body { display: flex; flex-direction: column; gap: 10px; padding: 10px 14px 14px; font-size: 13px; }
 .sfx-settings-row { display: flex; align-items: center; gap: 8px; color: var(--text-primary); }
@@ -4350,6 +4467,7 @@ body.no-sidebar .sidebar { display: none; }
     }
     .auth-shell-head,
     .auth-session-card,
+    .parent-settings-section-head,
     .household-shell-head,
     .social-shell-head,
     .social-code-card,
@@ -4366,6 +4484,7 @@ body.no-sidebar .sidebar { display: none; }
     }
     .household-summary-grid,
     .household-invite-form,
+    .parent-settings-inline-grid,
     .social-redeem-form {
         grid-template-columns: 1fr;
     }

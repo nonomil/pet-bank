@@ -23,6 +23,7 @@
 - `成长作品 / 工具箱 / 设置` 已从 `游乐场` 下拉移出。
 - `工具箱` 默认只显示 `随机点名 / 番茄计时`。
 - `数据管理` 已隐藏，只有 `?parentAdmin=1` 或本地高级开关打开时显示。
+- `设置` 已整理为 `账号与孩子 / 家庭云端 / 学习与题目 / 规则模板 / 高级与危险操作` 五个分区。
 
 ## 先读哪一篇
 
@@ -38,5 +39,6 @@
 - `js/app.js`：一级导航映射、游乐场下拉配置、页面激活逻辑。
 - `js/tools.js`：工具箱与高级 `数据管理` 显示开关。
 - `prj/parent_management_hidden_interfaces.test.mjs`：隐藏接口回归测试。
+- `prj/parent_settings_sections_contract.test.mjs`：设置页分区契约测试。
 - [游乐场与家长区导航收口设计](../plans/2026-07-06-playground-management-nav-design.md)
 - [家长区与隐藏管理接口设计](../plans/2026-07-06-parent-management-hidden-interface-design.md)

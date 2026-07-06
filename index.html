@@ -200,14 +200,78 @@
                         <p>在这里新增、改名或删除孩子账号。切换账号请点右上角头像。</p>
                     </div>
                 </section>
-                <section class="map-stage-panel">
-                    <div id="auth-root"></div>
-                    <div id="household-root"></div>
-                    <div id="social-root"></div>
-                    <div id="diagnostics-root"></div>
-                    <div id="settings-account-list"></div>
-                    <div id="settings-learning-mode"></div>
-                    <div id="settings-math-diff"></div>
+                <section class="map-stage-panel parent-settings-panel" aria-label="家长设置分区">
+                    <div class="parent-settings-shell">
+                        <section class="parent-settings-section" aria-labelledby="parent-settings-accounts-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">孩子档案</p>
+                                    <h3 id="parent-settings-accounts-title">账号与孩子</h3>
+                                </div>
+                                <span class="parent-settings-tag">常用</span>
+                            </div>
+                            <p class="parent-settings-copy">新增、改名或删除孩子账号；切换当前孩子仍然使用右上角头像。</p>
+                            <div id="settings-account-list"></div>
+                        </section>
+
+                        <section class="parent-settings-section" aria-labelledby="parent-settings-cloud-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">同步与边界</p>
+                                    <h3 id="parent-settings-cloud-title">家庭云端</h3>
+                                </div>
+                                <span class="parent-settings-tag">家长账号</span>
+                            </div>
+                            <p class="parent-settings-copy">登录、家庭同步、好友串门等能力集中在这里，避免散落到孩子主流程。</p>
+                            <div class="parent-settings-module-stack">
+                                <div id="auth-root"></div>
+                                <div id="household-root"></div>
+                                <div id="social-root"></div>
+                            </div>
+                        </section>
+
+                        <section class="parent-settings-section" aria-labelledby="parent-settings-learning-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">学习体验</p>
+                                    <h3 id="parent-settings-learning-title">学习与题目</h3>
+                                </div>
+                                <span class="parent-settings-tag">低频调整</span>
+                            </div>
+                            <p class="parent-settings-copy">管理学习打勾模式、数学 PK 难度等会影响孩子日常体验的配置。</p>
+                            <div class="parent-settings-inline-grid">
+                                <div id="settings-learning-mode"></div>
+                                <div id="settings-math-diff"></div>
+                            </div>
+                        </section>
+
+                        <section class="parent-settings-section parent-settings-section-muted" aria-labelledby="parent-settings-rules-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">积分规则</p>
+                                    <h3 id="parent-settings-rules-title">规则模板</h3>
+                                </div>
+                                <span class="parent-settings-tag">规划中</span>
+                            </div>
+                            <p class="parent-settings-copy">后续会把阅读完成、数学挑战、主动复盘、整理书包等加分/扣分项做成可编辑模板。</p>
+                            <div class="parent-settings-note">
+                                现在先保留为说明区，避免在没有角色权限和备份确认前开放批量规则编辑。
+                            </div>
+                        </section>
+
+                        <section class="parent-settings-section parent-settings-section-danger" aria-labelledby="parent-settings-advanced-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">备份与诊断</p>
+                                    <h3 id="parent-settings-advanced-title">高级与危险操作</h3>
+                                </div>
+                                <span class="parent-settings-tag">默认隐藏</span>
+                            </div>
+                            <p class="parent-settings-copy">数据导入、导出、云端诊断和覆盖类操作统一收纳到高级区，普通模式不直接打扰家长和孩子。</p>
+                            <p class="parent-settings-note">如需临时打开数据管理，请在本地访问地址追加 <code>?parentAdmin=1</code>，操作前先导出备份。</p>
+                            <div id="diagnostics-root"></div>
+                        </section>
+                    </div>
                 </section>
             </div>
 
