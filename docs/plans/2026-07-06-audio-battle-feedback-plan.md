@@ -2,8 +2,8 @@
 
 > **给 Claude:** 必需子技能：使用 superpowers:executing-plans 来逐任务实施此计划。
 
-**目标：** 为探索故事、音效系统和探索战斗补齐语义化声音与可见战斗反馈闭环。  
-**架构：** `sfx.js` 负责统一音效 API 与设置 UI；`exploration-detail.js` 在探索事件节点播放语义化音效；`exploration.js` 派发战斗动作事件；`app.js` 在战斗 UI 生命周期内稳定监听事件并驱动动画。  
+**目标：** 为探索故事、音效系统和探索战斗补齐语义化声音与可见战斗反馈闭环。
+**架构：** `sfx.js` 负责统一音效 API 与设置 UI；`exploration-detail.js` 在探索事件节点播放语义化音效；`exploration.js` 派发战斗动作事件；`app.js` 在战斗 UI 生命周期内稳定监听事件并驱动动画。
 **技术栈：** 原生 JavaScript、CSS、ZzFX、本地 mp3 资产兜底、Node/Python 静态契约测试。
 
 ---
