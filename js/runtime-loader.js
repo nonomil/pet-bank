@@ -11,7 +11,7 @@
         card: ['css/card-collection.css'],
         arena: ['css/arena.css'],
         playground: ['css/playground.css?v=8', 'css/leaderboard.css?v=2', 'css/hanzi-game.css?v=4'],
-        learn: ['css/learn-center.css?v=2']
+        learn: ['css/learn-center.css?v=6']
     };
 
     const SCRIPT_BUNDLES = {
@@ -22,7 +22,7 @@
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
         explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/exploration-detail.js'],
         playground: ['js/math-pk.js?v=2', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
-        learn: ['js/learn-center.js?v=2'],
+        learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=6'],
         shop: ['js/shop.js'],
         cloud: [
             'js/vendor/supabase-js.js',

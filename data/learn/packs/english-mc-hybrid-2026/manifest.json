@@ -4,7 +4,7 @@
   "coverEmoji": "🧩",
   "audience": "Minecraft英语故事",
   "description": "这是一套以 Minecraft 英语故事为主线的混合式资料包：在当前项目里看计划、看目标词、拿积分；打开外部点读页完成章节阅读后，再回到这里打勾记录。",
-  "moduleCount": 4,
+  "moduleCount": 5,
   "packType": "hybrid",
   "contentMode": "external-plus-local",
   "sourceAdapter": "mayihaoke-reader",
@@ -57,6 +57,13 @@
       "emoji": "🧰",
       "duration": "预留接口",
       "summary": "为后续接入老师链接、家长自定义资料包和更多英语网站预留统一入口。"
+    },
+    {
+      "id": "minecraft-vocab",
+      "title": "Minecraft 单词卡",
+      "emoji": "🔤",
+      "duration": "24 词起步",
+      "summary": "从 Minecraft 故事和单词入口沉淀高频词，先认读，再测验，掌握后兑换英语主题奖励。"
     }
   ]
 }

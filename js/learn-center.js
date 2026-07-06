@@ -15,10 +15,24 @@
         catalogState: 'petbank_learning_catalog_state',
         progress: 'petbank_learning_progress',
         rewards: 'petbank_learning_rewards',
+        quizAttempts: 'petbank_learning_quiz_attempts',
         printPrefs: 'petbank_learning_print_prefs',
         dailySheet: 'petbank_learning_daily_sheet',
-        dailySheetMode: 'petbank_learning_sheet_mode'
+        dailySheetMode: 'petbank_learning_sheet_mode',
+        vocabFocus: 'petbank_learning_vocab_focus'
     };
+
+    const VOCAB_STAGE_SIZE = 6;
+    const VOCAB_IMAGE_BY_WORD = {
+        block: 'assets/learn/english-vocab/block.webp',
+        world: 'assets/learn/english-vocab/world.webp',
+        hello: 'assets/learn/english-vocab/hello.webp',
+        look: 'assets/learn/english-vocab/look.webp',
+        stone: 'assets/learn/english-vocab/stone.webp',
+        light: 'assets/learn/english-vocab/light.webp'
+    };
+    const VOCAB_FALLBACK_IMAGE = 'assets/learn/english-vocab/minecraft-card.webp';
+    let activeVocabAudio = null;
 
     const DAILY_SHEET_MODES = {
         'template-a': {
@@ -158,6 +172,15 @@
         });
     }
 
+    function resetLearningScroll() {
+        try {
+            window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+            window.setTimeout(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }), 0);
+        } catch (err) {
+            try { window.scrollTo(0, 0); } catch (innerErr) {}
+        }
+    }
+
     function getProgressState() {
         return readStorage(STORAGE_KEYS.progress, {});
     }
@@ -172,6 +195,29 @@
 
     function saveRewardState(rewards) {
         writeStorage(STORAGE_KEYS.rewards, rewards);
+    }
+
+    function getQuizAttempts() {
+        return readStorage(STORAGE_KEYS.quizAttempts, {});
+    }
+
+    function saveQuizAttempts(attempts) {
+        writeStorage(STORAGE_KEYS.quizAttempts, attempts || {});
+    }
+
+    function getQuizKey(packId, moduleId, lessonId) {
+        return `${packId}:${moduleId}:${lessonId}`;
+    }
+
+    function getLessonQuiz(lesson) {
+        const quiz = lesson?.quiz || null;
+        if (!quiz || !Array.isArray(quiz.questions) || !quiz.questions.length) return null;
+        return quiz;
+    }
+
+    function isQuizPassed(packId, moduleId, lessonId) {
+        const attempts = getQuizAttempts();
+        return !!attempts[getQuizKey(packId, moduleId, lessonId)]?.passed;
     }
 
     function getPrintPrefs() {
@@ -288,7 +334,89 @@
         return (manifest?.modules || []).find(module => module.id === moduleId) || null;
     }
 
+    function getVocabCards(module) {
+        return Array.isArray(module?.cards) ? module.cards : [];
+    }
+
+    function getVocabStats(module) {
+        const cards = getVocabCards(module);
+        return window.EnglishVocabProgress?.stats?.(cards) || {
+            total: cards.length,
+            new: cards.length,
+            learning: 0,
+            mastered: 0
+        };
+    }
+
+    function getVocabModuleKey(module) {
+        return String(module?.id || 'minecraft-vocab');
+    }
+
+    function getVocabFocusIndex(module, cards) {
+        const cardList = Array.isArray(cards) ? cards : getVocabCards(module);
+        if (!cardList.length) return 0;
+        const focusState = readStorage(STORAGE_KEYS.vocabFocus, {});
+        const saved = Number(focusState?.[getVocabModuleKey(module)]);
+        if (Number.isInteger(saved) && saved >= 0 && saved < cardList.length) return saved;
+        const progressApi = window.EnglishVocabProgress || null;
+        const firstUnmastered = cardList.findIndex(card => (progressApi?.get?.(card.id)?.status || 'new') !== 'mastered');
+        return firstUnmastered >= 0 ? firstUnmastered : 0;
+    }
+
+    function setVocabFocusIndex(module, nextIndex) {
+        const cards = getVocabCards(module);
+        if (!cards.length) return;
+        const normalized = ((Number(nextIndex || 0) % cards.length) + cards.length) % cards.length;
+        const focusState = readStorage(STORAGE_KEYS.vocabFocus, {});
+        focusState[getVocabModuleKey(module)] = normalized;
+        writeStorage(STORAGE_KEYS.vocabFocus, focusState);
+    }
+
+    function getVocabStageItems(cards, focusIndex) {
+        const safeCards = Array.isArray(cards) ? cards : [];
+        if (!safeCards.length) return [];
+        const maxStart = Math.max(0, safeCards.length - VOCAB_STAGE_SIZE);
+        const stageStart = Math.min(Math.floor(Number(focusIndex || 0) / VOCAB_STAGE_SIZE) * VOCAB_STAGE_SIZE, maxStart);
+        return safeCards.slice(stageStart, stageStart + VOCAB_STAGE_SIZE).map((card, offset) => ({
+            card,
+            index: stageStart + offset
+        }));
+    }
+
+    function getVocabCardImage(card) {
+        const explicit = String(card?.image || '').trim();
+        if (explicit) return explicit;
+        return VOCAB_IMAGE_BY_WORD[String(card?.word || '').toLowerCase()] || VOCAB_FALLBACK_IMAGE;
+    }
+
+    function getVocabCardAudio(card) {
+        const explicit = String(card?.audio || '').trim();
+        if (explicit) return explicit;
+        const word = String(card?.word || '').trim().toLowerCase();
+        return word ? `assets/learn/english-vocab/audio/${word}.mp3` : '';
+    }
+
+    function playVocabAudio(src) {
+        if (!src) return;
+        try {
+            if (activeVocabAudio) {
+                activeVocabAudio.pause();
+                activeVocabAudio.currentTime = 0;
+            }
+            activeVocabAudio = new Audio(src);
+            activeVocabAudio.play().catch(() => {});
+        } catch (err) {}
+    }
+
     function getModuleProgress(packId, module) {
+        if (module?.type === 'vocab') {
+            const vocabStats = getVocabStats(module);
+            return {
+                total: vocabStats.total,
+                completed: vocabStats.mastered,
+                percent: vocabStats.total ? Math.round((vocabStats.mastered / vocabStats.total) * 100) : 0
+            };
+        }
         const lessonIds = Array.isArray(module?.lessons) ? module.lessons.map(getLessonKey) : [];
         const progress = getProgressState();
         const done = progress?.[packId]?.modules?.[module?.id]?.completedLessons || [];
@@ -444,6 +572,7 @@
     }
 
     function getContinueLessonId(packId, module) {
+        if (module?.type === 'vocab') return 'vocab-practice';
         if (!Array.isArray(module?.lessons) || !module.lessons.length) return null;
         const firstIncomplete = module.lessons.find(lesson => !isLessonCompleted(packId, module.id, getLessonKey(lesson)));
         return getLessonKey(firstIncomplete || module.lessons[0]);
@@ -2254,6 +2383,274 @@
         `;
     }
 
+    function renderLessonQuiz(packId, moduleId, lessonId, lesson) {
+        const quiz = getLessonQuiz(lesson);
+        if (!quiz) return '';
+        const attempts = getQuizAttempts();
+        const attempt = attempts[getQuizKey(packId, moduleId, lessonId)] || null;
+        const passed = !!attempt?.passed;
+        const passScore = Number(quiz.passScore) || Math.max(1, quiz.questions.length);
+        const statusText = passed
+            ? `已通过 · 答对 ${attempt.correct}/${attempt.total}`
+            : attempt
+                ? `再试一次 · 上次答对 ${attempt.correct}/${attempt.total}`
+                : `答对 ${passScore} 题即可打勾`;
+        return `
+            <section class="learn-card learn-quiz-card ${passed ? 'is-passed' : ''}" data-learn-quiz>
+                <div class="learn-quiz-head">
+                    <div>
+                        <span class="learn-card-kicker">Quiz</span>
+                        <h3>章节轻测验</h3>
+                    </div>
+                    <span class="learn-quiz-status">${escapeHtml(statusText)}</span>
+                </div>
+                <div class="learn-quiz-list">
+                    ${quiz.questions.map((question, index) => `
+                        <article class="learn-quiz-question" data-learn-quiz-question data-question-id="${escapeHtml(question.id)}">
+                            <div class="learn-quiz-question-head">
+                                <span>${index + 1}</span>
+                                <strong>${escapeHtml(question.prompt)}</strong>
+                            </div>
+                            <div class="learn-quiz-choices">
+                                ${(question.choices || []).map(choice => `
+                                    <button class="learn-btn learn-btn-secondary learn-quiz-choice" type="button" data-learn-quiz-choice="${escapeHtml(choice)}">${escapeHtml(choice)}</button>
+                                `).join('')}
+                            </div>
+                            ${question.explain ? `<p class="learn-quiz-explain">${escapeHtml(question.explain)}</p>` : ''}
+                        </article>
+                    `).join('')}
+                </div>
+                <div class="learn-card-actions learn-quiz-actions">
+                    <button class="learn-btn learn-btn-primary" type="button" data-learn-action="submit-quiz">${passed ? '重新提交测验' : '提交测验'}</button>
+                </div>
+            </section>
+        `;
+    }
+
+    function getVocabStatusLabel(status) {
+        const map = {
+            mastered: '已掌握',
+            learning: '学习中',
+            new: '新词'
+        };
+        return map[status] || map.new;
+    }
+
+    function renderEnglishRewards(cards) {
+        const rewards = window.EnglishVocabProgress?.claimMilestoneRewards?.(cards) || {};
+        const reward = rewards['minecraft-card-common-10'] || null;
+        if (reward) {
+            return `
+                <section class="learn-card learn-english-rewards is-earned" data-learn-english-rewards>
+                    <div>
+                        <span class="learn-card-kicker">英语兑换</span>
+                        <h3>${escapeHtml(reward.title || 'Minecraft 普通卡兑换券')}</h3>
+                        <p>已放入奖励记录。</p>
+                    </div>
+                    <span class="learn-english-reward-badge">已获得</span>
+                </section>
+            `;
+        }
+
+        const stats = window.EnglishVocabProgress?.stats?.(cards) || { mastered: 0 };
+        const remain = Math.max(0, 10 - Number(stats.mastered || 0));
+        return `
+            <section class="learn-card learn-english-rewards" data-learn-english-rewards>
+                <div>
+                    <span class="learn-card-kicker">英语兑换</span>
+                    <h3>10 个词换 Minecraft 普通卡</h3>
+                    <p>还差 ${remain} 个词。</p>
+                </div>
+                <span class="learn-english-reward-badge">待领取</span>
+            </section>
+        `;
+    }
+
+    function renderVocabWorksheet(module) {
+        const cards = getVocabCards(module);
+        const progressApi = window.EnglishVocabProgress || null;
+        const stats = getVocabStats(module);
+        if (!cards.length) {
+            return `
+                <section class="learn-vocab" data-learn-vocab>
+                    <div class="learn-empty">
+                        <h3 class="learn-section-title">还没有单词卡</h3>
+                    </div>
+                </section>
+            `;
+        }
+        const focusIndex = getVocabFocusIndex(module, cards);
+        const focusCard = cards[focusIndex] || cards[0];
+        const focusProgress = progressApi?.get?.(focusCard.id) || { status: 'new', streak: 0, correct: 0, wrong: 0 };
+        const focusStatus = focusProgress.status || 'new';
+        const stageItems = getVocabStageItems(cards, focusIndex);
+        const stageMastered = stageItems.filter(item => (progressApi?.get?.(item.card.id)?.status || 'new') === 'mastered').length;
+        const stagePercent = stageItems.length ? Math.round((stageMastered / stageItems.length) * 100) : 0;
+        const stageNumber = Math.floor(focusIndex / VOCAB_STAGE_SIZE) + 1;
+        const focusImage = getVocabCardImage(focusCard);
+        const focusAudio = getVocabCardAudio(focusCard);
+        return `
+            <section class="learn-vocab" data-learn-vocab>
+                <div class="learn-vocab-board">
+                    <div class="learn-vocab-board-head">
+                        <div>
+                            <span class="learn-card-kicker">Minecraft Words</span>
+                            <h3>看图认单词</h3>
+                        </div>
+                        <div class="learn-vocab-stats" data-learn-vocab-stats>
+                            <span>第 ${stageNumber} 组</span>
+                            <span>已掌握 ${stats.mastered}/${stats.total}</span>
+                        </div>
+                    </div>
+                    <div class="learn-vocab-progress-row">
+                        <div class="learn-vocab-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${stageItems.length}" aria-valuenow="${stageMastered}">
+                            <span style="width: ${stagePercent}%"></span>
+                        </div>
+                        <strong>${stageMastered}/${stageItems.length}</strong>
+                    </div>
+                    <div class="learn-vocab-stage-track" aria-label="本组单词进度">
+                        ${stageItems.map(item => {
+                            const progress = progressApi?.get?.(item.card.id) || { status: 'new', streak: 0 };
+                            const status = progress.status || 'new';
+                            const isActive = item.index === focusIndex;
+                            return `
+                                <button class="learn-vocab-stage-card is-${escapeHtml(status)}${isActive ? ' is-active' : ''}" type="button" data-vocab-stage-card data-learn-vocab-stage="${item.index}" aria-label="第 ${item.index + 1} 张 ${escapeHtml(item.card.word)}">
+                                    <span class="learn-vocab-stage-star" aria-hidden="true">★</span>
+                                    <span class="learn-vocab-stage-word">${escapeHtml(item.card.translation)}</span>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    <article class="learn-vocab-card learn-vocab-focus-card is-${escapeHtml(focusStatus)}" data-vocab-card="${escapeHtml(focusCard.id)}" data-vocab-focus-card>
+                        <div class="learn-vocab-art" data-vocab-art>
+                            <img src="${escapeHtml(focusImage)}" alt="${escapeHtml(focusCard.word)} ${escapeHtml(focusCard.translation)}" loading="lazy">
+                        </div>
+                        <div class="learn-vocab-focus-copy">
+                            <div class="learn-vocab-card-top">
+                                <span class="learn-vocab-status">${getVocabStatusLabel(focusStatus)}</span>
+                                <span class="learn-vocab-level">${escapeHtml(focusCard.level || 'starter')}</span>
+                            </div>
+                            <div class="learn-vocab-word-row">
+                                <strong data-vocab-focus-word>${escapeHtml(focusCard.word)}</strong>
+                                ${focusAudio ? `
+                                    <button class="learn-vocab-listen" type="button" data-learn-vocab-listen="${escapeHtml(focusAudio)}" aria-label="听 ${escapeHtml(focusCard.word)}">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M4 9v6h4l5 4V5L8 9H4z"></path>
+                                            <path d="M16 9.5a4 4 0 0 1 0 5"></path>
+                                            <path d="M18.5 7a7 7 0 0 1 0 10"></path>
+                                        </svg>
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <span class="learn-vocab-translation">${escapeHtml(focusCard.translation)}</span>
+                            <div class="learn-vocab-actions learn-vocab-focus-actions">
+                                <button class="learn-btn learn-btn-primary" type="button" data-learn-vocab-practice="${escapeHtml(focusCard.id)}">认识了</button>
+                                <button class="learn-btn learn-btn-secondary" type="button" data-learn-vocab-miss="${escapeHtml(focusCard.id)}">再看一次</button>
+                                <button class="learn-btn learn-btn-secondary" type="button" data-learn-vocab-next="${escapeHtml(focusCard.id)}">下一张</button>
+                            </div>
+                            <p>${escapeHtml(focusCard.example || '')}</p>
+                            <small>${escapeHtml(focusCard.exampleZh || '')}</small>
+                            <div class="learn-vocab-reward-strip" aria-label="本组星星">
+                                <span>星星</span>
+                                <div>
+                                    ${stageItems.map(item => {
+                                        const status = progressApi?.get?.(item.card.id)?.status || 'new';
+                                        return `<i class="${status === 'mastered' ? 'is-earned' : ''}" aria-hidden="true">★</i>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                            <div class="learn-vocab-memory">
+                                <span>连对 ${Math.min(Number(focusProgress.streak || 0), 2)}/2</span>
+                                <span>错 ${Number(focusProgress.wrong || 0)}</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            ${renderEnglishRewards(cards)}
+        `;
+    }
+
+    function bindVocabInteractions(container, module, rerender) {
+        const progressApi = window.EnglishVocabProgress;
+        const cards = getVocabCards(module);
+        const cardsById = Object.fromEntries(cards.map((card, index) => [card.id, { card, index }]));
+        container.querySelectorAll('[data-learn-vocab-listen]').forEach(button => {
+            button.addEventListener('click', () => {
+                playVocabAudio(button.dataset.learnVocabListen || '');
+            });
+        });
+        container.querySelectorAll('[data-learn-vocab-stage]').forEach(button => {
+            button.addEventListener('click', () => {
+                setVocabFocusIndex(module, Number(button.dataset.learnVocabStage || 0));
+                rerender();
+            });
+        });
+        container.querySelectorAll('[data-learn-vocab-next]').forEach(button => {
+            button.addEventListener('click', () => {
+                const cardId = button.dataset.learnVocabNext || '';
+                const entry = cardsById[cardId];
+                setVocabFocusIndex(module, (entry?.index || getVocabFocusIndex(module, cards)) + 1);
+                rerender();
+            });
+        });
+        if (!progressApi) return;
+        container.querySelectorAll('[data-learn-vocab-practice]').forEach(button => {
+            button.addEventListener('click', () => {
+                const cardId = button.dataset.learnVocabPractice || '';
+                const next = progressApi.record(cardId, true);
+                const entry = cardsById[cardId];
+                if (next.status === 'mastered' && entry) {
+                    setVocabFocusIndex(module, entry.index + 1);
+                } else if (entry) {
+                    setVocabFocusIndex(module, entry.index);
+                }
+                if (typeof window.showToast === 'function') {
+                    window.showToast(next.status === 'mastered'
+                        ? `已掌握：${entry?.card?.word || cardId}`
+                        : `继续加油：${entry?.card?.word || cardId} 连续 ${next.streak}/2`);
+                }
+                rerender();
+            });
+        });
+        container.querySelectorAll('[data-learn-vocab-miss]').forEach(button => {
+            button.addEventListener('click', () => {
+                const cardId = button.dataset.learnVocabMiss || '';
+                const next = progressApi.record(cardId, false);
+                const entry = cardsById[cardId];
+                if (entry) setVocabFocusIndex(module, entry.index);
+                if (typeof window.showToast === 'function') {
+                    window.showToast(`再看一次：${entry?.card?.word || cardId}，当前 ${getVocabStatusLabel(next.status)}`);
+                }
+                rerender();
+            });
+        });
+    }
+
+    function renderVocabLesson(container, containerId, packId, moduleId, moduleMeta, module) {
+        const lessonId = state.activeLessonId || 'vocab-practice';
+        state.activeLessonId = lessonId;
+        persistCatalogState();
+        const stats = getVocabStats(module);
+        container.innerHTML = `
+            <div class="learn-shell learn-vocab-lesson-shell">
+                <section class="learn-vocab-topbar">
+                    <button class="learn-btn learn-btn-secondary" type="button" onclick="LearnCenter.openPack('${packId}')">返回</button>
+                    <div>
+                        <span class="learn-card-kicker">Minecraft Words</span>
+                        <h2>${escapeHtml(moduleMeta?.title || module?.title || 'Minecraft 单词卡')}</h2>
+                    </div>
+                    <div class="learn-vocab-topbar-score">
+                        <span>${stats.mastered}</span>
+                        <small>已掌握</small>
+                    </div>
+                </section>
+                ${renderVocabWorksheet(module)}
+            </div>
+        `;
+        bindVocabInteractions(container, module, () => void renderLesson(containerId || 'learn-lesson-container'));
+    }
+
     function renderReviewWorksheet(lesson) {
         const checklist = Array.isArray(lesson?.checklist) ? lesson.checklist : [];
         return `
@@ -2329,6 +2726,7 @@
 
     function renderLessonBody(pack, module, lesson, showPinyin, context) {
         if (module?.type === 'external-reader') return renderExternalReaderWorksheet(pack, module, lesson);
+        if (module?.type === 'vocab') return renderVocabWorksheet(module);
         if (module?.type === 'resource-hub') return renderResourceHubWorksheet(module, lesson);
         if (module?.type === 'literacy') return renderLiteracyWorksheet(lesson, showPinyin, context);
         if (module?.type === 'review') return renderReviewWorksheet(lesson);
@@ -2873,6 +3271,9 @@
             const module = modulesById[moduleMeta.id];
             const progress = getModuleProgress(packId, module);
             const continueLessonId = getContinueLessonId(packId, module);
+            const actionLabel = module?.type === 'vocab'
+                ? '打开单词卡'
+                : (progress.completed ? '继续学习' : '打开第一节');
             return `
                 <article class="learn-card">
                     <div class="learn-card-kicker">${moduleMeta.emoji || '📝'} ${moduleMeta.duration || ''}</div>
@@ -2883,7 +3284,7 @@
                         <span>${progress.percent}%</span>
                     </div>
                     <div class="learn-card-actions">
-                        <button class="learn-btn learn-btn-primary" onclick="LearnCenter.openLesson('${packId}','${moduleMeta.id}','${continueLessonId || ''}')">${progress.completed ? '继续学习' : '打开第一节'}</button>
+                        <button class="learn-btn learn-btn-primary" onclick="LearnCenter.openLesson('${packId}','${moduleMeta.id}','${continueLessonId || ''}')">${actionLabel}</button>
                     </div>
                 </article>
             `;
@@ -2969,6 +3370,10 @@
         const module = await getModule(packId, moduleId);
         const moduleMeta = getModuleMeta(manifest, moduleId);
         const plan = pack && pack.plan;
+        if (module?.type === 'vocab') {
+            renderVocabLesson(container, containerId || 'learn-lesson-container', packId, moduleId, moduleMeta, module);
+            return;
+        }
         const lessons = Array.isArray(module?.lessons) ? module.lessons : [];
         const lesson = lessons.find(item => getLessonKey(item) === state.activeLessonId) || lessons[0];
         if (!lesson) {
@@ -2997,9 +3402,15 @@
         const completionIntro = getLessonCompletionIntro(manifest, moduleId, module, rewardPoints, completed);
         const completionHint = getLessonCompletionHint(manifest, moduleId, module, completed);
         const showPinyinToggle = module?.type !== 'external-reader';
+        const quizRequired = !!getLessonQuiz(lesson);
+        const quizPassed = !quizRequired || isQuizPassed(packId, moduleId, lessonId);
+        const completeDisabled = completed || !quizPassed;
         const actionNote = module?.type === 'external-reader'
             ? '先打开点读页，读完回来打勾，然后继续下一节或返回资料包。'
             : '打完勾后，可以继续下一节、返回资料包，或者切换拼音显示。';
+        const completeNoteText = !completed && quizRequired && !quizPassed
+            ? '先完成章节轻测验，通过后再打勾领取成长分。'
+            : completionHint;
 
         container.innerHTML = `
             <div class="learn-shell">
@@ -3015,6 +3426,7 @@
                     <div class="learn-lesson-state ${completed ? 'is-completed' : ''}" data-learn-completion-badge>${getLessonCompletionBadge(completed)}</div>
                 </section>
                 ${renderLessonBody(pack, module, lesson, prefs.showPinyin, lessonContext)}
+                ${renderLessonQuiz(packId, moduleId, lessonId, lesson)}
                 <section class="learn-card learn-complete-card ${completed ? 'is-completed' : ''}" data-learn-complete-card>
                     <div class="learn-complete-copy">
                         <span class="learn-complete-kicker">${completed ? '本页已打勾' : '本页读完就点这里'}</span>
@@ -3022,8 +3434,8 @@
                         <p data-learn-complete-copy>${completionIntro}</p>
                     </div>
                     <div class="learn-complete-actions">
-                        <button class="learn-btn learn-btn-primary learn-btn-check" data-learn-action="complete-lesson" ${completed ? 'disabled' : ''}>${completed ? '✅ 已打勾' : `✅ 读完打勾 +${rewardPoints} 分`}</button>
-                        <p class="learn-complete-note" data-learn-complete-note>${completionHint}</p>
+                        <button class="learn-btn learn-btn-primary learn-btn-check" data-learn-action="complete-lesson" ${completeDisabled ? 'disabled' : ''}>${completed ? '✅ 已打勾' : quizRequired && !quizPassed ? '先通过测验再打勾' : `✅ 读完打勾 +${rewardPoints} 分`}</button>
+                        <p class="learn-complete-note" data-learn-complete-note>${completeNoteText}</p>
                     </div>
                 </section>
                 <section class="learn-card learn-lesson-actions">
@@ -3054,6 +3466,43 @@
         if (toggleBtn) {
             toggleBtn.addEventListener('click', () => {
                 togglePinyinPref();
+                void renderLesson(containerId || 'learn-lesson-container');
+            });
+        }
+
+        container.querySelectorAll('[data-learn-quiz-choice]').forEach(button => {
+            button.addEventListener('click', () => {
+                const question = button.closest('[data-learn-quiz-question]');
+                question?.querySelectorAll('[data-learn-quiz-choice]').forEach(item => item.classList.remove('is-selected'));
+                button.classList.add('is-selected');
+            });
+        });
+
+        const quizBtn = container.querySelector('[data-learn-action="submit-quiz"]');
+        if (quizBtn) {
+            quizBtn.addEventListener('click', () => {
+                const quiz = getLessonQuiz(lesson);
+                if (!quiz) return;
+                let correct = 0;
+                quiz.questions.forEach(question => {
+                    const block = container.querySelector(`[data-question-id="${CSS.escape(question.id)}"]`);
+                    const selected = block?.querySelector('[data-learn-quiz-choice].is-selected')?.dataset.learnQuizChoice || '';
+                    if (selected === question.answer) correct += 1;
+                });
+                const total = quiz.questions.length;
+                const passScore = Number(quiz.passScore) || Math.max(1, total);
+                const passed = correct >= passScore;
+                const attempts = getQuizAttempts();
+                attempts[getQuizKey(packId, moduleId, lessonId)] = {
+                    passed,
+                    correct,
+                    total,
+                    updatedAt: new Date().toISOString()
+                };
+                saveQuizAttempts(attempts);
+                if (typeof window.showToast === 'function') {
+                    window.showToast(passed ? `✅ 测验通过：答对 ${correct}/${total} 题` : `再试一次：答对 ${correct}/${total} 题`);
+                }
                 void renderLesson(containerId || 'learn-lesson-container');
             });
         }
@@ -3333,6 +3782,7 @@
     function openPack(packId) {
         state.activePackId = packId || state.activePackId;
         persistCatalogState();
+        resetLearningScroll();
         if (typeof window.switchPage === 'function') {
             window.switchPage('learn-pack');
         } else {
@@ -3345,6 +3795,7 @@
         state.activeModuleId = moduleId;
         state.activeLessonId = lessonId;
         persistCatalogState();
+        resetLearningScroll();
         if (typeof window.switchPage === 'function') {
             window.switchPage('learn-lesson');
         } else {
@@ -3355,6 +3806,7 @@
     function openPlan(packId) {
         state.activePackId = packId || state.activePackId;
         persistCatalogState();
+        resetLearningScroll();
         if (typeof window.switchPage === 'function') {
             window.switchPage('learn-plan');
         } else {
@@ -3365,6 +3817,7 @@
     function openPrint(packId) {
         state.activePackId = packId || state.activePackId;
         persistCatalogState();
+        resetLearningScroll();
         if (typeof window.switchPage === 'function') {
             window.switchPage('learn-print');
         } else {

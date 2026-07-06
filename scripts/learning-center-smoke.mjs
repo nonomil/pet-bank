@@ -263,6 +263,7 @@ async function main() {
       }
       localStorage.removeItem('petbank_learning_progress');
       localStorage.removeItem('petbank_learning_rewards');
+      localStorage.removeItem('petbank_learning_quiz_attempts');
       localStorage.removeItem('petbank_learning_daily_sheet');
 
       if (typeof window.switchPage === 'function') window.switchPage('learning-sheet');
@@ -548,6 +549,8 @@ async function main() {
       const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
       localStorage.removeItem('petbank_learning_progress');
       localStorage.removeItem('petbank_learning_rewards');
+      localStorage.removeItem('petbank_learning_vocab_progress');
+      localStorage.removeItem('petbank_learning_english_rewards');
       const currentPoints = parseInt(localStorage.getItem('petbank_points') || '0', 10);
       if (typeof window.addGrowthPoints === 'function') {
         if (currentPoints < 50) window.addGrowthPoints(50 - currentPoints);
@@ -560,6 +563,7 @@ async function main() {
       const storyModule = await window.LearnCenter?.getModule?.('english-mc-hybrid-2026', 'mcbook56-story');
       const startersModule = await window.LearnCenter?.getModule?.('english-mc-hybrid-2026', 'mcbookstarters-reader');
       const reviewModule = await window.LearnCenter?.getModule?.('english-mc-hybrid-2026', 'english-weekly-review');
+      const vocabModule = await window.LearnCenter?.getModule?.('english-mc-hybrid-2026', 'minecraft-vocab');
 
       if (window.LearnCenter?.openPack) window.LearnCenter.openPack('english-mc-hybrid-2026');
       await sleep(350);
@@ -571,19 +575,46 @@ async function main() {
       const lessonText = lessonPage?.innerText || '';
       const openExternal = lessonPage?.querySelector('[data-learn-action="open-external"]');
       const completeBtn = lessonPage?.querySelector('[data-learn-action="complete-lesson"]');
+      const quizBlock = lessonPage?.querySelector('[data-learn-quiz]');
+      const quizQuestions = lessonPage?.querySelectorAll('[data-learn-quiz-question]').length || 0;
+      const completeDisabledBeforeQuiz = !!completeBtn?.disabled;
 
       window.__learnSmokeLastToast = '';
       const pointsBefore = parseInt(localStorage.getItem('petbank_points') || '0', 10);
       if (completeBtn) completeBtn.click();
       await sleep(250);
+      const pointsAfterBlockedClick = parseInt(localStorage.getItem('petbank_points') || '0', 10);
+
+      const answerQuiz = async (lessonId) => {
+        const activeModule = await window.LearnCenter?.getModule?.('english-mc-hybrid-2026', 'mcbook56-story');
+        const lesson = activeModule?.lessons?.find(item => item.id === lessonId);
+        const questions = lesson?.quiz?.questions || [];
+        questions.forEach(question => {
+          const block = document.querySelector(`[data-question-id="${question.id}"]`);
+          const button = [...(block?.querySelectorAll('[data-learn-quiz-choice]') || [])]
+            .find(item => item.dataset.learnQuizChoice === question.answer || item.textContent.trim() === question.answer);
+          if (button) button.click();
+        });
+        document.querySelector('[data-learn-action="submit-quiz"]')?.click();
+        await sleep(350);
+      };
+
+      await answerQuiz('chapter-01');
+      const lessonPageAfterQuiz = document.getElementById('page-learn-lesson');
+      const completeBtnAfterQuiz = lessonPageAfterQuiz?.querySelector('[data-learn-action="complete-lesson"]');
+      const completeDisabledAfterQuiz = !!completeBtnAfterQuiz?.disabled;
+      const quizToast = window.__learnSmokeLastToast || document.getElementById('petToast')?.textContent || '';
+      if (completeBtnAfterQuiz) completeBtnAfterQuiz.click();
+      await sleep(250);
       const pointsAfterFirst = parseInt(localStorage.getItem('petbank_points') || '0', 10);
-      if (completeBtn) completeBtn.click();
+      if (completeBtnAfterQuiz) completeBtnAfterQuiz.click();
       await sleep(250);
       const pointsAfterSecond = parseInt(localStorage.getItem('petbank_points') || '0', 10);
       const toastAfterFirst = window.__learnSmokeLastToast || document.getElementById('petToast')?.textContent || '';
 
       if (window.LearnCenter?.openLesson) window.LearnCenter.openLesson('english-mc-hybrid-2026', 'mcbook56-story', 'chapter-02');
       await sleep(350);
+      await answerQuiz('chapter-02');
       const chapter2Btn = document.getElementById('page-learn-lesson')?.querySelector('[data-learn-action="complete-lesson"]');
       if (chapter2Btn) chapter2Btn.click();
       await sleep(250);
@@ -591,6 +622,7 @@ async function main() {
 
       if (window.LearnCenter?.openLesson) window.LearnCenter.openLesson('english-mc-hybrid-2026', 'mcbook56-story', 'chapter-03');
       await sleep(350);
+      await answerQuiz('chapter-03');
       const chapter3Btn = document.getElementById('page-learn-lesson')?.querySelector('[data-learn-action="complete-lesson"]');
       window.__learnSmokeLastToast = '';
       const pointsBeforeChapter3 = parseInt(localStorage.getItem('petbank_points') || '0', 10);
@@ -599,6 +631,38 @@ async function main() {
       const pointsAfterChapter3 = parseInt(localStorage.getItem('petbank_points') || '0', 10);
       const toastAfterChapter3 = window.__learnSmokeLastToast || document.getElementById('petToast')?.textContent || '';
 
+      window.scrollTo(0, 1800);
+      if (window.LearnCenter?.openLesson) window.LearnCenter.openLesson('english-mc-hybrid-2026', 'minecraft-vocab', 'vocab-practice');
+      await sleep(350);
+      const vocabPage = document.getElementById('page-learn-lesson');
+      const vocabScrollY = Math.round(window.scrollY || document.documentElement.scrollTop || 0);
+      const vocabText = vocabPage?.innerText || '';
+      const vocabBlock = vocabPage?.querySelector('[data-learn-vocab]');
+      const vocabFocusCard = vocabPage?.querySelector('[data-vocab-focus-card]');
+      const vocabFocusWord = vocabFocusCard?.querySelector('[data-vocab-focus-word]')?.textContent?.trim() || '';
+      const vocabImageSrc = vocabFocusCard?.querySelector('[data-vocab-art] img')?.getAttribute('src') || '';
+      const vocabAudioSrc = vocabFocusCard?.querySelector('[data-learn-vocab-listen]')?.dataset.learnVocabListen || '';
+      const vocabStageCards = vocabPage?.querySelectorAll('[data-vocab-stage-card]').length || 0;
+      const vocabFocusButtons = vocabFocusCard?.querySelectorAll('[data-learn-vocab-practice], [data-learn-vocab-miss], [data-learn-vocab-next]').length || 0;
+      const visibleVocabCards = [...(vocabPage?.querySelectorAll('[data-vocab-card]') || [])]
+        .filter(el => {
+          const rect = el.getBoundingClientRect();
+          const style = getComputedStyle(el);
+          return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+        }).length;
+      const vocabStatsText = vocabPage?.querySelector('[data-learn-vocab-stats]')?.textContent || '';
+
+      const firstTenCards = (vocabModule?.cards || []).slice(0, 10);
+      firstTenCards.forEach(card => {
+        window.EnglishVocabProgress?.record?.(card.id, true);
+        window.EnglishVocabProgress?.record?.(card.id, true);
+      });
+      if (window.LearnCenter?.openLesson) window.LearnCenter.openLesson('english-mc-hybrid-2026', 'minecraft-vocab', 'vocab-practice');
+      await sleep(350);
+      const vocabRewardPage = document.getElementById('page-learn-lesson');
+      const englishRewardsRaw = localStorage.getItem('petbank_learning_english_rewards') || '';
+      const englishRewardText = vocabRewardPage?.querySelector('[data-learn-english-rewards]')?.textContent || '';
+
       return {
         homepageHasEnglish: /英语/.test(document.getElementById('page-learn')?.innerText || ''),
         manifestPackType: pack?.manifest?.packType || '',
@@ -606,12 +670,19 @@ async function main() {
         storyCount: storyModule?.lessons?.length || 0,
         startersCount: startersModule?.lessons?.length || 0,
         reviewCount: reviewModule?.lessons?.length || 0,
+        vocabCardCount: vocabModule?.cards?.length || 0,
         firstSourceKind: storyModule?.lessons?.[0]?.source?.kind || '',
         packText,
         lessonText,
         hasOpenExternal: !!openExternal,
         externalUrl: openExternal?.getAttribute('href') || openExternal?.dataset?.url || '',
+        hasQuizBlock: !!quizBlock,
+        quizQuestions,
+        completeDisabledBeforeQuiz,
+        completeDisabledAfterQuiz,
+        quizToast,
         pointsBefore,
+        pointsAfterBlockedClick,
         pointsAfterFirst,
         pointsAfterSecond,
         toastAfterFirst,
@@ -619,6 +690,20 @@ async function main() {
         pointsBeforeChapter3,
         pointsAfterChapter3,
         toastAfterChapter3,
+        hasVocabProgressApi: !!window.EnglishVocabProgress,
+        hasVocabBlock: !!vocabBlock,
+        hasVocabFocusCard: !!vocabFocusCard,
+        vocabFocusWord,
+        vocabImageSrc,
+        vocabAudioSrc,
+        vocabStageCards,
+        vocabFocusButtons,
+        visibleVocabCards,
+        vocabScrollY,
+        vocabText,
+        vocabStatsText,
+        englishRewardsRaw,
+        englishRewardText,
         progressRaw: localStorage.getItem('petbank_learning_progress'),
         rewardsRaw: localStorage.getItem('petbank_learning_rewards')
       };
@@ -629,15 +714,27 @@ async function main() {
     check('英语故事模块至少有 3 节', englishPackFlow.storyCount >= 3, `count=${englishPackFlow.storyCount}`);
     check('英语 Starters 模块至少有 2 节', englishPackFlow.startersCount >= 2, `count=${englishPackFlow.startersCount}`);
     check('英语每周复盘模块存在', englishPackFlow.reviewCount >= 1, `count=${englishPackFlow.reviewCount}`);
+    check('英语 Minecraft 单词卡模块至少 20 张卡', englishPackFlow.vocabCardCount >= 20, `count=${englishPackFlow.vocabCardCount}`);
+    check('英语词卡进度 API 已加载', englishPackFlow.hasVocabProgressApi);
     check('英语 lesson 识别 external-chapter 来源', englishPackFlow.firstSourceKind === 'external-chapter', `kind=${englishPackFlow.firstSourceKind}`);
-    check('英语资料包页显示故事模块和复盘模块', /我的世界英语故事/.test(englishPackFlow.packText) && /每周英语复盘/.test(englishPackFlow.packText), englishPackFlow.packText.slice(0, 160));
+    check('英语资料包页显示故事模块、复盘模块和单词卡模块', /我的世界英语故事/.test(englishPackFlow.packText) && /每周英语复盘/.test(englishPackFlow.packText) && /Minecraft 单词卡/.test(englishPackFlow.packText), englishPackFlow.packText.slice(0, 220));
     check('英语 lesson 页面存在打开外部章节按钮', englishPackFlow.hasOpenExternal);
     check('英语外部章节按钮包含 mayihaoke 地址', /mayihaoke\.com/.test(englishPackFlow.externalUrl), englishPackFlow.externalUrl);
     check('英语 lesson 页面展示目标词和家长提示', /目标词|家长提示/.test(englishPackFlow.lessonText), englishPackFlow.lessonText.slice(0, 200));
+    check('英语 lesson 页面显示章节轻测验', englishPackFlow.hasQuizBlock);
+    check('英语 lesson 轻测验至少 3 题', englishPackFlow.quizQuestions >= 3, `questions=${englishPackFlow.quizQuestions}`);
+    check('英语 lesson 测验通过前不能直接打勾', englishPackFlow.completeDisabledBeforeQuiz);
+    check(
+      '英语 lesson 测验通过前不会发分',
+      englishPackFlow.pointsAfterBlockedClick === englishPackFlow.pointsBefore,
+      `points ${englishPackFlow.pointsBefore} -> ${englishPackFlow.pointsAfterBlockedClick}`
+    );
+    check('英语 lesson 测验通过后完成按钮可用', !englishPackFlow.completeDisabledAfterQuiz);
+    check('英语 lesson 提交测验后提示通过', /测验通过|答对/.test(englishPackFlow.quizToast), englishPackFlow.quizToast);
     check(
       '英语章节积分只发一次',
-      englishPackFlow.pointsAfterFirst > englishPackFlow.pointsBefore && englishPackFlow.pointsAfterSecond === englishPackFlow.pointsAfterFirst,
-      `points ${englishPackFlow.pointsBefore} -> ${englishPackFlow.pointsAfterFirst} -> ${englishPackFlow.pointsAfterSecond}`
+      englishPackFlow.pointsAfterFirst > englishPackFlow.pointsAfterBlockedClick && englishPackFlow.pointsAfterSecond === englishPackFlow.pointsAfterFirst,
+      `points ${englishPackFlow.pointsAfterBlockedClick} -> ${englishPackFlow.pointsAfterFirst} -> ${englishPackFlow.pointsAfterSecond}`
     );
     check('英语章节完成后弹出成长分提示', /成长分 \+2|成长分.*2|\+2 分/.test(englishPackFlow.toastAfterFirst), englishPackFlow.toastAfterFirst);
     check('英语章节完成后写入 learning_progress', !!englishPackFlow.progressRaw);
@@ -648,6 +745,54 @@ async function main() {
       `points ${englishPackFlow.pointsBeforeChapter3} -> ${englishPackFlow.pointsAfterChapter3}`
     );
     check('第 3 个英语章节提示连读奖励', /连读奖励|成长分 \+3|成长分.*3/.test(englishPackFlow.toastAfterChapter3), englishPackFlow.toastAfterChapter3);
+    check('英语单词卡 lesson 渲染词卡面板', englishPackFlow.hasVocabBlock, englishPackFlow.vocabText.slice(0, 160));
+    check('打开英语单词卡 lesson 会回到页面顶部', englishPackFlow.vocabScrollY <= 20, `scrollY=${englishPackFlow.vocabScrollY}`);
+    check('英语单词卡默认是一页一张大卡片', englishPackFlow.hasVocabFocusCard && englishPackFlow.visibleVocabCards <= 1, `focus=${englishPackFlow.hasVocabFocusCard} visibleCards=${englishPackFlow.visibleVocabCards}`);
+    check('英语单词卡焦点卡有配图', /assets\/learn\/english-vocab\/.+\.(svg|png|webp)/.test(englishPackFlow.vocabImageSrc), englishPackFlow.vocabImageSrc);
+    check('英语单词卡焦点卡有本地英文配音', /assets\/learn\/english-vocab\/audio\/.+\.mp3/.test(englishPackFlow.vocabAudioSrc), englishPackFlow.vocabAudioSrc);
+    check('英语单词卡只展示 6 个本组进度点', englishPackFlow.vocabStageCards === 6, `stage=${englishPackFlow.vocabStageCards}`);
+    check('英语单词卡焦点卡只保留 3 个大操作', englishPackFlow.vocabFocusButtons === 3, `buttons=${englishPackFlow.vocabFocusButtons}`);
+    check('英语单词卡 lesson 展示掌握统计', /已掌握|学习中|新词/.test(englishPackFlow.vocabStatsText), englishPackFlow.vocabStatsText);
+    check('掌握 10 个 Minecraft 词后生成英语兑换券记录', /minecraft-card-common-10/.test(englishPackFlow.englishRewardsRaw), englishPackFlow.englishRewardsRaw);
+    check('英语单词卡页展示兑换券', /兑换券|Minecraft 普通卡/.test(englishPackFlow.englishRewardText), englishPackFlow.englishRewardText);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    const mobileQuizLayout = await page.evaluate(async () => {
+      const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+      if (window.LearnCenter?.openLesson) {
+        window.LearnCenter.openLesson('english-mc-hybrid-2026', 'mcbook56-story', 'chapter-01');
+      }
+      await sleep(350);
+      const cards = [...document.querySelectorAll('[data-learn-quiz-question]')].map((el) => {
+        const rect = el.getBoundingClientRect();
+        return {
+          x: Math.round(rect.x),
+          y: Math.round(rect.y),
+          width: Math.round(rect.width)
+        };
+      });
+      const firstX = cards[0]?.x || 0;
+      const singleColumn = cards.length >= 3
+        && cards.every((card, index) => Math.abs(card.x - firstX) <= 4 && (index === 0 || card.y > cards[index - 1].y));
+
+      return {
+        cardCount: cards.length,
+        minCardWidth: cards.length ? Math.min(...cards.map(card => card.width)) : 0,
+        singleColumn,
+        overflowX: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth
+      };
+    });
+    check(
+      '英语 quiz 移动端单列且不横向溢出',
+      mobileQuizLayout.cardCount >= 3
+        && mobileQuizLayout.singleColumn
+        && mobileQuizLayout.minCardWidth >= 220
+        && !mobileQuizLayout.overflowX,
+      `cards=${mobileQuizLayout.cardCount} minWidth=${mobileQuizLayout.minCardWidth} overflow=${mobileQuizLayout.scrollWidth}/${mobileQuizLayout.clientWidth}`
+    );
+    await page.setViewportSize({ width: 1280, height: 720 });
 
     const profileSetup = await page.evaluate(() => {
       const activeBefore = window.ProfileManager?.getActiveId?.();

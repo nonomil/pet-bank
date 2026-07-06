@@ -44,6 +44,47 @@
           "block"
         ],
         "parentTip": "第一节只求孩子愿意听和开口，不要追着纠正每个音。"
+      },
+      "quiz": {
+        "passScore": 2,
+        "questions": [
+          {
+            "id": "chapter-01-q1",
+            "type": "en-to-zh",
+            "prompt": "I see a block.",
+            "choices": [
+              "我看见一个方块。",
+              "我打开一扇门。",
+              "我跑向朋友。"
+            ],
+            "answer": "我看见一个方块。",
+            "explain": "block 是方块，I see 是我看见。"
+          },
+          {
+            "id": "chapter-01-q2",
+            "type": "word-to-zh",
+            "prompt": "world",
+            "choices": [
+              "世界",
+              "石头",
+              "光"
+            ],
+            "answer": "世界",
+            "explain": "world 表示世界，也可以理解成新的冒险世界。"
+          },
+          {
+            "id": "chapter-01-q3",
+            "type": "zh-to-en",
+            "prompt": "你好",
+            "choices": [
+              "hello",
+              "door",
+              "run"
+            ],
+            "answer": "hello",
+            "explain": "hello 是打招呼时说的你好。"
+          }
+        ]
       }
     },
     {
@@ -80,6 +121,47 @@
           "light"
         ],
         "parentTip": "如果孩子不想整句跟读，就只读关键词，也算完成。"
+      },
+      "quiz": {
+        "passScore": 2,
+        "questions": [
+          {
+            "id": "chapter-02-q1",
+            "type": "word-to-zh",
+            "prompt": "look",
+            "choices": [
+              "看",
+              "跑",
+              "玩"
+            ],
+            "answer": "看",
+            "explain": "look 是看，常见短句是 Look at..."
+          },
+          {
+            "id": "chapter-02-q2",
+            "type": "en-to-zh",
+            "prompt": "The stone is gray.",
+            "choices": [
+              "石头是灰色的。",
+              "太阳很明亮。",
+              "门是红色的。"
+            ],
+            "answer": "石头是灰色的。",
+            "explain": "stone 是石头，gray 是灰色。"
+          },
+          {
+            "id": "chapter-02-q3",
+            "type": "zh-to-en",
+            "prompt": "光",
+            "choices": [
+              "light",
+              "water",
+              "fire"
+            ],
+            "answer": "light",
+            "explain": "light 可以表示光。"
+          }
+        ]
       }
     },
     {
@@ -116,6 +198,47 @@
           "friend"
         ],
         "parentTip": "第三节更重要的是“连着坚持了”，不是读得多标准。"
+      },
+      "quiz": {
+        "passScore": 2,
+        "questions": [
+          {
+            "id": "chapter-03-q1",
+            "type": "word-to-zh",
+            "prompt": "run",
+            "choices": [
+              "跑",
+              "看",
+              "合成"
+            ],
+            "answer": "跑",
+            "explain": "run 是跑。"
+          },
+          {
+            "id": "chapter-03-q2",
+            "type": "en-to-zh",
+            "prompt": "Open the door.",
+            "choices": [
+              "打开门。",
+              "看方块。",
+              "吃苹果。"
+            ],
+            "answer": "打开门。",
+            "explain": "door 是门，open the door 是打开门。"
+          },
+          {
+            "id": "chapter-03-q3",
+            "type": "zh-to-en",
+            "prompt": "朋友",
+            "choices": [
+              "friend",
+              "creeper",
+              "world"
+            ],
+            "answer": "friend",
+            "explain": "friend 是朋友。"
+          }
+        ]
       }
     }
   ]
