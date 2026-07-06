@@ -2018,6 +2018,8 @@ function showBattleModal(battle) {
     const petImg = (PetSystem.getCurrentStageImage ? PetSystem.getCurrentStageImage() : '') || '';
     const monsterImg = `assets/monsters/${battle.monster.id}.webp`;
     const petName = pet.species_data?.name || '宠物';
+    window.removeEventListener('battle-animate', handleBattleAnimate);
+    window.addEventListener('battle-animate', handleBattleAnimate);
     content.innerHTML = `
         <div class="battle-arena">
             <img class="battle-arena-bg" src="${arenaBg}" alt="" onerror="this.style.display='none'">
@@ -2157,12 +2159,6 @@ function battleAction(action) {
 
     if (!result) { setBattleUILock(false); return; }
     appendBattleLog(result);
-    // 浮动伤害：取最后一条伤害记录，弹到对应一方上方
-    const lastDmg = result.log.slice().reverse().find(l => /造成\s*(\d+)\s*伤害/.test(l.text));
-    if (lastDmg) {
-        const m = lastDmg.text.match(/造成\s*(\d+)\s*伤害/);
-        if (m) showBattleDamage(parseInt(m[1], 10), lastDmg.type === 'enemy' ? 'pet' : 'monster');
-    }
 
     if (result.status === 'won' || result.status === 'lost' || result.status === 'fled') {
         // 战斗胜利有概率掉落卡片
@@ -2234,11 +2230,6 @@ function updateBattleUI(battle) {
     if (hpBars.length >= 2) {
         hpBars[1].style.width = `${(battle.monster.current_hp / battle.monster.hp) * 100}%`;
     }
-
-    // 处理动画
-    // 监听 exploration.js 发出的事件
-    window.removeEventListener('battle-animate', handleBattleAnimate);
-    window.addEventListener('battle-animate', handleBattleAnimate, { once: true });
 }
 
 // 浮动伤害数字（出招时弹到 battleDamageZone，1.2s 上浮淡出）
@@ -2257,19 +2248,50 @@ function handleBattleAnimate(e) {
     const petEl = document.getElementById('battleFighterPet');
     const monsterEl = document.getElementById('battleFighterMonster');
     const modal = document.getElementById('battleModal');
+    const play = (name) => {
+        if (window.sfx && typeof window.sfx.play === 'function') window.sfx.play(name);
+    };
+    const pulse = (el, className, duration) => {
+        if (!el) return;
+        el.classList.remove(className);
+        void el.offsetWidth;
+        el.classList.add(className);
+        setTimeout(() => el.classList.remove(className), duration || 500);
+    };
 
-    if (type === 'player-attack') {
+    if (type === 'battle-start') {
+        play('battleStart');
+        pulse(modal, 'battle-cast', 520);
+    } else if (type === 'player-attack') {
+        play('playerAttack');
         // 玩家攻击 → 怪物受击抖动
-        monsterEl?.classList.add('battle-hit');
-        setTimeout(() => monsterEl?.classList.remove('battle-hit'), 500);
+        if (e.detail.damage) showBattleDamage(e.detail.damage, 'monster');
+        pulse(monsterEl, 'battle-hit', 500);
+    } else if (type === 'skill-cast') {
+        play('skillCast');
+        if (e.detail.damage) showBattleDamage(e.detail.damage, 'monster');
+        pulse(petEl, 'battle-cast', 520);
+        pulse(monsterEl, 'battle-hit', 500);
+    } else if (type === 'defend') {
+        play('defend');
+        pulse(petEl, 'battle-guard', 650);
+    } else if (type === 'item-use') {
+        play('itemUse');
+        pulse(petEl, 'battle-guard', 650);
     } else if (type === 'enemy-attack') {
+        play('enemyAttack');
         // 敌人攻击 → 宠物受击抖动 + 红闪
-        petEl?.classList.add('battle-hit');
-        setTimeout(() => petEl?.classList.remove('battle-hit'), 500);
+        if (e.detail.damage) showBattleDamage(e.detail.damage, 'pet');
+        pulse(petEl, 'battle-hit', 500);
         if (modal) {
-            modal.classList.add('battle-flash-red');
-            setTimeout(() => modal.classList.remove('battle-flash-red'), 500);
+            pulse(modal, 'battle-flash-red', 500);
         }
+    } else if (type === 'battle-win') {
+        play('battleWin');
+        pulse(modal, 'battle-win-glow', 900);
+    } else if (type === 'battle-lose') {
+        play('battleLose');
+        pulse(modal, 'battle-lose-dim', 900);
     }
 }
 
@@ -2321,6 +2343,7 @@ function useItemInBattle(itemId) {
 
 function closeBattleModal() {
     battleUILocked = false;   // 关闭战斗时重置 UI 锁，避免残留导致下次战斗按钮全禁用
+    window.removeEventListener('battle-animate', handleBattleAnimate);
     const status = ExplorationSystem.getCurrentBattle && ExplorationSystem.getCurrentBattle()?.status;
     ExplorationSystem.endBattle();
     document.getElementById('battleModal').classList.remove('show');

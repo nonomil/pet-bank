@@ -23,6 +23,10 @@ const ExplorationDetail = (function () {
             .catch(() => { _cmathLoading = false; });
     }
 
+    function playSfx(name) {
+        if (window.sfx && typeof window.sfx.play === 'function') window.sfx.play(name);
+    }
+
     // 探索故事事件（数据驱动 data/stories/ 文件夹，每场景一个 json；fetch 失败回退硬编码 sceneEvents 兜底）
     const STORY_SCENE_IDS = ['forest', 'beach', 'mountain', 'space', 'candy', 'cave', 'waterfall', 'desert', 'underwater', 'castle', 'volcano', 'stargarden'];
     let _storiesLoaded = false;
@@ -197,6 +201,7 @@ const ExplorationDetail = (function () {
         const box = document.getElementById('galgameBox');
         if (!textEl) return;
         if (correct) {
+            playSfx('mathCorrect');
             if (exp && window.PetSystem) PetSystem.addExp(exp);
             const parts = [`<span class="galgame-found">${msg || '答对了！'}</span>`];
             if (explanation) {
@@ -204,6 +209,7 @@ const ExplorationDetail = (function () {
             }
             textEl.innerHTML = parts.join('<br>');
         } else {
+            playSfx('mathWrong');
             const parts = ['<span class="galgame-warn">这次记录还差一点点。</span>'];
             if (hint) {
                 parts.push(`<span class="galgame-hint">提示：${hint}</span>`);
@@ -234,6 +240,7 @@ const ExplorationDetail = (function () {
             textEl.innerHTML = event.text;
             setScenePortrait();
         } else if (event.type === 'discover') {
+            playSfx('discover');
             const found = !!(event.item && Math.random() < event.chance);
             nameEl.textContent = '✨ 发现';
             textEl.innerHTML = `<span style="font-size:28px">${event.emoji}</span> ${event.text}${found ? '<br><span class="galgame-found">✨ 获得物品！</span>' : ''}`;
@@ -249,6 +256,7 @@ const ExplorationDetail = (function () {
             eventIndex--;  // undo，等 choose 推进
             return;
         } else if (event.type === 'encounter') {
+            playSfx('encounterWarning');
             nameEl.textContent = '⚠️ 遭遇';
             textEl.innerHTML = `<span class="galgame-warn">${event.text}</span><br>点击准备战斗！`;
         } else if (event.type === 'math') {
@@ -281,6 +289,7 @@ const ExplorationDetail = (function () {
         const choicesEl = document.getElementById('galgameChoices');
         const box = document.getElementById('galgameBox');
         if (!textEl) return;
+        playSfx('choiceConfirm');
         textEl.innerHTML = `<span class="galgame-reward">${choice.text}</span><br>${choice.reward}${found ? '<br><span class="galgame-found">✨ 获得物品！</span>' : ''}`;
         choicesEl.innerHTML = '';
         box.onclick = () => ExplorationDetail.next();  // 恢复点击推进
@@ -304,6 +313,7 @@ const ExplorationDetail = (function () {
         }
 
         if (result.battle) {
+            playSfx('battleStart');
             const battle = ExplorationSystem.startBattle(result.battle.scene, result.battle.monster);
             showBattleModal(battle);
         } else {
@@ -313,6 +323,7 @@ const ExplorationDetail = (function () {
     }
 
     function next() {
+        playSfx('dialogueNext');
         showNextEvent();  // galgame 单条推进（无堆叠，无需 disable）
     }
 

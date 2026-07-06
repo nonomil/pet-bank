@@ -84,6 +84,13 @@ const ExplorationSystem = (function () {
         return 'core';
     }
 
+    function emitBattleAnimation(type, detail) {
+        if (typeof window === 'undefined' || typeof window.dispatchEvent !== 'function' || typeof CustomEvent === 'undefined') return;
+        window.dispatchEvent(new CustomEvent('battle-animate', {
+            detail: Object.assign({ type }, detail || {})
+        }));
+    }
+
     let scenes = null;
     let currentBattle = null;
     let unlockedScenes = {};
@@ -476,7 +483,9 @@ const ExplorationSystem = (function () {
             chapter: arenaChapter
         };
         currentBattle.log.push({ type: 'system', text: `⚔️ 遭遇战：${pet.species_data?.name || '宠物'} vs ${monster.name} (Lv.${scene.danger_level})` });
-        window.sfx && sfx.hit();
+        emitBattleAnimation('battle-start', { actor: 'system', target: 'all' });
+        const galgameActive = !!(window.ExplorationDetail && ExplorationDetail.isActive && ExplorationDetail.isActive());
+        if (!galgameActive && window.sfx && typeof sfx.battleStart === 'function') sfx.battleStart();
         return currentBattle;
     }
 
@@ -514,7 +523,9 @@ const ExplorationSystem = (function () {
                 if (ko || PetSystem.getState().hp <= 0) {
                     battle.status = 'lost';
                     battle.log.push({ type: 'system', text: '💀 宠物倒下了...' });
+                    emitBattleAnimation('battle-lose', { actor: 'enemy', target: 'pet' });
                 }
+                emitBattleAnimation('enemy-attack', { actor: 'monster', target: 'pet', damage });
             }
             // 回合结束：CD 递减
             if (typeof PetSystem.tickCooldowns === 'function') PetSystem.tickCooldowns(cdStartedThisTurn);
@@ -540,6 +551,7 @@ const ExplorationSystem = (function () {
                 // 防御：设 defending，下回合减伤，本回合不造伤
                 PetSystem.setDefending(true);
                 battle.log.push({ type: 'player', text: `${skill.icon} ${skill.name}！下回合受击减伤 50%` });
+                emitBattleAnimation('defend', { actor: 'pet', target: 'pet', skillId: skill.id });
                 PetSystem.startCooldown(skill.id, skill.cooldown);
                 cdStartedThisTurn.push(skill.id);
             } else {
@@ -550,12 +562,14 @@ const ExplorationSystem = (function () {
                     type: 'player',
                     text: `${skill.icon} ${skill.name}！对 ${battle.monster.name} 造成 ${playerDmg} 伤害 (${Math.max(0, battle.monster.current_hp)}/${battle.monster.hp})`
                 });
+                emitBattleAnimation('skill-cast', { actor: 'pet', target: 'monster', skillId: skill.id, damage: playerDmg });
                 PetSystem.startCooldown(skill.id, skill.cooldown);
                 cdStartedThisTurn.push(skill.id);
             }
         } else if (act.type === 'item') {
             // 道具：使用动作在 app.js 已完成（InventorySystem.useItem），这里只记录日志 + 消耗回合
             battle.log.push({ type: 'reward', text: `🎒 使用 ${act.itemName || '道具'}：${act.resultMsg || '生效'}` });
+            emitBattleAnimation('item-use', { actor: 'pet', target: 'pet', itemId: act.itemId });
         } else {
             // 普攻
             playerDmg = BattleEngine.calcDamage(petAtk, battle.monster.def || 0, { useDef: false });
@@ -564,8 +578,8 @@ const ExplorationSystem = (function () {
                 type: 'player',
                 text: `⚔️ 你攻击 ${battle.monster.name}，造成 ${playerDmg} 伤害 (${Math.max(0, battle.monster.current_hp)}/${battle.monster.hp})`
             });
+            emitBattleAnimation('player-attack', { actor: 'pet', target: 'monster', damage: playerDmg });
         }
-        window.sfx && sfx.hit();
 
         // ---- 判定胜利 ----
         if (battle.monster.current_hp <= 0) {
@@ -577,7 +591,7 @@ const ExplorationSystem = (function () {
                 type: 'reward',
                 text: `🎉 胜利！获得 ${expGain} EXP${result.leveled_up ? `，升级 Lv.${result.new_level}！` : ''}`
             });
-            window.sfx && sfx.levelup();
+            emitBattleAnimation('battle-win', { actor: 'pet', target: 'monster' });
 
             for (const drop of battle.monster.drops || []) {
                 if (Math.random() < drop.rate) {
@@ -610,9 +624,11 @@ const ExplorationSystem = (function () {
             type: 'enemy',
             text: `${battle.monster.name} 反击！造成 ${enemyAtk} 伤害${wasDefending ? '（🛡️ 防御减伤已生效）' : ''}`
         });
+        emitBattleAnimation('enemy-attack', { actor: 'monster', target: 'pet', damage: enemyAtk, defended: wasDefending });
         if (ko) {
             battle.status = 'lost';
             battle.log.push({ type: 'system', text: '💀 宠物倒下了...' });
+            emitBattleAnimation('battle-lose', { actor: 'monster', target: 'pet' });
         }
 
         // 回合结束：CD 递减
