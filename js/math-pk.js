@@ -5,7 +5,7 @@
  * 每轮同一题，机器人有「思考倒计时」（按难度），人若在机器人之前答对则人赢该轮；
  * 答错不结束（继续抢答但机器人仍在计时）。共 5 轮，比胜场，人赢获成长积分。
  * 难度从「设置」页读取（petbank_math_difficulty），综合进阶档约 30% 出 CMATH 应用题。
- * 美术：assets/arena/（Agnes 生成：arena-bg / human-kid / robot-rival）。
+ * 美术：assets/arena/（竞技台背景）+ 当前宠物头像 + 分级机器人对手。
  */
 (function() {
     'use strict';
@@ -26,7 +26,8 @@
         WIN_BONUS: 25,           // 赢得整局额外奖励
         WORD_RATIO: 0.3,         // medium_mix 出 CMATH 应用题概率
         STORAGE_KEY_HIGH_SCORE: 'petbank_math_high_score',
-        STORAGE_KEY_DIFFICULTY: 'petbank_math_difficulty'
+        STORAGE_KEY_DIFFICULTY: 'petbank_math_difficulty',
+        MUL_TRAINING_UNLOCK_STREAK: 5
     };
 
     const DIFFICULTY_LABELS = {
@@ -35,6 +36,14 @@
         medium_mul: '乘法启程',
         medium_mix: '综合闯关',
         hard: '乘除挑战'
+    };
+
+    const MATH_PK_ROBOT_RIVALS = {
+        easy20: { name: '圆圆练习机', image: 'assets/arena/math-rivals/robot-easy20.webp' },
+        easy100: { name: '彩键计算机', image: 'assets/arena/math-rivals/robot-easy100.webp' },
+        medium_mul: { name: '星阵机器人', image: 'assets/arena/math-rivals/robot-mul.webp' },
+        medium_mix: { name: '博士计算机', image: 'assets/arena/math-rivals/robot-mix.webp' },
+        hard: { name: '冠军计算机', image: 'assets/arena/math-rivals/robot-hard.webp' }
     };
 
     const VALID_DIFFICULTIES = Object.keys(DIFFICULTY_LABELS);
@@ -67,7 +76,14 @@
         score: 0,
         combo: 0,
         maxCombo: 0,
-        correctCount: 0
+        correctCount: 0,
+        training: {
+            active: false,
+            streak: 0,
+            totalCorrect: 0,
+            currentQuestion: null,
+            readyForPk: false
+        }
     };
 
     // CMATH 应用题池（data/math-cmath.json，来源 XiaoMi/cmath CC BY 4.0）
@@ -97,6 +113,31 @@
     function normalizeDifficulty(diff) {
         const mapped = LEGACY_DIFFICULTY_MAP[diff] || diff;
         return VALID_DIFFICULTIES.includes(mapped) ? mapped : 'easy20';
+    }
+
+    function getMathPkPlayerAvatar() {
+        const fallback = 'assets/pets/poses/dog_idle.webp';
+        try {
+            if (window.PetSystem && typeof window.PetSystem.getCurrentStageImage === 'function') {
+                return window.PetSystem.getCurrentStageImage() || fallback;
+            }
+        } catch (e) {}
+        return fallback;
+    }
+
+    function getMathPkPlayerName() {
+        try {
+            if (window.PetSystem && typeof window.PetSystem.getState === 'function' && typeof window.PetSystem.getAllSpecies === 'function') {
+                const petState = window.PetSystem.getState();
+                const species = window.PetSystem.getAllSpecies().find(item => item.id === petState.species);
+                return species && species.name ? species.name : '我的宠物';
+            }
+        } catch (e) {}
+        return '我的宠物';
+    }
+
+    function getMathPkRobotRival(diff) {
+        return MATH_PK_ROBOT_RIVALS[normalizeDifficulty(diff)] || MATH_PK_ROBOT_RIVALS.easy20;
     }
 
     // ============ 工具函数 ============
@@ -136,6 +177,29 @@
             if (normalized === 'medium_mix') return r < 0.35 ? this._mul(2, 9, 2, 9) : this._addsub(100);
             return r < 0.5 ? this._mul(2, 12, 2, 9) : this._div();
         },
+        generateMultiplicationTrainingQuestion(streak) {
+            const earlySizes = [2, 5, 10];
+            const laterSizes = [2, 3, 4, 5, 10];
+            const sizes = streak >= 3 ? laterSizes : earlySizes;
+            let groups;
+            let groupSize;
+            let answer;
+            do {
+                groups = this.getRandomInt(2, streak >= 3 ? 5 : 4);
+                groupSize = sizes[this.getRandomInt(0, sizes.length - 1)];
+                answer = groups * groupSize;
+            } while (answer > 60);
+            return {
+                text: `${groups} 组，每组 ${groupSize} 个`,
+                answer,
+                op: '*',
+                isMultiplicationTraining: true,
+                groups,
+                groupSize,
+                repeatedAddition: Array(groups).fill(groupSize).join(' + '),
+                multiplication: `${groups} × ${groupSize}`
+            };
+        },
         generateWordQuestion(difficulty) {
             const normalized = normalizeDifficulty(difficulty);
             const grade = normalized === 'easy20' || normalized === 'easy100' ? '1' : '2';
@@ -153,6 +217,10 @@
             const container = document.getElementById(containerId);
             if (!container) return null;
             _ensureCmathPool();
+            const playerAvatar = getMathPkPlayerAvatar();
+            const playerName = escapeHtml(getMathPkPlayerName());
+            const robotRival = getMathPkRobotRival(state.mathDifficulty);
+            const robotName = escapeHtml(robotRival.name);
             container.innerHTML = `
                 <div class="math-arena" id="math-arena">
                     <style>
@@ -201,8 +269,36 @@
                         .arena-lobby p { color:rgba(255,255,255,.82); margin-bottom:4px; }
                         .arena-btn { margin-top:14px; padding:15px 44px; font-size:1.25rem; font-weight:800; border:none; border-radius:999px; background:linear-gradient(135deg,var(--gold,#d4b96a),var(--sage-green,#7BAE8F)); color:#fff; cursor:pointer; box-shadow:0 10px 28px rgba(0,0,0,.35); transition:transform .1s; }
                         .arena-btn:hover { transform:translateY(-2px); }
+                        .mul-mode-switch { display:inline-grid; grid-template-columns:1fr 1fr; gap:6px; padding:5px; border-radius:999px; background:rgba(255,255,255,.12); margin:12px 0 4px; }
+                        .mul-mode-switch button { border:0; border-radius:999px; padding:9px 18px; color:#fff; background:transparent; font-weight:800; cursor:pointer; }
+                        .mul-mode-switch button.active { background:rgba(255,255,255,.24); }
+                        .math-array { display:grid; gap:7px; padding:14px 18px; border-radius:16px; background:rgba(255,255,255,.12); }
+                        .math-array-row { display:flex; justify-content:center; gap:7px; }
+                        .math-array-dot { width:18px; height:18px; border-radius:50%; background:#ffd166; box-shadow:0 2px 8px rgba(0,0,0,.25); transition:transform .18s ease, box-shadow .18s ease, background .18s ease; }
+                        .mul-explain { display:grid; gap:6px; text-align:center; font-weight:800; }
+                        .mul-explain span { padding:6px 12px; border-radius:999px; background:rgba(15,20,29,.72); }
+                        .mul-feedback { max-width:420px; line-height:1.6; color:rgba(255,255,255,.9); }
+                        .mul-streak-meter { display:flex; justify-content:center; gap:6px; margin:2px 0 4px; }
+                        .mul-streak-cell { width:28px; height:8px; border-radius:999px; background:rgba(255,255,255,.18); overflow:hidden; }
+                        .mul-streak-cell.active { background:linear-gradient(90deg,#6ee7b7,#ffd166); box-shadow:0 0 12px rgba(255,209,102,.38); }
+                        .math-array-row.fx-reveal { animation:math-row-reveal .32s ease both; animation-delay:calc(var(--row-index, 0) * 70ms); }
+                        .math-array.correct .math-array-dot { animation:math-correct-spark .55s ease both; }
+                        .math-answer-correct { animation:math-answer-pop .42s ease both; }
+                        .math-answer-wrong { animation:arena-shake .35s ease; }
+                        .math-fx-burst { position:absolute; pointer-events:none; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle,rgba(255,209,102,.8),rgba(110,231,183,.25) 42%,transparent 70%); animation:math-fx-burst .7s ease forwards; }
                         @keyframes arena-pop { 0%{transform:translate(-50%,-50%) scale(.6);opacity:0;} 100%{transform:translate(-50%,-50%) scale(1);opacity:1;} }
                         @keyframes arena-shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-7px);} 75%{transform:translateX(7px);} }
+                        @keyframes math-row-reveal { from{ transform:translateY(8px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+                        @keyframes math-correct-spark { 0%{ transform:scale(1); } 45%{ transform:scale(1.18); box-shadow:0 0 16px rgba(255,209,102,.75); } 100%{ transform:scale(1); } }
+                        @keyframes math-answer-pop { 0%{ transform:scale(.92); opacity:.7; } 100%{ transform:scale(1); opacity:1; } }
+                        @keyframes math-fx-burst { from{ transform:scale(.45); opacity:.9; } to{ transform:scale(1.3); opacity:0; } }
+                        @media (prefers-reduced-motion: reduce) {
+                            .math-array-row.fx-reveal,
+                            .math-array.correct .math-array-dot,
+                            .math-answer-correct,
+                            .math-answer-wrong,
+                            .math-fx-burst { animation:none !important; transition:none !important; }
+                        }
                         @media (max-width:760px){
                             .arena-stage { grid-template-columns:1fr 1fr; grid-template-areas:'human robot' 'center center'; }
                             .arena-avatar { width:120px; height:120px; }
@@ -216,20 +312,20 @@
                     </style>
                     <div class="arena-topbar">
                         <span class="arena-pill" id="arena-round-pill">数学 PK 竞技台</span>
-                        <span class="arena-pill arena-score" id="arena-score-pill">你 <b id="arena-human-score">0</b> : <b id="arena-robot-score">0</b> 机器人</span>
+                        <span class="arena-pill arena-score" id="arena-score-pill">宠物 <b id="arena-human-score">0</b> : <b id="arena-robot-score">0</b> 机器人</span>
                         <button class="arena-exit" title="退出" onclick="MathPKGame._exit()">✕</button>
                     </div>
                     <div class="arena-stage">
                         <div class="arena-side human" id="arena-side-human">
-                            <img class="arena-avatar" src="assets/arena/human-kid.png" alt="你">
-                            <div class="arena-name">你</div>
+                            <img class="arena-avatar pet-avatar" id="arena-human-avatar" src="${escapeHtml(playerAvatar)}" alt="${playerName}" onerror="this.src='assets/pets/poses/dog_idle.webp'">
+                            <div class="arena-name" id="arena-human-name">${playerName}</div>
                             <div class="arena-status" id="arena-human-status">准备就绪</div>
                             <div class="arena-time" id="arena-human-time"></div>
                         </div>
                         <div class="arena-center" id="arena-center"></div>
                         <div class="arena-side robot" id="arena-side-robot">
-                            <img class="arena-avatar" src="assets/arena/robot-rival.png" alt="机器人">
-                            <div class="arena-name">机器人</div>
+                            <img class="arena-avatar robot-avatar" id="arena-robot-avatar" src="${escapeHtml(robotRival.image)}" alt="${robotName}">
+                            <div class="arena-name" id="arena-robot-name">${robotName}</div>
                             <div class="arena-status" id="arena-robot-status">准备就绪</div>
                             <div class="arena-time" id="arena-robot-time"></div>
                             <div class="arena-thinkbar" id="arena-robot-bar" style="display:none;"><i></i></div>
@@ -249,6 +345,10 @@
             if (!center) return;
             const high = localStorage.getItem(CONFIG.STORAGE_KEY_HIGH_SCORE) || 0;
             const difficultyLabel = DIFFICULTY_LABELS[normalizeDifficulty(state.mathDifficulty)] || '加减起步';
+            if (normalizeDifficulty(state.mathDifficulty) === 'medium_mul') {
+                this._multiplicationLobby();
+                return;
+            }
             center.innerHTML = `
                 <div class="arena-lobby">
                     <h2>🔢 数学 PK 竞技台</h2>
@@ -270,6 +370,31 @@
             this._setSide('human', { status: '准备就绪', time: '' });
             this._setSide('robot', { status: '准备就绪', time: '' });
             this._setSideClass('human', ''); this._setSideClass('robot', '');
+        },
+
+        _multiplicationLobby() {
+            const center = document.getElementById('arena-center');
+            if (!center) return;
+            const high = localStorage.getItem(CONFIG.STORAGE_KEY_HIGH_SCORE) || 0;
+            center.innerHTML = `
+                <div class="arena-lobby">
+                    <h2>乘法启程</h2>
+                    <p>先看懂“几组几个”，再挑战机器人。</p>
+                    <div class="mul-mode-switch" aria-label="乘法启程模式">
+                        <button class="active" type="button" onclick="MathPKGame.startTraining()">练习场</button>
+                        <button type="button" onclick="MathPKGame.start()">PK</button>
+                    </div>
+                    <button class="arena-btn" onclick="MathPKGame.startTraining()">开始练习</button>
+                    <button class="arena-btn" style="margin-top:10px;background:rgba(255,255,255,.18);" onclick="MathPKGame.start()">开始对战</button>
+                    <p style="margin-top:14px;font-size:.8rem;opacity:.7;">历史最高分：${high}</p>
+                </div>
+            `;
+            const bar = document.getElementById('arena-robot-bar');
+            if (bar) bar.style.display = 'none';
+            this._setSide('human', { status: '准备练习', time: '' });
+            this._setSide('robot', { status: '等你准备好再 PK', time: '' });
+            this._setSideClass('human', '');
+            this._setSideClass('robot', '');
         },
 
         // 对战中：题面 + 显示屏 + 键盘
@@ -294,6 +419,63 @@
             this._setSide('human', { status: '思考中…', time: '' });
             this._setSide('robot', { status: '思考中…', time: '' });
             this._setSideClass('human', ''); this._setSideClass('robot', '');
+        },
+
+        _streakMeter() {
+            const total = CONFIG.MUL_TRAINING_UNLOCK_STREAK;
+            const active = Math.min(state.training.streak, total);
+            return `
+                <div class="mul-streak-meter" aria-label="连对 ${active}/${total}">
+                    ${Array(total).fill(0).map((_, index) => `<i class="mul-streak-cell ${index < active ? 'active' : ''}"></i>`).join('')}
+                </div>
+            `;
+        },
+
+        trainingMatch(question) {
+            const center = document.getElementById('arena-center');
+            if (!center) return;
+            const rows = Array(question.groups).fill(0).map((_, index) => `
+                <div class="math-array-row fx-reveal" style="--row-index:${index};">
+                    ${Array(question.groupSize).fill(0).map(() => '<i class="math-array-dot"></i>').join('')}
+                </div>
+            `).join('');
+            const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(d =>
+                `<button class="arena-key" onclick="MathPKGame._inputDigit(${d})">${d}</button>`).join('');
+            center.innerHTML = `
+                ${this._streakMeter()}
+                <div class="arena-qtag">练习场</div>
+                <div class="arena-question word">${question.text}，一共有几个？</div>
+                <div class="math-array">${rows}</div>
+                <div class="mul-explain">
+                    <span>${question.repeatedAddition} = ?</span>
+                    <span>${question.multiplication} = ?</span>
+                </div>
+                <div class="arena-display empty" id="arena-display">输入答案</div>
+                <div class="arena-keypad">
+                    ${keys}
+                    <button class="arena-key clear" onclick="MathPKGame._clearInput()">⌫ 清除</button>
+                    <button class="arena-key" onclick="MathPKGame._inputDigit(0)">0</button>
+                    <button class="arena-key confirm" onclick="MathPKGame._submitAnswer()">✓ 确认</button>
+                </div>
+                <div class="mul-feedback" id="mul-feedback"></div>
+            `;
+            this._setSide('human', { status: `连对 ${state.training.streak}`, time: '' });
+            this._setSide('robot', { status: '练会再挑战', time: '' });
+        },
+
+        _multiplicationReady() {
+            const center = document.getElementById('arena-center');
+            if (!center) return;
+            center.innerHTML = `
+                <div class="arena-lobby">
+                    <h2>可以挑战了</h2>
+                    <p>你已经连续看懂 ${CONFIG.MUL_TRAINING_UNLOCK_STREAK} 道“几组几个”。</p>
+                    <button class="arena-btn" onclick="MathPKGame.start()">挑战机器人</button>
+                    <button class="arena-btn" style="margin-top:10px;background:rgba(255,255,255,.18);" onclick="MathPKGame.startTraining()">继续练习</button>
+                </div>
+            `;
+            this._setSide('human', { status: '准备挑战', time: '' });
+            this._setSide('robot', { status: '机器人上线', time: '' });
         },
 
         _setSide(who, opts) {
@@ -451,9 +633,82 @@
             state.combo = 0;
             state.maxCombo = 0;
             state.correctCount = 0;
+            state.training.active = false;
+            state.training.currentQuestion = null;
+            state.training.readyForPk = false;
             state.matchStartTs = Date.now();
             render._setScore();
             this._nextRound();
+        },
+
+        startTraining() {
+            state.isPlaying = true;
+            state.roundClosing = false;
+            state.mode = 'training';
+            state.currentInput = '';
+            state.training.active = true;
+            state.training.streak = 0;
+            state.training.totalCorrect = 0;
+            state.training.readyForPk = false;
+            if (state.robotTimer) clearTimeout(state.robotTimer);
+            this._nextTrainingQuestion();
+        },
+
+        _nextTrainingQuestion() {
+            state.currentInput = '';
+            state.roundResolved = false;
+            state.roundClosing = false;
+            state.currentQuestion = utils.generateMultiplicationTrainingQuestion(state.training.streak);
+            state.training.currentQuestion = state.currentQuestion;
+            render._setRoundPill(`乘法练习 · 连对 ${state.training.streak} / ${CONFIG.MUL_TRAINING_UNLOCK_STREAK}`);
+            render.trainingMatch(state.currentQuestion);
+        },
+
+        _submitTrainingAnswer(selected) {
+            const correct = selected === state.currentQuestion.answer;
+            if (!correct) {
+                const explanation = `再看一眼：${state.currentQuestion.multiplication} 是 ${state.currentQuestion.groups} 组 ${state.currentQuestion.groupSize} 个，${state.currentQuestion.repeatedAddition} = ${state.currentQuestion.answer}`;
+                state.training.streak = 0;
+                state.currentInput = '';
+                render.trainingMatch(state.currentQuestion);
+                const display = document.getElementById('arena-display');
+                if (display) {
+                    display.classList.add('math-answer-wrong');
+                    setTimeout(() => display.classList.remove('math-answer-wrong'), 360);
+                }
+                const feedback = document.getElementById('mul-feedback');
+                if (feedback) {
+                    feedback.innerHTML = explanation;
+                }
+                render._setSide('human', { status: '看图再试一次', time: '' });
+                window.sfx && sfx.error();
+                return;
+            }
+            const array = document.querySelector && document.querySelector('.math-array');
+            if (array) array.classList.add('correct');
+            const display = document.getElementById('arena-display');
+            if (display) display.classList.add('math-answer-correct');
+            const center = document.getElementById('arena-center');
+            if (center && typeof center.insertAdjacentHTML === 'function') {
+                center.insertAdjacentHTML('beforeend', '<span class="math-fx-burst"></span>');
+            }
+            state.training.streak++;
+            state.training.totalCorrect++;
+            state.currentInput = '';
+            if (state.training.streak >= CONFIG.MUL_TRAINING_UNLOCK_STREAK) {
+                state.training.readyForPk = true;
+                render.toast(`已经连对 ${state.training.streak} 题<small>要不要挑战机器人？</small>`, 'win');
+                setTimeout(() => {
+                    render.hideToast();
+                    render._multiplicationReady();
+                }, 900);
+                return;
+            }
+            render.toast(`答对了！<small>${state.currentQuestion.repeatedAddition} = ${state.currentQuestion.answer}</small>`, 'win');
+            setTimeout(() => {
+                render.hideToast();
+                this._nextTrainingQuestion();
+            }, 900);
         },
 
         startAsyncMatch(match) {
@@ -472,6 +727,9 @@
             state.maxCombo = 0;
             state.correctCount = 0;
             state.currentInput = '';
+            state.training.active = false;
+            state.training.currentQuestion = null;
+            state.training.readyForPk = false;
             state.matchStartTs = Date.now();
             render._setScore();
             this._nextRound();
@@ -559,6 +817,10 @@
             if (!state.isPlaying || state.roundClosing || state.roundResolved) return;
             if (state.currentInput === '') return;
             const selected = parseInt(state.currentInput, 10);
+            if (state.mode === 'training') {
+                this._submitTrainingAnswer(selected);
+                return;
+            }
             const correct = selected === state.currentQuestion.answer;
             if (isAsyncMode()) {
                 state.roundResolved = true;
@@ -747,6 +1009,7 @@
 
     window.MathPKGame = {
         start: () => Game.start(),
+        startTraining: () => Game.startTraining(),
         renderUI: (id) => Game.renderUI(id),
         _exit: () => Game._exit(),
         _setDifficulty: (d) => Game._setDifficulty(d),
