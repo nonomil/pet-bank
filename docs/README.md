@@ -17,6 +17,13 @@ docs/
 │   ├── 02-数据模型与权限.md           家庭/孩子/好友/PK 的实体关系与权限边界
 │   ├── 03-分阶段落地计划.md           从账号到串门再到数学/汉字PK的阶段路线
 │   └── 联调上线/                      Supabase 部署、双设备联调、上线回滚与二期计划
+├── 家长区与管理接口/
+│   ├── README.md                      家长区、设置、工具箱、隐藏接口的说明文档包
+│   ├── 00-方案总览.md                 为什么管理入口要从游乐场拆出来
+│   ├── 01-参考项目拆解.md             班宠乐园 1/2 的设置、工具、班级管理参考
+│   ├── 02-当前项目入口说明.md         当前设置、工具箱、成长作品各自做什么
+│   ├── 03-隐藏接口与权限边界.md       数据管理等高级接口如何隐藏、如何打开
+│   └── 04-实施与验收清单.md           测试命令、手工验收、后续 P1 建议
 ├── 英语学习/
 │   ├── README.md                      英语混合资料包专题索引（已落地口径 + 扩展预留）
 │   ├── 混合式英语学习资料包方案.md      为什么英语走“当前项目学习壳 + 外部阅读源”
@@ -101,6 +108,7 @@ docs/
 | [进度/README](进度/README.md) | 进度索引，按阶段回看每轮会话做了什么 | 查 progress 记录 |
 | [方案/README](方案/README.md) | 方案与 change-request 索引，带文档编号 | 查变更原因、查 CR |
 | [家庭账号社交体系/README](家庭账号社交体系/README.md) | 家长账号 / 家庭 / 多孩子 / 串门 / 数学汉字异步 PK 的专题入口 | 准备把产品升级成多家庭互动体系 |
+| [家长区与管理接口/README](家长区与管理接口/README.md) | 家长区、设置、工具箱、隐藏接口的说明文档包，解释哪些给孩子看、哪些给家长看、哪些默认隐藏 | 查设置/管理入口为什么这么放、数据管理怎么打开 |
 | [家庭账号社交体系/联调上线/README](家庭账号社交体系/联调上线/README.md) | 家庭账号社交体系的联调上线入口，覆盖 Supabase 部署、双设备验收和回滚 | 准备把这套能力放进真实环境 |
 | [plans/2026-07-05-admin-backoffice-hermes-design](plans/2026-07-05-admin-backoffice-hermes-design.md) | 轻后台、数据库升级不覆盖数据、Hermes 自动部署的正式设计稿 | 准备补后台和自动部署规范 |
 | [plans/2026-07-05-admin-backoffice-hermes-implementation](plans/2026-07-05-admin-backoffice-hermes-implementation.md) | 上述后台与部署规范的实施计划 | 准备按任务落地 admin / migration / Hermes 配置 |
@@ -139,6 +147,7 @@ docs/
 - 查温暖陪伴型首页仪表盘示例工程 / Codex UI 输入包怎么组织 → [设计稿](plans/2026-07-05-warm-home-dashboard-demo-design.md)、[实施计划](plans/2026-07-05-warm-home-dashboard-demo-implementation.md)
 - 查英语学习资料包 / 外链扩展 → [英语学习/README](英语学习/README.md)、[设计稿](plans/2026-07-05-learning-center-english-hybrid-design.md)、[实施计划](plans/2026-07-05-learning-center-english-hybrid-implementation.md)
 - 查学习单该放学习页还是积分页 / 模板怎么选 → [积分学习打勾方案/README](积分学习打勾方案/README.md)、[模板 A 设计稿](plans/2026-07-05-daily-learning-sheet-template-a.md)、[收口结论](plans/2026-07-05-scheme-b-points-vs-learn.md)、[积分区学习单子页设计稿](plans/2026-07-05-points-learning-sheet-subtab-design.md)、[实施计划](plans/2026-07-05-points-learning-sheet-subtab-implementation.md)
+- 查家长区 / 设置 / 工具箱 / 数据管理隐藏接口 → [家长区与管理接口/README](家长区与管理接口/README.md)
 - 查版本变更 / CR / 进度关系 → [changes/README](changes/README.md)
 - 查架构 / 技术栈 / 部署 → [设计/技术架构](设计/技术架构.md)
 - 查模块 API / 数据结构 / localStorage 键 → [设计/模块清单与接口](设计/模块清单与接口.md)
