@@ -483,6 +483,43 @@
         `;
     }
 
+    function getLocalPetVisitVisual() {
+        const activeProfile = getActiveLocalProfile();
+        const pet = window.PetSystem && typeof window.PetSystem.getState === 'function'
+            ? window.PetSystem.getState()
+            : null;
+        const imageUrl = window.PetSystem && typeof window.PetSystem.getCurrentStageImage === 'function'
+            ? window.PetSystem.getCurrentStageImage()
+            : '';
+        const emoji = window.PetSystem && typeof window.PetSystem.getStageEmoji === 'function'
+            ? window.PetSystem.getStageEmoji()
+            : (pet && pet.species_data && pet.species_data.emoji) || (activeProfile && activeProfile.emoji) || '🐾';
+
+        return {
+            ownerName: activeProfile && activeProfile.name ? activeProfile.name : '我',
+            petName: pet && pet.species_data && pet.species_data.name ? pet.species_data.name : '我的宠物',
+            imageUrl: imageUrl || '',
+            emoji: emoji
+        };
+    }
+
+    function renderFriendHomePetFigure(config) {
+        const imageUrl = config.imageUrl || '';
+        const visual = imageUrl
+            ? `<img class="friend-home-pet-img" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(config.petName || config.ownerName || '宠物')}">`
+            : `<div class="friend-home-pet-emoji">${escapeHtml(config.emoji || '🐾')}</div>`;
+        return `
+            <div class="friend-home-pet-card ${escapeHtml(config.className || '')}">
+                <span class="friend-home-pet-role">${escapeHtml(config.role || '')}</span>
+                ${visual}
+                <div class="friend-home-pet-caption">
+                    <strong>${escapeHtml(config.ownerName || '小伙伴')}</strong>
+                    <span>${escapeHtml(config.petName || '宠物')}</span>
+                </div>
+            </div>
+        `;
+    }
+
     function buildFriendHomeVisitMarkup() {
         const peer = state.activeVisitPeerId ? findPeer(state.activeVisitPeerId) : null;
         if (!peer) {
@@ -521,9 +558,23 @@
         const backgroundStyle = homeSummary.background_image
             ? `background:${escapeHtml(gradient)};background-image:linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.1)), url('${escapeHtml(homeSummary.background_image)}');background-size:cover;background-position:center;`
             : `background:${escapeHtml(gradient)};`;
-        const petVisual = petSummary.image_url
-            ? `<img class="friend-home-pet-img" src="${escapeHtml(petSummary.image_url)}" alt="${escapeHtml(peer.display_name)}">`
-            : `<div class="friend-home-pet-emoji">${escapeHtml(petSummary.species_emoji || peer.emoji || '🐾')}</div>`;
+        const visitorPet = getLocalPetVisitVisual();
+        const visitorPetCard = renderFriendHomePetFigure({
+            className: 'friend-home-visitor-pet-card',
+            role: '来访伙伴',
+            ownerName: visitorPet.ownerName,
+            petName: visitorPet.petName,
+            imageUrl: visitorPet.imageUrl,
+            emoji: visitorPet.emoji
+        });
+        const ownerPetCard = renderFriendHomePetFigure({
+            className: 'friend-home-owner-pet-card',
+            role: '小屋主人',
+            ownerName: peer.display_name,
+            petName: petSummary.species_name || '还没同步宠物摘要',
+            imageUrl: petSummary.image_url || '',
+            emoji: petSummary.species_emoji || peer.emoji || '🐾'
+        });
 
         return `
             <section class="social-shell friend-home-visit-shell">
@@ -541,8 +592,10 @@
                         <h4>${escapeHtml(homeSummary.theme_name || '温馨小屋')}</h4>
                         <p>${escapeHtml(petSummary.species_name || '还没同步宠物摘要')} ${petSummary.level ? '· Lv.' + escapeHtml(petSummary.level) : ''}</p>
                     </div>
-                    <div class="friend-home-pet-card">
-                        ${petVisual}
+                    <div class="friend-home-pet-duo" aria-label="串门双方宠物">
+                        ${visitorPetCard}
+                        <div class="friend-home-pet-duo-link">串门</div>
+                        ${ownerPetCard}
                     </div>
                 </div>
                 <div class="friend-home-info-grid">

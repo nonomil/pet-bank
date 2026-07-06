@@ -1216,6 +1216,36 @@ function getWalkPeerSourceLabel(peer) {
     return peer && peer.peerType === 'household' ? '家庭成员' : '好友';
 }
 
+function getWalkPeerVisualMarkup(peer) {
+    const petSummary = peer && peer.pet_summary_json ? peer.pet_summary_json : {};
+    const imageUrl = petSummary.image_url || '';
+    if (imageUrl) {
+        return `<img class="walk-buddy-stage-img" src="${escapeAppHtml(imageUrl)}" alt="${escapeAppHtml(peer.display_name || '同行宠物')}">`;
+    }
+    return `<div class="walk-buddy-stage-emoji">${escapeAppHtml(petSummary.species_emoji || peer.emoji || '🐾')}</div>`;
+}
+
+function getFeaturedWalkPeer(combinedPeers, availablePeers, pendingInvites) {
+    if (pendingInvites.length) {
+        const invite = pendingInvites[0];
+        const matched = combinedPeers.find(function(peer) {
+            return peer && peer.id === invite.peerChildId;
+        });
+        if (matched) return matched;
+        return {
+            id: invite.peerChildId,
+            display_name: invite.peerName || '好友',
+            emoji: invite.peerEmoji || '🐾',
+            peerType: 'friend',
+            pet_summary_json: {
+                species_emoji: invite.peerEmoji || '🐾'
+            },
+            home_summary_json: {}
+        };
+    }
+    return availablePeers[0] || null;
+}
+
 function renderWalkPage() {
     const root = document.getElementById('walk-page-root');
     if (!root) return;
@@ -1294,6 +1324,15 @@ function renderWalkPage() {
     const pendingInvites = (socialState.visits || []).filter(function(visit) {
         return visit && visit.pendingWalkInvite;
     });
+    const featuredWalkPeer = getFeaturedWalkPeer(combinedPeers, availablePeers, pendingInvites);
+    const walkBuddyStageMarkup = featuredWalkPeer ? `
+        <div class="walk-buddy-stage-card" aria-label="同行伙伴宠物">
+            <span class="walk-buddy-stage-kicker">同行伙伴</span>
+            <div class="walk-buddy-stage-visual">${getWalkPeerVisualMarkup(featuredWalkPeer)}</div>
+            <strong>${escapeAppHtml(featuredWalkPeer.display_name || '好友')}</strong>
+            <small>${escapeAppHtml((featuredWalkPeer.pet_summary_json && featuredWalkPeer.pet_summary_json.species_name) || '一起遛弯')}</small>
+        </div>
+    ` : '';
     const walkStatusMarkup = `
         <div class="card walk-home-card">
             <div class="card-body walk-home-status">
@@ -1391,6 +1430,7 @@ function renderWalkPage() {
             <div class="walk-home-main">
                 <div class="walk-scene-stage-wrap">
                     <div id="walk-scene-stage"></div>
+                    ${walkBuddyStageMarkup}
                 </div>
             </div>
             <aside class="walk-home-side">

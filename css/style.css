@@ -4283,14 +4283,57 @@ body.no-sidebar .sidebar { display: none; }
 }
 .friend-home-pet-card {
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 10px;
     min-height: 220px;
     padding: 18px;
     border-radius: 22px;
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(220, 228, 221, 0.92);
     backdrop-filter: blur(6px);
+}
+.friend-home-pet-duo {
+    display: grid;
+    grid-template-columns: minmax(118px, 1fr) auto minmax(138px, 1fr);
+    align-items: center;
+    gap: 12px;
+}
+.friend-home-visitor-pet-card {
+    min-height: 176px;
+    background: rgba(255, 255, 255, 0.6);
+    transform: translateY(18px) scale(0.9);
+}
+.friend-home-owner-pet-card {
+    min-height: 226px;
+    background: rgba(255, 255, 255, 0.82);
+}
+.friend-home-pet-role {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #517062;
+    font-size: 11px;
+    font-weight: 800;
+}
+.friend-home-pet-duo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(220, 228, 221, 0.92);
+    color: #567463;
+    font-size: 12px;
+    font-weight: 900;
+    box-shadow: 0 10px 20px rgba(74, 96, 81, 0.12);
 }
 .friend-home-pet-img {
     width: 100%;
@@ -4303,11 +4346,38 @@ body.no-sidebar .sidebar { display: none; }
     font-size: 88px;
     line-height: 1;
 }
+.friend-home-pet-caption {
+    display: grid;
+    gap: 2px;
+    text-align: center;
+}
+.friend-home-pet-caption strong {
+    color: var(--text-primary);
+    font-size: 13px;
+}
+.friend-home-pet-caption span {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
 .friend-home-info-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px;
     margin-top: 16px;
+}
+@media (max-width: 720px) {
+    .friend-home-pet-duo {
+        grid-template-columns: 1fr;
+    }
+    .friend-home-pet-duo-link {
+        width: auto;
+        height: auto;
+        padding: 7px 12px;
+        border-radius: 999px;
+    }
+    .friend-home-visitor-pet-card {
+        transform: none;
+    }
 }
 .friend-home-info-card {
     display: grid;
