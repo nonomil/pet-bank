@@ -546,7 +546,7 @@ function completeRecommended() {
 
 // ============ 一级导航映射（首页 Tab 收口，M0.6） ============
 // tab 名称 -> 默认落地页（单一事实源，对应 docs/plans/2026-06-29-home-tab-navigation-*）
-const HOME_TAB_MAP = { '首页': 'map', '积分': 'today', '学习': 'learn', '宠物': 'pet', '探索': 'explore', '更多': 'works' };
+const HOME_TAB_MAP = { '首页': 'map', '积分': 'today', '学习': 'learn', '宠物': 'pet', '探索': 'explore', '游乐场': 'playground', '家长区': 'settings' };
 function getHomeTabMap() { return Object.assign({}, HOME_TAB_MAP); }
 // 叶子页 / hub 页 -> 所属一级 tab 的 data-page（switchPage 时据此高亮父 tab）
 const PAGE_TO_TAB = {
@@ -560,7 +560,7 @@ const PAGE_TO_TAB = {
     leaderboard: 'playground',                                  // 排行榜 → 游乐场
     pet: 'pet', home: 'pet', 'home-visit': 'pet', card: 'pet', walk: 'pet',          // 宠物
     explore: 'explore',                                         // 探索（含成长地图）
-    works: 'playground', tools: 'playground', settings: 'playground' // 作品/工具/设置都继续归游乐场 tab
+    works: 'settings', tools: 'settings', settings: 'settings'   // 低频作品/工具/设置归右上角家长区入口
 };
 
 const TOP_HUB_MENU_CONFIG = {
@@ -580,9 +580,10 @@ const TOP_HUB_MENU_CONFIG = {
     ],
     playground: [
         { page: 'playground', label: '游乐场首页' },
-        { page: 'works', label: '成长作品' },
-        { page: 'tools', label: '工具箱' },
-        { page: 'settings', label: '设置' }
+        { page: 'mathpk', label: '数学 PK' },
+        { page: 'hanzi', label: '汉字游戏' },
+        { action: 'cardArena', label: '卡牌对战' },
+        { page: 'leaderboard', label: '排行榜' }
     ]
 };
 
@@ -660,6 +661,8 @@ function handleTopHubMenuAction(action) {
     closeTopHubMenus();
     if (action === 'walk') {
         openPetWalk();
+    } else if (action === 'cardArena' && typeof window.openCardArenaEntry === 'function') {
+        window.openCardArenaEntry();
     }
 }
 

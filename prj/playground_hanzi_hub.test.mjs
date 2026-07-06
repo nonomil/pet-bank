@@ -26,14 +26,36 @@ page.on('pageerror', (err) => consoleErrors.push(String(err)));
 await page.goto(`${BASE}/index.html`, { waitUntil: 'domcontentloaded', timeout: 30000 });
 await page.waitForFunction(() => typeof window.switchPage === 'function', { timeout: 8000 });
 
-const routedPages = ['playground', 'works', 'tools', 'settings', 'hanzi', 'leaderboard'];
-for (const pageName of routedPages) {
+const gamePages = ['playground', 'mathpk', 'hanzi', 'leaderboard'];
+for (const pageName of gamePages) {
     await page.evaluate((name) => window.switchPage(name), pageName);
     const activeTab = await page.evaluate(() => document.querySelector('.nav-tab.active')?.dataset.page || null);
     check(`${pageName} stays under playground tab`, activeTab === 'playground', `got ${activeTab}`);
 }
 
+const managementPages = ['works', 'tools', 'settings'];
+for (const pageName of managementPages) {
+    await page.evaluate((name) => window.switchPage(name), pageName);
+    const activeTab = await page.evaluate(() => document.querySelector('.nav-tab.active')?.dataset.page || null);
+    check(`${pageName} stays under management settings shortcut`, activeTab === 'settings', `got ${activeTab}`);
+}
+
 await page.evaluate(() => window.switchPage('playground'));
+await page.click('.nav-hub[data-page="playground"] .nav-tab');
+const playgroundMenu = await page.evaluate(() => ({
+    text: document.querySelector('#topHubMenu')?.textContent || '',
+    hidden: document.querySelector('#topHubMenu')?.hidden ?? true
+}));
+check('playground top menu opens', playgroundMenu.hidden === false);
+check('playground top menu only exposes play entries', /数学 PK/.test(playgroundMenu.text) && /汉字游戏/.test(playgroundMenu.text) && /卡牌对战/.test(playgroundMenu.text) && /排行榜/.test(playgroundMenu.text), playgroundMenu.text);
+check('playground top menu hides management entries', !/成长作品|工具箱|设置/.test(playgroundMenu.text), playgroundMenu.text);
+
+const managementShortcut = await page.evaluate(() => ({
+    exists: !!document.querySelector('.nav-utility-settings[data-page="settings"]'),
+    label: document.querySelector('.nav-utility-settings[data-page="settings"]')?.textContent?.trim() || ''
+}));
+check('top nav exposes a separate parent shortcut', managementShortcut.exists && /设置|管理|家长区/.test(managementShortcut.label), managementShortcut.label);
+
 const playground = await page.evaluate(() => ({
     cards: Array.from(document.querySelectorAll('#page-playground .playground-grid .pg-img-card img')).map((el) => el.getAttribute('alt')?.trim()).filter(Boolean)
 }));
