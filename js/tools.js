@@ -20,6 +20,18 @@ const ToolboxSystem = (function() {
         FAMILY: 'petbank_family_members',
         POMODORO_TODAY: 'petbank_pomodoro_today'
     };
+    const ADVANCED_TOOLS_FLAG = 'petbank_parent_admin_tools';
+
+    const _isAdvancedToolsEnabled = () => {
+        try {
+            const params = new URLSearchParams(window.location.search || '');
+            return params.get('parentAdmin') === '1'
+                || localStorage.getItem(ADVANCED_TOOLS_FLAG) === '1'
+                || sessionStorage.getItem(ADVANCED_TOOLS_FLAG) === '1';
+        } catch (e) {
+            return false;
+        }
+    };
 
     // --- Helper Methods ---
     const _loadState = () => {
@@ -489,7 +501,9 @@ const ToolboxSystem = (function() {
 
             cardRow.appendChild(createCard('随机点名', '🎲', '#673ab7', 'picker'));
             cardRow.appendChild(createCard('番茄计时', '🍅', '#ff5252', 'pomodoro'));
-            cardRow.appendChild(createCard('数据管理', '💾', '#607d8b', 'data_io'));
+            if (_isAdvancedToolsEnabled()) {
+                cardRow.appendChild(createCard('数据管理', '💾', '#607d8b', 'data_io'));
+            }
             mainWrapper.appendChild(cardRow);
 
             // 2. Tool Display Area (Two-column layout when a tool is active)
@@ -532,6 +546,17 @@ const ToolboxSystem = (function() {
             state.activeTool = null;
             const toolArea = document.getElementById('toolbox-tool-area');
             if (toolArea) toolArea.style.display = 'none';
+        },
+
+        enableAdvancedTools: function() {
+            try { localStorage.setItem(ADVANCED_TOOLS_FLAG, '1'); } catch (e) {}
+        },
+
+        disableAdvancedTools: function() {
+            try {
+                localStorage.removeItem(ADVANCED_TOOLS_FLAG);
+                sessionStorage.removeItem(ADVANCED_TOOLS_FLAG);
+            } catch (e) {}
         }
     };
 })();
