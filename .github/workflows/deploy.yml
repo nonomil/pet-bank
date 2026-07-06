@@ -24,33 +24,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v4
       - name: Assemble static site artifact
-        run: |
-          mkdir -p _site
-          cp index.html admin.html cloud-config.local.js _site/
-          cp -R css js assets data _site/
-          # Keep source-only art out of the Pages artifact. Runtime pet images
-          # are still shipped from assets/pets/poses, assets/banchong*, etc.
-          rm -rf _site/assets/pets/originals
-          rm -rf _site/assets/pets/poses-originals
-          rm -rf _site/assets/pets-originals
-          rm -rf _site/assets/references
-          # Keep GitHub Pages comfortably small: runtime code uses WebP for
-          # most art, so ship only the raster files still referenced at runtime.
-          mkdir -p _site-runtime-raster
-          (
-            cd _site
-            cp --parents assets/arena/arena-{1..5}.png ../_site-runtime-raster/
-            cp --parents assets/arena/training-bg-{1..5}.png ../_site-runtime-raster/
-            cp --parents assets/arena/human-kid.png assets/arena/robot-rival.png ../_site-runtime-raster/
-            cp --parents assets/ui/hanzi-img/*.png ../_site-runtime-raster/
-            cp --parents assets/learn/*.png ../_site-runtime-raster/
-            cp --parents assets/home-bg/map-board.png ../_site-runtime-raster/
-            cp --parents data/GPT生图/背景图片-1.png ../_site-runtime-raster/
-          )
-          find _site/assets _site/data -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.bmp' \) -delete
-          cp -R _site-runtime-raster/. _site/
-          rm -rf _site-runtime-raster
-          touch _site/.nojekyll
+        run: node scripts/assemble-pages-artifact.mjs _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

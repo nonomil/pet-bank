@@ -44,3 +44,21 @@ def test_runtime_loader_vendors_supabase_browser_bundle():
     js = Path("js/runtime-loader.js").read_text(encoding="utf-8")
     assert "js/vendor/supabase-js.js" in js
     assert "cdn.jsdelivr.net/npm/@supabase/supabase-js@2" not in js
+
+
+def test_html_entrypoints_use_local_style_runtime_dependencies():
+    for html_path in (Path("index.html"), Path("admin.html")):
+        html = html_path.read_text(encoding="utf-8")
+        assert "https://cdn.tailwindcss.com" not in html
+        assert "fonts.googleapis.com" not in html
+        assert 'href="css/vendor/tailwind-lite.css"' in html
+
+
+def test_homepage_css_uses_optimized_map_images():
+    css = Path("css/style.css").read_text(encoding="utf-8")
+    assert "../data/GPT生图/背景图片-1.png" not in css
+    assert "../assets/home-bg/map-board.png" not in css
+    assert "../assets/home-bg/map-hero-texture.webp" in css
+    assert "../assets/home-bg/map-board.webp" in css
+    assert Path("assets/home-bg/map-hero-texture.webp").is_file()
+    assert Path("assets/home-bg/map-board.webp").is_file()
