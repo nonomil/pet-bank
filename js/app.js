@@ -2255,6 +2255,7 @@ function handleBattleAnimate(e) {
     const petEl = document.getElementById('battleFighterPet');
     const monsterEl = document.getElementById('battleFighterMonster');
     const modal = document.getElementById('battleModal');
+    if (window.BattleFx && typeof BattleFx.show === 'function') BattleFx.show(type, e.detail);
     const play = (name) => {
         if (window.sfx && typeof window.sfx.play === 'function') window.sfx.play(name);
     };
