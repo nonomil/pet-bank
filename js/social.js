@@ -845,7 +845,7 @@
             if (result.error) throw result.error;
             state.walkInvitePeerId = '';
             state.info = '已把“' + route.name + '”路线发给 ' + peer.display_name + '。';
-            await refresh();
+            await refresh({ preserveInfo: true });
             if (window.ActivityFeedSystem && typeof window.ActivityFeedSystem.refresh === 'function') {
                 await window.ActivityFeedSystem.refresh();
             }
@@ -899,7 +899,7 @@
 
             if (result.error) throw result.error;
             state.info = '已接受邀请，现在按同一路线去遛弯。';
-            await refresh();
+            await refresh({ preserveInfo: true });
             if (window.ActivityFeedSystem && typeof window.ActivityFeedSystem.refresh === 'function') {
                 await window.ActivityFeedSystem.refresh();
             }
@@ -914,8 +914,13 @@
         return false;
     }
 
-    async function refresh() {
+    async function refresh(options) {
+        const config = Object.assign({ preserveInfo: false }, options || {});
+        const preserveInfo = Boolean(config.preserveInfo);
         state.error = '';
+        if (!preserveInfo) {
+            state.info = '';
+        }
         state.loading = true;
         renderAll();
 
@@ -995,7 +1000,7 @@
                 : '新好友';
             state.info = '好友添加成功：已和「' + friendName + '」建立好友关系。';
             event.target.reset();
-            await refresh();
+            await refresh({ preserveInfo: true });
             if (window.ActivityFeedSystem && typeof window.ActivityFeedSystem.refresh === 'function') {
                 await window.ActivityFeedSystem.refresh();
             }
@@ -1016,7 +1021,7 @@
             }
             await window.CloudSync.setHomeVisibility(visibility);
             state.info = '好友小屋可见性已更新为：' + getVisibilityLabel(visibility);
-            await refresh();
+            await refresh({ preserveInfo: true });
         } catch (error) {
             state.error = error && error.message ? error.message : '更新小屋可见性失败';
             renderAll();
@@ -1033,7 +1038,7 @@
             }
             await window.CloudSync.setVisitAccess(visibility);
             state.info = '好友串门权限已更新为：' + getAccessLabel(visibility, 'visit');
-            await refresh();
+            await refresh({ preserveInfo: true });
         } catch (error) {
             state.error = error && error.message ? error.message : '更新串门权限失败';
             renderAll();
@@ -1050,7 +1055,7 @@
             }
             await window.CloudSync.setPKAccess(visibility);
             state.info = '好友 PK 权限已更新为：' + getAccessLabel(visibility, 'pk');
-            await refresh();
+            await refresh({ preserveInfo: true });
         } catch (error) {
             state.error = error && error.message ? error.message : '更新 PK 权限失败';
             renderAll();
@@ -1116,7 +1121,7 @@
 
             if (result.error) throw result.error;
             state.info = action.label + '已发送，等好友回来看小屋吧。';
-            await refresh();
+            await refresh({ preserveInfo: true });
             if (window.ActivityFeedSystem && typeof window.ActivityFeedSystem.refresh === 'function') {
                 await window.ActivityFeedSystem.refresh();
             }
