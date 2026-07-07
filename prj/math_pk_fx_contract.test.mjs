@@ -35,8 +35,8 @@ assert.ok(
     'math PK battle feedback should not use a high-saturation center toast'
 );
 assert.ok(
-    source.includes('grid-template-columns:repeat(6,48px)'),
-    'desktop Math PK keypad should use a low, non-blocking control strip'
+    source.includes('grid-template-columns:repeat(3,64px)'),
+    'desktop Math PK keypad should keep a larger 3-column nine-key layout'
 );
 
 console.log('PASS math_pk_fx_contract');

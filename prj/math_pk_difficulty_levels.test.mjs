@@ -7,6 +7,11 @@ const repoRoot = process.cwd();
 const mathPkPath = path.join(repoRoot, 'js', 'math-pk.js');
 const source = fs.readFileSync(mathPkPath, 'utf8');
 
+assert.ok(source.includes('mathpk-difficulty-panel'), 'Math PK lobby should include an in-game difficulty settings panel');
+assert.ok(source.includes('难度设置'), 'Math PK lobby should label the in-game difficulty settings');
+assert.ok(source.includes('MathPKGame._setDifficulty'), 'Math PK difficulty options should be changeable inside the game UI');
+assert.ok(source.includes('grid-template-columns:repeat(3,64px)'), 'Math PK keypad should use a larger 3-column nine-key layout');
+
 function createMathPkSandbox() {
     const storage = new Map();
     const documentStub = {

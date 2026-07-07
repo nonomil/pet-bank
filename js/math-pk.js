@@ -38,12 +38,20 @@
         hard: '乘除挑战'
     };
 
+    const DIFFICULTY_OPTIONS = [
+        { id: 'easy20', label: '加减起步', desc: '20 以内加减' },
+        { id: 'easy100', label: '加减进阶', desc: '100 以内加减' },
+        { id: 'medium_mul', label: '乘法启程', desc: '基础乘法练习' },
+        { id: 'medium_mix', label: '综合闯关', desc: '加减乘 + 应用题' },
+        { id: 'hard', label: '乘除挑战', desc: '乘除（机器人更快）' }
+    ];
+
     const MATH_PK_ROBOT_RIVALS = {
-        easy20: { name: '圆圆练习机', image: 'assets/arena/math-rivals/robot-easy20.webp' },
-        easy100: { name: '彩键计算机', image: 'assets/arena/math-rivals/robot-easy100.webp' },
-        medium_mul: { name: '星阵机器人', image: 'assets/arena/math-rivals/robot-mul.webp' },
-        medium_mix: { name: '博士计算机', image: 'assets/arena/math-rivals/robot-mix.webp' },
-        hard: { name: '冠军计算机', image: 'assets/arena/math-rivals/robot-hard.webp' }
+        easy20: { name: '圆圆练习机', image: 'assets/arena/math-rivals/robot-easy20-v5.webp' },
+        easy100: { name: '彩键计算机', image: 'assets/arena/math-rivals/robot-easy100-v5.webp' },
+        medium_mul: { name: '星阵机器人', image: 'assets/arena/math-rivals/robot-mul-v5.webp' },
+        medium_mix: { name: '博士计算机', image: 'assets/arena/math-rivals/robot-mix-v5.webp' },
+        hard: { name: '冠军计算机', image: 'assets/arena/math-rivals/robot-hard-v5.webp' }
     };
 
     const VALID_DIFFICULTIES = Object.keys(DIFFICULTY_LABELS);
@@ -265,12 +273,12 @@
                         .arena-display { background:rgba(9,14,22,.58); color:#b9ead6; font-family:'Noto Sans SC',monospace; font-size:1.7rem; font-weight:800; padding:7px 18px; border-radius:12px; min-width:146px; text-align:right; letter-spacing:2px; border:1px solid rgba(255,255,255,.1); box-shadow:0 10px 22px rgba(0,0,0,.22); }
                         .arena-display.empty { color:rgba(255,255,255,.45); font-size:1rem; letter-spacing:0; font-weight:600; }
                         .arena-display.shake { animation:arena-shake .35s ease; }
-                        .arena-keypad { display:grid; grid-template-columns:repeat(6,48px); gap:6px; padding:6px; border-radius:14px; background:rgba(7,12,20,.18); border:1px solid rgba(255,255,255,.07); backdrop-filter:blur(6px); }
-                        .arena-key { width:48px; height:42px; font-size:1.06rem; font-weight:800; color:rgba(255,255,255,.9); background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.13); border-radius:10px; cursor:pointer; transition:transform .08s, background .15s, border-color .15s; user-select:none; box-shadow:inset 0 1px 0 rgba(255,255,255,.07); }
+                        .arena-keypad { display:grid; grid-template-columns:repeat(3,64px); gap:9px; padding:8px; border-radius:16px; background:rgba(7,12,20,.2); border:1px solid rgba(255,255,255,.08); backdrop-filter:blur(6px); }
+                        .arena-key { width:64px; height:54px; font-size:1.22rem; font-weight:800; color:rgba(255,255,255,.92); background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.14); border-radius:12px; cursor:pointer; transition:transform .08s, background .15s, border-color .15s; user-select:none; box-shadow:inset 0 1px 0 rgba(255,255,255,.07); }
                         .arena-key:hover { background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.22); }
                         .arena-key:active { transform:scale(.92); }
-                        .arena-key.clear { background:rgba(120,72,72,.22); font-size:.78rem; line-height:1.05; }
-                        .arena-key.confirm { background:rgba(123,174,143,.7); border-color:rgba(210,236,220,.24); font-size:.78rem; line-height:1.05; }
+                        .arena-key.clear { background:rgba(120,72,72,.22); font-size:.92rem; line-height:1.1; }
+                        .arena-key.confirm { background:rgba(123,174,143,.7); border-color:rgba(210,236,220,.24); font-size:.92rem; line-height:1.1; }
                         .arena-vs { position:absolute; left:50%; top:40%; transform:translate(-50%,-50%); font-size:2.1rem; font-weight:900; color:rgba(255,255,255,.11); z-index:1; pointer-events:none; }
                         .arena-toast.math-pk-battle-caption { position:absolute; left:50%; top:auto; bottom:18px; transform:translateX(-50%); z-index:6; max-width:min(430px,calc(100% - 32px)); color:#eef7f2; font-size:.9rem; font-weight:800; padding:7px 14px; border-radius:999px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,.24); display:none; backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.13); background:rgba(13,20,24,.62); pointer-events:none; }
                         .arena-toast.show { display:block; animation:math-pk-caption-in .24s ease; }
@@ -290,6 +298,16 @@
                         .arena-lobby p { color:rgba(255,255,255,.82); margin-bottom:4px; }
                         .arena-btn { margin-top:14px; padding:15px 44px; font-size:1.25rem; font-weight:800; border:none; border-radius:999px; background:linear-gradient(135deg,var(--gold,#d4b96a),var(--sage-green,#7BAE8F)); color:#fff; cursor:pointer; box-shadow:0 10px 28px rgba(0,0,0,.35); transition:transform .1s; }
                         .arena-btn:hover { transform:translateY(-2px); }
+                        .mathpk-difficulty-panel { width:min(560px,calc(100vw - 44px)); margin:14px auto 0; padding:10px; border-radius:16px; background:rgba(7,12,20,.26); border:1px solid rgba(255,255,255,.1); backdrop-filter:blur(8px); }
+                        .mathpk-difficulty-title { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 2px 8px; color:rgba(255,255,255,.86); font-size:.82rem; font-weight:800; }
+                        .mathpk-difficulty-title small { color:rgba(255,255,255,.58); font-weight:650; }
+                        .mathpk-difficulty-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; }
+                        .mathpk-difficulty-option { min-height:56px; padding:8px 6px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.09); color:rgba(255,255,255,.84); cursor:pointer; text-align:center; transition:background .15s,border-color .15s,transform .08s; }
+                        .mathpk-difficulty-option:hover { background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.2); }
+                        .mathpk-difficulty-option:active { transform:scale(.96); }
+                        .mathpk-difficulty-option.active { background:rgba(123,174,143,.78); border-color:rgba(226,240,231,.34); color:#fff; }
+                        .mathpk-difficulty-option b { display:block; font-size:.86rem; line-height:1.15; }
+                        .mathpk-difficulty-option span { display:block; margin-top:4px; font-size:.68rem; line-height:1.15; opacity:.76; }
                         .mul-mode-switch { display:inline-grid; grid-template-columns:1fr 1fr; gap:6px; padding:5px; border-radius:999px; background:rgba(255,255,255,.12); margin:12px 0 4px; }
                         .mul-mode-switch button { border:0; border-radius:999px; padding:9px 18px; color:#fff; background:transparent; font-weight:800; cursor:pointer; }
                         .mul-mode-switch button.active { background:rgba(255,255,255,.24); }
@@ -343,6 +361,8 @@
                             .arena-keypad { grid-template-columns:repeat(3,54px); gap:6px; background:rgba(7,12,20,.22); }
                             .arena-key { width:54px; height:48px; font-size:1.15rem; }
                             .arena-lobby h2 { font-size:1.8rem; }
+                            .mathpk-difficulty-panel { width:calc(100vw - 24px); padding:8px; }
+                            .mathpk-difficulty-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
                         }
                     </style>
                     <div class="arena-topbar">
@@ -390,7 +410,8 @@
                 <div class="arena-lobby">
                     <h2>🔢 数学 PK 竞技台</h2>
                     <p>和机器人同题竞速，${CONFIG.TOTAL_ROUNDS} 局定胜负！</p>
-                    <p>当前难度：<b style="color:#ffd166;">${difficultyLabel}</b>（在「设置」中修改）</p>
+                    <p>当前难度：<b style="color:#ffd166;">${difficultyLabel}</b></p>
+                    ${this._difficultyPanel()}
                     <button class="arena-btn" onclick="MathPKGame.start()">开始对战</button>
                     <div id="mathpk-async-root" style="margin-top:14px;"></div>
                     <p style="margin-top:14px;font-size:.8rem;opacity:.7;">历史最高分：${high}</p>
@@ -417,6 +438,7 @@
                 <div class="arena-lobby">
                     <h2>乘法启程</h2>
                     <p>先看懂“几组几个”，再挑战机器人。</p>
+                    ${this._difficultyPanel()}
                     <div class="mul-mode-switch" aria-label="乘法启程模式">
                         <button class="active" type="button" onclick="MathPKGame.startTraining()">练习场</button>
                         <button type="button" onclick="MathPKGame.start()">PK</button>
@@ -432,6 +454,26 @@
             this._setSide('robot', { status: '等你准备好再 PK', time: '' });
             this._setSideClass('human', '');
             this._setSideClass('robot', '');
+        },
+
+        _difficultyPanel() {
+            const cur = normalizeDifficulty(state.mathDifficulty);
+            return `
+                <div class="mathpk-difficulty-panel" aria-label="数学 PK 难度设置">
+                    <div class="mathpk-difficulty-title">
+                        <span>难度设置</span>
+                        <small>影响题目和机器人速度</small>
+                    </div>
+                    <div class="mathpk-difficulty-grid">
+                        ${DIFFICULTY_OPTIONS.map((option) => `
+                            <button type="button" class="mathpk-difficulty-option ${cur === option.id ? 'active' : ''}" onclick="MathPKGame._setDifficulty('${option.id}')">
+                                <b>${option.label}</b>
+                                <span>${option.desc}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         },
 
         // 对战中：题面 + 显示屏 + 键盘
@@ -664,20 +706,13 @@
             if (!container) return;
             _lastDiffContainer = containerId;
             const cur = normalizeDifficulty(state.mathDifficulty);
-            const opts = [
-                { id: 'easy20', label: '加减起步', desc: '20 以内加减' },
-                { id: 'easy100', label: '加减进阶', desc: '100 以内加减' },
-                { id: 'medium_mul', label: '乘法启程', desc: '基础乘法练习' },
-                { id: 'medium_mix', label: '综合闯关', desc: '加减乘 + 应用题' },
-                { id: 'hard', label: '乘除挑战', desc: '乘除（机器人更快）' }
-            ];
             container.innerHTML = `
                 <div class="card" style="margin-top:16px;">
                     <div class="card-header"><h3 class="text-sm font-bold">🔢 数学 PK 难度</h3></div>
                     <div class="card-body">
                         <p class="text-xs text-muted" style="margin-bottom:12px;">数学 PK 竞技台每局 ${CONFIG.TOTAL_ROUNDS} 轮，在此选择出题难度（也影响机器人速度）。</p>
                         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;">
-                            ${opts.map(o => `
+                            ${DIFFICULTY_OPTIONS.map(o => `
                                 <button data-diff="${o.id}" onclick="MathPKGame._setDifficulty('${o.id}')"
                                     style="padding:14px 10px;border-radius:14px;cursor:pointer;text-align:center;border:2px solid ${cur === o.id ? 'transparent' : '#e5e7eb'};background:${cur === o.id ? 'var(--sage-green, #7BAE8F)' : '#f7f9f8'};color:${cur === o.id ? '#fff' : '#3f5e4a'};transition:all 0.15s;">
                                     <div style="font-weight:700;font-size:15px;">${o.label}</div>
@@ -702,6 +737,12 @@
             if (!VALID_DIFFICULTIES.includes(normalized)) return;
             state.mathDifficulty = normalized;
             try { localStorage.setItem(CONFIG.STORAGE_KEY_DIFFICULTY, normalized); } catch (e) {}
+            const mathPage = document.getElementById('page-mathpk');
+            const arena = document.getElementById('math-arena');
+            if (arena && mathPage && mathPage.classList.contains('active') && !state.isPlaying) {
+                this.renderUI('math-pk-container');
+                return;
+            }
             if (_lastDiffContainer) render.renderDifficultySetting(_lastDiffContainer);
         },
 
