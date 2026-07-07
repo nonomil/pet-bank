@@ -181,7 +181,7 @@
             const r = Math.random();
             if (normalized === 'easy20') return this._addsub(20);
             if (normalized === 'easy100') return this._addsub(100);
-            if (normalized === 'medium_mul') return this._mul(2, 6, 2, 9);
+            if (normalized === 'medium_mul') return r < 0.45 ? this._addsub(20) : this._mul(2, 5, 2, 5);
             if (normalized === 'medium_mix') return r < 0.35 ? this._mul(2, 9, 2, 9) : this._addsub(100);
             return r < 0.5 ? this._mul(2, 12, 2, 9) : this._div();
         },
@@ -887,13 +887,64 @@
             return utils.generateQuestion(diff);
         },
 
-        _robotThinkMs(diff) {
+        _extractQuestionNumbers(question) {
+            return (String(question && question.text || '').match(/\d+/g) || []).map((value) => Number(value));
+        },
+
+        _estimateRobotThinkMs(question, diff) {
             const normalized = normalizeDifficulty(diff);
-            if (normalized === 'easy20') return 5200 + Math.floor(Math.random() * 3800);      // 5.2-9.0s
-            if (normalized === 'easy100') return 4700 + Math.floor(Math.random() * 3300);     // 4.7-8.0s
-            if (normalized === 'medium_mul') return 4000 + Math.floor(Math.random() * 2500);  // 4.0-6.5s
-            if (normalized === 'medium_mix') return 3500 + Math.floor(Math.random() * 2500);  // 3.5-6.0s
-            return 2800 + Math.floor(Math.random() * 1700);                                     // 2.8-4.5s
+            const profile = {
+                easy20: { min: 5200, max: 9000, jitter: 520 },
+                easy100: { min: 4700, max: 8000, jitter: 480 },
+                medium_mul: { min: 6400, max: 9800, jitter: 520 },
+                medium_mix: { min: 3500, max: 7000, jitter: 420 },
+                hard: { min: 3000, max: 5600, jitter: 360 }
+            }[normalized] || { min: 3000, max: 5600, jitter: 360 };
+
+            const q = question || {};
+            const nums = this._extractQuestionNumbers(q);
+            const op = q.op || (/×/.test(q.text) ? '*' : (/÷/.test(q.text) ? '/' : (/[-]/.test(q.text) ? '-' : '+')));
+            let ms = profile.min;
+
+            if (q.isWord) {
+                ms += 900;
+            } else if (op === '*') {
+                const a = Number(q.groups || nums[0] || 2);
+                const b = Number(q.groupSize || nums[1] || 2);
+                const larger = Math.max(a, b);
+                const smaller = Math.min(a, b);
+                ms += 900 + (larger - 2) * 170 + (smaller - 2) * 110;
+                if (a * b >= 30) ms += 320;
+                if (normalized === 'medium_mul') ms += 1100;
+                if ([2, 5, 10].includes(a) || [2, 5, 10].includes(b)) ms += 180;
+                else ms += 320;
+            } else if (op === '/') {
+                const dividend = Number(nums[0] || 12);
+                const divisor = Number(nums[1] || 2);
+                ms += 980 + Math.max(0, divisor - 2) * 85 + Math.max(0, Math.floor(dividend / 10)) * 70;
+            } else {
+                const a = Number(nums[0] || 0);
+                const b = Number(nums[1] || 0);
+                const larger = Math.max(a, b);
+                ms += larger <= 20 ? 260 : 720;
+                if (op === '+') {
+                    if ((a % 10) + (b % 10) >= 10) ms += 420;
+                    if (a + b >= 100) ms += 260;
+                } else {
+                    if ((a % 10) < (b % 10)) ms += 520;
+                    if (a >= 50) ms += 180;
+                }
+                if (normalized === 'medium_mul') ms += 520;
+            }
+
+            const jitterSeed = (Number(q.answer) || 0) + nums.reduce((sum, value) => sum + value, 0) + normalized.length * 17;
+            const jitter = ((jitterSeed * 73) % (profile.jitter * 2 + 1)) - profile.jitter;
+            ms += jitter;
+            return Math.max(profile.min, Math.min(profile.max, ms));
+        },
+
+        _robotThinkMs(question, diff) {
+            return this._estimateRobotThinkMs(question, diff);
         },
 
         _nextRound() {
@@ -919,7 +970,7 @@
                 render._setSideClass('robot', '');
                 return;
             }
-            state.robotThinkMs = this._robotThinkMs(state.mathDifficulty);
+            state.robotThinkMs = this._robotThinkMs(state.currentQuestion, state.mathDifficulty);
             render.startRobotBar();
             if (state.robotTimer) clearTimeout(state.robotTimer);
             state.robotTimer = setTimeout(() => this._robotAnswer(), state.robotThinkMs);
@@ -1158,6 +1209,7 @@
         startAsyncMatch: (match) => Game.startAsyncMatch(match),
         buildAsyncQuestionSet: buildAsyncQuestionSet,
         describeAsyncQuestionSet: describeAsyncQuestionSet,
+        estimateRobotThinkMs: (question, difficulty) => Game._estimateRobotThinkMs(question, difficulty),
         getDifficulty: () => normalizeDifficulty(localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty)
     };
 

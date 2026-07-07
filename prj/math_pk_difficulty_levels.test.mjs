@@ -92,5 +92,26 @@ assert.ok(
     mediumMulQuestions.some((question) => /×/.test(question.text)),
     'medium_mul should still include multiplication questions'
 );
+assert.ok(
+    mediumMulQuestions.some((question) => /[+-]/.test(question.text)),
+    'medium_mul should include addition transition questions for early multiplication learners'
+);
+mediumMulQuestions.forEach((question) => {
+    if (!/×/.test(question.text)) return;
+    const nums = extractNumbers(question.text);
+    assert.ok(nums.length >= 2, `medium_mul multiplication should expose two factors: ${question.text}`);
+    assert.ok(nums[0] <= 5 && nums[1] <= 5, `medium_mul multiplication should stay within 5 times table: ${question.text}`);
+});
+
+const easyAddThink = game.estimateRobotThinkMs({ text: '4 + 3', answer: 7, op: '+' }, 'medium_mul');
+const easyMulThink = game.estimateRobotThinkMs({ text: '4 × 3', answer: 12, op: '*' }, 'medium_mul');
+assert.ok(
+    easyMulThink > easyAddThink,
+    `medium_mul robot should think longer on simple multiplication than on simple addition: add=${easyAddThink}, mul=${easyMulThink}`
+);
+assert.ok(
+    easyMulThink >= 7000,
+    `medium_mul simple multiplication should leave more thinking space for children who still count by addition: ${easyMulThink}`
+);
 
 console.log('PASS math_pk_difficulty_levels');
