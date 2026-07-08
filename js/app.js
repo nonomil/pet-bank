@@ -882,6 +882,7 @@ function updateBrowserRoute(page, options = {}) {
 }
 
 function getRouteShell(page) {
+    if (page === 'map') return 'home';
     if (PARENT_SHELL_PAGES.has(page)) return 'parent';
     if (APP_SHELL_PAGES.has(page)) return 'app';
     return 'app';
@@ -921,6 +922,7 @@ function applyRouteShell(page) {
     const shell = getRouteShell(page);
     const tabPage = PAGE_TO_TAB[page] || page;
     const parentNavKey = getParentShellNavKey(page);
+    document.body.classList.toggle('shell-home', shell === 'home');
     document.body.classList.toggle('shell-app', shell === 'app');
     document.body.classList.toggle('shell-parent', shell === 'parent');
     document.body.setAttribute('data-route-shell', shell);

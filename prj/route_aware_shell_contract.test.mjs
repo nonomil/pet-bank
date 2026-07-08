@@ -23,7 +23,8 @@ check('child app bottom dock exposes primary app destinations', [
     /data-app-dock="playground"[\s\S]{0,220}switchPage\('playground'\)/.test(html)
 ].every(Boolean));
 check('route shell page sets separate app and parent page groups', /const\s+APP_SHELL_PAGES\s*=\s*new\s+Set/.test(appJs) && /const\s+PARENT_SHELL_PAGES\s*=\s*new\s+Set/.test(appJs));
-check('switchPage applies route shell classes', /function\s+applyRouteShell\s*\(\s*page\s*\)/.test(appJs) && /applyRouteShell\s*\(\s*page\s*\)/.test(appJs) && /classList\.toggle\(\s*['"]shell-app['"]/.test(appJs) && /classList\.toggle\(\s*['"]shell-parent['"]/.test(appJs));
+check('home page uses classic home shell instead of immersive app shell', /if\s*\(\s*page\s*===\s*['"]map['"]\s*\)\s*return\s+['"]home['"]/.test(appJs) && /classList\.toggle\(\s*['"]shell-home['"]/.test(appJs) && /body\.shell-home\s+\.app-bottom-dock\s*\{[^}]*display:\s*none/.test(css));
+check('switchPage applies route shell classes', /function\s+applyRouteShell\s*\(\s*page\s*\)/.test(appJs) && /applyRouteShell\s*\(\s*page\s*\)/.test(appJs) && /classList\.toggle\(\s*['"]shell-home['"]/.test(appJs) && /classList\.toggle\(\s*['"]shell-app['"]/.test(appJs) && /classList\.toggle\(\s*['"]shell-parent['"]/.test(appJs));
 check('app shell syncs active dock and lightweight status', /\[data-app-dock\]/.test(appJs) && /appShellPoints/.test(appJs) && /appShellChildName/.test(appJs));
 check('app shell marks current app page and surface mode', /function\s+getAppShellSurface\s*\(\s*page\s*\)/.test(appJs) && /dataset\.appPage/.test(appJs) && /dataset\.appSurface/.test(appJs) && /return\s+['"]scene['"]/.test(appJs) && /return\s+['"]game['"]/.test(appJs) && /return\s+['"]focus['"]/.test(appJs));
 check('app shell preserves raw app route page for deep fullscreen pages', /dataset\.appRoutePage\s*=\s*page/.test(appJs) && /delete\s+document\.body\.dataset\.appRoutePage/.test(appJs));

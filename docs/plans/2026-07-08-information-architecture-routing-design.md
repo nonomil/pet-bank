@@ -108,13 +108,14 @@
 
 导航壳开始跟随信息架构切换，而不是所有页面共用同一套顶部大导航：
 
-- `/app/*` 和旧兼容孩子页进入 `shell-app`：隐藏旧顶部大导航和左侧栏，显示孩子端轻量状态条与底部 Dock。
+- `/app` 首页进入 `shell-home`：保留旧版顶部导航、左侧任务栏和首页 dashboard 结构，避免把首页误改成游戏全屏场景。
+- `/app/explore`、`/app/playground/*` 等孩子端沉浸页进入 `shell-app`：隐藏旧顶部大导航和左侧栏，显示孩子端轻量状态条与底部 Dock。
 - 孩子端状态条保留“返回孩子首页 / 当前孩子与成长分 / 家长区”三个核心动作，避免沉浸页迷路。
-- 底部 Dock 收纳首页、积分、学习、宠物、探索、游乐场六个孩子端主入口，叶子页按父栏目高亮。
+- 底部 Dock 只在沉浸 `shell-app` 显示，收纳首页、积分、学习、宠物、探索、游乐场六个孩子端主入口，叶子页按父栏目高亮。
 - `/parent`、`/parent/works`、`/parent/tools`、`/settings/*` 进入 `shell-parent`：保留管理型顶部，隐藏孩子端主导航，强调家长区管理任务。
 - 增加 skip link 和 main 跳转目标，避免新增导航后键盘用户要反复穿过导航。
 
-这一步仍是 SPA 内的壳切换，不是物理多页面。后续可以继续把 `/app/explore`、`/app/playground/*`、`/app/pet/home` 做成更强沉浸页，并把 `/parent/settings/*` 的管理导航整理成更像后台控制台的左侧栏。
+这一步仍是 SPA 内的壳切换，不是物理多页面。首页应继续保持旧版导航和侧栏的“仪表盘”体感；后续可以继续把 `/app/explore`、`/app/playground/*`、`/app/pet/home` 做成更强沉浸页，并把 `/parent/settings/*` 的管理导航整理成更像后台控制台的左侧栏。
 
 ## 第五轮家长管理导航
 
@@ -130,13 +131,24 @@
 
 ## 第六轮孩子端沉浸壳分类
 
-`shell-app` 不再只是“隐藏旧导航 + 展示 Dock”，而是开始输出孩子端页面分类：
+`shell-app` 不再只是“隐藏旧导航 + 展示 Dock”，而是开始输出孩子端沉浸页分类；`/app` 首页单独使用 `shell-home` 保留旧版首页导航和侧栏：
 
 - `data-app-page`：当前 Dock 归属页，例如 `playground`、`explore`、`pet`。
 - `data-app-route-page`：真实 SPA 页，例如 `mathpk`、`hanzi`、`home`，为后续子游戏或宠物小屋全屏化预留精确钩子。
 - `data-app-surface`：页面壳类型，当前分为 `home`、`focus`、`studio`、`scene`、`game`。
 
-这一轮只做壳层和间距：`scene/game` 优先接近全屏舞台，`focus/studio/home` 保持可阅读但占满视口。这样做避免把所有页面粗暴改成同一种全屏，也避免破坏游乐场、探索、宠物等页面内部已经存在的独立样式。后续可以按真实页面逐个推进：先做 `/app/playground/*` 和 `/app/explore` 的舞台化，再做 `/app/pet/home` 的宠物房间沉浸化。
+这一轮只做壳层和间距：`scene/game` 优先接近全屏舞台，`focus/studio` 保持可阅读但占满视口。这样做避免把所有页面粗暴改成同一种全屏，也避免破坏首页、游乐场、探索、宠物等页面内部已经存在的独立样式。后续可以按真实页面逐个推进：先做 `/app/playground/*` 和 `/app/explore` 的舞台化，再做 `/app/pet/home` 的宠物房间沉浸化。
+
+## 第七轮首页经典壳回收
+
+用户反馈新版首页不如旧版，根因是 `0d698189 feat: add route-aware navigation shells` 把 `/app` 首页也纳入了沉浸 `shell-app`，导致旧版顶部导航、左侧任务栏和首页 dashboard 结构被隐藏。
+
+修正原则：
+
+- `/app` / `map` 只负责孩子端首页与总览，不做全屏沉浸。
+- `shell-home` 保留旧版导航、左侧栏和首页舞台布局。
+- `shell-app` 继续用于探索、游乐场、玩法深页等需要沉浸的子页面。
+- 合同测试增加“首页使用经典壳而不是沉浸壳”的约束，防止后续再把首页误判成游戏页。
 
 ## 验证点
 

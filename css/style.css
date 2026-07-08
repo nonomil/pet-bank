@@ -2413,6 +2413,12 @@ body.no-sidebar .sidebar { display: none; }
     display: none;
 }
 
+body.shell-home .app-shell-bar,
+body.shell-home .parent-shell-nav,
+body.shell-home .app-bottom-dock {
+    display: none;
+}
+
 body.shell-app .top-nav {
     display: none;
 }
