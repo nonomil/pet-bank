@@ -128,6 +128,16 @@
 
 这一轮让家长区的导航不再依赖孩子端一级导航。后续如果继续增强，可以把 `parent-shell-nav` 从横向条升级为宽屏左侧栏、移动端顶部 tabs，并把设置子页导航与家长管理导航合并得更像控制台。
 
+## 第六轮孩子端沉浸壳分类
+
+`shell-app` 不再只是“隐藏旧导航 + 展示 Dock”，而是开始输出孩子端页面分类：
+
+- `data-app-page`：当前 Dock 归属页，例如 `playground`、`explore`、`pet`。
+- `data-app-route-page`：真实 SPA 页，例如 `mathpk`、`hanzi`、`home`，为后续子游戏或宠物小屋全屏化预留精确钩子。
+- `data-app-surface`：页面壳类型，当前分为 `home`、`focus`、`studio`、`scene`、`game`。
+
+这一轮只做壳层和间距：`scene/game` 优先接近全屏舞台，`focus/studio/home` 保持可阅读但占满视口。这样做避免把所有页面粗暴改成同一种全屏，也避免破坏游乐场、探索、宠物等页面内部已经存在的独立样式。后续可以按真实页面逐个推进：先做 `/app/playground/*` 和 `/app/explore` 的舞台化，再做 `/app/pet/home` 的宠物房间沉浸化。
+
 ## 验证点
 
 - 静态契约：`node prj/url_routing_and_settings_subpages.test.mjs`

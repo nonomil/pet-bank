@@ -61,7 +61,8 @@ check('settings sections keep existing mount ids', [
     'settings-math-diff',
     'diagnostics-root'
 ].every((id) => html.includes(`id="${id}"`)));
-check('index injects a base href before relative assets on deep routes', /document\.write\(['"`]<base href=/.test(html));
+check('index declares a static base before relative assets on deep routes', /<base\s+id="routeBase"\s+href="\/">/.test(html) && html.indexOf('<base id="routeBase"') < html.indexOf('<link rel="preload"'));
+check('route base script updates the static base element', /getElementById\(['"]routeBase['"]\)/.test(html) && /setAttribute\(['"]href['"],\s*base\)/.test(html));
 check('base href route prefixes include app namespace', /routePrefixes\s*=\s*\[[^\]]*['"]\/app['"]/.test(html));
 check('Pages artifact emits 404 fallback for deep links', /404\.html/.test(artifactJs) && /copyFile\('index\.html',\s*'404\.html'\)/.test(artifactJs));
 

@@ -25,8 +25,11 @@ check('child app bottom dock exposes primary app destinations', [
 check('route shell page sets separate app and parent page groups', /const\s+APP_SHELL_PAGES\s*=\s*new\s+Set/.test(appJs) && /const\s+PARENT_SHELL_PAGES\s*=\s*new\s+Set/.test(appJs));
 check('switchPage applies route shell classes', /function\s+applyRouteShell\s*\(\s*page\s*\)/.test(appJs) && /applyRouteShell\s*\(\s*page\s*\)/.test(appJs) && /classList\.toggle\(\s*['"]shell-app['"]/.test(appJs) && /classList\.toggle\(\s*['"]shell-parent['"]/.test(appJs));
 check('app shell syncs active dock and lightweight status', /\[data-app-dock\]/.test(appJs) && /appShellPoints/.test(appJs) && /appShellChildName/.test(appJs));
+check('app shell marks current app page and surface mode', /function\s+getAppShellSurface\s*\(\s*page\s*\)/.test(appJs) && /dataset\.appPage/.test(appJs) && /dataset\.appSurface/.test(appJs) && /return\s+['"]scene['"]/.test(appJs) && /return\s+['"]game['"]/.test(appJs) && /return\s+['"]focus['"]/.test(appJs));
+check('app shell preserves raw app route page for deep fullscreen pages', /dataset\.appRoutePage\s*=\s*page/.test(appJs) && /delete\s+document\.body\.dataset\.appRoutePage/.test(appJs));
 check('app shell hides legacy top nav and sidebar', /body\.shell-app\s+\.top-nav\s*\{[^}]*display:\s*none/.test(css) && /body\.shell-app\s+\.sidebar\s*\{[^}]*display:\s*none/.test(css));
 check('app shell uses near fullscreen content and bottom dock', /body\.shell-app\s+\.page-shell\s*\{[^}]*max-width:\s*none/.test(css) && /body\.shell-app\s+\.app-bottom-dock\s*\{[^}]*display:\s*flex/.test(css));
+check('app shell has distinct fullscreen surface rules', /body\.shell-app\[data-app-surface="scene"\]\s+\.page-shell/.test(css) && /body\.shell-app\[data-app-surface="game"\]\s+\.page-shell/.test(css) && /body\.shell-app\[data-app-surface="focus"\]\s+\.page-shell/.test(css) && /body\.shell-app\[data-app-page="playground"\]/.test(css) && /min-height:\s*calc\(100svh/.test(css));
 check('parent shell keeps management chrome and hides child primary nav', /body\.shell-parent\s+\.primary-nav\s*\{[^}]*display:\s*none/.test(css) && /body\.shell-parent\s+\.app-shell-bar\s*\{[^}]*display:\s*none/.test(css));
 check('parent shell exposes dedicated management nav', [
     /class="[^"]*parent-shell-nav/.test(html),

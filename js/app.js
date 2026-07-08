@@ -908,6 +908,15 @@ function getParentShellNavKey(page) {
     return 'app';
 }
 
+function getAppShellSurface(page) {
+    const tabPage = PAGE_TO_TAB[page] || page;
+    if (page === 'mathpk' || page === 'hanzi' || page === 'leaderboard') return 'game';
+    if (tabPage === 'explore' || tabPage === 'playground') return 'scene';
+    if (tabPage === 'today' || tabPage === 'learn') return 'focus';
+    if (tabPage === 'pet') return 'studio';
+    return 'home';
+}
+
 function applyRouteShell(page) {
     const shell = getRouteShell(page);
     const tabPage = PAGE_TO_TAB[page] || page;
@@ -915,6 +924,15 @@ function applyRouteShell(page) {
     document.body.classList.toggle('shell-app', shell === 'app');
     document.body.classList.toggle('shell-parent', shell === 'parent');
     document.body.setAttribute('data-route-shell', shell);
+    if (shell === 'app') {
+        document.body.dataset.appPage = tabPage;
+        document.body.dataset.appRoutePage = page;
+        document.body.dataset.appSurface = getAppShellSurface(page);
+    } else {
+        delete document.body.dataset.appPage;
+        delete document.body.dataset.appRoutePage;
+        delete document.body.dataset.appSurface;
+    }
     document.querySelectorAll('[data-app-dock]').forEach((item) => {
         item.classList.toggle('is-current', item.dataset.appDock === tabPage);
         item.setAttribute('aria-current', item.dataset.appDock === tabPage ? 'page' : 'false');

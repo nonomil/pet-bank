@@ -5,21 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>成长伙伴 · 萌宠冒险岛</title>
     <link rel="icon" href="data:,">
+    <base id="routeBase" href="/">
     <script>
         (function () {
-            if (!/^https?:$/.test(window.location.protocol)) return;
-            var path = window.location.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '') || '/';
-            var routePrefixes = ['/app', '/settings', '/today', '/learn', '/pet', '/explore', '/playground', '/parent', '/shop'];
-            for (var i = 0; i < routePrefixes.length; i += 1) {
-                var prefix = routePrefixes[i];
-                var index = path.indexOf(prefix);
-                if (index >= 0 && (index === 0 || path.charAt(index - 1) === '/')) {
-                    var base = path.slice(0, index) || '/';
-                    if (base !== '/' && !/\/$/.test(base)) base += '/';
-                    document.write('<base href="' + base + '">');
-                    break;
+            var baseEl = document.getElementById('routeBase');
+            var base = './';
+            if (/^https?:$/.test(window.location.protocol)) {
+                var path = window.location.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '') || '/';
+                var routePrefixes = ['/app', '/settings', '/today', '/learn', '/pet', '/explore', '/playground', '/parent', '/shop'];
+                for (var i = 0; i < routePrefixes.length; i += 1) {
+                    var prefix = routePrefixes[i];
+                    var index = path.indexOf(prefix);
+                    if (index >= 0 && (index === 0 || path.charAt(index - 1) === '/')) {
+                        base = path.slice(0, index) || '/';
+                        if (base !== '/' && !/\/$/.test(base)) base += '/';
+                        break;
+                    }
                 }
             }
+            if (baseEl) baseEl.setAttribute('href', base);
         })();
     </script>
     <link rel="preload" href="js/pet.js" as="script" fetchpriority="high">

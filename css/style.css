@@ -2431,6 +2431,46 @@ body.shell-app .page-shell {
 body.shell-app .main-content {
     width: 100%;
 }
+body.shell-app {
+    min-height: 100svh;
+    scroll-padding-top: 64px;
+    scroll-padding-bottom: 112px;
+}
+body.shell-app[data-app-surface="home"] {
+    background-color: #f2f8f1;
+}
+body.shell-app[data-app-surface="focus"] {
+    background-color: #faf7ee;
+}
+body.shell-app[data-app-surface="studio"] {
+    background-color: #f3f7fb;
+}
+body.shell-app[data-app-surface="scene"] {
+    background-color: #edf8f6;
+}
+body.shell-app[data-app-surface="game"] {
+    background-color: #f8f3ea;
+}
+body.shell-app[data-app-surface="home"] .page-shell,
+body.shell-app[data-app-surface="focus"] .page-shell,
+body.shell-app[data-app-surface="studio"] .page-shell,
+body.shell-app[data-app-surface="scene"] .page-shell,
+body.shell-app[data-app-surface="game"] .page-shell {
+    min-height: calc(100svh - 58px);
+}
+body.shell-app[data-app-surface="scene"] .page-shell,
+body.shell-app[data-app-surface="game"] .page-shell {
+    padding-left: clamp(12px, 2.2vw, 32px);
+    padding-right: clamp(12px, 2.2vw, 32px);
+}
+body.shell-app[data-app-page="playground"] .page-shell,
+body.shell-app[data-app-page="explore"] .page-shell {
+    padding-top: 10px;
+}
+body.shell-app[data-app-page="playground"] .main-content,
+body.shell-app[data-app-page="explore"] .main-content {
+    min-height: calc(100svh - 176px);
+}
 body.shell-app .app-shell-bar {
     position: sticky;
     top: 0;
