@@ -4024,6 +4024,93 @@ body.no-sidebar .sidebar { display: none; }
     display: grid;
     gap: 16px;
 }
+.settings-subpage-shell {
+    display: grid;
+    grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+.settings-subpage-nav {
+    position: sticky;
+    top: 86px;
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 18px;
+    border: 1px solid rgba(220, 228, 221, 0.86);
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 8px 18px rgba(73, 84, 74, 0.06);
+}
+.settings-subpage-nav-item {
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+.settings-subpage-nav-item:hover,
+.settings-subpage-nav-item:focus-visible {
+    background: rgba(126, 182, 108, 0.1);
+    color: var(--text-primary);
+    outline: none;
+}
+.settings-subpage-nav-item.is-current {
+    background: linear-gradient(135deg, rgba(126, 182, 108, 0.18), rgba(245, 206, 129, 0.2));
+    color: #3f6655;
+    box-shadow: inset 0 0 0 1px rgba(126, 182, 108, 0.18);
+}
+.settings-subpage-panels {
+    min-width: 0;
+}
+.settings-subpage-panel {
+    display: none;
+}
+.settings-subpage-panel.is-active {
+    display: block;
+}
+.settings-home-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+.settings-home-entry {
+    display: grid;
+    gap: 7px;
+    min-height: 132px;
+    padding: 15px;
+    border-radius: 16px;
+    border: 1px solid rgba(220, 228, 221, 0.88);
+    background: rgba(255, 255, 255, 0.82);
+    color: var(--text-primary);
+    text-decoration: none;
+    box-shadow: 0 8px 18px rgba(73, 84, 74, 0.06);
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+.settings-home-entry:hover,
+.settings-home-entry:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(126, 182, 108, 0.42);
+    box-shadow: 0 12px 24px rgba(73, 84, 74, 0.1);
+    outline: none;
+}
+.settings-home-entry-kicker {
+    color: #9a7340;
+    font-size: 11px;
+    font-weight: 900;
+}
+.settings-home-entry strong {
+    font-size: 17px;
+}
+.settings-home-entry span:last-child {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.55;
+}
 .parent-settings-section {
     position: relative;
     overflow: hidden;
@@ -4953,8 +5040,20 @@ body.no-sidebar .sidebar { display: none; }
     .household-summary-grid,
     .household-invite-form,
     .parent-settings-inline-grid,
+    .settings-home-grid,
     .social-redeem-form {
         grid-template-columns: 1fr;
+    }
+    .settings-subpage-shell {
+        grid-template-columns: 1fr;
+    }
+    .settings-subpage-nav {
+        position: static;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .settings-subpage-nav-item {
+        justify-content: center;
+        text-align: center;
     }
     .household-actions,
     .household-issued-invite-card,

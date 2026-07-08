@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>成长伙伴 · 萌宠冒险岛</title>
     <link rel="icon" href="data:,">
+    <script>
+        (function () {
+            if (!/^https?:$/.test(window.location.protocol)) return;
+            var path = window.location.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '') || '/';
+            var routePrefixes = ['/settings', '/today', '/learn', '/pet', '/explore', '/playground', '/parent', '/shop'];
+            for (var i = 0; i < routePrefixes.length; i += 1) {
+                var prefix = routePrefixes[i];
+                var index = path.indexOf(prefix);
+                if (index >= 0 && (index === 0 || path.charAt(index - 1) === '/')) {
+                    var base = path.slice(0, index) || '/';
+                    if (base !== '/' && !/\/$/.test(base)) base += '/';
+                    document.write('<base href="' + base + '">');
+                    break;
+                }
+            }
+        })();
+    </script>
     <link rel="preload" href="js/pet.js" as="script" fetchpriority="high">
     <link rel="preload" href="js/runtime-loader.js" as="script" fetchpriority="high">
     <link rel="preload" href="js/battle-fx.js" as="script" fetchpriority="high">
@@ -178,31 +195,72 @@
                     <summary class="section-menu-trigger">
                         <div class="section-menu-copy">
                             <span class="section-menu-label">家长区导航</span>
-                            <span class="section-menu-current">当前：设置</span>
+                            <span class="section-menu-current">当前：设置首页</span>
                         </div>
                         <span class="section-menu-arrow" aria-hidden="true">▾</span>
                     </summary>
                     <div class="section-menu-panel">
                         <button class="section-menu-item" type="button" onclick="switchPage('works')">成长作品</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('tools')">工具箱</button>
-                        <button class="section-menu-item is-current" type="button" onclick="switchPage('settings')">设置</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('settings')">设置首页</button>
                     </div>
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="家长区快捷导航">
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('works')">成长作品</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('tools')">工具箱</button>
-                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('settings')">设置</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('settings')">设置首页</button>
                 </div>
                 <section class="map-hero" style="margin-bottom:16px;">
                     <div class="map-hero-copy">
-                        <p class="map-eyebrow">设置 / 账号管理</p>
-                        <h2>管理所有孩子的账号</h2>
-                        <p>在这里新增、改名或删除孩子账号。切换账号请点右上角头像。</p>
+                        <p class="map-eyebrow" id="settingsHeroEyebrow">设置 / 家长区</p>
+                        <h2 id="settingsHeroTitle">设置首页</h2>
+                        <p id="settingsHeroCopy">把账号、家庭云端、学习题目和危险操作拆成可直达的子页，先让家长区有清晰边界。</p>
                     </div>
                 </section>
-                <section class="map-stage-panel parent-settings-panel" aria-label="家长设置分区">
-                    <div class="parent-settings-shell">
-                        <section class="parent-settings-section" aria-labelledby="parent-settings-accounts-title">
+                <section class="map-stage-panel parent-settings-panel settings-subpage-shell" aria-label="家长设置分区">
+                    <nav class="settings-subpage-nav" aria-label="设置子页面">
+                        <a class="settings-subpage-nav-item is-current" href="/settings" data-settings-nav="home" onclick="handleSettingsNavClick(event, 'home')">设置首页</a>
+                        <a class="settings-subpage-nav-item" href="/settings/account" data-settings-nav="account" onclick="handleSettingsNavClick(event, 'account')">账号与孩子</a>
+                        <a class="settings-subpage-nav-item" href="/settings/family" data-settings-nav="family" onclick="handleSettingsNavClick(event, 'family')">家庭云端</a>
+                        <a class="settings-subpage-nav-item" href="/settings/learning" data-settings-nav="learning" onclick="handleSettingsNavClick(event, 'learning')">学习与题目</a>
+                        <a class="settings-subpage-nav-item" href="/settings/rules" data-settings-nav="rules" onclick="handleSettingsNavClick(event, 'rules')">规则模板</a>
+                        <a class="settings-subpage-nav-item" href="/settings/advanced" data-settings-nav="advanced" onclick="handleSettingsNavClick(event, 'advanced')">高级操作</a>
+                    </nav>
+                    <div class="parent-settings-shell settings-subpage-panels">
+                        <section class="parent-settings-section settings-subpage-panel is-active" data-settings-section="home" aria-labelledby="parent-settings-home-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">家长区目录</p>
+                                    <h3 id="parent-settings-home-title">设置首页</h3>
+                                </div>
+                                <span class="parent-settings-tag">可直达</span>
+                            </div>
+                            <p class="parent-settings-copy">设置首页只保留入口，不再把账号、云端、学习、规则和危险操作全部堆在同一屏。需要处理哪类事情，就进入对应子页。</p>
+                            <div class="settings-home-grid">
+                                <a class="settings-home-entry" href="/settings/account" onclick="handleSettingsNavClick(event, 'account')">
+                                    <span class="settings-home-entry-kicker">常用</span>
+                                    <strong>账号与孩子</strong>
+                                    <span>新增、改名、删除孩子档案。</span>
+                                </a>
+                                <a class="settings-home-entry" href="/settings/family" onclick="handleSettingsNavClick(event, 'family')">
+                                    <span class="settings-home-entry-kicker">家长账号</span>
+                                    <strong>家庭云端</strong>
+                                    <span>登录、同步、家庭协作和好友边界。</span>
+                                </a>
+                                <a class="settings-home-entry" href="/settings/learning" onclick="handleSettingsNavClick(event, 'learning')">
+                                    <span class="settings-home-entry-kicker">低频调整</span>
+                                    <strong>学习与题目</strong>
+                                    <span>学习单模式与数学 PK 难度。</span>
+                                </a>
+                                <a class="settings-home-entry" href="/settings/advanced" onclick="handleSettingsNavClick(event, 'advanced')">
+                                    <span class="settings-home-entry-kicker">默认隐藏</span>
+                                    <strong>高级操作</strong>
+                                    <span>备份、诊断、覆盖类操作集中收纳。</span>
+                                </a>
+                            </div>
+                        </section>
+
+                        <section class="parent-settings-section settings-subpage-panel" data-settings-section="account" aria-labelledby="parent-settings-accounts-title">
                             <div class="parent-settings-section-head">
                                 <div>
                                     <p class="parent-settings-kicker">孩子档案</p>
@@ -214,7 +272,7 @@
                             <div id="settings-account-list"></div>
                         </section>
 
-                        <section class="parent-settings-section" aria-labelledby="parent-settings-cloud-title">
+                        <section class="parent-settings-section settings-subpage-panel" data-settings-section="family" aria-labelledby="parent-settings-cloud-title">
                             <div class="parent-settings-section-head">
                                 <div>
                                     <p class="parent-settings-kicker">同步与边界</p>
@@ -230,7 +288,7 @@
                             </div>
                         </section>
 
-                        <section class="parent-settings-section" aria-labelledby="parent-settings-learning-title">
+                        <section class="parent-settings-section settings-subpage-panel" data-settings-section="learning" aria-labelledby="parent-settings-learning-title">
                             <div class="parent-settings-section-head">
                                 <div>
                                     <p class="parent-settings-kicker">学习体验</p>
@@ -245,7 +303,7 @@
                             </div>
                         </section>
 
-                        <section class="parent-settings-section parent-settings-section-muted" aria-labelledby="parent-settings-rules-title">
+                        <section class="parent-settings-section parent-settings-section-muted settings-subpage-panel" data-settings-section="rules" aria-labelledby="parent-settings-rules-title">
                             <div class="parent-settings-section-head">
                                 <div>
                                     <p class="parent-settings-kicker">积分规则</p>
@@ -259,7 +317,7 @@
                             </div>
                         </section>
 
-                        <section class="parent-settings-section parent-settings-section-danger" aria-labelledby="parent-settings-advanced-title">
+                        <section class="parent-settings-section parent-settings-section-danger settings-subpage-panel" data-settings-section="advanced" aria-labelledby="parent-settings-advanced-title">
                             <div class="parent-settings-section-head">
                                 <div>
                                     <p class="parent-settings-kicker">备份与诊断</p>

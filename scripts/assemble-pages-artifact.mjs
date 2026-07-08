@@ -73,9 +73,9 @@ function shouldExclude(src) {
     return false;
 }
 
-function copyFile(fileName) {
+function copyFile(fileName, destName = fileName) {
     const src = path.join(repoRoot, fileName);
-    const dest = path.join(outDir, fileName);
+    const dest = path.join(outDir, destName);
     if (!fs.existsSync(src)) {
         throw new Error(`Missing required file: ${fileName}`);
     }
@@ -104,6 +104,7 @@ fs.mkdirSync(outDir, { recursive: true });
 for (const fileName of ['index.html', 'admin.html', 'cloud-config.local.js']) {
     copyFile(fileName);
 }
+copyFile('index.html', '404.html');
 
 for (const dirName of ['css', 'js', 'assets', 'data']) {
     copyDir(dirName);

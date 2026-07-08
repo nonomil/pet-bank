@@ -650,6 +650,216 @@ const PAGE_TO_TAB = {
     works: 'settings', tools: 'settings', settings: 'settings'   // 低频作品/工具/设置归右上角家长区入口
 };
 
+const SETTINGS_SECTION_ROUTES = {
+    home: '/settings',
+    account: '/settings/account',
+    family: '/settings/family',
+    learning: '/settings/learning',
+    rules: '/settings/rules',
+    advanced: '/settings/advanced'
+};
+
+const SETTINGS_SECTION_LABELS = {
+    home: '设置首页',
+    account: '账号与孩子',
+    family: '家庭云端',
+    learning: '学习与题目',
+    rules: '规则模板',
+    advanced: '高级与危险操作'
+};
+
+const PAGE_ROUTE_MAP = {
+    map: '/',
+    today: '/today',
+    'learning-sheet': '/today/learning-sheet',
+    review: '/today/review',
+    reward: '/today/reward',
+    shop: '/today/shop',
+    inventory: '/today/inventory',
+    learn: '/learn',
+    'learn-pack': '/learn/pack',
+    'learn-plan': '/learn/plan',
+    'learn-lesson': '/learn/lesson',
+    'learn-print': '/learn/print',
+    pet: '/pet',
+    home: '/pet/home',
+    walk: '/pet/walk',
+    card: '/pet/cards',
+    'home-visit': '/pet/home-visit',
+    explore: '/explore',
+    playground: '/playground',
+    mathpk: '/playground/math-pk',
+    hanzi: '/playground/hanzi',
+    leaderboard: '/playground/leaderboard',
+    works: '/parent/works',
+    tools: '/parent/tools',
+    settings: '/settings'
+};
+
+const ROUTE_TO_PAGE = {
+    '/': { page: 'map' },
+    '/today': { page: 'today' },
+    '/today/learning-sheet': { page: 'learning-sheet' },
+    '/today/review': { page: 'review' },
+    '/today/reward': { page: 'reward' },
+    '/today/shop': { page: 'shop' },
+    '/today/inventory': { page: 'inventory' },
+    '/shop': { page: 'shop' },
+    '/learn': { page: 'learn' },
+    '/learn/pack': { page: 'learn-pack' },
+    '/learn/plan': { page: 'learn-plan' },
+    '/learn/lesson': { page: 'learn-lesson' },
+    '/learn/print': { page: 'learn-print' },
+    '/pet': { page: 'pet' },
+    '/pet/home': { page: 'home' },
+    '/pet/walk': { page: 'walk' },
+    '/pet/cards': { page: 'card' },
+    '/pet/home-visit': { page: 'home-visit' },
+    '/explore': { page: 'explore' },
+    '/playground': { page: 'playground' },
+    '/playground/math-pk': { page: 'mathpk' },
+    '/playground/hanzi': { page: 'hanzi' },
+    '/playground/leaderboard': { page: 'leaderboard' },
+    '/parent/works': { page: 'works' },
+    '/parent/tools': { page: 'tools' },
+    '/settings': { page: 'settings', settingsSection: 'home' },
+    '/settings/account': { page: 'settings', settingsSection: 'account' },
+    '/settings/family': { page: 'settings', settingsSection: 'family' },
+    '/settings/learning': { page: 'settings', settingsSection: 'learning' },
+    '/settings/rules': { page: 'settings', settingsSection: 'rules' },
+    '/settings/advanced': { page: 'settings', settingsSection: 'advanced' }
+};
+
+let activeSettingsSection = 'home';
+
+function canUsePathRouting() {
+    return window.location && /^https?:$/.test(window.location.protocol);
+}
+
+function cleanRoutePath(pathname) {
+    let path = '/';
+    try {
+        path = decodeURIComponent(pathname || '/');
+    } catch (error) {
+        path = pathname || '/';
+    }
+    path = path.replace(/\/index\.html$/i, '/').replace(/\/+$/g, '') || '/';
+    return path;
+}
+
+function normalizeRoutePath(pathname) {
+    const path = cleanRoutePath(pathname);
+    if (ROUTE_TO_PAGE[path]) return path;
+    const segments = path.split('/').filter(Boolean);
+    for (let i = 1; i < segments.length; i += 1) {
+        const candidate = '/' + segments.slice(i).join('/');
+        if (ROUTE_TO_PAGE[candidate]) return candidate;
+    }
+    return path;
+}
+
+function inferRouteBase(pathname) {
+    const path = cleanRoutePath(pathname);
+    if (ROUTE_TO_PAGE[path]) return '';
+    const routePaths = Object.keys(ROUTE_TO_PAGE).filter(routePath => routePath !== '/').sort((a, b) => b.length - a.length);
+    for (const routePath of routePaths) {
+        if (path === routePath || path.endsWith(routePath)) {
+            return path.slice(0, -routePath.length).replace(/\/+$/g, '');
+        }
+    }
+    if (/\/index\.html$/i.test(pathname || '')) {
+        return (pathname || '').replace(/\/index\.html$/i, '').replace(/\/+$/g, '');
+    }
+    if (path !== '/' && !/\.[a-z0-9]+$/i.test(path.split('/').pop() || '')) {
+        return path;
+    }
+    return '';
+}
+
+function withRouteBase(routePath) {
+    const base = inferRouteBase(window.location.pathname || '/');
+    if (!base) return routePath;
+    if (routePath === '/') return base || '/';
+    return `${base}${routePath}`;
+}
+
+function cloneRoute(route) {
+    return Object.assign({}, route || { page: 'map' });
+}
+
+function resolveRouteFromLocation(locationLike) {
+    const loc = locationLike || window.location;
+    const hashPath = loc && loc.hash && loc.hash.startsWith('#/')
+        ? loc.hash.slice(1).replace(/\/+$/g, '') || '/'
+        : '';
+    const routePath = hashPath || normalizeRoutePath(loc ? loc.pathname : '/');
+    return cloneRoute(ROUTE_TO_PAGE[routePath] || { page: 'map' });
+}
+
+function normalizeSettingsSection(section) {
+    return SETTINGS_SECTION_ROUTES[section] ? section : 'home';
+}
+
+function getPathForPage(page, options = {}) {
+    if (page === 'settings') {
+        return SETTINGS_SECTION_ROUTES[normalizeSettingsSection(options.settingsSection || activeSettingsSection)];
+    }
+    return PAGE_ROUTE_MAP[page] || PAGE_ROUTE_MAP.map;
+}
+
+function updateBrowserRoute(page, options = {}) {
+    if (!canUsePathRouting() || options.updateHistory === false) return;
+    const path = withRouteBase(getPathForPage(page, options));
+    const search = window.location.search || '';
+    const nextUrl = `${path}${search}`;
+    const currentUrl = `${window.location.pathname}${window.location.search}`;
+    if (nextUrl === currentUrl) return;
+    const state = { page, settingsSection: options.settingsSection || null };
+    if (options.replace) {
+        window.history.replaceState(state, '', nextUrl);
+    } else {
+        window.history.pushState(state, '', nextUrl);
+    }
+}
+
+function applySettingsSection(section) {
+    activeSettingsSection = normalizeSettingsSection(section);
+    const label = SETTINGS_SECTION_LABELS[activeSettingsSection] || SETTINGS_SECTION_LABELS.home;
+    document.querySelectorAll('#page-settings .settings-subpage-panel[data-settings-section]').forEach((panel) => {
+        panel.classList.toggle('is-active', panel.dataset.settingsSection === activeSettingsSection);
+    });
+    document.querySelectorAll('#page-settings [data-settings-nav]').forEach((item) => {
+        item.classList.toggle('is-current', item.dataset.settingsNav === activeSettingsSection);
+        if (item.tagName === 'A') {
+            item.setAttribute('aria-current', item.dataset.settingsNav === activeSettingsSection ? 'page' : 'false');
+        }
+    });
+    document.querySelectorAll('#page-settings .section-menu-current').forEach((node) => {
+        node.textContent = `当前：${label}`;
+    });
+    const title = document.getElementById('settingsHeroTitle');
+    const eyebrow = document.getElementById('settingsHeroEyebrow');
+    const copy = document.getElementById('settingsHeroCopy');
+    if (eyebrow) eyebrow.textContent = activeSettingsSection === 'home' ? '设置 / 家长区' : `设置 / ${label}`;
+    if (title) title.textContent = activeSettingsSection === 'home' ? '设置首页' : label;
+    if (copy) {
+        const copies = {
+            home: '把账号、家庭云端、学习题目和危险操作拆成可直达的子页，先让家长区有清晰边界。',
+            account: '新增、改名或删除孩子账号；切换当前孩子仍然使用右上角头像。',
+            family: '登录、家庭同步、好友串门等能力集中在这里，避免散落到孩子主流程。',
+            learning: '管理学习打勾模式、数学 PK 难度等会影响孩子日常体验的配置。',
+            rules: '后续把阅读、数学、复盘、整理等加分/扣分项做成可编辑模板。',
+            advanced: '数据导入、导出、云端诊断和覆盖类操作统一收纳到高级区。'
+        };
+        copy.textContent = copies[activeSettingsSection] || copies.home;
+    }
+}
+
+function handleSettingsNavClick(event, section) {
+    if (event) event.preventDefault();
+    switchPage('settings', { settingsSection: normalizeSettingsSection(section) });
+}
+
 const TOP_HUB_MENU_CONFIG = {
     today: [
         { page: 'today', label: '今日打卡' },
@@ -778,9 +988,12 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-function switchPage(page) {
+function switchPage(page, options = {}) {
     closeSectionMenus();
     closeTopHubMenus();
+    if (page === 'settings') {
+        activeSettingsSection = normalizeSettingsSection(options.settingsSection || activeSettingsSection || 'home');
+    }
     // 离开宠物小屋：标记 exit（写 last_home_ts，下次进入结算）
     const prevPageEl = document.querySelector('.page.active');
     const prevPage = prevPageEl ? prevPageEl.id.replace('page-', '') : null;
@@ -809,6 +1022,12 @@ function switchPage(page) {
     // 首页保留侧栏状态感；其他 tab 继续沿用全宽内容页。
     document.body.classList.toggle('no-sidebar', page !== 'map');
     document.body.classList.toggle('learn-mode', page === 'learn' || page.startsWith('learn-'));
+    updateBrowserRoute(page, {
+        settingsSection: page === 'settings' ? activeSettingsSection : null,
+        replace: options.replace === true,
+        updateHistory: options.updateHistory
+    });
+    if (page === 'settings') applySettingsSection(activeSettingsSection);
     void preparePage(page);
     /* legacy eager page activation kept disabled after runtime-loader migration
     if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
@@ -995,6 +1214,7 @@ function runPageActivation(page) {
             })
             .catch(function () {});
     }
+    if (page === 'settings') applySettingsSection(activeSettingsSection);
 }
 
 async function preparePage(page) {
@@ -2668,11 +2888,16 @@ window.openPetWalk = openPetWalk;
 window.handlePrimaryNavClick = handlePrimaryNavClick;
 window.handleTopHubMenuSelect = handleTopHubMenuSelect;
 window.handleTopHubMenuAction = handleTopHubMenuAction;
+window.handleSettingsNavClick = handleSettingsNavClick;
 window.renderAll = renderAll;
 window.saveAppState = saveAppState;
 
 // ============ 初始化 ============
 async function init() {
+    const initialRoute = resolveRouteFromLocation(window.location);
+    if (initialRoute.page === 'settings') {
+        activeSettingsSection = normalizeSettingsSection(initialRoute.settingsSection);
+    }
     if (window.ProfileManager && typeof ProfileManager.ensureDefault === 'function') {
         ProfileManager.ensureDefault();
     }
@@ -2693,7 +2918,19 @@ async function init() {
     renderAll();
     // 初始化宝箱系统
     if (window.TreasureChest) TreasureChest.init();
+    switchPage(initialRoute.page, {
+        settingsSection: initialRoute.settingsSection,
+        replace: true
+    });
     if (window.lucide) lucide.createIcons();
 }
 
 window.addEventListener('DOMContentLoaded', init);
+window.addEventListener('popstate', function () {
+    const route = resolveRouteFromLocation(window.location);
+    switchPage(route.page, {
+        settingsSection: route.settingsSection,
+        replace: true,
+        updateHistory: false
+    });
+});
