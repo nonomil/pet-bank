@@ -39,12 +39,17 @@ cd 宠物积分系统/
 node scripts/run-full-regression.mjs
 ```
 
-覆盖 33 项测试：
+覆盖 38 项测试：
 - `prj/regression_runner_contract.test.mjs` — 回归合约
 - `prj/runtime_loader_route_base_contract.test.mjs` — Runtime Loader 路由基准合约
 - `prj/audio_battle_feedback_contract.test.mjs` — 音频/战斗反馈
+- `prj/test_homepage_focus_layout_contract.py` — 首页焦点 Hero 布局
+- `prj/url_routing_and_settings_subpages.test.mjs` — 路由与设置子页
 - `prj/math_pk_guided_feedback_contract.test.mjs` — 数学PK/探索小题引导式反馈
 - `prj/math_pk_support_cards_contract.test.mjs` — 数学PK支援卡与奖励星轨
+- `prj/playground_hanzi_hub.test.mjs` — 游乐场与汉字中心导航
+- `prj/vocab_registry_contract.test.mjs` — 英语词库注册层
+- `prj/word_memory_external_vocab_merge_contract.test.mjs` — 单词记忆外部词库合并
 - `prj/gameplay_core_flows_simulation.mjs` — 核心玩法流程
 - `prj/full_game_loop_simulation.mjs` — 完整游戏循环
 - `prj/learning_and_card_progression_simulation.mjs` — 学习+卡牌进度
@@ -103,9 +108,14 @@ node scripts/playwright-browser.mjs
 | `prj/regression_p1.test.mjs` | P1 回归 |
 | `prj/runtime_loader_route_base_contract.test.mjs` | Runtime Loader 路由基准 |
 | `prj/audio_battle_feedback_contract.test.mjs` | 音频战斗反馈 |
+| `prj/test_homepage_focus_layout_contract.py` | 首页焦点 Hero 布局 |
+| `prj/url_routing_and_settings_subpages.test.mjs` | 路由与设置子页 |
 | `prj/exploration_math_feedback.test.mjs` | 探索数学反馈 |
 | `prj/exploration_battle_guided_feedback.test.mjs` | 探索战斗失败复盘 |
 | `prj/math_pk_support_cards_contract.test.mjs` | 数学PK支援卡与奖励星轨 |
+| `prj/playground_hanzi_hub.test.mjs` | 游乐场与汉字中心导航 |
+| `prj/vocab_registry_contract.test.mjs` | 英语词库注册层 |
+| `prj/word_memory_external_vocab_merge_contract.test.mjs` | 单词记忆外部词库合并 |
 | `prj/pinyin_star_scout_voice_contract.test.mjs` | 拼音块原型本地语音链路 |
 | `prj/word_memory_map_bomb_throw.test.mjs` | 单词记忆地图投掷 |
 | `prj/word_memory_map_movement_fx.test.mjs` | 单词记忆地图移动动效 |
@@ -152,12 +162,14 @@ node scripts/playwright-browser.mjs
 
 | 改了什么 | 跑什么 |
 |---------|--------|
-| app.js（任务/积分/路由） | `regression_p1.test.mjs` + `gameplay_core_flows_simulation.mjs` |
+| app.js（任务/积分/路由） | `regression_p1.test.mjs` + `test_homepage_focus_layout_contract.py` + `url_routing_and_settings_subpages.test.mjs` + `playground_hanzi_hub.test.mjs` + `gameplay_core_flows_simulation.mjs` |
 | pet.js（宠物养成） | `pet_card_image_loading_regression.test.mjs` + `pet_archive_standalone_simulation.mjs` |
 | home.js（宠物小屋） | `edge_states_standalone_simulation.mjs` |
 | exploration.js（探索） | `exploration_battle_guided_feedback.test.mjs` + `exploration_math_feedback.test.mjs` + `exploration_story_and_state_resume_simulation.mjs` |
+| `data/vocab/english-minecraft/*`（英语词库注册层） | `vocab_registry_contract.test.mjs` |
 | `prj/拼音块收集台原型/game.js`（拼音块原型） | `pinyin_star_scout_voice_contract.test.mjs` + `prj/拼音块收集台原型/verify.mjs` |
 | `prj/单词记忆射击场原型/game.js`（单词记忆地图） | `word_memory_map_bomb_throw.test.mjs` + `word_memory_map_movement_fx.test.mjs` + `word_memory_map_rewards_ui.test.mjs` + `word_memory_map_voice_contract.test.mjs` + `word_memory_map_voice_playback.test.mjs` + `word_memory_map_walk_cycle.test.mjs` + `word_memory_minecraft_adapter_contract.test.mjs` + `prj/单词记忆射击场原型/verify.mjs` |
+| `data/vocab/word-memory-combined/*`（单词记忆外部词库层） | `word_memory_external_vocab_merge_contract.test.mjs` + `word_memory_minecraft_adapter_contract.test.mjs` |
 | `prj/学习机玩法原型/game.js`（学习机原型） | `learning_arcade_hanzi_voice_reuse.test.mjs` + `prj/学习机玩法原型/verify.mjs` + `prj/学习机玩法原型/scripts/test-full-prototype-smoke.mjs` |
 | `prj/prototype-voice-workflow/`（共享语音流水线） | `shared_prototype_voice_workflow.test.mjs` |
 | card-arena/collection（卡牌） | `task4_slot_compat.test.mjs` + `learning_and_card_progression_simulation.mjs` |
