@@ -75,6 +75,10 @@
         return a;
     }
     function _pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function _resolveLocalAsset(path) {
+        if (!path) return path;
+        return window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(path) : path;
+    }
 
     function _backgroundForRound(round) {
         const safeRound = Math.max(1, Number(round || 1));
@@ -86,7 +90,7 @@
         const ov = document.getElementById('hz-overlay');
         if (!ov) return;
         const bg = _backgroundForRound(round);
-        const bgUrl = new URL(bg, document.baseURI).href;
+        const bgUrl = _resolveLocalAsset(bg);
         ov.style.setProperty('--hz-bg', `url("${bgUrl}")`);
         ov.dataset.hzBg = bg;
     }
@@ -108,7 +112,7 @@
     async function _loadBank() {
         if (state.bankLoaded) return state.bank;
         try {
-            const resp = await fetch(CONFIG.QUESTIONS_URL);
+            const resp = await fetch(_resolveLocalAsset(CONFIG.QUESTIONS_URL));
             if (resp.ok) {
                 state.bank = await resp.json();
                 state.bankLoaded = true;
@@ -119,7 +123,7 @@
         // 合并 HSK 题库（levels.hsk1 → 启蒙关并存）
         if (state.bank) {
             try {
-                const r2 = await fetch(CONFIG.HSK_URL);
+                const r2 = await fetch(_resolveLocalAsset(CONFIG.HSK_URL));
                 if (r2.ok) {
                     const hsk = await r2.json();
                     if (hsk && hsk.levels && hsk.levels.hsk1) {
@@ -155,7 +159,7 @@
     function _renderEmoji(q) {
         const char = (q && (q.char || q.answer)) || '';
         if (char && HANZI_IMG_CHARS.has(char)) {
-            return `<img src="assets/ui/hanzi-img/${char}.png" class="hz-emoji-img" alt="${char}">`;
+            return `<img src="${_resolveLocalAsset(`assets/ui/hanzi-img/${char}.png`)}" class="hz-emoji-img" alt="${char}">`;
         }
         return (q && q.emoji) || '';
     }

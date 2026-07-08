@@ -464,7 +464,7 @@ const PI_DEFAULT_EMOJI = { add: '⭐', deduct: '⚠️' };
 
 async function loadPointItems() {
     try {
-        const resp = await fetch('data/point-items.json');
+        const resp = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/point-items.json') : 'data/point-items.json');
         if (resp.ok) {
             const data = await resp.json();
             pointItems.add = Array.isArray(data.add) ? data.add : [];
@@ -2673,35 +2673,58 @@ function handleBattleAnimate(e) {
         play('battleStart');
         pulse(modal, 'battle-cast', 520);
     } else if (type === 'player-attack') {
+        play('dashWhoosh');
         play('playerAttack');
         // 玩家攻击 → 怪物受击抖动
         if (e.detail.damage) showBattleDamage(e.detail.damage, 'monster');
+        if (e.detail.damage) play('battleImpact');
         pulse(monsterEl, 'battle-hit', 500);
     } else if (type === 'skill-cast') {
+        play('dashWhoosh');
         play('skillCast');
         if (e.detail.damage) showBattleDamage(e.detail.damage, 'monster');
+        if (e.detail.damage) play('battleImpact');
         pulse(petEl, 'battle-cast', 520);
         pulse(monsterEl, 'battle-hit', 500);
     } else if (type === 'defend') {
         play('defend');
+        play('shieldSpark');
         pulse(petEl, 'battle-guard', 650);
     } else if (type === 'item-use') {
         play('itemUse');
+        if (e.detail.heal) play('healPulse');
+        play('shieldSpark');
         pulse(petEl, 'battle-guard', 650);
     } else if (type === 'enemy-attack') {
+        play('dashWhoosh');
         play('enemyAttack');
         // 敌人攻击 → 宠物受击抖动 + 红闪
         if (e.detail.damage) showBattleDamage(e.detail.damage, 'pet');
+        if (e.detail.damage) {
+            play('battleImpact');
+            play('stunPop');
+        }
         pulse(petEl, 'battle-hit', 500);
         if (modal) {
             pulse(modal, 'battle-flash-red', 500);
         }
     } else if (type === 'battle-win') {
+        play('roundWinCue');
         play('battleWin');
+        play('rewardFanfare');
+        play('victoryBurst');
         pulse(modal, 'battle-win-glow', 900);
     } else if (type === 'battle-lose') {
+        play('roundLoseCue');
         play('battleLose');
+        play('faintDrop');
         pulse(modal, 'battle-lose-dim', 900);
+    }
+}
+
+function playGlobalSfx(name) {
+    if (window.sfx && typeof window.sfx.play === 'function') {
+        window.sfx.play(name);
     }
 }
 
@@ -2793,6 +2816,7 @@ async function renderInventoryPage() {
 function showItemDetail(itemId) {
     const item = InventorySystem.getItemData(itemId);
     if (!item) return;
+    playGlobalSfx('itemInspect');
     const count = InventorySystem.getCount(itemId);
     let actionBtn = '';
     if (item.type === 'consumable') {
@@ -2853,6 +2877,9 @@ function showLevelUpAnimation(level) {
         </div>
     `;
     document.body.appendChild(overlay);
+    playGlobalSfx('levelup');
+    playGlobalSfx('rewardClaim');
+    playGlobalSfx('victoryBurst');
 
     // 撒彩色纸屑
     const colors = ['#FFD700','#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8'];

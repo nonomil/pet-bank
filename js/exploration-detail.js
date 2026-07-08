@@ -17,7 +17,7 @@ const ExplorationDetail = (function () {
     function _ensureCmathPool() {
         if (CMATH_POOL || _cmathLoading) return;
         _cmathLoading = true;
-        fetch('data/math-cmath.json')
+        fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/math-cmath.json') : 'data/math-cmath.json')
             .then(r => r.json())
             .then(d => { CMATH_POOL = d.grades || {}; _cmathLoading = false; })
             .catch(() => { _cmathLoading = false; });
@@ -36,7 +36,7 @@ const ExplorationDetail = (function () {
         if (_storiesLoadingPromise) return _storiesLoadingPromise;
         _storiesLoadingPromise = (async () => {
             try {
-                const results = await Promise.all(STORY_SCENE_IDS.map(id => fetch(`data/stories/${id}.json`).then(r => r.json())));
+                const results = await Promise.all(STORY_SCENE_IDS.map(id => fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(`data/stories/${id}.json`) : `data/stories/${id}.json`).then(r => r.json())));
                 results.forEach((s, i) => {
                     if (s && s.events) sceneEvents[STORY_SCENE_IDS[i]] = s.events;
                     if (s && s.ending_text) SCENE_ENDING[STORY_SCENE_IDS[i]] = s.ending_text;

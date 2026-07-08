@@ -74,7 +74,7 @@ const HomeSystem = (function () {
     // 从 data/furniture.json 加载家具目录，建立 id 索引，并归一化 ownership
     async function loadCatalog() {
         try {
-            const res = await fetch('data/furniture.json');
+            const res = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/furniture.json') : 'data/furniture.json');
             if (!res.ok) throw new Error('furniture.json HTTP ' + res.status);
             const data = await res.json();
             furnitureCatalog = Array.isArray(data.furniture) ? data.furniture : [];

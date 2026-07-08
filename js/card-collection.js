@@ -196,7 +196,7 @@ const CardCollection = (function() {
     function loadLoreData() {
         if (_loreLoadPromise) return _loreLoadPromise;
 
-        _loreLoadPromise = fetch('data/pokedex-lore-draft.json')
+        _loreLoadPromise = fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/pokedex-lore-draft.json') : 'data/pokedex-lore-draft.json')
             .then((resp) => {
                 if (!resp.ok) throw new Error(`lore fetch failed: ${resp.status}`);
                 return resp.json();

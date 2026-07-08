@@ -19,7 +19,7 @@ const TreasureChest = (function () {
 
     async function load() {
         try {
-            const resp = await fetch('data/items.json');
+            const resp = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/items.json') : 'data/items.json');
             const data = await resp.json();
             itemsData = data.items || [];
         } catch (e) {

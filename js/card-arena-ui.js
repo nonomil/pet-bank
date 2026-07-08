@@ -32,6 +32,12 @@ const CardArenaUI = (function () {
     let stagesCache = null;       // arena-stages.json 缓存
     let pendingStageId = null;    // 当前正在打的关卡 id（null = 自由对战/随机敌人）
 
+    function playSfx(name) {
+        if (window.sfx && typeof window.sfx.play === 'function') {
+            window.sfx.play(name);
+        }
+    }
+
     // 读进度（带兜底：默认解锁第 1 关）
     function getProgress() {
         try {
@@ -110,7 +116,7 @@ const CardArenaUI = (function () {
     async function _loadStages() {
         if (stagesCache) return stagesCache;
         try {
-            const res = await fetch('data/arena-stages.json');
+            const res = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/arena-stages.json') : 'data/arena-stages.json');
             stagesCache = await res.json();
         } catch (e) {
             stagesCache = null;
@@ -253,16 +259,20 @@ const CardArenaUI = (function () {
         }).join('');
         grid.innerHTML = flowSteps + ticketBar + freePlayCard + stagesHtml;
         modal.classList.add('show');
+        playSfx('trainingUnlock');
+        playSfx('uiOpen');
     }
 
     function closeStages() {
         const m = document.getElementById('arenaStagesModal');
         if (m) m.classList.remove('show');
+        playSfx('uiClose');
     }
 
     // 点关卡 → 进入选队（敌人 = 该关 enemies）
     function enterStage(stageId) {
         if (!isUnlocked(stageId)) return;
+        playSfx('choiceConfirm');
         // 对战每日 3 场免费 / profile；用完后可凭 arena_ticket（额外券）续战
         if (!_payArenaEntry()) return;
         pendingStageId = stageId;
@@ -393,8 +403,9 @@ const CardArenaUI = (function () {
     // 取 species 立绘图（imageStages['2'] 终极态 / imageUrl）
     function _speciesImg(sp) {
         if (!sp) return '';
-        if (sp.imageStages && sp.imageStages['2']) return sp.imageStages['2'];
-        return sp.imageUrl || '';
+        const raw = (sp.imageStages && sp.imageStages['2']) || sp.imageUrl || '';
+        if (!raw) return '';
+        return window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(raw) : raw;
     }
 
     // 稀有度边框 class
@@ -515,7 +526,7 @@ const CardArenaUI = (function () {
                 <div class="arena-pick-card ${_rarityCls(sp)}" data-id="${sp.id}" onclick="CardArenaUI.togglePick('${sp.id}')">
                     <span class="pick-badge">✓</span>
                     ${img
-                        ? `<img class="pick-img" src="${img}" alt="${sp.name}" onerror="this.style.display='none';this.parentElement.querySelector('.pick-emoji').style.display=''">`
+                        ? `<img class="pick-img" src="${img}" alt="${sp.name}" onerror="this.style.display='none';var fallback=this.parentElement&&this.parentElement.querySelector('.pick-emoji');if(fallback)fallback.style.display=''">`
                         : ''}
                     <div class="pick-emoji" style="${img ? 'display:none' : ''}">${sp.emoji || '🐾'}</div>
                     <div class="pick-name">${sp.name}</div>
@@ -526,12 +537,17 @@ const CardArenaUI = (function () {
 
         _updateTeamFooter();
         modal.classList.add('show');
+        playSfx('questionReveal');
+        playSfx('uiOpen');
+        playSfx('cardFlip');
+        playSfx('spotlightPulse');
     }
 
     function togglePick(id) {
         const idx = selectedIds.indexOf(id);
         if (idx >= 0) {
             selectedIds.splice(idx, 1);
+            playSfx('teamDeselect');
         } else {
             if (selectedIds.length >= TEAM_SIZE) {
                 if (typeof showToast === 'function') showToast('已选满 ' + TEAM_SIZE + ' 只');
@@ -548,6 +564,10 @@ const CardArenaUI = (function () {
                 return;
             }
             selectedIds.push(id);
+            playSfx('teamSelect');
+            playSfx('cardFlip');
+            if (selectedIds.length === TEAM_SIZE) playSfx('duelReady');
+            playSfx('choiceConfirm');
         }
         // 同步 DOM 选中态
         document.querySelectorAll('#arenaTeamGrid .arena-pick-card').forEach(el => {
@@ -575,6 +595,7 @@ const CardArenaUI = (function () {
 
     function confirmTeam() {
         if (selectedIds.length !== TEAM_SIZE) return;
+        playSfx('choiceConfirm');
 
         // ===== PvP 轮流选队分支 =====
         if (pvpMode === 'pickA') {
@@ -605,6 +626,7 @@ const CardArenaUI = (function () {
             lastDamageEvents = [];
             lastMoveText = '';
             uiLocked = false;
+            playSfx('challengeStart');
             openBattleModal();
             return;
         }
@@ -624,11 +646,13 @@ const CardArenaUI = (function () {
         lastDamageEvents = [];
         lastMoveText = '';
         uiLocked = false;
+        playSfx('challengeStart');
         openBattleModal();
     }
 
     function closeTeamModal() {
         document.getElementById('arenaTeamModal').classList.remove('show');
+        playSfx('uiClose');
         // PvP 选队中途关闭：重置 PvP 状态，避免脏数据残留
         if (pvpMode === 'pickA' || pvpMode === 'pickB') {
             pvpMode = 'off';
@@ -643,10 +667,12 @@ const CardArenaUI = (function () {
         if (!modal) return;
         modal.classList.add('show');
         renderBattle();
+        playSfx('battleStart');
     }
 
     function closeBattleModal() {
         document.getElementById('arenaBattleModal').classList.remove('show');
+        playSfx('uiClose');
     }
 
     // 取当前上场 combatant
@@ -763,7 +789,7 @@ const CardArenaUI = (function () {
         return `
             <div class="arena-fighter-art">
                 ${img
-                    ? `<img class="arena-avatar" src="${img}" alt="${c.name}" onerror="this.style.display='none';this.parentElement.querySelector('.arena-fighter-emoji').style.display=''">`
+                    ? `<img class="arena-avatar" src="${img}" alt="${c.name}" onerror="this.style.display='none';var fallback=this.parentElement&&this.parentElement.querySelector('.arena-fighter-emoji');if(fallback)fallback.style.display=''">`
                     : ''}
                 <div class="arena-fighter-emoji" style="${img ? 'display:none' : ''}">🐾</div>
             </div>
@@ -800,7 +826,7 @@ const CardArenaUI = (function () {
                  ${clickAttr}
                  title="${fainted ? '已倒下' : (active ? '上场中' : '点击换人（耗回合）')}">
                 ${img
-                    ? `<img class="bench-img" src="${img}" alt="${c.name}" onerror="this.style.display='none';this.parentElement.querySelector('.bench-emoji').style.display=''">`
+                    ? `<img class="bench-img" src="${img}" alt="${c.name}" onerror="this.style.display='none';var fallback=this.parentElement&&this.parentElement.querySelector('.bench-emoji');if(fallback)fallback.style.display=''">`
                     : `<span class="bench-emoji">🐾</span>`}
                 <div class="bench-hp"><div class="bench-hp-fill" style="width:${_hpPct(c)}%"></div></div>
             </div>
@@ -1056,6 +1082,7 @@ const CardArenaUI = (function () {
     // 增量取事件 → 出招提示 → 浮动伤害 → 解锁 → 重渲染 → 结算
     function _animateAndRender(st, beforeLogLen) {
         const newEvents = st.log.slice(beforeLogLen);
+        _playArenaSfx(newEvents, st);
         // 据最新一回合事件刷新出招提示大字（持续到下一动作）
         const moveText = _moveTextFromEvents(newEvents, st);
         if (moveText) lastMoveText = moveText;
@@ -1065,6 +1092,75 @@ const CardArenaUI = (function () {
         _popDamage(newEvents);         // 重渲染后再 append 浮动伤害（zone 已存在）
         if (ended) {
             setTimeout(() => _showResult(st.status), 700);
+        }
+    }
+
+    function _playArenaSfx(events, st) {
+        if (!Array.isArray(events) || !events.length) return;
+        let comboPlayed = false;
+        let healPlayed = false;
+        let impactPlayed = false;
+        for (let i = 0; i < events.length; i++) {
+            const ev = events[i];
+            if (ev.action === 'attack') {
+                playSfx('dashWhoosh');
+                playSfx(ev.side === 'player' ? 'playerAttack' : 'enemyAttack');
+                if (ev.dmg > 0 && !impactPlayed) {
+                    playSfx('battleImpact');
+                    impactPlayed = true;
+                }
+                continue;
+            }
+            if (ev.action === 'power_strike' || ev.action === 'ultimate') {
+                playSfx('dashWhoosh');
+                playSfx('skillCast');
+                if (ev.dmg > 0 && !impactPlayed) {
+                    playSfx('battleImpact');
+                    impactPlayed = true;
+                }
+                if (!comboPlayed) {
+                    playSfx('comboUp');
+                    comboPlayed = true;
+                }
+                continue;
+            }
+            if (ev.action === 'defend') {
+                playSfx('defend');
+                playSfx('shieldSpark');
+                continue;
+            }
+            if (ev.action === 'itemUsed') {
+                playSfx('itemUse');
+                if (ev.heal > 0 && !healPlayed) {
+                    playSfx('healPulse');
+                    healPlayed = true;
+                }
+                if (ev.dmg > 0 && !impactPlayed) {
+                    playSfx('battleImpact');
+                    impactPlayed = true;
+                }
+                continue;
+            }
+            if (ev.action === 'switch') {
+                playSfx('uiOpen');
+                playSfx('switchPoof');
+                continue;
+            }
+            if (ev.action === 'faint') {
+                playSfx('battleImpact');
+                playSfx('stunPop');
+                playSfx('faintDrop');
+            }
+        }
+        if (st && (st.status === 'win' || st.status === 'lose')) {
+            playSfx(st.status === 'win' ? 'roundWinCue' : 'roundLoseCue');
+            playSfx(st.status === 'win' ? 'battleWin' : 'battleLose');
+            if (pendingStageId != null && st.status === 'win') playSfx('rewardStar');
+            if (st.status === 'win') {
+                playSfx('rewardFanfare');
+                playSfx('victoryBurst');
+            }
+            else playSfx('faintDrop');
         }
     }
 
@@ -1150,6 +1246,7 @@ const CardArenaUI = (function () {
         // win = 玩家A 胜（enemy=玩家B 全灭），lose = 玩家A 负 / 玩家B 胜
         if (s && s.mode === 'pvp') {
             const winner = isWin ? 'A' : 'B';  // A 队=player 全灭→lose→B 胜
+            playSfx('resultStamp');
             overlay.innerHTML = `
                 <div class="arena-result-title win">🏆 玩家${winner} 获胜！</div>
                 <div class="text-xs text-muted" style="margin:4px 0;">家庭双人彩蛋 · 友谊赛不计积分</div>
@@ -1169,6 +1266,7 @@ const CardArenaUI = (function () {
             const stageName = (stagesCache && stagesCache.stages)
                 ? (stagesCache.stages.find(s => s.id === pendingStageId) || {}).name
                 : ('关卡 ' + pendingStageId);
+            playSfx('resultStamp');
             const rewardLines = [];
             if (result.firstClear) {
                 if (result.granted.points) rewardLines.push(`+${result.granted.points} 积分`);
@@ -1193,6 +1291,7 @@ const CardArenaUI = (function () {
             const nextBtn = result.unlockedNext
                 ? `<button class="btn-primary" onclick="CardArenaUI.gotoNext(${result.unlockedNext})">➡️ 下一关</button>`
                 : '';
+            if (result.firstClear || result.unlockedNext) playSfx('trainingUnlock');
             overlay.innerHTML = `
                 <div class="arena-result-title win">🏆 通关！</div>
                 <div class="text-xs text-muted" style="margin-bottom:4px;">${stageName}</div>
@@ -1208,6 +1307,7 @@ const CardArenaUI = (function () {
             return;
         }
         if (!isWin && pendingStageId != null) {
+            playSfx('resultStamp');
             overlay.innerHTML = `
                 <div class="arena-result-title lose">💀 失败</div>
                 <div class="text-xs text-muted" style="margin:4px 0;">再调整队伍试试吧</div>
@@ -1222,6 +1322,7 @@ const CardArenaUI = (function () {
 
         // —— 自由对战（练习模式：可随时玩，不计成长积分，避免刷分循环）——
         // 奖励收口到「轻章节首通」；自由练习只给成就感，不走 addGrowthPoints
+        playSfx('resultStamp');
         overlay.innerHTML = `
             <div class="arena-result-title ${isWin ? 'win' : 'lose'}">${isWin ? '🏆 胜利' : '💀 失败'}</div>
             <div class="arena-result-reward">${isWin ? '练习完成！' : '再调整队伍试试'}</div>

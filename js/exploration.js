@@ -98,7 +98,7 @@ const ExplorationSystem = (function () {
     async function loadScenes() {
         if (scenes) return scenes;
         try {
-            const response = await fetch('data/scenes.json');
+            const response = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/scenes.json') : 'data/scenes.json');
             scenes = await response.json();
             loadUnlockState();
             return scenes;

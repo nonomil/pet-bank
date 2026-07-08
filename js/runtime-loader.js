@@ -5,6 +5,7 @@
     const stylePromises = new Map();
     const featurePromises = new Map();
     const initFlags = Object.create(null);
+    const assetBaseHref = resolveAssetBaseHref();
 
     const STYLE_BUNDLES = {
         walk: ['css/walk.css'],
@@ -53,14 +54,40 @@
 
     function findScript(src) {
         return Array.from(document.scripts).find(function (script) {
-            return script.getAttribute('data-petbank-src') === src || script.getAttribute('src') === src;
+            return script.getAttribute('data-petbank-src') === src
+                || script.getAttribute('src') === src
+                || script.getAttribute('src') === resolveAssetUrl(src);
         }) || null;
     }
 
     function findStyle(href) {
         return Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find(function (link) {
-            return link.getAttribute('data-petbank-href') === href || link.getAttribute('href') === href;
+            return link.getAttribute('data-petbank-href') === href
+                || link.getAttribute('href') === href
+                || link.getAttribute('href') === resolveAssetUrl(href);
         }) || null;
+    }
+
+    function resolveAssetBaseHref() {
+        try {
+            const current = document.currentScript;
+            if (current && current.src) {
+                return new URL('../', current.src).href;
+            }
+            const script = Array.from(document.scripts).find(function (node) {
+                return /(?:^|\/)js\/runtime-loader\.js(?:\?|$)/.test(node.src || '');
+            });
+            if (script && script.src) {
+                return new URL('../', script.src).href;
+            }
+        } catch (error) {}
+        return new URL('./', document.baseURI || window.location.href).href;
+    }
+
+    function resolveAssetUrl(path) {
+        if (!path) return path;
+        if (/^(?:[a-z]+:)?\/\//i.test(path) || /^(?:data|blob):/i.test(path)) return path;
+        return new URL(path.replace(/^\/+/, ''), assetBaseHref).href;
     }
 
     function loadScript(src) {
@@ -76,7 +103,7 @@
 
         const promise = new Promise(function (resolve, reject) {
             const script = document.createElement('script');
-            script.src = src;
+            script.src = resolveAssetUrl(src);
             script.async = false;
             script.fetchPriority = 'high';
             script.dataset.petbankSrc = src;
@@ -103,7 +130,7 @@
         const promise = new Promise(function (resolve, reject) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = href;
+            link.href = resolveAssetUrl(href);
             link.fetchPriority = 'high';
             link.dataset.petbankHref = href;
             link.onload = function () { resolve(link); };
@@ -426,9 +453,11 @@
         ensureAudioFeature: ensureAudioFeature,
         ensureCloudFeature: ensureCloudFeature,
         ensureCardArenaFeature: ensureCardArenaFeature,
+        resolveAssetUrl: resolveAssetUrl,
         prefetch: prefetch,
         _loadScript: loadScript,
         _loadStyle: loadStyle
     };
+    window.resolvePetBankAssetUrl = resolveAssetUrl;
     window.openCardArenaEntry = openCardArenaEntry;
 })();

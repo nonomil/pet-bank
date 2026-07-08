@@ -351,7 +351,7 @@ const PetSystem = (function () {
     async function loadSkills() {
         if (skillsData) return skillsData;
         try {
-            const resp = await fetch('data/skills.json');
+            const resp = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/skills.json') : 'data/skills.json');
             if (!resp.ok) {
                 throw new Error(`HTTP ${resp.status}`);
             }
@@ -537,7 +537,7 @@ const PetSystem = (function () {
         if (PET_DB_LOAD_PROMISE) return PET_DB_LOAD_PROMISE;
         PET_DB_LOAD_PROMISE = (async function() {
             try {
-                const resp = await fetch('data/pets.json', { priority: 'high' });
+                const resp = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/pets.json') : 'data/pets.json', { priority: 'high' });
                 if (!resp.ok) return false;
                 const db = await resp.json();
                 if (db.flat && db.flat.length > SPECIES_FALLBACK.length) {

@@ -11,7 +11,7 @@ const InventorySystem = (function () {
     async function loadItemsData() {
         if (itemsData) return itemsData;
         try {
-            const response = await fetch('data/items.json');
+            const response = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/items.json') : 'data/items.json');
             itemsData = await response.json();
             return itemsData;
         } catch (e) {

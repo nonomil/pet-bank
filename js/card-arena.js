@@ -46,6 +46,11 @@ const CardArena = (function () {
         }));
     }
 
+    function _resolveCombatantImg(src) {
+        if (!src) return '';
+        return window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(src) : src;
+    }
+
     /**
      * 从 PetSystem species 构建单个 combatant
      * @param {object} species PetSystem.getAllSpecies() 项（base_hp/atk/def/spd/rarity/imageStages）
@@ -55,7 +60,7 @@ const CardArena = (function () {
         const c = BattleEngine.makeCombatant({
             id: species.id,
             name: species.name || species.id,
-            img: (species.imageStages && species.imageStages['2']) || species.imageUrl || '',
+            img: _resolveCombatantImg((species.imageStages && species.imageStages['2']) || species.imageUrl || ''),
             side: side,
             level: 1,
             hp: species.base_hp || 100,
@@ -109,7 +114,7 @@ const CardArena = (function () {
             const c = BattleEngine.makeCombatant({
                 id: spec.id || ('enemy_' + Math.random().toString(36).slice(2, 7)),
                 name: spec.name || spec.id || '敌方',
-                img: spec.img || '',
+                img: _resolveCombatantImg(spec.img || ''),
                 side: side,
                 level: spec.level || 1,
                 hp: spec.hp != null ? spec.hp : (spec.maxHp || 100),

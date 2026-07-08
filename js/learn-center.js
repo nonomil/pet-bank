@@ -76,6 +76,12 @@
         } catch (err) {}
     }
 
+    function playSfx(name) {
+        if (window.sfx && typeof window.sfx.play === 'function') {
+            window.sfx.play(name);
+        }
+    }
+
     function escapeHtml(value) {
         return String(value == null ? '' : value)
             .replace(/&/g, '&amp;')
@@ -87,7 +93,8 @@
 
     async function fetchJson(url) {
         try {
-            const resp = await fetch(url);
+            const resolvedUrl = window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(url) : url;
+            const resp = await fetch(resolvedUrl);
             if (!resp.ok) return null;
             return await resp.json();
         } catch (err) {
@@ -385,15 +392,16 @@
 
     function getVocabCardImage(card) {
         const explicit = String(card?.image || '').trim();
-        if (explicit) return explicit;
-        return VOCAB_IMAGE_BY_WORD[String(card?.word || '').toLowerCase()] || VOCAB_FALLBACK_IMAGE;
+        const raw = explicit || VOCAB_IMAGE_BY_WORD[String(card?.word || '').toLowerCase()] || VOCAB_FALLBACK_IMAGE;
+        return window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(raw) : raw;
     }
 
     function getVocabCardAudio(card) {
         const explicit = String(card?.audio || '').trim();
-        if (explicit) return explicit;
+        if (explicit) return window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(explicit) : explicit;
         const word = String(card?.word || '').trim().toLowerCase();
-        return word ? `assets/learn/english-vocab/audio/${word}.mp3` : '';
+        const raw = word ? `assets/learn/english-vocab/audio/${word}.mp3` : '';
+        return raw && window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(raw) : raw;
     }
 
     function playVocabAudio(src) {
@@ -3535,6 +3543,10 @@
                 }
                 if (document.getElementById('points-learning-sheet-container')) {
                     void renderDailyCheckin('points-learning-sheet-container');
+                }
+                if (result.totalPoints > 0) {
+                    window.sfx && window.sfx.rewardClaim && window.sfx.rewardClaim();
+                    if (result.bundleGranted || result.streakGranted) playSfx('victoryBurst');
                 }
                 if (typeof window.showToast === 'function') {
                     window.showToast(getLessonCompletionToast(result));
