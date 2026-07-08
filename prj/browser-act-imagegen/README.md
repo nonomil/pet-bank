@@ -27,14 +27,29 @@ browser-act get-skills core --skill-version 2.0.2
 
 ## 核心流程
 
+### 0. ChatGPT 浏览器选择门禁（2026-07-07 验证）
+
+从历史会话 `019f3b3a-f0f7-7fd3-8a3d-c1d7ac0cd748` 复盘后，本项目 ChatGPT 生图优先按下面规则选浏览器：
+
+| 场景 | 结论 | 动作 |
+|------|------|------|
+| 要打开 `chatgpt.com` / ChatGPT 会话页下载生图 | 优先用 `chrome-direct` 的 `direct_local_*` 浏览器 | 复用真实已登录 Google Chrome，避开 Cloudflare |
+| `direct_local_*` attach 失败，但已有语义匹配的 `chrome_local_*` | 可以作为第二优先回退 | 用 `--headed` 实开验证；如果标题是 `ChatGPT` 且 state 能看到侧边栏/输入框，就继续 |
+| 看到 `chrome_local_*` 或 `type=chrome` | 不作为 ChatGPT 生图首选，但不是绝对不可用 | 这类导入/后台浏览器经常落到 Cloudflare / Just a moment，所以必须先实开验证 |
+| `chrome-direct` 报 `Browser window not found` | 不是换成 `chrome_local_*`，而是先修真实 Chrome 连接 | 确认 Google Chrome 标准版正在运行、remote debugging 已允许、browser-act 能看到该窗口 |
+| 页面里出现 `backend-api/estuary/content` 图片 | 说明图已在登录态页面中可取 | 用页面内 `fetch(img.src)`，再 base64 分段保存，别直接 `Invoke-WebRequest` |
+
+历史验证过的最稳路径是 `chrome-direct` 接管真实登录态 Chrome；但 2026-07-08 这次实跑也证明，若 `direct_local_*` 因 `Browser window not found` 暂时不可用，语义匹配的 `chrome_local_*` 在 `--headed` 下仍可能成功进入 ChatGPT 会话页。因此不要在多个 `chrome_local_*` 之间盲试，但可以对最匹配的那一个做一次实开验证。
+
 ### A. ChatGPT 生图（chrome-direct 绕 Cloudflare）
 ```
 创建 chrome-direct 浏览器（控制用户 Chrome）
   → open session navigate chatgpt.com（chrome-direct 用真人 Chrome 信誉绕 Cloudflare）
   → input prompt + Enter
   → 轮询等新图（记录生图前 img 数 N0，等 estuary img 数 > N0）
-  → eval fetch 图 URL → canvas 转 webp → sessionStorage base64
-  → 分段取 base64（40KB/段）→ 解码 → 抠图（白→透明）→ 存
+  → 优先走 browser-act network request 直取 response_body(base64)
+  → 如果 network body 不可用，再回退到 sessionStorage 分段取回
+  → 解码 → 抠图（白→透明）→ 存
 ```
 
 ### 页面级背景资产治理（本项目新增约定）
@@ -67,6 +82,7 @@ browser-act get-skills core --skill-version 2.0.2
 | `fetch_pvz_hd.py` | PVZ 小图重找更大版本 |
 | `gen_pvz_hd.sh` | ChatGPT 生 PVZ HD（chrome-direct，含轮询+下载+抠图） |
 | `gen_mc_happyattack.sh` | ChatGPT 生 MC happy/attack 动作图 |
+| `download_chatgpt_estuary_current.ps1` | 从当前 ChatGPT 会话页导出全部 `estuary/content` 原图到工作流输出目录 |
 | `keyout_pvz.py` / `keyout_mc.py` / `keyout_entity303.py` | 批量抠图白→透明 |
 | `activate_window.ps1` | PowerShell 激活 Chrome 窗口到前台 |
 
@@ -96,13 +112,15 @@ browser-act get-skills core --skill-version 2.0.2
 
 10. **白底 vs 透明**：ChatGPT 默认生白底，Fandom 原图是透明 PNG。要统一透明，ChatGPT 图需抠图（PIL ImageChops，白色 → alpha 0）。
 
-11. **页面背景风格漂移**：给游乐场、汉字、排行榜各生一张独立大背景，最终会让站内视觉断裂。**解法**：页面级背景默认继续使用首页 `home-bg`，生图只负责局部素材。
+11. **更快的下载法已验证**：如果你是先在页面里 `fetch(estuary_url)`，再用 `browser-act --session <name> network request <id>` 查看该请求，常能直接拿到 `response_body_base64_encoded=True` 和完整 `response_body=`。**解法**：优先直接解码 response body，速度明显快于 sessionStorage 分段。
 
-12. **Fandom 反爬（curl 拿空 body）**：curl 拿到 HTTP 200 + Content-Type 但 SIZE=0。**解法**：Python `urllib` + `Referer`（具体 wiki 页面，不是根域名）+ `Sec-Fetch-Dest/Mode/Site` header。
+12. **页面背景风格漂移**：给游乐场、汉字、排行榜各生一张独立大背景，最终会让站内视觉断裂。**解法**：页面级背景默认继续使用首页 `home-bg`，生图只负责局部素材。
 
-13. **Fandom 文件名不规则**：`Special:FilePath/Wall-nut.png` 可能 404（实际文件名 `Wallnut.png` 或带版本号）。**解法**：试 `_HD` / `_PvZ2` / 数字 / 去连字符 / `in-game` 等变体；部分角色 Fandom 只有 96×96 小 sprite，无 HD 版。
+13. **Fandom 反爬（curl 拿空 body）**：curl 拿到 HTTP 200 + Content-Type 但 SIZE=0。**解法**：Python `urllib` + `Referer`（具体 wiki 页面，不是根域名）+ `Sec-Fetch-Dest/Mode/Site` header。
 
-14. **ChatGPT 额度**：免费版 ~5 张/天就到顶，Plus 额度高但批量上百张仍要分天/换号。
+14. **Fandom 文件名不规则**：`Special:FilePath/Wall-nut.png` 可能 404（实际文件名 `Wallnut.png` 或带版本号）。**解法**：试 `_HD` / `_PvZ2` / 数字 / 去连字符 / `in-game` 等变体；部分角色 Fandom 只有 96×96 小 sprite，无 HD 版。
+
+15. **ChatGPT 额度**：免费版 ~5 张/天就到顶，Plus 额度高但批量上百张仍要分天/换号。
 
 ---
 
@@ -155,6 +173,16 @@ browser-act --session s1 browser open <browser_id> "https://chatgpt.com"
 Fandom 批量抓：
 ```bash
 python scripts/fetch_pvz.py   # 改 mobs 字典 + PROJ 路径
+```
+
+导出当前 ChatGPT 会话页图片：
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\download_chatgpt_estuary_current.ps1 `
+  -SessionName creeper_gpt_import_headed `
+  -OutDir G:\StudyCode\宠物积分系统\prj\gpt-image-workflow\output\20260708-demo `
+  -NamePrefix creeper-chatgpt `
+  -SelectIndex 1 `
+  -SelectedName bow-vs-creeper-reference
 ```
 
 抠图：

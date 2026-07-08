@@ -2,6 +2,18 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.17] - 2026-07-08
+### 📚 数学 PK 文档归档 + 🤖 机器人素材批次整理
+
+- 新增 `docs/数学PK游戏/` 专题目录，统一归档乘法启程方案、角色资产升级、桌游/游戏化调研、学习支援卡与奖励轨道设计，以及参考截图
+- `docs/plans/README.md`、`docs/README.md` 补齐数学 PK 专题与 `2026-07-07-math-pk-support-cards-p1` 实施计划入口，避免新文档落盘后缺少总索引
+- `docs/GPT生图/README.md` 新增儿童游戏 UI 透明素材流水线入口，并去掉公开文档里不该出现的密钥前缀描述
+- `prj/browser-act-imagegen/README.md` 补充 ChatGPT `estuary/content` 下载经验、浏览器选择门禁，以及当前会话页导出脚本说明
+- 新增 `prj/browser-act-imagegen/scripts/download_chatgpt_estuary_current.ps1`，支持从当前 ChatGPT 会话页导出 `estuary/content` 原图到工作流目录
+- 整理 `prj/browser-act-imagegen/scripts/gen_pet_sprite_sheet.sh` 为可移植模板脚本，不再硬编码本机浏览器 ID、仓库根目录和临时目录
+- 新增一批 Agnes 数学 PK 机器人候选立绘（`assets/arena/math-rivals/robot-*-v2/v3/v4.{png,webp}`）供后续挑选与替换
+- `.gitignore` 增补 GPT 生图本地 key 文档、browser-act 本地 Chrome profile、临时截图和日志忽略规则，降低误推送敏感内容风险
+
 ## [v0.7.16] - 2026-07-08
 ### 🧪 统一总回归入口 + 整体验收收口
 
