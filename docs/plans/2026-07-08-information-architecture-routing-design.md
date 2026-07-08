@@ -92,6 +92,18 @@
 
 这一轮只建立 URL 合同，不改变页面布局和权限模型。下一步若继续推进，可以把 `settings` 的子页渲染从一个 HTML 面板进一步拆成模块化配置，并把 `/parent` 做成家长管理首页。
 
+## 第三轮 `/parent` 家长管理首页
+
+`/parent` 已从 settings 的别名升级为独立的家长管理首页。它仍然位于当前 SPA 内部，但信息架构上已经成为家长区总览：
+
+- 右上角“家长区”入口进入 `/parent`，不再直接落到 settings。
+- `/parent` 展示“设置管理 / 成长作品 / 工具箱”三个管理入口。
+- `/parent/works`、`/parent/tools` 继续作为家长区叶子页。
+- `/settings/*` 继续保留为用户明确希望的短路径，`/parent/settings/*` 继续作为家长区命名空间别名。
+- 孩子主应用仍以 `/app/*` 为规范路径，避免把家长管理入口混入孩子日常导航。
+
+这一轮仍未做物理多页拆分。现在的边界是“路径和页面容器层面的分区”，下一步才适合评估是否拆 `parent.html`、`settings.html` 或引入正式路由框架。
+
 ## 验证点
 
 - 静态契约：`node prj/url_routing_and_settings_subpages.test.mjs`

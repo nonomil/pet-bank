@@ -633,7 +633,7 @@ function completeRecommended() {
 
 // ============ 一级导航映射（首页 Tab 收口，M0.6） ============
 // tab 名称 -> 默认落地页（单一事实源，对应 docs/plans/2026-06-29-home-tab-navigation-*）
-const HOME_TAB_MAP = { '首页': 'map', '积分': 'today', '学习': 'learn', '宠物': 'pet', '探索': 'explore', '游乐场': 'playground', '家长区': 'settings' };
+const HOME_TAB_MAP = { '首页': 'map', '积分': 'today', '学习': 'learn', '宠物': 'pet', '探索': 'explore', '游乐场': 'playground', '家长区': 'parent' };
 function getHomeTabMap() { return Object.assign({}, HOME_TAB_MAP); }
 // 叶子页 / hub 页 -> 所属一级 tab 的 data-page（switchPage 时据此高亮父 tab）
 const PAGE_TO_TAB = {
@@ -647,7 +647,8 @@ const PAGE_TO_TAB = {
     leaderboard: 'playground',                                  // 排行榜 → 游乐场
     pet: 'pet', home: 'pet', 'home-visit': 'pet', card: 'pet', walk: 'pet',          // 宠物
     explore: 'explore',                                         // 探索（含成长地图）
-    works: 'settings', tools: 'settings', settings: 'settings'   // 低频作品/工具/设置归右上角家长区入口
+    parent: 'parent',
+    works: 'parent', tools: 'parent', settings: 'parent'         // 低频作品/工具/设置归右上角家长区入口
 };
 
 const SETTINGS_SECTION_ROUTES = {
@@ -691,6 +692,7 @@ const PAGE_ROUTE_MAP = {
     mathpk: '/app/playground/math-pk',
     hanzi: '/app/playground/hanzi',
     leaderboard: '/app/playground/leaderboard',
+    parent: '/parent',
     works: '/parent/works',
     tools: '/parent/tools',
     settings: '/settings'
@@ -742,9 +744,9 @@ const ROUTE_TO_PAGE = {
     '/playground/math-pk': { page: 'mathpk' },
     '/playground/hanzi': { page: 'hanzi' },
     '/playground/leaderboard': { page: 'leaderboard' },
+    '/parent': { page: 'parent' },
     '/parent/works': { page: 'works' },
     '/parent/tools': { page: 'tools' },
-    '/parent': { page: 'settings', settingsSection: 'home' },
     '/parent/settings': { page: 'settings', settingsSection: 'home' },
     '/parent/settings/account': { page: 'settings', settingsSection: 'account' },
     '/parent/settings/family': { page: 'settings', settingsSection: 'family' },
@@ -1156,8 +1158,19 @@ function maybeSeedStarterCards() {
     } catch (error) {}
 }
 
+function updateParentHomePage() {
+    const childNameEl = document.getElementById('parentHomeChildName');
+    if (!childNameEl) return;
+    const activeProfile = window.ProfileSystem && typeof ProfileSystem.getActiveProfile === 'function'
+        ? ProfileSystem.getActiveProfile()
+        : null;
+    const fallbackName = document.getElementById('profileCurName')?.textContent || '默认孩子';
+    childNameEl.textContent = activeProfile && activeProfile.name ? activeProfile.name : fallbackName;
+}
+
 function runPageActivation(page) {
     if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
+    if (page === 'parent') updateParentHomePage();
     if (page === 'pet') renderPetPage();
     if (page === 'walk') {
         renderWalkPage();

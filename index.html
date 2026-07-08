@@ -72,7 +72,7 @@
                     <span id="profileCurName">默认孩子</span>
                     <span class="profile-caret">▾</span>
                 </div>
-                <button class="nav-tab nav-utility-settings" data-page="settings" type="button" onclick="switchPage('settings')" title="家长设置、作品与低频工具">
+                <button class="nav-tab nav-utility-settings" data-page="parent" type="button" onclick="switchPage('parent')" title="家长管理、设置、作品与低频工具">
                     <span>⚙️ 家长区</span>
                 </button>
                 <div class="point-capsule">
@@ -189,6 +189,48 @@
                 </section>
             </div>
 
+            <!-- PAGE: 家长管理首页 -->
+            <div class="page" id="page-parent">
+                <section class="map-hero parent-home-hero">
+                    <div class="map-hero-copy">
+                        <p class="map-eyebrow">Parent Console</p>
+                        <h2>家长管理首页</h2>
+                        <p>这里是成人管理入口，孩子日常任务和游戏继续留在 /app；账号、规则、作品和工具从这里进入。</p>
+                    </div>
+                    <div class="parent-home-status" aria-label="家长区状态">
+                        <div>
+                            <span>当前孩子</span>
+                            <strong id="parentHomeChildName">默认孩子</strong>
+                        </div>
+                        <div>
+                            <span>管理模式</span>
+                            <strong>轻量管理</strong>
+                        </div>
+                    </div>
+                </section>
+                <section class="parent-home-grid" aria-label="家长管理入口">
+                    <button class="parent-home-entry" type="button" data-parent-entry="settings" onclick="switchPage('settings')">
+                        <span class="parent-home-entry-kicker">设置管理</span>
+                        <strong>账号、家庭与规则</strong>
+                        <span>进入设置首页，再处理孩子档案、家庭云端、学习题目、规则模板和高级操作。</span>
+                    </button>
+                    <button class="parent-home-entry" type="button" data-parent-entry="works" onclick="switchPage('works')">
+                        <span class="parent-home-entry-kicker">成长记录</span>
+                        <strong>成长作品</strong>
+                        <span>收集作品名称和背后的故事，后续可扩展成成长档案与家长复盘。</span>
+                    </button>
+                    <button class="parent-home-entry" type="button" data-parent-entry="tools" onclick="switchPage('tools')">
+                        <span class="parent-home-entry-kicker">低频工具</span>
+                        <strong>工具箱</strong>
+                        <span>随机点名、番茄计时和受控的数据管理入口，不混进孩子主流程。</span>
+                    </button>
+                </section>
+                <section class="parent-home-note">
+                    <h3>页面边界</h3>
+                    <p><code>/parent</code> 是家长管理总览；<code>/settings/*</code> 和 <code>/parent/settings/*</code> 是设置子页；<code>/app/*</code> 是孩子主应用。</p>
+                </section>
+            </div>
+
             <!-- PAGE: 设置 / 账号管理 -->
             <div class="page" id="page-settings">
                 <details class="section-menu">
@@ -200,12 +242,14 @@
                         <span class="section-menu-arrow" aria-hidden="true">▾</span>
                     </summary>
                     <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('parent')">家长首页</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('works')">成长作品</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('tools')">工具箱</button>
                         <button class="section-menu-item is-current" type="button" onclick="switchPage('settings')">设置首页</button>
                     </div>
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="家长区快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('parent')">家长首页</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('works')">成长作品</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('tools')">工具箱</button>
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('settings')">设置首页</button>
@@ -653,12 +697,14 @@
                         <span class="section-menu-arrow" aria-hidden="true">▾</span>
                     </summary>
                     <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('parent')">家长首页</button>
                         <button class="section-menu-item is-current" type="button" onclick="switchPage('works')">成长作品</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('tools')">工具箱</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('settings')">设置</button>
                     </div>
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="家长区快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('parent')">家长首页</button>
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('works')">成长作品</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('tools')">工具箱</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('settings')">设置</button>
@@ -1025,12 +1071,14 @@
                         <span class="section-menu-arrow" aria-hidden="true">▾</span>
                     </summary>
                     <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('parent')">家长首页</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('works')">成长作品</button>
                         <button class="section-menu-item is-current" type="button" onclick="switchPage('tools')">工具箱</button>
                         <button class="section-menu-item" type="button" onclick="switchPage('settings')">设置</button>
                     </div>
                 </details>
                 <div class="section-shortcuts" role="navigation" aria-label="家长区快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('parent')">家长首页</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('works')">成长作品</button>
                     <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('tools')">工具箱</button>
                     <button class="section-shortcut-btn" type="button" onclick="switchPage('settings')">设置</button>

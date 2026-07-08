@@ -11,7 +11,14 @@ function check(name, cond, detail = '') {
 }
 
 check('top nav exposes parent zone wording', /家长区/.test(indexHtml));
-check('management leaf pages map to settings shortcut', /works:\s*'settings',\s*tools:\s*'settings',\s*settings:\s*'settings'/.test(appJs));
+check('top nav opens dedicated parent home', /data-page="parent"[\s\S]{0,160}switchPage\('parent'\)/.test(indexHtml));
+check('parent home exists before settings page', indexHtml.indexOf('id="page-parent"') >= 0 && indexHtml.indexOf('id="page-parent"') < indexHtml.indexOf('id="page-settings"'));
+check('management leaf pages map to parent tab', /parent:\s*'parent'/.test(appJs) && /works:\s*'parent',\s*tools:\s*'parent',\s*settings:\s*'parent'/.test(appJs));
+check('parent home links to management leaves', [
+    /data-parent-entry="works"[\s\S]{0,220}switchPage\('works'\)/.test(indexHtml),
+    /data-parent-entry="tools"[\s\S]{0,220}switchPage\('tools'\)/.test(indexHtml),
+    /data-parent-entry="settings"[\s\S]{0,220}switchPage\('settings'\)/.test(indexHtml)
+].every(Boolean));
 const menuStart = appJs.indexOf('playground: [');
 const menuEnd = appJs.indexOf(']', menuStart);
 const playgroundMenuBlock = menuStart >= 0 && menuEnd > menuStart ? appJs.slice(menuStart, menuEnd) : '';

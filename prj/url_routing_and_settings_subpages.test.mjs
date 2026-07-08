@@ -35,6 +35,13 @@ check('parent settings namespace aliases map to settings sections', [
     /['"]\/parent\/settings\/account['"]\s*:\s*\{\s*page:\s*['"]settings['"],\s*settingsSection:\s*['"]account['"]/.test(appJs),
     /['"]\/parent\/settings\/family['"]\s*:\s*\{\s*page:\s*['"]settings['"],\s*settingsSection:\s*['"]family['"]/.test(appJs)
 ].every(Boolean));
+check('/parent maps to dedicated parent home page', /['"]\/parent['"]\s*:\s*\{\s*page:\s*['"]parent['"]/.test(appJs));
+check('parent home page has direct management entries', [
+    /id="page-parent"/.test(html),
+    /data-parent-entry="works"/.test(html),
+    /data-parent-entry="tools"/.test(html),
+    /data-parent-entry="settings"/.test(html)
+].every(Boolean));
 check('switchPage can skip history writes during route hydration', /switchPage\s*\(\s*page\s*,\s*options\s*=\s*\{\s*\}/.test(appJs) && /replace:\s*true/.test(appJs));
 check('popstate listener restores page from URL', /addEventListener\s*\(\s*['"]popstate['"]/.test(appJs));
 check('DOMContentLoaded init activates route from URL', /resolveRouteFromLocation\s*\(\s*window\.location/.test(appJs) && /switchPage\s*\(\s*initialRoute\.page/.test(appJs));
