@@ -114,7 +114,7 @@ if ($items.Count -eq 0) {
 
 # Force each estuary URL through fetch() so browser-act records a Fetch request
 # whose response body can be exported directly as base64.
-$prefetchJson = ($items | Select-Object src | ConvertTo-Json -Compress)
+$prefetchJson = ($items | Select-Object src | ConvertTo-Json -Compress -AsArray)
 $prefetchScript = @"
 (async()=>{
   const urls = $prefetchJson;

@@ -37,9 +37,12 @@ browser-act get-skills core --skill-version 2.0.2
 | `direct_local_*` attach 失败，但已有语义匹配的 `chrome_local_*` | 可以作为第二优先回退 | 用 `--headed` 实开验证；如果标题是 `ChatGPT` 且 state 能看到侧边栏/输入框，就继续 |
 | 看到 `chrome_local_*` 或 `type=chrome` | 不作为 ChatGPT 生图首选，但不是绝对不可用 | 这类导入/后台浏览器经常落到 Cloudflare / Just a moment，所以必须先实开验证 |
 | `chrome-direct` 报 `Browser window not found` | 不是换成 `chrome_local_*`，而是先修真实 Chrome 连接 | 确认 Google Chrome 标准版正在运行、remote debugging 已允许、browser-act 能看到该窗口 |
+| `browser open` / `navigate` 报 `Timed out waiting for page load state 'domcontentloaded'`，但 session 还活着 | 不要立刻判死刑 | 先 `get title`、`screenshot`、`state`；如果页面其实已经是 ChatGPT 首页或会话页，就继续操作，不要重开 |
 | 页面里出现 `backend-api/estuary/content` 图片 | 说明图已在登录态页面中可取 | 用页面内 `fetch(img.src)`，再 base64 分段保存，别直接 `Invoke-WebRequest` |
 
 历史验证过的最稳路径是 `chrome-direct` 接管真实登录态 Chrome；但 2026-07-08 这次实跑也证明，若 `direct_local_*` 因 `Browser window not found` 暂时不可用，语义匹配的 `chrome_local_*` 在 `--headed` 下仍可能成功进入 ChatGPT 会话页。因此不要在多个 `chrome_local_*` 之间盲试，但可以对最匹配的那一个做一次实开验证。
+
+同时要注意另一类“假失败”：2026-07-08 这次还复现了 `browser-act` 对 `chatgpt.com` 偶发卡在 `readyState=loading` / `domcontentloaded` 超时，但截图和 `state` 已经能看到可交互的 ChatGPT 首页。这种情况下应把它视为“页面已可用、load wait 失真”，直接复用当前 session 往下做，不要因为超时提示反复重开。
 
 ### A. ChatGPT 生图（chrome-direct 绕 Cloudflare）
 ```
