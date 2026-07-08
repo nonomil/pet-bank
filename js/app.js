@@ -336,6 +336,7 @@ function updateStats() {
     }
     updateMapHomeSummary();
     updateMapCompanionCard();
+    syncRouteShellStatus();
 }
 
 function updateTopPoints() {
@@ -651,6 +652,33 @@ const PAGE_TO_TAB = {
     works: 'parent', tools: 'parent', settings: 'parent'         // 低频作品/工具/设置归右上角家长区入口
 };
 
+const APP_SHELL_PAGES = new Set([
+    'map',
+    'today',
+    'learning-sheet',
+    'review',
+    'reward',
+    'shop',
+    'inventory',
+    'learn',
+    'learn-pack',
+    'learn-plan',
+    'learn-lesson',
+    'learn-print',
+    'pet',
+    'home',
+    'walk',
+    'card',
+    'home-visit',
+    'explore',
+    'playground',
+    'mathpk',
+    'hanzi',
+    'leaderboard'
+]);
+
+const PARENT_SHELL_PAGES = new Set(['parent', 'works', 'tools', 'settings']);
+
 const SETTINGS_SECTION_ROUTES = {
     home: '/settings',
     account: '/settings/account',
@@ -853,6 +881,38 @@ function updateBrowserRoute(page, options = {}) {
     }
 }
 
+function getRouteShell(page) {
+    if (PARENT_SHELL_PAGES.has(page)) return 'parent';
+    if (APP_SHELL_PAGES.has(page)) return 'app';
+    return 'app';
+}
+
+function syncRouteShellStatus() {
+    const childNameEl = document.getElementById('appShellChildName');
+    const pointsEl = document.getElementById('appShellPoints');
+    if (childNameEl) {
+        const activeProfile = window.ProfileManager && typeof ProfileManager.getActive === 'function'
+            ? ProfileManager.getActive()
+            : null;
+        const fallbackName = document.getElementById('profileCurName')?.textContent || '默认孩子';
+        childNameEl.textContent = activeProfile && activeProfile.name ? activeProfile.name : fallbackName;
+    }
+    if (pointsEl) pointsEl.textContent = String(totalPoints || 0);
+}
+
+function applyRouteShell(page) {
+    const shell = getRouteShell(page);
+    const tabPage = PAGE_TO_TAB[page] || page;
+    document.body.classList.toggle('shell-app', shell === 'app');
+    document.body.classList.toggle('shell-parent', shell === 'parent');
+    document.body.setAttribute('data-route-shell', shell);
+    document.querySelectorAll('[data-app-dock]').forEach((item) => {
+        item.classList.toggle('is-current', item.dataset.appDock === tabPage);
+        item.setAttribute('aria-current', item.dataset.appDock === tabPage ? 'page' : 'false');
+    });
+    syncRouteShellStatus();
+}
+
 function applySettingsSection(section) {
     activeSettingsSection = normalizeSettingsSection(section);
     const label = SETTINGS_SECTION_LABELS[activeSettingsSection] || SETTINGS_SECTION_LABELS.home;
@@ -1050,6 +1110,7 @@ function switchPage(page, options = {}) {
         const hub = tab.closest('.nav-hub');
         if (hub) hub.classList.add('active');
     }
+    applyRouteShell(page);
     // 首页保留侧栏状态感；其他 tab 继续沿用全宽内容页。
     document.body.classList.toggle('no-sidebar', page !== 'map');
     document.body.classList.toggle('learn-mode', page === 'learn' || page.startsWith('learn-'));
@@ -2536,6 +2597,27 @@ function appendBattleLog(battle) {
     setTimeout(() => { if (bubble.parentNode) bubble.remove(); }, 2200);
 }
 
+function renderBattleResultGuide(battle) {
+    const guide = battle && battle.guidedFeedback;
+    if (!guide || battle.status !== 'lost') return '';
+    return `
+        <div class="battle-result-guide">
+            <strong>复盘</strong>
+            <p>${escapeAppHtml(guide.note || '')}</p>
+            <strong>下一步</strong>
+            <p>${escapeAppHtml(guide.nextStep || '')}</p>
+        </div>
+    `;
+}
+
+function renderBattleEndActions(battle) {
+    const label = battle.status === 'won' ? '🎉 继续探索' : battle.status === 'lost' ? '回到宠物页' : '继续探索';
+    return `
+        ${renderBattleResultGuide(battle)}
+        <button class="btn-primary" onclick="closeBattleModal()">${label}</button>
+    `;
+}
+
 function getSpeciesDisplayName(speciesId, fallbackName) {
     if (fallbackName) return fallbackName;
     try {
@@ -2622,9 +2704,7 @@ function battleAction(action) {
         }
         // 显示结算
         const actionsEl = document.getElementById('battleActions');
-        actionsEl.innerHTML = `
-            <button class="btn-primary" onclick="closeBattleModal()">${result.status === 'won' ? '🎉 继续探索' : result.status === 'lost' ? '回到宠物页' : '继续探索'}</button>
-        `;
+        actionsEl.innerHTML = renderBattleEndActions(result);
         renderPetPage();
     } else {
         // 战斗继续：解锁 UI（敌人反击已完成）
@@ -2774,9 +2854,7 @@ function useItemInBattle(itemId) {
 
     if (battle.status === 'won' || battle.status === 'lost' || battle.status === 'fled') {
         const actionsEl = document.getElementById('battleActions');
-        actionsEl.innerHTML = `
-            <button class="btn-primary" onclick="closeBattleModal()">${battle.status === 'won' ? '🎉 继续探索' : battle.status === 'lost' ? '回到宠物页' : '继续探索'}</button>
-        `;
+        actionsEl.innerHTML = renderBattleEndActions(battle);
         renderPetPage();
     } else {
         setBattleUILock(false);

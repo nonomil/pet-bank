@@ -104,9 +104,22 @@
 
 这一轮仍未做物理多页拆分。现在的边界是“路径和页面容器层面的分区”，下一步才适合评估是否拆 `parent.html`、`settings.html` 或引入正式路由框架。
 
+## 第四轮 Route-aware Shell
+
+导航壳开始跟随信息架构切换，而不是所有页面共用同一套顶部大导航：
+
+- `/app/*` 和旧兼容孩子页进入 `shell-app`：隐藏旧顶部大导航和左侧栏，显示孩子端轻量状态条与底部 Dock。
+- 孩子端状态条保留“返回孩子首页 / 当前孩子与成长分 / 家长区”三个核心动作，避免沉浸页迷路。
+- 底部 Dock 收纳首页、积分、学习、宠物、探索、游乐场六个孩子端主入口，叶子页按父栏目高亮。
+- `/parent`、`/parent/works`、`/parent/tools`、`/settings/*` 进入 `shell-parent`：保留管理型顶部，隐藏孩子端主导航，强调家长区管理任务。
+- 增加 skip link 和 main 跳转目标，避免新增导航后键盘用户要反复穿过导航。
+
+这一步仍是 SPA 内的壳切换，不是物理多页面。后续可以继续把 `/app/explore`、`/app/playground/*`、`/app/pet/home` 做成更强沉浸页，并把 `/parent/settings/*` 的管理导航整理成更像后台控制台的左侧栏。
+
 ## 验证点
 
 - 静态契约：`node prj/url_routing_and_settings_subpages.test.mjs`
+- 导航壳契约：`node prj/route_aware_shell_contract.test.mjs`
 - 既有家长区结构：`node prj/parent_settings_sections_contract.test.mjs`
 - 隐藏管理接口：`node prj/parent_management_hidden_interfaces.test.mjs`
 - 浏览器冒烟：打开 `/settings/account`，应激活 settings 页的“账号与孩子”；点击“家庭云端”后 URL 应变成 `/settings/family`。

@@ -9,7 +9,7 @@
         (function () {
             if (!/^https?:$/.test(window.location.protocol)) return;
             var path = window.location.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '') || '/';
-            var routePrefixes = ['/settings', '/today', '/learn', '/pet', '/explore', '/playground', '/parent', '/shop'];
+            var routePrefixes = ['/app', '/settings', '/today', '/learn', '/pet', '/explore', '/playground', '/parent', '/shop'];
             for (var i = 0; i < routePrefixes.length; i += 1) {
                 var prefix = routePrefixes[i];
                 var index = path.indexOf(prefix);
@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="css/animations.css">
 </head>
 <body class="map-page-bg">
+    <a class="skip-link" href="#mainContent">跳到主要内容</a>
     <!-- TOP NAV -->
     <div class="top-nav">
         <div class="top-nav-inner max-w-7xl mx-auto">
@@ -85,7 +86,22 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-6 py-6 flex gap-6">
+    <div class="app-shell-bar" aria-label="孩子端状态栏">
+        <button class="app-shell-brand" type="button" onclick="switchPage('map')" aria-label="返回孩子首页">
+            <i data-lucide="home" class="w-4 h-4" aria-hidden="true"></i>
+            <span>萌宠冒险岛</span>
+        </button>
+        <div class="app-shell-status">
+            <span id="appShellChildName">默认孩子</span>
+            <span><strong id="appShellPoints">0</strong> 成长分</span>
+        </div>
+        <button class="app-shell-parent-link" type="button" onclick="switchPage('parent')">
+            <i data-lucide="settings" class="w-4 h-4" aria-hidden="true"></i>
+            <span>家长区</span>
+        </button>
+    </div>
+
+    <div class="page-shell max-w-7xl mx-auto px-6 py-6 flex gap-6">
         <!-- LEFT SIDEBAR -->
         <aside class="sidebar">
             <div class="card">
@@ -143,7 +159,7 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="main-content">
+        <main class="main-content" id="mainContent" tabindex="-1">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
                 <div class="home-stage-stack">
@@ -1094,6 +1110,33 @@
             </div>
         </main>
     </div>
+
+    <nav class="app-bottom-dock" aria-label="孩子端主导航">
+        <button class="app-dock-item" type="button" data-app-dock="map" onclick="switchPage('map')">
+            <i data-lucide="home" aria-hidden="true"></i>
+            <span>首页</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="today" onclick="switchPage('today')">
+            <i data-lucide="star" aria-hidden="true"></i>
+            <span>积分</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="learn" onclick="switchPage('learn')">
+            <i data-lucide="book-open" aria-hidden="true"></i>
+            <span>学习</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="pet" onclick="switchPage('pet')">
+            <i data-lucide="paw-print" aria-hidden="true"></i>
+            <span>宠物</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="explore" onclick="switchPage('explore')">
+            <i data-lucide="map" aria-hidden="true"></i>
+            <span>探索</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="playground" onclick="switchPage('playground')">
+            <i data-lucide="gamepad-2" aria-hidden="true"></i>
+            <span>游乐场</span>
+        </button>
+    </nav>
 
     <!-- Battle Modal -->
     <div id="battleModal" class="modal">

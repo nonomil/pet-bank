@@ -62,6 +62,7 @@ check('settings sections keep existing mount ids', [
     'diagnostics-root'
 ].every((id) => html.includes(`id="${id}"`)));
 check('index injects a base href before relative assets on deep routes', /document\.write\(['"`]<base href=/.test(html));
+check('base href route prefixes include app namespace', /routePrefixes\s*=\s*\[[^\]]*['"]\/app['"]/.test(html));
 check('Pages artifact emits 404 fallback for deep links', /404\.html/.test(artifactJs) && /copyFile\('index\.html',\s*'404\.html'\)/.test(artifactJs));
 
 const failed = results.filter((item) => !item.pass);
