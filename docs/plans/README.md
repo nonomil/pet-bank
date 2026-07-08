@@ -59,6 +59,7 @@
 | `PLAN-2026-07-08-MCVIEWS-01` | [2026-07-08-minecraft-vocab-views-implementation](./2026-07-08-minecraft-vocab-views-implementation.md) | 实施记录 | 已落地 | 在正式 Minecraft 主仓上补出 `starter / core / typing-view / memory-view` 四个玩法视图，并让学习机打字线直接读取 `typing-view` |
 | `PLAN-2026-07-08-WORDMEM-MC-ADAPTER-01` | [2026-07-08-word-memory-minecraft-adapter-implementation](./2026-07-08-word-memory-minecraft-adapter-implementation.md) | 实施记录 | 已落地 | 单词记忆射击场引用根目录 `data/vocab/english-minecraft` 的 `memory-view`，生成活动词卡，并同步补齐本地 mp3 语音与适配验证 |
 | `DESIGN-2026-07-08-GAME-SPLIT-01` | [2026-07-08-learning-games-subject-split-design](./2026-07-08-learning-games-subject-split-design.md) | 设计稿 | 已确认方向 | 学习机玩法分工与题库分仓设计：明确打字射击练英语拼写、地图记忆练词义、拼音蛇练拼音、Math PK 练数学，并把数据收口为学科主仓 + 游戏视图 |
+| `PLAN-2026-07-08-EXP-BATTLE-FEEDBACK-01` | [2026-07-08-exploration-battle-feedback-implementation](./2026-07-08-exploration-battle-feedback-implementation.md) | 实施计划 | 已落地 | 探索战斗失败反馈计划：补齐“复盘 + 下一步”结构化提示，并纳入全量回归 |
 | `TOPIC-FAMILY-ACCOUNT-SOCIAL` | [../家庭账号社交体系/README](../家庭账号社交体系/README.md) | 专题索引 | 当前活跃 | 账号体系、家庭关系、好友串门与异步 PK 的专题目录 |
 | `ROLL-2026-07-05-01` | [../家庭账号社交体系/联调上线/manual-run-template](../家庭账号社交体系/联调上线/manual-run-template.md) | 联调模板 | 当前活跃 | 双家长 / 双设备 / 双家庭联调记录模板，可由 ops 脚本生成当天文档 |
 | `ROLL-2026-07-05-02` | [../家庭账号社交体系/联调上线/deploy-log-template](../家庭账号社交体系/联调上线/deploy-log-template.md) | 部署模板 | 当前活跃 | Supabase 部署日志模板，可由 ops 脚本生成当天文档 |

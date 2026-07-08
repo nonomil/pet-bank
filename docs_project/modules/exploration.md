@@ -1,6 +1,6 @@
 # 探索冒险系统 (ExplorationSystem)
 
-> 核心文件: [js/exploration.js](../../js/exploration.js) (666行)
+> 核心文件: [js/exploration.js](../../js/exploration.js) (686行)
 > 详情文件: [js/exploration-detail.js](../../js/exploration-detail.js) (381行)
 > 战斗引擎: [js/battle-engine.js](../../js/battle-engine.js)
 > 战斗特效: [js/battle-fx.js](../../js/battle-fx.js)
@@ -90,10 +90,20 @@
 | `ExplorationSystem.tryUnlock(sceneId, boardId)` | exploration.js:340 | 尝试解锁场景，成功后扣积分并刷新地图 |
 | `ExplorationSystem.startExploration(sceneId)` | exploration.js:404 | 开始某场景探索，读取叙事/事件/战斗 |
 | `ExplorationSystem.startBattle(scene, monster)` | exploration.js:469 | 触发探索战斗，创建当前 battle 状态 |
-| `ExplorationSystem.battleTurn(action)` | exploration.js:495 | 执行一回合（普攻/技能/防御） |
+| `buildBattleGuidedFeedback(battle, cause)` | exploration.js:492 | 按失败原因生成探索战斗复盘/下一步建议 |
+| `markBattleLost(battle, cause)` | exploration.js:506 | 统一标记探索战斗失败并写入 `battle.guidedFeedback` |
+| `ExplorationSystem.battleTurn(action)` | exploration.js:517 | 执行一回合（普攻/技能/防御） |
 | `ExplorationSystem.getUnlockedCount()` | exploration.js:146 | 统计已解锁场景数量 |
 | `ExplorationSystem.isSceneUnlocked(scene)` | exploration.js:139 | 判断场景是否已解锁 |
 | `ExplorationSystem.unlockScene(sceneId)` | exploration.js:316 | 写入已解锁场景 |
+
+### 探索战斗失败反馈
+
+- `markBattleLost()` 在逃跑失败或敌人反击导致 HP 归零时写入 `battle.guidedFeedback`。
+- `battle.guidedFeedback` 包含 `note` 和 `nextStep`，当前用于战斗结算区，后续也可供成长报告读取。
+- [js/app.js](../../js/app.js) 的 `renderBattleResultGuide()`（app.js:2600）负责渲染"复盘/下一步"，`renderBattleEndActions()`（app.js:2613）统一普通攻击与道具路径的结算按钮区。
+- 样式在 [css/style.css](../../css/style.css) 的 `.battle-result-guide`（style.css:3862）维护。
+- 对应验证：`node prj/exploration_battle_guided_feedback.test.mjs`。
 
 ### ExplorationDetail 关键函数
 
@@ -145,4 +155,4 @@ key: petbank_points          → 积分（解锁消耗扣减）(exploration.js:3
 - 场景解锁消耗积分，在 exploration.js:331 扣除。
 - BLANK_CELLS 仅作路线装饰点，不可点击。
 - 螺旋布局方案经过 3 版迭代（S0→S1→S2），当前 min_level 决定圈层而非 chapter。
-- 探索小题的反馈文案和数学 PK 结算反馈属于同一轮"引导式反馈闭环"，但实现位置分离。
+- 探索小题、探索战斗失败和数学 PK 结算反馈属于同一轮"引导式反馈闭环"，但实现位置分离。

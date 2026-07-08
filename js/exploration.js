@@ -489,6 +489,28 @@ const ExplorationSystem = (function () {
         return currentBattle;
     }
 
+    function buildBattleGuidedFeedback(battle, cause) {
+        const monsterName = battle?.monster?.name || '对手';
+        if (cause === 'flee_failed') {
+            return {
+                note: `这次撤退没有拉开距离，被 ${monsterName} 接上了反击节奏。`,
+                nextStep: '先回宠物小屋休息或救援；下次体力低时，可以先用防御或回血道具稳住。'
+            };
+        }
+        return {
+            note: `${monsterName} 的反击比较重，这次主要是体力没有撑到最后。`,
+            nextStep: '先回宠物小屋休息或救援；再挑战时先看 HP，必要时用防御、回血道具或换低危险场景热身。'
+        };
+    }
+
+    function markBattleLost(battle, cause) {
+        battle.status = 'lost';
+        battle.guidedFeedback = buildBattleGuidedFeedback(battle, cause);
+        battle.log.push({ type: 'system', text: '💤 宠物需要休息一下。' });
+        battle.log.push({ type: 'system', text: `复盘：${battle.guidedFeedback.note}` });
+        battle.log.push({ type: 'system', text: `下一步：${battle.guidedFeedback.nextStep}` });
+    }
+
     // battleTurn(action)
     //   action: 'attack' | 'flee' | { type:'skill', skillId } | { type:'item', itemId, itemName, resultMsg }
     // 技能/道具都消耗 1 回合（敌人反击），defend 在敌人反击时减伤并清除
@@ -521,8 +543,7 @@ const ExplorationSystem = (function () {
                 const ko = PetSystem.takeDamage(damage, { applyDefend: true });
                 battle.log.push({ type: 'enemy', text: `${battle.monster.name} 攻击！造成 ${damage} 伤害` });
                 if (ko || PetSystem.getState().hp <= 0) {
-                    battle.status = 'lost';
-                    battle.log.push({ type: 'system', text: '💀 宠物倒下了...' });
+                    markBattleLost(battle, 'flee_failed');
                     emitBattleAnimation('battle-lose', { actor: 'enemy', target: 'pet' });
                 }
                 emitBattleAnimation('enemy-attack', { actor: 'monster', target: 'pet', damage });
@@ -626,8 +647,7 @@ const ExplorationSystem = (function () {
         });
         emitBattleAnimation('enemy-attack', { actor: 'monster', target: 'pet', damage: enemyAtk, defended: wasDefending });
         if (ko) {
-            battle.status = 'lost';
-            battle.log.push({ type: 'system', text: '💀 宠物倒下了...' });
+            markBattleLost(battle, 'enemy_counter');
             emitBattleAnimation('battle-lose', { actor: 'monster', target: 'pet' });
         }
 

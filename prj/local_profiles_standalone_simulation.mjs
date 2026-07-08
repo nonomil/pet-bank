@@ -117,8 +117,6 @@ const secondProfileState = await page.evaluate(() => ({
 check('第二个孩子可以拥有自己的宠物和积分状态', secondProfileState.points === 21 && secondProfileState.species === 'cat', JSON.stringify(secondProfileState));
 await shot('03-switched-to-second-profile.png');
 
-await page.click('#profileSwitcher');
-await page.waitForSelector('.profile-panel', { timeout: 5000 });
 await page.evaluate(() => {
     const target = window.ProfileManager.list().find((p) => p.name === '默认孩子');
     if (target) window.ProfileManager._swapTo(target.id, false);

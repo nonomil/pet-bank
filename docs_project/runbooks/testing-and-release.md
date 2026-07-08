@@ -39,7 +39,7 @@ cd 宠物积分系统/
 node scripts/run-full-regression.mjs
 ```
 
-覆盖 21 项测试：
+覆盖 22 项测试：
 - `prj/regression_runner_contract.test.mjs` — 回归合约
 - `prj/runtime_loader_route_base_contract.test.mjs` — Runtime Loader 路由基准合约
 - `prj/audio_battle_feedback_contract.test.mjs` — 音频/战斗反馈
@@ -48,6 +48,7 @@ node scripts/run-full-regression.mjs
 - `prj/full_game_loop_simulation.mjs` — 完整游戏循环
 - `prj/learning_and_card_progression_simulation.mjs` — 学习+卡牌进度
 - `prj/hanzi_and_english_playground_simulation.mjs` — 汉字+英语游乐场
+- `prj/exploration_battle_guided_feedback.test.mjs` — 探索战斗失败复盘
 - `prj/exploration_story_and_state_resume_simulation.mjs` — 探索故事+状态恢复
 - `prj/cloud_family_social_pk_simulation.mjs` — 云端家庭社交PK
 - `prj/walk_page_standalone_simulation.mjs` — 遛弯页
@@ -92,6 +93,7 @@ node scripts/playwright-browser.mjs
 | `prj/runtime_loader_route_base_contract.test.mjs` | Runtime Loader 路由基准 |
 | `prj/audio_battle_feedback_contract.test.mjs` | 音频战斗反馈 |
 | `prj/exploration_math_feedback.test.mjs` | 探索数学反馈 |
+| `prj/exploration_battle_guided_feedback.test.mjs` | 探索战斗失败复盘 |
 | `prj/math_pk_guided_feedback_contract.test.mjs` | 数学PK/探索小题引导式反馈 |
 | `prj/math_pk_fx_contract.test.mjs` | 数学PK特效 |
 | `prj/math_pk_character_assets.test.mjs` | 数学PK角色素材 |
@@ -131,7 +133,7 @@ node scripts/playwright-browser.mjs
 | app.js（任务/积分/路由） | `regression_p1.test.mjs` + `gameplay_core_flows_simulation.mjs` |
 | pet.js（宠物养成） | `pet_card_image_loading_regression.test.mjs` + `pet_archive_standalone_simulation.mjs` |
 | home.js（宠物小屋） | `edge_states_standalone_simulation.mjs` |
-| exploration.js（探索） | `exploration_math_feedback.test.mjs` + `exploration_story_and_state_resume_simulation.mjs` |
+| exploration.js（探索） | `exploration_battle_guided_feedback.test.mjs` + `exploration_math_feedback.test.mjs` + `exploration_story_and_state_resume_simulation.mjs` |
 | card-arena/collection（卡牌） | `task4_slot_compat.test.mjs` + `learning_and_card_progression_simulation.mjs` |
 | math-pk.js（数学PK） | `math_pk_guided_feedback_contract.test.mjs` + `math_pk_fx_contract.test.mjs` + `math_pk_character_assets.test.mjs` + `math_pk_multiplication_onboarding.test.mjs` |
 | learn-center.js（学习中心） | `learning-center-smoke.mjs` |

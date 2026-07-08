@@ -46,19 +46,29 @@ for (const lesson of story.lessons.slice(0, 3)) {
 
 assert.equal(vocab.id, 'minecraft-vocab');
 assert.equal(vocab.type, 'vocab');
-assert.equal(vocab.sourceProvider, 'mayihaoke');
+assert.equal(vocab.sourceProvider, 'mixed');
+assert.deepEqual(
+  vocab.sourceProviders,
+  ['mayihaoke', 'minecraft_words_apk-main'],
+  'formal vocab should declare both starter and external providers'
+);
 assert.equal(vocab.sourceSnapshot, 'data/learn/external/mayihaoke/resources.json');
-assert.ok(Array.isArray(vocab.cards) && vocab.cards.length >= 20, 'minecraft-vocab should start with at least 20 cards');
+assert.ok(Array.isArray(vocab.cards) && vocab.cards.length >= 80, 'minecraft-vocab should expand to at least 80 cards');
 
 const snapshotWords = new Set((snapshot.candidateWords || []).map(item => item.word));
 for (const card of vocab.cards) {
   assert.ok(card.id && card.word && card.translation, 'card should include id/word/translation');
-  assert.ok(snapshotWords.has(card.word), `${card.word} should come from the crawled snapshot candidate list`);
   assert.ok(card.example && card.exampleZh, `${card.id} should include bilingual example`);
   assert.ok(Number(card.difficulty) >= 1, `${card.id} should include difficulty`);
   assert.ok(Array.isArray(card.distractors) && card.distractors.length >= 3, `${card.id} should include distractors`);
-  assert.ok(card.sourceProvider === 'mayihaoke', `${card.id} should keep source provider`);
-  assert.ok(card.sourceRoute || card.sourceChunk, `${card.id} should keep source reference`);
+  if (card.sourceProvider === 'mayihaoke') {
+    assert.ok(snapshotWords.has(card.word), `${card.word} starter card should still come from the crawled snapshot candidate list`);
+    assert.ok(card.sourceRoute || card.sourceChunk, `${card.id} starter card should keep source reference`);
+  } else {
+    assert.equal(card.sourceProvider, 'minecraft_words_apk-main', `${card.id} should use one of the approved providers`);
+    assert.ok(card.sourceFile, `${card.id} external card should keep sourceFile`);
+    assert.ok(card.category, `${card.id} external card should keep category`);
+  }
 }
 
 console.log('PASS - english quiz and vocab data contract');

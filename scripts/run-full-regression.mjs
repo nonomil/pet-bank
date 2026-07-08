@@ -15,6 +15,7 @@ const TASKS = [
     { label: 'full game loop', cmd: 'node', args: ['prj/full_game_loop_simulation.mjs'] },
     { label: 'learning and card progression', cmd: 'node', args: ['prj/learning_and_card_progression_simulation.mjs'] },
     { label: 'hanzi and english playground', cmd: 'node', args: ['prj/hanzi_and_english_playground_simulation.mjs'] },
+    { label: 'exploration battle guided feedback', cmd: 'node', args: ['prj/exploration_battle_guided_feedback.test.mjs'] },
     { label: 'exploration story and state resume', cmd: 'node', args: ['prj/exploration_story_and_state_resume_simulation.mjs'] },
     { label: 'cloud family social pk', cmd: 'node', args: ['prj/cloud_family_social_pk_simulation.mjs'] },
     { label: 'walk standalone', cmd: 'node', args: ['prj/walk_page_standalone_simulation.mjs'] },

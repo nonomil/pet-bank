@@ -1,692 +1,17 @@
 {
-  "id": "minecraft-vocab",
-  "type": "vocab",
-  "title": "Minecraft 单词卡",
+  "id": "minecraft-vocab-core",
+  "type": "vocab-view",
+  "title": "Minecraft 核心词卡视图",
+  "sourceModuleId": "minecraft-vocab",
   "sourceProvider": "mixed",
-  "sourceSnapshot": "data/learn/external/mayihaoke/resources.json",
-  "description": "保留 mayihaoke 起步词卡，并从 minecraft_words_apk-main 追加一批适合幼小衔接的 Minecraft 核心词卡，用于学习中心和原型玩法共用。",
+  "sourceProviders": [
+    "mayihaoke",
+    "minecraft_words_apk-main"
+  ],
+  "viewId": "core",
+  "generatedAt": "2026-07-08T09:32:33.006Z",
+  "description": "把外部精选的 72 张 core 词卡单独导出，方便后续做主题复盘和难度分层。",
   "cards": [
-    {
-      "id": "mc-word-block",
-      "word": "block",
-      "translation": "方块",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-01",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-01",
-      "example": "I see a block.",
-      "exampleZh": "我看见一个方块。",
-      "image": "assets/learn/english-vocab/block.webp",
-      "tags": [
-        "minecraft",
-        "object",
-        "starter"
-      ],
-      "distractors": [
-        "door",
-        "stone",
-        "sword"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/block.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-world",
-      "word": "world",
-      "translation": "世界",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-02",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-01",
-      "example": "This is a new world.",
-      "exampleZh": "这是一个新世界。",
-      "image": "assets/learn/english-vocab/world.webp",
-      "tags": [
-        "minecraft",
-        "place",
-        "starter"
-      ],
-      "distractors": [
-        "water",
-        "house",
-        "diamond"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/world.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-hello",
-      "word": "hello",
-      "translation": "你好",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-03",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-01",
-      "example": "Hello, friend!",
-      "exampleZh": "你好，朋友！",
-      "image": "assets/learn/english-vocab/hello.webp",
-      "tags": [
-        "greeting",
-        "starter"
-      ],
-      "distractors": [
-        "look",
-        "run",
-        "play"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/hello.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-look",
-      "word": "look",
-      "translation": "看",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-04",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-02",
-      "example": "Look at the stone.",
-      "exampleZh": "看那块石头。",
-      "image": "assets/learn/english-vocab/look.webp",
-      "tags": [
-        "verb",
-        "starter"
-      ],
-      "distractors": [
-        "run",
-        "craft",
-        "hello"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/look.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-stone",
-      "word": "stone",
-      "translation": "石头",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-05",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-02",
-      "example": "The stone is gray.",
-      "exampleZh": "石头是灰色的。",
-      "image": "assets/learn/english-vocab/stone.webp",
-      "tags": [
-        "minecraft",
-        "object",
-        "starter"
-      ],
-      "distractors": [
-        "block",
-        "tree",
-        "apple"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/stone.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-light",
-      "word": "light",
-      "translation": "光",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-06",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-02",
-      "example": "I see light.",
-      "exampleZh": "我看见光。",
-      "image": "assets/learn/english-vocab/light.webp",
-      "tags": [
-        "nature",
-        "starter"
-      ],
-      "distractors": [
-        "fire",
-        "water",
-        "door"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/light.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-run",
-      "word": "run",
-      "translation": "跑",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-07",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-03",
-      "example": "I run to my friend.",
-      "exampleZh": "我跑向我的朋友。",
-      "image": "assets/learn/english-vocab/world.webp",
-      "tags": [
-        "verb",
-        "starter"
-      ],
-      "distractors": [
-        "look",
-        "play",
-        "craft"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/run.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-door",
-      "word": "door",
-      "translation": "门",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-08",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-03",
-      "example": "Open the door.",
-      "exampleZh": "打开门。",
-      "image": "assets/learn/english-vocab/minecraft-card.webp",
-      "tags": [
-        "minecraft",
-        "object",
-        "starter"
-      ],
-      "distractors": [
-        "block",
-        "bag",
-        "tree"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/door.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-friend",
-      "word": "friend",
-      "translation": "朋友",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-09",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-03",
-      "example": "My friend is here.",
-      "exampleZh": "我的朋友在这里。",
-      "image": "assets/learn/english-vocab/hello.webp",
-      "tags": [
-        "people",
-        "starter"
-      ],
-      "distractors": [
-        "world",
-        "creeper",
-        "cat"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/friend.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-cat",
-      "word": "cat",
-      "translation": "猫",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-10",
-      "sourceModuleId": "mcbookstarters-reader",
-      "sourceLessonId": "chapter-01",
-      "example": "The cat is cute.",
-      "exampleZh": "这只猫很可爱。",
-      "image": "assets/learn/english-vocab/minecraft-card.webp",
-      "tags": [
-        "animal",
-        "starter"
-      ],
-      "distractors": [
-        "bag",
-        "sun",
-        "tree"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/cat.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-bag",
-      "word": "bag",
-      "translation": "书包",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-11",
-      "sourceModuleId": "mcbookstarters-reader",
-      "sourceLessonId": "chapter-01",
-      "example": "I have a bag.",
-      "exampleZh": "我有一个书包。",
-      "image": "assets/learn/english-vocab/minecraft-card.webp",
-      "tags": [
-        "object",
-        "starter"
-      ],
-      "distractors": [
-        "cat",
-        "door",
-        "apple"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/bag.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-sun",
-      "word": "sun",
-      "translation": "太阳",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-12",
-      "sourceModuleId": "mcbookstarters-reader",
-      "sourceLessonId": "chapter-01",
-      "example": "The sun is bright.",
-      "exampleZh": "太阳很明亮。",
-      "image": "assets/learn/english-vocab/light.webp",
-      "tags": [
-        "nature",
-        "starter"
-      ],
-      "distractors": [
-        "light",
-        "fire",
-        "water"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/sun.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-tree",
-      "word": "tree",
-      "translation": "树",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-13",
-      "sourceModuleId": "mcbookstarters-reader",
-      "sourceLessonId": "chapter-02",
-      "example": "I see a tree.",
-      "exampleZh": "我看见一棵树。",
-      "image": "assets/learn/english-vocab/world.webp",
-      "tags": [
-        "nature",
-        "starter"
-      ],
-      "distractors": [
-        "stone",
-        "door",
-        "sword"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/tree.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-red",
-      "word": "red",
-      "translation": "红色",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-14",
-      "sourceModuleId": "mcbookstarters-reader",
-      "sourceLessonId": "chapter-02",
-      "example": "The apple is red.",
-      "exampleZh": "苹果是红色的。",
-      "image": "assets/learn/english-vocab/block.webp",
-      "tags": [
-        "color",
-        "starter"
-      ],
-      "distractors": [
-        "sun",
-        "tree",
-        "bag"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/red.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-play",
-      "word": "play",
-      "translation": "玩",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-15",
-      "sourceModuleId": "mcbookstarters-reader",
-      "sourceLessonId": "chapter-02",
-      "example": "We play together.",
-      "exampleZh": "我们一起玩。",
-      "image": "assets/learn/english-vocab/hello.webp",
-      "tags": [
-        "verb",
-        "starter"
-      ],
-      "distractors": [
-        "run",
-        "look",
-        "craft"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/play.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-sword",
-      "word": "sword",
-      "translation": "剑",
-      "level": "ket-1",
-      "difficulty": 2,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
-      "sourceCandidateId": "mayihaoke-candidate-16",
-      "sourceModuleId": "minecraft-vocab",
-      "sourceLessonId": "minewords-seed",
-      "example": "I have a sword.",
-      "exampleZh": "我有一把剑。",
-      "image": "assets/learn/english-vocab/world.webp",
-      "tags": [
-        "minecraft",
-        "tool",
-        "ket-1"
-      ],
-      "distractors": [
-        "pickaxe",
-        "door",
-        "block"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/sword.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-pickaxe",
-      "word": "pickaxe",
-      "translation": "镐",
-      "level": "ket-1",
-      "difficulty": 2,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
-      "sourceCandidateId": "mayihaoke-candidate-17",
-      "sourceModuleId": "minecraft-vocab",
-      "sourceLessonId": "minewords-seed",
-      "example": "Use the pickaxe.",
-      "exampleZh": "使用镐。",
-      "image": "assets/learn/english-vocab/look.webp",
-      "tags": [
-        "minecraft",
-        "tool",
-        "ket-1"
-      ],
-      "distractors": [
-        "sword",
-        "diamond",
-        "apple"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/pickaxe.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-diamond",
-      "word": "diamond",
-      "translation": "钻石",
-      "level": "ket-1",
-      "difficulty": 2,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
-      "sourceCandidateId": "mayihaoke-candidate-18",
-      "sourceModuleId": "minecraft-vocab",
-      "sourceLessonId": "minewords-seed",
-      "example": "The diamond is blue.",
-      "exampleZh": "钻石是蓝色的。",
-      "image": "assets/learn/english-vocab/block.webp",
-      "tags": [
-        "minecraft",
-        "object",
-        "ket-1"
-      ],
-      "distractors": [
-        "stone",
-        "water",
-        "bag"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/diamond.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-creeper",
-      "word": "creeper",
-      "translation": "苦力怕",
-      "level": "ket-1",
-      "difficulty": 2,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
-      "sourceCandidateId": "mayihaoke-candidate-19",
-      "sourceModuleId": "minecraft-vocab",
-      "sourceLessonId": "minewords-seed",
-      "example": "The creeper is near.",
-      "exampleZh": "苦力怕在附近。",
-      "image": "assets/learn/english-vocab/world.webp",
-      "tags": [
-        "minecraft",
-        "mob",
-        "ket-1"
-      ],
-      "distractors": [
-        "friend",
-        "cat",
-        "world"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/creeper.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-craft",
-      "word": "craft",
-      "translation": "合成",
-      "level": "ket-1",
-      "difficulty": 2,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
-      "sourceCandidateId": "mayihaoke-candidate-20",
-      "sourceModuleId": "minecraft-vocab",
-      "sourceLessonId": "minewords-seed",
-      "example": "I craft a tool.",
-      "exampleZh": "我合成一个工具。",
-      "image": "assets/learn/english-vocab/block.webp",
-      "tags": [
-        "minecraft",
-        "verb",
-        "ket-1"
-      ],
-      "distractors": [
-        "play",
-        "look",
-        "run"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/craft.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-water",
-      "word": "water",
-      "translation": "水",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-21",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-01",
-      "example": "Water is here.",
-      "exampleZh": "水在这里。",
-      "image": "assets/learn/english-vocab/minecraft-card.webp",
-      "tags": [
-        "nature",
-        "starter"
-      ],
-      "distractors": [
-        "fire",
-        "light",
-        "stone"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/water.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-fire",
-      "word": "fire",
-      "translation": "火",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
-      "sourceCandidateId": "mayihaoke-candidate-22",
-      "sourceModuleId": "mcbook56-story",
-      "sourceLessonId": "chapter-02",
-      "example": "Do not touch the fire.",
-      "exampleZh": "不要碰火。",
-      "image": "assets/learn/english-vocab/light.webp",
-      "tags": [
-        "nature",
-        "starter"
-      ],
-      "distractors": [
-        "water",
-        "sun",
-        "light"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/fire.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-house",
-      "word": "house",
-      "translation": "房子",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
-      "sourceCandidateId": "mayihaoke-candidate-23",
-      "sourceModuleId": "minecraft-vocab",
-      "sourceLessonId": "minewords-seed",
-      "example": "This is my house.",
-      "exampleZh": "这是我的房子。",
-      "image": "assets/learn/english-vocab/world.webp",
-      "tags": [
-        "place",
-        "starter"
-      ],
-      "distractors": [
-        "world",
-        "door",
-        "tree"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/house.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
-    {
-      "id": "mc-word-apple",
-      "word": "apple",
-      "translation": "苹果",
-      "level": "starter",
-      "difficulty": 1,
-      "sourceProvider": "mayihaoke",
-      "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
-      "sourceCandidateId": "mayihaoke-candidate-24",
-      "sourceModuleId": "minecraft-vocab",
-      "sourceLessonId": "minewords-seed",
-      "example": "I eat an apple.",
-      "exampleZh": "我吃一个苹果。",
-      "image": "assets/learn/english-vocab/minecraft-card.webp",
-      "tags": [
-        "food",
-        "starter"
-      ],
-      "distractors": [
-        "red",
-        "bag",
-        "diamond"
-      ],
-      "imageSource": "mayihaoke-reference-crop",
-      "audio": "assets/learn/english-vocab/audio/apple.mp3",
-      "audioVoice": "en-US-AnaNeural"
-    },
     {
       "id": "mc-core-001-cow",
       "word": "cow",
@@ -716,7 +41,8 @@
         "pig",
         "sheep",
         "chicken"
-      ]
+      ],
+      "viewCategory": "animal"
     },
     {
       "id": "mc-core-002-egg",
@@ -747,7 +73,8 @@
         "boat",
         "book",
         "bowl"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-003-oak",
@@ -778,7 +105,8 @@
         "dirt",
         "sand",
         "wood"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-004-pig",
@@ -809,7 +137,8 @@
         "cow",
         "sheep",
         "chicken"
-      ]
+      ],
+      "viewCategory": "animal"
     },
     {
       "id": "mc-core-005-blue",
@@ -840,7 +169,8 @@
         "black",
         "green",
         "white"
-      ]
+      ],
+      "viewCategory": "color"
     },
     {
       "id": "mc-core-006-boat",
@@ -871,7 +201,8 @@
         "egg",
         "book",
         "bowl"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-007-book",
@@ -902,7 +233,8 @@
         "egg",
         "boat",
         "bowl"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-008-bowl",
@@ -933,7 +265,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-009-dirt",
@@ -964,7 +297,8 @@
         "oak",
         "sand",
         "wood"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-010-milk",
@@ -995,7 +329,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-011-sand",
@@ -1026,7 +361,8 @@
         "oak",
         "dirt",
         "wood"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-012-wood",
@@ -1057,7 +393,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-013-wool",
@@ -1088,7 +425,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-014-birch",
@@ -1119,7 +457,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-015-black",
@@ -1150,7 +489,8 @@
         "blue",
         "green",
         "white"
-      ]
+      ],
+      "viewCategory": "color"
     },
     {
       "id": "mc-core-016-bread",
@@ -1181,7 +521,8 @@
         "cow",
         "egg",
         "oak"
-      ]
+      ],
+      "viewCategory": "food"
     },
     {
       "id": "mc-core-017-clock",
@@ -1212,7 +553,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-018-daisy",
@@ -1243,7 +585,8 @@
         "poppy",
         "tulip",
         "orchid"
-      ]
+      ],
+      "viewCategory": "plant"
     },
     {
       "id": "mc-core-019-flint",
@@ -1274,7 +617,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-020-grass",
@@ -1305,7 +649,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-021-green",
@@ -1336,7 +681,8 @@
         "blue",
         "black",
         "white"
-      ]
+      ],
+      "viewCategory": "color"
     },
     {
       "id": "mc-core-022-paper",
@@ -1367,7 +713,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-023-poppy",
@@ -1398,7 +745,8 @@
         "daisy",
         "tulip",
         "orchid"
-      ]
+      ],
+      "viewCategory": "plant"
     },
     {
       "id": "mc-core-024-seeds",
@@ -1429,7 +777,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-025-sheep",
@@ -1460,7 +809,8 @@
         "cow",
         "pig",
         "chicken"
-      ]
+      ],
+      "viewCategory": "animal"
     },
     {
       "id": "mc-core-026-stick",
@@ -1491,7 +841,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-027-sugar",
@@ -1522,7 +873,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-028-tulip",
@@ -1553,7 +905,8 @@
         "daisy",
         "poppy",
         "orchid"
-      ]
+      ],
+      "viewCategory": "plant"
     },
     {
       "id": "mc-core-029-wheat",
@@ -1584,7 +937,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-030-white",
@@ -1615,7 +969,8 @@
         "blue",
         "black",
         "green"
-      ]
+      ],
+      "viewCategory": "color"
     },
     {
       "id": "mc-core-031-acacia",
@@ -1646,7 +1001,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-032-cactus",
@@ -1677,7 +1033,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-033-flower",
@@ -1708,7 +1065,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-034-gravel",
@@ -1739,7 +1097,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-035-jungle",
@@ -1770,7 +1129,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-036-leaves",
@@ -1801,7 +1161,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-037-orchid",
@@ -1832,7 +1193,8 @@
         "daisy",
         "poppy",
         "tulip"
-      ]
+      ],
+      "viewCategory": "plant"
     },
     {
       "id": "mc-core-038-planks",
@@ -1863,7 +1225,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-039-sponge",
@@ -1894,7 +1257,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-040-spruce",
@@ -1925,7 +1289,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-041-string",
@@ -1956,7 +1321,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-042-yellow",
@@ -1987,7 +1353,8 @@
         "blue",
         "black",
         "green"
-      ]
+      ],
+      "viewCategory": "color"
     },
     {
       "id": "mc-core-043-bedrock",
@@ -2018,7 +1385,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-044-chicken",
@@ -2049,7 +1417,8 @@
         "cow",
         "pig",
         "sheep"
-      ]
+      ],
+      "viewCategory": "animal"
     },
     {
       "id": "mc-core-045-compass",
@@ -2080,7 +1449,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-046-diorite",
@@ -2111,7 +1481,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-047-feather",
@@ -2142,7 +1513,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-048-granite",
@@ -2173,7 +1545,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-049-leather",
@@ -2204,7 +1577,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-050-sapling",
@@ -2235,7 +1609,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-051-andesite",
@@ -2266,7 +1641,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-052-charcoal",
@@ -2297,7 +1673,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-053-mushroom",
@@ -2328,7 +1705,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-054-snowball",
@@ -2359,7 +1737,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-055-air",
@@ -2390,7 +1769,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-056-ice",
@@ -2421,7 +1801,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-057-mud",
@@ -2452,7 +1833,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-058-tnt",
@@ -2483,7 +1865,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-059-bell",
@@ -2514,7 +1897,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-060-cake",
@@ -2545,7 +1929,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-061-clay",
@@ -2576,7 +1961,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-062-lava",
@@ -2607,7 +1993,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-063-loom",
@@ -2638,7 +2025,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-064-rail",
@@ -2669,7 +2057,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-065-tuff",
@@ -2700,7 +2089,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-066-anvil",
@@ -2731,7 +2121,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-067-chain",
@@ -2762,7 +2153,8 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "viewCategory": "block"
     },
     {
       "id": "mc-core-068-axe",
@@ -2793,7 +2185,8 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "viewCategory": "item"
     },
     {
       "id": "mc-core-069-ore",
@@ -2824,7 +2217,8 @@
         "cave",
         "disk",
         "hill"
-      ]
+      ],
+      "viewCategory": "environment"
     },
     {
       "id": "mc-core-070-cave",
@@ -2855,7 +2249,8 @@
         "ore",
         "disk",
         "hill"
-      ]
+      ],
+      "viewCategory": "environment"
     },
     {
       "id": "mc-core-071-disk",
@@ -2886,7 +2281,8 @@
         "ore",
         "cave",
         "hill"
-      ]
+      ],
+      "viewCategory": "environment"
     },
     {
       "id": "mc-core-072-hill",
@@ -2917,12 +2313,8 @@
         "ore",
         "cave",
         "disk"
-      ]
+      ],
+      "viewCategory": "environment"
     }
-  ],
-  "sourceProviders": [
-    "mayihaoke",
-    "minecraft_words_apk-main"
-  ],
-  "generatedAt": "2026-07-08T09:32:32.997Z"
+  ]
 }

@@ -5,7 +5,7 @@
  * 继续读写 `petbank_*` 键（零改动）。ProfileManager 在切换 profile 时，
  * 动态遍历 localStorage 所有 `petbank_*` 业务键，把当前 profile 的数据快照
  * 存到 `petbank_profile_data_{id}`，再加载目标 profile 的快照写回业务键，
- * 最后 location.reload()，各模块重新读 petbank_* 完成切换。
+ * 最后回到当前应用入口壳重新初始化，各模块重新读 petbank_* 完成切换。
  *
  * 元数据键（全局共享，不随 profile 切换）：
  *   - petbank_profiles_meta   : [{id,name,emoji,createdAt}]
@@ -88,6 +88,54 @@
         return Object.keys(snapshot).some(function (key) {
             return isBusinessKey(key) || (key && key.startsWith('petbank_'));
         });
+    }
+
+    const ROUTE_PREFIXES = [
+        '/home-visit',
+        '/learning-sheet',
+        '/learn-lesson',
+        '/learn-print',
+        '/learn-plan',
+        '/learn-pack',
+        '/leaderboard',
+        '/playground',
+        '/inventory',
+        '/settings',
+        '/explore',
+        '/review',
+        '/reward',
+        '/parent',
+        '/today',
+        '/learn',
+        '/mathpk',
+        '/hanzi',
+        '/works',
+        '/tools',
+        '/shop',
+        '/walk',
+        '/home',
+        '/card',
+        '/pet',
+        '/app'
+    ];
+
+    function resolveAppShellUrl() {
+        const pathname = (window.location && window.location.pathname) || '/';
+        for (let i = 0; i < ROUTE_PREFIXES.length; i += 1) {
+            const prefix = ROUTE_PREFIXES[i];
+            const index = pathname.indexOf(prefix);
+            if (index >= 0 && (index === 0 || pathname.charAt(index - 1) === '/')) {
+                let base = pathname.slice(0, index) || '/';
+                if (base !== '/' && !/\/$/.test(base)) base += '/';
+                return new URL(base, window.location.origin).href;
+            }
+        }
+        return new URL('./', document.baseURI || window.location.href).href;
+    }
+
+    function reloadAppShell() {
+        const shellUrl = resolveAppShellUrl();
+        window.location.replace(shellUrl);
     }
 
     const ProfileManager = {
@@ -215,7 +263,7 @@
          *   2. 清空当前所有业务键
          *   3. 加载 target 快照写回业务键
          *   4. 设 active=target
-         *   5. location.reload()
+         *   5. 回到应用入口壳重新初始化
          *
          * skipSaveCurrent=true 时跳过步骤 1（用于删除当前档）
          */
@@ -244,28 +292,28 @@
         },
 
         /**
-         * 切换 profile（对外）：校验后 swap + reload
+         * 切换 profile（对外）：校验后 swap + 回到应用入口壳
          */
         switchTo(id) {
             const list = this._readMeta();
             if (!list.find(p => p.id === id)) return { ok: false, reason: 'not_found' };
             if (id === this.getActiveId()) return { ok: false, reason: 'same' };
             this._swapTo(id, false);
-            // 5. reload 让各模块重新读 petbank_*
-            location.reload();
+            // 5. 回到入口页，避免本地静态服务器在深路由 reload 时返回 404
+            reloadAppShell();
             return { ok: true };
         },
 
         /**
          * 重置当前 profile 的所有业务数据（危险操作，需确认）
-         * 清空当前业务键 + 移除当前快照 + reload
+         * 清空当前业务键 + 移除当前快照 + 回到应用入口壳
          */
         resetCurrent() {
             const id = this.getActiveId();
             if (!id) return { ok: false };
             getBusinessKeys().forEach(k => localStorage.removeItem(k));
             localStorage.removeItem(DATA_PREFIX + id);
-            location.reload();
+            reloadAppShell();
             return { ok: true };
         },
 
