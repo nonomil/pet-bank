@@ -39,7 +39,7 @@ cd 宠物积分系统/
 node scripts/run-full-regression.mjs
 ```
 
-覆盖 44 项测试：
+覆盖 49 项测试：
 - `prj/regression_runner_contract.test.mjs` — 回归合约
 - `prj/runtime_loader_route_base_contract.test.mjs` — Runtime Loader 路由基准合约
 - `prj/audio_battle_feedback_contract.test.mjs` — 音频/战斗反馈
@@ -55,7 +55,12 @@ node scripts/run-full-regression.mjs
 - `prj/math_pk_support_cards_contract.test.mjs` — 数学PK支援卡与奖励星轨
 - `prj/playground_hanzi_hub.test.mjs` — 游乐场与汉字中心导航
 - `prj/vocab_registry_contract.test.mjs` — 英语词库注册层
+- `prj/minecraft_vocab_selector_contract.test.mjs` — Minecraft 词库选择器
+- `prj/minecraft_vocab_views_contract.test.mjs` — Minecraft 词库视图
+- `prj/minecraft_core_vocab_expansion_contract.test.mjs` — Minecraft 核心词库扩展
+- `prj/learning_center_english_quiz_vocab_contract.test.mjs` — 学习中心英语 quiz 数据
 - `prj/word_memory_external_vocab_merge_contract.test.mjs` — 单词记忆外部词库合并
+- `prj/word_memory_world_pack_selector.test.mjs` — 单词记忆地图主题选择器
 - `prj/gameplay_core_flows_simulation.mjs` — 核心玩法流程
 - `prj/full_game_loop_simulation.mjs` — 完整游戏循环
 - `prj/learning_and_card_progression_simulation.mjs` — 学习+卡牌进度
@@ -127,7 +132,12 @@ node scripts/playwright-browser.mjs
 | `prj/math_pk_support_cards_contract.test.mjs` | 数学PK支援卡与奖励星轨 |
 | `prj/playground_hanzi_hub.test.mjs` | 游乐场与汉字中心导航 |
 | `prj/vocab_registry_contract.test.mjs` | 英语词库注册层 |
+| `prj/minecraft_vocab_selector_contract.test.mjs` | Minecraft 词库选择器 |
+| `prj/minecraft_vocab_views_contract.test.mjs` | Minecraft 词库视图 |
+| `prj/minecraft_core_vocab_expansion_contract.test.mjs` | Minecraft 核心词库扩展 |
+| `prj/learning_center_english_quiz_vocab_contract.test.mjs` | 学习中心英语 quiz 数据 |
 | `prj/word_memory_external_vocab_merge_contract.test.mjs` | 单词记忆外部词库合并 |
+| `prj/word_memory_world_pack_selector.test.mjs` | 单词记忆地图主题选择器 |
 | `prj/pinyin_star_scout_voice_contract.test.mjs` | 拼音块原型本地语音链路 |
 | `prj/word_memory_map_bomb_throw.test.mjs` | 单词记忆地图投掷 |
 | `prj/word_memory_map_movement_fx.test.mjs` | 单词记忆地图移动动效 |
@@ -183,8 +193,9 @@ node scripts/playwright-browser.mjs
 | 全局页面对齐 / 图片懒加载 / 卡牌详情 | `petbank_ui_alignment_regression.test.mjs` |
 | exploration.js（探索） | `exploration_battle_guided_feedback.test.mjs` + `exploration_math_feedback.test.mjs` + `exploration_story_and_state_resume_simulation.mjs` |
 | `data/vocab/english-minecraft/*`（英语词库注册层） | `vocab_registry_contract.test.mjs` |
+| `data/vocab/english-minecraft/views/*`（Minecraft 词库选择与视图） | `minecraft_vocab_selector_contract.test.mjs` + `minecraft_vocab_views_contract.test.mjs` + `minecraft_core_vocab_expansion_contract.test.mjs` + `learning_center_english_quiz_vocab_contract.test.mjs` |
 | `prj/拼音块收集台原型/game.js`（拼音块原型） | `pinyin_star_scout_voice_contract.test.mjs` + `prj/拼音块收集台原型/verify.mjs` |
-| `prj/单词记忆射击场原型/game.js`（单词记忆地图） | `word_memory_map_bomb_throw.test.mjs` + `word_memory_map_movement_fx.test.mjs` + `word_memory_map_rewards_ui.test.mjs` + `word_memory_map_voice_contract.test.mjs` + `word_memory_map_voice_playback.test.mjs` + `word_memory_map_walk_cycle.test.mjs` + `word_memory_minecraft_adapter_contract.test.mjs` + `prj/单词记忆射击场原型/verify.mjs` |
+| `prj/单词记忆射击场原型/game.js`（单词记忆地图） | `word_memory_map_bomb_throw.test.mjs` + `word_memory_map_movement_fx.test.mjs` + `word_memory_map_rewards_ui.test.mjs` + `word_memory_map_voice_contract.test.mjs` + `word_memory_map_voice_playback.test.mjs` + `word_memory_map_walk_cycle.test.mjs` + `word_memory_minecraft_adapter_contract.test.mjs` + `word_memory_world_pack_selector.test.mjs` + `prj/单词记忆射击场原型/verify.mjs` |
 | `data/vocab/word-memory-combined/*`（单词记忆外部词库层） | `word_memory_external_vocab_merge_contract.test.mjs` + `word_memory_minecraft_adapter_contract.test.mjs` |
 | `prj/学习机玩法原型/game.js`（学习机原型） | `learning_arcade_hanzi_voice_reuse.test.mjs` + `prj/学习机玩法原型/verify.mjs` + `prj/学习机玩法原型/scripts/test-full-prototype-smoke.mjs` |
 | `prj/prototype-voice-workflow/`（共享语音流水线） | `shared_prototype_voice_workflow.test.mjs` |
