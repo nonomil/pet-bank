@@ -1,4 +1,5 @@
 import { chromium } from 'playwright';
+import { browserLaunchOpts } from '../scripts/playwright-browser.mjs';
 
 const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765';
 
@@ -8,9 +9,7 @@ function check(name, cond, detail = '') {
     console.log(`${cond ? 'PASS' : 'FAIL'} - ${name}${detail ? ` (${detail})` : ''}`);
 }
 
-const browser = await chromium.launch({
-    executablePath: process.env.PW_CHROME || undefined
-});
+const browser = await chromium.launch(browserLaunchOpts());
 const page = await browser.newPage();
 
 const consoleErrors = [];

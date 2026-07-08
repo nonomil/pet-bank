@@ -1,14 +1,7 @@
-import fs from 'node:fs';
 import { chromium } from 'playwright';
+import { browserLaunchOpts } from '../scripts/playwright-browser.mjs';
 
 const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765';
-const chromeCandidates = [
-    process.env.PW_CHROME,
-    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-    'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'
-].filter(Boolean);
-const browserExecutable = chromeCandidates.find((candidate) => fs.existsSync(candidate));
 
 const results = [];
 function check(name, cond, detail = '') {
@@ -16,9 +9,7 @@ function check(name, cond, detail = '') {
     console.log(`${cond ? 'PASS' : 'FAIL'} - ${name}${detail ? ` (${detail})` : ''}`);
 }
 
-const browser = await chromium.launch({
-    executablePath: browserExecutable
-});
+const browser = await chromium.launch(browserLaunchOpts());
 const page = await browser.newPage();
 
 const consoleErrors = [];
@@ -36,9 +27,13 @@ await page.addInitScript(() => {
 });
 
 await page.goto(`${BASE}/index.html`);
+await page.waitForFunction(() => window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function', { timeout: 15000 });
+await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('explore');
+});
 await page.waitForFunction(
     () => window.ExplorationDetail && typeof window.ExplorationDetail.show === 'function',
-    { timeout: 8000 }
+    { timeout: 15000 }
 );
 
 async function openForestMath() {

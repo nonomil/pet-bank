@@ -78,6 +78,11 @@ assert.match(centerHtml, /开始练习/, 'medium_mul lobby should offer practice
 assert.match(centerHtml, /开始对战/, 'medium_mul lobby should still expose PK entry');
 
 game.startTraining();
+const chooserHtml = elements.get('arena-center').innerHTML;
+assert.match(chooserHtml, /math-pk-support-chooser/, 'medium_mul training should open the support chooser first');
+assert.match(chooserHtml, /看阵列/, 'support chooser should offer show_array in multiplication onboarding');
+
+game.chooseSupportCardAndStart('show_array', 'training');
 const trainingHtml = elements.get('arena-center').innerHTML;
 assert.match(trainingHtml, /每组/, 'training question should explain groups');
 assert.match(trainingHtml, /[+]/, 'training question should show repeated addition');

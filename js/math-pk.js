@@ -27,6 +27,9 @@
         WORD_RATIO: 0.3,         // medium_mix 出 CMATH 应用题概率
         STORAGE_KEY_HIGH_SCORE: 'petbank_math_high_score',
         STORAGE_KEY_DIFFICULTY: 'petbank_math_difficulty',
+        STORAGE_KEY_SUPPORT_PROGRESS: 'petbank_math_support_progress',
+        STORAGE_KEY_SUPPORT_UNLOCKS: 'petbank_math_support_unlocks',
+        STORAGE_KEY_SUPPORT_SELECTED: 'petbank_math_support_selected',
         MUL_TRAINING_UNLOCK_STREAK: 5
     };
 
@@ -54,6 +57,37 @@
         hard: { name: '冠军计算机', image: 'assets/arena/math-rivals/robot-hard-v5.webp' }
     };
 
+    const MATH_PK_SUPPORT_CARDS = {
+        show_array: {
+            id: 'show_array',
+            name: '看阵列',
+            stages: ['medium_mul'],
+            type: 'learning_support',
+            timing: 'question_render',
+            description: '乘法题自动显示分组图',
+            tag: '适合看图'
+        },
+        slow_robot: {
+            id: 'slow_robot',
+            name: '慢一点',
+            stages: ['medium_mul', 'medium_mix'],
+            type: 'learning_support',
+            timing: 'robot_think',
+            description: '本局机器人每题多思考 2 秒',
+            tag: '适合慢慢想',
+            effect: { robotThinkMsBonus: 2000 }
+        },
+        retry_once: {
+            id: 'retry_once',
+            name: '再试一次',
+            stages: ['medium_mul', 'medium_mix'],
+            type: 'learning_support',
+            timing: 'first_wrong_answer',
+            description: '本局第一次答错不扣连对或多给一点思考时间',
+            tag: '适合练信心'
+        }
+    };
+
     const VALID_DIFFICULTIES = Object.keys(DIFFICULTY_LABELS);
     const LEGACY_DIFFICULTY_MAP = {
         easy: 'easy20',
@@ -78,6 +112,7 @@
         robotWins: 0,
         roundStartTs: 0,
         robotThinkMs: 0,
+        robotDeadlineTs: 0,
         robotTimer: null,
         roundResolved: false,
         // 计分
@@ -85,12 +120,20 @@
         combo: 0,
         maxCombo: 0,
         correctCount: 0,
+        multiplicationCorrectCount: 0,
         training: {
             active: false,
             streak: 0,
             totalCorrect: 0,
             currentQuestion: null,
             readyForPk: false
+        },
+        support: {
+            selectedCardId: null,
+            offeredCardIds: [],
+            pendingMode: null,
+            retryUsed: false,
+            starsEarned: 0
         }
     };
 
@@ -100,7 +143,7 @@
     function _ensureCmathPool() {
         if (CMATH_POOL || _cmathLoading) return;
         _cmathLoading = true;
-        fetch('data/math-cmath.json')
+        fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/math-cmath.json') : 'data/math-cmath.json')
             .then(r => r.json())
             .then(d => { CMATH_POOL = d.grades || {}; _cmathLoading = false; })
             .catch(() => { _cmathLoading = false; });
@@ -121,6 +164,62 @@
     function normalizeDifficulty(diff) {
         const mapped = LEGACY_DIFFICULTY_MAP[diff] || diff;
         return VALID_DIFFICULTIES.includes(mapped) ? mapped : 'easy20';
+    }
+
+    function getDefaultUnlockedSupportCardIds() {
+        return ['show_array', 'slow_robot', 'retry_once'];
+    }
+
+    function readJsonStorage(key, fallback) {
+        try {
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw) : fallback;
+        } catch (e) {
+            return fallback;
+        }
+    }
+
+    function writeJsonStorage(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        } catch (e) {}
+    }
+
+    function getUnlockedSupportCardIds() {
+        const saved = readJsonStorage(CONFIG.STORAGE_KEY_SUPPORT_UNLOCKS, null);
+        if (Array.isArray(saved) && saved.length) return saved.filter((id) => MATH_PK_SUPPORT_CARDS[id]);
+        return getDefaultUnlockedSupportCardIds();
+    }
+
+    function getSupportProgress() {
+        const saved = readJsonStorage(CONFIG.STORAGE_KEY_SUPPORT_PROGRESS, {});
+        return {
+            medium_mul: Number(saved.medium_mul || 0),
+            medium_mix: Number(saved.medium_mix || 0),
+            hard: Number(saved.hard || 0)
+        };
+    }
+
+    function saveSupportProgress(progress) {
+        writeJsonStorage(CONFIG.STORAGE_KEY_SUPPORT_PROGRESS, progress);
+    }
+
+    function setSelectedSupportCardId(cardId) {
+        state.support.selectedCardId = cardId || null;
+        try {
+            if (cardId) localStorage.setItem(CONFIG.STORAGE_KEY_SUPPORT_SELECTED, cardId);
+            else localStorage.removeItem(CONFIG.STORAGE_KEY_SUPPORT_SELECTED);
+        } catch (e) {}
+    }
+
+    function getSelectedSupportCard() {
+        const selectedId = state.support.selectedCardId || localStorage.getItem(CONFIG.STORAGE_KEY_SUPPORT_SELECTED);
+        return selectedId && MATH_PK_SUPPORT_CARDS[selectedId] ? MATH_PK_SUPPORT_CARDS[selectedId] : null;
+    }
+
+    function isSupportChooserDifficulty(diff) {
+        const normalized = normalizeDifficulty(diff);
+        return normalized === 'medium_mul' || normalized === 'medium_mix';
     }
 
     function getMathPkPlayerAvatar() {
@@ -146,6 +245,49 @@
 
     function getMathPkRobotRival(diff) {
         return MATH_PK_ROBOT_RIVALS[normalizeDifficulty(diff)] || MATH_PK_ROBOT_RIVALS.easy20;
+    }
+
+    function getMathPkPlayerAttackArchetype() {
+        const avatar = getMathPkPlayerAvatar();
+        const lower = String(avatar || '').toLowerCase();
+        if (lower.includes('plant') || lower.includes('pea') || lower.includes('sprout')) return 'hopper';
+        if (lower.includes('dragon') || lower.includes('bird') || lower.includes('wing')) return 'spinner';
+        if (lower.includes('cat') || lower.includes('fox') || lower.includes('rabbit')) return 'dasher';
+        return 'allrounder';
+    }
+
+    function getMathPkRobotAttackArchetype(diff) {
+        const normalized = normalizeDifficulty(diff);
+        if (normalized === 'easy20') return 'hopper';
+        if (normalized === 'easy100') return 'dasher';
+        if (normalized === 'medium_mul') return 'spinner';
+        if (normalized === 'medium_mix') return 'allrounder';
+        return 'spinner';
+    }
+
+    function playSfx(name) {
+        if (window.sfx && typeof window.sfx.play === 'function') {
+            window.sfx.play(name);
+        }
+    }
+
+    function playSfxLater(name, delayMs, guard) {
+        setTimeout(() => {
+            if (typeof guard === 'function' && !guard()) return;
+            playSfx(name);
+        }, Math.max(0, Number(delayMs) || 0));
+    }
+
+    function playAttackStyleSfx(attackStyle, side) {
+        if (attackStyle === 'attack-hop') {
+            playSfx('attackHop');
+            return;
+        }
+        if (attackStyle === 'attack-spin') {
+            playSfx('attackSpin');
+            return;
+        }
+        playSfx(side === 'robot' ? 'enemyAttack' : 'playerAttack');
     }
 
     // ============ 工具函数 ============
@@ -257,9 +399,14 @@
                         .arena-avatar { position:relative; z-index:2; width:200px; height:200px; object-fit:contain; filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); transition:filter .3s; }
                         .arena-side.dim .arena-avatar { filter:grayscale(.7) brightness(.55); }
                         .arena-side.win .arena-avatar { filter:drop-shadow(0 0 20px rgba(110,231,183,.95)); }
-                        .arena-side.math-pk-caster.human .arena-avatar { animation:math-pk-cast-human .72s ease both; }
-                        .arena-side.math-pk-caster.robot .arena-avatar { animation:math-pk-cast-robot .72s ease both; }
-                        .arena-side.math-pk-target-hit .arena-avatar { animation:math-pk-target-shake .58s ease both; }
+                        .arena-side.math-pk-caster.attack-dash.human .arena-avatar { animation:math-pk-rush-dash-human .84s cubic-bezier(.2,.88,.22,1) both; }
+                        .arena-side.math-pk-caster.attack-dash.robot .arena-avatar { animation:math-pk-rush-dash-robot .84s cubic-bezier(.2,.88,.22,1) both; }
+                        .arena-side.math-pk-caster.attack-hop.human .arena-avatar { animation:math-pk-rush-hop-human .9s cubic-bezier(.2,.82,.26,1) both; }
+                        .arena-side.math-pk-caster.attack-hop.robot .arena-avatar { animation:math-pk-rush-hop-robot .9s cubic-bezier(.2,.82,.26,1) both; }
+                        .arena-side.math-pk-caster.attack-spin.human .arena-avatar { animation:math-pk-rush-spin-human .88s cubic-bezier(.2,.88,.22,1) both; }
+                        .arena-side.math-pk-caster.attack-spin.robot .arena-avatar { animation:math-pk-rush-spin-robot .88s cubic-bezier(.2,.88,.22,1) both; }
+                        .arena-side.math-pk-target-hit.from-human .arena-avatar { animation:math-pk-target-hit-from-human .62s ease both; }
+                        .arena-side.math-pk-target-hit.from-robot .arena-avatar { animation:math-pk-target-hit-from-robot .62s ease both; }
                         .arena-side.math-pk-target-hit::after { content:''; position:absolute; z-index:1; top:43%; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.95) 0 9%,rgba(255,209,102,.82) 10% 28%,rgba(34,211,238,.28) 29% 52%,transparent 64%); animation:math-pk-impact-burst .62s ease-out forwards; pointer-events:none; }
                         .arena-name { position:relative; z-index:3; font-size:18px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,.5); }
                         .arena-status { position:relative; z-index:3; font-size:13px; background:rgba(255,255,255,.15); padding:5px 14px; border-radius:999px; min-height:26px; display:flex; align-items:center; }
@@ -287,12 +434,18 @@
                         .arena-toast.lose { background:rgba(40,31,29,.64); border-color:rgba(210,176,148,.22); }
                         .math-pk-attack-cue { position:absolute; left:50%; top:18%; transform:translate(-50%,-50%); z-index:5; display:none; padding:5px 11px; border-radius:999px; background:rgba(15,20,29,.52); border:1px solid rgba(255,255,255,.14); font-size:.86rem; font-weight:800; box-shadow:0 6px 18px rgba(0,0,0,.22); }
                         .math-pk-attack-cue.show { display:block; animation:arena-pop .26s ease; }
-                        .math-pk-skill-shot { position:absolute; top:42%; left:24%; width:58px; height:14px; z-index:5; pointer-events:none; border-radius:999px; background:linear-gradient(90deg,rgba(215,238,232,0),rgba(166,209,197,.38),rgba(211,226,220,.72)); box-shadow:0 0 10px rgba(160,197,190,.32), 0 0 20px rgba(156,211,198,.14); transform:translate(-50%,-50%); opacity:0; }
-                        .math-pk-skill-shot::before { content:''; position:absolute; right:-12px; top:50%; width:22px; height:22px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.86) 0 17%,rgba(225,210,156,.58) 18% 40%,rgba(156,211,198,.28) 41% 62%,transparent 66%); transform:translateY(-50%); }
-                        .math-pk-skill-shot.robot { left:76%; background:linear-gradient(270deg,rgba(236,209,177,0),rgba(190,154,118,.34),rgba(225,215,178,.66)); box-shadow:0 0 10px rgba(226,201,138,.3), 0 0 20px rgba(210,167,118,.14); }
-                        .math-pk-skill-shot.robot::before { left:-12px; right:auto; background:radial-gradient(circle,rgba(255,255,255,.84) 0 17%,rgba(226,201,138,.54) 18% 40%,rgba(210,167,118,.28) 41% 62%,transparent 66%); }
-                        .math-pk-skill-shot.human { animation:math-pk-shot-human .74s cubic-bezier(.2,.85,.2,1) forwards; }
-                        .math-pk-skill-shot.robot { animation:math-pk-shot-robot .74s cubic-bezier(.2,.85,.2,1) forwards; }
+                        .math-pk-rush-trail { position:absolute; top:43%; left:29%; width:156px; height:84px; z-index:4; pointer-events:none; opacity:0; filter:blur(.2px); transform:translate(-50%,-50%); }
+                        .math-pk-rush-trail::before { content:''; position:absolute; inset:20px 8px; border-radius:999px; background:linear-gradient(90deg,rgba(211,226,220,0),rgba(196,225,216,.34),rgba(255,255,255,.82)); box-shadow:0 0 16px rgba(194,226,216,.34); }
+                        .math-pk-rush-trail::after { content:''; position:absolute; right:0; top:50%; width:58px; height:58px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.82) 0 16%,rgba(255,209,102,.48) 17% 40%,rgba(110,231,183,.18) 41% 62%,transparent 64%); transform:translateY(-50%); }
+                        .math-pk-rush-trail.robot { left:71%; }
+                        .math-pk-rush-trail.robot::before { background:linear-gradient(270deg,rgba(225,215,178,0),rgba(226,201,138,.34),rgba(255,255,255,.8)); box-shadow:0 0 16px rgba(226,201,138,.34); }
+                        .math-pk-rush-trail.robot::after { left:0; right:auto; background:radial-gradient(circle,rgba(255,255,255,.82) 0 16%,rgba(226,201,138,.5) 17% 40%,rgba(210,167,118,.2) 41% 62%,transparent 64%); }
+                        .math-pk-rush-trail.attack-dash.human { animation:math-pk-trail-dash-human .66s ease-out forwards; }
+                        .math-pk-rush-trail.attack-dash.robot { animation:math-pk-trail-dash-robot .66s ease-out forwards; }
+                        .math-pk-rush-trail.attack-hop.human { animation:math-pk-trail-hop-human .74s ease-out forwards; }
+                        .math-pk-rush-trail.attack-hop.robot { animation:math-pk-trail-hop-robot .74s ease-out forwards; }
+                        .math-pk-rush-trail.attack-spin.human { animation:math-pk-trail-spin-human .72s ease-out forwards; }
+                        .math-pk-rush-trail.attack-spin.robot { animation:math-pk-trail-spin-robot .72s ease-out forwards; }
                         .arena-lobby { text-align:center; }
                         .arena-lobby h2 { font-size:2.6rem; font-weight:900; text-shadow:0 4px 14px rgba(0,0,0,.6); margin-bottom:6px; }
                         .arena-lobby p { color:rgba(255,255,255,.82); margin-bottom:4px; }
@@ -311,7 +464,20 @@
                         .mul-mode-switch { display:inline-grid; grid-template-columns:1fr 1fr; gap:6px; padding:5px; border-radius:999px; background:rgba(255,255,255,.12); margin:12px 0 4px; }
                         .mul-mode-switch button { border:0; border-radius:999px; padding:9px 18px; color:#fff; background:transparent; font-weight:800; cursor:pointer; }
                         .mul-mode-switch button.active { background:rgba(255,255,255,.24); }
+                        .math-pk-support-chooser { width:min(620px,calc(100vw - 36px)); padding:18px; border-radius:20px; background:rgba(9,14,22,.64); border:1px solid rgba(255,255,255,.12); box-shadow:0 18px 48px rgba(0,0,0,.34); backdrop-filter:blur(10px); }
+                        .math-pk-support-chooser h3 { margin:0 0 6px; font-size:1.5rem; font-weight:900; }
+                        .math-pk-support-chooser p { margin:0; color:rgba(255,255,255,.78); }
+                        .math-pk-support-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:14px; }
+                        .math-pk-support-card { padding:14px 12px; border-radius:16px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.08); color:#fff; text-align:left; cursor:pointer; transition:transform .08s, background .15s, border-color .15s; }
+                        .math-pk-support-card:hover { background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.24); transform:translateY(-2px); }
+                        .math-pk-support-card b { display:block; font-size:1rem; margin-bottom:6px; }
+                        .math-pk-support-card span { display:block; font-size:.82rem; line-height:1.45; color:rgba(255,255,255,.82); }
+                        .math-pk-support-card i { display:inline-flex; margin-top:10px; padding:4px 10px; border-radius:999px; background:rgba(123,174,143,.26); color:#dff4e5; font-size:.74rem; font-style:normal; font-weight:800; }
+                        .math-pk-support-status { display:inline-flex; align-items:center; justify-content:center; gap:6px; max-width:min(420px,96%); margin:0 auto 4px; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.1); font-size:.82rem; font-weight:800; color:#f4f8f6; }
                         .math-array { display:grid; gap:7px; padding:14px 18px; border-radius:16px; background:rgba(255,255,255,.12); }
+                        .math-array.math-array-compact { gap:4px; padding:10px 12px; background:rgba(255,255,255,.08); }
+                        .math-array.math-array-compact .math-array-row { gap:4px; }
+                        .math-array.math-array-compact .math-array-dot { width:12px; height:12px; }
                         .math-array-row { display:flex; justify-content:center; gap:7px; }
                         .math-array-dot { width:18px; height:18px; border-radius:50%; background:#ffd166; box-shadow:0 2px 8px rgba(0,0,0,.25); transition:transform .18s ease, box-shadow .18s ease, background .18s ease; }
                         .mul-explain { display:grid; gap:6px; text-align:center; font-weight:800; }
@@ -332,11 +498,20 @@
                         @keyframes math-correct-spark { 0%{ transform:scale(1); } 45%{ transform:scale(1.18); box-shadow:0 0 16px rgba(255,209,102,.75); } 100%{ transform:scale(1); } }
                         @keyframes math-answer-pop { 0%{ transform:scale(.92); opacity:.7; } 100%{ transform:scale(1); opacity:1; } }
                         @keyframes math-fx-burst { from{ transform:scale(.45); opacity:.9; } to{ transform:scale(1.3); opacity:0; } }
-                        @keyframes math-pk-cast-human { 0%,100%{ transform:translateX(0) scale(1); } 38%{ transform:translateX(22px) scale(1.08); } 62%{ transform:translateX(12px) scale(1.03); } }
-                        @keyframes math-pk-cast-robot { 0%,100%{ transform:translateX(0) scale(1); } 38%{ transform:translateX(-22px) scale(1.08); } 62%{ transform:translateX(-12px) scale(1.03); } }
-                        @keyframes math-pk-target-shake { 0%,100%{ transform:translateX(0) rotate(0); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(12px) rotate(2deg); filter:drop-shadow(0 0 24px rgba(255,209,102,.95)); } 36%{ transform:translateX(-10px) rotate(-2deg); } 56%{ transform:translateX(7px) rotate(1deg); } 76%{ transform:translateX(-4px) rotate(-1deg); } }
-                        @keyframes math-pk-shot-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.55) rotate(-4deg); left:27%; top:43%; } 16%{ opacity:.86; } 68%{ opacity:.9; transform:translate(-50%,-50%) scale(1) rotate(-1deg); left:71%; top:41%; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.18) rotate(0); left:75%; top:40%; } }
-                        @keyframes math-pk-shot-robot { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.55) rotate(4deg); left:73%; top:43%; } 16%{ opacity:.86; } 68%{ opacity:.9; transform:translate(-50%,-50%) scale(1) rotate(1deg); left:29%; top:41%; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.18) rotate(0); left:25%; top:40%; } }
+                        @keyframes math-pk-rush-dash-human { 0%{ transform:translateX(0) scale(1); } 24%{ transform:translateX(34px) scale(1.06); } 52%{ transform:translateX(118px) scale(1.14); } 66%{ transform:translateX(136px) scale(1.08); } 100%{ transform:translateX(0) scale(1); } }
+                        @keyframes math-pk-rush-dash-robot { 0%{ transform:translateX(0) scale(1); } 24%{ transform:translateX(-34px) scale(1.06); } 52%{ transform:translateX(-118px) scale(1.14); } 66%{ transform:translateX(-136px) scale(1.08); } 100%{ transform:translateX(0) scale(1); } }
+                        @keyframes math-pk-rush-hop-human { 0%{ transform:translateX(0) translateY(0) scale(1); } 26%{ transform:translateX(36px) translateY(-10px) scale(1.05); } 58%{ transform:translateX(120px) translateY(-42px) scale(1.12); } 72%{ transform:translateX(136px) translateY(-6px) scale(1.08); } 100%{ transform:translateX(0) translateY(0) scale(1); } }
+                        @keyframes math-pk-rush-hop-robot { 0%{ transform:translateX(0) translateY(0) scale(1); } 26%{ transform:translateX(-36px) translateY(-10px) scale(1.05); } 58%{ transform:translateX(-120px) translateY(-42px) scale(1.12); } 72%{ transform:translateX(-136px) translateY(-6px) scale(1.08); } 100%{ transform:translateX(0) translateY(0) scale(1); } }
+                        @keyframes math-pk-rush-spin-human { 0%{ transform:translateX(0) rotate(0deg) scale(1); } 24%{ transform:translateX(28px) rotate(-10deg) scale(1.05); } 56%{ transform:translateX(112px) rotate(250deg) scale(1.13); } 70%{ transform:translateX(128px) rotate(320deg) scale(1.08); } 100%{ transform:translateX(0) rotate(360deg) scale(1); } }
+                        @keyframes math-pk-rush-spin-robot { 0%{ transform:translateX(0) rotate(0deg) scale(1); } 24%{ transform:translateX(-28px) rotate(10deg) scale(1.05); } 56%{ transform:translateX(-112px) rotate(-250deg) scale(1.13); } 70%{ transform:translateX(-128px) rotate(-320deg) scale(1.08); } 100%{ transform:translateX(0) rotate(-360deg) scale(1); } }
+                        @keyframes math-pk-target-hit-from-human { 0%,100%{ transform:translateX(0) rotate(0); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(18px) rotate(2deg) scale(1.04); filter:drop-shadow(0 0 24px rgba(255,209,102,.95)); } 36%{ transform:translateX(8px) rotate(1deg); } 56%{ transform:translateX(-8px) rotate(-1deg); } 76%{ transform:translateX(4px) rotate(.5deg); } }
+                        @keyframes math-pk-target-hit-from-robot { 0%,100%{ transform:translateX(0) rotate(0); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(-18px) rotate(-2deg) scale(1.04); filter:drop-shadow(0 0 24px rgba(255,209,102,.95)); } 36%{ transform:translateX(-8px) rotate(-1deg); } 56%{ transform:translateX(8px) rotate(1deg); } 76%{ transform:translateX(-4px) rotate(-.5deg); } }
+                        @keyframes math-pk-trail-dash-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65); left:30%; } 22%{ opacity:.88; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.06); left:62%; } }
+                        @keyframes math-pk-trail-dash-robot { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65); left:70%; } 22%{ opacity:.88; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.06); left:38%; } }
+                        @keyframes math-pk-trail-hop-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65) translateY(6px); left:30%; } 22%{ opacity:.82; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.02) translateY(-14px); left:62%; } }
+                        @keyframes math-pk-trail-hop-robot { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65) translateY(6px); left:70%; } 22%{ opacity:.82; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.02) translateY(-14px); left:38%; } }
+                        @keyframes math-pk-trail-spin-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.62) rotate(-12deg); left:30%; } 22%{ opacity:.86; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.08) rotate(18deg); left:60%; } }
+                        @keyframes math-pk-trail-spin-robot { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.62) rotate(12deg); left:70%; } 22%{ opacity:.86; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.08) rotate(-18deg); left:40%; } }
                         @keyframes math-pk-impact-burst { 0%{ opacity:0; transform:scale(.45); } 32%{ opacity:.82; transform:scale(1.02); } 100%{ opacity:0; transform:scale(1.35); } }
                         @media (prefers-reduced-motion: reduce) {
                             .math-array-row.fx-reveal,
@@ -345,9 +520,10 @@
                             .math-answer-wrong,
                             .math-fx-burst,
                             .arena-side.math-pk-caster .arena-avatar,
-                            .arena-side.math-pk-target-hit .arena-avatar,
+                            .arena-side.math-pk-target-hit.from-human .arena-avatar,
+                            .arena-side.math-pk-target-hit.from-robot .arena-avatar,
                             .arena-side.math-pk-target-hit::after,
-                            .math-pk-skill-shot { animation:none !important; transition:none !important; }
+                            .math-pk-rush-trail { animation:none !important; transition:none !important; }
                         }
                         @media (max-width:760px){
                             .math-pk-hp-track { gap:8px; }
@@ -363,6 +539,7 @@
                             .arena-lobby h2 { font-size:1.8rem; }
                             .mathpk-difficulty-panel { width:calc(100vw - 24px); padding:8px; }
                             .mathpk-difficulty-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+                            .math-pk-support-grid { grid-template-columns:1fr; }
                         }
                     </style>
                     <div class="arena-topbar">
@@ -476,16 +653,84 @@
             `;
         },
 
+        _supportBadge() {
+            const card = getSelectedSupportCard();
+            if (!card) return '';
+            const usedText = card.id === 'retry_once' && state.support.retryUsed ? '已使用' : '';
+            return `<div class="math-pk-support-status" id="math-pk-support-status">本局支援：${card.name}${usedText ? ` · ${usedText}` : ''}</div>`;
+        },
+
+        _refreshSupportStatus() {
+            const el = document.getElementById('math-pk-support-status');
+            if (!el) return;
+            const card = getSelectedSupportCard();
+            if (!card) {
+                el.textContent = '';
+                return;
+            }
+            const usedText = card.id === 'retry_once' && state.support.retryUsed ? ' · 已使用' : '';
+            el.textContent = `本局支援：${card.name}${usedText}`;
+        },
+
+        _renderCompactArray(question) {
+            const nums = Game._extractQuestionNumbers(question);
+            const groups = Math.max(2, Math.min(5, Number(question.groups || nums[0] || 0)));
+            const groupSize = Math.max(2, Math.min(5, Number(question.groupSize || nums[1] || 0)));
+            if (!groups || !groupSize) return '';
+            return `
+                <div class="math-array math-array-compact" aria-label="${groups} 组每组 ${groupSize} 个">
+                    ${Array(groups).fill(0).map((_, index) => `
+                        <div class="math-array-row" style="--row-index:${index};">
+                            ${Array(groupSize).fill(0).map(() => '<i class="math-array-dot"></i>').join('')}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        },
+
+        supportChooser(diff) {
+            const center = document.getElementById('arena-center');
+            if (!center) return;
+            const cards = state.support.offeredCardIds
+                .map((cardId) => MATH_PK_SUPPORT_CARDS[cardId])
+                .filter(Boolean);
+            const nextLabel = state.support.pendingMode === 'training' ? '练习场' : 'PK';
+            center.innerHTML = `
+                <div class="math-pk-support-chooser">
+                    <h3>先选一个支援</h3>
+                    <p>${DIFFICULTY_LABELS[normalizeDifficulty(diff)]} · 进入 ${nextLabel} 前，挑一个更适合这局的帮助。</p>
+                    <div class="math-pk-support-grid">
+                        ${cards.map((card) => `
+                            <button type="button" class="math-pk-support-card" onclick="MathPKGame.chooseSupportCardAndStart('${card.id}','${state.support.pendingMode}')">
+                                <b>${card.name}</b>
+                                <span>${card.description}</span>
+                                <i>${card.tag}</i>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <button class="arena-btn" style="margin-top:14px;background:rgba(255,255,255,.18);" onclick="MathPKGame.renderUI('math-pk-container')">返回大厅</button>
+                </div>
+            `;
+            this._setSide('human', { status: '挑个帮手再出发', time: '' });
+            this._setSide('robot', { status: '机器人正在等你', time: '' });
+            this._setSideClass('human', '');
+            this._setSideClass('robot', '');
+        },
+
         // 对战中：题面 + 显示屏 + 键盘
         match(question) {
             const center = document.getElementById('arena-center');
             if (!center) return;
             const isWord = !!question.isWord;
+            const supportCard = getSelectedSupportCard();
+            const showCompactArray = supportCard && supportCard.id === 'show_array' && question && question.op === '*';
             const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(d =>
                 `<button class="arena-key" onclick="MathPKGame._inputDigit(${d})">${d}</button>`).join('');
             center.innerHTML = `
+                ${this._supportBadge()}
                 ${isWord ? '<div class="arena-qtag">📝 应用题</div>' : ''}
                 <div class="arena-question ${isWord ? 'word' : ''}">${question.text}${isWord ? '' : ' ='}</div>
+                ${showCompactArray ? this._renderCompactArray(question) : ''}
                 <div class="arena-display empty" id="arena-display">输入答案</div>
                 <div class="arena-keypad">
                     ${keys}
@@ -521,6 +766,7 @@
             const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(d =>
                 `<button class="arena-key" onclick="MathPKGame._inputDigit(${d})">${d}</button>`).join('');
             center.innerHTML = `
+                ${this._supportBadge()}
                 ${this._streakMeter()}
                 <div class="arena-qtag">练习场</div>
                 <div class="arena-question word">${question.text}，一共有几个？</div>
@@ -555,6 +801,8 @@
             `;
             this._setSide('human', { status: '准备挑战', time: '' });
             this._setSide('robot', { status: '机器人上线', time: '' });
+            playSfx('duelReady');
+            playSfx('spotlightPulse');
         },
 
         _setSide(who, opts) {
@@ -606,37 +854,63 @@
             el.className = `math-pk-attack-cue show ${type || ''}`;
             setTimeout(() => el.classList.remove('show'), 1100);
         },
+        _pickAttackStyle(winner) {
+            const stylesByArchetype = {
+                hopper: ['attack-hop', 'attack-dash', 'attack-hop', 'attack-spin'],
+                spinner: ['attack-spin', 'attack-dash', 'attack-spin', 'attack-hop'],
+                dasher: ['attack-dash', 'attack-dash', 'attack-hop', 'attack-spin'],
+                allrounder: ['attack-dash', 'attack-hop', 'attack-spin']
+            };
+            const archetype = winner === 'human'
+                ? getMathPkPlayerAttackArchetype()
+                : getMathPkRobotAttackArchetype(state.mathDifficulty);
+            const styles = stylesByArchetype[archetype] || stylesByArchetype.allrounder;
+            const q = state.currentQuestion || {};
+            const seed = (state.round || 0) + (q.answer || 0) + (winner === 'human' ? 1 : 2);
+            return styles[seed % styles.length];
+        },
         _playAttackFx(winner) {
             const caster = winner === 'human' ? 'human' : 'robot';
             const target = winner === 'human' ? 'robot' : 'human';
             const casterEl = document.getElementById(`arena-side-${caster}`);
             const targetEl = document.getElementById(`arena-side-${target}`);
             const stage = document.querySelector('.arena-stage');
+            const attackStyle = this._pickAttackStyle(winner);
+            const cueText = {
+                'attack-dash': '飞扑突击',
+                'attack-hop': '腾空一击',
+                'attack-spin': '旋风撞击'
+            }[attackStyle] || '近战突击';
             [casterEl, targetEl].forEach((el) => {
                 if (!el) return;
-                el.classList.remove('math-pk-caster', 'math-pk-target-hit');
+                el.classList.remove('math-pk-caster', 'math-pk-target-hit', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot');
             });
-            const oldShot = stage && stage.querySelector('.math-pk-skill-shot');
-            if (oldShot) oldShot.remove();
+            const oldTrail = stage && stage.querySelector('.math-pk-rush-trail');
+            if (oldTrail) oldTrail.remove();
             if (casterEl) {
                 void casterEl.offsetWidth;
                 casterEl.classList.add('math-pk-caster');
+                casterEl.classList.add(attackStyle);
             }
+            this._attackCue(cueText, attackStyle);
             if (stage) {
-                const shot = document.createElement('i');
-                shot.className = `math-pk-skill-shot ${caster}`;
-                shot.setAttribute('aria-hidden', 'true');
-                stage.appendChild(shot);
-                setTimeout(() => shot.remove(), 850);
+                const trail = document.createElement('i');
+                trail.className = `math-pk-rush-trail ${caster} ${attackStyle}`;
+                trail.setAttribute('aria-hidden', 'true');
+                stage.appendChild(trail);
+                setTimeout(() => trail.remove(), 820);
             }
             setTimeout(() => {
                 if (!targetEl) return;
                 targetEl.classList.add('math-pk-target-hit');
+                targetEl.classList.add(attackStyle);
+                targetEl.classList.add(caster === 'human' ? 'from-human' : 'from-robot');
             }, 420);
             setTimeout(() => {
-                if (casterEl) casterEl.classList.remove('math-pk-caster');
-                if (targetEl) targetEl.classList.remove('math-pk-target-hit');
+                if (casterEl) casterEl.classList.remove('math-pk-caster', 'attack-dash', 'attack-hop', 'attack-spin');
+                if (targetEl) targetEl.classList.remove('math-pk-target-hit', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot');
             }, 980);
+            return attackStyle;
         },
         _setRoundPill(text) {
             const el = document.getElementById('arena-round-pill');
@@ -654,6 +928,11 @@
             void bar.offsetWidth; // 强制回流
             bar.style.transition = `width ${state.robotThinkMs}ms linear`;
             bar.style.width = '0%';
+            if (state.robotThinkMs >= 2800) {
+                const cueRound = state.round;
+                playSfxLater('countdownTick', Math.max(240, Math.floor(state.robotThinkMs * 0.5)), () => state.isPlaying && !state.roundResolved && state.round === cueRound);
+                playSfxLater('countdownUrgent', Math.max(320, state.robotThinkMs - 1200), () => state.isPlaying && !state.roundResolved && state.round === cueRound);
+            }
         },
 
         toast(html, type) {
@@ -685,6 +964,9 @@
                 return;
             }
             const win = data.humanWins > data.robotWins;
+            const stars = Number(data.starsEarned || 0);
+            const progress = Number(data.totalStars || 0);
+            const starText = `${'★'.repeat(stars)}${'☆'.repeat(Math.max(0, 3 - stars))}`;
             center.innerHTML = `
                 <div class="arena-lobby">
                     <h2 style="font-size:2rem;">${win ? '🏆 你赢了！' : (data.humanWins === data.robotWins ? '🤝 平局！' : '🤖 机器人赢了')}</h2>
@@ -692,6 +974,9 @@
                     <p style="font-size:2.2rem;font-weight:900;color:#ffd166;margin-top:8px;">+${data.earnedPoints}</p>
                     <p style="opacity:.8;">获得成长积分</p>
                     <p style="margin-top:6px;opacity:.75;font-size:.85rem;">答对 ${data.correctCount}/${data.total} · 最高连击 ${data.maxCombo}</p>
+                    <p style="margin-top:10px;font-size:1rem;">本局获得 <b style="color:#ffd166;">${starText}</b></p>
+                    <p style="opacity:.82;">累计星轨：${progress} / 12</p>
+                    <p style="opacity:.9;font-size:.88rem;">解锁：${escapeHtml(data.rewardMessage || '继续收集星星')}</p>
                     <button class="arena-btn" onclick="MathPKGame.start()">再来一局</button>
                     <button class="arena-btn" style="margin-top:10px;background:rgba(255,255,255,.18);" onclick="MathPKGame.renderUI('math-pk-container')">返回大厅</button>
                 </div>
@@ -732,11 +1017,108 @@
             state.mathDifficulty = normalizeDifficulty(localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty);
         },
 
+        _resetSupportForMatch() {
+            state.support.retryUsed = false;
+            state.support.starsEarned = 0;
+        },
+
+        _buildSupportOffer(diff) {
+            const normalized = normalizeDifficulty(diff);
+            const unlocked = getUnlockedSupportCardIds();
+            return unlocked
+                .map((cardId) => MATH_PK_SUPPORT_CARDS[cardId])
+                .filter((card) => card && Array.isArray(card.stages) && card.stages.includes(normalized))
+                .slice(0, 3)
+                .map((card) => card.id);
+        },
+
+        _openSupportChooser(nextMode) {
+            const diff = normalizeDifficulty(state.mathDifficulty);
+            const offeredCardIds = this._buildSupportOffer(diff);
+            if (!offeredCardIds.length) return false;
+            state.isPlaying = false;
+            state.support.offeredCardIds = offeredCardIds;
+            state.support.pendingMode = nextMode;
+            render._setRoundPill(`${DIFFICULTY_LABELS[diff]} · 选支援`);
+            render.supportChooser(diff);
+            playSfx('supportReady');
+            playSfx('spotlightPulse');
+            return true;
+        },
+
+        _maybeOpenSupportChooser(nextMode) {
+            const diff = normalizeDifficulty(state.mathDifficulty);
+            if (!isSupportChooserDifficulty(diff)) return false;
+            return this._openSupportChooser(nextMode);
+        },
+
+        chooseSupportCardAndStart(cardId, nextMode) {
+            const card = MATH_PK_SUPPORT_CARDS[cardId];
+            if (!card) return;
+            setSelectedSupportCardId(card.id);
+            state.support.pendingMode = null;
+            state.support.offeredCardIds = [];
+            this._resetSupportForMatch();
+            playSfx('supportUse');
+            if (nextMode === 'training') {
+                this._startTrainingCore();
+                return;
+            }
+            this._startRobotMatchCore();
+        },
+
+        _startRobotMatchCore() {
+            state.isPlaying = true;
+            state.roundClosing = false;
+            state.mode = 'robot';
+            state.asyncMatch = null;
+            state.asyncQuestions = null;
+            state.asyncSummary = null;
+            state.round = 0;
+            state.humanWins = 0;
+            state.robotWins = 0;
+            state.score = 0;
+            state.combo = 0;
+            state.maxCombo = 0;
+            state.correctCount = 0;
+            state.multiplicationCorrectCount = 0;
+            state.training.active = false;
+            state.training.currentQuestion = null;
+            state.training.readyForPk = false;
+            state.matchStartTs = Date.now();
+            this._resetSupportForMatch();
+            render._setScore();
+            playSfx('challengeStart');
+            this._nextRound();
+        },
+
+        _startTrainingCore() {
+            state.isPlaying = true;
+            state.roundClosing = false;
+            state.mode = 'training';
+            state.currentInput = '';
+            state.training.active = true;
+            state.training.streak = 0;
+            state.training.totalCorrect = 0;
+            state.training.readyForPk = false;
+            state.multiplicationCorrectCount = 0;
+            this._resetSupportForMatch();
+            if (state.robotTimer) clearTimeout(state.robotTimer);
+            playSfx('challengeStart');
+            this._nextTrainingQuestion();
+        },
+
         _setDifficulty(diff) {
             const normalized = normalizeDifficulty(diff);
             if (!VALID_DIFFICULTIES.includes(normalized)) return;
+            if (state.mathDifficulty !== normalized) playSfx('choiceConfirm');
             state.mathDifficulty = normalized;
             try { localStorage.setItem(CONFIG.STORAGE_KEY_DIFFICULTY, normalized); } catch (e) {}
+            if (!isSupportChooserDifficulty(normalized)) {
+                setSelectedSupportCardId(null);
+                state.support.offeredCardIds = [];
+                state.support.pendingMode = null;
+            }
             const mathPage = document.getElementById('page-mathpk');
             const arena = document.getElementById('math-arena');
             if (arena && mathPage && mathPage.classList.contains('active') && !state.isPlaying) {
@@ -753,41 +1135,20 @@
             state.mathDifficulty = normalizeDifficulty(localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty);
             render.createContainer(containerId);
             this.init();
+            playSfx('uiOpen');
+            playSfx('spotlightPulse');
         },
 
         start() {
-            state.isPlaying = true;
-            state.roundClosing = false;
-            state.mode = 'robot';
-            state.asyncMatch = null;
-            state.asyncQuestions = null;
-            state.asyncSummary = null;
-            state.round = 0;
-            state.humanWins = 0;
-            state.robotWins = 0;
-            state.score = 0;
-            state.combo = 0;
-            state.maxCombo = 0;
-            state.correctCount = 0;
-            state.training.active = false;
-            state.training.currentQuestion = null;
-            state.training.readyForPk = false;
-            state.matchStartTs = Date.now();
-            render._setScore();
-            this._nextRound();
+            playSfx('choiceConfirm');
+            if (this._maybeOpenSupportChooser('robot')) return;
+            this._startRobotMatchCore();
         },
 
         startTraining() {
-            state.isPlaying = true;
-            state.roundClosing = false;
-            state.mode = 'training';
-            state.currentInput = '';
-            state.training.active = true;
-            state.training.streak = 0;
-            state.training.totalCorrect = 0;
-            state.training.readyForPk = false;
-            if (state.robotTimer) clearTimeout(state.robotTimer);
-            this._nextTrainingQuestion();
+            playSfx('choiceConfirm');
+            if (this._maybeOpenSupportChooser('training')) return;
+            this._startTrainingCore();
         },
 
         _nextTrainingQuestion() {
@@ -798,13 +1159,25 @@
             state.training.currentQuestion = state.currentQuestion;
             render._setRoundPill(`乘法练习 · 连对 ${state.training.streak} / ${CONFIG.MUL_TRAINING_UNLOCK_STREAK}`);
             render.trainingMatch(state.currentQuestion);
+            playSfx('mathRoundStart');
+            playSfx('questionReveal');
         },
 
         _submitTrainingAnswer(selected) {
+            playSfx('answerSubmit');
             const correct = selected === state.currentQuestion.answer;
             if (!correct) {
                 const explanation = `再看一眼：${state.currentQuestion.multiplication} 是 ${state.currentQuestion.groups} 组 ${state.currentQuestion.groupSize} 个，${state.currentQuestion.repeatedAddition} = ${state.currentQuestion.answer}`;
-                state.training.streak = 0;
+                const retryCard = getSelectedSupportCard();
+                const keepStreak = retryCard && retryCard.id === 'retry_once' && !state.support.retryUsed;
+                if (keepStreak) {
+                    state.support.retryUsed = true;
+                    render._refreshSupportStatus();
+                    render.toast('这次不扣连对<small>再试一次已使用</small>', 'win');
+                    playSfx('supportUse');
+                } else {
+                    state.training.streak = 0;
+                }
                 state.currentInput = '';
                 render.trainingMatch(state.currentQuestion);
                 const display = document.getElementById('arena-display');
@@ -816,8 +1189,9 @@
                 if (feedback) {
                     feedback.innerHTML = explanation;
                 }
-                render._setSide('human', { status: '看图再试一次', time: '' });
-                window.sfx && sfx.error();
+                render._setSide('human', { status: keepStreak ? '这次不扣连对' : '看图再试一次', time: '' });
+                playSfx('mathWrong');
+                playSfx('stunPop');
                 return;
             }
             const array = document.querySelector && document.querySelector('.math-array');
@@ -830,10 +1204,16 @@
             }
             state.training.streak++;
             state.training.totalCorrect++;
+            state.multiplicationCorrectCount++;
             state.currentInput = '';
+            playSfx('mathCorrect');
+            if (state.training.streak >= 2) playSfx('comboUp');
             if (state.training.streak >= CONFIG.MUL_TRAINING_UNLOCK_STREAK) {
                 state.training.readyForPk = true;
                 render.toast(`已经连对 ${state.training.streak} 题<small>要不要挑战机器人？</small>`, 'win');
+                playSfx('duelReady');
+                playSfx('supportReady');
+                playSfx('trainingUnlock');
                 setTimeout(() => {
                     render.hideToast();
                     render._multiplicationReady();
@@ -868,12 +1248,14 @@
             state.training.readyForPk = false;
             state.matchStartTs = Date.now();
             render._setScore();
+            playSfx('challengeStart');
             this._nextRound();
         },
 
         _exit() {
             state.isPlaying = false;
             if (state.robotTimer) clearTimeout(state.robotTimer);
+            playSfx('uiClose');
             if (typeof window.switchPage === 'function') switchPage('map');
             else render.renderUI('math-pk-container');
         },
@@ -940,7 +1322,14 @@
             const jitterSeed = (Number(q.answer) || 0) + nums.reduce((sum, value) => sum + value, 0) + normalized.length * 17;
             const jitter = ((jitterSeed * 73) % (profile.jitter * 2 + 1)) - profile.jitter;
             ms += jitter;
-            return Math.max(profile.min, Math.min(profile.max, ms));
+            const supportCard = getSelectedSupportCard();
+            let maxMs = profile.max;
+            if (supportCard && supportCard.id === 'slow_robot') {
+                const bonus = Number((supportCard.effect && supportCard.effect.robotThinkMsBonus) || 0);
+                ms += bonus;
+                maxMs += bonus;
+            }
+            return Math.max(profile.min, Math.min(maxMs, ms));
         },
 
         _robotThinkMs(question, diff) {
@@ -961,6 +1350,8 @@
             render._setRoundPill(`${isAsyncMode() ? '好友异步挑战' : '第'} ${state.round} / ${getRoundTotal()} ${isAsyncMode() ? '题' : '轮'}`);
             render.match(state.currentQuestion);
             render.hideToast();
+            playSfx('mathRoundStart');
+            playSfx('questionReveal');
             if (isAsyncMode()) {
                 const bar = document.getElementById('arena-robot-bar');
                 if (bar) bar.style.display = 'none';
@@ -971,7 +1362,9 @@
                 return;
             }
             state.robotThinkMs = this._robotThinkMs(state.currentQuestion, state.mathDifficulty);
+            state.robotDeadlineTs = Date.now() + state.robotThinkMs;
             render.startRobotBar();
+            playSfx('robotCharge');
             if (state.robotTimer) clearTimeout(state.robotTimer);
             state.robotTimer = setTimeout(() => this._robotAnswer(), state.robotThinkMs);
         },
@@ -987,11 +1380,14 @@
             if (state.currentInput.length >= 4) return;
             state.currentInput += String(d);
             this._refreshDisplay();
+            playSfx('mathKeyTap');
         },
         _clearInput() {
             if (!state.isPlaying || state.roundClosing || state.roundResolved) return;
+            if (state.currentInput === '') return;
             state.currentInput = '';
             this._refreshDisplay();
+            playSfx('inputErase');
         },
         _refreshDisplay() {
             const el = document.getElementById('arena-display');
@@ -1008,6 +1404,7 @@
                 this._submitTrainingAnswer(selected);
                 return;
             }
+            playSfx('answerSubmit');
             const correct = selected === state.currentQuestion.answer;
             if (isAsyncMode()) {
                 state.roundResolved = true;
@@ -1021,11 +1418,15 @@
                     render._setSide('human', { status: '✓ 答对！', time: '' });
                     render._setSide('robot', { status: '好友稍后作答', time: '' });
                     render.toast(`✨ 本题得 ${gain} 分<small>好友也会做同一题</small>`, 'win');
+                    playSfx('mathCorrect');
+                    if (state.combo >= 2) playSfx('comboUp');
                 } else {
                     state.combo = 0;
                     render._setSide('human', { status: '答错了', time: '' });
                     render._setSide('robot', { status: '好友稍后作答', time: '' });
                     render.toast(`✗ 正确答案：${state.currentQuestion.answer}<small>下一题继续加油</small>`, 'lose');
+                    playSfx('mathWrong');
+                    playSfx('stunPop');
                 }
                 render._setScore();
                 setTimeout(() => {
@@ -1038,9 +1439,25 @@
                 // 答错：不结束本轮，扣时间继续抢答（机器人仍在计时）
                 const disp = document.getElementById('arena-display');
                 if (disp) { disp.classList.add('shake'); setTimeout(() => disp.classList.remove('shake'), 350); }
+                const retryCard = getSelectedSupportCard();
+                if (!isAsyncMode() && retryCard && retryCard.id === 'retry_once' && !state.support.retryUsed) {
+                    state.support.retryUsed = true;
+                    render._refreshSupportStatus();
+                    const now = Date.now();
+                    const remaining = Math.max(0, state.robotDeadlineTs - now);
+                    const extendedMs = remaining + 1500;
+                    state.robotThinkMs = extendedMs;
+                    state.robotDeadlineTs = now + extendedMs;
+                    if (state.robotTimer) clearTimeout(state.robotTimer);
+                    state.robotTimer = setTimeout(() => this._robotAnswer(), extendedMs);
+                    render.startRobotBar();
+                    render.toast('再试一次已使用<small>机器人稍微等你一下</small>', 'win');
+                    playSfx('supportUse');
+                }
                 state.currentInput = '';
                 this._refreshDisplay();
-                window.sfx && sfx.error();
+                playSfx('mathWrong');
+                playSfx('stunPop');
                 return;
             }
             // 答对：人在机器人之前完成 → 人赢本轮
@@ -1048,15 +1465,17 @@
             if (state.robotTimer) clearTimeout(state.robotTimer);
             const humanMs = Date.now() - state.roundStartTs;
             this._resolveRound('human', humanMs);
-            window.sfx && sfx.click();
+            playSfx('mathCorrect');
         },
 
         _resolveRound(winner, humanMs) {
             state.roundClosing = true;
             const robotSec = (state.robotThinkMs / 1000).toFixed(1);
             if (winner === 'human') {
+                const resolvedRound = state.round;
                 state.humanWins++;
                 state.correctCount++;
+                if (state.currentQuestion && state.currentQuestion.op === '*') state.multiplicationCorrectCount++;
                 state.combo++;
                 if (state.combo > state.maxCombo) state.maxCombo = state.combo;
                 state.score += CONFIG.BASE_SCORE + Math.min(state.combo * 2, 20);
@@ -1064,16 +1483,26 @@
                 render._setSide('human', { status: '✓ 答对！', time: `⚡ ${hs}s` });
                 render._setSide('robot', { status: '被抢先了', time: '' });
                 render._setSideClass('human', 'win'); render._setSideClass('robot', 'dim');
-                render._playAttackFx('human');
+                const attackStyle = render._playAttackFx('human');
                 render.toast(`⚡ 宠物出招！<small>用时 ${hs}s · +${CONFIG.BASE_SCORE + Math.min(state.combo * 2, 20)} 分</small>`, 'win');
+                playSfx('dashWhoosh');
+                playAttackStyleSfx(attackStyle, 'human');
+                playSfx('roundWinCue');
+                playSfxLater('battleImpact', 320, () => state.round === resolvedRound && state.roundClosing);
+                if (state.combo >= 2) playSfx('comboUp');
             } else {
+                const resolvedRound = state.round;
                 state.robotWins++;
                 state.combo = 0;
                 render._setSide('robot', { status: '✓ 答对！', time: `⚡ ${robotSec}s` });
                 render._setSide('human', { status: '慢了一步', time: '' });
                 render._setSideClass('robot', 'win'); render._setSideClass('human', 'dim');
-                render._playAttackFx('robot');
+                const attackStyle = render._playAttackFx('robot');
                 render.toast(`🤖 机器人反击<small>它用时 ${robotSec}s</small>`, 'lose');
+                playSfx('dashWhoosh');
+                playAttackStyleSfx(attackStyle, 'robot');
+                playSfx('roundLoseCue');
+                playSfxLater('battleImpact', 320, () => state.round === resolvedRound && state.roundClosing);
             }
             render._setScore();
             // 停掉机器人思考条动画
@@ -1150,16 +1579,67 @@
                 return;
             }
 
+            const starsEarned = this._estimateRewardStars({
+                difficulty: state.mathDifficulty,
+                completed: true,
+                correctCount: state.correctCount,
+                multiplicationCorrectCount: state.multiplicationCorrectCount,
+                win: win,
+                total: getRoundTotal(),
+                maxCombo: state.maxCombo
+            });
+            state.support.starsEarned = starsEarned;
+            const progress = getSupportProgress();
+            const diff = normalizeDifficulty(state.mathDifficulty);
+            const previousStars = Number(progress[diff] || 0);
+            const totalStars = previousStars + starsEarned;
+            progress[diff] = totalStars;
+            saveSupportProgress(progress);
+            let rewardMessage = '再拿 1 颗星，就能更进一步';
+            if (previousStars < 3 && totalStars >= 3) rewardMessage = '解锁新支援卡「拆一拆」';
+            else if (previousStars < 6 && totalStars >= 6) rewardMessage = '解锁宠物入场动作';
+            else if (previousStars < 9 && totalStars >= 9) rewardMessage = '解锁机器人图鉴徽章';
+            else if (previousStars < 12 && totalStars >= 12) rewardMessage = '获得当前阶段完成印章';
+
             render._setRoundPill(win ? '🏆 胜利' : '对战结束');
-            window.sfx && sfx.levelup();
+            playSfx(win ? 'battleWin' : 'battleLose');
+            if (starsEarned > 0) playSfx('rewardStar');
+            if (win || starsEarned > 0) playSfx('rewardFanfare');
+            if (win) playSfx('victoryBurst');
+            if (!win) playSfx('faintDrop');
+            playSfx('resultStamp');
             render.result({
                 humanWins: state.humanWins,
                 robotWins: state.robotWins,
                 earnedPoints,
                 correctCount: state.correctCount,
                 maxCombo: state.maxCombo,
-                total: CONFIG.TOTAL_ROUNDS
+                total: CONFIG.TOTAL_ROUNDS,
+                starsEarned: starsEarned,
+                totalStars: totalStars,
+                rewardMessage: rewardMessage
             });
+        },
+
+        _estimateRewardStars(summary) {
+            const data = summary || {};
+            const difficulty = normalizeDifficulty(data.difficulty || state.mathDifficulty);
+            if (difficulty === 'medium_mul') {
+                let stars = 0;
+                if (data.completed) stars++;
+                if (Number(data.correctCount || 0) >= 3) stars++;
+                if (Number(data.multiplicationCorrectCount || 0) >= 1) stars++;
+                return Math.min(3, stars);
+            }
+            if (difficulty === 'medium_mix') {
+                let stars = 0;
+                if (data.win) stars++;
+                const total = Math.max(1, Number(data.total || CONFIG.TOTAL_ROUNDS));
+                if ((Number(data.correctCount || 0) / total) >= 0.7) stars++;
+                if (Number(data.maxCombo || 0) >= 2) stars++;
+                return Math.min(3, stars);
+            }
+            return 0;
         }
     };
 
@@ -1199,6 +1679,7 @@
     window.MathPKGame = {
         start: () => Game.start(),
         startTraining: () => Game.startTraining(),
+        chooseSupportCardAndStart: (cardId, nextMode) => Game.chooseSupportCardAndStart(cardId, nextMode),
         renderUI: (id) => Game.renderUI(id),
         _exit: () => Game._exit(),
         _setDifficulty: (d) => Game._setDifficulty(d),
@@ -1210,7 +1691,10 @@
         buildAsyncQuestionSet: buildAsyncQuestionSet,
         describeAsyncQuestionSet: describeAsyncQuestionSet,
         estimateRobotThinkMs: (question, difficulty) => Game._estimateRobotThinkMs(question, difficulty),
-        getDifficulty: () => normalizeDifficulty(localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty)
+        estimateRewardStars: (summary) => Game._estimateRewardStars(summary),
+        getDifficulty: () => normalizeDifficulty(localStorage.getItem(CONFIG.STORAGE_KEY_DIFFICULTY) || state.mathDifficulty),
+        getSupportCards: () => MATH_PK_SUPPORT_CARDS,
+        getUnlockedSupportCardIds: () => getUnlockedSupportCardIds()
     };
 
     // 物理键盘支持（仅对战中）

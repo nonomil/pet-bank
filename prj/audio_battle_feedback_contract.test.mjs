@@ -10,8 +10,12 @@ function read(relPath) {
 
 const files = {
     sfx: read('js/sfx.js'),
+    mathPk: read('js/math-pk.js'),
+    cardArenaUi: read('js/card-arena-ui.js'),
     explorationDetail: read('js/exploration-detail.js'),
     exploration: read('js/exploration.js'),
+    shop: read('js/shop.js'),
+    learnCenter: read('js/learn-center.js'),
     app: read('js/app.js'),
     css: read('css/style.css')
 };
@@ -40,7 +44,46 @@ const semanticSfx = [
     'defend',
     'itemUse',
     'battleWin',
-    'battleLose'
+    'battleLose',
+    'uiOpen',
+    'uiClose',
+    'mathRoundStart',
+    'mathKeyTap',
+    'comboUp',
+    'supportReady',
+    'supportUse',
+    'rewardStar',
+    'battleImpact',
+    'healPulse',
+    'countdownTick',
+    'countdownUrgent',
+    'dashWhoosh',
+    'roundWinCue',
+    'roundLoseCue',
+    'questionReveal',
+    'answerSubmit',
+    'inputErase',
+    'robotCharge',
+    'challengeStart',
+    'trainingUnlock',
+    'teamSelect',
+    'teamDeselect',
+    'duelReady',
+    'resultStamp',
+    'spotlightPulse',
+    'attackHop',
+    'attackSpin',
+    'shieldSpark',
+    'faintDrop',
+    'rewardFanfare',
+    'cardFlip',
+    'switchPoof',
+    'stunPop',
+    'victoryBurst',
+    'purchaseConfirm',
+    'rewardClaim',
+    'chestOpen',
+    'itemInspect'
 ];
 
 for (const name of semanticSfx) {
@@ -100,7 +143,39 @@ check('battle animation listener is not once-only', !files.app.includes("addEven
 check('closeBattleModal removes battle animation listener', !!closeBattleModalBlock && closeBattleModalBlock.includes("removeEventListener('battle-animate'"));
 check('battle animation shows player damage from event detail', files.app.includes("showBattleDamage(e.detail.damage, 'monster')"));
 check('battle animation shows enemy damage from event detail', files.app.includes("showBattleDamage(e.detail.damage, 'pet')"));
+check('battle animation plays impact on damage', files.app.includes("play('battleImpact')"));
+check('battle animation plays heal pulse for healing item use', files.app.includes("if (e.detail.heal) play('healPulse')"));
+check('battle animation plays shield spark for defend and item use', files.app.includes("play('shieldSpark')"));
+check('battle animation plays dash whoosh on attack actions', files.app.includes("play('dashWhoosh')"));
+check('battle animation plays round cues on battle end', files.app.includes("play('roundWinCue')") && files.app.includes("play('roundLoseCue')"));
+check('battle animation plays reward fanfare and faint drop on battle end', files.app.includes("play('rewardFanfare')") && files.app.includes("play('faintDrop')"));
 check('battleAction no longer derives only the last damage log', !files.app.includes('result.log.slice().reverse()'));
+
+check('math pk uses keypad tap sfx', files.mathPk.includes("playSfx('mathKeyTap')"));
+check('math pk uses support ready sound', files.mathPk.includes("playSfx('supportReady')"));
+check('math pk uses support use sound', files.mathPk.includes("playSfx('supportUse')"));
+check('math pk uses comboUp sound', files.mathPk.includes("playSfx('comboUp')"));
+check('math pk uses rewardStar sound', files.mathPk.includes("playSfx('rewardStar')"));
+check('math pk uses countdown cues for robot timer', files.mathPk.includes("playSfxLater('countdownTick'") && files.mathPk.includes("playSfxLater('countdownUrgent'"));
+check('math pk uses dash and round cues', files.mathPk.includes("playSfx('dashWhoosh')") && files.mathPk.includes("playSfx('roundWinCue')") && files.mathPk.includes("playSfx('roundLoseCue')"));
+check('math pk uses question reveal and submit sounds', files.mathPk.includes("playSfx('questionReveal')") && files.mathPk.includes("playSfx('answerSubmit')"));
+check('math pk uses erase and robot charge sounds', files.mathPk.includes("playSfx('inputErase')") && files.mathPk.includes("playSfx('robotCharge')"));
+check('math pk uses challenge start and training unlock sounds', files.mathPk.includes("playSfx('challengeStart')") && files.mathPk.includes("playSfx('trainingUnlock')"));
+check('math pk uses spotlight, duel ready and result stamp sounds', files.mathPk.includes("playSfx('spotlightPulse')") && files.mathPk.includes("playSfx('duelReady')") && files.mathPk.includes("playSfx('resultStamp')"));
+check('math pk varies attack/result sounds with hop spin fanfare faint', files.mathPk.includes("playSfx('attackHop')") && files.mathPk.includes("playSfx('attackSpin')") && files.mathPk.includes("playSfx('rewardFanfare')") && files.mathPk.includes("playSfx('faintDrop')"));
+check('math pk uses extra stun and victory burst sounds', files.mathPk.includes("playSfx('stunPop')") && files.mathPk.includes("playSfx('victoryBurst')"));
+check('card arena uses battle/audio feedback', files.cardArenaUi.includes('_playArenaSfx(newEvents, st)'));
+check('card arena plays battle impact or heal pulse', files.cardArenaUi.includes("playSfx('battleImpact')") && files.cardArenaUi.includes("playSfx('healPulse')"));
+check('card arena plays dash and round cues', files.cardArenaUi.includes("playSfx('dashWhoosh')") && files.cardArenaUi.includes("roundWinCue") && files.cardArenaUi.includes("roundLoseCue"));
+check('card arena uses extra ui open/close sounds around flow', files.cardArenaUi.includes("playSfx('challengeStart')") && files.cardArenaUi.includes("playSfx('trainingUnlock')"));
+check('card arena uses team pick, duel ready, result stamp and spotlight sounds', files.cardArenaUi.includes("playSfx('teamSelect')") && files.cardArenaUi.includes("playSfx('teamDeselect')") && files.cardArenaUi.includes("playSfx('duelReady')") && files.cardArenaUi.includes("playSfx('resultStamp')") && files.cardArenaUi.includes("playSfx('spotlightPulse')"));
+check('card arena uses shield spark, faint drop and reward fanfare', files.cardArenaUi.includes("playSfx('shieldSpark')") && files.cardArenaUi.includes("playSfx('faintDrop')") && files.cardArenaUi.includes("playSfx('rewardFanfare')"));
+check('card arena uses card flip, switch poof and victory burst', files.cardArenaUi.includes("playSfx('cardFlip')") && files.cardArenaUi.includes("playSfx('switchPoof')") && files.cardArenaUi.includes("playSfx('victoryBurst')"));
+check('battle animation uses stun and victory burst sounds', files.app.includes("play('stunPop')") && files.app.includes("play('victoryBurst')"));
+check('shop uses purchase confirm, chest open and reward claim sounds', files.shop.includes("playSfx('purchaseConfirm')") && files.shop.includes("playSfx('chestOpen')") && files.shop.includes("playSfx('rewardClaim')"));
+check('inventory detail uses inspect sound', files.app.includes("playGlobalSfx('itemInspect')"));
+check('level up wrapper uses level up sound', files.app.includes("playGlobalSfx('levelup')"));
+check('learn center completion uses reward claim sound', files.learnCenter.includes("window.sfx.rewardClaim"));
 
 check('css includes battle cast animation class', files.css.includes('.battle-cast'));
 check('css includes reduced motion override', files.css.includes('prefers-reduced-motion: reduce'));

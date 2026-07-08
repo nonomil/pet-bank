@@ -14,6 +14,16 @@
  *   sfx.choiceConfirm(), sfx.encounterWarning(), sfx.battleStart()
  *   sfx.playerAttack(), sfx.enemyAttack(), sfx.skillCast(), sfx.defend()
  *   sfx.itemUse(), sfx.battleWin(), sfx.battleLose()
+ *   sfx.uiOpen(), sfx.uiClose(), sfx.mathRoundStart(), sfx.mathKeyTap()
+ *   sfx.comboUp(), sfx.supportReady(), sfx.supportUse(), sfx.rewardStar()
+ *   sfx.battleImpact(), sfx.healPulse(), sfx.countdownTick(), sfx.countdownUrgent()
+ *   sfx.dashWhoosh(), sfx.roundWinCue(), sfx.roundLoseCue()
+ *   sfx.questionReveal(), sfx.answerSubmit(), sfx.inputErase(), sfx.robotCharge()
+ *   sfx.challengeStart(), sfx.trainingUnlock(), sfx.teamSelect(), sfx.teamDeselect()
+ *   sfx.duelReady(), sfx.resultStamp(), sfx.spotlightPulse()
+ *   sfx.attackHop(), sfx.attackSpin(), sfx.shieldSpark(), sfx.faintDrop(), sfx.rewardFanfare()
+ *   sfx.cardFlip(), sfx.switchPoof(), sfx.stunPop(), sfx.victoryBurst()
+ *   sfx.purchaseConfirm(), sfx.rewardClaim(), sfx.chestOpen(), sfx.itemInspect()
  */
 
 (function () {
@@ -55,7 +65,46 @@
         defend:           { zzfx: [0.32, 0, 420, 0.015, 0.06, 0.13, 0, 1.4, -60, 0, 0, 0, 0.55], mp3: 'assets/audio/sfx/defend.mp3' },
         itemUse:          { zzfx: [0.3, 0, 560, 0.01, 0.055, 0.12, 0, 1, 120, 0, 0, 0, 0.35], mp3: 'assets/audio/sfx/itemUse.mp3' },
         battleWin:        { zzfx: [0.46, 0, 500, 0.025, 0.12, 0.24, 0, 1, 320, 0, 0.08, 4, 0.55], mp3: 'assets/audio/sfx/battleWin.mp3' },
-        battleLose:       { zzfx: [0.34, 0, 190, 0.03, 0.12, 0.22, 2, 0.75, -120, 0, 0, 0, 0.4], mp3: 'assets/audio/sfx/battleLose.mp3' }
+        battleLose:       { zzfx: [0.34, 0, 190, 0.03, 0.12, 0.22, 2, 0.75, -120, 0, 0, 0, 0.4], mp3: 'assets/audio/sfx/battleLose.mp3' },
+        uiOpen:           { zzfx: [0.2, 0, 720, 0.01, 0.025, 0.08, 0, 1, 120, 0, 0, 0, 0.22], mp3: 'assets/audio/sfx/uiOpen.mp3' },
+        uiClose:          { zzfx: [0.18, 0, 420, 0.008, 0.02, 0.07, 0, 1, -90, 0, 0, 0, 0.2], mp3: 'assets/audio/sfx/uiClose.mp3' },
+        mathRoundStart:   { zzfx: [0.3, 0, 540, 0.015, 0.045, 0.11, 0, 1, 180, 0, 0, 0, 0.32], mp3: 'assets/audio/sfx/mathRoundStart.mp3' },
+        mathKeyTap:       { zzfx: [0.12, 0, 860, 0.003, 0.01, 0.02, 0, 1, 0, 0, 0, 0, 0.12], mp3: 'assets/audio/sfx/mathKeyTap.mp3' },
+        comboUp:          { zzfx: [0.32, 0, 620, 0.012, 0.05, 0.14, 0, 1, 260, 0, 0.05, 6, 0.35], mp3: 'assets/audio/sfx/comboUp.mp3' },
+        supportReady:     { zzfx: [0.28, 0, 780, 0.012, 0.05, 0.16, 0, 1.1, 220, 0, 0.06, 5, 0.32], mp3: 'assets/audio/sfx/supportReady.mp3' },
+        supportUse:       { zzfx: [0.28, 0, 560, 0.01, 0.04, 0.12, 0, 1.1, 140, 0, 0.04, 4, 0.3], mp3: 'assets/audio/sfx/supportUse.mp3' },
+        rewardStar:       { zzfx: [0.34, 0, 860, 0.012, 0.07, 0.18, 0, 1, 280, 0, 0.08, 7, 0.38], mp3: 'assets/audio/sfx/rewardStar.mp3' },
+        battleImpact:     { zzfx: [0.4, 0, 120, 0.004, 0.03, 0.08, 1, 0.4, -40, 0, 0, 0, 0.45], mp3: 'assets/audio/sfx/battleImpact.mp3' },
+        healPulse:        { zzfx: [0.26, 0, 660, 0.012, 0.06, 0.16, 0, 1, 160, 0, 0, 0, 0.3], mp3: 'assets/audio/sfx/healPulse.mp3' },
+        countdownTick:    { zzfx: [0.16, 0, 940, 0.004, 0.012, 0.028, 0, 1, -10, 0, 0, 0, 0.14], mp3: 'assets/audio/sfx/countdownTick.mp3' },
+        countdownUrgent:  { zzfx: [0.22, 0, 980, 0.004, 0.02, 0.06, 2, 0.95, -60, 0, 0.08, 10, 0.18], mp3: 'assets/audio/sfx/countdownUrgent.mp3' },
+        dashWhoosh:       { zzfx: [0.24, 0, 220, 0.004, 0.03, 0.08, 3, 0.8, 420, 0, 0, 0, 0.22], mp3: 'assets/audio/sfx/dashWhoosh.mp3' },
+        roundWinCue:      { zzfx: [0.28, 0, 700, 0.01, 0.04, 0.12, 0, 1.1, 180, 0, 0.03, 5, 0.26], mp3: 'assets/audio/sfx/roundWinCue.mp3' },
+        roundLoseCue:     { zzfx: [0.22, 0, 240, 0.01, 0.04, 0.1, 2, 0.95, -90, 0, 0, 0, 0.22], mp3: 'assets/audio/sfx/roundLoseCue.mp3' },
+        questionReveal:   { zzfx: [0.22, 0, 760, 0.01, 0.03, 0.08, 0, 1.1, 90, 0, 0, 0, 0.2], mp3: 'assets/audio/sfx/questionReveal.mp3' },
+        answerSubmit:     { zzfx: [0.18, 0, 540, 0.004, 0.012, 0.04, 0, 1, -20, 0, 0, 0, 0.12], mp3: 'assets/audio/sfx/answerSubmit.mp3' },
+        inputErase:       { zzfx: [0.14, 0, 320, 0.004, 0.01, 0.03, 0, 1, -40, 0, 0, 0, 0.1], mp3: 'assets/audio/sfx/inputErase.mp3' },
+        robotCharge:      { zzfx: [0.2, 0, 280, 0.01, 0.05, 0.14, 3, 0.8, 140, 0, 0.05, 7, 0.24], mp3: 'assets/audio/sfx/robotCharge.mp3' },
+        challengeStart:   { zzfx: [0.36, 0, 420, 0.02, 0.06, 0.16, 1, 0.9, 220, 0, 0.05, 4, 0.3], mp3: 'assets/audio/sfx/challengeStart.mp3' },
+        trainingUnlock:   { zzfx: [0.34, 0, 820, 0.015, 0.08, 0.2, 0, 1.05, 260, 0, 0.06, 6, 0.34], mp3: 'assets/audio/sfx/trainingUnlock.mp3' },
+        teamSelect:       { zzfx: [0.2, 0, 720, 0.006, 0.018, 0.05, 0, 1, 70, 0, 0, 0, 0.16], mp3: 'assets/audio/sfx/teamSelect.mp3' },
+        teamDeselect:     { zzfx: [0.16, 0, 380, 0.005, 0.015, 0.04, 0, 1, -50, 0, 0, 0, 0.12], mp3: 'assets/audio/sfx/teamDeselect.mp3' },
+        duelReady:        { zzfx: [0.3, 0, 680, 0.015, 0.04, 0.11, 0, 1.05, 180, 0, 0.04, 5, 0.28], mp3: 'assets/audio/sfx/duelReady.mp3' },
+        resultStamp:      { zzfx: [0.3, 0, 210, 0.004, 0.03, 0.08, 1, 0.8, -20, 0, 0, 0, 0.34], mp3: 'assets/audio/sfx/resultStamp.mp3' },
+        spotlightPulse:   { zzfx: [0.24, 0, 560, 0.02, 0.05, 0.12, 0, 1.1, 210, 0, 0.03, 4, 0.24], mp3: 'assets/audio/sfx/spotlightPulse.mp3' },
+        attackHop:        { zzfx: [0.22, 0, 430, 0.006, 0.03, 0.08, 0, 1.05, 220, 0, 0.02, 3, 0.18], mp3: 'assets/audio/sfx/attackHop.mp3' },
+        attackSpin:       { zzfx: [0.24, 0, 300, 0.008, 0.05, 0.12, 3, 0.9, 280, 0, 0.05, 8, 0.22], mp3: 'assets/audio/sfx/attackSpin.mp3' },
+        shieldSpark:      { zzfx: [0.2, 0, 720, 0.004, 0.03, 0.1, 0, 1.2, -40, 0, 0.08, 6, 0.2], mp3: 'assets/audio/sfx/shieldSpark.mp3' },
+        faintDrop:        { zzfx: [0.26, 0, 160, 0.01, 0.06, 0.18, 1, 0.75, -180, 0, 0, 0, 0.28], mp3: 'assets/audio/sfx/faintDrop.mp3' },
+        rewardFanfare:    { zzfx: [0.34, 0, 460, 0.02, 0.08, 0.22, 0, 1.05, 320, 0, 0.06, 5, 0.42], mp3: 'assets/audio/sfx/rewardFanfare.mp3' },
+        cardFlip:         { zzfx: [0.18, 0, 640, 0.004, 0.016, 0.05, 0, 1.1, 140, 0, 0.02, 6, 0.14], mp3: 'assets/audio/sfx/cardFlip.mp3' },
+        switchPoof:       { zzfx: [0.22, 0, 360, 0.008, 0.028, 0.08, 3, 0.95, 160, 0, 0.03, 5, 0.16], mp3: 'assets/audio/sfx/switchPoof.mp3' },
+        stunPop:          { zzfx: [0.18, 0, 240, 0.005, 0.02, 0.055, 1, 0.9, -30, 0, 0, 0, 0.16], mp3: 'assets/audio/sfx/stunPop.mp3' },
+        victoryBurst:     { zzfx: [0.3, 0, 760, 0.012, 0.07, 0.17, 0, 1.08, 220, 0, 0.07, 7, 0.34], mp3: 'assets/audio/sfx/victoryBurst.mp3' },
+        purchaseConfirm:  { zzfx: [0.24, 0, 680, 0.01, 0.03, 0.08, 0, 1.05, 120, 0, 0.02, 4, 0.2], mp3: 'assets/audio/sfx/purchaseConfirm.mp3' },
+        rewardClaim:      { zzfx: [0.3, 0, 820, 0.012, 0.06, 0.14, 0, 1.08, 180, 0, 0.05, 6, 0.3], mp3: 'assets/audio/sfx/rewardClaim.mp3' },
+        chestOpen:        { zzfx: [0.28, 0, 300, 0.01, 0.05, 0.14, 1, 0.85, 200, 0, 0.04, 5, 0.26], mp3: 'assets/audio/sfx/chestOpen.mp3' },
+        itemInspect:      { zzfx: [0.16, 0, 760, 0.004, 0.015, 0.05, 0, 1, 70, 0, 0, 0, 0.14], mp3: 'assets/audio/sfx/itemInspect.mp3' }
     };
 
     var _instances = {};
@@ -171,7 +220,9 @@
         });
         test.addEventListener('click', function (event) {
             event.stopPropagation();
-            _play('discover');
+            _play('uiOpen');
+            setTimeout(function () { _play('mathCorrect'); }, 180);
+            setTimeout(function () { _play('battleWin'); }, 420);
         });
     }
 
@@ -208,6 +259,45 @@
         itemUse: function () { _play('itemUse'); },
         battleWin: function () { _play('battleWin'); },
         battleLose: function () { _play('battleLose'); },
+        uiOpen: function () { _play('uiOpen'); },
+        uiClose: function () { _play('uiClose'); },
+        mathRoundStart: function () { _play('mathRoundStart'); },
+        mathKeyTap: function () { _play('mathKeyTap'); },
+        comboUp: function () { _play('comboUp'); },
+        supportReady: function () { _play('supportReady'); },
+        supportUse: function () { _play('supportUse'); },
+        rewardStar: function () { _play('rewardStar'); },
+        battleImpact: function () { _play('battleImpact'); },
+        healPulse: function () { _play('healPulse'); },
+        countdownTick: function () { _play('countdownTick'); },
+        countdownUrgent: function () { _play('countdownUrgent'); },
+        dashWhoosh: function () { _play('dashWhoosh'); },
+        roundWinCue: function () { _play('roundWinCue'); },
+        roundLoseCue: function () { _play('roundLoseCue'); },
+        questionReveal: function () { _play('questionReveal'); },
+        answerSubmit: function () { _play('answerSubmit'); },
+        inputErase: function () { _play('inputErase'); },
+        robotCharge: function () { _play('robotCharge'); },
+        challengeStart: function () { _play('challengeStart'); },
+        trainingUnlock: function () { _play('trainingUnlock'); },
+        teamSelect: function () { _play('teamSelect'); },
+        teamDeselect: function () { _play('teamDeselect'); },
+        duelReady: function () { _play('duelReady'); },
+        resultStamp: function () { _play('resultStamp'); },
+        spotlightPulse: function () { _play('spotlightPulse'); },
+        attackHop: function () { _play('attackHop'); },
+        attackSpin: function () { _play('attackSpin'); },
+        shieldSpark: function () { _play('shieldSpark'); },
+        faintDrop: function () { _play('faintDrop'); },
+        rewardFanfare: function () { _play('rewardFanfare'); },
+        cardFlip: function () { _play('cardFlip'); },
+        switchPoof: function () { _play('switchPoof'); },
+        stunPop: function () { _play('stunPop'); },
+        victoryBurst: function () { _play('victoryBurst'); },
+        purchaseConfirm: function () { _play('purchaseConfirm'); },
+        rewardClaim: function () { _play('rewardClaim'); },
+        chestOpen: function () { _play('chestOpen'); },
+        itemInspect: function () { _play('itemInspect'); },
         play: function (name) { _play(name); },
 
         setVolume: function (v) {

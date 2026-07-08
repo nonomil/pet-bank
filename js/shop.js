@@ -104,6 +104,12 @@ const ShopSystem = (function () {
     return null;
   };
 
+  const playSfx = (name) => {
+    if (window.sfx && typeof window.sfx.play === 'function') {
+      window.sfx.play(name);
+    }
+  };
+
   const saveHistory = (key, entry) => {
     const history = getHistory(key);
     history.unshift({ ...entry, timestamp: new Date().toISOString() });
@@ -226,14 +232,17 @@ const ShopSystem = (function () {
     }
 
     adjustGrowthPoints(-item.price);
-    window.sfx && sfx.coin();
+    playSfx('purchaseConfirm');
+    playSfx('coin');
     // 对战道具进背包（InventorySystem），奖励券类仍走历史记录（不进背包保持原行为）
     if (item.toInventory && window.InventorySystem && typeof window.InventorySystem.addItem === 'function') {
       const res = window.InventorySystem.addItem(item.id, 1);
       saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'battle_item' });
+      playSfx('rewardClaim');
       alert(`${res.success ? '兑换成功！' : ''}${item.name}${res.success ? '' : '（背包写入失败）'}`);
     } else {
       saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'purchase' });
+      playSfx('rewardClaim');
       alert(`兑换成功！${item.name}`);
     }
   };
@@ -274,11 +283,13 @@ const ShopSystem = (function () {
     }
 
     adjustGrowthPoints(-item.price);
+    playSfx('purchaseConfirm');
     // 只调 HomeSystem.addFurniture，不直接写 localStorage、不进 InventorySystem
     if (window.HomeSystem && typeof window.HomeSystem.addFurniture === 'function') {
       window.HomeSystem.addFurniture(itemId);
     }
     saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'furniture' });
+    playSfx('rewardClaim');
     renderUI('shop-ui');
     return true;
   };
@@ -295,6 +306,8 @@ const ShopSystem = (function () {
     }
 
     adjustGrowthPoints(-box.price);
+    playSfx('purchaseConfirm');
+    playSfx('chestOpen');
 
     // Prepare Animation Overlay
     const overlay = document.createElement('div');
@@ -359,7 +372,8 @@ const ShopSystem = (function () {
           window.InventorySystem.addItem(result.value);
         }
       }
-      window.sfx && sfx.notice();
+      playSfx('rewardClaim');
+      playSfx('notice');
 
       saveHistory('petbank_blindbox_history', { name: result.name, type: 'blindbox_result' });
 

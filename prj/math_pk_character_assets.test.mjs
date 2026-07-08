@@ -6,11 +6,11 @@ const repoRoot = process.cwd();
 const source = fs.readFileSync(path.join(repoRoot, 'js', 'math-pk.js'), 'utf8');
 
 const robotAssetBases = [
-    'robot-easy20',
-    'robot-easy100',
-    'robot-mul',
-    'robot-mix',
-    'robot-hard'
+    'robot-easy20-v5',
+    'robot-easy100-v5',
+    'robot-mul-v5',
+    'robot-mix-v5',
+    'robot-hard-v5'
 ];
 
 const robotWebpAssets = robotAssetBases.map((name) => `assets/arena/math-rivals/${name}.webp`);
