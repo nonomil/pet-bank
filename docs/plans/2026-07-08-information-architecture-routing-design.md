@@ -81,6 +81,17 @@
 - `scripts/assemble-pages-artifact.mjs`：发布 artifact 自动生成 `404.html` 深链 fallback。
 - `prj/url_routing_and_settings_subpages.test.mjs`：新增契约测试覆盖路径映射、子页面板、挂载点和 fallback。
 
+## 第二轮边界 URL 合同
+
+在不拆物理文件、不引入路由框架的前提下，继续把 URL 语义向“官网 / 孩子应用 / 家长区”靠拢：
+
+- 孩子主应用的规范路径迁到 `/app/*`，例如 `/app`、`/app/today`、`/app/learn`、`/app/pet`、`/app/playground/math-pk`。
+- 旧路径 `/`、`/today`、`/learn`、`/pet`、`/playground/*` 保留为兼容入口，打开后由 `switchPage()` 写回规范路径。
+- settings 保留用户明确提到的 `/settings/*` 直达路径，同时增加 `/parent/settings/*` 作为家长区命名空间别名。
+- `/parent/works`、`/parent/tools` 继续作为家长区低频管理页，后续可补真正的 `/parent` 管理首页。
+
+这一轮只建立 URL 合同，不改变页面布局和权限模型。下一步若继续推进，可以把 `settings` 的子页渲染从一个 HTML 面板进一步拆成模块化配置，并把 `/parent` 做成家长管理首页。
+
 ## 验证点
 
 - 静态契约：`node prj/url_routing_and_settings_subpages.test.mjs`

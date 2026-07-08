@@ -16,6 +16,25 @@ check('/settings maps to settings page', /['"]\/settings['"]\s*:\s*\{\s*page:\s*
 check('/settings/account maps to account section', /['"]\/settings\/account['"]\s*:\s*\{\s*page:\s*['"]settings['"],\s*settingsSection:\s*['"]account['"]/.test(appJs));
 check('/settings/family maps to family section', /['"]\/settings\/family['"]\s*:\s*\{\s*page:\s*['"]settings['"],\s*settingsSection:\s*['"]family['"]/.test(appJs));
 check('/settings/learning maps to learning section', /['"]\/settings\/learning['"]\s*:\s*\{\s*page:\s*['"]settings['"],\s*settingsSection:\s*['"]learning['"]/.test(appJs));
+check('child app canonical routes live under /app namespace', [
+    /map:\s*['"]\/app['"]/.test(appJs),
+    /today:\s*['"]\/app\/today['"]/.test(appJs),
+    /learn:\s*['"]\/app\/learn['"]/.test(appJs),
+    /pet:\s*['"]\/app\/pet['"]/.test(appJs),
+    /playground:\s*['"]\/app\/playground['"]/.test(appJs)
+].every(Boolean));
+check('legacy child routes remain compatibility aliases', [
+    /['"]\/['"]\s*:\s*\{\s*page:\s*['"]map['"]/.test(appJs),
+    /['"]\/today['"]\s*:\s*\{\s*page:\s*['"]today['"]/.test(appJs),
+    /['"]\/learn['"]\s*:\s*\{\s*page:\s*['"]learn['"]/.test(appJs),
+    /['"]\/pet['"]\s*:\s*\{\s*page:\s*['"]pet['"]/.test(appJs),
+    /['"]\/playground['"]\s*:\s*\{\s*page:\s*['"]playground['"]/.test(appJs)
+].every(Boolean));
+check('parent settings namespace aliases map to settings sections', [
+    /['"]\/parent\/settings['"]\s*:\s*\{\s*page:\s*['"]settings['"],\s*settingsSection:\s*['"]home['"]/.test(appJs),
+    /['"]\/parent\/settings\/account['"]\s*:\s*\{\s*page:\s*['"]settings['"],\s*settingsSection:\s*['"]account['"]/.test(appJs),
+    /['"]\/parent\/settings\/family['"]\s*:\s*\{\s*page:\s*['"]settings['"],\s*settingsSection:\s*['"]family['"]/.test(appJs)
+].every(Boolean));
 check('switchPage can skip history writes during route hydration', /switchPage\s*\(\s*page\s*,\s*options\s*=\s*\{\s*\}/.test(appJs) && /replace:\s*true/.test(appJs));
 check('popstate listener restores page from URL', /addEventListener\s*\(\s*['"]popstate['"]/.test(appJs));
 check('DOMContentLoaded init activates route from URL', /resolveRouteFromLocation\s*\(\s*window\.location/.test(appJs) && /switchPage\s*\(\s*initialRoute\.page/.test(appJs));
