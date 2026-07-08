@@ -36,7 +36,7 @@ const managementPages = ['works', 'tools', 'settings'];
 for (const pageName of managementPages) {
     await page.evaluate((name) => window.switchPage(name), pageName);
     const activeTab = await page.evaluate(() => document.querySelector('.nav-tab.active')?.dataset.page || null);
-    check(`${pageName} stays under management settings shortcut`, activeTab === 'settings', `got ${activeTab}`);
+    check(`${pageName} stays under parent shortcut`, activeTab === 'parent', `got ${activeTab}`);
 }
 
 await page.evaluate(() => window.switchPage('playground'));
@@ -50,8 +50,8 @@ check('playground top menu only exposes play entries', /数学 PK/.test(playgrou
 check('playground top menu hides management entries', !/成长作品|工具箱|设置/.test(playgroundMenu.text), playgroundMenu.text);
 
 const managementShortcut = await page.evaluate(() => ({
-    exists: !!document.querySelector('.nav-utility-settings[data-page="settings"]'),
-    label: document.querySelector('.nav-utility-settings[data-page="settings"]')?.textContent?.trim() || ''
+    exists: !!document.querySelector('.nav-utility-settings[data-page="parent"]'),
+    label: document.querySelector('.nav-utility-settings[data-page="parent"]')?.textContent?.trim() || ''
 }));
 check('top nav exposes a separate parent shortcut', managementShortcut.exists && /设置|管理|家长区/.test(managementShortcut.label), managementShortcut.label);
 
