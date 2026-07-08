@@ -116,6 +116,18 @@
 
 这一步仍是 SPA 内的壳切换，不是物理多页面。后续可以继续把 `/app/explore`、`/app/playground/*`、`/app/pet/home` 做成更强沉浸页，并把 `/parent/settings/*` 的管理导航整理成更像后台控制台的左侧栏。
 
+## 第五轮家长管理导航
+
+`shell-parent` 继续从“保留旧顶部导航”向管理控制台靠近：
+
+- 增加 `parent-shell-nav`，只在家长管理壳显示。
+- 管理导航包含“家长首页 / 设置管理 / 成长作品 / 工具箱 / 进入孩子端”。
+- `/settings/*` 和 `/parent/settings/*` 会高亮“设置管理”；`/parent/works` 和 `/parent/tools` 分别高亮对应管理页。
+- 孩子端 `shell-app` 明确隐藏这条管理导航，只保留孩子状态条和底部 Dock。
+- 管理导航使用本地 `lucide-lite` 图标，避免新增外部依赖或空图标。
+
+这一轮让家长区的导航不再依赖孩子端一级导航。后续如果继续增强，可以把 `parent-shell-nav` 从横向条升级为宽屏左侧栏、移动端顶部 tabs，并把设置子页导航与家长管理导航合并得更像控制台。
+
 ## 验证点
 
 - 静态契约：`node prj/url_routing_and_settings_subpages.test.mjs`

@@ -2408,11 +2408,15 @@ body.no-sidebar .sidebar { display: none; }
 }
 
 .app-shell-bar,
-.app-bottom-dock {
+.app-bottom-dock,
+.parent-shell-nav {
     display: none;
 }
 
 body.shell-app .top-nav {
+    display: none;
+}
+body.shell-app .parent-shell-nav {
     display: none;
 }
 body.shell-app .sidebar {
@@ -2546,6 +2550,58 @@ body.shell-app .app-bottom-dock {
 
 body.shell-parent .primary-nav {
     display: none;
+}
+body.shell-parent .parent-shell-nav {
+    position: sticky;
+    top: 65px;
+    z-index: 96;
+    display: flex;
+    padding: 10px 24px;
+    border-bottom: 1px solid rgba(220, 228, 221, 0.86);
+    background: rgba(250, 252, 249, 0.92);
+    backdrop-filter: blur(12px);
+}
+body.shell-parent .parent-shell-nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    overflow-x: auto;
+}
+.parent-shell-nav-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 8px 13px;
+    border: 1px solid rgba(190, 208, 194, 0.92);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+.parent-shell-nav-item:hover,
+.parent-shell-nav-item:focus-visible {
+    border-color: rgba(126, 182, 108, 0.45);
+    background: rgba(245, 250, 247, 0.98);
+    color: var(--text-primary);
+    outline: none;
+}
+.parent-shell-nav-item:focus-visible {
+    box-shadow: 0 0 0 3px rgba(126, 182, 108, 0.18);
+}
+.parent-shell-nav-item.is-current {
+    border-color: rgba(82, 109, 93, 0.88);
+    background: #526d5d;
+    color: #fff;
+}
+.parent-shell-nav-item-app {
+    margin-left: auto;
 }
 body.shell-parent .app-shell-bar {
     display: none;

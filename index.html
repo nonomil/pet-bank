@@ -86,6 +86,31 @@
         </div>
     </div>
 
+    <nav class="parent-shell-nav" aria-label="家长管理导航">
+        <div class="parent-shell-nav-inner max-w-7xl mx-auto">
+            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="parent" onclick="switchPage('parent')">
+                <i data-lucide="home" class="w-4 h-4" aria-hidden="true"></i>
+                <span>家长首页</span>
+            </button>
+            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="settings" onclick="switchPage('settings')">
+                <i data-lucide="settings" class="w-4 h-4" aria-hidden="true"></i>
+                <span>设置管理</span>
+            </button>
+            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="works" onclick="switchPage('works')">
+                <i data-lucide="archive" class="w-4 h-4" aria-hidden="true"></i>
+                <span>成长作品</span>
+            </button>
+            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="tools" onclick="switchPage('tools')">
+                <i data-lucide="wrench" class="w-4 h-4" aria-hidden="true"></i>
+                <span>工具箱</span>
+            </button>
+            <button class="parent-shell-nav-item parent-shell-nav-item-app" type="button" data-parent-shell-nav="app" onclick="switchPage('map')">
+                <i data-lucide="gamepad-2" class="w-4 h-4" aria-hidden="true"></i>
+                <span>进入孩子端</span>
+            </button>
+        </div>
+    </nav>
+
     <div class="app-shell-bar" aria-label="孩子端状态栏">
         <button class="app-shell-brand" type="button" onclick="switchPage('map')" aria-label="返回孩子首页">
             <i data-lucide="home" class="w-4 h-4" aria-hidden="true"></i>

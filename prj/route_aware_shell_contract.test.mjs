@@ -28,7 +28,17 @@ check('app shell syncs active dock and lightweight status', /\[data-app-dock\]/.
 check('app shell hides legacy top nav and sidebar', /body\.shell-app\s+\.top-nav\s*\{[^}]*display:\s*none/.test(css) && /body\.shell-app\s+\.sidebar\s*\{[^}]*display:\s*none/.test(css));
 check('app shell uses near fullscreen content and bottom dock', /body\.shell-app\s+\.page-shell\s*\{[^}]*max-width:\s*none/.test(css) && /body\.shell-app\s+\.app-bottom-dock\s*\{[^}]*display:\s*flex/.test(css));
 check('parent shell keeps management chrome and hides child primary nav', /body\.shell-parent\s+\.primary-nav\s*\{[^}]*display:\s*none/.test(css) && /body\.shell-parent\s+\.app-shell-bar\s*\{[^}]*display:\s*none/.test(css));
-check('local lucide-lite includes shell navigation icons', ['home', 'settings', 'star', 'book-open', 'paw-print', 'map', 'gamepad-2'].every((name) => lucideLiteJs.includes(`${name}:`) || lucideLiteJs.includes(`'${name}':`)));
+check('parent shell exposes dedicated management nav', [
+    /class="[^"]*parent-shell-nav/.test(html),
+    /data-parent-shell-nav="parent"[\s\S]{0,220}switchPage\('parent'\)/.test(html),
+    /data-parent-shell-nav="settings"[\s\S]{0,220}switchPage\('settings'\)/.test(html),
+    /data-parent-shell-nav="works"[\s\S]{0,220}switchPage\('works'\)/.test(html),
+    /data-parent-shell-nav="tools"[\s\S]{0,220}switchPage\('tools'\)/.test(html),
+    /data-parent-shell-nav="app"[\s\S]{0,220}switchPage\('map'\)/.test(html)
+].every(Boolean));
+check('parent shell nav is only visible in parent shell', /body\.shell-parent\s+\.parent-shell-nav\s*\{[^}]*display:\s*flex/.test(css) && /body\.shell-app\s+\.parent-shell-nav\s*\{[^}]*display:\s*none/.test(css));
+check('app shell syncs parent management nav current state', /\[data-parent-shell-nav\]/.test(appJs) && /item\.dataset\.parentShellNav/.test(appJs));
+check('local lucide-lite includes shell navigation icons', ['home', 'settings', 'star', 'book-open', 'paw-print', 'map', 'gamepad-2', 'wrench'].every((name) => lucideLiteJs.includes(`${name}:`) || lucideLiteJs.includes(`'${name}':`)));
 
 const failed = results.filter((item) => !item.pass);
 console.log(`\n${results.length - failed.length}/${results.length} passed`);

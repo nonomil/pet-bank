@@ -900,15 +900,28 @@ function syncRouteShellStatus() {
     if (pointsEl) pointsEl.textContent = String(totalPoints || 0);
 }
 
+function getParentShellNavKey(page) {
+    if (page === 'settings') return 'settings';
+    if (page === 'works') return 'works';
+    if (page === 'tools') return 'tools';
+    if (page === 'parent') return 'parent';
+    return 'app';
+}
+
 function applyRouteShell(page) {
     const shell = getRouteShell(page);
     const tabPage = PAGE_TO_TAB[page] || page;
+    const parentNavKey = getParentShellNavKey(page);
     document.body.classList.toggle('shell-app', shell === 'app');
     document.body.classList.toggle('shell-parent', shell === 'parent');
     document.body.setAttribute('data-route-shell', shell);
     document.querySelectorAll('[data-app-dock]').forEach((item) => {
         item.classList.toggle('is-current', item.dataset.appDock === tabPage);
         item.setAttribute('aria-current', item.dataset.appDock === tabPage ? 'page' : 'false');
+    });
+    document.querySelectorAll('[data-parent-shell-nav]').forEach((item) => {
+        item.classList.toggle('is-current', item.dataset.parentShellNav === parentNavKey);
+        item.setAttribute('aria-current', item.dataset.parentShellNav === parentNavKey ? 'page' : 'false');
     });
     syncRouteShellStatus();
 }

@@ -11,7 +11,8 @@
         'book-open': '<path d="M12 7v14"></path><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H12v18H5.5A2.5 2.5 0 0 1 3 18.5Z"></path><path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H12v18h6.5a2.5 2.5 0 0 0 2.5-2.5Z"></path>',
         'paw-print': '<circle cx="11" cy="4" r="2"></circle><circle cx="18" cy="8" r="2"></circle><circle cx="5" cy="8" r="2"></circle><path d="M6.5 18.5c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5c0 1.4-1.1 2.5-2.5 2.5-.9 0-1.7-.5-3-.5s-2.1.5-3 .5a2.5 2.5 0 0 1-2.5-2.5Z"></path>',
         map: '<polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"></polygon><path d="M9 3v15"></path><path d="M15 6v15"></path>',
-        'gamepad-2': '<path d="M6 12h4"></path><path d="M8 10v4"></path><path d="M15 13h.01"></path><path d="M18 11h.01"></path><path d="M17.3 6H6.7A4.7 4.7 0 0 0 2 10.7v2.6A4.7 4.7 0 0 0 6.7 18h.2a3 3 0 0 0 2.1-.9l1-1.1h4l1 1.1a3 3 0 0 0 2.1.9h.2a4.7 4.7 0 0 0 4.7-4.7v-2.6A4.7 4.7 0 0 0 17.3 6Z"></path>'
+        'gamepad-2': '<path d="M6 12h4"></path><path d="M8 10v4"></path><path d="M15 13h.01"></path><path d="M18 11h.01"></path><path d="M17.3 6H6.7A4.7 4.7 0 0 0 2 10.7v2.6A4.7 4.7 0 0 0 6.7 18h.2a3 3 0 0 0 2.1-.9l1-1.1h4l1 1.1a3 3 0 0 0 2.1.9h.2a4.7 4.7 0 0 0 4.7-4.7v-2.6A4.7 4.7 0 0 0 17.3 6Z"></path>',
+        wrench: '<path d="M14.7 6.3a4 4 0 0 0 5 5L10.5 20.5a2.1 2.1 0 0 1-3-3l9.2-9.2a4 4 0 0 0-2-2Z"></path><path d="m18 2 4 4"></path><path d="m2 22 5-5"></path>'
     };
 
     function buildSvg(name, className) {
