@@ -39,19 +39,25 @@ cd 宠物积分系统/
 node scripts/run-full-regression.mjs
 ```
 
-覆盖 27 项测试：
+覆盖 33 项测试：
 - `prj/regression_runner_contract.test.mjs` — 回归合约
 - `prj/runtime_loader_route_base_contract.test.mjs` — Runtime Loader 路由基准合约
 - `prj/audio_battle_feedback_contract.test.mjs` — 音频/战斗反馈
 - `prj/math_pk_guided_feedback_contract.test.mjs` — 数学PK/探索小题引导式反馈
+- `prj/math_pk_support_cards_contract.test.mjs` — 数学PK支援卡与奖励星轨
 - `prj/gameplay_core_flows_simulation.mjs` — 核心玩法流程
 - `prj/full_game_loop_simulation.mjs` — 完整游戏循环
 - `prj/learning_and_card_progression_simulation.mjs` — 学习+卡牌进度
 - `prj/hanzi_and_english_playground_simulation.mjs` — 汉字+英语游乐场
 - `prj/exploration_battle_guided_feedback.test.mjs` — 探索战斗失败复盘
+- `prj/pinyin_star_scout_voice_contract.test.mjs` — 拼音块原型本地语音链路
 - `prj/word_memory_map_bomb_throw.test.mjs` — 单词记忆地图投掷
+- `prj/word_memory_map_movement_fx.test.mjs` — 单词记忆地图移动动效
 - `prj/word_memory_map_rewards_ui.test.mjs` — 单词记忆地图连击与任务条
+- `prj/word_memory_map_voice_contract.test.mjs` — 单词记忆地图本地语音资产
 - `prj/word_memory_map_voice_playback.test.mjs` — 单词记忆地图本地语音回放
+- `prj/word_memory_map_walk_cycle.test.mjs` — 单词记忆地图角色走路循环
+- `prj/word_memory_minecraft_adapter_contract.test.mjs` — 单词记忆 Minecraft 词库适配
 - `prj/shared_prototype_voice_workflow.test.mjs` — 跨原型共享语音资产流程
 - `prj/learning_arcade_hanzi_voice_reuse.test.mjs` — 学习机汉字语音复用
 - `prj/exploration_story_and_state_resume_simulation.mjs` — 探索故事+状态恢复
@@ -99,9 +105,15 @@ node scripts/playwright-browser.mjs
 | `prj/audio_battle_feedback_contract.test.mjs` | 音频战斗反馈 |
 | `prj/exploration_math_feedback.test.mjs` | 探索数学反馈 |
 | `prj/exploration_battle_guided_feedback.test.mjs` | 探索战斗失败复盘 |
+| `prj/math_pk_support_cards_contract.test.mjs` | 数学PK支援卡与奖励星轨 |
+| `prj/pinyin_star_scout_voice_contract.test.mjs` | 拼音块原型本地语音链路 |
 | `prj/word_memory_map_bomb_throw.test.mjs` | 单词记忆地图投掷 |
+| `prj/word_memory_map_movement_fx.test.mjs` | 单词记忆地图移动动效 |
 | `prj/word_memory_map_rewards_ui.test.mjs` | 单词记忆地图连击与任务条 |
+| `prj/word_memory_map_voice_contract.test.mjs` | 单词记忆地图本地语音资产 |
 | `prj/word_memory_map_voice_playback.test.mjs` | 单词记忆地图本地语音回放 |
+| `prj/word_memory_map_walk_cycle.test.mjs` | 单词记忆地图角色走路循环 |
+| `prj/word_memory_minecraft_adapter_contract.test.mjs` | 单词记忆 Minecraft 词库适配 |
 | `prj/shared_prototype_voice_workflow.test.mjs` | 跨原型共享语音资产流程 |
 | `prj/learning_arcade_hanzi_voice_reuse.test.mjs` | 学习机汉字语音复用 |
 | `prj/math_pk_guided_feedback_contract.test.mjs` | 数学PK/探索小题引导式反馈 |
@@ -144,11 +156,12 @@ node scripts/playwright-browser.mjs
 | pet.js（宠物养成） | `pet_card_image_loading_regression.test.mjs` + `pet_archive_standalone_simulation.mjs` |
 | home.js（宠物小屋） | `edge_states_standalone_simulation.mjs` |
 | exploration.js（探索） | `exploration_battle_guided_feedback.test.mjs` + `exploration_math_feedback.test.mjs` + `exploration_story_and_state_resume_simulation.mjs` |
-| `prj/单词记忆射击场原型/game.js`（单词记忆地图） | `word_memory_map_bomb_throw.test.mjs` + `word_memory_map_rewards_ui.test.mjs` + `word_memory_map_voice_playback.test.mjs` + `prj/单词记忆射击场原型/verify.mjs` |
+| `prj/拼音块收集台原型/game.js`（拼音块原型） | `pinyin_star_scout_voice_contract.test.mjs` + `prj/拼音块收集台原型/verify.mjs` |
+| `prj/单词记忆射击场原型/game.js`（单词记忆地图） | `word_memory_map_bomb_throw.test.mjs` + `word_memory_map_movement_fx.test.mjs` + `word_memory_map_rewards_ui.test.mjs` + `word_memory_map_voice_contract.test.mjs` + `word_memory_map_voice_playback.test.mjs` + `word_memory_map_walk_cycle.test.mjs` + `word_memory_minecraft_adapter_contract.test.mjs` + `prj/单词记忆射击场原型/verify.mjs` |
 | `prj/学习机玩法原型/game.js`（学习机原型） | `learning_arcade_hanzi_voice_reuse.test.mjs` + `prj/学习机玩法原型/verify.mjs` + `prj/学习机玩法原型/scripts/test-full-prototype-smoke.mjs` |
 | `prj/prototype-voice-workflow/`（共享语音流水线） | `shared_prototype_voice_workflow.test.mjs` |
 | card-arena/collection（卡牌） | `task4_slot_compat.test.mjs` + `learning_and_card_progression_simulation.mjs` |
-| math-pk.js（数学PK） | `math_pk_guided_feedback_contract.test.mjs` + `math_pk_fx_contract.test.mjs` + `math_pk_character_assets.test.mjs` + `math_pk_multiplication_onboarding.test.mjs` |
+| math-pk.js（数学PK） | `math_pk_guided_feedback_contract.test.mjs` + `math_pk_support_cards_contract.test.mjs` + `math_pk_fx_contract.test.mjs` + `math_pk_character_assets.test.mjs` + `math_pk_multiplication_onboarding.test.mjs` |
 | learn-center.js（学习中心） | `learning-center-smoke.mjs` |
 | cloud-*.js（云端） | `cloud_family_social_pk_simulation.mjs` |
 | shop/inventory（商城） | `task3_shop_buy.test.mjs` + `shop_inventory_standalone_simulation.mjs` |
