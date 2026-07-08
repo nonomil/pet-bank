@@ -1,5 +1,6 @@
 // Task 3 smoke check: shop buyFurniture + home ownership linkage + duplicate block
 import { chromium } from 'playwright';
+import { browserLaunchOpts } from '../scripts/playwright-browser.mjs';
 
 const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:4173';
 const results = [];
@@ -8,7 +9,7 @@ function check(name, cond) {
     console.log(`${cond ? 'PASS' : 'FAIL'} - ${name}`);
 }
 
-const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || undefined });
+const browser = await chromium.launch(browserLaunchOpts());
 const page = await browser.newPage();
 
 const consoleErrors = [];
@@ -28,9 +29,13 @@ await page.addInitScript(() => {
 });
 
 await page.goto(BASE + '/index.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
-await page.waitForFunction(() => window.ShopSystem && typeof window.ShopSystem.buyFurniture === 'function', { timeout: 8000 });
-// Wait for catalog to be loaded
-await page.waitForFunction(() => window.HomeSystem && window.HomeSystem.getFurnitureCatalog().length >= 8, { timeout: 8000 });
+await page.waitForFunction(() => window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function', { timeout: 15000 });
+await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('home');
+    await window.PetBankRuntime.ensurePage('shop');
+});
+await page.waitForFunction(() => window.ShopSystem && typeof window.ShopSystem.buyFurniture === 'function', { timeout: 15000 });
+await page.waitForFunction(() => window.HomeSystem && window.HomeSystem.getFurnitureCatalog().length >= 8, { timeout: 15000 });
 
 // Test 1: purchase reaches home ownership
 const r1 = await page.evaluate(() => {
@@ -72,12 +77,12 @@ const uiCheck = await page.evaluate(() => {
     if (!shopEl) return { hasSection: false, hasBadge: false, hasOwnedBtn: false };
     const txt = shopEl.textContent;
     return {
-        hasSection: txt.includes('家园装饰'),
+        hasSection: txt.includes('小屋装饰'),
         hasBadge: txt.includes('地面') || txt.includes('角落') || txt.includes('背景'),
         hasOwnedBtn: txt.includes('已拥有')
     };
 });
-check('shop UI shows 家园装饰 section', uiCheck.hasSection);
+check('shop UI shows 小屋装饰 section', uiCheck.hasSection);
 check('shop UI shows slot badge label', uiCheck.hasBadge);
 check('shop UI shows 已拥有 button for owned cozy_rug', uiCheck.hasOwnedBtn);
 

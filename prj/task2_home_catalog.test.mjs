@@ -1,5 +1,6 @@
 // Task 2 smoke check: home.js loadCatalog + ownership normalization
 import { chromium } from 'playwright';
+import { browserLaunchOpts } from '../scripts/playwright-browser.mjs';
 
 const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:4173';
 
@@ -9,9 +10,7 @@ function check(name, cond) {
     console.log(`${cond ? 'PASS' : 'FAIL'} - ${name}`);
 }
 
-const browser = await chromium.launch({
-    executablePath: process.env.PW_CHROME || undefined
-});
+const browser = await chromium.launch(browserLaunchOpts());
 const page = await browser.newPage();
 
 const consoleErrors = [];
@@ -31,9 +30,12 @@ await page.addInitScript(() => {
 });
 
 await page.goto(BASE + '/index.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
-// Wait for init to finish (HomeSystem.init + loadCatalog)
-await page.waitForFunction(() => window.HomeSystem && typeof window.HomeSystem.getFurnitureCatalog === 'function', { timeout: 8000 });
-await page.waitForFunction(() => window.HomeSystem.getFurnitureCatalog().length >= 8, { timeout: 8000 }).catch(() => {});
+await page.waitForFunction(() => window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function', { timeout: 15000 });
+await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('home');
+});
+await page.waitForFunction(() => window.HomeSystem && typeof window.HomeSystem.getFurnitureCatalog === 'function', { timeout: 15000 });
+await page.waitForFunction(() => window.HomeSystem.getFurnitureCatalog().length >= 8, { timeout: 15000 }).catch(() => {});
 
 // Run the plan's smoke assertions
 const probe = await page.evaluate(async () => {

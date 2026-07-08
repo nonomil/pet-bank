@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { chromium, devices } from 'playwright';
+import { browserLaunchOpts } from '../scripts/playwright-browser.mjs';
 
 const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765';
 const CAPTURE_DIR = process.env.PETBANK_CAPTURE_DIR || '';
@@ -10,9 +11,7 @@ function check(name, cond, detail = '') {
     console.log(`${cond ? 'PASS' : 'FAIL'} - ${name}${detail ? ` (${detail})` : ''}`);
 }
 
-const browser = await chromium.launch({
-    executablePath: process.env.PW_CHROME || undefined
-});
+const browser = await chromium.launch(browserLaunchOpts());
 const page = await browser.newPage();
 
 const consoleErrors = [];
@@ -30,11 +29,15 @@ await page.addInitScript(() => {
 });
 
 await page.goto(`${BASE}/index.html`);
+await page.waitForFunction(() => window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function', { timeout: 15000 });
+await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('explore');
+});
 await page.waitForFunction(
     () => window.ExplorationSystem && typeof window.ExplorationSystem.getMapLayout === 'function',
-    { timeout: 8000 }
+    { timeout: 15000 }
 );
-await page.waitForFunction(() => typeof window.switchPage === 'function', { timeout: 8000 });
+await page.waitForFunction(() => typeof window.switchPage === 'function', { timeout: 15000 });
 await page.evaluate(() => window.switchPage('map'));
 await page.waitForFunction(
     () => document.querySelectorAll('#treasureWarehouseGrid .chest-card').length >= 3,
@@ -101,9 +104,7 @@ if (CAPTURE_DIR) {
 await browser.close();
 
 if (CAPTURE_DIR) {
-    const mobileBrowser = await chromium.launch({
-        executablePath: process.env.PW_CHROME || undefined
-    });
+    const mobileBrowser = await chromium.launch(browserLaunchOpts());
     const mobileContext = await mobileBrowser.newContext({
         ...devices['iPhone 13']
     });
@@ -112,9 +113,13 @@ if (CAPTURE_DIR) {
         localStorage.clear();
     });
     await mobilePage.goto(`${BASE}/index.html`);
+    await mobilePage.waitForFunction(() => window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function', { timeout: 15000 });
+    await mobilePage.evaluate(async () => {
+        await window.PetBankRuntime.ensurePage('explore');
+    });
     await mobilePage.waitForFunction(
         () => window.ExplorationSystem && typeof window.switchPage === 'function',
-        { timeout: 8000 }
+        { timeout: 15000 }
     );
     await mobilePage.evaluate(() => window.switchPage('map'));
     await mobilePage.waitForFunction(

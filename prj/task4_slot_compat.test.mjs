@@ -1,5 +1,6 @@
 // Task 4 smoke check: slot compatibility + replacement semantics + unplaced tray
 import { chromium } from 'playwright';
+import { browserLaunchOpts } from '../scripts/playwright-browser.mjs';
 
 const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:4173';
 const results = [];
@@ -8,7 +9,7 @@ function check(name, cond) {
     console.log(`${cond ? 'PASS' : 'FAIL'} - ${name}`);
 }
 
-const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || undefined });
+const browser = await chromium.launch(browserLaunchOpts());
 const page = await browser.newPage();
 
 const consoleErrors = [];
@@ -33,7 +34,11 @@ await page.addInitScript(() => {
 });
 
 await page.goto(BASE + '/index.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
-await page.waitForFunction(() => window.HomeSystem && window.HomeSystem.getFurnitureCatalog().length >= 8, { timeout: 8000 });
+await page.waitForFunction(() => window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function', { timeout: 15000 });
+await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('home');
+});
+await page.waitForFunction(() => window.HomeSystem && window.HomeSystem.getFurnitureCatalog().length >= 8, { timeout: 15000 });
 
 // Test 1: incompatible placement rejected (wall_frame=backdrop into center_left=floor)
 const r1 = await page.evaluate(() => {

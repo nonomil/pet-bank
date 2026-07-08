@@ -1,5 +1,6 @@
 // Regression: verify P1 features + existing shop/blindbox still work after Task 1-4
 import { chromium } from 'playwright';
+import { browserLaunchOpts } from '../scripts/playwright-browser.mjs';
 
 const BASE = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:4173';
 const results = [];
@@ -8,7 +9,7 @@ function check(name, cond) {
     console.log(`${cond ? 'PASS' : 'FAIL'} - ${name}`);
 }
 
-const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || undefined });
+const browser = await chromium.launch(browserLaunchOpts());
 const page = await browser.newPage();
 
 const consoleErrors = [];
@@ -24,9 +25,14 @@ page.on('pageerror', err => consoleErrors.push(String(err)));
 await page.addInitScript(() => { localStorage.clear(); });
 await page.goto(BASE + '/index.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
 
-// Wait for full init
-await page.waitForFunction(() => window.HomeSystem && window.ShopSystem && window.PetSystem, { timeout: 8000 });
-await page.waitForFunction(() => window.HomeSystem.getFurnitureCatalog().length >= 8, { timeout: 8000 });
+// Wait for runtime bootstrap, then use the current lazy page loader contract.
+await page.waitForFunction(() => window.PetBankRuntime && window.PetSystem && typeof window.switchPage === 'function', { timeout: 15000 });
+await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('home');
+    await window.PetBankRuntime.ensurePage('shop');
+});
+await page.waitForFunction(() => window.HomeSystem && window.ShopSystem, { timeout: 15000 });
+await page.waitForFunction(() => window.HomeSystem.getFurnitureCatalog().length >= 8, { timeout: 15000 });
 
 // P1: home renders with 4 interaction buttons, speech bubble api, bg api
 await page.evaluate(() => window.switchPage('home'));
@@ -72,8 +78,8 @@ const shopUi = await page.evaluate(() => {
     return {
         rendered: !!el && el.innerHTML.length > 100,
         hasBlindbox: txt.includes('盲盒惊喜'),
-        hasRewards: txt.includes('奖励兑换'),
-        hasFurniture: txt.includes('家园装饰'),
+        hasRewards: txt.includes('家庭奖励卡'),
+        hasFurniture: txt.includes('小屋装饰'),
         hasHistory: txt.includes('最近动态'),
         buyFn: typeof window.ShopSystem.buy === 'function',
         openBoxFn: typeof window.ShopSystem.openBox === 'function',

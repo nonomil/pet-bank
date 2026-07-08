@@ -10,6 +10,7 @@ const TASKS = [
     { label: 'regression runner contract', cmd: 'node', args: ['prj/regression_runner_contract.test.mjs'] },
     { label: 'runtime loader route base contract', cmd: 'node', args: ['prj/runtime_loader_route_base_contract.test.mjs'] },
     { label: 'audio contract', cmd: 'node', args: ['prj/audio_battle_feedback_contract.test.mjs'] },
+    { label: 'math pk guided feedback contract', cmd: 'node', args: ['prj/math_pk_guided_feedback_contract.test.mjs'] },
     { label: 'core gameplay', cmd: 'node', args: ['prj/gameplay_core_flows_simulation.mjs'] },
     { label: 'full game loop', cmd: 'node', args: ['prj/full_game_loop_simulation.mjs'] },
     { label: 'learning and card progression', cmd: 'node', args: ['prj/learning_and_card_progression_simulation.mjs'] },
