@@ -13,6 +13,14 @@
 - 修复深链接下浏览器预加载资源误落到 `/app/css/...`、`/parent/settings/js/...` 的问题，改用静态 `<base id="routeBase">` + 启动脚本同步 base
 - 新增和扩展 IA 合同测试，覆盖 URL 映射、设置子页、家长区隐藏入口、route-aware shell、深链接资源 base 与浏览器冒烟验证
 
+### ⚔️ 三套 PK 战斗动作升级
+
+- 数学 PK、宠物卡牌对战、探索遭遇战统一补上“前冲贴近 -> 命中爆点 -> 受击后仰 -> 回位”动作骨架，命中光效真正落在被打方身上
+- 数学 PK 在现有 dash / hop / spin 出招基础上增加 `math-pk-rush-active` 与 `math-pk-target-recoil`，让宠物和机器人都更像真的冲过去打中对手
+- 探索遭遇战扩展 BattleFx 事件语义，宠物攻击、技能攻击、怪物扑击都会驱动左右角色 motion class，而不是只弹浮层特效
+- 卡牌 PK 为普攻 / 重击 / 必杀增加不同的冲刺与回弹节奏，并把 impact burst、目标 recoil、HP 震动挂到受击卡位
+- 三套玩法补齐 reduced-motion 降级与新的 battle motion 契约测试，守住“对方也要有动画反应”的体验底线
+
 ## [v0.7.17] - 2026-07-08
 ### 📚 数学 PK 文档归档 + 🤖 机器人素材批次整理
 

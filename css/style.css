@@ -3953,6 +3953,32 @@ body.shell-parent .app-bottom-dock {
 @keyframes battle-cast-pop { 0% { transform: scale(1); filter: brightness(1); } 45% { transform: scale(1.05); filter: brightness(1.22) saturate(1.25); } 100% { transform: scale(1); filter: brightness(1); } }
 .battle-guard { animation: battle-guard-glow 0.65s ease-out; }
 @keyframes battle-guard-glow { 0% { filter: drop-shadow(0 0 0 rgba(126,230,138,0)); } 40% { filter: drop-shadow(0 0 18px rgba(126,230,138,0.75)); } 100% { filter: drop-shadow(0 0 0 rgba(126,230,138,0)); } }
+.battle-motion-approach { z-index: 6; }
+.battle-motion-approach-right { animation: battle-motion-approach-right .66s cubic-bezier(.22,.82,.24,1) both; }
+.battle-motion-approach-left { animation: battle-motion-approach-left .66s cubic-bezier(.22,.82,.24,1) both; }
+.battle-motion-recoil { z-index: 6; }
+.battle-motion-recoil-right { animation: battle-motion-recoil-right .46s ease-out both; }
+.battle-motion-recoil-left { animation: battle-motion-recoil-left .46s ease-out both; }
+.battle-motion-impact::after { content:''; position:absolute; top:42%; left:50%; width:168px; height:168px; border-radius:50%; transform:translate(-50%,-50%); background:radial-gradient(circle,rgba(255,255,255,.96) 0 9%,rgba(255,214,102,.86) 10% 28%,rgba(120,212,255,.28) 29% 54%,transparent 66%); animation:battle-motion-impact .46s ease-out forwards; }
+.battle-motion-style-pounce.battle-motion-approach-left,
+.battle-motion-style-pounce.battle-motion-approach-right { animation-duration:.72s; }
+.battle-motion-style-pounce.battle-motion-approach-left { animation-name:battle-motion-pounce-left; }
+.battle-motion-style-pounce.battle-motion-approach-right { animation-name:battle-motion-pounce-right; }
+.battle-motion-style-arc.battle-motion-approach-left { animation-name:battle-motion-arc-left; }
+.battle-motion-style-arc.battle-motion-approach-right { animation-name:battle-motion-arc-right; }
+.battle-motion-style-burst.battle-motion-approach-left { animation-duration:.78s; animation-name:battle-motion-burst-left; }
+.battle-motion-style-burst.battle-motion-approach-right { animation-duration:.78s; animation-name:battle-motion-burst-right; }
+@keyframes battle-motion-approach-right { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(18px,-2px,0) scale(1.04); } 58%{ transform:translate3d(80px,-10px,0) scale(1.12); } 100%{ transform:translate3d(0,0,0) scale(1); } }
+@keyframes battle-motion-approach-left { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(-18px,-2px,0) scale(1.04); } 58%{ transform:translate3d(-80px,-10px,0) scale(1.12); } 100%{ transform:translate3d(0,0,0) scale(1); } }
+@keyframes battle-motion-pounce-right { 0%{ transform:translate3d(0,0,0) scale(1); } 26%{ transform:translate3d(16px,-10px,0) scale(1.05); } 58%{ transform:translate3d(76px,-28px,0) scale(1.1); } 100%{ transform:translate3d(0,0,0) scale(1); } }
+@keyframes battle-motion-pounce-left { 0%{ transform:translate3d(0,0,0) scale(1); } 26%{ transform:translate3d(-16px,-10px,0) scale(1.05); } 58%{ transform:translate3d(-76px,-28px,0) scale(1.1); } 100%{ transform:translate3d(0,0,0) scale(1); } }
+@keyframes battle-motion-arc-right { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(14px,-10px,0) scale(1.05); } 58%{ transform:translate3d(72px,-34px,0) scale(1.13) rotate(-4deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
+@keyframes battle-motion-arc-left { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(-14px,-10px,0) scale(1.05); } 58%{ transform:translate3d(-72px,-34px,0) scale(1.13) rotate(4deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
+@keyframes battle-motion-burst-right { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(22px,-8px,0) scale(1.06); } 56%{ transform:translate3d(90px,-18px,0) scale(1.15) rotate(-8deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
+@keyframes battle-motion-burst-left { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(-22px,-8px,0) scale(1.06); } 56%{ transform:translate3d(-90px,-18px,0) scale(1.15) rotate(8deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
+@keyframes battle-motion-recoil-right { 0%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } 20%{ transform:translate3d(18px,-2px,0) scale(1.05); filter:brightness(1.22) saturate(1.2); } 44%{ transform:translate3d(8px,0,0) scale(.98); } 100%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } }
+@keyframes battle-motion-recoil-left { 0%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } 20%{ transform:translate3d(-18px,-2px,0) scale(1.05); filter:brightness(1.22) saturate(1.2); } 44%{ transform:translate3d(-8px,0,0) scale(.98); } 100%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } }
+@keyframes battle-motion-impact { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.45); } 32%{ opacity:.88; transform:translate(-50%,-50%) scale(1.02); } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.34); } }
 .battle-flash-red { animation: battle-flash 0.5s; }
 @keyframes battle-flash { 0%,100% { box-shadow: inset 0 0 0 rgba(255,0,0,0); } 50% { box-shadow: inset 0 0 90px rgba(255,40,40,0.5); } }
 .battle-win-glow { animation: battle-win-glow 0.9s ease-out; }
@@ -4034,7 +4060,12 @@ body.shell-parent .app-bottom-dock {
   .battle-lose-dim,
   .battle-fx,
   .battle-fx *,
-  .battle-fx-screen-kick {
+  .battle-fx-screen-kick,
+  .battle-motion-approach-right,
+  .battle-motion-approach-left,
+  .battle-motion-recoil-right,
+  .battle-motion-recoil-left,
+  .battle-motion-impact::after {
     animation: none !important;
   }
   .battle-fx { display: none !important; }

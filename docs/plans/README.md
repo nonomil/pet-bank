@@ -53,6 +53,12 @@
 | `DESIGN-2026-07-05-03` | [2026-07-05-admin-backoffice-hermes-design](./2026-07-05-admin-backoffice-hermes-design.md) | 设计稿 | 当前活跃 | 轻后台、数据库安全升级与 Hermes 自动部署的正式设计稿 |
 | `PLAN-2026-07-05-04` | [2026-07-05-admin-backoffice-hermes-implementation](./2026-07-05-admin-backoffice-hermes-implementation.md) | 实施计划 | 当前活跃 | 轻后台、admin 角色模型、Hermes 配置与部署约定的实施计划 |
 | `PLAN-2026-07-07-MATH-PK-CARDS-P1` | [2026-07-07-math-pk-support-cards-p1](./2026-07-07-math-pk-support-cards-p1.md) | 实施计划 | 已落地(v0.7.14) | 数学 PK 学习支援卡 P1：三选一支援卡、三张低龄友好卡和局后 3 星结算的实施计划 |
+| `DESIGN-2026-07-08-PK-BRAWL-MOTION-01` | [2026-07-08-pk-brawl-battle-motion-design](./2026-07-08-pk-brawl-battle-motion-design.md) | 设计稿 | 已确认方向 | 数学 PK、卡牌对战、探索遭遇战统一升级为“前冲贴近 -> 命中 -> 受击 -> 回位”的共通战斗动作语言 |
+| `PLAN-2026-07-08-PK-BRAWL-MOTION-01` | [2026-07-08-pk-brawl-battle-motion-implementation](./2026-07-08-pk-brawl-battle-motion-implementation.md) | 实施计划 | 实施中 | 三套 PK 玩法的 battle motion 契约、探索动作骨架、数学 PK 贴身命中和卡牌重演出落地计划 |
+| `PLAN-2026-07-08-MCVOCAB-01` | [2026-07-08-minecraft-core-vocab-expansion-implementation](./2026-07-08-minecraft-core-vocab-expansion-implementation.md) | 实施计划 | 已落地 | Minecraft 正式题库扩容计划：保留 24 张 mayihaoke starter 卡，增量导入 `minecraft_words_apk-main` 精选 core 词，并与学习机原型共享筛选器 |
+| `PLAN-2026-07-08-MCVIEWS-01` | [2026-07-08-minecraft-vocab-views-implementation](./2026-07-08-minecraft-vocab-views-implementation.md) | 实施记录 | 已落地 | 在正式 Minecraft 主仓上补出 `starter / core / typing-view / memory-view` 四个玩法视图，并让学习机打字线直接读取 `typing-view` |
+| `PLAN-2026-07-08-WORDMEM-MC-ADAPTER-01` | [2026-07-08-word-memory-minecraft-adapter-implementation](./2026-07-08-word-memory-minecraft-adapter-implementation.md) | 实施记录 | 已落地 | 单词记忆射击场引用根目录 `data/vocab/english-minecraft` 的 `memory-view`，生成活动词卡，并同步补齐本地 mp3 语音与适配验证 |
+| `DESIGN-2026-07-08-GAME-SPLIT-01` | [2026-07-08-learning-games-subject-split-design](./2026-07-08-learning-games-subject-split-design.md) | 设计稿 | 已确认方向 | 学习机玩法分工与题库分仓设计：明确打字射击练英语拼写、地图记忆练词义、拼音蛇练拼音、Math PK 练数学，并把数据收口为学科主仓 + 游戏视图 |
 | `TOPIC-FAMILY-ACCOUNT-SOCIAL` | [../家庭账号社交体系/README](../家庭账号社交体系/README.md) | 专题索引 | 当前活跃 | 账号体系、家庭关系、好友串门与异步 PK 的专题目录 |
 | `ROLL-2026-07-05-01` | [../家庭账号社交体系/联调上线/manual-run-template](../家庭账号社交体系/联调上线/manual-run-template.md) | 联调模板 | 当前活跃 | 双家长 / 双设备 / 双家庭联调记录模板，可由 ops 脚本生成当天文档 |
 | `ROLL-2026-07-05-02` | [../家庭账号社交体系/联调上线/deploy-log-template](../家庭账号社交体系/联调上线/deploy-log-template.md) | 部署模板 | 当前活跃 | Supabase 部署日志模板，可由 ops 脚本生成当天文档 |

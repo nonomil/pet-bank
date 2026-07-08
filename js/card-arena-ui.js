@@ -20,6 +20,7 @@ const CardArenaUI = (function () {
     let lastDamageEvents = [];   // 本回合伤害事件（用于浮动数字）
     let uiLocked = false;        // 动作锁（防连点）
     let lastMoveText = '';       // 最近一回合的出招提示大字（持续到下一动作）
+    let arenaMotionCleanupTimer = null;
 
     // ===== PvP 本地热座状态 =====
     // pvpMode：'off' | 'pickA' | 'pickB'（选队阶段轮到谁）
@@ -440,7 +441,7 @@ const CardArenaUI = (function () {
 
     function _combatCardHtml(c, role, sideClass) {
         return `
-            <div class="arena-combat-card ${sideClass || ''}">
+            <div class="arena-combat-card ${sideClass || ''}" data-side="${sideClass || ''}">
                 <div class="arena-combat-role">${role}</div>
                 ${_fighterHtml(c)}
                 ${_hpLineHtml(c)}
@@ -1090,9 +1091,76 @@ const CardArenaUI = (function () {
         if (!ended) uiLocked = false;  // 先解锁，再 renderBattle（按钮 disabled 据此）
         renderBattle();                // 重渲染 stage（含 #arenaDamageZone / #arenaMoveZone）
         _popDamage(newEvents);         // 重渲染后再 append 浮动伤害（zone 已存在）
+        _playBattleMotion(newEvents);
         if (ended) {
             setTimeout(() => _showResult(st.status), 700);
         }
+    }
+
+    function _latestActionEvent(events) {
+        if (!Array.isArray(events)) return null;
+        for (let i = events.length - 1; i >= 0; i--) {
+            const ev = events[i];
+            if (!ev) continue;
+            if (ev.action === 'attack' || ev.action === 'power_strike' || ev.action === 'ultimate' || ev.action === 'itemUsed') {
+                return ev;
+            }
+        }
+        return null;
+    }
+
+    function _motionStyleFromEvent(ev) {
+        if (!ev) return '';
+        if (ev.action === 'ultimate') return 'arena-motion-style-ultimate';
+        if (ev.action === 'power_strike') return 'arena-motion-style-heavy';
+        return 'arena-motion-style-basic';
+    }
+
+    function _clearBattleMotion() {
+        if (arenaMotionCleanupTimer) {
+            clearTimeout(arenaMotionCleanupTimer);
+            arenaMotionCleanupTimer = null;
+        }
+        document.querySelectorAll('.arena-combat-card, #arenaDamageZone').forEach((el) => {
+            if (!el) return;
+            el.classList.remove(
+                'arena-battle-lunge',
+                'arena-battle-lunge-player',
+                'arena-battle-lunge-enemy',
+                'arena-impact-burst',
+                'arena-target-recoil',
+                'arena-target-recoil-player',
+                'arena-target-recoil-enemy',
+                'arena-motion-style-basic',
+                'arena-motion-style-heavy',
+                'arena-motion-style-ultimate',
+                'arena-hp-shake'
+            );
+        });
+    }
+
+    function _playBattleMotion(events) {
+        const ev = _latestActionEvent(events);
+        if (!ev) return;
+        const actorSide = ev.side === 'enemy' ? 'enemy' : 'player';
+        const targetSide = actorSide === 'player' ? 'enemy' : 'player';
+        const actorCard = document.querySelector(`.arena-combat-card[data-side="${actorSide}"]`);
+        const targetCard = document.querySelector(`.arena-combat-card[data-side="${targetSide}"]`);
+        const zone = document.getElementById('arenaDamageZone');
+        const styleClass = _motionStyleFromEvent(ev);
+        _clearBattleMotion();
+        if (actorCard) {
+            actorCard.classList.add('arena-battle-lunge', `arena-battle-lunge-${actorSide}`);
+            if (styleClass) actorCard.classList.add(styleClass);
+        }
+        setTimeout(() => {
+            if (zone) zone.classList.add('arena-impact-burst');
+            if (targetCard) {
+                targetCard.classList.add('arena-target-recoil', `arena-target-recoil-${targetSide}`, 'arena-hp-shake');
+                if (styleClass) targetCard.classList.add(styleClass);
+            }
+        }, ev.action === 'ultimate' ? 180 : 140);
+        arenaMotionCleanupTimer = setTimeout(_clearBattleMotion, 900);
     }
 
     function _playArenaSfx(events, st) {

@@ -191,6 +191,40 @@
 .arena-combat-card.enemy {
     border-color: rgba(248, 113, 113, .28);
 }
+.arena-battle-lunge { z-index: 4; }
+.arena-battle-lunge-player { animation: arena-battle-lunge-player .78s cubic-bezier(.2,.86,.22,1) both; }
+.arena-battle-lunge-enemy { animation: arena-battle-lunge-enemy .78s cubic-bezier(.2,.86,.22,1) both; }
+.arena-motion-style-heavy.arena-battle-lunge-player { animation-name: arena-battle-heavy-player; }
+.arena-motion-style-heavy.arena-battle-lunge-enemy { animation-name: arena-battle-heavy-enemy; }
+.arena-motion-style-ultimate.arena-battle-lunge-player { animation-duration: .92s; animation-name: arena-battle-ultimate-player; }
+.arena-motion-style-ultimate.arena-battle-lunge-enemy { animation-duration: .92s; animation-name: arena-battle-ultimate-enemy; }
+.arena-target-recoil-player { animation: arena-target-recoil-player .58s ease-out both; }
+.arena-target-recoil-enemy { animation: arena-target-recoil-enemy .58s ease-out both; }
+.arena-impact-burst::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255,255,255,.96) 0 10%, rgba(255,221,115,.84) 11% 28%, rgba(248,113,113,.3) 29% 52%, transparent 66%);
+    animation: arena-impact-burst .54s ease-out forwards;
+}
+.arena-motion-style-ultimate.arena-target-recoil-player,
+.arena-motion-style-ultimate.arena-target-recoil-enemy { animation-duration: .66s; }
+.arena-hp-shake .arena-hp-fill { animation: arena-hp-shake .42s ease-out; }
+@keyframes arena-battle-lunge-player { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(18px,-6px,0) scale(1.04); } 58%{ transform:translate3d(88px,-16px,0) scale(1.12); } 100%{ transform:translate3d(0,0,0) scale(1); } }
+@keyframes arena-battle-lunge-enemy { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(-18px,-6px,0) scale(1.04); } 58%{ transform:translate3d(-88px,-16px,0) scale(1.12); } 100%{ transform:translate3d(0,0,0) scale(1); } }
+@keyframes arena-battle-heavy-player { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(22px,-10px,0) scale(1.06); } 56%{ transform:translate3d(102px,-24px,0) scale(1.14) rotate(-4deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
+@keyframes arena-battle-heavy-enemy { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(-22px,-10px,0) scale(1.06); } 56%{ transform:translate3d(-102px,-24px,0) scale(1.14) rotate(4deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
+@keyframes arena-battle-ultimate-player { 0%{ transform:translate3d(0,0,0) scale(1); } 22%{ transform:translate3d(20px,-10px,0) scale(1.06); } 52%{ transform:translate3d(108px,-30px,0) scale(1.14) rotate(12deg); } 74%{ transform:translate3d(96px,-8px,0) scale(1.08) rotate(220deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(360deg); } }
+@keyframes arena-battle-ultimate-enemy { 0%{ transform:translate3d(0,0,0) scale(1); } 22%{ transform:translate3d(-20px,-10px,0) scale(1.06); } 52%{ transform:translate3d(-108px,-30px,0) scale(1.14) rotate(-12deg); } 74%{ transform:translate3d(-96px,-8px,0) scale(1.08) rotate(-220deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(-360deg); } }
+@keyframes arena-target-recoil-player { 0%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } 22%{ transform:translate3d(-24px,0,0) scale(1.05); filter:brightness(1.2) saturate(1.15); } 42%{ transform:translate3d(-10px,0,0) scale(.98); } 100%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } }
+@keyframes arena-target-recoil-enemy { 0%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } 22%{ transform:translate3d(24px,0,0) scale(1.05); filter:brightness(1.2) saturate(1.15); } 42%{ transform:translate3d(10px,0,0) scale(.98); } 100%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } }
+@keyframes arena-impact-burst { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.42); } 30%{ opacity:.92; transform:translate(-50%,-50%) scale(1.02); } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.38); } }
+@keyframes arena-hp-shake { 0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-4px); } 75%{ transform:translateX(4px); } }
 .arena-combat-role {
     align-self: flex-start;
     padding: 5px 11px;
@@ -559,3 +593,13 @@
 .arena-stage-card .stage-enemies { font-size:11px; color:#6b7280; margin-bottom:2px; }
 .arena-stage-card .stage-reward { font-size:11px; color:#059669; }
 @media (max-width: 600px) { .arena-stages-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) {
+    .arena-battle-lunge-player,
+    .arena-battle-lunge-enemy,
+    .arena-target-recoil-player,
+    .arena-target-recoil-enemy,
+    .arena-impact-burst::after,
+    .arena-hp-shake .arena-hp-fill {
+        animation: none !important;
+    }
+}

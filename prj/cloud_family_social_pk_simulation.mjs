@@ -830,7 +830,24 @@ await page.goto(`${BASE}/index.html`, { waitUntil: 'domcontentloaded', timeout: 
 await page.waitForFunction(() => window.PetBankRuntime && window.PetSystem && typeof window.switchPage === 'function', { timeout: 20000 });
 
 async function shot(name) {
-    await page.screenshot({ path: path.join(OUT_DIR, name), fullPage: true });
+    const finalPath = path.join(OUT_DIR, name);
+    const tempPath = `${finalPath}.tmp.png`;
+    let lastError = null;
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+        try {
+            fs.mkdirSync(path.dirname(finalPath), { recursive: true });
+            await page.screenshot({ path: tempPath, fullPage: true });
+            fs.renameSync(tempPath, finalPath);
+            return;
+        } catch (error) {
+            lastError = error;
+            try {
+                if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+            } catch {}
+            await new Promise((resolve) => setTimeout(resolve, 160 * (attempt + 1)));
+        }
+    }
+    throw lastError;
 }
 
 await page.evaluate(() => {

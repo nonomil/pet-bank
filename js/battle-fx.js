@@ -46,6 +46,10 @@
             name: 'slash',
             target: 'monster',
             label: '攻击',
+            attacker: 'pet',
+            defender: 'monster',
+            motionStyle: 'dash',
+            recoil: true,
             lottie: LOTTIE_ROOT + 'slash.json',
             html: '<span class="battle-fx-streak"></span><span class="battle-fx-streak streak-soft"></span><span class="battle-fx-spark fx-a"></span><span class="battle-fx-spark fx-b"></span>'
         },
@@ -53,6 +57,10 @@
             name: 'enemy-claw',
             target: 'pet',
             label: '',
+            attacker: 'monster',
+            defender: 'pet',
+            motionStyle: 'pounce',
+            recoil: true,
             html: '<span class="battle-fx-claw c1"></span><span class="battle-fx-claw c2"></span><span class="battle-fx-claw c3"></span>'
         },
         'item-use': {
@@ -78,13 +86,22 @@
     function getEffectSpec(type, detail) {
         detail = detail || {};
         if (type === 'skill-cast') {
-            return SKILL_EFFECTS[detail.skillId] || {
+            var skillSpec = SKILL_EFFECTS[detail.skillId] || {
                 name: 'power-strike',
                 target: 'monster',
                 label: '技能',
+                attacker: 'pet',
+                defender: 'monster',
+                motionStyle: 'arc',
+                recoil: true,
                 lottie: LOTTIE_ROOT + 'power-strike.json',
                 html: SKILL_EFFECTS.power_strike.html
             };
+            if (!skillSpec.attacker) skillSpec.attacker = 'pet';
+            if (!skillSpec.defender) skillSpec.defender = skillSpec.target === 'pet' ? 'pet' : 'monster';
+            if (!skillSpec.motionStyle) skillSpec.motionStyle = detail.skillId === 'ultimate' ? 'burst' : 'arc';
+            if (skillSpec.recoil == null) skillSpec.recoil = skillSpec.defender === 'monster';
+            return skillSpec;
         }
         if (type === 'defend') return SKILL_EFFECTS.defend;
         return EVENT_EFFECTS[type] || null;

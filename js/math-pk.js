@@ -468,15 +468,17 @@
                         .arena-avatar { position:relative; z-index:2; width:200px; height:200px; object-fit:contain; filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); transition:filter .3s; }
                         .arena-side.dim .arena-avatar { filter:grayscale(.7) brightness(.55); }
                         .arena-side.win .arena-avatar { filter:drop-shadow(0 0 20px rgba(110,231,183,.95)); }
-                        .arena-side.math-pk-caster.attack-dash.human .arena-avatar { animation:math-pk-rush-dash-human .84s cubic-bezier(.2,.88,.22,1) both; }
-                        .arena-side.math-pk-caster.attack-dash.robot .arena-avatar { animation:math-pk-rush-dash-robot .84s cubic-bezier(.2,.88,.22,1) both; }
-                        .arena-side.math-pk-caster.attack-hop.human .arena-avatar { animation:math-pk-rush-hop-human .9s cubic-bezier(.2,.82,.26,1) both; }
-                        .arena-side.math-pk-caster.attack-hop.robot .arena-avatar { animation:math-pk-rush-hop-robot .9s cubic-bezier(.2,.82,.26,1) both; }
-                        .arena-side.math-pk-caster.attack-spin.human .arena-avatar { animation:math-pk-rush-spin-human .88s cubic-bezier(.2,.88,.22,1) both; }
-                        .arena-side.math-pk-caster.attack-spin.robot .arena-avatar { animation:math-pk-rush-spin-robot .88s cubic-bezier(.2,.88,.22,1) both; }
+                        .arena-side.math-pk-caster.math-pk-rush-active.attack-dash.human .arena-avatar { animation:math-pk-rush-dash-human .84s cubic-bezier(.2,.88,.22,1) both; }
+                        .arena-side.math-pk-caster.math-pk-rush-active.attack-dash.robot .arena-avatar { animation:math-pk-rush-dash-robot .84s cubic-bezier(.2,.88,.22,1) both; }
+                        .arena-side.math-pk-caster.math-pk-rush-active.attack-hop.human .arena-avatar { animation:math-pk-rush-hop-human .9s cubic-bezier(.2,.82,.26,1) both; }
+                        .arena-side.math-pk-caster.math-pk-rush-active.attack-hop.robot .arena-avatar { animation:math-pk-rush-hop-robot .9s cubic-bezier(.2,.82,.26,1) both; }
+                        .arena-side.math-pk-caster.math-pk-rush-active.attack-spin.human .arena-avatar { animation:math-pk-rush-spin-human .88s cubic-bezier(.2,.88,.22,1) both; }
+                        .arena-side.math-pk-caster.math-pk-rush-active.attack-spin.robot .arena-avatar { animation:math-pk-rush-spin-robot .88s cubic-bezier(.2,.88,.22,1) both; }
                         .arena-side.math-pk-target-hit.from-human .arena-avatar { animation:math-pk-target-hit-from-human .62s ease both; }
                         .arena-side.math-pk-target-hit.from-robot .arena-avatar { animation:math-pk-target-hit-from-robot .62s ease both; }
                         .arena-side.math-pk-target-hit::after { content:''; position:absolute; z-index:1; top:43%; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.95) 0 9%,rgba(255,209,102,.82) 10% 28%,rgba(34,211,238,.28) 29% 52%,transparent 64%); animation:math-pk-impact-burst .62s ease-out forwards; pointer-events:none; }
+                        .arena-side.math-pk-target-recoil.from-human .arena-avatar { animation:math-pk-target-recoil-from-human .66s ease both; }
+                        .arena-side.math-pk-target-recoil.from-robot .arena-avatar { animation:math-pk-target-recoil-from-robot .66s ease both; }
                         .arena-name { position:relative; z-index:3; font-size:18px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,.5); }
                         .arena-status { position:relative; z-index:3; font-size:13px; background:rgba(255,255,255,.15); padding:5px 14px; border-radius:999px; min-height:26px; display:flex; align-items:center; }
                         .arena-time { position:relative; z-index:3; font-size:13px; color:#ffd166; font-weight:700; min-height:18px; }
@@ -580,6 +582,8 @@
                         @keyframes math-pk-rush-spin-robot { 0%{ transform:translateX(0) rotate(0deg) scale(1); } 24%{ transform:translateX(-28px) rotate(10deg) scale(1.05); } 56%{ transform:translateX(-112px) rotate(-250deg) scale(1.13); } 70%{ transform:translateX(-128px) rotate(-320deg) scale(1.08); } 100%{ transform:translateX(0) rotate(-360deg) scale(1); } }
                         @keyframes math-pk-target-hit-from-human { 0%,100%{ transform:translateX(0) rotate(0); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(18px) rotate(2deg) scale(1.04); filter:drop-shadow(0 0 24px rgba(255,209,102,.95)); } 36%{ transform:translateX(8px) rotate(1deg); } 56%{ transform:translateX(-8px) rotate(-1deg); } 76%{ transform:translateX(4px) rotate(.5deg); } }
                         @keyframes math-pk-target-hit-from-robot { 0%,100%{ transform:translateX(0) rotate(0); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(-18px) rotate(-2deg) scale(1.04); filter:drop-shadow(0 0 24px rgba(255,209,102,.95)); } 36%{ transform:translateX(-8px) rotate(-1deg); } 56%{ transform:translateX(8px) rotate(1deg); } 76%{ transform:translateX(-4px) rotate(-.5deg); } }
+                        @keyframes math-pk-target-recoil-from-human { 0%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(24px) scale(1.07); filter:brightness(1.2) drop-shadow(0 0 28px rgba(255,209,102,.95)); } 40%{ transform:translateX(10px) scale(.98); } 100%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } }
+                        @keyframes math-pk-target-recoil-from-robot { 0%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(-24px) scale(1.07); filter:brightness(1.2) drop-shadow(0 0 28px rgba(255,209,102,.95)); } 40%{ transform:translateX(-10px) scale(.98); } 100%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } }
                         @keyframes math-pk-trail-dash-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65); left:30%; } 22%{ opacity:.88; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.06); left:62%; } }
                         @keyframes math-pk-trail-dash-robot { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65); left:70%; } 22%{ opacity:.88; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.06); left:38%; } }
                         @keyframes math-pk-trail-hop-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65) translateY(6px); left:30%; } 22%{ opacity:.82; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.02) translateY(-14px); left:62%; } }
@@ -596,6 +600,8 @@
                             .arena-side.math-pk-caster .arena-avatar,
                             .arena-side.math-pk-target-hit.from-human .arena-avatar,
                             .arena-side.math-pk-target-hit.from-robot .arena-avatar,
+                            .arena-side.math-pk-target-recoil.from-human .arena-avatar,
+                            .arena-side.math-pk-target-recoil.from-robot .arena-avatar,
                             .arena-side.math-pk-target-hit::after,
                             .math-pk-rush-trail { animation:none !important; transition:none !important; }
                         }
@@ -959,13 +965,14 @@
             }[attackStyle] || '近战突击';
             [casterEl, targetEl].forEach((el) => {
                 if (!el) return;
-                el.classList.remove('math-pk-caster', 'math-pk-target-hit', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot');
+                el.classList.remove('math-pk-caster', 'math-pk-rush-active', 'math-pk-target-hit', 'math-pk-target-recoil', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot');
             });
             const oldTrail = stage && stage.querySelector('.math-pk-rush-trail');
             if (oldTrail) oldTrail.remove();
             if (casterEl) {
                 void casterEl.offsetWidth;
                 casterEl.classList.add('math-pk-caster');
+                casterEl.classList.add('math-pk-rush-active');
                 casterEl.classList.add(attackStyle);
             }
             this._attackCue(cueText, attackStyle);
@@ -979,12 +986,13 @@
             setTimeout(() => {
                 if (!targetEl) return;
                 targetEl.classList.add('math-pk-target-hit');
+                targetEl.classList.add('math-pk-target-recoil');
                 targetEl.classList.add(attackStyle);
                 targetEl.classList.add(caster === 'human' ? 'from-human' : 'from-robot');
             }, 420);
             setTimeout(() => {
-                if (casterEl) casterEl.classList.remove('math-pk-caster', 'attack-dash', 'attack-hop', 'attack-spin');
-                if (targetEl) targetEl.classList.remove('math-pk-target-hit', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot');
+                if (casterEl) casterEl.classList.remove('math-pk-caster', 'math-pk-rush-active', 'attack-dash', 'attack-hop', 'attack-spin');
+                if (targetEl) targetEl.classList.remove('math-pk-target-hit', 'math-pk-target-recoil', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot');
             }, 980);
             return attackStyle;
         },

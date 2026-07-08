@@ -2786,7 +2786,11 @@ function handleBattleAnimate(e) {
     const petEl = document.getElementById('battleFighterPet');
     const monsterEl = document.getElementById('battleFighterMonster');
     const modal = document.getElementById('battleModal');
+    const damageZone = document.getElementById('battleDamageZone');
     if (window.BattleFx && typeof BattleFx.show === 'function') BattleFx.show(type, e.detail);
+    const spec = window.BattleFx && typeof window.BattleFx.getEffectSpec === 'function'
+        ? window.BattleFx.getEffectSpec(type, e.detail)
+        : null;
     const play = (name) => {
         if (window.sfx && typeof window.sfx.play === 'function') window.sfx.play(name);
     };
@@ -2797,6 +2801,43 @@ function handleBattleAnimate(e) {
         el.classList.add(className);
         setTimeout(() => el.classList.remove(className), duration || 500);
     };
+    const clearMotion = () => {
+        [petEl, monsterEl, damageZone].forEach((el) => {
+            if (!el) return;
+            el.classList.remove(
+                'battle-motion-approach',
+                'battle-motion-approach-left',
+                'battle-motion-approach-right',
+                'battle-motion-impact',
+                'battle-motion-recoil',
+                'battle-motion-recoil-left',
+                'battle-motion-recoil-right',
+                'battle-motion-style-dash',
+                'battle-motion-style-pounce',
+                'battle-motion-style-arc',
+                'battle-motion-style-burst'
+            );
+        });
+    };
+    const motion = (attacker, defender, style) => {
+        const attackerEl = attacker === 'pet' ? petEl : monsterEl;
+        const defenderEl = defender === 'pet' ? petEl : monsterEl;
+        const approachSide = attacker === 'pet' ? 'battle-motion-approach-right' : 'battle-motion-approach-left';
+        const recoilSide = defender === 'pet' ? 'battle-motion-recoil-left' : 'battle-motion-recoil-right';
+        clearMotion();
+        if (attackerEl) {
+            attackerEl.classList.add('battle-motion-approach', approachSide);
+            if (style) attackerEl.classList.add(`battle-motion-style-${style}`);
+        }
+        setTimeout(() => {
+            if (damageZone) damageZone.classList.add('battle-motion-impact');
+            if (defenderEl) {
+                defenderEl.classList.add('battle-motion-recoil', recoilSide);
+                if (style) defenderEl.classList.add(`battle-motion-style-${style}`);
+            }
+        }, style === 'burst' ? 180 : 150);
+        setTimeout(clearMotion, 760);
+    };
 
     if (type === 'battle-start') {
         play('battleStart');
@@ -2804,6 +2845,7 @@ function handleBattleAnimate(e) {
     } else if (type === 'player-attack') {
         play('dashWhoosh');
         play('playerAttack');
+        motion((spec && spec.attacker) || 'pet', (spec && spec.defender) || 'monster', (spec && spec.motionStyle) || 'dash');
         // 玩家攻击 → 怪物受击抖动
         if (e.detail.damage) showBattleDamage(e.detail.damage, 'monster');
         if (e.detail.damage) play('battleImpact');
@@ -2811,6 +2853,7 @@ function handleBattleAnimate(e) {
     } else if (type === 'skill-cast') {
         play('dashWhoosh');
         play('skillCast');
+        motion((spec && spec.attacker) || 'pet', (spec && spec.defender) || 'monster', (spec && spec.motionStyle) || 'arc');
         if (e.detail.damage) showBattleDamage(e.detail.damage, 'monster');
         if (e.detail.damage) play('battleImpact');
         pulse(petEl, 'battle-cast', 520);
@@ -2827,6 +2870,7 @@ function handleBattleAnimate(e) {
     } else if (type === 'enemy-attack') {
         play('dashWhoosh');
         play('enemyAttack');
+        motion((spec && spec.attacker) || 'monster', (spec && spec.defender) || 'pet', (spec && spec.motionStyle) || 'pounce');
         // 敌人攻击 → 宠物受击抖动 + 红闪
         if (e.detail.damage) showBattleDamage(e.detail.damage, 'pet');
         if (e.detail.damage) {
