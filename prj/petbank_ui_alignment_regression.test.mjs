@@ -40,11 +40,16 @@ await page.addInitScript(() => {
 await page.goto(`${BASE}/index.html`, { waitUntil: 'domcontentloaded', timeout: 60000 });
 await page.waitForFunction(() => typeof window.switchPage === 'function', undefined, { timeout: 15000 });
 
-await page.evaluate(() => window.switchPage('card'));
+await page.evaluate(async () => {
+  if (window.PetBankRuntime?.ensurePage) {
+    await window.PetBankRuntime.ensurePage('card');
+  }
+  window.switchPage('card');
+});
 await page.waitForFunction(
   () => document.querySelectorAll('.card-gallery-card').length >= 4,
   undefined,
-  { timeout: IS_LOCAL_BASE ? 8000 : 45000 }
+  { timeout: IS_LOCAL_BASE ? 15000 : 45000 }
 );
 
 const cardCatalogProbe = await page.evaluate(() => ({

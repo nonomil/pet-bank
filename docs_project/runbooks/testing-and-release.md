@@ -39,12 +39,18 @@ cd 宠物积分系统/
 node scripts/run-full-regression.mjs
 ```
 
-覆盖 38 项测试：
+覆盖 44 项测试：
 - `prj/regression_runner_contract.test.mjs` — 回归合约
 - `prj/runtime_loader_route_base_contract.test.mjs` — Runtime Loader 路由基准合约
 - `prj/audio_battle_feedback_contract.test.mjs` — 音频/战斗反馈
 - `prj/test_homepage_focus_layout_contract.py` — 首页焦点 Hero 布局
 - `prj/url_routing_and_settings_subpages.test.mjs` — 路由与设置子页
+- `prj/top_nav_hub_menu.test.mjs` — 顶栏 Hub 菜单关闭逻辑
+- `prj/parent_settings_sections_contract.test.mjs` — 家长设置分区结构
+- `prj/parent_management_hidden_interfaces.test.mjs` — 家长区隐藏管理入口
+- `prj/mayihaoke_resource_snapshot_contract.test.mjs` — mayihaoke 资源快照
+- `prj/pet_asset_integrity.test.mjs` — 宠物运行时图片资产完整性
+- `prj/petbank_ui_alignment_regression.test.mjs` — 整站 UI 对齐回归
 - `prj/math_pk_guided_feedback_contract.test.mjs` — 数学PK/探索小题引导式反馈
 - `prj/math_pk_support_cards_contract.test.mjs` — 数学PK支援卡与奖励星轨
 - `prj/playground_hanzi_hub.test.mjs` — 游乐场与汉字中心导航
@@ -110,6 +116,12 @@ node scripts/playwright-browser.mjs
 | `prj/audio_battle_feedback_contract.test.mjs` | 音频战斗反馈 |
 | `prj/test_homepage_focus_layout_contract.py` | 首页焦点 Hero 布局 |
 | `prj/url_routing_and_settings_subpages.test.mjs` | 路由与设置子页 |
+| `prj/top_nav_hub_menu.test.mjs` | 顶栏 Hub 菜单关闭逻辑 |
+| `prj/parent_settings_sections_contract.test.mjs` | 家长设置分区结构 |
+| `prj/parent_management_hidden_interfaces.test.mjs` | 家长区隐藏管理入口 |
+| `prj/mayihaoke_resource_snapshot_contract.test.mjs` | mayihaoke 资源快照 |
+| `prj/pet_asset_integrity.test.mjs` | 宠物运行时图片资产完整性 |
+| `prj/petbank_ui_alignment_regression.test.mjs` | 整站 UI 对齐回归 |
 | `prj/exploration_math_feedback.test.mjs` | 探索数学反馈 |
 | `prj/exploration_battle_guided_feedback.test.mjs` | 探索战斗失败复盘 |
 | `prj/math_pk_support_cards_contract.test.mjs` | 数学PK支援卡与奖励星轨 |
@@ -162,9 +174,13 @@ node scripts/playwright-browser.mjs
 
 | 改了什么 | 跑什么 |
 |---------|--------|
-| app.js（任务/积分/路由） | `regression_p1.test.mjs` + `test_homepage_focus_layout_contract.py` + `url_routing_and_settings_subpages.test.mjs` + `playground_hanzi_hub.test.mjs` + `gameplay_core_flows_simulation.mjs` |
+| app.js（任务/积分/路由） | `regression_p1.test.mjs` + `test_homepage_focus_layout_contract.py` + `url_routing_and_settings_subpages.test.mjs` + `top_nav_hub_menu.test.mjs` + `playground_hanzi_hub.test.mjs` + `gameplay_core_flows_simulation.mjs` |
 | pet.js（宠物养成） | `pet_card_image_loading_regression.test.mjs` + `pet_archive_standalone_simulation.mjs` |
+| `data/pets.json`（宠物运行时资源） | `pet_asset_integrity.test.mjs` |
 | home.js（宠物小屋） | `edge_states_standalone_simulation.mjs` |
+| `index.html` + `css/style.css`（家长设置结构） | `parent_settings_sections_contract.test.mjs` + `parent_management_hidden_interfaces.test.mjs` |
+| mayihaoke 外部学习资源快照 | `mayihaoke_resource_snapshot_contract.test.mjs` |
+| 全局页面对齐 / 图片懒加载 / 卡牌详情 | `petbank_ui_alignment_regression.test.mjs` |
 | exploration.js（探索） | `exploration_battle_guided_feedback.test.mjs` + `exploration_math_feedback.test.mjs` + `exploration_story_and_state_resume_simulation.mjs` |
 | `data/vocab/english-minecraft/*`（英语词库注册层） | `vocab_registry_contract.test.mjs` |
 | `prj/拼音块收集台原型/game.js`（拼音块原型） | `pinyin_star_scout_voice_contract.test.mjs` + `prj/拼音块收集台原型/verify.mjs` |
