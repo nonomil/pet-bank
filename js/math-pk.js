@@ -42,11 +42,41 @@
     };
 
     const DIFFICULTY_OPTIONS = [
-        { id: 'easy20', label: '加减起步', desc: '20 以内加减' },
-        { id: 'easy100', label: '加减进阶', desc: '100 以内加减' },
-        { id: 'medium_mul', label: '乘法启程', desc: '基础乘法练习' },
-        { id: 'medium_mix', label: '综合闯关', desc: '加减乘 + 应用题' },
-        { id: 'hard', label: '乘除挑战', desc: '乘除（机器人更快）' }
+        {
+            id: 'easy20',
+            label: '加减起步',
+            desc: '20 以内加减',
+            fitFor: '适合刚开始热身',
+            reason: '数字小，更容易先看清题目和符号。'
+        },
+        {
+            id: 'easy100',
+            label: '加减进阶',
+            desc: '100 以内加减',
+            fitFor: '适合已经能稳住 20 以内',
+            reason: '练进位、退位和更长一点的心算节奏。'
+        },
+        {
+            id: 'medium_mul',
+            label: '乘法启程',
+            desc: '基础乘法练习',
+            fitFor: '适合刚开始理解乘法',
+            reason: '先把乘法看成“几组几个”，再慢慢提速。'
+        },
+        {
+            id: 'medium_mix',
+            label: '综合闯关',
+            desc: '加减乘 + 应用题',
+            fitFor: '适合想练切换思路',
+            reason: '一局里会遇到不同题型，适合练观察和判断。'
+        },
+        {
+            id: 'hard',
+            label: '乘除挑战',
+            desc: '乘除（机器人更快）',
+            fitFor: '适合已经比较熟练',
+            reason: '用更快节奏练稳定度，先保准确再追速度。'
+        }
     ];
 
     const MATH_PK_ROBOT_RIVALS = {
@@ -245,6 +275,45 @@
 
     function getMathPkRobotRival(diff) {
         return MATH_PK_ROBOT_RIVALS[normalizeDifficulty(diff)] || MATH_PK_ROBOT_RIVALS.easy20;
+    }
+
+    function buildGuidedFeedback(summary) {
+        const data = summary || {};
+        const total = Math.max(1, Number(data.total || CONFIG.TOTAL_ROUNDS || 1));
+        const correctCount = Number(data.correctCount || 0);
+        const ratio = correctCount / total;
+        const difficulty = normalizeDifficulty(data.difficulty || state.mathDifficulty);
+        const win = !!data.win;
+        const maxCombo = Number(data.maxCombo || 0);
+
+        if (difficulty === 'medium_mul' && ratio < 0.7) {
+            return {
+                note: '这局最值得练的是把乘法看成“几组几个”。',
+                nextStep: '下一局先数有几组，再数每组几个，最后再写乘法。'
+            };
+        }
+        if (correctCount === 0) {
+            return {
+                note: '这局题目节奏有点快，先把观察顺序找回来。',
+                nextStep: '下一局先慢读题，再点答案；也可以换到更适合热身的难度。'
+            };
+        }
+        if (ratio < 0.5) {
+            return {
+                note: '你已经开始抓到题目了，还需要多一点确认时间。',
+                nextStep: '下一局先看符号，再算数字，确定后再出手。'
+            };
+        }
+        if (!win) {
+            return {
+                note: maxCombo >= 2 ? '你已经能连续答对，说明方法是对的。' : '你答对了一些题，准确度正在变稳。',
+                nextStep: '下一局先保准确，再慢慢追速度。'
+            };
+        }
+        return {
+            note: maxCombo >= 2 ? '你这局已经打出连续思考节奏。' : '你完成了这一局挑战。',
+            nextStep: '下一局可以继续巩固，也可以试试更适合挑战的新难度。'
+        };
     }
 
     function getMathPkPlayerAttackArchetype() {
@@ -455,12 +524,17 @@
                         .mathpk-difficulty-title { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 2px 8px; color:rgba(255,255,255,.86); font-size:.82rem; font-weight:800; }
                         .mathpk-difficulty-title small { color:rgba(255,255,255,.58); font-weight:650; }
                         .mathpk-difficulty-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; }
-                        .mathpk-difficulty-option { min-height:56px; padding:8px 6px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.09); color:rgba(255,255,255,.84); cursor:pointer; text-align:center; transition:background .15s,border-color .15s,transform .08s; }
+                        .mathpk-difficulty-option { min-height:92px; padding:8px 6px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.09); color:rgba(255,255,255,.84); cursor:pointer; text-align:center; transition:background .15s,border-color .15s,transform .08s; }
                         .mathpk-difficulty-option:hover { background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.2); }
                         .mathpk-difficulty-option:active { transform:scale(.96); }
                         .mathpk-difficulty-option.active { background:rgba(123,174,143,.78); border-color:rgba(226,240,231,.34); color:#fff; }
                         .mathpk-difficulty-option b { display:block; font-size:.86rem; line-height:1.15; }
                         .mathpk-difficulty-option span { display:block; margin-top:4px; font-size:.68rem; line-height:1.15; opacity:.76; }
+                        .mathpk-difficulty-option small { display:block; margin-top:5px; font-size:.64rem; line-height:1.18; opacity:.9; font-weight:800; }
+                        .mathpk-difficulty-option em { display:block; margin-top:4px; font-size:.6rem; line-height:1.22; opacity:.68; font-style:normal; }
+                        .mathpk-result-guide { margin:12px auto 10px; max-width:420px; padding:10px 12px; border-radius:14px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.14); text-align:left; }
+                        .mathpk-result-guide strong { display:block; color:#ffd166; font-size:.82rem; margin-top:4px; }
+                        .mathpk-result-guide p { margin:3px 0 6px; line-height:1.5; font-size:.88rem; opacity:.9; }
                         .mul-mode-switch { display:inline-grid; grid-template-columns:1fr 1fr; gap:6px; padding:5px; border-radius:999px; background:rgba(255,255,255,.12); margin:12px 0 4px; }
                         .mul-mode-switch button { border:0; border-radius:999px; padding:9px 18px; color:#fff; background:transparent; font-weight:800; cursor:pointer; }
                         .mul-mode-switch button.active { background:rgba(255,255,255,.24); }
@@ -644,8 +718,10 @@
                     <div class="mathpk-difficulty-grid">
                         ${DIFFICULTY_OPTIONS.map((option) => `
                             <button type="button" class="mathpk-difficulty-option ${cur === option.id ? 'active' : ''}" onclick="MathPKGame._setDifficulty('${option.id}')">
-                                <b>${option.label}</b>
-                                <span>${option.desc}</span>
+                                <b>${escapeHtml(option.label)}</b>
+                                <span>${escapeHtml(option.desc)}</span>
+                                <small>${escapeHtml(option.fitFor || '')}</small>
+                                <em>${escapeHtml(option.reason || '')}</em>
                             </button>
                         `).join('')}
                     </div>
@@ -967,6 +1043,7 @@
             const stars = Number(data.starsEarned || 0);
             const progress = Number(data.totalStars || 0);
             const starText = `${'★'.repeat(stars)}${'☆'.repeat(Math.max(0, 3 - stars))}`;
+            const guidedFeedback = data.guidedFeedback || buildGuidedFeedback(data);
             center.innerHTML = `
                 <div class="arena-lobby">
                     <h2 style="font-size:2rem;">${win ? '🏆 你赢了！' : (data.humanWins === data.robotWins ? '🤝 平局！' : '🤖 机器人赢了')}</h2>
@@ -977,6 +1054,12 @@
                     <p style="margin-top:10px;font-size:1rem;">本局获得 <b style="color:#ffd166;">${starText}</b></p>
                     <p style="opacity:.82;">累计星轨：${progress} / 12</p>
                     <p style="opacity:.9;font-size:.88rem;">解锁：${escapeHtml(data.rewardMessage || '继续收集星星')}</p>
+                    <div class="mathpk-result-guide">
+                        <strong>复盘</strong>
+                        <p>${escapeHtml(guidedFeedback.note || '')}</p>
+                        <strong>下一局</strong>
+                        <p>${escapeHtml(guidedFeedback.nextStep || '')}</p>
+                    </div>
                     <button class="arena-btn" onclick="MathPKGame.start()">再来一局</button>
                     <button class="arena-btn" style="margin-top:10px;background:rgba(255,255,255,.18);" onclick="MathPKGame.renderUI('math-pk-container')">返回大厅</button>
                 </div>
@@ -999,9 +1082,11 @@
                         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;">
                             ${DIFFICULTY_OPTIONS.map(o => `
                                 <button data-diff="${o.id}" onclick="MathPKGame._setDifficulty('${o.id}')"
-                                    style="padding:14px 10px;border-radius:14px;cursor:pointer;text-align:center;border:2px solid ${cur === o.id ? 'transparent' : '#e5e7eb'};background:${cur === o.id ? 'var(--sage-green, #7BAE8F)' : '#f7f9f8'};color:${cur === o.id ? '#fff' : '#3f5e4a'};transition:all 0.15s;">
-                                    <div style="font-weight:700;font-size:15px;">${o.label}</div>
-                                    <div style="font-size:11px;margin-top:4px;opacity:0.85;">${o.desc}</div>
+                                    style="padding:14px 10px;border-radius:14px;cursor:pointer;text-align:left;border:2px solid ${cur === o.id ? 'transparent' : '#e5e7eb'};background:${cur === o.id ? 'var(--sage-green, #7BAE8F)' : '#f7f9f8'};color:${cur === o.id ? '#fff' : '#3f5e4a'};transition:all 0.15s;">
+                                    <div style="font-weight:800;font-size:15px;">${escapeHtml(o.label)}</div>
+                                    <div style="font-size:11px;margin-top:4px;opacity:0.85;">${escapeHtml(o.desc)}</div>
+                                    <div style="font-size:12px;margin-top:7px;font-weight:800;">${escapeHtml(o.fitFor || '')}</div>
+                                    <div style="font-size:11px;margin-top:4px;line-height:1.45;opacity:0.86;">${escapeHtml(o.reason || '')}</div>
                                 </button>
                             `).join('')}
                         </div>
@@ -1609,6 +1694,7 @@
             if (!win) playSfx('faintDrop');
             playSfx('resultStamp');
             render.result({
+                difficulty: state.mathDifficulty,
                 humanWins: state.humanWins,
                 robotWins: state.robotWins,
                 earnedPoints,
@@ -1617,7 +1703,17 @@
                 total: CONFIG.TOTAL_ROUNDS,
                 starsEarned: starsEarned,
                 totalStars: totalStars,
-                rewardMessage: rewardMessage
+                rewardMessage: rewardMessage,
+                guidedFeedback: buildGuidedFeedback({
+                    difficulty: state.mathDifficulty,
+                    humanWins: state.humanWins,
+                    robotWins: state.robotWins,
+                    correctCount: state.correctCount,
+                    multiplicationCorrectCount: state.multiplicationCorrectCount,
+                    maxCombo: state.maxCombo,
+                    total: CONFIG.TOTAL_ROUNDS,
+                    win: win
+                })
             });
         },
 

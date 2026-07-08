@@ -195,6 +195,13 @@ const ExplorationDetail = (function () {
         }
         return [...opts].sort(() => Math.random() - 0.5);
     }
+
+    function buildMathRetryHint(hint, explanation) {
+        if (hint) return `下一步：${hint}`;
+        if (explanation) return `复盘：${explanation}`;
+        return '下一步：先把题目里的数量圈出来，再决定用加法、减法还是乘法。';
+    }
+
     function answerMath(correct, exp, msg, hint, explanation) {
         const textEl = document.getElementById('galgameText');
         const choicesEl = document.getElementById('galgameChoices');
@@ -210,11 +217,10 @@ const ExplorationDetail = (function () {
             textEl.innerHTML = parts.join('<br>');
         } else {
             playSfx('mathWrong');
-            const parts = ['<span class="galgame-warn">这次记录还差一点点。</span>'];
-            if (hint) {
-                parts.push(`<span class="galgame-hint">提示：${hint}</span>`);
-            } else {
-                parts.push('<span class="galgame-warn">答错了……继续探索吧。</span>');
+            const parts = ['<span class="galgame-warn">这次还差一点，先换个观察顺序。</span>'];
+            parts.push(`<span class="galgame-hint">${buildMathRetryHint(hint, explanation)}</span>`);
+            if (hint && explanation) {
+                parts.push(`<span class="galgame-explanation">复盘：${explanation}</span>`);
             }
             textEl.innerHTML = parts.join('<br>');
         }
