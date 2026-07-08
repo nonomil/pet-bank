@@ -52,6 +52,7 @@
 | `PLAN-2026-07-05-03` | [2026-07-05-family-account-social-live-validation-plan](./2026-07-05-family-account-social-live-validation-plan.md) | 实施计划 | 当前活跃 | 家庭账号社交体系的真实环境部署、双设备联调、灰度与回滚计划 |
 | `DESIGN-2026-07-05-03` | [2026-07-05-admin-backoffice-hermes-design](./2026-07-05-admin-backoffice-hermes-design.md) | 设计稿 | 当前活跃 | 轻后台、数据库安全升级与 Hermes 自动部署的正式设计稿 |
 | `PLAN-2026-07-05-04` | [2026-07-05-admin-backoffice-hermes-implementation](./2026-07-05-admin-backoffice-hermes-implementation.md) | 实施计划 | 当前活跃 | 轻后台、admin 角色模型、Hermes 配置与部署约定的实施计划 |
+| `PLAN-2026-07-07-MATH-PK-CARDS-P1` | [2026-07-07-math-pk-support-cards-p1](./2026-07-07-math-pk-support-cards-p1.md) | 实施计划 | 已落地(v0.7.14) | 数学 PK 学习支援卡 P1：三选一支援卡、三张低龄友好卡和局后 3 星结算的实施计划 |
 | `TOPIC-FAMILY-ACCOUNT-SOCIAL` | [../家庭账号社交体系/README](../家庭账号社交体系/README.md) | 专题索引 | 当前活跃 | 账号体系、家庭关系、好友串门与异步 PK 的专题目录 |
 | `ROLL-2026-07-05-01` | [../家庭账号社交体系/联调上线/manual-run-template](../家庭账号社交体系/联调上线/manual-run-template.md) | 联调模板 | 当前活跃 | 双家长 / 双设备 / 双家庭联调记录模板，可由 ops 脚本生成当天文档 |
 | `ROLL-2026-07-05-02` | [../家庭账号社交体系/联调上线/deploy-log-template](../家庭账号社交体系/联调上线/deploy-log-template.md) | 部署模板 | 当前活跃 | Supabase 部署日志模板，可由 ops 脚本生成当天文档 |

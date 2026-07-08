@@ -35,6 +35,8 @@ docs/参考案例/
 .env
 # Agnes 生图 API 密钥（含 key，严禁入库；调用方式见 memory/agnes-image-api）
 docs/GPT生图/Agnes生图.md
+docs/GPT生图/*key.md
+prj/browser-act-imagegen/chrome-pet-sprite-profile/
 
 # --- 临时探测脚本（banchong/voxcpm 下载探测，不入库）---
 scripts/_*.py
@@ -59,3 +61,6 @@ data/*.rescan-report.json
 
 # --- 临时工作目录（截图/调试输出/中间产物，不入库）---
 tmp/
+tmp_*.png
+tmp_*.log
+chatgpt-sprite-page.png

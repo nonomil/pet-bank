@@ -13,6 +13,7 @@
 | [MC宠物动作图提示词-happy-attack](./MC宠物动作图提示词-happy-attack.md) | Minecraft 宠物动作图提示词 | MC 动作姿态扩展 |
 | [PVZ + Minecraft 宠物生图提示词](./PVZ%20+%20Minecraft%20宠物生图提示词.md) | PVZ / MC 系列统一提示词规范 | 批量生成基础素材 |
 | [宠物小屋背景提示词](./宠物小屋背景提示词.md) | 宠物小屋 6 套主题房间背景提示词 + 接入 | 小屋装饰经济（P2）生图 |
+| [儿童游戏 UI 资产流水线](./儿童游戏UI资产流水线.md) | GPT/Agnes/ChatGPT/Cowart 生图到透明 PNG 资产包的项目 SOP | 学习机玩法、儿童游戏 UI、爆炸图裁切与网页接入 |
 | [卡牌系统专题资源](../卡牌系统/资源/) | 卡牌边框生图提示词、合成脚本、卡牌参考样式 | 卡牌系统专题资源已独立归档 |
 | [探索 galgame 提示词](../plans/2026-06-29-探索故事galgame重设计.md) | 12 场景背景 + 12 角色立绘 + 怪物立绘（galgame VN 风） | 探索 galgame 视觉素材 |
 
@@ -30,7 +31,7 @@
 | 宠物卡牌 V2 合成图 | 198 | `assets/cards/composed-v2/` | Agnes 底图 + 本地脚本叠中文属性 | 本地合成 |
 | 学习中心中文资料包入口封面 | 1 | `assets/learn/` | Agnes API 单张生成 | agnes-image-2.1-flash |
 
-> v0.5.3 用 Agnes 新 key（`sk-Dt1UZ...`）批量生成 24 张 galgame 素材。提示词见 [探索 galgame 提示词](../plans/2026-06-29-探索故事galgame重设计.md) §4。
+> v0.5.3 用 Agnes API 批量生成 24 张 galgame 素材。提示词见 [探索 galgame 提示词](../plans/2026-06-29-探索故事galgame重设计.md) §4。
 >
 > v0.5.4 新增图鉴分馆封面流程：
 > 先用 `scripts/generators/gen_gallery_covers.py` 生成 4 张分馆底图，再用 `scripts/generators/compose_gallery_cover_collages.py` 把代表宠物卡直接烘进背景图，最终供图鉴首页 4 张分馆卡复用。
@@ -45,6 +46,8 @@
 
 ## 3. 使用建议
 
+- 想做学习机/儿童游戏 UI 资产包：
+  先看 `儿童游戏UI资产流水线.md`，再调用项目技能 `.codex/skills/gpt-image-ui-assets/`
 - 想补仓鼠系 / banchong 缺图：
   先看 `banchong宠物生图提示词-补全48张.md`
 - 想扩展 MC 动作图：
