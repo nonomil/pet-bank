@@ -7,9 +7,9 @@
 
 - 新增路径化 SPA 路由合同：孩子主应用收口到 `/app/*`，设置页支持 `/settings/*` 与 `/parent/settings/*`，家长管理区拥有 `/parent`、`/parent/works`、`/parent/tools` 等直达 URL
 - 设置页从大杂烩改为“设置首页 + 子页入口 + 分区面板”，保留账号、家庭云端、学习与题目、规则模板、高级操作等挂载点
-- 新增 route-aware shell：`/app` 首页使用 `shell-home` 保留旧版顶部导航和左侧栏；探索、游乐场和玩法深页使用 `shell-app` 显示轻状态条与底部 Dock；家长区 `shell-parent` 隐藏孩子主导航，显示专用管理导航
+- 新增 route-aware shell：`/app`、积分、学习、宠物、探索、游乐场等一级 tab 使用 `shell-home` 保留旧版顶部主导航；数学 PK、汉字游戏、宠物散步/卡牌等深层玩法页才使用 `shell-app` 显示轻状态条与底部 Dock；家长区 `shell-parent` 隐藏孩子主导航，显示专用管理导航
 - 家长管理导航增加“家长首页 / 设置管理 / 成长作品 / 工具箱 / 进入孩子端”，并按 `/settings/*`、`/parent/works`、`/parent/tools` 同步高亮
-- 孩子端沉浸页输出 `data-app-page`、`data-app-route-page`、`data-app-surface`，把 `/app/explore`、`/app/playground/*`、学习专注页、宠物工作室等分成可继续沉浸化的页面壳类型，同时避免首页被误改成全屏游戏壳
+- 孩子端沉浸页输出 `data-app-page`、`data-app-route-page`、`data-app-surface`，先把深层玩法页分成可继续沉浸化的页面壳类型，同时避免首页和一级 tab 被误改成全屏游戏壳
 - 修复深链接下浏览器预加载资源误落到 `/app/css/...`、`/parent/settings/js/...` 的问题，改用静态 `<base id="routeBase">` + 启动脚本同步 base
 - 新增和扩展 IA 合同测试，覆盖 URL 映射、设置子页、家长区隐藏入口、route-aware shell、深链接资源 base 与浏览器冒烟验证
 

@@ -652,7 +652,7 @@ const PAGE_TO_TAB = {
     works: 'parent', tools: 'parent', settings: 'parent'         // 低频作品/工具/设置归右上角家长区入口
 };
 
-const APP_SHELL_PAGES = new Set([
+const CLASSIC_APP_PAGES = new Set([
     'map',
     'today',
     'learning-sheet',
@@ -667,11 +667,14 @@ const APP_SHELL_PAGES = new Set([
     'learn-print',
     'pet',
     'home',
-    'walk',
-    'card',
     'home-visit',
     'explore',
-    'playground',
+    'playground'
+]);
+
+const APP_SHELL_PAGES = new Set([
+    'walk',
+    'card',
     'mathpk',
     'hanzi',
     'leaderboard'
@@ -882,10 +885,10 @@ function updateBrowserRoute(page, options = {}) {
 }
 
 function getRouteShell(page) {
-    if (page === 'map') return 'home';
+    if (CLASSIC_APP_PAGES.has(page)) return 'home';
     if (PARENT_SHELL_PAGES.has(page)) return 'parent';
     if (APP_SHELL_PAGES.has(page)) return 'app';
-    return 'app';
+    return 'home';
 }
 
 function syncRouteShellStatus() {
