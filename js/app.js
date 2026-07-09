@@ -144,6 +144,7 @@ let totalPoints = 0;
 let completedTasks = new Set();
 let activeExploreSceneId = null;
 let pageActivationToken = 0;
+const GROWTH_WORKS_KEY = 'petbank_growth_works';
 
 Object.defineProperty(window, 'totalPoints', {
     configurable: true,
@@ -168,6 +169,119 @@ function loadAppState() {
     if (saved) completedTasks = new Set(JSON.parse(saved));
     localStorage.setItem('petbank_tasks_completed_today', String(completedTasks.size));
     window.totalPoints = totalPoints;
+}
+
+function readGrowthWorks() {
+    try {
+        const raw = localStorage.getItem(GROWTH_WORKS_KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        return Array.isArray(list) ? list : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function writeGrowthWorks(list) {
+    try {
+        localStorage.setItem(GROWTH_WORKS_KEY, JSON.stringify(Array.isArray(list) ? list : []));
+    } catch (error) {}
+}
+
+function getGrowthWorksForActiveProfile() {
+    const activeId = window.ProfileManager && typeof ProfileManager.getActiveId === 'function'
+        ? ProfileManager.getActiveId()
+        : 'p_default';
+    return readGrowthWorks()
+        .filter((item) => item && item.profileId === activeId)
+        .sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+}
+
+function renderGrowthWorksPage() {
+    const listEl = document.getElementById('worksList');
+    const countEl = document.getElementById('worksCountText');
+    const summaryEl = document.getElementById('worksSummaryText');
+    const childEl = document.getElementById('worksActiveChild');
+    if (!listEl || !countEl || !summaryEl || !childEl) return;
+
+    const profile = window.ProfileManager && typeof ProfileManager.getActive === 'function'
+        ? ProfileManager.getActive()
+        : null;
+    const childName = profile && profile.name ? profile.name : '默认孩子';
+    const works = getGrowthWorksForActiveProfile();
+
+    childEl.textContent = childName;
+    countEl.textContent = `${works.length} 条`;
+    summaryEl.textContent = works.length
+        ? `最近一条记录在 ${new Date(Number(works[0].createdAt || Date.now())).toLocaleDateString()}，继续把孩子今天的小成果留存下来。`
+        : '还没有保存作品，先记录一条今天的小成果。';
+
+    if (!works.length) {
+        listEl.innerHTML = '<div class="text-xs text-muted py-4">这里会按当前孩子分别保存作品记录，适合积累成长档案和家长复盘素材。</div>';
+        return;
+    }
+
+    listEl.innerHTML = works.slice(0, 8).map((item) => `
+        <article class="review-box" style="padding:12px;">
+            <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                    <div class="text-xs text-muted">${escapePiHtml(item.type || '成长记录')} · ${new Date(Number(item.createdAt || Date.now())).toLocaleDateString()}</div>
+                    <div class="font-bold mt-1">${escapePiHtml(item.title || '未命名作品')}</div>
+                    <p class="text-xs text-muted mt-2" style="line-height:1.5;">${escapePiHtml(item.story || '还没有补充作品故事。')}</p>
+                    ${item.note ? `<div class="text-xs mt-2" style="color:var(--sage-green);font-weight:700;">家长备注：${escapePiHtml(item.note)}</div>` : ''}
+                </div>
+                <button class="btn-secondary text-xs" type="button" onclick="removeGrowthWork('${escapePiHtml(item.id)}')">删除</button>
+            </div>
+        </article>
+    `).join('');
+}
+
+function saveGrowthWork() {
+    const titleEl = document.getElementById('worksTitleInput');
+    const typeEl = document.getElementById('worksTypeSelect');
+    const storyEl = document.getElementById('worksStoryInput');
+    const noteEl = document.getElementById('worksNoteInput');
+    if (!titleEl || !typeEl || !storyEl || !noteEl) return;
+
+    const title = (titleEl.value || '').trim();
+    const story = (storyEl.value || '').trim();
+    const note = (noteEl.value || '').trim();
+    const type = (typeEl.value || '').trim() || '成长记录';
+    if (!title) {
+        alert('请先填写作品名称。');
+        titleEl.focus();
+        return;
+    }
+
+    const profile = window.ProfileManager && typeof ProfileManager.getActive === 'function'
+        ? ProfileManager.getActive()
+        : null;
+    const profileId = window.ProfileManager && typeof ProfileManager.getActiveId === 'function'
+        ? ProfileManager.getActiveId()
+        : 'p_default';
+    const list = readGrowthWorks();
+    list.unshift({
+        id: `work_${Date.now()}`,
+        profileId,
+        childName: profile && profile.name ? profile.name : '默认孩子',
+        title,
+        type,
+        story,
+        note,
+        createdAt: Date.now()
+    });
+    writeGrowthWorks(list);
+    titleEl.value = '';
+    storyEl.value = '';
+    noteEl.value = '';
+    typeEl.value = '绘画';
+    renderGrowthWorksPage();
+    if (window.sfx && typeof window.sfx.play === 'function') window.sfx.play('rewardFanfare');
+}
+
+function removeGrowthWork(id) {
+    const next = readGrowthWorks().filter((item) => item && item.id !== id);
+    writeGrowthWorks(next);
+    renderGrowthWorksPage();
 }
 
 function getActivePageId() {
@@ -364,6 +478,598 @@ function getRecommendedScene() {
         if ((a.min_level || 0) !== (b.min_level || 0)) return (a.min_level || 0) - (b.min_level || 0);
         return (a.unlock_cost || 0) - (b.unlock_cost || 0);
     })[0];
+}
+
+function getMathPkStageSummary() {
+    const difficultyMap = {
+        easy20: '加减起步',
+        easy100: '加减进阶',
+        medium_mul: '乘法启程',
+        medium_mix: '综合闯关',
+        hard: '乘除挑战'
+    };
+    const difficulty = localStorage.getItem('petbank_math_difficulty') || 'easy20';
+    let stars = { medium_mul: 0, medium_mix: 0, hard: 0 };
+    try {
+        const saved = JSON.parse(localStorage.getItem('petbank_math_support_progress') || '{}');
+        stars = {
+            medium_mul: Number(saved.medium_mul || 0),
+            medium_mix: Number(saved.medium_mix || 0),
+            hard: Number(saved.hard || 0)
+        };
+    } catch (_) {}
+    const totalStars = stars.medium_mul + stars.medium_mix + stars.hard;
+    const bestScore = window.Leaderboard && typeof window.Leaderboard.getBest === 'function'
+        ? window.Leaderboard.getBest('mathpk')
+        : Number(localStorage.getItem('petbank_math_high_score') || 0);
+    return {
+        label: difficultyMap[difficulty] || '加减起步',
+        bestScore,
+        totalStars,
+        stageRewards: [
+            { threshold: 3, label: '拆一拆支援卡', unlocked: totalStars >= 3 },
+            { threshold: 6, label: '宠物入场动作', unlocked: totalStars >= 6 },
+            { threshold: 9, label: '机器人图鉴徽章', unlocked: totalStars >= 9 },
+            { threshold: 12, label: '阶段完成印章', unlocked: totalStars >= 12 }
+        ],
+        nextStep: difficulty === 'medium_mul'
+            ? '继续把乘法看成“几组几个”，攒够星轨后再去挑战更快的机器人。'
+            : difficulty === 'medium_mix'
+                ? '下一局试着先保准确，再把连击拉起来。'
+                : '想换脑筋时，可以回乘法启程先练理解。'
+    };
+}
+
+function getArenaStageSummary() {
+    let progress = { cleared: [], current: 1 };
+    try {
+        const saved = JSON.parse(localStorage.getItem('petbank_arena_progress') || '{}');
+        progress = {
+            cleared: Array.isArray(saved.cleared) ? saved.cleared : [],
+            current: Number(saved.current || 1)
+        };
+    } catch (_) {}
+    const clearedCount = progress.cleared.length;
+    const nextStage = progress.current;
+    return {
+        clearedCount,
+        nextStage,
+        stageRewards: [
+            { threshold: 1, label: '训练营首胜', unlocked: clearedCount >= 1 },
+            { threshold: 3, label: '稳定通关节奏', unlocked: clearedCount >= 3 },
+            { threshold: 5, label: '中段章节开放', unlocked: clearedCount >= 5 },
+            { threshold: 8, label: '高阶训练场', unlocked: clearedCount >= 8 }
+        ],
+        nextStep: clearedCount === 0
+            ? '先去自由练习热身，集齐 2 张卡后就能稳定开打。'
+            : `轻章节已经打过 ${clearedCount} 关，下一步可以去挑战第 ${nextStage} 关。`
+    };
+}
+
+function getExploreStageSummary() {
+    const pet = window.PetSystem && typeof PetSystem.getState === 'function' ? PetSystem.getState() : null;
+    let unlockedScenes = 0;
+    try {
+        const raw = JSON.parse(localStorage.getItem('petbank_unlocked_scenes') || '{}');
+        unlockedScenes = Object.keys(raw).filter((key) => raw[key]).length;
+    } catch (_) {}
+    const recommendedScene = getRecommendedScene();
+    return {
+        explorations: Number(pet?.explorations || 0),
+        wins: Number(pet?.wins || 0),
+        unlockedScenes,
+        stageRewards: [
+            { threshold: 1, label: '第一次冒险得手', unlocked: Number(pet?.wins || 0) >= 1 },
+            { threshold: 3, label: '连续外出路线', unlocked: Number(pet?.explorations || 0) >= 3 },
+            { threshold: 5, label: '更多场景开放', unlocked: unlockedScenes >= 5 },
+            { threshold: 8, label: '图鉴补完节奏', unlocked: Number(pet?.wins || 0) >= 8 }
+        ],
+        nextStep: recommendedScene
+            ? `下一站推荐去 ${recommendedScene.name}，顺手补图鉴和掉落。`
+            : '先去宠物养成页领养伙伴，再回来开启探索路线。'
+    };
+}
+
+const BATTLE_MILESTONE_REWARD_KEY = 'petbank_battle_milestone_rewards';
+const BATTLE_RECENT_ACTIVITY_KEY = 'petbank_battle_recent_activity';
+
+const BATTLE_MILESTONES = [
+    {
+        id: 'math_first_star',
+        mode: 'mathpk',
+        title: '乘法启程小星轨',
+        desc: '数学 PK 累计拿到至少 1 颗星轨。',
+        rewardText: '+15 成长分',
+        isComplete(summary) {
+            return Number(summary.math.totalStars || 0) >= 1;
+        },
+        reward() {
+            return { points: 15 };
+        }
+    },
+    {
+        id: 'arena_first_clear',
+        mode: 'arena',
+        title: '训练营首胜',
+        desc: '卡牌对战轻章节累计通关至少 1 关。',
+        rewardText: '额外对战券 x1',
+        isComplete(summary) {
+            return Number(summary.arena.clearedCount || 0) >= 1;
+        },
+        reward() {
+            return { itemId: 'arena_ticket', itemCount: 1 };
+        }
+    },
+    {
+        id: 'explore_first_win',
+        mode: 'explore',
+        title: '第一次冒险得手',
+        desc: '探索冒险累计拿到至少 1 场胜利。',
+        rewardText: '回血药 x1',
+        isComplete(summary) {
+            return Number(summary.explore.wins || 0) >= 1;
+        },
+        reward() {
+            return { itemId: 'battle_heal_potion', itemCount: 1 };
+        }
+    },
+    {
+        id: 'triple_route_open',
+        mode: 'all',
+        title: '三线作战开张',
+        desc: '数学 PK、卡牌对战、探索冒险三条线都真正开始推进。',
+        rewardText: '+30 成长分',
+        isComplete(summary) {
+            return Number(summary.math.totalStars || 0) >= 1
+                && Number(summary.arena.clearedCount || 0) >= 1
+                && Number(summary.explore.explorations || 0) >= 1;
+        },
+        reward() {
+            return { points: 30 };
+        }
+    }
+];
+
+let battleMilestoneRunBaseline = null;
+
+function readBattleMilestoneRewards() {
+    try {
+        return JSON.parse(localStorage.getItem(BATTLE_MILESTONE_REWARD_KEY) || '{}');
+    } catch (_) {
+        return {};
+    }
+}
+
+function writeBattleMilestoneRewards(rewards) {
+    try {
+        localStorage.setItem(BATTLE_MILESTONE_REWARD_KEY, JSON.stringify(rewards || {}));
+    } catch (_) {}
+}
+
+function readBattleRecentActivity() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(BATTLE_RECENT_ACTIVITY_KEY) || '[]');
+        return Array.isArray(raw) ? raw : [];
+    } catch (_) {
+        return [];
+    }
+}
+
+function writeBattleRecentActivity(items) {
+    try {
+        localStorage.setItem(BATTLE_RECENT_ACTIVITY_KEY, JSON.stringify(Array.isArray(items) ? items.slice(0, 8) : []));
+    } catch (_) {}
+}
+
+function pushBattleRecentActivity(entry) {
+    if (!entry || !entry.title) return;
+    const next = readBattleRecentActivity();
+    next.unshift({
+        id: entry.id || `battle_recent_${Date.now()}`,
+        mode: entry.mode || 'all',
+        title: entry.title,
+        detail: entry.detail || '',
+        timestamp: entry.timestamp || new Date().toISOString()
+    });
+    writeBattleRecentActivity(next);
+}
+window.recordBattleRecentActivity = pushBattleRecentActivity;
+
+function formatBattleRecentTime(isoText) {
+    if (!isoText) return '刚刚';
+    const delta = Math.max(0, Date.now() - new Date(isoText).getTime());
+    const minutes = Math.floor(delta / 60000);
+    if (minutes < 1) return '刚刚';
+    if (minutes < 60) return `${minutes} 分钟前`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} 小时前`;
+    const days = Math.floor(hours / 24);
+    return `${days} 天前`;
+}
+
+function getBattleRecentActivitySummary() {
+    const items = readBattleRecentActivity();
+    const todayMomentum = getMathPkStageSummary().totalStars + getArenaStageSummary().clearedCount + getExploreStageSummary().wins;
+    return {
+        items,
+        todayMomentum
+    };
+}
+
+function renderBattleRecentActivity(containerId, options) {
+    const root = document.getElementById(containerId);
+    if (!root) return;
+    const compact = options && options.compact === true;
+    const heading = (options && options.heading) || '今日战果';
+    const summary = getBattleRecentActivitySummary();
+    const items = summary.items;
+    root.innerHTML = `
+        <section class="battle-recent-board${compact ? ' compact' : ''}">
+            <div class="battle-recent-head">
+                <div>
+                    <span class="battle-recent-kicker">${compact ? '最近收获' : '今日战果'}</span>
+                    <h4>${heading}</h4>
+                    <p>${items.length ? '把刚刚打出来的奖励、通关和推进留下来，孩子回来看时会更像一段真的冒险旅程。' : '打一局、领一次奖励、推进一小步，这里就会开始长出今天的战果。'}</p>
+                </div>
+                <div class="battle-recent-badge">+${summary.todayMomentum}</div>
+            </div>
+            <div class="battle-recent-list">
+                ${items.length ? items.map((item) => `
+                    <article class="battle-recent-item" data-mode="${item.mode}">
+                        <div class="battle-recent-item-top">
+                            <strong>${item.title}</strong>
+                            <span>${formatBattleRecentTime(item.timestamp)}</span>
+                        </div>
+                        <p>${item.detail}</p>
+                    </article>
+                `).join('') : `
+                    <article class="battle-recent-item empty">
+                        <div class="battle-recent-item-top">
+                            <strong>还没有新的战果</strong>
+                            <span>现在开始</span>
+                        </div>
+                        <p>先去打一局数学 PK、卡牌训练营或探索遭遇战，这里会自动记录今天真正推进过的东西。</p>
+                    </article>
+                `}
+            </div>
+        </section>
+    `;
+}
+
+function getBattleMilestoneSummary() {
+    const summary = {
+        math: getMathPkStageSummary(),
+        arena: getArenaStageSummary(),
+        explore: getExploreStageSummary()
+    };
+    const claimed = readBattleMilestoneRewards();
+    const milestones = BATTLE_MILESTONES.map((item) => {
+        const completed = !!item.isComplete(summary);
+        const claimedEntry = claimed[item.id] || null;
+        return {
+            id: item.id,
+            mode: item.mode,
+            title: item.title,
+            desc: item.desc,
+            rewardText: item.rewardText,
+            completed,
+            claimed: !!claimedEntry,
+            claimable: completed && !claimedEntry
+        };
+    });
+    return {
+        summary,
+        milestones,
+        claimableCount: milestones.filter((item) => item.claimable).length,
+        claimedCount: milestones.filter((item) => item.claimed).length
+    };
+}
+
+function snapshotBattleMilestonesForRun() {
+    const pack = getBattleMilestoneSummary();
+    battleMilestoneRunBaseline = {
+        completedIds: pack.milestones.filter((item) => item.completed).map((item) => item.id),
+        claimedIds: pack.milestones.filter((item) => item.claimed).map((item) => item.id)
+    };
+    return battleMilestoneRunBaseline;
+}
+
+function consumeBattleMilestoneUnlocksForRun() {
+    const pack = getBattleMilestoneSummary();
+    const baseline = battleMilestoneRunBaseline || { completedIds: [], claimedIds: [] };
+    battleMilestoneRunBaseline = null;
+    return pack.milestones.filter((item) => item.completed && !baseline.completedIds.includes(item.id));
+}
+
+function claimBattleMilestoneRewardFromResult(milestoneId) {
+    const ok = claimBattleMilestoneReward(milestoneId);
+    if (!ok) return false;
+    document.querySelectorAll(`[data-battle-unlock-claim="${milestoneId}"]`).forEach((button) => {
+        button.disabled = true;
+        button.textContent = '已领取';
+        button.classList.add('done');
+        const chip = button.closest('.battle-unlock-chip');
+        if (chip) chip.classList.add('is-claimed');
+    });
+    document.querySelectorAll('[data-battle-unlock-summary]').forEach((node) => {
+        const pending = node.querySelectorAll('.battle-unlock-claim:not(.done)').length;
+        const heading = node.querySelector('[data-battle-unlock-title]');
+        const note = node.querySelector('[data-battle-unlock-note]');
+        if (pending === 0) {
+            node.classList.add('is-cleared');
+            if (heading) heading.textContent = '本局奖励已领取';
+            if (note) note.textContent = '奖励已经放进背包或成长积分里了，可以继续下一场。';
+        }
+    });
+    return ok;
+}
+
+function renderBattleMilestoneUnlockSummary(unlocks, options) {
+    const list = Array.isArray(unlocks) ? unlocks : [];
+    if (!list.length) return '';
+    const compact = options && options.compact === true;
+    return `
+        <div class="battle-unlock-summary${compact ? ' compact' : ''}" data-battle-unlock-summary>
+            <strong data-battle-unlock-title>本局新解锁</strong>
+            <div class="battle-unlock-list">
+                ${list.map((item) => `
+                    <span class="battle-unlock-chip">
+                        <span>${item.title} · ${item.rewardText}</span>
+                        <button class="battle-unlock-claim" data-battle-unlock-claim="${item.id}" type="button" onclick="claimBattleMilestoneRewardFromResult('${item.id}')">立即领取</button>
+                    </span>
+                `).join('')}
+            </div>
+            <p data-battle-unlock-note>可以直接领取，也能稍后去游乐场看板或每周复盘查看。</p>
+        </div>
+    `;
+}
+
+function claimBattleMilestoneReward(milestoneId) {
+    const rewards = readBattleMilestoneRewards();
+    if (rewards[milestoneId]) return false;
+    const pack = getBattleMilestoneSummary();
+    const milestone = BATTLE_MILESTONES.find((item) => item.id === milestoneId);
+    const status = pack.milestones.find((item) => item.id === milestoneId);
+    if (!milestone || !status || !status.claimable) return false;
+
+    const reward = milestone.reward() || {};
+    if (reward.points) addGrowthPoints(Number(reward.points) || 0);
+    if (reward.itemId && window.InventorySystem && typeof window.InventorySystem.addItem === 'function') {
+        window.InventorySystem.addItem(reward.itemId, Number(reward.itemCount) || 1);
+    }
+
+    rewards[milestoneId] = {
+        claimedAt: new Date().toISOString(),
+        reward
+    };
+    writeBattleMilestoneRewards(rewards);
+    pushBattleRecentActivity({
+        id: `milestone_${milestone.id}_${Date.now()}`,
+        mode: milestone.mode,
+        title: milestone.title,
+        detail: `已领取 ${milestone.rewardText}`
+    });
+    if (window.sfx && typeof window.sfx.play === 'function') {
+        window.sfx.play('rewardClaim');
+        window.sfx.play('rewardFanfare');
+    }
+    if (typeof showToast === 'function') {
+        showToast(`已领取：${milestone.title} · ${milestone.rewardText}`);
+    }
+    renderPlaygroundProgressBoard();
+    renderReviewBattleBoard();
+    updateStats();
+    return true;
+}
+
+window.claimBattleMilestoneReward = claimBattleMilestoneReward;
+window.claimBattleMilestoneRewardFromResult = claimBattleMilestoneRewardFromResult;
+
+function renderBattleMilestoneStrip(containerId, options) {
+    const root = document.getElementById(containerId);
+    if (!root) return;
+    const compact = options && options.compact === true;
+    const pack = getBattleMilestoneSummary();
+    const list = pack.milestones;
+    root.innerHTML = `
+        <div class="battle-milestone-strip${compact ? ' compact' : ''}">
+            <div class="battle-milestone-strip-head">
+                <div>
+                    <span class="battle-milestone-kicker">成长奖励</span>
+                    <h4>跨玩法里程碑</h4>
+                    <p>把不同玩法接起来后，奖励会变得更像一次真正的冒险旅程。</p>
+                </div>
+                <div class="battle-milestone-badge">${pack.claimableCount > 0 ? `待领取 ${pack.claimableCount}` : `已领取 ${pack.claimedCount}`}</div>
+            </div>
+            <div class="battle-milestone-list">
+                ${list.map((item) => `
+                    <article class="battle-milestone-card ${item.claimable ? 'is-claimable' : ''} ${item.claimed ? 'is-claimed' : ''}" data-mode="${item.mode}">
+                        <div class="battle-milestone-card-top">
+                            <strong>${item.title}</strong>
+                            <span>${item.rewardText}</span>
+                        </div>
+                        <p>${item.desc}</p>
+                        <div class="battle-milestone-card-bottom">
+                            <em>${item.claimed ? '已领取' : item.completed ? '已完成' : '进行中'}</em>
+                            ${item.claimable
+                                ? `<button class="battle-milestone-claim" type="button" onclick="claimBattleMilestoneReward('${item.id}')">领取</button>`
+                                : item.claimed
+                                    ? `<button class="battle-milestone-claim done" type="button" disabled>已领取</button>`
+                                    : `<button class="battle-milestone-claim ghost" type="button" disabled>继续推进</button>`}
+                        </div>
+                    </article>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function renderPlaygroundProgressBoard() {
+    const root = document.getElementById('playgroundProgressBoard');
+    if (!root) return;
+    const math = getMathPkStageSummary();
+    const arena = getArenaStageSummary();
+    const explore = getExploreStageSummary();
+    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins;
+    const mathRewardPreview = Array.isArray(math.stageRewards)
+        ? math.stageRewards.map((item) => `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}★ ${item.label}</span>`).join('')
+        : '';
+    const arenaRewardPreview = Array.isArray(arena.stageRewards)
+        ? arena.stageRewards.map((item) => `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}关 ${item.label}</span>`).join('')
+        : '';
+    const exploreRewardPreview = Array.isArray(explore.stageRewards)
+        ? explore.stageRewards.map((item) => {
+            const unit = item.threshold === 3 ? '次' : item.threshold === 5 ? '景' : '场';
+            return `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}${unit} ${item.label}</span>`;
+        }).join('')
+        : '';
+
+    root.innerHTML = `
+        <div class="playground-progress-head">
+            <div>
+                <span>作战看板</span>
+                <h3>今天的游乐场成长路线</h3>
+                <p>不是只选一个入口就结束，而是把练习、对战和探索接成一条会继续前进的路线。</p>
+            </div>
+            <div class="playground-progress-badge">✨ 当前势头 ${totalMomentum}</div>
+        </div>
+        <div class="playground-progress-grid">
+            <article class="playground-progress-card" data-mode="mathpk">
+                <div class="playground-progress-top">
+                    <div>
+                        <span class="playground-progress-kicker">数学 PK</span>
+                        <h4 class="playground-progress-title">${math.label}</h4>
+                    </div>
+                </div>
+                <div class="playground-progress-metrics">
+                    <span><small>最高分</small><strong>${math.bestScore}</strong></span>
+                    <span><small>星轨</small><strong>${math.totalStars}</strong></span>
+                </div>
+                <div class="playground-goal-strip">${mathRewardPreview}</div>
+                <div class="playground-progress-next"><strong>下一步</strong>${math.nextStep}</div>
+                <button class="playground-progress-action" type="button" onclick="switchPage('mathpk')">继续数学 PK</button>
+            </article>
+            <article class="playground-progress-card" data-mode="arena">
+                <div class="playground-progress-top">
+                    <div>
+                        <span class="playground-progress-kicker">卡牌对战</span>
+                        <h4 class="playground-progress-title">训练营进度</h4>
+                    </div>
+                </div>
+                <div class="playground-progress-metrics">
+                    <span><small>已通关</small><strong>${arena.clearedCount} 关</strong></span>
+                    <span><small>下一关</small><strong>${arena.nextStage}</strong></span>
+                </div>
+                <div class="playground-goal-strip">${arenaRewardPreview}</div>
+                <div class="playground-progress-next"><strong>下一步</strong>${arena.nextStep}</div>
+                <button class="playground-progress-action" type="button" onclick="openCardArenaEntry()">继续卡牌 PK</button>
+            </article>
+            <article class="playground-progress-card" data-mode="explore">
+                <div class="playground-progress-top">
+                    <div>
+                        <span class="playground-progress-kicker">探索冒险</span>
+                        <h4 class="playground-progress-title">伙伴外出记录</h4>
+                    </div>
+                </div>
+                <div class="playground-progress-metrics">
+                    <span><small>探索次数</small><strong>${explore.explorations}</strong></span>
+                    <span><small>胜场</small><strong>${explore.wins}</strong></span>
+                </div>
+                <div class="playground-goal-strip">${exploreRewardPreview}</div>
+                <div class="playground-progress-next"><strong>下一步</strong>${explore.nextStep}</div>
+                <button class="playground-progress-action" type="button" onclick="switchPage('explore')">继续探索</button>
+            </article>
+        </div>
+        <div id="playgroundBattleRecent"></div>
+        <div id="playgroundBattleMilestones"></div>
+    `;
+    renderBattleRecentActivity('playgroundBattleRecent', { heading: '今日战果' });
+    renderBattleMilestoneStrip('playgroundBattleMilestones', { compact: true });
+}
+
+function renderReviewBattleBoard() {
+    const root = document.getElementById('reviewBattleBoard');
+    const momentumEl = document.getElementById('reviewBattleMomentum');
+    if (!root) return;
+    const math = getMathPkStageSummary();
+    const arena = getArenaStageSummary();
+    const explore = getExploreStageSummary();
+    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins;
+    if (momentumEl) momentumEl.textContent = String(totalMomentum);
+
+    const cards = [
+        {
+            mode: 'mathpk',
+            kicker: '数学 PK',
+            title: math.label,
+            metrics: [
+                { label: '最高分', value: String(math.bestScore) },
+                { label: '星轨', value: String(math.totalStars) }
+            ],
+            growth: math.totalStars > 0
+                ? '已经开始把“会做题”推进到“能连续答对”。'
+                : '现在最重要的是先建立理解，不急着全程比速度。',
+            next: math.nextStep,
+            action: `<button class="review-battle-action" type="button" onclick="switchPage('mathpk')">继续数学 PK</button>`
+        },
+        {
+            mode: 'arena',
+            kicker: '卡牌对战',
+            title: '训练营进度',
+            metrics: [
+                { label: '已通关', value: `${arena.clearedCount} 关` },
+                { label: '下一关', value: String(arena.nextStage) }
+            ],
+            growth: arena.clearedCount > 0
+                ? '已经把组队、出招和结算接成了完整的一局。'
+                : '先多打几局自由练习，把操作顺序和技能节奏玩熟。',
+            next: arena.nextStep,
+            action: `<button class="review-battle-action" type="button" onclick="openCardArenaEntry()">继续卡牌 PK</button>`
+        },
+        {
+            mode: 'explore',
+            kicker: '探索冒险',
+            title: '伙伴外出记录',
+            metrics: [
+                { label: '探索次数', value: String(explore.explorations) },
+                { label: '胜场', value: String(explore.wins) }
+            ],
+            growth: explore.explorations > 0
+                ? '已经把战斗放回场景和故事里，不只是单独打一局。'
+                : '先出去走一趟，让路线、掉落和战斗真正连起来。',
+            next: explore.nextStep,
+            action: `<button class="review-battle-action" type="button" onclick="switchPage('explore')">继续探索</button>`
+        }
+    ];
+
+    root.innerHTML = `
+        <div class="review-battle-grid">
+            ${cards.map((card) => `
+                <article class="review-battle-card" data-mode="${card.mode}">
+                    <div class="review-battle-top">
+                        <div>
+                            <span class="review-battle-kicker">${card.kicker}</span>
+                            <h3 class="review-battle-title">${card.title}</h3>
+                        </div>
+                    </div>
+                    <div class="review-battle-metrics">
+                        ${card.metrics.map((metric) => `
+                            <span><small>${metric.label}</small><strong>${metric.value}</strong></span>
+                        `).join('')}
+                    </div>
+                    <div class="review-battle-copy">
+                        <p><strong>这周看到的进步</strong>${card.growth}</p>
+                        <p><strong>下一步</strong>${card.next}</p>
+                    </div>
+                    ${card.action}
+                </article>
+            `).join('')}
+        </div>
+        <div id="reviewBattleRecent"></div>
+        <div id="reviewBattleMilestones"></div>
+    `;
+    renderBattleRecentActivity('reviewBattleRecent', { compact: true, heading: '最近收获' });
+    renderBattleMilestoneStrip('reviewBattleMilestones', { compact: false });
 }
 
 function updateMapCompanionCard() {
@@ -1258,8 +1964,8 @@ function maybeSeedStarterCards() {
 function updateParentHomePage() {
     const childNameEl = document.getElementById('parentHomeChildName');
     if (!childNameEl) return;
-    const activeProfile = window.ProfileSystem && typeof ProfileSystem.getActiveProfile === 'function'
-        ? ProfileSystem.getActiveProfile()
+    const activeProfile = window.ProfileManager && typeof ProfileManager.getActive === 'function'
+        ? ProfileManager.getActive()
         : null;
     const fallbackName = document.getElementById('profileCurName')?.textContent || '默认孩子';
     childNameEl.textContent = activeProfile && activeProfile.name ? activeProfile.name : fallbackName;
@@ -1268,6 +1974,7 @@ function updateParentHomePage() {
 function runPageActivation(page) {
     if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     if (page === 'parent') updateParentHomePage();
+    if (page === 'works') renderGrowthWorksPage();
     if (page === 'pet') renderPetPage();
     if (page === 'walk') {
         renderWalkPage();
@@ -1284,6 +1991,8 @@ function runPageActivation(page) {
         window.SocialSystem.renderFriendHomeVisit('friend-home-visit-root');
     }
     if (page === 'explore' && window.ExplorationSystem) void renderExplorePage();
+    if (page === 'playground') renderPlaygroundProgressBoard();
+    if (page === 'review') renderReviewBattleBoard();
     if (page === 'mathpk' && window.MathPKGame) MathPKGame.renderUI('math-pk-container');
     if (page === 'hanzi' && window.HanziGame) HanziGame.renderUI('hanzi-container');
     if (page === 'review' && window.FamilyReview && typeof window.FamilyReview.refresh === 'function') void FamilyReview.refresh('family-review-root');
@@ -2508,6 +3217,7 @@ function exploreScene(sceneId) {
 
 function showBattleModal(battle) {
     battleUILocked = false;   // 新战斗开始，重置 UI 锁（修复上次战斗结束残留导致下次卡死）
+    snapshotBattleMilestonesForRun();
     const modal = document.getElementById('battleModal');
     const content = document.getElementById('battleContent');
     modal.classList.add('show');
@@ -2646,9 +3356,39 @@ function renderBattleResultGuide(battle) {
     `;
 }
 
+function renderBattleResultRewardSummary(battle) {
+    if (!battle || battle.status !== 'won') return '';
+    const rewardLines = Array.isArray(battle.log)
+        ? battle.log.filter((item) => item && item.type === 'reward').slice(-3).map((item) => item.text || '')
+        : [];
+    if (!rewardLines.length) return '';
+    return `
+        <div class="battle-result-reward-box">
+            <strong>本局收获</strong>
+            <p>${escapeAppHtml(rewardLines.join(' · '))}</p>
+        </div>
+    `;
+}
+
+function renderBattleResultHero(battle) {
+    if (!battle) return '';
+    const isWin = battle.status === 'won';
+    const statusLabel = isWin ? '胜利结算' : battle.status === 'lost' ? '战斗结束' : '探索完成';
+    const headline = isWin ? '这一场已经稳稳拿下' : battle.status === 'lost' ? '先收住，再准备下一次出发' : '这次外出已经记进旅程';
+    return `
+        <div class="battle-result-hero ${isWin ? 'win' : 'lose'}">
+            <span class="battle-result-kicker">${statusLabel}</span>
+            <strong>${headline}</strong>
+        </div>
+    `;
+}
+
 function renderBattleEndActions(battle) {
     const label = battle.status === 'won' ? '🎉 继续探索' : battle.status === 'lost' ? '回到宠物页' : '继续探索';
     return `
+        ${renderBattleResultHero(battle)}
+        ${renderBattleResultRewardSummary(battle)}
+        ${renderBattleMilestoneUnlockSummary(battle && battle.newMilestones, { compact: true })}
         ${renderBattleResultGuide(battle)}
         <button class="btn-primary" onclick="closeBattleModal()">${label}</button>
     `;
@@ -2694,6 +3434,18 @@ function battleAction(action) {
     appendBattleLog(result);
 
     if (result.status === 'won' || result.status === 'lost' || result.status === 'fled') {
+        result.newMilestones = consumeBattleMilestoneUnlocksForRun();
+        if (result.status === 'won' && typeof window.recordBattleRecentActivity === 'function') {
+            const rewardText = Array.isArray(result.log)
+                ? result.log.filter((item) => item && item.type === 'reward').slice(-2).map((item) => item.text).join(' · ')
+                : '';
+            window.recordBattleRecentActivity({
+                id: `explore_${Date.now()}`,
+                mode: 'explore',
+                title: `探索胜利 · ${result.monster && result.monster.name ? result.monster.name : '遭遇战'}`,
+                detail: rewardText || '完成一场探索遭遇战'
+            });
+        }
         // 战斗胜利有概率掉落卡片
         if (result.status === 'won' && window.CardCollection) {
             const curBattle = (typeof ExplorationSystem.getCurrentBattle === 'function') ? ExplorationSystem.getCurrentBattle() : null;
@@ -2802,20 +3554,30 @@ function handleBattleAnimate(e) {
         setTimeout(() => el.classList.remove(className), duration || 500);
     };
     const clearMotion = () => {
-        [petEl, monsterEl, damageZone].forEach((el) => {
+        [petEl, monsterEl, damageZone, modal].forEach((el) => {
             if (!el) return;
             el.classList.remove(
                 'battle-motion-approach',
                 'battle-motion-approach-left',
                 'battle-motion-approach-right',
                 'battle-motion-impact',
+                'battle-motion-impact-style-dash',
+                'battle-motion-impact-style-pounce',
+                'battle-motion-impact-style-arc',
+                'battle-motion-impact-style-burst',
+                'battle-motion-contact-flare',
+                'battle-motion-ground-ring',
+                'battle-motion-impact-shockwave',
                 'battle-motion-recoil',
                 'battle-motion-recoil-left',
                 'battle-motion-recoil-right',
+                'battle-motion-slam',
                 'battle-motion-style-dash',
                 'battle-motion-style-pounce',
                 'battle-motion-style-arc',
-                'battle-motion-style-burst'
+                'battle-motion-style-burst',
+                'battle-motion-afterimage',
+                'battle-motion-stage-impact-focus'
             );
         });
     };
@@ -2824,19 +3586,28 @@ function handleBattleAnimate(e) {
         const defenderEl = defender === 'pet' ? petEl : monsterEl;
         const approachSide = attacker === 'pet' ? 'battle-motion-approach-right' : 'battle-motion-approach-left';
         const recoilSide = defender === 'pet' ? 'battle-motion-recoil-left' : 'battle-motion-recoil-right';
+        const impactStyle = style === 'burst'
+            ? 'battle-motion-impact-style-burst'
+            : style === 'arc'
+                ? 'battle-motion-impact-style-arc'
+                : style === 'pounce'
+                    ? 'battle-motion-impact-style-pounce'
+                    : 'battle-motion-impact-style-dash';
         clearMotion();
         if (attackerEl) {
-            attackerEl.classList.add('battle-motion-approach', approachSide);
+            attackerEl.classList.add('battle-motion-approach', approachSide, 'battle-motion-afterimage');
             if (style) attackerEl.classList.add(`battle-motion-style-${style}`);
         }
+        if (modal) modal.classList.add('battle-motion-stage-impact-focus');
         setTimeout(() => {
-            if (damageZone) damageZone.classList.add('battle-motion-impact');
+            if (damageZone) damageZone.classList.add('battle-motion-impact', impactStyle);
             if (defenderEl) {
-                defenderEl.classList.add('battle-motion-recoil', recoilSide);
+                defenderEl.classList.add('battle-motion-impact', impactStyle, 'battle-motion-contact-flare', 'battle-motion-ground-ring', 'battle-motion-impact-shockwave');
+                defenderEl.classList.add('battle-motion-recoil', 'battle-motion-slam', recoilSide);
                 if (style) defenderEl.classList.add(`battle-motion-style-${style}`);
             }
-        }, style === 'burst' ? 180 : 150);
-        setTimeout(clearMotion, 760);
+        }, style === 'burst' ? 170 : 130);
+        setTimeout(clearMotion, 860);
     };
 
     if (type === 'battle-start') {
@@ -3087,14 +3858,17 @@ function renderAll() {
     renderSidebarTasks();
     updateStats();
     renderGrowthStickerReport();
+    renderReviewBattleBoard();
     if (activePage === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
         void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
     }
     renderPetPage();
     renderInventoryPage();
     if (activePage === 'explore' && window.ExplorationSystem) void renderExplorePage();
+    if (activePage === 'playground') renderPlaygroundProgressBoard();
     if (activePage === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     if (activePage === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
+    if (activePage === 'works') renderGrowthWorksPage();
     if (window.lucide) lucide.createIcons();
 }
 
@@ -3116,6 +3890,8 @@ window.handlePrimaryNavClick = handlePrimaryNavClick;
 window.handleTopHubMenuSelect = handleTopHubMenuSelect;
 window.handleTopHubMenuAction = handleTopHubMenuAction;
 window.handleSettingsNavClick = handleSettingsNavClick;
+window.saveGrowthWork = saveGrowthWork;
+window.removeGrowthWork = removeGrowthWork;
 window.renderAll = renderAll;
 window.saveAppState = saveAppState;
 
@@ -3124,6 +3900,21 @@ async function init() {
     const initialRoute = resolveRouteFromLocation(window.location);
     if (initialRoute.page === 'settings') {
         activeSettingsSection = normalizeSettingsSection(initialRoute.settingsSection);
+    }
+    const needsCloudBootstrap = ['settings', 'parent'].includes(initialRoute.page);
+    if (window.RuntimeLoader && typeof window.RuntimeLoader.ensureCloudFeature === 'function' && needsCloudBootstrap) {
+        try {
+            await window.RuntimeLoader.ensureCloudFeature();
+        } catch (error) {
+            console.warn('[app] cloud feature preload failed:', error);
+        }
+    }
+    if (window.CloudRestore && typeof window.CloudRestore.hydrateFromCloud === 'function') {
+        try {
+            await window.CloudRestore.hydrateFromCloud();
+        } catch (error) {
+            console.warn('[app] cloud restore failed during init:', error);
+        }
     }
     if (window.ProfileManager && typeof ProfileManager.ensureDefault === 'function') {
         ProfileManager.ensureDefault();

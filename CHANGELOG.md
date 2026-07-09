@@ -2,6 +2,50 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.19] - 2026-07-09
+### ✅ 云端家庭 / 社交 / 异步 PK 与统一总回归再收口
+
+- 重新验证 `prj/cloud_family_social_pk_simulation.mjs`，在当前工作树与本地静态服务环境下得到最新结果 `29/29 passed`
+- 这轮浏览器级 Fake Supabase 模拟继续覆盖：家长账号登录态、家庭创建、孩子同步、家庭邀请码、第二位家长加入、好友码兑换、串门 / 一起遛弯、好友小屋访客页、数学异步 PK 应战与结算、本地清空后云端恢复
+- 把两条仍旧检查 `index.html` 静态 `<script>` 标签的云端契约测试，对齐到当前 `js/runtime-loader.js` 动态加载架构，避免旧测试继续误报云端能力缺失
+- `js/app.js` 初始化阶段补上面向 `/settings` / `/parent` 等管理入口的云端能力预热，并显式尝试 `CloudRestore.hydrateFromCloud()`，让应用启动链与云端恢复职责更一致
+- `.gitignore` 补充 `cloud-config.local.js`，降低本地云端配置误入库风险
+- 统一总回归入口 `scripts/run-full-regression.mjs` 继续纳入 `route_aware_shell_contract`、`battle_milestones_contract`、`pk_brawl_shared_design_contract`、`pk_brawl_shared_experience_contract`、`social_two_pet_visual_contract`、`social_walk_profile_switch_info_contract`，以及 `family_review`、`activity_feed`、`friend_home_visit_page`、`friend_house_preview`、`home_dashboard_nav`、`pet_walk_page`、`points_exchange_cards` 等 Python 合同，把首页、好友小屋、活动流、家长复盘与积分卡片展示层也纳入总验收
+- `prj/parent_light_modules_simulation.mjs` 修正为等待 `works/tools` 页真正激活并可见后再操作，解决“单跑能过、统一回归串跑超时”的时序问题
+- 统一总回归入口在当前工作树下最新实跑结果升级为 `All 91 regression tasks passed.`
+- 云端 / 家庭 / 社交 / 恢复相关验证通过：`prj/cloud_family_social_pk_simulation.mjs`、`prj/test_cloud_contract_smoke.py`、`prj/test_cloud_loader_pages_contract.py`、`prj/test_cloud_diagnostics_contract.py`、`prj/test_cloud_config_persistence_contract.py`、`prj/test_household_contract.py`、`prj/test_household_invite_issue_contract.py`、`prj/test_child_social_profile_contract.py`、`prj/test_family_social_scope_contract.py`、`prj/test_social_walk_invite_flow_contract.py`、`prj/test_async_pk_contract.py`、`prj/test_async_pk_results_contract.py`、`prj/test_cloud_sync_contract.py`、`prj/test_cloud_restore_contract.py`、`prj/test_social_walk_action_contract.py`、`prj/test_household_peer_social_contract.py`、`prj/test_family_social_ops_contract.py`
+
+### ✨ 三玩法战斗命中层继续补强
+
+- 数学 PK 追加受击背光 `math-pk-target-backglow`、舞台亮场 `math-pk-stage-hit-flash`，让宠物和机器人在暗背景里被命中时更亮、更像真的贴脸打中
+- 宠物卡牌 PK 为受击方追加命中切光 `arena-impact-contact`、拖尾 `arena-impact-trail` 和舞台亮场 `arena-stage-hit-flash`，普攻 / 重击 / 必杀的落点更有前后层次
+- 探索遭遇战补上 `battle-motion-impact-trail` 与整场景闪亮一拍 `battle-motion-stage-flash`，普通攻击、技能攻击、怪物扑击都会带更明确的受击亮斩
+- 三套玩法都保留 `prefers-reduced-motion` 降级路径，避免为了更花的演出破坏低动态模式
+- 回归验证通过：`prj/pk_brawl_battle_motion_contract.test.mjs`、`prj/battle_milestones_contract.test.mjs`、`prj/gameplay_core_flows_simulation.mjs`、`prj/full_game_loop_simulation.mjs`、`prj/whole_game_completion_audit.mjs`
+
+### ✨ 战斗贴脸感再次加强
+
+- 数学 PK 新增 `math-pk-target-slam`、`math-pk-impact-shockwave`、`math-pk-stage-impact-focus`，让宠物前冲更靠近、命中后机器人有更大的受击压缩和亮场扩散
+- 数学 PK 出招期间新增 `math-pk-center-yield`，答题区和九键会短暂缩小、下沉、淡化，减少对角色贴脸攻击和命中光效的遮挡
+- 宠物卡牌 PK 新增 `arena-target-slam`、`arena-impact-shockwave`、`arena-stage-impact-focus`，把卡牌角色的贴脸冲刺、命中爆点和受击后仰提升到和数学 PK 同档
+- 探索战斗新增长受击 `battle-motion-slam`、`battle-motion-impact-shockwave`、`battle-motion-stage-impact-focus`，让宠物与怪物对撞时不再只是轻微闪一下
+- 本轮针对强化后的动作合同重新补绿：`prj/math_pk_fx_contract.test.mjs`、`prj/pk_brawl_battle_motion_contract.test.mjs`
+
+### 🧒 多孩子档案隔离模拟补强
+
+- 新增并补绿 `prj/profile_isolation_journey_simulation.mjs`，真实覆盖“默认孩子 -> 新建二号孩子 -> 切换 -> 分别写入宠物 / 积分 / 作品 / 对战道具 -> 来回切换恢复”的完整旅程
+- 修正档案隔离模拟里的过时断言：对战道具改为真实业务 id `battle_heal_potion`，避免把脚本假设错误误判成隔离失败
+- 修正 profile 切换模拟的重载时序：只在首次进入页面时清空 `localStorage`，避免测试自身在每次 reload 时把刚写好的档案快照又清掉
+- 补上家长首页当前孩子名的等待断言，确认 `parentHomeChildName` 会随着 active profile 正确同步
+- 多档案回归验证通过：`prj/profile_isolation_journey_simulation.mjs`、`prj/cross_surface_journey_simulation.mjs`、`prj/parent_light_modules_simulation.mjs`、`prj/gameplay_core_flows_simulation.mjs`、`prj/full_game_loop_simulation.mjs`、`prj/whole_game_completion_audit.mjs`
+
+### 🧩 整游戏厚流程模拟补齐
+
+- 新增 `prj/extended_whole_game_progression_simulation.mjs`，把此前“页面能打开”的薄验证补成更完整的产品旅程：今日打卡拿分、家庭奖励兑换、首页日常宝箱开箱、汉字挑战完整 10 题、排行榜落榜、设置页孩子账号的新建/改名/删除
+- 扩展模拟里补上升级弹层关闭与页面时序等待，避免宝箱奖励触发升级后挡住后续操作，让整局模拟更稳定、更接近真实玩家链路
+- 这条模拟和已有主循环/多档案/PK 三玩法回归组合后，当前本地已经能直接证明：孩子主流程、游乐场三条战斗线、家长区轻模块、多孩子隔离、奖励与宝箱、汉字答题、账号管理动作链都能跑通
+- 扩展回归验证通过：`prj/extended_whole_game_progression_simulation.mjs`、`prj/profile_isolation_journey_simulation.mjs`、`prj/gameplay_core_flows_simulation.mjs`、`prj/whole_game_completion_audit.mjs`
+
 ## [v0.7.18] - 2026-07-08
 ### 🧭 信息架构路径化 + 孩子端/家长区导航壳分离
 
@@ -20,6 +64,81 @@
 - 探索遭遇战扩展 BattleFx 事件语义，宠物攻击、技能攻击、怪物扑击都会驱动左右角色 motion class，而不是只弹浮层特效
 - 卡牌 PK 为普攻 / 重击 / 必杀增加不同的冲刺与回弹节奏，并把 impact burst、目标 recoil、HP 震动挂到受击卡位
 - 三套玩法补齐 reduced-motion 降级与新的 battle motion 契约测试，守住“对方也要有动画反应”的体验底线
+
+### ✨ PK 近身命中表现二次加强
+
+- 数学 PK 的 dash / hop / spin 三种出招继续细化为“前摇蓄力 -> 贴脸命中 -> 亮部切光 -> 受击回弹”的完整一拍，宠物和机器人双方都能看出真正打到对方
+- 数学 PK 追加命中切光与招式轨迹内芯，命中点会沿被攻击方向炸开，角色背后暗背景里也更容易看清主角位置
+- 探索遭遇战把 `battle-motion-impact` 真正挂到受击角色节点，不再只在中央 damage zone 爆一下；普通攻击、技能攻击、怪物扑击都能在被打侧看到命中亮斩
+- `BattleFx` 的 player / enemy attack 追加命中 contact 层，让 slash / claw 不只是扫过去，而是带一个贴近角色身体的爆点
+- 卡牌 PK 的普攻 / 重击 / 必杀前冲距离和落点继续拉开，impact burst 改成偏向受击卡位内侧，整体更接近“冲上去打一记”的节奏
+- `prj/gameplay_core_flows_simulation.mjs` 与 `prj/full_game_loop_simulation.mjs` 新增动作瞬时探针，自动验证卡牌 PK / 探索战斗在攻击瞬间确实挂上 approach / recoil / impact 类，而不是只完成文案和结算流程
+
+### 🎥 战斗峰值截图与证据质量修正
+
+- 数学 PK、卡牌 PK、探索遭遇战的命中背光与受击高亮持续时间略微拉长，自动截图更容易抓到真正的命中峰值，而不是余波结束后的回位帧
+- `prj/gameplay_core_flows_simulation.mjs` 的截图抓取改为优先截取战斗容器本身，不再一律使用整页长截图，减少 fixed modal / 全屏竞技台在浏览器截图中的错位
+- 调整数学 PK、卡牌 PK、探索遭遇战的模拟截图时机，使 `03b-mathpk-battle-hit.png` 等关键图更接近实际出招瞬间
+- 修复卡牌 PK 动作探针受敌方快速反击影响导致的偶发误报，改为识别任一侧真实命中峰值，提升模拟稳定性
+
+### 🧭 游乐场主循环补强
+
+- 游乐场首页新增“作战看板”，把数学 PK、卡牌对战、探索冒险三条线的最近进展汇总到同一页，不再只是入口墙
+- 看板会读取数学 PK 当前难度、最高分与星轨，卡牌训练营已通关数与下一关，探索次数与胜场，并生成对应的下一步建议
+- 打完一局回到游乐场后，孩子可以直接看到“继续数学 PK / 继续卡牌 PK / 继续探索”的下一步入口，跨玩法成长路线更连贯
+- `prj/gameplay_core_flows_simulation.mjs` 新增游乐场看板渲染验证，确保这个跨玩法闭环不是只写了页面壳
+
+### 🪄 三套战斗风格差异化 + 复盘页主循环补强
+
+- 数学 PK 的近身命中进一步区分为 `dash / hop / spin` 三种受击风格，命中切片、爆点形状和 contact flare 不再完全共用一套表现
+- 卡牌 PK 的 `basic / heavy / ultimate` 三档动作追加独立 impact style，普攻、重击、必杀在受击背光和命中外形上更容易一眼看出区别
+- 探索遭遇战把 `dash / pounce / arc / burst` 的 motion style 同步到命中层，角色靠近、贴脸命中和对方中招光效形成成套语言
+- 每周复盘页新增“跨玩法成长复盘”，把数学 PK、卡牌训练营、探索冒险三条线的当前进度、这周看到的进步和下一步建议放进同一块可行动面板
+- `prj/pk_brawl_battle_motion_contract.test.mjs` 新增三套玩法 style-specific impact 合同，`prj/gameplay_core_flows_simulation.mjs` 新增复盘页跨玩法面板验证
+
+### 🎁 跨玩法里程碑奖励接入
+
+- 游乐场作战看板和每周复盘页新增“跨玩法里程碑”奖励条，把数学 PK、卡牌对战、探索冒险的阶段推进变成真正可领取的成长奖励
+- 首批落地 4 个轻量 milestone：数学首颗星轨、卡牌训练营首通关、探索首胜、三线都开张
+- 奖励直接复用现有成长分和背包体系，可发放成长积分、额外对战券、回血药，不另起一套新经济系统
+- 新增 `claimBattleMilestoneReward` 与本地领取状态存储，避免重复领奖，并在领取后即时刷新游乐场/复盘页
+- 新增 `prj/battle_milestones_contract.test.mjs`，`prj/gameplay_core_flows_simulation.mjs` 也补上跨玩法里程碑面板验证
+
+### 🎉 战斗结算即时领奖反馈补强
+
+- 数学 PK、卡牌 PK、探索遭遇战的 `本局新解锁` 区块统一支持 `立即领取`，不再要求孩子额外跳去游乐场看板或每周复盘页完成奖励闭环
+- 结算页点击后会立即把奖励发放到成长积分或背包，并把按钮状态切成 `已领取`，同时把标题更新为 `本局奖励已领取`
+- 奖励区补上完成态视觉：已领取条目会转为绿色完成态，底部说明同步切成“奖励已经放进背包或成长积分里了，可以继续下一场”
+- `prj/gameplay_core_flows_simulation.mjs` 新增卡牌 PK 结果页即时领奖验证，确认奖励到账、按钮切换为已领取且结果文案同步刷新
+
+### 🧾 游乐场 / 复盘页新增“今日战果”
+
+- 游乐场作战看板下新增 `今日战果`，把最近真实领取到的跨玩法奖励和推进记录单独收成一块，不再只有抽象的总进度数字
+- 每周复盘页同步新增精简版 `最近收获`，方便家长和孩子回看“今天到底打出了什么成果”
+- 当前首批接入来源为跨玩法里程碑领取：像 `训练营首胜 · 额外对战券 x1` 这样的奖励一领完，就会立即出现在游乐场和复盘页
+- 新增轻量 battle recent feed 本地存储与时间文案，不额外引入后台；后续可以继续把数学 PK 局后星轨、探索掉落、卡牌首通奖励继续并入
+- `prj/gameplay_core_flows_simulation.mjs` 补上游乐场 / 复盘页最近战果验证，确保奖励领取后主循环汇总面板会同步刷新
+
+### 🪄 结果区奖励摘要 + 更多真实战果来源
+
+- 探索遭遇战结算新增 `本局收获` 区块，把 EXP、掉落、稀有线索直接收进结果区，不再只靠战斗 log 和 toast
+- `今日战果 / 最近收获` 继续扩来源：数学 PK 局后积分与星轨、卡牌训练营首通、探索胜利与奖励都会写进跨玩法战果流
+- 探索战斗对自定义测试怪增加 `reward_exp -> exp` 兜底，修复结果摘要里偶发 `NaN EXP` 的问题
+- `prj/gameplay_core_flows_simulation.mjs` 新增探索结算奖励文案不允许出现 `NaN` 的断言，并继续验证数学 PK / 探索战斗都会把成果写入今日战果
+
+### 🏁 三套玩法结果演出继续补强
+
+- 探索遭遇战结果区新增统一 `结果结算` 头图层，把“这一场已经稳稳拿下 / 先收住再准备下一次出发”这种状态感拉出来，不再只有按钮和奖励文本
+- 卡牌训练营结果层新增 `arena-result-hero` 摘要卡，首通、失败、自由练习、PvP 彩蛋都多一层“这一局打成了什么”的结果提示
+- 结果摘要与奖励区继续保持低饱和暖色体系，尽量像同一个游戏里的完成节点，而不是突然切到一块硬弹窗
+- `prj/gameplay_core_flows_simulation.mjs` 补充卡牌训练营 / 探索遭遇战结果摘要头断言，确保新的结果演出层真实挂载到了 DOM
+
+### ⭐ 数学 PK 结果层与星轨奖励树补齐
+
+- 数学 PK 结果页新增统一 `结果结算 / 继续蓄力` 头层，胜局、平局、失利不再只是分数和复盘文字堆在一起
+- 局后结果区新增 4 档 `星轨奖励树`：`3★ 拆一拆支援卡 / 6★ 宠物入场动作 / 9★ 机器人图鉴徽章 / 12★ 阶段完成印章`
+- 游乐场作战看板里的数学 PK 卡也同步显示这条长期目标条，让孩子在离开战斗页后仍能看到接下来值得继续攒的目标
+- `prj/gameplay_core_flows_simulation.mjs` 新增数学 PK 结果头和奖励树断言，并验证游乐场数学卡里存在 4 个长期目标 chip
 
 ## [v0.7.17] - 2026-07-08
 ### 📚 数学 PK 文档归档 + 🤖 机器人素材批次整理
@@ -44,7 +163,7 @@
 - 对齐多份 standalone / e2e 模拟脚本到新版设置页信息架构：账号与孩子、家庭云端、学习与题目分栏，以及静态服务器下避免直接 reload 到子路径
 - 把 `edge_states_standalone_simulation.mjs` 与 `settings_parent_management_standalone_simulation.mjs` 的截图写盘补成带重试的稳健实现，降低 Windows 偶发文件写入抖动造成的误报
 - 新增 `docs/参考/2026-07-08-统一总回归入口.md`，整理总回归命令、前置条件、覆盖项与最新结果
-- 更新整体验收总览，明确当前已可通过统一入口复验，并记录最新结果 `All 20 regression tasks passed.`
+- 更新整体验收总览，明确当前已可通过统一入口复验；该入口后续已继续扩充，最新实跑结果见 `v0.7.19` 下的 `All 54 regression tasks passed.`
 
 ## [v0.7.13] - 2026-07-07
 ## [v0.7.15] - 2026-07-08

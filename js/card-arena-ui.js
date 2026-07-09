@@ -666,6 +666,7 @@ const CardArenaUI = (function () {
     function openBattleModal() {
         const modal = document.getElementById('arenaBattleModal');
         if (!modal) return;
+        if (typeof window.snapshotBattleMilestonesForRun === 'function') window.snapshotBattleMilestonesForRun();
         modal.classList.add('show');
         renderBattle();
         playSfx('battleStart');
@@ -1121,20 +1122,29 @@ const CardArenaUI = (function () {
             clearTimeout(arenaMotionCleanupTimer);
             arenaMotionCleanupTimer = null;
         }
-        document.querySelectorAll('.arena-combat-card, #arenaDamageZone').forEach((el) => {
+        document.querySelectorAll('.arena-combat-card, #arenaDamageZone, #arenaStage').forEach((el) => {
             if (!el) return;
             el.classList.remove(
                 'arena-battle-lunge',
                 'arena-battle-lunge-player',
                 'arena-battle-lunge-enemy',
                 'arena-impact-burst',
+                'arena-impact-style-basic',
+                'arena-impact-style-heavy',
+                'arena-impact-style-ultimate',
+                'arena-impact-backlight',
+                'arena-impact-floor-ring',
+                'arena-impact-shockwave',
                 'arena-target-recoil',
+                'arena-target-slam',
                 'arena-target-recoil-player',
                 'arena-target-recoil-enemy',
                 'arena-motion-style-basic',
                 'arena-motion-style-heavy',
                 'arena-motion-style-ultimate',
-                'arena-hp-shake'
+                'arena-hp-shake',
+                'arena-lunge-afterimage',
+                'arena-stage-impact-focus'
             );
         });
     }
@@ -1147,19 +1157,26 @@ const CardArenaUI = (function () {
         const actorCard = document.querySelector(`.arena-combat-card[data-side="${actorSide}"]`);
         const targetCard = document.querySelector(`.arena-combat-card[data-side="${targetSide}"]`);
         const zone = document.getElementById('arenaDamageZone');
+        const stage = document.getElementById('arenaStage');
         const styleClass = _motionStyleFromEvent(ev);
         _clearBattleMotion();
         if (actorCard) {
-            actorCard.classList.add('arena-battle-lunge', `arena-battle-lunge-${actorSide}`);
+            actorCard.classList.add('arena-battle-lunge', `arena-battle-lunge-${actorSide}`, 'arena-lunge-afterimage');
             if (styleClass) actorCard.classList.add(styleClass);
         }
+        if (stage) stage.classList.add('arena-stage-impact-focus');
         setTimeout(() => {
-            if (zone) zone.classList.add('arena-impact-burst');
+            const impactClass = styleClass === 'arena-motion-style-ultimate'
+                ? 'arena-impact-style-ultimate'
+                : styleClass === 'arena-motion-style-heavy'
+                    ? 'arena-impact-style-heavy'
+                    : 'arena-impact-style-basic';
+            if (zone) zone.classList.add('arena-impact-burst', impactClass);
             if (targetCard) {
-                targetCard.classList.add('arena-target-recoil', `arena-target-recoil-${targetSide}`, 'arena-hp-shake');
+                targetCard.classList.add('arena-impact-backlight', 'arena-impact-floor-ring', 'arena-impact-shockwave', impactClass, 'arena-target-recoil', 'arena-target-slam', `arena-target-recoil-${targetSide}`, 'arena-hp-shake');
                 if (styleClass) targetCard.classList.add(styleClass);
             }
-        }, ev.action === 'ultimate' ? 180 : 140);
+        }, ev.action === 'ultimate' ? 170 : 120);
         arenaMotionCleanupTimer = setTimeout(_clearBattleMotion, 900);
     }
 
@@ -1309,15 +1326,29 @@ const CardArenaUI = (function () {
         if (!overlay) return;
         const isWin = status === 'win';
         const s = CardArena.getState();
+        const resultHero = (title, subline, tone) => `
+            <div class="arena-result-hero ${tone || (isWin ? 'win' : 'lose')}">
+                <span class="arena-result-kicker">${isWin ? '结果结算' : '重新整理'}</span>
+                <strong>${title}</strong>
+                ${subline ? `<p>${subline}</p>` : ''}
+            </div>
+        `;
 
         // —— PvP 本地热座彩蛋 ——
         // win = 玩家A 胜（enemy=玩家B 全灭），lose = 玩家A 负 / 玩家B 胜
         if (s && s.mode === 'pvp') {
             const winner = isWin ? 'A' : 'B';  // A 队=player 全灭→lose→B 胜
             playSfx('resultStamp');
+            const milestoneHtml = typeof window.renderBattleMilestoneUnlockSummary === 'function'
+                ? window.renderBattleMilestoneUnlockSummary(typeof window.consumeBattleMilestoneUnlocksForRun === 'function'
+                    ? window.consumeBattleMilestoneUnlocksForRun()
+                    : [], { compact: true })
+                : '';
             overlay.innerHTML = `
                 <div class="arena-result-title win">🏆 玩家${winner} 获胜！</div>
+                ${resultHero(`玩家${winner} 先把节奏拿住了`, '这一局已经打成一场完整的家庭对战。', 'win')}
                 <div class="text-xs text-muted" style="margin:4px 0;">家庭双人彩蛋 · 友谊赛不计积分</div>
+                ${milestoneHtml}
                 <div class="arena-result-btns">
                     <button class="btn-primary" onclick="CardArenaUI.rematchPvp()">🔁 再战</button>
                     <button class="btn-secondary" onclick="CardArenaUI.closeBattleModal()">✕ 关闭</button>
@@ -1356,15 +1387,30 @@ const CardArenaUI = (function () {
                 rewardLines.unshift(extraGrant);
                 if (typeof showToast === 'function') showToast(extraGrant);
             }
+            if (typeof window.recordBattleRecentActivity === 'function') {
+                window.recordBattleRecentActivity({
+                    id: `arena_stage_${pendingStageId || 'free'}_${Date.now()}`,
+                    mode: 'arena',
+                    title: `卡牌训练营通关 · ${stageName || '训练营'}`,
+                    detail: rewardLines.join(' · ') || '完成一场训练营挑战'
+                });
+            }
             const nextBtn = result.unlockedNext
                 ? `<button class="btn-primary" onclick="CardArenaUI.gotoNext(${result.unlockedNext})">➡️ 下一关</button>`
+                : '';
+            const milestoneHtml = typeof window.renderBattleMilestoneUnlockSummary === 'function'
+                ? window.renderBattleMilestoneUnlockSummary(typeof window.consumeBattleMilestoneUnlocksForRun === 'function'
+                    ? window.consumeBattleMilestoneUnlocksForRun()
+                    : [], { compact: true })
                 : '';
             if (result.firstClear || result.unlockedNext) playSfx('trainingUnlock');
             overlay.innerHTML = `
                 <div class="arena-result-title win">🏆 通关！</div>
+                ${resultHero(`轻章节已经推进到 ${stageName}`, rewardLines[0] || '这次训练已经成功记进今日战果。', 'win')}
                 <div class="text-xs text-muted" style="margin-bottom:4px;">${stageName}</div>
                 <div class="arena-result-reward">${rewardLines.join(' · ') || '完成'}</div>
                 ${result.unlockedNext ? '<div class="text-xs" style="color:#10b981;margin:4px 0;">🔓 已解锁下一关</div>' : ''}
+                ${milestoneHtml}
                 <div class="arena-result-btns">
                     ${nextBtn}
                     <button class="btn-secondary" onclick="CardArenaUI.replayStage()">🔁 再战</button>
@@ -1376,9 +1422,16 @@ const CardArenaUI = (function () {
         }
         if (!isWin && pendingStageId != null) {
             playSfx('resultStamp');
+            const milestoneHtml = typeof window.renderBattleMilestoneUnlockSummary === 'function'
+                ? window.renderBattleMilestoneUnlockSummary(typeof window.consumeBattleMilestoneUnlocksForRun === 'function'
+                    ? window.consumeBattleMilestoneUnlocksForRun()
+                    : [], { compact: true })
+                : '';
             overlay.innerHTML = `
                 <div class="arena-result-title lose">💀 失败</div>
+                ${resultHero('这局先收住，下一局再换个打法', '先看看队伍站位和技能顺序，再回来打一轮。', 'lose')}
                 <div class="text-xs text-muted" style="margin:4px 0;">再调整队伍试试吧</div>
+                ${milestoneHtml}
                 <div class="arena-result-btns">
                     <button class="btn-primary" onclick="CardArenaUI.replayStage()">🔁 再战</button>
                     <button class="btn-secondary" onclick="CardArenaUI.backToStages()">📋 关卡列表</button>
@@ -1391,10 +1444,17 @@ const CardArenaUI = (function () {
         // —— 自由对战（练习模式：可随时玩，不计成长积分，避免刷分循环）——
         // 奖励收口到「轻章节首通」；自由练习只给成就感，不走 addGrowthPoints
         playSfx('resultStamp');
+        const milestoneHtml = typeof window.renderBattleMilestoneUnlockSummary === 'function'
+            ? window.renderBattleMilestoneUnlockSummary(typeof window.consumeBattleMilestoneUnlocksForRun === 'function'
+                ? window.consumeBattleMilestoneUnlocksForRun()
+                : [], { compact: true })
+            : '';
         overlay.innerHTML = `
             <div class="arena-result-title ${isWin ? 'win' : 'lose'}">${isWin ? '🏆 胜利' : '💀 失败'}</div>
+            ${resultHero(isWin ? '这一局练习已经打完了' : '这局练习先停在这里', isWin ? '再打一局，手感会更顺。' : '先调一下队伍，再回来继续。', isWin ? 'win' : 'lose')}
             <div class="arena-result-reward">${isWin ? '练习完成！' : '再调整队伍试试'}</div>
             <div class="text-xs text-muted" style="margin:4px 0;">自由练习 · 不计成长积分（奖励看轻章节首通）</div>
+            ${milestoneHtml}
             <div class="arena-result-btns">
                 <button class="btn-primary" onclick="CardArenaUI.rematch()">🔁 再战一局</button>
                 <button class="btn-secondary" onclick="CardArenaUI.closeBattleModal()">✕ 关闭</button>

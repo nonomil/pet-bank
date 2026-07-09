@@ -51,7 +51,7 @@
             motionStyle: 'dash',
             recoil: true,
             lottie: LOTTIE_ROOT + 'slash.json',
-            html: '<span class="battle-fx-streak"></span><span class="battle-fx-streak streak-soft"></span><span class="battle-fx-spark fx-a"></span><span class="battle-fx-spark fx-b"></span>'
+            html: '<span class="battle-fx-streak"></span><span class="battle-fx-streak streak-soft"></span><span class="battle-fx-contact"></span><span class="battle-fx-spark fx-a"></span><span class="battle-fx-spark fx-b"></span>'
         },
         'enemy-attack': {
             name: 'enemy-claw',
@@ -61,7 +61,7 @@
             defender: 'pet',
             motionStyle: 'pounce',
             recoil: true,
-            html: '<span class="battle-fx-claw c1"></span><span class="battle-fx-claw c2"></span><span class="battle-fx-claw c3"></span>'
+            html: '<span class="battle-fx-claw c1"></span><span class="battle-fx-claw c2"></span><span class="battle-fx-claw c3"></span><span class="battle-fx-contact enemy-contact"></span>'
         },
         'item-use': {
             name: 'item-heal',

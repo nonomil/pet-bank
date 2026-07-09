@@ -192,6 +192,26 @@
     border-color: rgba(248, 113, 113, .28);
 }
 .arena-battle-lunge { z-index: 4; }
+.arena-lunge-afterimage::before,
+.arena-lunge-afterimage::after {
+    content: '';
+    position: absolute;
+    inset: 24px 34px 78px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(circle, rgba(255,248,218,.18) 0 26%, rgba(255,221,115,.1) 27% 52%, transparent 76%);
+    filter: blur(8px);
+    animation: arena-lunge-afterimage .72s ease-out forwards;
+}
+.arena-lunge-afterimage::after {
+    inset: 48px 62px 92px;
+    background: radial-gradient(circle, rgba(110,231,183,.12) 0 26%, transparent 76%);
+    animation-delay: .06s;
+}
+.arena-combat-card.enemy.arena-lunge-afterimage::before {
+    background: radial-gradient(circle, rgba(255,248,218,.18) 0 26%, rgba(248,113,113,.1) 27% 52%, transparent 76%);
+}
 .arena-battle-lunge-player { animation: arena-battle-lunge-player .78s cubic-bezier(.2,.86,.22,1) both; }
 .arena-battle-lunge-enemy { animation: arena-battle-lunge-enemy .78s cubic-bezier(.2,.86,.22,1) both; }
 .arena-motion-style-heavy.arena-battle-lunge-player { animation-name: arena-battle-heavy-player; }
@@ -200,10 +220,37 @@
 .arena-motion-style-ultimate.arena-battle-lunge-enemy { animation-duration: .92s; animation-name: arena-battle-ultimate-enemy; }
 .arena-target-recoil-player { animation: arena-target-recoil-player .58s ease-out both; }
 .arena-target-recoil-enemy { animation: arena-target-recoil-enemy .58s ease-out both; }
+.arena-target-slam .arena-avatar { transform-origin: center 72%; }
+.arena-target-slam.arena-target-recoil-player .arena-avatar { animation: arena-target-slam-player .76s cubic-bezier(.2,.86,.22,1) both; }
+.arena-target-slam.arena-target-recoil-enemy .arena-avatar { animation: arena-target-slam-enemy .76s cubic-bezier(.2,.86,.22,1) both; }
+.arena-stage.arena-stage-impact-focus::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(255,255,255,.02), rgba(255,221,115,.08), rgba(255,255,255,.02));
+    opacity: 0;
+    animation: arena-stage-impact-focus .7s ease-out forwards;
+}
+.arena-stage.arena-stage-impact-focus::after {
+    content: '';
+    position: absolute;
+    inset: 7% 6% 9%;
+    z-index: 2;
+    pointer-events: none;
+    border-radius: 36px;
+    background: radial-gradient(circle at center, rgba(255,255,255,.14), rgba(255,221,115,.12) 26%, rgba(110,231,183,.08) 44%, transparent 74%);
+    opacity: 0;
+    animation: arena-stage-impact-glow .72s ease-out forwards;
+}
+.arena-combat-card { --arena-impact-x: 50%; }
+.arena-combat-card.enemy { --arena-impact-x: 28%; }
+.arena-combat-card.player { --arena-impact-x: 72%; }
 .arena-impact-burst::after {
     content: '';
     position: absolute;
-    left: 50%;
+    left: var(--arena-impact-x, 50%);
     top: 42%;
     width: 200px;
     height: 200px;
@@ -212,19 +259,158 @@
     background: radial-gradient(circle, rgba(255,255,255,.96) 0 10%, rgba(255,221,115,.84) 11% 28%, rgba(248,113,113,.3) 29% 52%, transparent 66%);
     animation: arena-impact-burst .54s ease-out forwards;
 }
+.arena-impact-burst::before {
+    content: '';
+    position: absolute;
+    top: 42%;
+    left: var(--arena-impact-x, 50%);
+    width: 230px;
+    height: 122px;
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.92), rgba(255,221,115,.82), rgba(248,113,113,.18), transparent 82%);
+    animation: arena-impact-slice-right .42s cubic-bezier(.2,.84,.22,1) forwards;
+}
+.arena-impact-style-basic.arena-impact-burst::after {
+    width: 188px;
+    height: 188px;
+}
+.arena-impact-style-heavy.arena-impact-burst::after {
+    width: 228px;
+    height: 228px;
+    background: radial-gradient(circle, rgba(255,255,255,.98) 0 12%, rgba(255,221,115,.9) 13% 30%, rgba(248,113,113,.4) 31% 56%, transparent 70%);
+}
+.arena-impact-style-ultimate.arena-impact-burst::after {
+    width: 248px;
+    height: 248px;
+    border: 6px solid rgba(255,221,115,.7);
+    border-left-color: transparent;
+    border-bottom-color: rgba(110,231,183,.32);
+    background: radial-gradient(circle, rgba(255,255,255,.26) 0 14%, transparent 42%);
+    animation: arena-impact-ultimate-burst .72s ease-out forwards;
+}
+.arena-impact-backlight::after {
+    content: '';
+    position: absolute;
+    left: var(--arena-impact-x, 50%);
+    top: 42%;
+    width: 248px;
+    height: 248px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255,246,210,.95) 0 18%, rgba(255,221,115,.7) 19% 38%, rgba(248,113,113,.22) 39% 60%, transparent 74%);
+    filter: blur(4px);
+    opacity: 0;
+    mix-blend-mode: screen;
+    animation: arena-impact-backlight .76s ease-out forwards;
+    z-index: 0;
+}
+.arena-impact-shockwave .arena-fighter-art::before {
+    content: '';
+    position: absolute;
+    left: var(--arena-impact-x, 50%);
+    top: 42%;
+    width: 308px;
+    height: 308px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(.34);
+    background: radial-gradient(circle, rgba(255,255,255,.18) 0 10%, rgba(255,221,115,.26) 11% 26%, rgba(110,231,183,.12) 27% 48%, transparent 66%);
+    opacity: 0;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    animation: arena-impact-shockwave .82s ease-out forwards;
+}
+.arena-impact-style-basic.arena-impact-shockwave .arena-fighter-art::before {
+    width: 286px;
+    height: 286px;
+}
+.arena-impact-style-heavy.arena-impact-shockwave .arena-fighter-art::before {
+    width: 328px;
+    height: 328px;
+}
+.arena-impact-style-ultimate.arena-impact-shockwave .arena-fighter-art::before {
+    width: 356px;
+    height: 356px;
+    background: conic-gradient(from 90deg, rgba(255,255,255,0), rgba(255,221,115,.46), rgba(110,231,183,.24), rgba(255,255,255,0));
+    animation: arena-impact-shockwave-ultimate .9s ease-out forwards;
+}
+.arena-impact-floor-ring::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 26px;
+    width: 176px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateX(-50%) scale(.46);
+    border: 3px solid rgba(255,232,170,.44);
+    border-top-color: rgba(110,231,183,.3);
+    background: radial-gradient(circle at center, rgba(255,248,218,.12), transparent 70%);
+    filter: blur(.4px);
+    opacity: 0;
+    animation: arena-impact-floor-ring .76s ease-out forwards;
+    pointer-events: none;
+    z-index: 0;
+}
+.arena-impact-style-heavy.arena-impact-floor-ring::before {
+    width: 204px;
+    height: 52px;
+    border-color: rgba(255,221,115,.52);
+}
+.arena-impact-style-ultimate.arena-impact-floor-ring::before {
+    width: 228px;
+    height: 58px;
+    border-width: 4px;
+    border-left-color: transparent;
+    border-bottom-color: rgba(110,231,183,.34);
+    animation: arena-impact-floor-ring-ultimate .86s ease-out forwards;
+}
+.arena-impact-style-heavy.arena-impact-backlight::after {
+    width: 272px;
+    height: 272px;
+    filter: blur(5px);
+}
+.arena-impact-style-ultimate.arena-impact-backlight::after {
+    width: 296px;
+    height: 296px;
+    background: conic-gradient(from 90deg, rgba(255,255,255,0), rgba(255,221,115,.82), rgba(110,231,183,.46), rgba(255,255,255,0));
+    animation: arena-impact-ultimate-backlight .84s ease-out forwards;
+}
+.arena-combat-card.enemy.arena-impact-backlight::after {
+    background: radial-gradient(circle, rgba(255,246,210,.95) 0 18%, rgba(255,221,115,.74) 19% 38%, rgba(110,231,183,.22) 39% 60%, transparent 74%);
+}
+.arena-combat-card.enemy.arena-impact-burst::before {
+    background: linear-gradient(270deg, transparent, rgba(255,255,255,.92), rgba(255,221,115,.82), rgba(110,231,183,.18), transparent 82%);
+    animation-name: arena-impact-slice-left;
+}
 .arena-motion-style-ultimate.arena-target-recoil-player,
-.arena-motion-style-ultimate.arena-target-recoil-enemy { animation-duration: .66s; }
+.arena-motion-style-ultimate.arena-target-recoil-enemy { animation-duration: .72s; }
 .arena-hp-shake .arena-hp-fill { animation: arena-hp-shake .42s ease-out; }
-@keyframes arena-battle-lunge-player { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(18px,-6px,0) scale(1.04); } 58%{ transform:translate3d(88px,-16px,0) scale(1.12); } 100%{ transform:translate3d(0,0,0) scale(1); } }
-@keyframes arena-battle-lunge-enemy { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(-18px,-6px,0) scale(1.04); } 58%{ transform:translate3d(-88px,-16px,0) scale(1.12); } 100%{ transform:translate3d(0,0,0) scale(1); } }
-@keyframes arena-battle-heavy-player { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(22px,-10px,0) scale(1.06); } 56%{ transform:translate3d(102px,-24px,0) scale(1.14) rotate(-4deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
-@keyframes arena-battle-heavy-enemy { 0%{ transform:translate3d(0,0,0) scale(1); } 24%{ transform:translate3d(-22px,-10px,0) scale(1.06); } 56%{ transform:translate3d(-102px,-24px,0) scale(1.14) rotate(4deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
-@keyframes arena-battle-ultimate-player { 0%{ transform:translate3d(0,0,0) scale(1); } 22%{ transform:translate3d(20px,-10px,0) scale(1.06); } 52%{ transform:translate3d(108px,-30px,0) scale(1.14) rotate(12deg); } 74%{ transform:translate3d(96px,-8px,0) scale(1.08) rotate(220deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(360deg); } }
-@keyframes arena-battle-ultimate-enemy { 0%{ transform:translate3d(0,0,0) scale(1); } 22%{ transform:translate3d(-20px,-10px,0) scale(1.06); } 52%{ transform:translate3d(-108px,-30px,0) scale(1.14) rotate(-12deg); } 74%{ transform:translate3d(-96px,-8px,0) scale(1.08) rotate(-220deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(-360deg); } }
+@keyframes arena-battle-lunge-player { 0%{ transform:translate3d(0,0,0) scale(1); } 18%{ transform:translate3d(26px,-8px,0) scale(1.06); } 54%{ transform:translate3d(138px,-24px,0) scale(1.18); } 68%{ transform:translate3d(156px,-6px,0) scale(1.1); } 100%{ transform:translate3d(0,0,0) scale(1); } }
+@keyframes arena-battle-lunge-enemy { 0%{ transform:translate3d(0,0,0) scale(1); } 18%{ transform:translate3d(-26px,-8px,0) scale(1.06); } 54%{ transform:translate3d(-138px,-24px,0) scale(1.18); } 68%{ transform:translate3d(-156px,-6px,0) scale(1.1); } 100%{ transform:translate3d(0,0,0) scale(1); } }
+@keyframes arena-battle-heavy-player { 0%{ transform:translate3d(0,0,0) scale(1); } 20%{ transform:translate3d(24px,-12px,0) scale(1.06); } 54%{ transform:translate3d(118px,-28px,0) scale(1.16) rotate(-6deg); } 70%{ transform:translate3d(130px,-10px,0) scale(1.08) rotate(-2deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
+@keyframes arena-battle-heavy-enemy { 0%{ transform:translate3d(0,0,0) scale(1); } 20%{ transform:translate3d(-24px,-12px,0) scale(1.06); } 54%{ transform:translate3d(-118px,-28px,0) scale(1.16) rotate(6deg); } 70%{ transform:translate3d(-130px,-10px,0) scale(1.08) rotate(2deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(0); } }
+@keyframes arena-battle-ultimate-player { 0%{ transform:translate3d(0,0,0) scale(1); } 18%{ transform:translate3d(22px,-10px,0) scale(1.06); } 48%{ transform:translate3d(118px,-34px,0) scale(1.15) rotate(14deg); } 68%{ transform:translate3d(112px,-10px,0) scale(1.1) rotate(250deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(360deg); } }
+@keyframes arena-battle-ultimate-enemy { 0%{ transform:translate3d(0,0,0) scale(1); } 18%{ transform:translate3d(-22px,-10px,0) scale(1.06); } 48%{ transform:translate3d(-118px,-34px,0) scale(1.15) rotate(-14deg); } 68%{ transform:translate3d(-112px,-10px,0) scale(1.1) rotate(-250deg); } 100%{ transform:translate3d(0,0,0) scale(1) rotate(-360deg); } }
 @keyframes arena-target-recoil-player { 0%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } 22%{ transform:translate3d(-24px,0,0) scale(1.05); filter:brightness(1.2) saturate(1.15); } 42%{ transform:translate3d(-10px,0,0) scale(.98); } 100%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } }
 @keyframes arena-target-recoil-enemy { 0%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } 22%{ transform:translate3d(24px,0,0) scale(1.05); filter:brightness(1.2) saturate(1.15); } 42%{ transform:translate3d(10px,0,0) scale(.98); } 100%{ transform:translate3d(0,0,0) scale(1); filter:brightness(1); } }
+@keyframes arena-target-slam-player { 0%{ transform:translate3d(0,0,0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translate3d(-34px,0,0) scale(1.12,.96); filter:brightness(1.28) drop-shadow(0 0 34px rgba(255,221,115,.96)); } 36%{ transform:translate3d(-14px,0,0) scale(.96,1.04); } 60%{ transform:translate3d(12px,0,0) scale(1.03,.98); } 100%{ transform:translate3d(0,0,0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } }
+@keyframes arena-target-slam-enemy { 0%{ transform:translate3d(0,0,0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translate3d(34px,0,0) scale(1.12,.96); filter:brightness(1.28) drop-shadow(0 0 34px rgba(255,221,115,.96)); } 36%{ transform:translate3d(14px,0,0) scale(.96,1.04); } 60%{ transform:translate3d(-12px,0,0) scale(1.03,.98); } 100%{ transform:translate3d(0,0,0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } }
 @keyframes arena-impact-burst { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.42); } 30%{ opacity:.92; transform:translate(-50%,-50%) scale(1.02); } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.38); } }
+@keyframes arena-impact-backlight { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.44); } 26%{ opacity:.92; transform:translate(-50%,-50%) scale(1.02); } 58%{ opacity:.54; transform:translate(-50%,-50%) scale(1.12); } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.26); } }
+@keyframes arena-impact-ultimate-burst { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.4) rotate(0deg); } 32%{ opacity:.96; transform:translate(-50%,-50%) scale(1.04) rotate(140deg); } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.3) rotate(320deg); } }
+@keyframes arena-impact-ultimate-backlight { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.4) rotate(0deg); } 28%{ opacity:.9; transform:translate(-50%,-50%) scale(1.02) rotate(110deg); } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.24) rotate(250deg); } }
+@keyframes arena-impact-slice-right { 0%{ opacity:0; transform:translate(-50%,-50%) translateX(-42px) scaleX(.26) scaleY(.84); } 30%{ opacity:.96; } 100%{ opacity:0; transform:translate(-50%,-50%) translateX(14px) scaleX(1.08) scaleY(1); } }
+@keyframes arena-impact-slice-left { 0%{ opacity:0; transform:translate(-50%,-50%) translateX(42px) scaleX(.26) scaleY(.84); } 30%{ opacity:.96; } 100%{ opacity:0; transform:translate(-50%,-50%) translateX(-14px) scaleX(1.08) scaleY(1); } }
 @keyframes arena-hp-shake { 0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-4px); } 75%{ transform:translateX(4px); } }
+@keyframes arena-lunge-afterimage { 0%{ opacity:0; transform:translateX(0) scale(.58); } 28%{ opacity:.44; } 100%{ opacity:0; transform:translateX(28px) scale(1.08); } }
+@keyframes arena-impact-floor-ring { 0%{ opacity:0; transform:translateX(-50%) scale(.46); } 28%{ opacity:.72; } 100%{ opacity:0; transform:translateX(-50%) scale(1.34); } }
+@keyframes arena-impact-floor-ring-ultimate { 0%{ opacity:0; transform:translateX(-50%) scale(.38) rotate(0deg); } 28%{ opacity:.82; } 100%{ opacity:0; transform:translateX(-50%) scale(1.42) rotate(18deg); } }
+@keyframes arena-impact-shockwave { 0%{ opacity:0; transform:translate(-50%, -50%) scale(.34); } 28%{ opacity:.78; transform:translate(-50%, -50%) scale(1); } 100%{ opacity:0; transform:translate(-50%, -50%) scale(1.34); } }
+@keyframes arena-impact-shockwave-ultimate { 0%{ opacity:0; transform:translate(-50%, -50%) scale(.3) rotate(0deg); } 28%{ opacity:.82; transform:translate(-50%, -50%) scale(1) rotate(110deg); } 100%{ opacity:0; transform:translate(-50%, -50%) scale(1.28) rotate(260deg); } }
+@keyframes arena-stage-impact-focus { 0%{ opacity:0; transform:scaleX(.92); } 24%{ opacity:.86; } 100%{ opacity:0; transform:scaleX(1.06); } }
+@keyframes arena-stage-impact-glow { 0%{ opacity:0; } 28%{ opacity:1; } 100%{ opacity:0; } }
 .arena-combat-role {
     align-self: flex-start;
     padding: 5px 11px;
@@ -519,6 +705,12 @@
 .arena-result-title { font-size: 44px; font-weight: 900; margin-bottom: 10px; text-shadow: 0 4px 14px rgba(0,0,0,.6); }
 .arena-result-title.win { color: #FFD740; }
 .arena-result-title.lose { color: #FF6B6B; }
+.arena-result-hero { width: min(680px, calc(100% - 32px)); margin: 0 0 12px; padding: 14px 16px; border-radius: 16px; text-align: left; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.08); }
+.arena-result-hero.win { background: rgba(255, 210, 77, 0.13); border-color: rgba(255, 210, 77, 0.22); }
+.arena-result-hero.lose { background: rgba(255, 107, 107, 0.12); border-color: rgba(255, 107, 107, 0.2); }
+.arena-result-kicker { display: inline-flex; margin-bottom: 6px; color: #ffe08d; font-size: 11px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+.arena-result-hero strong { display: block; font-size: 20px; line-height: 1.3; color: #fff; margin-bottom: 4px; }
+.arena-result-hero p { margin: 0; color: rgba(255,255,255,.82); font-size: 13px; line-height: 1.55; }
 .arena-result-reward { font-size: 18px; margin-bottom: 18px; }
 .arena-result-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
@@ -554,6 +746,7 @@
     .arena-bench-slot .bench-img { width: 40px; height: 40px; }
     .arena-bench-slot .bench-emoji { font-size: 26px; }
     .arena-result-title { font-size: 32px; }
+    .arena-result-hero strong { font-size: 17px; }
 }
 
 /* ===== 闯关：关卡选择卡片 ===== */
@@ -598,7 +791,12 @@
     .arena-battle-lunge-enemy,
     .arena-target-recoil-player,
     .arena-target-recoil-enemy,
+    .arena-target-slam .arena-avatar,
+    .arena-impact-shockwave .arena-fighter-art::before,
+    .arena-impact-backlight::after,
     .arena-impact-burst::after,
+    .arena-stage.arena-stage-impact-focus::before,
+    .arena-stage.arena-stage-impact-focus::after,
     .arena-hp-shake .arena-hp-fill {
         animation: none !important;
     }

@@ -474,17 +474,44 @@
                         .arena-side.math-pk-caster.math-pk-rush-active.attack-hop.robot .arena-avatar { animation:math-pk-rush-hop-robot .9s cubic-bezier(.2,.82,.26,1) both; }
                         .arena-side.math-pk-caster.math-pk-rush-active.attack-spin.human .arena-avatar { animation:math-pk-rush-spin-human .88s cubic-bezier(.2,.88,.22,1) both; }
                         .arena-side.math-pk-caster.math-pk-rush-active.attack-spin.robot .arena-avatar { animation:math-pk-rush-spin-robot .88s cubic-bezier(.2,.88,.22,1) both; }
-                        .arena-side.math-pk-target-hit.from-human .arena-avatar { animation:math-pk-target-hit-from-human .62s ease both; }
-                        .arena-side.math-pk-target-hit.from-robot .arena-avatar { animation:math-pk-target-hit-from-robot .62s ease both; }
-                        .arena-side.math-pk-target-hit::after { content:''; position:absolute; z-index:1; top:43%; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.95) 0 9%,rgba(255,209,102,.82) 10% 28%,rgba(34,211,238,.28) 29% 52%,transparent 64%); animation:math-pk-impact-burst .62s ease-out forwards; pointer-events:none; }
-                        .arena-side.math-pk-target-recoil.from-human .arena-avatar { animation:math-pk-target-recoil-from-human .66s ease both; }
-                        .arena-side.math-pk-target-recoil.from-robot .arena-avatar { animation:math-pk-target-recoil-from-robot .66s ease both; }
+                        .arena-side.math-pk-target-hit.from-human .arena-avatar { animation:math-pk-target-hit-from-human .72s ease both; }
+                        .arena-side.math-pk-target-hit.from-robot .arena-avatar { animation:math-pk-target-hit-from-robot .72s ease both; }
+                        .arena-side.math-pk-target-hit::after { content:''; position:absolute; z-index:1; top:43%; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.95) 0 9%,rgba(255,209,102,.82) 10% 28%,rgba(34,211,238,.28) 29% 52%,transparent 64%); animation:math-pk-impact-burst .74s ease-out forwards; pointer-events:none; }
+                        .arena-side.math-pk-target-hit .math-pk-impact-echo { position:absolute; top:43%; width:214px; height:214px; border-radius:50%; z-index:0; pointer-events:none; opacity:0; border:4px solid rgba(255,232,170,.58); border-left-color:transparent; border-bottom-color:rgba(34,211,238,.26); transform:translateY(-50%) scale(.44); animation:math-pk-impact-echo .82s ease-out forwards; }
+                        .arena-side.math-pk-target-hit .math-pk-target-backglow { position:absolute; top:43%; width:308px; height:308px; border-radius:50%; z-index:0; pointer-events:none; opacity:0; mix-blend-mode:screen; background:radial-gradient(circle,rgba(255,250,232,.36) 0 14%,rgba(255,214,102,.26) 15% 34%,rgba(34,211,238,.1) 35% 58%,transparent 72%); filter:blur(14px); animation:math-pk-target-backglow .84s ease-out forwards; }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-dash::after { width:210px; height:130px; border-radius:999px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),rgba(255,209,102,.88),rgba(34,211,238,.28),transparent 84%); }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-dash .math-pk-impact-echo { width:248px; height:138px; border-radius:999px; border-width:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),rgba(255,214,102,.34),rgba(34,211,238,.14),transparent 84%); filter:blur(2px); }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-hop::after { width:188px; height:188px; background:radial-gradient(circle,rgba(255,255,255,.98) 0 12%,rgba(110,231,183,.72) 13% 34%,rgba(255,209,102,.36) 35% 58%,transparent 72%); box-shadow:0 0 24px rgba(110,231,183,.34); }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-hop .math-pk-impact-echo { width:236px; height:236px; border-color:rgba(110,231,183,.52); border-right-color:rgba(255,232,170,.3); border-bottom-color:transparent; }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-spin::after { width:202px; height:202px; border:5px solid rgba(255,209,102,.56); border-left-color:transparent; border-bottom-color:rgba(34,211,238,.34); background:radial-gradient(circle,rgba(255,255,255,.22) 0 12%,transparent 40%); animation:math-pk-impact-spin-burst .78s ease-out forwards; }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-spin .math-pk-impact-echo { width:254px; height:254px; border-width:5px; border-color:rgba(255,209,102,.5); border-top-color:rgba(34,211,238,.32); animation:math-pk-impact-spin-echo .88s ease-out forwards; }
+                        .arena-side.math-pk-target-hit::before { content:''; position:absolute; z-index:1; top:43%; width:232px; height:136px; border-radius:999px; opacity:0; pointer-events:none; transform:translateY(-50%); }
+                        .arena-side.math-pk-target-hit .math-pk-contact-flare { position:absolute; top:43%; width:256px; height:256px; border-radius:50%; z-index:0; pointer-events:none; opacity:0; mix-blend-mode:screen; background:radial-gradient(circle,rgba(255,247,212,.98) 0 18%,rgba(255,214,102,.72) 19% 38%,rgba(109,213,250,.28) 39% 58%,transparent 72%); filter:blur(4px); animation:math-pk-contact-flare .8s ease-out forwards; }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-dash .math-pk-contact-flare { width:228px; height:228px; filter:blur(2px); }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-hop .math-pk-contact-flare { width:280px; height:280px; background:radial-gradient(circle,rgba(255,247,212,.98) 0 16%,rgba(110,231,183,.64) 17% 38%,rgba(255,214,102,.24) 39% 62%,transparent 74%); }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-spin .math-pk-contact-flare { width:296px; height:296px; background:conic-gradient(from 90deg,rgba(255,255,255,0),rgba(255,214,102,.7),rgba(34,211,238,.42),rgba(255,255,255,0)); animation:math-pk-contact-spin-flare .78s ease-out forwards; }
+                        .arena-side.math-pk-target-hit.from-human .math-pk-contact-flare { right:-4px; }
+                        .arena-side.math-pk-target-hit.from-robot .math-pk-contact-flare { left:-4px; background:radial-gradient(circle,rgba(255,247,212,.96) 0 18%,rgba(255,214,102,.68) 19% 38%,rgba(255,143,89,.28) 39% 58%,transparent 72%); }
+                        .arena-side.math-pk-target-hit.from-human .math-pk-target-backglow { right:-28px; }
+                        .arena-side.math-pk-target-hit.from-robot .math-pk-target-backglow { left:-28px; background:radial-gradient(circle,rgba(255,250,232,.34) 0 14%,rgba(255,214,102,.24) 15% 34%,rgba(255,143,89,.12) 35% 58%,transparent 72%); }
+                        .arena-side.math-pk-target-hit.from-human::before { right:8px; background:linear-gradient(270deg,rgba(255,255,255,.95),rgba(255,223,127,.82) 34%,rgba(109,213,250,.24) 60%,transparent 78%); animation:math-pk-contact-slice-human .48s cubic-bezier(.2,.84,.22,1) forwards; }
+                        .arena-side.math-pk-target-hit.from-robot::before { left:8px; background:linear-gradient(90deg,rgba(255,255,255,.95),rgba(255,223,127,.82) 34%,rgba(245,158,66,.26) 60%,transparent 78%); animation:math-pk-contact-slice-robot .48s cubic-bezier(.2,.84,.22,1) forwards; }
+                        .arena-side.math-pk-target-recoil.from-human .arena-avatar { animation:math-pk-target-recoil-from-human .74s ease both; }
+                        .arena-side.math-pk-target-recoil.from-robot .arena-avatar { animation:math-pk-target-recoil-from-robot .74s ease both; }
+                        .arena-side.math-pk-target-slam.from-human .arena-avatar { animation:math-pk-target-slam-from-human .82s cubic-bezier(.2,.86,.22,1) both; }
+                        .arena-side.math-pk-target-slam.from-robot .arena-avatar { animation:math-pk-target-slam-from-robot .82s cubic-bezier(.2,.86,.22,1) both; }
+                        .arena-stage.math-pk-stage-hit-flash::after,
+                        .arena-stage.math-pk-stage-impact-focus::after { content:''; position:absolute; inset:8% 7% 10%; z-index:1; pointer-events:none; border-radius:36px; background:radial-gradient(circle at center, rgba(255,255,255,.16), rgba(255,214,102,.14) 24%, rgba(34,211,238,.08) 42%, transparent 72%); opacity:0; animation:math-pk-stage-hit-flash .66s ease-out forwards; }
+                        .arena-stage.math-pk-stage-impact-focus::before { content:''; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(90deg, rgba(255,255,255,.02), rgba(255,214,102,.08), rgba(255,255,255,.02)); opacity:0; animation:math-pk-stage-impact-focus .72s ease-out forwards; }
                         .arena-name { position:relative; z-index:3; font-size:18px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,.5); }
                         .arena-status { position:relative; z-index:3; font-size:13px; background:rgba(255,255,255,.15); padding:5px 14px; border-radius:999px; min-height:26px; display:flex; align-items:center; }
                         .arena-time { position:relative; z-index:3; font-size:13px; color:#ffd166; font-weight:700; min-height:18px; }
                         .arena-thinkbar { width:130px; height:9px; background:rgba(255,255,255,.2); border-radius:999px; overflow:hidden; }
                         .arena-thinkbar > i { display:block; height:100%; width:100%; background:linear-gradient(90deg,#6ee7b7,#22d3ee); }
-                        .arena-center { grid-area:center; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; }
+                        .arena-center { grid-area:center; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; transition:opacity .18s ease, transform .18s ease, filter .18s ease; transform-origin:center center; }
+                        .arena-center.math-pk-center-yield { opacity:.52; filter:saturate(.78) brightness(.9); transform:translateY(24px) scale(.76); pointer-events:none; animation:math-pk-center-yield-in .26s ease both; }
+                        .arena-center.math-pk-center-yield .arena-keypad { opacity:.64; box-shadow:none; }
+                        .arena-center.math-pk-center-yield .arena-question { text-shadow:0 2px 8px rgba(0,0,0,.5); }
                         .arena-qtag { font-size:.72rem; background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.12); padding:3px 12px; border-radius:999px; }
                         .arena-question { font-size:3.2rem; font-weight:900; text-shadow:0 3px 12px rgba(0,0,0,.65); text-align:center; line-height:1.1; }
                         .arena-question.word { font-size:1.15rem; font-weight:600; line-height:1.6; max-width:92%; text-shadow:0 2px 6px rgba(0,0,0,.7); }
@@ -506,17 +533,45 @@
                         .math-pk-attack-cue { position:absolute; left:50%; top:18%; transform:translate(-50%,-50%); z-index:5; display:none; padding:5px 11px; border-radius:999px; background:rgba(15,20,29,.52); border:1px solid rgba(255,255,255,.14); font-size:.86rem; font-weight:800; box-shadow:0 6px 18px rgba(0,0,0,.22); }
                         .math-pk-attack-cue.show { display:block; animation:arena-pop .26s ease; }
                         .math-pk-rush-trail { position:absolute; top:43%; left:29%; width:156px; height:84px; z-index:4; pointer-events:none; opacity:0; filter:blur(.2px); transform:translate(-50%,-50%); }
+                        .math-pk-rush-shadow { position:absolute; top:43%; left:29%; width:186px; height:110px; z-index:3; pointer-events:none; opacity:0; transform:translate(-50%,-50%); filter:blur(8px); }
+                        .math-pk-impact-shockwave { position:absolute; top:43%; width:320px; height:320px; border-radius:50%; z-index:0; pointer-events:none; opacity:0; mix-blend-mode:screen; background:radial-gradient(circle, rgba(255,255,255,.22) 0 10%, rgba(255,223,127,.3) 11% 24%, rgba(34,211,238,.12) 25% 48%, transparent 64%); transform:translateY(-50%) scale(.32); animation:math-pk-impact-shockwave .82s ease-out forwards; }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-dash .math-pk-impact-shockwave { width:340px; height:220px; border-radius:999px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.12), rgba(255,214,102,.28), rgba(34,211,238,.12), transparent 86%); }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-hop .math-pk-impact-shockwave { background:radial-gradient(circle, rgba(255,255,255,.18) 0 12%, rgba(110,231,183,.26) 13% 32%, rgba(255,214,102,.14) 33% 54%, transparent 68%); }
+                        .arena-side.math-pk-target-hit.math-pk-impact-style-spin .math-pk-impact-shockwave { background:conic-gradient(from 90deg, rgba(255,255,255,0), rgba(255,214,102,.42), rgba(34,211,238,.22), rgba(255,255,255,0)); animation:math-pk-impact-shockwave-spin .88s ease-out forwards; }
+                        .arena-side.math-pk-target-hit.from-human .math-pk-impact-shockwave { right:-38px; }
+                        .arena-side.math-pk-target-hit.from-robot .math-pk-impact-shockwave { left:-38px; }
+                        .math-pk-rush-shadow::before,
+                        .math-pk-rush-shadow::after { content:''; position:absolute; inset:0; border-radius:50%; background:radial-gradient(circle,rgba(255,245,214,.28) 0 18%,rgba(255,209,102,.14) 19% 44%,transparent 72%); }
+                        .math-pk-rush-shadow::after { inset:20px 30px; background:radial-gradient(circle,rgba(110,231,183,.14) 0 24%,transparent 68%); }
                         .math-pk-rush-trail::before { content:''; position:absolute; inset:20px 8px; border-radius:999px; background:linear-gradient(90deg,rgba(211,226,220,0),rgba(196,225,216,.34),rgba(255,255,255,.82)); box-shadow:0 0 16px rgba(194,226,216,.34); }
                         .math-pk-rush-trail::after { content:''; position:absolute; right:0; top:50%; width:58px; height:58px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.82) 0 16%,rgba(255,209,102,.48) 17% 40%,rgba(110,231,183,.18) 41% 62%,transparent 64%); transform:translateY(-50%); }
+                        .math-pk-rush-trail > i { position:absolute; inset:0; display:block; border-radius:999px; opacity:0; }
+                        .math-pk-rush-trail > i::before,
+                        .math-pk-rush-trail > i::after { content:''; position:absolute; top:50%; transform:translateY(-50%); border-radius:50%; }
+                        .math-pk-rush-trail.attack-dash > i::before { right:18px; width:78px; height:78px; background:radial-gradient(circle,rgba(255,248,214,.98) 0 18%,rgba(255,198,80,.54) 19% 42%,transparent 66%); }
+                        .math-pk-rush-trail.attack-dash > i::after { left:16px; width:92px; height:26px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.72),rgba(255,209,102,.22),transparent); }
+                        .math-pk-rush-trail.attack-hop > i::before { right:22px; width:68px; height:68px; background:radial-gradient(circle,rgba(255,255,255,.95) 0 20%,rgba(110,231,183,.46) 21% 44%,transparent 66%); }
+                        .math-pk-rush-trail.attack-hop > i::after { left:28px; width:64px; height:64px; border:3px solid rgba(110,231,183,.48); border-color:rgba(110,231,183,.48) transparent transparent transparent; background:transparent; transform:translateY(-50%) rotate(-14deg); }
+                        .math-pk-rush-trail.attack-spin > i::before { right:16px; width:84px; height:84px; border:4px solid rgba(255,209,102,.5); border-left-color:transparent; border-bottom-color:rgba(34,211,238,.35); background:transparent; animation:math-pk-spin-ring .38s linear infinite; }
+                        .math-pk-rush-trail.attack-spin > i::after { left:20px; width:70px; height:18px; background:linear-gradient(90deg,transparent,rgba(34,211,238,.58),rgba(255,255,255,.88),transparent); transform:translateY(-50%) rotate(-18deg); }
                         .math-pk-rush-trail.robot { left:71%; }
                         .math-pk-rush-trail.robot::before { background:linear-gradient(270deg,rgba(225,215,178,0),rgba(226,201,138,.34),rgba(255,255,255,.8)); box-shadow:0 0 16px rgba(226,201,138,.34); }
                         .math-pk-rush-trail.robot::after { left:0; right:auto; background:radial-gradient(circle,rgba(255,255,255,.82) 0 16%,rgba(226,201,138,.5) 17% 40%,rgba(210,167,118,.2) 41% 62%,transparent 64%); }
+                        .math-pk-rush-trail.robot.attack-dash > i::after,
+                        .math-pk-rush-trail.robot.attack-hop > i::after,
+                        .math-pk-rush-trail.robot.attack-spin > i::after { left:auto; right:16px; transform:translateY(-50%) rotate(18deg); }
+                        .math-pk-rush-trail.robot.attack-hop > i::after { right:28px; transform:translateY(-50%) rotate(14deg); }
                         .math-pk-rush-trail.attack-dash.human { animation:math-pk-trail-dash-human .66s ease-out forwards; }
                         .math-pk-rush-trail.attack-dash.robot { animation:math-pk-trail-dash-robot .66s ease-out forwards; }
                         .math-pk-rush-trail.attack-hop.human { animation:math-pk-trail-hop-human .74s ease-out forwards; }
                         .math-pk-rush-trail.attack-hop.robot { animation:math-pk-trail-hop-robot .74s ease-out forwards; }
                         .math-pk-rush-trail.attack-spin.human { animation:math-pk-trail-spin-human .72s ease-out forwards; }
                         .math-pk-rush-trail.attack-spin.robot { animation:math-pk-trail-spin-robot .72s ease-out forwards; }
+                        .math-pk-rush-shadow.human { animation:math-pk-shadow-human .76s ease-out forwards; }
+                        .math-pk-rush-shadow.robot { animation:math-pk-shadow-robot .76s ease-out forwards; }
+                        .math-pk-rush-shadow.attack-hop::before { background:radial-gradient(circle,rgba(110,231,183,.24) 0 22%,rgba(255,244,214,.18) 23% 44%,transparent 72%); }
+                        .math-pk-rush-shadow.attack-spin::before { background:conic-gradient(from 90deg,rgba(255,255,255,0),rgba(255,209,102,.34),rgba(34,211,238,.18),rgba(255,255,255,0)); }
+                        .math-pk-rush-shadow.robot::before { background:radial-gradient(circle,rgba(255,244,214,.24) 0 18%,rgba(245,158,66,.14) 19% 44%,transparent 72%); }
                         .arena-lobby { text-align:center; }
                         .arena-lobby h2 { font-size:2.6rem; font-weight:900; text-shadow:0 4px 14px rgba(0,0,0,.6); margin-bottom:6px; }
                         .arena-lobby p { color:rgba(255,255,255,.82); margin-bottom:4px; }
@@ -537,6 +592,16 @@
                         .mathpk-result-guide { margin:12px auto 10px; max-width:420px; padding:10px 12px; border-radius:14px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.14); text-align:left; }
                         .mathpk-result-guide strong { display:block; color:#ffd166; font-size:.82rem; margin-top:4px; }
                         .mathpk-result-guide p { margin:3px 0 6px; line-height:1.5; font-size:.88rem; opacity:.9; }
+                        .mathpk-result-hero { max-width:520px; margin:10px auto 8px; padding:12px 14px; border-radius:16px; border:1px solid rgba(255,255,255,.12); text-align:left; background:rgba(255,255,255,.08); }
+                        .mathpk-result-hero.win { background:rgba(255,209,102,.14); border-color:rgba(255,209,102,.24); }
+                        .mathpk-result-hero.lose { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.14); }
+                        .mathpk-result-kicker { display:inline-flex; margin-bottom:6px; color:#ffe08d; font-size:.72rem; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
+                        .mathpk-result-hero strong { display:block; color:#fff; font-size:1rem; line-height:1.45; }
+                        .mathpk-result-track { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; max-width:560px; margin:12px auto 10px; }
+                        .mathpk-result-track-item { padding:10px 8px; border-radius:14px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.07); text-align:center; }
+                        .mathpk-result-track-item.done { background:rgba(123,174,143,.28); border-color:rgba(196,230,210,.28); }
+                        .mathpk-result-track-item b { display:block; color:#ffd166; font-size:.88rem; margin-bottom:4px; }
+                        .mathpk-result-track-item span { display:block; font-size:.72rem; line-height:1.35; color:rgba(255,255,255,.86); }
                         .mul-mode-switch { display:inline-grid; grid-template-columns:1fr 1fr; gap:6px; padding:5px; border-radius:999px; background:rgba(255,255,255,.12); margin:12px 0 4px; }
                         .mul-mode-switch button { border:0; border-radius:999px; padding:9px 18px; color:#fff; background:transparent; font-weight:800; cursor:pointer; }
                         .mul-mode-switch button.active { background:rgba(255,255,255,.24); }
@@ -574,16 +639,19 @@
                         @keyframes math-correct-spark { 0%{ transform:scale(1); } 45%{ transform:scale(1.18); box-shadow:0 0 16px rgba(255,209,102,.75); } 100%{ transform:scale(1); } }
                         @keyframes math-answer-pop { 0%{ transform:scale(.92); opacity:.7; } 100%{ transform:scale(1); opacity:1; } }
                         @keyframes math-fx-burst { from{ transform:scale(.45); opacity:.9; } to{ transform:scale(1.3); opacity:0; } }
-                        @keyframes math-pk-rush-dash-human { 0%{ transform:translateX(0) scale(1); } 24%{ transform:translateX(34px) scale(1.06); } 52%{ transform:translateX(118px) scale(1.14); } 66%{ transform:translateX(136px) scale(1.08); } 100%{ transform:translateX(0) scale(1); } }
-                        @keyframes math-pk-rush-dash-robot { 0%{ transform:translateX(0) scale(1); } 24%{ transform:translateX(-34px) scale(1.06); } 52%{ transform:translateX(-118px) scale(1.14); } 66%{ transform:translateX(-136px) scale(1.08); } 100%{ transform:translateX(0) scale(1); } }
-                        @keyframes math-pk-rush-hop-human { 0%{ transform:translateX(0) translateY(0) scale(1); } 26%{ transform:translateX(36px) translateY(-10px) scale(1.05); } 58%{ transform:translateX(120px) translateY(-42px) scale(1.12); } 72%{ transform:translateX(136px) translateY(-6px) scale(1.08); } 100%{ transform:translateX(0) translateY(0) scale(1); } }
-                        @keyframes math-pk-rush-hop-robot { 0%{ transform:translateX(0) translateY(0) scale(1); } 26%{ transform:translateX(-36px) translateY(-10px) scale(1.05); } 58%{ transform:translateX(-120px) translateY(-42px) scale(1.12); } 72%{ transform:translateX(-136px) translateY(-6px) scale(1.08); } 100%{ transform:translateX(0) translateY(0) scale(1); } }
-                        @keyframes math-pk-rush-spin-human { 0%{ transform:translateX(0) rotate(0deg) scale(1); } 24%{ transform:translateX(28px) rotate(-10deg) scale(1.05); } 56%{ transform:translateX(112px) rotate(250deg) scale(1.13); } 70%{ transform:translateX(128px) rotate(320deg) scale(1.08); } 100%{ transform:translateX(0) rotate(360deg) scale(1); } }
-                        @keyframes math-pk-rush-spin-robot { 0%{ transform:translateX(0) rotate(0deg) scale(1); } 24%{ transform:translateX(-28px) rotate(10deg) scale(1.05); } 56%{ transform:translateX(-112px) rotate(-250deg) scale(1.13); } 70%{ transform:translateX(-128px) rotate(-320deg) scale(1.08); } 100%{ transform:translateX(0) rotate(-360deg) scale(1); } }
+                        @keyframes math-pk-center-yield-in { 0%{ opacity:1; transform:translateY(0) scale(1); } 100%{ opacity:.52; transform:translateY(24px) scale(.76); } }
+                        @keyframes math-pk-rush-dash-human { 0%{ transform:translateX(0) scale(1); } 18%{ transform:translateX(42px) scale(1.08); } 54%{ transform:translateX(148px) scale(1.18); } 68%{ transform:translateX(168px) scale(1.1); } 100%{ transform:translateX(0) scale(1); } }
+                        @keyframes math-pk-rush-dash-robot { 0%{ transform:translateX(0) scale(1); } 18%{ transform:translateX(-42px) scale(1.08); } 54%{ transform:translateX(-148px) scale(1.18); } 68%{ transform:translateX(-168px) scale(1.1); } 100%{ transform:translateX(0) scale(1); } }
+                        @keyframes math-pk-rush-hop-human { 0%{ transform:translateX(0) translateY(0) scale(1); } 24%{ transform:translateX(46px) translateY(-14px) scale(1.06); } 58%{ transform:translateX(146px) translateY(-58px) scale(1.16); } 72%{ transform:translateX(166px) translateY(-8px) scale(1.1); } 100%{ transform:translateX(0) translateY(0) scale(1); } }
+                        @keyframes math-pk-rush-hop-robot { 0%{ transform:translateX(0) translateY(0) scale(1); } 24%{ transform:translateX(-46px) translateY(-14px) scale(1.06); } 58%{ transform:translateX(-146px) translateY(-58px) scale(1.16); } 72%{ transform:translateX(-166px) translateY(-8px) scale(1.1); } 100%{ transform:translateX(0) translateY(0) scale(1); } }
+                        @keyframes math-pk-rush-spin-human { 0%{ transform:translateX(0) rotate(0deg) scale(1); } 22%{ transform:translateX(34px) rotate(-14deg) scale(1.08); } 56%{ transform:translateX(136px) rotate(280deg) scale(1.18); } 70%{ transform:translateX(154px) rotate(344deg) scale(1.1); } 100%{ transform:translateX(0) rotate(360deg) scale(1); } }
+                        @keyframes math-pk-rush-spin-robot { 0%{ transform:translateX(0) rotate(0deg) scale(1); } 22%{ transform:translateX(-34px) rotate(14deg) scale(1.08); } 56%{ transform:translateX(-136px) rotate(-280deg) scale(1.18); } 70%{ transform:translateX(-154px) rotate(-344deg) scale(1.1); } 100%{ transform:translateX(0) rotate(-360deg) scale(1); } }
                         @keyframes math-pk-target-hit-from-human { 0%,100%{ transform:translateX(0) rotate(0); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(18px) rotate(2deg) scale(1.04); filter:drop-shadow(0 0 24px rgba(255,209,102,.95)); } 36%{ transform:translateX(8px) rotate(1deg); } 56%{ transform:translateX(-8px) rotate(-1deg); } 76%{ transform:translateX(4px) rotate(.5deg); } }
                         @keyframes math-pk-target-hit-from-robot { 0%,100%{ transform:translateX(0) rotate(0); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(-18px) rotate(-2deg) scale(1.04); filter:drop-shadow(0 0 24px rgba(255,209,102,.95)); } 36%{ transform:translateX(-8px) rotate(-1deg); } 56%{ transform:translateX(8px) rotate(1deg); } 76%{ transform:translateX(-4px) rotate(-.5deg); } }
                         @keyframes math-pk-target-recoil-from-human { 0%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(24px) scale(1.07); filter:brightness(1.2) drop-shadow(0 0 28px rgba(255,209,102,.95)); } 40%{ transform:translateX(10px) scale(.98); } 100%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } }
                         @keyframes math-pk-target-recoil-from-robot { 0%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(-24px) scale(1.07); filter:brightness(1.2) drop-shadow(0 0 28px rgba(255,209,102,.95)); } 40%{ transform:translateX(-10px) scale(.98); } 100%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } }
+                        @keyframes math-pk-target-slam-from-human { 0%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(34px) scale(1.12,.96); filter:brightness(1.26) drop-shadow(0 0 36px rgba(255,214,102,.98)); } 34%{ transform:translateX(16px) scale(.96,1.04); } 58%{ transform:translateX(-12px) scale(1.03,.98); } 100%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } }
+                        @keyframes math-pk-target-slam-from-robot { 0%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } 18%{ transform:translateX(-34px) scale(1.12,.96); filter:brightness(1.26) drop-shadow(0 0 36px rgba(255,214,102,.98)); } 34%{ transform:translateX(-16px) scale(.96,1.04); } 58%{ transform:translateX(12px) scale(1.03,.98); } 100%{ transform:translateX(0) scale(1); filter:drop-shadow(0 8px 16px rgba(0,0,0,.55)); } }
                         @keyframes math-pk-trail-dash-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65); left:30%; } 22%{ opacity:.88; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.06); left:62%; } }
                         @keyframes math-pk-trail-dash-robot { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65); left:70%; } 22%{ opacity:.88; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.06); left:38%; } }
                         @keyframes math-pk-trail-hop-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.65) translateY(6px); left:30%; } 22%{ opacity:.82; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.02) translateY(-14px); left:62%; } }
@@ -591,6 +659,21 @@
                         @keyframes math-pk-trail-spin-human { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.62) rotate(-12deg); left:30%; } 22%{ opacity:.86; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.08) rotate(18deg); left:60%; } }
                         @keyframes math-pk-trail-spin-robot { 0%{ opacity:0; transform:translate(-50%,-50%) scale(.62) rotate(12deg); left:70%; } 22%{ opacity:.86; } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.08) rotate(-18deg); left:40%; } }
                         @keyframes math-pk-impact-burst { 0%{ opacity:0; transform:scale(.45); } 32%{ opacity:.82; transform:scale(1.02); } 100%{ opacity:0; transform:scale(1.35); } }
+                        @keyframes math-pk-impact-echo { 0%{ opacity:0; transform:translateY(-50%) scale(.44) rotate(0deg); } 34%{ opacity:.62; } 100%{ opacity:0; transform:translateY(-50%) scale(1.26) rotate(140deg); } }
+                        @keyframes math-pk-impact-spin-burst { 0%{ opacity:0; transform:scale(.42) rotate(0deg); } 32%{ opacity:.9; transform:scale(1.04) rotate(120deg); } 100%{ opacity:0; transform:scale(1.32) rotate(320deg); } }
+                        @keyframes math-pk-impact-spin-echo { 0%{ opacity:0; transform:translateY(-50%) scale(.4) rotate(0deg); } 28%{ opacity:.72; } 100%{ opacity:0; transform:translateY(-50%) scale(1.18) rotate(240deg); } }
+                        @keyframes math-pk-target-backglow { 0%{ opacity:0; transform:translateY(-50%) scale(.5); } 28%{ opacity:.88; transform:translateY(-50%) scale(1.02); } 100%{ opacity:0; transform:translateY(-50%) scale(1.22); } }
+                        @keyframes math-pk-contact-flare { 0%{ opacity:0; transform:translateY(-50%) scale(.42); } 28%{ opacity:.92; transform:translateY(-50%) scale(1.04); } 100%{ opacity:0; transform:translateY(-50%) scale(1.28); } }
+                        @keyframes math-pk-contact-spin-flare { 0%{ opacity:0; transform:translateY(-50%) scale(.4) rotate(0deg); } 28%{ opacity:.9; transform:translateY(-50%) scale(1) rotate(130deg); } 100%{ opacity:0; transform:translateY(-50%) scale(1.24) rotate(260deg); } }
+                        @keyframes math-pk-impact-shockwave { 0%{ opacity:0; transform:translateY(-50%) scale(.32); } 26%{ opacity:.78; transform:translateY(-50%) scale(1); } 100%{ opacity:0; transform:translateY(-50%) scale(1.34); } }
+                        @keyframes math-pk-impact-shockwave-spin { 0%{ opacity:0; transform:translateY(-50%) scale(.32) rotate(0deg); } 28%{ opacity:.82; transform:translateY(-50%) scale(1) rotate(120deg); } 100%{ opacity:0; transform:translateY(-50%) scale(1.28) rotate(280deg); } }
+                        @keyframes math-pk-contact-slice-human { 0%{ opacity:0; transform:translateY(-50%) translateX(-42px) scaleX(.32) scaleY(.82); } 28%{ opacity:.95; } 100%{ opacity:0; transform:translateY(-50%) translateX(12px) scaleX(1.08) scaleY(1); } }
+                        @keyframes math-pk-contact-slice-robot { 0%{ opacity:0; transform:translateY(-50%) translateX(42px) scaleX(.32) scaleY(.82); } 28%{ opacity:.95; } 100%{ opacity:0; transform:translateY(-50%) translateX(-12px) scaleX(1.08) scaleY(1); } }
+                        @keyframes math-pk-spin-ring { from{ transform:translateY(-50%) rotate(0deg); } to{ transform:translateY(-50%) rotate(360deg); } }
+                        @keyframes math-pk-shadow-human { 0%{ opacity:0; left:28%; transform:translate(-50%,-50%) scale(.54); } 22%{ opacity:.48; } 100%{ opacity:0; left:61%; transform:translate(-50%,-50%) scale(1.08); } }
+                        @keyframes math-pk-shadow-robot { 0%{ opacity:0; left:72%; transform:translate(-50%,-50%) scale(.54); } 22%{ opacity:.48; } 100%{ opacity:0; left:39%; transform:translate(-50%,-50%) scale(1.08); } }
+                        @keyframes math-pk-stage-hit-flash { 0%{ opacity:0; } 28%{ opacity:1; } 100%{ opacity:0; } }
+                        @keyframes math-pk-stage-impact-focus { 0%{ opacity:0; transform:scaleX(.92); } 24%{ opacity:.88; } 100%{ opacity:0; transform:scaleX(1.06); } }
                         @media (prefers-reduced-motion: reduce) {
                             .math-array-row.fx-reveal,
                             .math-array.correct .math-array-dot,
@@ -603,7 +686,17 @@
                             .arena-side.math-pk-target-recoil.from-human .arena-avatar,
                             .arena-side.math-pk-target-recoil.from-robot .arena-avatar,
                             .arena-side.math-pk-target-hit::after,
-                            .math-pk-rush-trail { animation:none !important; transition:none !important; }
+                            .arena-side.math-pk-target-hit::before,
+                            .arena-side.math-pk-target-hit .math-pk-contact-flare,
+                            .arena-side.math-pk-target-hit .math-pk-impact-echo,
+                            .arena-side.math-pk-target-hit .math-pk-target-backglow,
+                            .arena-side.math-pk-target-hit .math-pk-impact-shockwave,
+                            .arena-stage.math-pk-stage-hit-flash::after,
+                            .arena-stage.math-pk-stage-impact-focus::after,
+                            .arena-stage.math-pk-stage-impact-focus::before,
+                            .arena-center.math-pk-center-yield,
+                            .math-pk-rush-trail,
+                            .math-pk-rush-shadow { animation:none !important; transition:none !important; }
                         }
                         @media (max-width:760px){
                             .math-pk-hp-track { gap:8px; }
@@ -617,6 +710,7 @@
                             .arena-keypad { grid-template-columns:repeat(3,54px); gap:6px; background:rgba(7,12,20,.22); }
                             .arena-key { width:54px; height:48px; font-size:1.15rem; }
                             .arena-lobby h2 { font-size:1.8rem; }
+                            .mathpk-result-track { grid-template-columns:repeat(2,minmax(0,1fr)); }
                             .mathpk-difficulty-panel { width:calc(100vw - 24px); padding:8px; }
                             .mathpk-difficulty-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
                             .math-pk-support-grid { grid-template-columns:1fr; }
@@ -957,6 +1051,7 @@
             const casterEl = document.getElementById(`arena-side-${caster}`);
             const targetEl = document.getElementById(`arena-side-${target}`);
             const stage = document.querySelector('.arena-stage');
+            const center = document.getElementById('arena-center');
             const attackStyle = this._pickAttackStyle(winner);
             const cueText = {
                 'attack-dash': '飞扑突击',
@@ -965,35 +1060,94 @@
             }[attackStyle] || '近战突击';
             [casterEl, targetEl].forEach((el) => {
                 if (!el) return;
-                el.classList.remove('math-pk-caster', 'math-pk-rush-active', 'math-pk-target-hit', 'math-pk-target-recoil', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot');
+                el.classList.remove('math-pk-caster', 'math-pk-rush-active', 'math-pk-target-hit', 'math-pk-target-recoil', 'math-pk-target-slam', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot', 'math-pk-impact-style-dash', 'math-pk-impact-style-hop', 'math-pk-impact-style-spin');
             });
             const oldTrail = stage && stage.querySelector('.math-pk-rush-trail');
             if (oldTrail) oldTrail.remove();
+            const oldShadow = stage && stage.querySelector('.math-pk-rush-shadow');
+            if (oldShadow) oldShadow.remove();
+            if (targetEl) {
+                const oldFlare = targetEl.querySelector('.math-pk-contact-flare');
+                if (oldFlare) oldFlare.remove();
+                const oldEcho = targetEl.querySelector('.math-pk-impact-echo');
+                if (oldEcho) oldEcho.remove();
+                const oldGlow = targetEl.querySelector('.math-pk-target-backglow');
+                if (oldGlow) oldGlow.remove();
+                const oldShockwave = targetEl.querySelector('.math-pk-impact-shockwave');
+                if (oldShockwave) oldShockwave.remove();
+            }
             if (casterEl) {
                 void casterEl.offsetWidth;
                 casterEl.classList.add('math-pk-caster');
                 casterEl.classList.add('math-pk-rush-active');
                 casterEl.classList.add(attackStyle);
             }
+            if (stage) {
+                stage.classList.remove('math-pk-stage-hit-flash', 'math-pk-stage-impact-focus');
+                void stage.offsetWidth;
+                stage.classList.add('math-pk-stage-hit-flash');
+                stage.classList.add('math-pk-stage-impact-focus');
+            }
+            if (center) {
+                center.classList.remove('math-pk-center-yield');
+                void center.offsetWidth;
+                center.classList.add('math-pk-center-yield');
+            }
             this._attackCue(cueText, attackStyle);
             if (stage) {
+                const shadow = document.createElement('i');
+                shadow.className = `math-pk-rush-shadow ${caster} ${attackStyle}`;
+                shadow.setAttribute('aria-hidden', 'true');
+                stage.appendChild(shadow);
                 const trail = document.createElement('i');
                 trail.className = `math-pk-rush-trail ${caster} ${attackStyle}`;
+                trail.innerHTML = '<i aria-hidden="true"></i>';
                 trail.setAttribute('aria-hidden', 'true');
                 stage.appendChild(trail);
+                setTimeout(() => shadow.remove(), 860);
                 setTimeout(() => trail.remove(), 820);
             }
             setTimeout(() => {
                 if (!targetEl) return;
+                const flare = document.createElement('i');
+                flare.className = 'math-pk-contact-flare';
+                flare.setAttribute('aria-hidden', 'true');
+                const echo = document.createElement('i');
+                echo.className = 'math-pk-impact-echo';
+                echo.setAttribute('aria-hidden', 'true');
+                const backglow = document.createElement('i');
+                backglow.className = 'math-pk-target-backglow';
+                backglow.setAttribute('aria-hidden', 'true');
+                const shockwave = document.createElement('i');
+                shockwave.className = 'math-pk-impact-shockwave';
+                shockwave.setAttribute('aria-hidden', 'true');
+                targetEl.appendChild(backglow);
+                targetEl.appendChild(shockwave);
+                targetEl.appendChild(echo);
+                targetEl.appendChild(flare);
                 targetEl.classList.add('math-pk-target-hit');
                 targetEl.classList.add('math-pk-target-recoil');
+                targetEl.classList.add('math-pk-target-slam');
                 targetEl.classList.add(attackStyle);
+                targetEl.classList.add(attackStyle === 'attack-hop' ? 'math-pk-impact-style-hop' : attackStyle === 'attack-spin' ? 'math-pk-impact-style-spin' : 'math-pk-impact-style-dash');
                 targetEl.classList.add(caster === 'human' ? 'from-human' : 'from-robot');
-            }, 420);
+            }, 300);
             setTimeout(() => {
                 if (casterEl) casterEl.classList.remove('math-pk-caster', 'math-pk-rush-active', 'attack-dash', 'attack-hop', 'attack-spin');
-                if (targetEl) targetEl.classList.remove('math-pk-target-hit', 'math-pk-target-recoil', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot');
-            }, 980);
+                if (targetEl) {
+                    targetEl.classList.remove('math-pk-target-hit', 'math-pk-target-recoil', 'math-pk-target-slam', 'attack-dash', 'attack-hop', 'attack-spin', 'from-human', 'from-robot', 'math-pk-impact-style-dash', 'math-pk-impact-style-hop', 'math-pk-impact-style-spin');
+                    const flare = targetEl.querySelector('.math-pk-contact-flare');
+                    if (flare) flare.remove();
+                    const echo = targetEl.querySelector('.math-pk-impact-echo');
+                    if (echo) echo.remove();
+                    const glow = targetEl.querySelector('.math-pk-target-backglow');
+                    if (glow) glow.remove();
+                    const shockwave = targetEl.querySelector('.math-pk-impact-shockwave');
+                    if (shockwave) shockwave.remove();
+                }
+                if (stage) stage.classList.remove('math-pk-stage-hit-flash', 'math-pk-stage-impact-focus');
+                if (center) center.classList.remove('math-pk-center-yield');
+            }, 1100);
             return attackStyle;
         },
         _setRoundPill(text) {
@@ -1052,9 +1206,28 @@
             const progress = Number(data.totalStars || 0);
             const starText = `${'★'.repeat(stars)}${'☆'.repeat(Math.max(0, 3 - stars))}`;
             const guidedFeedback = data.guidedFeedback || buildGuidedFeedback(data);
+            const rewardStages = [
+                { threshold: 3, label: '拆一拆支援卡' },
+                { threshold: 6, label: '宠物入场动作' },
+                { threshold: 9, label: '机器人图鉴徽章' },
+                { threshold: 12, label: '阶段完成印章' }
+            ];
+            const rewardStageHtml = rewardStages.map((item) => `
+                <div class="mathpk-result-track-item ${progress >= item.threshold ? 'done' : ''}">
+                    <b>${item.threshold}★</b>
+                    <span>${escapeHtml(item.label)}</span>
+                </div>
+            `).join('');
+            const unlockHtml = typeof window.renderBattleMilestoneUnlockSummary === 'function'
+                ? window.renderBattleMilestoneUnlockSummary(data.newMilestones, { compact: true })
+                : '';
             center.innerHTML = `
                 <div class="arena-lobby">
                     <h2 style="font-size:2rem;">${win ? '🏆 你赢了！' : (data.humanWins === data.robotWins ? '🤝 平局！' : '🤖 机器人赢了')}</h2>
+                    <div class="mathpk-result-hero ${win ? 'win' : 'lose'}">
+                        <span class="mathpk-result-kicker">${win ? '结果结算' : '继续蓄力'}</span>
+                        <strong>${win ? '这局已经把节奏和准确度都打出来了' : (data.humanWins === data.robotWins ? '这一局已经把基础节奏稳住了' : '这局先把方法收住，下一局会更稳')}</strong>
+                    </div>
                     <p style="font-size:1.1rem;">比分 你 <b style="color:#ffd166;">${data.humanWins}</b> : <b style="color:#ffd166;">${data.robotWins}</b> 机器人</p>
                     <p style="font-size:2.2rem;font-weight:900;color:#ffd166;margin-top:8px;">+${data.earnedPoints}</p>
                     <p style="opacity:.8;">获得成长积分</p>
@@ -1062,6 +1235,8 @@
                     <p style="margin-top:10px;font-size:1rem;">本局获得 <b style="color:#ffd166;">${starText}</b></p>
                     <p style="opacity:.82;">累计星轨：${progress} / 12</p>
                     <p style="opacity:.9;font-size:.88rem;">解锁：${escapeHtml(data.rewardMessage || '继续收集星星')}</p>
+                    <div class="mathpk-result-track">${rewardStageHtml}</div>
+                    ${unlockHtml}
                     <div class="mathpk-result-guide">
                         <strong>复盘</strong>
                         <p>${escapeHtml(guidedFeedback.note || '')}</p>
@@ -1161,6 +1336,7 @@
         },
 
         _startRobotMatchCore() {
+            if (typeof window.snapshotBattleMilestonesForRun === 'function') window.snapshotBattleMilestonesForRun();
             state.isPlaying = true;
             state.roundClosing = false;
             state.mode = 'robot';
@@ -1186,6 +1362,7 @@
         },
 
         _startTrainingCore() {
+            if (typeof window.snapshotBattleMilestonesForRun === 'function') window.snapshotBattleMilestonesForRun();
             state.isPlaying = true;
             state.roundClosing = false;
             state.mode = 'training';
@@ -1701,6 +1878,14 @@
             if (win) playSfx('victoryBurst');
             if (!win) playSfx('faintDrop');
             playSfx('resultStamp');
+            if (typeof window.recordBattleRecentActivity === 'function') {
+                window.recordBattleRecentActivity({
+                    id: `mathpk_${Date.now()}`,
+                    mode: 'mathpk',
+                    title: win ? '数学 PK 本局胜利' : '数学 PK 完成一局',
+                    detail: `获得 ${earnedPoints} 成长积分 · 本局 ${starsEarned} 星 · 累计星轨 ${totalStars}`
+                });
+            }
             render.result({
                 difficulty: state.mathDifficulty,
                 humanWins: state.humanWins,
@@ -1712,6 +1897,9 @@
                 starsEarned: starsEarned,
                 totalStars: totalStars,
                 rewardMessage: rewardMessage,
+                newMilestones: typeof window.consumeBattleMilestoneUnlocksForRun === 'function'
+                    ? window.consumeBattleMilestoneUnlocksForRun()
+                    : [],
                 guidedFeedback: buildGuidedFeedback({
                     difficulty: state.mathDifficulty,
                     humanWins: state.humanWins,
