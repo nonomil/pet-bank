@@ -448,6 +448,10 @@
                             background:#0f1419 url('assets/arena/arena-bg.webp') center/cover no-repeat; display:flex; flex-direction:column; }
                         .math-arena::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,12,22,.5), rgba(8,12,22,.78)); }
                         .arena-topbar { position:relative; z-index:3; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; padding:14px 22px; gap:10px; }
+                        .arena-topbar-left,
+                        .arena-topbar-center,
+                        .arena-topbar-right { display:flex; align-items:center; gap:10px; }
+                        .arena-topbar-center { margin-left:auto; margin-right:auto; }
                         .arena-pill { background:rgba(255,255,255,.13); backdrop-filter:blur(8px); padding:8px 16px; border-radius:999px; font-weight:700; font-size:14px; white-space:nowrap; }
                         .arena-score { font-size:20px; letter-spacing:3px; }
                         .arena-score b { color:#ffd166; font-size:24px; }
@@ -457,7 +461,9 @@
                         .math-pk-hp-cell { width:24px; height:9px; border-radius:999px; background:rgba(255,255,255,.18); box-shadow:inset 0 0 0 1px rgba(255,255,255,.1); }
                         .math-pk-hp-cell.active.human { background:linear-gradient(90deg,#6ee7b7,#22d3ee); box-shadow:0 0 10px rgba(110,231,183,.45); }
                         .math-pk-hp-cell.active.robot { background:linear-gradient(90deg,#f97316,#facc15); box-shadow:0 0 10px rgba(250,204,21,.42); }
-                        .arena-exit { background:rgba(255,255,255,.13); border:none; color:#fff; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:18px; }
+                        .arena-home { background:rgba(255,255,255,.92); color:#27435d; border:none; min-width:74px; height:40px; padding:0 16px; border-radius:999px; cursor:pointer; font-size:14px; font-weight:900; }
+                        .arena-exit { background:rgba(255,255,255,.13); border:none; color:#fff; min-width:74px; height:40px; padding:0 16px; border-radius:999px; cursor:pointer; font-size:14px; font-weight:900; }
+                        .arena-home:hover { background:rgba(255,255,255,.98); }
                         .arena-exit:hover { background:rgba(255,255,255,.24); }
                         .arena-stage { position:relative; z-index:2; flex:1; display:grid; grid-template-columns:1fr minmax(250px,.9fr) 1fr; grid-template-areas:'human center robot'; gap:10px; padding:4px 20px 18px; min-height:0; }
                         .arena-side { grid-area:auto; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; transition:filter .3s; isolation:isolate; }
@@ -717,9 +723,16 @@
                         }
                     </style>
                     <div class="arena-topbar">
-                        <span class="arena-pill" id="arena-round-pill">数学 PK 竞技台</span>
-                        <span class="arena-pill arena-score" id="arena-score-pill">宠物 <b id="arena-human-score">0</b> : <b id="arena-robot-score">0</b> 机器人</span>
-                        <button class="arena-exit" title="退出" onclick="MathPKGame._exit()">✕</button>
+                        <div class="arena-topbar-left">
+                            <button class="arena-home" type="button" onclick="MathPKGame._goHome()">首页</button>
+                        </div>
+                        <div class="arena-topbar-center">
+                            <span class="arena-pill" id="arena-round-pill">数学 PK 竞技台</span>
+                            <span class="arena-pill arena-score" id="arena-score-pill">宠物 <b id="arena-human-score">0</b> : <b id="arena-robot-score">0</b> 机器人</span>
+                        </div>
+                        <div class="arena-topbar-right">
+                            <button class="arena-exit" title="关闭" type="button" onclick="MathPKGame._close()">关闭</button>
+                        </div>
                         <div class="math-pk-hp-track" id="math-pk-hp-track">${this._hpTrack()}</div>
                     </div>
                     <div class="arena-stage">
@@ -1526,6 +1539,18 @@
             state.isPlaying = false;
             if (state.robotTimer) clearTimeout(state.robotTimer);
             playSfx('uiClose');
+            if (typeof window.switchPage === 'function') switchPage('playground');
+            else render.renderUI('math-pk-container');
+        },
+
+        _close() {
+            this._exit();
+        },
+
+        _goHome() {
+            state.isPlaying = false;
+            if (state.robotTimer) clearTimeout(state.robotTimer);
+            playSfx('uiClose');
             if (typeof window.switchPage === 'function') switchPage('map');
             else render.renderUI('math-pk-container');
         },
@@ -1974,6 +1999,8 @@
         chooseSupportCardAndStart: (cardId, nextMode) => Game.chooseSupportCardAndStart(cardId, nextMode),
         renderUI: (id) => Game.renderUI(id),
         _exit: () => Game._exit(),
+        _close: () => Game._close(),
+        _goHome: () => Game._goHome(),
         _setDifficulty: (d) => Game._setDifficulty(d),
         renderDifficultySetting: (id) => render.renderDifficultySetting(id),
         _inputDigit: (d) => Game._inputDigit(d),

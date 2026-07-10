@@ -1556,6 +1556,16 @@
     window.setTimeout(() => els.gameScreen?.focus({ preventScroll: true }), 0);
   }
 
+  function initialGameFromQuery() {
+    try {
+      const params = new URLSearchParams(window.location.search || '');
+      const gameId = String(params.get('game') || '').trim();
+      return ['word-shooter', 'word-cannon', 'pinyin-snake', 'hanzi-jumper'].includes(gameId) ? gameId : '';
+    } catch (_) {
+      return '';
+    }
+  }
+
   function keyboardMarkup(expectedLetters) {
     const rows = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
     return rows.map(row => (
@@ -3820,6 +3830,8 @@
     renderWordDifficultySwitch();
     updateSoundToggle();
     showHome();
+    const requestedGame = initialGameFromQuery();
+    if (requestedGame) openGame(requestedGame);
   }
 
   window.LearningArcadePrototype = {

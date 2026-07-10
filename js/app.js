@@ -1000,8 +1000,8 @@ function recordTypingDefenseResult(payload) {
         id: `typing_defense_${Date.now()}`,
         mode: 'typing-defense',
         title: payload.won
-            ? `打字防线通关 · ${friendlyTypingDefenseModeLabel(mode)}`
-            : `打字防线练习 · ${friendlyTypingDefenseModeLabel(mode)}`,
+            ? `消灭苦力怕通关 · ${friendlyTypingDefenseModeLabel(mode)}`
+            : `消灭苦力怕练习 · ${friendlyTypingDefenseModeLabel(mode)}`,
         detail: `同步 ${score} 成长分，拿到 ${stars} 颗星，最高连击 ${bestCombo}`
     });
     return next;
@@ -1083,8 +1083,8 @@ const BATTLE_MILESTONES = [
     {
         id: 'typing_first_win',
         mode: 'typing-defense',
-        title: '打字防线开张',
-        desc: '打字防线累计通关至少 1 局。',
+        title: '消灭苦力怕开张',
+        desc: '消灭苦力怕累计通关至少 1 局。',
         rewardText: '+15 成长分',
         isComplete(summary) {
             return Number(summary.typingDefense.wins || 0) >= 1;
@@ -1097,7 +1097,7 @@ const BATTLE_MILESTONES = [
         id: 'typing_three_modes',
         mode: 'typing-defense',
         title: '三种训练都碰过',
-        desc: '打字防线至少体验 3 种不同训练模式。',
+        desc: '消灭苦力怕至少体验 3 种不同训练模式。',
         rewardText: '+20 成长分',
         isComplete(summary) {
             return Number(summary.typingDefense.modeVariety || 0) >= 3;
@@ -1406,126 +1406,93 @@ function renderPlaygroundProgressBoard() {
     if (!root) return;
     const math = getMathPkStageSummary();
     const arena = getArenaStageSummary();
-    const explore = getExploreStageSummary();
     const typingDefense = getTypingDefenseStageSummary();
     const learningArcade = getLearningArcadeSummary();
-    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins + typingDefense.wins + learningArcade.completedRounds;
-    const mathRewardPreview = Array.isArray(math.stageRewards)
-        ? math.stageRewards.map((item) => `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}★ ${item.label}</span>`).join('')
-        : '';
-    const arenaRewardPreview = Array.isArray(arena.stageRewards)
-        ? arena.stageRewards.map((item) => `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}关 ${item.label}</span>`).join('')
-        : '';
-    const exploreRewardPreview = Array.isArray(explore.stageRewards)
-        ? explore.stageRewards.map((item) => {
-            const unit = item.threshold === 3 ? '次' : item.threshold === 5 ? '景' : '场';
-            return `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}${unit} ${item.label}</span>`;
-        }).join('')
-        : '';
-    const typingRewardPreview = Array.isArray(typingDefense.stageRewards)
-        ? typingDefense.stageRewards.map((item) => {
-            const unit = item.threshold === 300 ? '分' : (item.threshold === 3 ? '局' : (item.threshold === 5 ? '星' : '胜'));
-            return `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}${unit} ${item.label}</span>`;
-        }).join('')
-        : '';
-    const learningArcadeRewardPreview = [
-        { threshold: 1, unit: '次', label: '先点进去看看', unlocked: learningArcade.launches >= 1 },
-        { threshold: 1, unit: '局', label: '完整打一局', unlocked: learningArcade.completedRounds >= 1 },
-        { threshold: 3, unit: '局', label: '找到喜欢的节奏', unlocked: learningArcade.completedRounds >= 3 },
-        { threshold: 2, unit: '种', label: '换玩法不腻', unlocked: learningArcade.gameEntries.length >= 2 }
-    ].map((item) => `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}${item.unit} ${item.label}</span>`).join('');
+    const totalMomentum = math.totalStars + arena.clearedCount + typingDefense.wins + learningArcade.completedRounds;
+    const mathBest = window.Leaderboard && typeof window.Leaderboard.getBest === 'function'
+        ? window.Leaderboard.getBest('mathpk')
+        : math.bestScore;
+    const hanziBest = window.Leaderboard && typeof window.Leaderboard.getBest === 'function'
+        ? window.Leaderboard.getBest('hanzi')
+        : 0;
+    const hanziLevel = window.HanziGame && typeof window.HanziGame.getLevel === 'function'
+        ? window.HanziGame.getLevel()
+        : '1';
 
     root.innerHTML = `
         <div class="playground-progress-head">
             <div>
-                <span>作战看板</span>
+                <span>个人记录</span>
                 <h3>今天的游乐场成长路线</h3>
-                <p>不是只选一个入口就结束，而是把练习、对战和探索接成一条会继续前进的路线。</p>
+                <p>左边只留最关键的记录，排行榜也直接收进这里。</p>
             </div>
             <div class="playground-progress-badge">✨ 当前势头 ${totalMomentum}</div>
+        </div>
+        <div class="playground-progress-toolbar">
+            <button class="playground-progress-link" type="button" onclick="switchPage('leaderboard')">完整排行榜</button>
+            <button class="playground-progress-link" type="button" onclick="openCardArenaEntry()">打开卡牌对战</button>
         </div>
         <div class="playground-progress-grid">
             <article class="playground-progress-card" data-mode="mathpk">
                 <div class="playground-progress-top">
                     <div>
-                        <span class="playground-progress-kicker">数学 PK</span>
+                        <span class="playground-progress-kicker">数学 PK 排行</span>
                         <h4 class="playground-progress-title">${math.label}</h4>
                     </div>
                 </div>
                 <div class="playground-progress-metrics">
-                    <span><small>最高分</small><strong>${math.bestScore}</strong></span>
+                    <span><small>最高分</small><strong>${mathBest}</strong></span>
                     <span><small>星轨</small><strong>${math.totalStars}</strong></span>
                 </div>
-                <div class="playground-goal-strip">${mathRewardPreview}</div>
                 <div class="playground-progress-next"><strong>下一步</strong>${math.nextStep}</div>
                 <button class="playground-progress-action" type="button" onclick="switchPage('mathpk')">继续数学 PK</button>
             </article>
             <article class="playground-progress-card" data-mode="arena">
                 <div class="playground-progress-top">
                     <div>
-                        <span class="playground-progress-kicker">卡牌对战</span>
+                        <span class="playground-progress-kicker">汉字 PK 排行</span>
+                        <h4 class="playground-progress-title">汉字挑战</h4>
+                    </div>
+                </div>
+                <div class="playground-progress-metrics">
+                    <span><small>最高分</small><strong>${hanziBest}</strong></span>
+                    <span><small>当前等级</small><strong>Lv.${hanziLevel === 'hsk1' ? 'HSK' : hanziLevel}</strong></span>
+                </div>
+                <div class="playground-progress-next"><strong>下一步</strong>先挑等级开局，成绩会自动记到完整排行榜。</div>
+                <button class="playground-progress-action" type="button" onclick="switchPage('hanzi')">继续汉字挑战</button>
+            </article>
+            <article class="playground-progress-card" data-mode="learning-arcade">
+                <div class="playground-progress-top">
+                    <div>
+                        <span class="playground-progress-kicker">最近常玩</span>
+                        <h4 class="playground-progress-title">消灭苦力怕</h4>
+                    </div>
+                </div>
+                <div class="playground-progress-metrics">
+                    <span><small>通关局数</small><strong>${typingDefense.wins}</strong></span>
+                    <span><small>最佳连击</small><strong>${typingDefense.bestCombo}</strong></span>
+                </div>
+                <div class="playground-progress-next"><strong>下一步</strong>${typingDefense.nextStep}</div>
+                <button class="playground-progress-action" type="button" onclick="switchPage('typing-defense')">打开消灭苦力怕</button>
+            </article>
+            <article class="playground-progress-card" data-mode="arena">
+                <div class="playground-progress-top">
+                    <div>
+                        <span class="playground-progress-kicker">战果</span>
                         <h4 class="playground-progress-title">训练营进度</h4>
                     </div>
                 </div>
                 <div class="playground-progress-metrics">
                     <span><small>已通关</small><strong>${arena.clearedCount} 关</strong></span>
-                    <span><small>下一关</small><strong>${arena.nextStage}</strong></span>
+                    <span><small>小游戏完成</small><strong>${learningArcade.completedRounds}</strong></span>
                 </div>
-                <div class="playground-goal-strip">${arenaRewardPreview}</div>
                 <div class="playground-progress-next"><strong>下一步</strong>${arena.nextStep}</div>
                 <button class="playground-progress-action" type="button" onclick="openCardArenaEntry()">继续卡牌 PK</button>
             </article>
-            <article class="playground-progress-card" data-mode="explore">
-                <div class="playground-progress-top">
-                    <div>
-                        <span class="playground-progress-kicker">探索冒险</span>
-                        <h4 class="playground-progress-title">伙伴外出记录</h4>
-                    </div>
-                </div>
-                <div class="playground-progress-metrics">
-                    <span><small>探索次数</small><strong>${explore.explorations}</strong></span>
-                    <span><small>胜场</small><strong>${explore.wins}</strong></span>
-                </div>
-                <div class="playground-goal-strip">${exploreRewardPreview}</div>
-                <div class="playground-progress-next"><strong>下一步</strong>${explore.nextStep}</div>
-                <button class="playground-progress-action" type="button" onclick="switchPage('explore')">继续探索</button>
-            </article>
-            <article class="playground-progress-card" data-mode="typing-defense">
-                <div class="playground-progress-top">
-                    <div>
-                        <span class="playground-progress-kicker">打字防线</span>
-                        <h4 class="playground-progress-title">${typingDefense.label}</h4>
-                    </div>
-                </div>
-                <div class="playground-progress-metrics">
-                    <span><small>已通关</small><strong>${typingDefense.wins} 局</strong></span>
-                    <span><small>最佳连击</small><strong>${typingDefense.bestCombo}</strong></span>
-                </div>
-                <div class="playground-goal-strip">${typingRewardPreview}</div>
-                <div class="playground-progress-next"><strong>下一步</strong>${typingDefense.nextStep}</div>
-                <button class="playground-progress-action" type="button" onclick="switchPage('typing-defense')">继续打字防线</button>
-            </article>
-            <article class="playground-progress-card" data-mode="learning-arcade">
-                <div class="playground-progress-top">
-                    <div>
-                        <span class="playground-progress-kicker">学习机小游戏</span>
-                        <h4 class="playground-progress-title">${learningArcade.lastGameLabel}</h4>
-                    </div>
-                </div>
-                <div class="playground-progress-metrics">
-                    <span><small>已开局</small><strong>${learningArcade.launches} 次</strong></span>
-                    <span><small>完成局数</small><strong>${learningArcade.completedRounds}</strong></span>
-                </div>
-                <div class="playground-goal-strip">${learningArcadeRewardPreview}</div>
-                <div class="playground-progress-next"><strong>下一步</strong>${learningArcade.nextStep}</div>
-                <button class="playground-progress-action" type="button" onclick="switchPage('learning-arcade')">继续小游戏合集</button>
-            </article>
         </div>
         <div id="playgroundBattleRecent"></div>
-        <div id="playgroundBattleMilestones"></div>
     `;
-    renderBattleRecentActivity('playgroundBattleRecent', { heading: '今日战果' });
-    renderBattleMilestoneStrip('playgroundBattleMilestones', { compact: true });
+    renderBattleRecentActivity('playgroundBattleRecent', { compact: true, heading: '今日战果' });
 }
 
 function renderReviewBattleBoard() {
@@ -1585,7 +1552,7 @@ function renderReviewBattleBoard() {
         },
         {
             mode: 'typing-defense',
-            kicker: '打字防线',
+            kicker: '消灭苦力怕',
             title: typingDefense.label,
             metrics: [
                 { label: '通关局数', value: String(typingDefense.wins) },
@@ -1595,7 +1562,7 @@ function renderReviewBattleBoard() {
                 ? '已经把键盘输入、视觉定位和即时反馈连成同一件事。'
                 : '先打一局，让孩子先对“打字会触发结果”建立直接感受。',
             next: typingDefense.nextStep,
-            action: `<button class="review-battle-action" type="button" onclick="switchPage('typing-defense')">继续打字防线</button>`
+            action: `<button class="review-battle-action" type="button" onclick="switchPage('typing-defense')">继续消灭苦力怕</button>`
         },
         {
             mode: 'learning-arcade',
@@ -2298,7 +2265,7 @@ const TOP_HUB_MENU_CONFIG = {
         { page: 'playground', label: '游乐场首页' },
         { page: 'mathpk', label: '数学 PK' },
         { page: 'hanzi', label: '汉字游戏' },
-        { page: 'typing-defense', label: '打字防线' },
+        { page: 'typing-defense', label: '消灭苦力怕' },
         { page: 'learning-arcade', label: '学习机小游戏' },
         { page: 'word-memory-map', label: '单词记忆射击场' },
         { action: 'cardArena', label: '卡牌对战' },
@@ -2619,8 +2586,8 @@ function handleTypingDefenseBridgeMessage(event) {
             const score = Math.max(0, Math.floor(Number(payload.score) || 0));
             const stars = Math.max(0, Math.floor(Number(payload.earnedStars) || 0));
             const summary = payload.won
-                ? `打字防线通关，本局已同步 ${score} 成长分，拿到 ${stars} 颗星，累计通关 ${progress.wins} 局`
-                : `打字防线结束，本局已同步 ${score} 成长分`;
+                ? `消灭苦力怕通关，本局已同步 ${score} 成长分，拿到 ${stars} 颗星，累计通关 ${progress.wins} 局`
+                : `消灭苦力怕结束，本局已同步 ${score} 成长分`;
             showToast(summary);
         }
     }
@@ -2739,14 +2706,14 @@ function ensureTypingDefenseEmbed() {
     const status = document.getElementById('typing-defense-status');
     if (launchLink) launchLink.href = src;
     if (frame.dataset.loaded === '1') return;
-    if (status) status.textContent = '正在加载打字防线...';
+    if (status) status.textContent = '正在加载消灭苦力怕...';
     frame.addEventListener('load', function onLoad() {
         frame.dataset.loaded = '1';
         if (status) status.textContent = `已加载，可直接开始。当前主站积分 ${totalPoints || 0}`;
         frame.removeEventListener('load', onLoad);
     });
     frame.addEventListener('error', function onError() {
-        if (status) status.textContent = '加载失败，请检查本地静态资源路径。';
+        if (status) status.textContent = '加载失败，请检查消灭苦力怕的静态资源路径。';
         frame.removeEventListener('error', onError);
     });
     frame.src = src;
@@ -2755,7 +2722,8 @@ function ensureTypingDefenseEmbed() {
 function ensureLearningArcadeEmbed() {
     const frame = document.getElementById('learning-arcade-frame');
     if (!frame) return;
-    const src = withRouteBase('/prj/%E5%AD%A6%E4%B9%A0%E6%9C%BA%E7%8E%A9%E6%B3%95%E5%8E%9F%E5%9E%8B/index.html');
+    const requestedGame = String(frame.dataset.requestedGame || '').trim();
+    const src = withRouteBase(`/prj/%E5%AD%A6%E4%B9%A0%E6%9C%BA%E7%8E%A9%E6%B3%95%E5%8E%9F%E5%9E%8B/index.html${requestedGame ? `?game=${encodeURIComponent(requestedGame)}` : ''}`);
     const launchLink = document.getElementById('learning-arcade-launch');
     const status = document.getElementById('learning-arcade-status');
     if (launchLink) launchLink.href = src;
@@ -2772,6 +2740,30 @@ function ensureLearningArcadeEmbed() {
     });
     frame.src = src;
 }
+
+function openLearningArcadeGame(gameId) {
+    const normalized = String(gameId || '').trim();
+    if (!normalized) {
+        switchPage('learning-arcade');
+        return;
+    }
+    const frame = document.getElementById('learning-arcade-frame');
+    if (frame) {
+        frame.dataset.requestedGame = normalized;
+    }
+    switchPage('learning-arcade');
+    window.setTimeout(function () {
+        const liveFrame = document.getElementById('learning-arcade-frame');
+        const api = liveFrame && liveFrame.contentWindow && liveFrame.contentWindow.LearningArcadePrototype;
+        if (api && typeof api.openGame === 'function') {
+            try {
+                api.openGame(normalized);
+            } catch (_) {}
+        }
+    }, 120);
+}
+
+window.openLearningArcadeGame = openLearningArcadeGame;
 
 function ensureWordMemoryMapEmbed() {
     const frame = document.getElementById('word-memory-map-frame');

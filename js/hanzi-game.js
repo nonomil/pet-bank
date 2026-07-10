@@ -203,6 +203,13 @@
                 ? window.Leaderboard.getBest('hanzi') : 0;
             el.innerHTML = `
                 <div class="hz-lobby card">
+                    <div class="hz-page-actions">
+                        <button class="hz-page-btn" type="button" onclick="switchPage('map')">首页</button>
+                        <div class="hz-page-actions-right">
+                            <button class="hz-page-btn" type="button" onclick="switchPage('leaderboard')">排行榜</button>
+                            <button class="hz-page-btn is-close" type="button" onclick="switchPage('playground')">关闭</button>
+                        </div>
+                    </div>
                     <div class="hz-lobby-head">
                         <h2>📝 汉字挑战</h2>
                         <p>看拼音选字 / 例句填空 · 答对加分 · 连击有奖</p>
@@ -222,14 +229,14 @@
                                 } catch (_) {}
                             }
                             return `
-                            <div class="hz-level-card ${String(state.level) === String(c.lv) ? 'active' : ''}" data-lv="${c.lv}" onclick="HanziGame.chooseLevel('${c.lv}')">
+                            <button class="hz-level-card ${String(state.level) === String(c.lv) ? 'active' : ''}" type="button" data-lv="${c.lv}" onclick="HanziGame.chooseLevel('${c.lv}')">
                                 <div class="hz-level-num">${c.lv === 'hsk1' ? 'HSK' : 'Lv.' + c.lv}</div>
                                 <div class="hz-level-label">${c.tag}</div>
                                 ${progHtml}
-                            </div>`;
+                            </button>`;
                         }).join('')}
                     </div>
-                    <button class="hz-start-btn" onclick="HanziGame.start()">▶ 开始挑战（${CONFIG.TOTAL_ROUNDS} 题）</button>
+                    <button class="hz-start-btn" type="button" onclick="HanziGame.start()">▶ 开始挑战（${CONFIG.TOTAL_ROUNDS} 题）</button>
                     <div id="hanzi-async-root" style="margin-top:14px;"></div>
                     <div class="hz-best-hint">🥇 你的最高分：<b>${best}</b></div>
                 </div>`;
@@ -255,9 +262,16 @@
             ov.innerHTML = `
                 <div class="hz-stage">
                     <div class="hz-topbar">
-                        <span class="hz-pill" id="hz-round-pill">第 0/${CONFIG.TOTAL_ROUNDS} 题</span>
-                        <span class="hz-pill hz-score-pill" id="hz-score-pill">0 分</span>
-                        <button class="hz-exit-btn" onclick="HanziGame._exit()">✕ 退出</button>
+                        <div class="hz-topbar-left">
+                            <button class="hz-home-btn" type="button" onclick="switchPage('map')">首页</button>
+                        </div>
+                        <div class="hz-topbar-center">
+                            <span class="hz-pill" id="hz-round-pill">第 0/${CONFIG.TOTAL_ROUNDS} 题</span>
+                            <span class="hz-pill hz-score-pill" id="hz-score-pill">0 分</span>
+                        </div>
+                        <div class="hz-topbar-right">
+                            <button class="hz-exit-btn" type="button" onclick="HanziGame._exit()">关闭</button>
+                        </div>
                     </div>
                     <div class="hz-card" id="hz-card"></div>
                     <div class="hz-opts" id="hz-opts"></div>
@@ -376,7 +390,7 @@
                         ${state.asyncSummaryNote ? `<div class="hz-result-meta">${state.asyncSummaryNote}</div>` : ''}
                         <div class="hz-result-actions">
                             <button class="hz-btn-primary" onclick="${isAsyncMode() ? "HanziGame.renderUI('hanzi-container')" : 'HanziGame.start()'}">${isAsyncMode() ? '返回大厅' : '🔁 再来一局'}</button>
-                            <button class="hz-btn-secondary" onclick="HanziGame._exit()">🏆 看排行榜</button>
+                            <button class="hz-btn-secondary" onclick="HanziGame._exit()">返回游乐场</button>
                         </div>
                     </div>
                 </div>`;
@@ -540,7 +554,7 @@
     function _exit() {
         state.isPlaying = false;
         render._hideOverlay();
-        if (typeof window.switchPage === 'function') switchPage('leaderboard');
+        if (typeof window.switchPage === 'function') switchPage('playground');
     }
 
     async function buildAsyncQuestionSet() {
