@@ -12,10 +12,6 @@ prj/*
 !prj/学习机玩法原型/**
 !prj/消灭苦力怕打字游戏/
 !prj/消灭苦力怕打字游戏/**
-!prj/*.test.py
-!prj/*.test.mjs
-!prj/test_*.py
-!prj/test_*.mjs
 prj/学习机玩法原型/tmp-screenshots/
 prj/消灭苦力怕打字游戏/browser-screenshots/
 prj/消灭苦力怕打字游戏/tmp/
