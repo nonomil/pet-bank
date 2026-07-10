@@ -41,7 +41,12 @@
                 for (var i = 0; i < routePrefixes.length; i += 1) {
                     var prefix = routePrefixes[i];
                     var index = path.indexOf(prefix);
-                    if (index >= 0 && (index === 0 || path.charAt(index - 1) === '/')) {
+                    var nextChar = path.charAt(index + prefix.length);
+                    if (
+                        index >= 0 &&
+                        (index === 0 || path.charAt(index - 1) === '/') &&
+                        (!nextChar || nextChar === '/')
+                    ) {
                         base = path.slice(0, index) || '/';
                         if (base !== '/' && !/\/$/.test(base)) base += '/';
                         break;
