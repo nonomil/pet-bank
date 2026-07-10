@@ -1,0 +1,36 @@
+﻿# GPT Reference Scene Prompt
+
+Create a polished landscape game reference image for a children's typing and pinyin practice mini game.
+
+Use case: game UI visual reference
+Asset type: full-screen reference mockup, not individual assets
+Audience: children aged 5 to 7
+Viewport: landscape web game, 16:9 composition
+
+Scene:
+- bright blue sky with a few simple blocky clouds
+- soft green grassy field
+- a single original blocky green boom monster walking toward the player from the center distance
+- the monster is voxel-inspired but must not be Minecraft Creeper or any exact copyrighted character
+- the monster has a cute square face, little legs, and a slightly silly expression, not scary
+
+Gameplay UI:
+- one large target bubble above the monster, blank enough for HTML text overlay later
+- large bottom input panel for keyboard typing
+- three heart icons for health
+- star reward progress near the input panel
+- simple success particles hinted near the monster
+
+Design direction:
+- modern children's learning game
+- clean, playful, readable, not cluttered
+- large shapes, clear contrast, soft shadows
+- mix retro typing-game energy with modern friendly UI
+
+Important constraints:
+- no readable text, no letters, no numbers, no Chinese characters, no pinyin inside the image
+- leave all learning text areas blank
+- no logos, no watermark
+- do not recreate Minecraft UI or Creeper exactly
+- make it feel like an original educational web game screenshot
+

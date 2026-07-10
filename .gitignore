@@ -13,11 +13,15 @@ prj/*
 !prj/browser-act-imagegen/
 !prj/学习机玩法原型/
 !prj/学习机玩法原型/**
+!prj/消灭苦力怕打字游戏/
+!prj/消灭苦力怕打字游戏/**
 !prj/*.test.py
 !prj/*.test.mjs
 !prj/test_*.py
 !prj/test_*.mjs
 prj/学习机玩法原型/tmp-screenshots/
+prj/消灭苦力怕打字游戏/browser-screenshots/
+prj/消灭苦力怕打字游戏/tmp/
 prj/学习机玩法原型/**/__pycache__/
 prj/学习机玩法原型/**/*.pyc
 # docs/参考案例/ 含 12MB mp4 与视频抽帧图片，整体不入库

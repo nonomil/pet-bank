@@ -1,0 +1,874 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Minecraft Math: Legion Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #111;
+            font-family: 'VT323', monospace;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 顶部设置栏 */
+        #settings-bar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.85);
+            border-bottom: 2px solid #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 100;
+            padding: 0 8px;
+        }
+
+        .setting-group {
+            display: flex;
+            align-items: center;
+            color: #ddd;
+            font-size: 17px;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        select, input[type="range"] {
+            background: #3b3b3b;
+            border: 2px solid #1a1a1a;
+            color: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 17px;
+            padding: 2px;
+            outline: none;
+        }
+
+        button.mc-btn {
+            background-color: #777;
+            border: 2px solid #000;
+            border-top-color: #aaa;
+            border-left-color: #aaa;
+            color: #fff;
+            padding: 4px 14px;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            cursor: pointer;
+            text-shadow: 1px 1px 0 #333;
+            white-space: nowrap;
+            touch-action: manipulation;
+        }
+        button.mc-btn:active {
+            border-top-color: #222;
+            border-left-color: #222;
+            background-color: #555;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            top: 50px;
+            left: 0;
+        }
+
+        /* 底部答案区域 */
+        #answer-area {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.88);
+            border-top: 2px solid #444;
+            z-index: 60;
+        }
+
+        /* 四个答案按钮 2×2 */
+        #answer-buttons {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 4px;
+            padding: 4px;
+            pointer-events: none;
+        }
+        #answer-buttons.active {
+            pointer-events: auto;
+        }
+
+        .answer-btn {
+            font-family: 'VT323', monospace;
+            font-size: 44px;
+            color: #fff;
+            background-color: #3d5c2e;
+            border: 3px solid #000;
+            border-top-color: #618248;
+            border-left-color: #618248;
+            border-bottom-color: #1e2e17;
+            border-right-color: #1e2e17;
+            cursor: pointer;
+            text-shadow: 2px 2px 0 #000;
+            touch-action: manipulation;
+            transition: background-color 0.08s;
+            line-height: 1;
+        }
+        .answer-btn:active {
+            background-color: #253820;
+            border-top-color: #1e2e17;
+            border-left-color: #1e2e17;
+            border-bottom-color: #618248;
+            border-right-color: #618248;
+        }
+        .answer-btn.correct {
+            background-color: #1c7a1c !important;
+            border-top-color: #3acc3a !important;
+            border-left-color: #3acc3a !important;
+            color: #afffaf !important;
+        }
+        .answer-btn.wrong {
+            background-color: #7a1c1c !important;
+            border-top-color: #cc3a3a !important;
+            border-left-color: #cc3a3a !important;
+            color: #ffafaf !important;
+        }
+
+        /* 遮罩 */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.87);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 200;
+        }
+        #overlay h1 {
+            font-size: clamp(40px, 10vw, 72px);
+            text-shadow: 4px 4px 0 #000;
+            margin-bottom: 10px;
+            color: #fff;
+            text-align: center;
+        }
+        #overlay p {
+            font-size: clamp(20px, 5vw, 30px);
+            color: #ddd;
+            margin-bottom: 30px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* 手机屏幕适配 */
+        @media (max-width: 520px) {
+            #settings-bar { gap: 6px; padding: 0 6px; }
+            .setting-group { font-size: 14px; gap: 3px; }
+            select { font-size: 13px; max-width: 90px; }
+            input[type="range"] { width: 52px; }
+            button.mc-btn { font-size: 16px; padding: 4px 8px; }
+            #t-val { width: 16px; }
+        }
+        @media (max-width: 360px) {
+            .setting-group .label { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="gameCanvas" width="1920" height="791" style="width: 1920px; height: 791px; top: 0px; transform: none;"></canvas>
+
+    <!-- 顶部设置 -->
+    <div id="settings-bar" style="display: none;">
+        <div class="setting-group">
+            <span class="label">题目:</span>
+            <select id="diff-select">
+                <option value="addsub20">20以内加减</option>
+                <option value="addsub50">50以内加减</option>
+                <option value="addsub100">100以内加减</option>
+                <option value="mul9">乘法口诀</option>
+                <option value="div9">表内除法</option>
+            </select>
+        </div>
+        <div class="setting-group">
+            <span class="label">时间:</span>
+            <input type="range" id="time-range" min="5" max="30" value="15" oninput="document.getElementById('t-val').innerText=this.value">
+            <span id="t-val">15</span>s
+        </div>
+        <button class="mc-btn" onclick="game.start()">开始/重置</button>
+    </div>
+
+    <!-- 底部答题区 -->
+    <div id="answer-area">
+        <div id="answer-buttons" class="active">
+            <button class="answer-btn" id="btn-0" onclick="game.selectAnswer(0)">7</button>
+            <button class="answer-btn" id="btn-1" onclick="game.selectAnswer(1)">5</button>
+            <button class="answer-btn" id="btn-2" onclick="game.selectAnswer(2)">11</button>
+            <button class="answer-btn" id="btn-3" onclick="game.selectAnswer(3)">10</button>
+        </div>
+    </div>
+
+    <!-- 开始/结束遮罩 -->
+    <div id="overlay" style="display: none;">
+        <h1 id="ov-title">MINECRAFT MATH</h1>
+        <p id="ov-sub">选择正确答案消灭苦力怕！</p>
+        <button class="mc-btn" style="font-size:28px; padding:10px 30px;" onclick="game.start()">开始挑战</button>
+    </div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('overlay');
+    const answerButtonsDiv = document.getElementById('answer-buttons');
+
+    const SETTINGS_H = 50;
+    const ANSWER_H = 120;
+
+    // ─── 资源管理器 ─────────────────────────────────────────────
+    const Assets = {
+        textures: {},
+        init() {
+            this.textures.grass       = this.createNoise('#589C2A', '#4E8A25', 64);
+            this.textures.creeperSkin = this.createNoise('#0C9D40', '#087830', 64);
+            this.textures.creeperFace = this.createFace();
+            this.textures.sky         = this.createSky();
+            this.textures.heart       = this.createHeart();
+            this.textures.xp          = this.createXp();
+            this.textures.gold        = this.createGold();
+            this.textures.coin        = this.createCoin();
+        },
+        createNoise(c1, c2, s) {
+            const c = document.createElement('canvas');
+            c.width = s; c.height = s;
+            const x = c.getContext('2d');
+            x.fillStyle = c1; x.fillRect(0, 0, s, s);
+            for (let i = 0; i < s * s / 2; i++) {
+                x.fillStyle = c2;
+                x.fillRect(Math.random() * s, Math.random() * s, 2, 2);
+            }
+            return x.createPattern(c, 'repeat');
+        },
+        createFace() {
+            const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+            const x = c.getContext('2d');
+            x.fillStyle = '#000';
+            x.fillRect(8, 16, 16, 16); x.fillRect(40, 16, 16, 16);
+            x.fillRect(24, 32, 16, 24); x.fillRect(16, 40, 8, 16); x.fillRect(40, 40, 8, 16);
+            return c;
+        },
+        createSky() {
+            const c = document.createElement('canvas'); c.width = 1; c.height = 600;
+            const x = c.getContext('2d');
+            const g = x.createLinearGradient(0, 0, 0, 600);
+            g.addColorStop(0, '#84C6FF'); g.addColorStop(1, '#C6E6FF');
+            x.fillStyle = g; x.fillRect(0, 0, 1, 600);
+            return c;
+        },
+        createHeart() {
+            const c = document.createElement('canvas'); c.width = 16; c.height = 16;
+            const x = c.getContext('2d');
+            x.fillStyle = '#F00'; x.beginPath();
+            x.moveTo(8, 15);
+            x.bezierCurveTo(16, 10, 16, 0, 8, 4);
+            x.bezierCurveTo(0, 0, 0, 10, 8, 15);
+            x.fill();
+            return c;
+        },
+        createXp() {
+            const c = document.createElement('canvas'); c.width = 12; c.height = 12;
+            const x = c.getContext('2d');
+            x.fillStyle = '#AAFF00'; x.beginPath(); x.arc(6, 6, 5, 0, 7); x.fill();
+            x.strokeStyle = '#5F0'; x.lineWidth = 2; x.stroke();
+            return c;
+        },
+        createGold() {
+            const c = document.createElement('canvas'); c.width = 24; c.height = 24;
+            const x = c.getContext('2d');
+            x.fillStyle = '#FFD700'; x.beginPath();
+            x.moveTo(4, 18); x.lineTo(20, 18); x.lineTo(22, 14); x.lineTo(2, 14); x.fill();
+            x.fillStyle = '#FFFFA0'; x.fillRect(5, 10, 14, 4);
+            x.fillStyle = '#DAA520';
+            x.beginPath();
+            x.moveTo(2, 14); x.lineTo(5, 10); x.lineTo(19, 10); x.lineTo(22, 14); x.fill();
+            x.fillStyle = '#FFF'; x.fillRect(7, 11, 2, 2);
+            return c;
+        },
+        createCoin() {
+            const c = document.createElement('canvas'); c.width = 32; c.height = 32;
+            const x = c.getContext('2d');
+            x.fillStyle = '#B8860B';
+            x.beginPath(); x.arc(16, 16, 15, 0, Math.PI * 2); x.fill();
+            x.fillStyle = '#FFD700';
+            x.beginPath(); x.arc(16, 16, 12, 0, Math.PI * 2); x.fill();
+            x.fillStyle = '#FFF5A0';
+            x.beginPath(); x.arc(16, 16, 7, 0, Math.PI * 2); x.fill();
+            x.fillStyle = '#B8860B';
+            x.font = 'bold 10px sans-serif';
+            x.textAlign = 'center'; x.textBaseline = 'middle';
+            x.fillText('G', 16, 16);
+            return c;
+        }
+    };
+
+    // ─── 游戏引擎 ────────────────────────────────────────────────
+    const game = {
+        state: 'MENU',
+        frame: 0,
+        width: 0, height: 0, horizonY: 0,
+
+        score: 0,
+        rewards: 0,
+        targetRewards: 10,
+        coins: 0,
+        targetCoins: 3,
+        hp: 5, maxHp: 5,
+
+        concurrentMax: 1,           // 固定为 1，不可配置
+        durationSeconds: 15,
+        difficulty: 'addsub20',
+        spawnDelay: 0,              // 击杀/爆炸后的生成冷却帧数
+        currentChoices: [],
+
+        creepers: [], particles: [], floatTexts: [], clouds: [],
+        focalLength: 700, startZ: 3000, endZ: 50,
+
+        init() {
+            Assets.init();
+            this.resize();
+            window.addEventListener('resize', () => this.resize());
+            for (let i = 0; i < 8; i++) this.clouds.push(this.createCloud());
+            this.loop();
+        },
+
+
+
+        createCloud() {
+            return {
+                x: (Math.random() - 0.5) * 4000,
+                y: -500 - Math.random() * 500,
+                z: 1000 + Math.random() * 3000,
+                w: 200 + Math.random() * 300,
+                h: 80 + Math.random() * 100
+            };
+        },
+
+        start() {
+            this.difficulty       = document.getElementById('diff-select').value;
+            this.durationSeconds  = parseInt(document.getElementById('time-range').value);
+
+            this.score    = 0;
+            this.rewards  = 0;
+            this.coins    = 0;
+            this.hp       = 5;
+            this.spawnDelay = 0;
+            this.creepers   = [];
+            this.particles  = [];
+            this.floatTexts = [];
+            this.currentChoices = [];
+
+            this.clearAnswerButtons();
+            this.state = 'PLAYING';
+            overlay.style.display = 'none';
+        },
+
+        resize() {
+            const w = window.innerWidth;
+            const h = window.innerHeight - SETTINGS_H - ANSWER_H;
+            canvas.width  = w;
+            canvas.height = h;
+            canvas.style.width  = w + 'px';
+            canvas.style.height = h + 'px';
+            canvas.style.top    = SETTINGS_H + 'px';
+            this.width    = w;
+            this.height   = h;
+            this.horizonY = h * 0.55;
+            ctx.imageSmoothingEnabled = false;
+        },
+
+        // ── 答案选项算法 ────────────────────────────────────────
+        // 思路：根据题型生成"有教育意义"的干扰项
+        //   加减法：±1 ±2 ±3 ±5 ±10 等常见计算失误偏差
+        //   乘法：相邻口诀积 (a±1)×b 或 a×(b±1)
+        //   除法：答案±1 ±2 ±3（范围 1-9）
+        generateChoices(problem, type) {
+            const correct = problem.val;
+            const pool = new Set([correct]);
+
+            const tryAdd = v => {
+                if (Number.isInteger(v) && v >= 0) pool.add(v);
+            };
+
+            if (type === 'mul9') {
+                const [aPart, bPart] = problem.txt.split('×');
+                const a = parseInt(aPart), b = parseInt(bPart);
+                // 相邻口诀：最常见错误——记混相邻行/列
+                tryAdd((a + 1) * b);
+                tryAdd((a - 1) * b);
+                tryAdd(a * (b + 1));
+                tryAdd(a * (b - 1));
+                // 再填近邻数值
+                for (let d = 1; pool.size < 7 && d <= 15; d++) {
+                    tryAdd(correct + d);
+                    tryAdd(correct - d);
+                }
+            } else if (type === 'div9') {
+                // 除法答案 1-9，偏移 ±1 ±2 ±3
+                for (let d = 1; d <= 4; d++) {
+                    tryAdd(correct + d);
+                    tryAdd(correct - d);
+                }
+            } else {
+                // 加减法：常见错误是进位/借位失误（差1-2）、数数多/少（差5、10）
+                for (const d of [1, 2, 3, 5, 10]) {
+                    tryAdd(correct + d);
+                    tryAdd(correct - d);
+                }
+            }
+
+            // 保底：确保至少有 4 个候选
+            for (let d = 1; pool.size < 5 && d <= 50; d++) {
+                tryAdd(correct + d);
+                tryAdd(correct - d);
+            }
+
+            // 从候选中取 3 个错误答案（洗牌后截取）
+            const others = [];
+            pool.forEach(v => { if (v !== correct) others.push(v); });
+            for (let i = others.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [others[i], others[j]] = [others[j], others[i]];
+            }
+
+            // 正确答案 + 3 个错误，再整体洗牌
+            const result = [correct, ...others.slice(0, 3)];
+            for (let i = result.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [result[i], result[j]] = [result[j], result[i]];
+            }
+            return result; // 精确 4 项，含正确答案
+        },
+
+        // ── 按钮更新 ────────────────────────────────────────────
+        updateAnswerButtons(choices) {
+            this.currentChoices = choices;
+            choices.forEach((val, i) => {
+                const btn = document.getElementById(`btn-${i}`);
+                btn.textContent = val;
+                btn.className = 'answer-btn';
+            });
+            answerButtonsDiv.classList.add('active');
+        },
+
+        clearAnswerButtons() {
+            answerButtonsDiv.classList.remove('active');
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`btn-${i}`);
+                btn.textContent = '';
+                btn.className = 'answer-btn';
+            }
+        },
+
+        // ── 选择答案 ────────────────────────────────────────────
+        selectAnswer(idx) {
+            if (this.state !== 'PLAYING') return;
+            const activeCreeper = this.creepers.find(c => c.state === 'WALK');
+            if (!activeCreeper) return;
+
+            const chosen = this.currentChoices[idx];
+            const btn = document.getElementById(`btn-${idx}`);
+
+            // 立即锁定所有按钮，防止重复点击
+            answerButtonsDiv.classList.remove('active');
+
+            if (chosen === activeCreeper.problem.val) {
+                // 正确
+                btn.classList.add('correct');
+                activeCreeper.state = 'DYING';
+                activeCreeper.flashTimer = 20;
+                this.spawnParticles(activeCreeper.x, 0, activeCreeper.z, 20, 'BLOCK');
+                this.spawnParticles(activeCreeper.x, 0, activeCreeper.z, 10, 'XP');
+                this.handleKill(activeCreeper.x, activeCreeper.z);
+                this.shakeScreen(5);
+                this.spawnDelay = 30; // 等 ~0.5s 再刷新
+            } else {
+                // 错误：扣一个金锭（最少不低于 0）
+                if (this.rewards > 0) {
+                    this.rewards--;
+                    this.addScoreText('-GOLD', activeCreeper.x, activeCreeper.z, '#FF6600');
+                }
+                btn.classList.add('wrong');
+                this.shakeScreen(6);
+                setTimeout(() => {
+                    btn.classList.remove('wrong');
+                    // 只有仍在游戏且还有存活苦力怕才重新启用
+                    if (this.state === 'PLAYING' && this.creepers.some(c => c.state === 'WALK')) {
+                        answerButtonsDiv.classList.add('active');
+                    }
+                }, 600);
+            }
+        },
+
+        // ── 生成逻辑 ────────────────────────────────────────────
+        updateSpawn() {
+            if (this.rewards >= this.targetRewards) return;
+            if (this.spawnDelay > 0) { this.spawnDelay--; return; }
+            const activeCount = this.creepers.filter(c => c.state === 'WALK').length;
+            if (activeCount < this.concurrentMax) this.spawnCreeper();
+        },
+
+        spawnCreeper() {
+            const problem = this.generateMath(this.difficulty);
+            const choices = this.generateChoices(problem, this.difficulty);
+            const speed = (this.startZ - this.endZ) / (this.durationSeconds * 60);
+            // 生成范围：取 startZ 处可视宽度的 25%，避免苦力怕接近时超出手机边界
+            const rangeX = (this.width / 2) * (this.startZ / this.focalLength) * 0.25;
+            const x = (Math.random() - 0.5) * 2 * rangeX;
+
+            this.creepers.push({
+                x, y: 0, z: this.startZ,
+                speed, problem, state: 'WALK',
+                flashTimer: 0, frameOffset: Math.random() * 100
+            });
+
+            this.updateAnswerButtons(choices);
+        },
+
+        generateMath(type) {
+            const r = n => Math.floor(Math.random() * n);
+            let txt, val;
+            if (type.includes('addsub')) {
+                const max = parseInt(type.replace('addsub', ''));
+                if (Math.random() > 0.5) {
+                    const a = r(max + 1), b = r(max + 1 - a);
+                    txt = `${a}+${b}`; val = a + b;
+                } else {
+                    const a = r(max + 1), b = r(a + 1);
+                    txt = `${a}-${b}`; val = a - b;
+                }
+            } else if (type === 'mul9') {
+                const a = r(9) + 1, b = r(9) + 1;
+                txt = `${a}×${b}`; val = a * b;
+            } else {
+                const b = r(9) + 1, ans = r(9) + 1, a = b * ans;
+                txt = `${a}÷${b}`; val = ans;
+            }
+            return { txt, val };
+        },
+
+        handleKill(x, z) {
+            this.score += 10;
+            this.rewards++;
+            this.addScoreText('GET GOLD!', x, z, '#FFD700');
+            if (this.rewards >= this.targetRewards) {
+                this.rewards = 0;
+                this.coins++;
+                this.addScoreText('GET COIN!', x, z, '#FFFFFF');
+                if (this.coins >= this.targetCoins) {
+                    setTimeout(() => this.gameWin(), 1500);
+                }
+            }
+        },
+
+        addScoreText(txt, x, z, color) {
+            this.floatTexts.push({ val: txt, x, z, y: -180, life: 60, color });
+        },
+
+        explode(c) {
+            c.state = 'DYING';
+            this.clearAnswerButtons();
+            this.spawnParticles(c.x, 0, c.z, 40, 'EXPLODE');
+            this.hp--;
+            this.addScoreText('-10', c.x, c.z, '#F55');
+            this.score -= 10;
+            this.shakeScreen(20);
+            this.spawnDelay = 40;
+            if (this.hp <= 0) setTimeout(() => this.gameOver(), 1000);
+        },
+
+        shakeScreen(amount) {
+            const dx = (Math.random() - 0.5) * amount;
+            const dy = (Math.random() - 0.5) * amount;
+            canvas.style.transform = `translate(${dx}px, ${dy}px)`;
+            setTimeout(() => canvas.style.transform = 'none', 50);
+        },
+
+        spawnParticles(x, y, z, count, type) {
+            for (let i = 0; i < count; i++) {
+                this.particles.push({
+                    x, y, z,
+                    vx: (Math.random() - 0.5) * 25,
+                    vy: (Math.random() - 1) * 25,
+                    vz: (Math.random() - 0.5) * 25,
+                    life: 50, type
+                });
+            }
+        },
+
+        gameOver() {
+            this.state = 'MENU';
+            this.clearAnswerButtons();
+            overlay.style.display = 'flex';
+            const t = document.getElementById('ov-title');
+            t.innerText = 'GAME OVER';
+            t.style.color = '#FF5555';
+            document.getElementById('ov-sub').innerText = `最终得分: ${this.score}`;
+        },
+
+        gameWin() {
+            this.state = 'MENU';
+            this.clearAnswerButtons();
+            overlay.style.display = 'flex';
+            const t = document.getElementById('ov-title');
+            t.innerText = '挑战成功！';
+            t.style.color = '#55FF55';
+            document.getElementById('ov-sub').innerText = `恭喜集齐 3 枚金币！得分: ${this.score}`;
+        },
+
+        // ── 主循环 ──────────────────────────────────────────────
+        loop() {
+            ctx.clearRect(0, 0, this.width, this.height);
+            this.frame++;
+
+            // 背景
+            ctx.drawImage(Assets.textures.sky, 0, 0, this.width, this.height);
+            this.clouds.forEach(c => {
+                c.x += 0.2;
+                if (c.x > 2000) c.x = -2000;
+                this.drawCube(c.x, c.y, c.z, c.w, c.h, '#FFF8');
+            });
+
+            // 地面
+            const grad = ctx.createLinearGradient(0, this.horizonY, 0, this.height);
+            grad.addColorStop(0, '#74A346');
+            grad.addColorStop(1, '#4E8A25');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, this.horizonY, this.width, this.height - this.horizonY);
+            ctx.save();
+            ctx.globalAlpha = 0.1;
+            ctx.fillStyle = Assets.textures.grass;
+            ctx.fillRect(0, this.horizonY, this.width, this.height);
+            ctx.restore();
+
+            // 逻辑更新
+            if (this.state === 'PLAYING') {
+                this.updateSpawn();
+                this.creepers.forEach(c => {
+                    if (c.state === 'WALK') {
+                        c.z -= c.speed;
+                        c.x *= 0.995; // 加快向中央收敛，防止接近时超出手机屏幕边界
+                        if (c.z < this.endZ) this.explode(c);
+                    } else if (c.state === 'DYING') {
+                        c.flashTimer--;
+                    }
+                });
+                this.creepers = this.creepers.filter(
+                    c => c.state !== 'DYING' || c.flashTimer > 0
+                );
+            }
+
+            // 渲染苦力怕（按深度排序）
+            [...this.creepers]
+                .sort((a, b) => b.z - a.z)
+                .forEach(c => this.drawCreeper(c));
+
+            // 粒子
+            for (let i = this.particles.length - 1; i >= 0; i--) {
+                const p = this.particles[i];
+                p.x += p.vx; p.y += p.vy; p.z += p.vz;
+                p.vy += 1; p.life--;
+                if (p.y > 0) { p.y = 0; p.vy *= -0.5; }
+                if (p.z > 10) {
+                    const s = this.focalLength / p.z;
+                    const sx = this.width / 2 + p.x * s;
+                    const sy = this.horizonY + p.y * s;
+                    const sz = s * (p.type === 'XP' ? 8 : 12);
+                    if (p.type === 'XP') {
+                        ctx.drawImage(Assets.textures.xp, sx, sy, sz, sz);
+                        p.x *= 0.9; p.y *= 0.9; p.z -= 15;
+                    } else {
+                        ctx.fillStyle = p.type === 'BLOCK'
+                            ? Assets.textures.creeperSkin : '#FFF';
+                        ctx.fillRect(sx, sy, sz, sz);
+                    }
+                }
+                if (p.life <= 0 || p.z < 10) this.particles.splice(i, 1);
+            }
+
+            // 浮动文字
+            for (let i = this.floatTexts.length - 1; i >= 0; i--) {
+                const ft = this.floatTexts[i];
+                ft.y -= 2; ft.life--;
+                if (ft.z > 10) {
+                    const s = this.focalLength / ft.z;
+                    const sx = this.width / 2 + ft.x * s;
+                    const sy = this.horizonY + ft.y * s;
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.font = `bold ${s * 30}px 'VT323'`;
+                    ctx.fillStyle = ft.color;
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 2;
+                    ctx.strokeText(ft.val, sx, sy);
+                    ctx.fillText(ft.val, sx, sy);
+                    ctx.restore();
+                }
+                if (ft.life <= 0) this.floatTexts.splice(i, 1);
+            }
+
+            this.drawHUD();
+            requestAnimationFrame(() => this.loop());
+        },
+
+        drawCreeper(c) {
+            const s  = this.focalLength / c.z;
+            const cx = this.width / 2 + c.x * s;
+            const cy = this.horizonY;
+            const u  = s * 2.5;
+
+            const walk = Math.sin(this.frame * 0.1 + c.frameOffset);
+            const leg  = walk * u * 8;
+            const bob  = Math.abs(walk) * u * 2;
+            const hit  = c.state === 'DYING' ||
+                         (c.flashTimer > 0 && Math.floor(Date.now() / 50) % 2 === 0);
+
+            // 阴影
+            ctx.fillStyle = '#0004';
+            ctx.beginPath();
+            ctx.ellipse(cx, cy, u * 10, u * 4, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            const skin = Assets.textures.creeperSkin;
+            const drawRect = (x, y, w, h, tex) => {
+                if (hit) { ctx.fillStyle = '#FFF'; }
+                else      { ctx.fillStyle = tex; }
+                ctx.fillRect(x, y, w, h);
+                ctx.strokeStyle = '#0003';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, w, h);
+            };
+
+            // 腿
+            drawRect(cx - u * 4 + leg, cy - u * 12, u * 4, u * 12, skin);
+            drawRect(cx - leg,          cy - u * 12, u * 4, u * 12, skin);
+            // 身体
+            const by = cy - u * 24 - bob;
+            drawRect(cx - u * 4, by, u * 8, u * 18, skin);
+            // 头
+            const hy = by - u * 16;
+            drawRect(cx - u * 8, hy, u * 16, u * 16, skin);
+            if (!hit) {
+                ctx.drawImage(Assets.textures.creeperFace, cx - u * 8, hy, u * 16, u * 16);
+            }
+
+            // 题目（画在头顶，canvas 内辅助显示）
+            if (c.state === 'WALK') {
+                ctx.save();
+                const fontSize = Math.max(22, u * 10);
+                ctx.font = `bold ${fontSize}px 'VT323', monospace`;
+                ctx.textAlign = 'center';
+                const tw = ctx.measureText(c.problem.txt).width;
+                const pad = 6;
+                ctx.fillStyle = 'rgba(0,0,0,0.75)';
+                ctx.fillRect(cx - tw / 2 - pad, hy - fontSize - 10, tw + pad * 2, fontSize + 6);
+                ctx.fillStyle = '#FFF';
+                ctx.fillText(c.problem.txt, cx, hy - 10);
+                ctx.restore();
+            }
+        },
+
+        drawCube(x, y, z, w, h, col) {
+            const s = this.focalLength / z;
+            ctx.fillStyle = col;
+            ctx.fillRect(
+                this.width / 2 + x * s - w * s / 2,
+                this.horizonY + y * s - h * s / 2,
+                w * s, h * s
+            );
+        },
+
+        drawHUD() {
+            // 金币进度（最底部，3 枚）
+            const coinSize = Math.min(26, Math.floor(this.width / 18));
+            const coinGap  = 10;
+            const coinRowW = this.targetCoins * coinSize + (this.targetCoins - 1) * coinGap;
+            const coinX    = this.width / 2 - coinRowW / 2;
+            const coinY    = this.height - coinSize - 4;
+            for (let i = 0; i < this.targetCoins; i++) {
+                ctx.globalAlpha = i < this.coins ? 1 : 0.2;
+                ctx.drawImage(Assets.textures.coin,
+                    coinX + i * (coinSize + coinGap), coinY, coinSize, coinSize);
+            }
+            ctx.globalAlpha = 1;
+
+            // 金锭热栏（10 格，在金币上方）
+            const slots    = 10;
+            const slotSize = Math.min(36, Math.floor((this.width - 20) / slots));
+            const sx = this.width / 2 - (slots * slotSize) / 2;
+            const sy = coinY - slotSize - 5;
+            ctx.lineWidth = 2;
+            for (let i = 0; i < slots; i++) {
+                ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                ctx.fillRect(sx + i * slotSize, sy, slotSize, slotSize);
+                ctx.strokeStyle = '#888';
+                ctx.strokeRect(sx + i * slotSize, sy, slotSize, slotSize);
+                if (i < this.rewards) {
+                    const is  = slotSize * 0.6;
+                    const off = (slotSize - is) / 2;
+                    ctx.drawImage(Assets.textures.gold,
+                        sx + i * slotSize + off, sy + off, is, is);
+                }
+            }
+            if (this.rewards < slots) {
+                ctx.strokeStyle = '#FFF';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(sx + this.rewards * slotSize, sy, slotSize, slotSize);
+            }
+
+            // 血量（在金锭上方）
+            const heartSize = Math.min(20, this.width / 16);
+            const hx = this.width / 2 - (this.maxHp * (heartSize + 3)) / 2;
+            const hy = sy - heartSize - 8;
+            for (let i = 0; i < this.maxHp; i++) {
+                ctx.globalAlpha = i < this.hp ? 1 : 0.2;
+                ctx.drawImage(Assets.textures.heart,
+                    hx + i * (heartSize + 3), hy, heartSize, heartSize);
+            }
+            ctx.globalAlpha = 1;
+        }
+    };
+
+    game.init();
+
+    // URL 参数自动启动（来自 Vue 配置页）
+    (function () {
+        var p = new URLSearchParams(location.search);
+        if (p.get('autostart') !== '1') return;
+
+        var diff = p.get('diff') || 'addsub20';
+        var time = p.get('time') || '15';
+        document.getElementById('diff-select').value = diff;
+        document.getElementById('time-range').value = time;
+        document.getElementById('t-val').innerText = time;
+
+        // 隐藏设置栏，重算画布尺寸（SETTINGS_H 常量不再适用，覆盖 resize）
+        document.getElementById('settings-bar').style.display = 'none';
+        game.resize = function () {
+            var w = window.innerWidth;
+            var h = window.innerHeight - ANSWER_H;
+            canvas.width = w;  canvas.height = h;
+            canvas.style.width = w + 'px';  canvas.style.height = h + 'px';
+            canvas.style.top = '0px';
+            this.width = w;  this.height = h;
+            this.horizonY = h * 0.55;
+            ctx.imageSmoothingEnabled = false;
+        };
+        game.resize();
+        game.start();
+    })();
+</script>
+
+
+</body></html>

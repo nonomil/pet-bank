@@ -1,0 +1,36 @@
+﻿# GPT Reference Scene Prompt
+
+Create a polished landscape game reference image for a children's typing and pinyin practice mini game, based on the observed rhythm of a browser game where a blocky green monster walks closer from the distance and the player answers before it reaches them.
+
+Use case: game UI visual reference
+Asset type: full-screen reference mockup, not individual assets
+Audience: children aged 5 to 7
+Viewport: landscape web game, 16:9 composition
+
+Scene:
+- bright blue sky with a few simple blocky clouds
+- soft green grassy field
+- a single Minecraft-style green block monster walking toward the player from the center distance
+- it may resemble the self-use Minecraft-style assets already present in the project, but do not add any official logo or watermark
+- the monster has a square face, little legs, and a slightly silly expression, tense but not too scary for children
+
+Gameplay UI:
+- one large dark target bubble above the monster, blank enough for HTML text overlay later
+- large bottom keyboard typing panel replacing the original four-answer math buttons
+- three heart icons for health
+- gold/star reward progress near the input panel
+- simple cube explosion particles hinted near the monster
+
+Design direction:
+- modern children's learning game
+- clean, playful, readable, not cluttered
+- large shapes, clear contrast, soft shadows
+- mix retro canvas game energy with modern friendly UI
+
+Important constraints:
+- no readable text, no letters, no numbers, no Chinese characters, no pinyin inside the image
+- leave all learning text areas blank
+- no logos, no watermark
+- do not recreate the exact original page screenshot
+- make it feel like an evolved educational web game screenshot using this project's Minecraft-flavored assets
+

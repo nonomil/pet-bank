@@ -1,0 +1,10 @@
+﻿{
+    "mode":  "browser-handoff",
+    "created_at":  "2026-07-07T23:20:36",
+    "prompt_file":  ".\\prj\\消灭苦力怕打字游戏\\reference\\gpt\\reference-scene-handoff-v2\\browser_prompt.txt",
+    "prompt_preview":  "# GPT Reference Scene Prompt\n\nCreate a polished landscape game reference image for a children\u0027s typing and pinyin practice mini game, based on the observed rhyt",
+    "downloads_raw":  ".\\prj\\消灭苦力怕打字游戏\\reference\\gpt\\reference-scene-handoff-v2\\downloads\\raw",
+    "downloads_selected":  ".\\prj\\消灭苦力怕打字游戏\\reference\\gpt\\reference-scene-handoff-v2\\downloads\\selected",
+    "browser_act_skill_doc":  "G:\\StudyCode\\宠物积分系统\\.agents\\skills\\browser-act\\SKILL.md",
+    "target_site":  "chatgpt.com or user-specified image site"
+}
