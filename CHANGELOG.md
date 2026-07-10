@@ -2,6 +2,17 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.22] - 2026-07-10
+### 🗺️ 单词记忆射击场接入游乐场 + 主站成长桥接
+
+- `单词记忆射击场` 作为 `游乐场` 子页正式接入主站，新增入口卡、`/app/playground/word-memory-map` 子页、iframe 宿主壳和 `独立打开` 双入口
+- 主站补齐深链恢复与静态入口兜底，直接访问 `word-memory-map` 子页不再出现 404，宿主页样式和 iframe 尺寸与 `打字防线` 保持一致
+- `单词记忆射击场` 原型在大地图通关结算时通过 `postMessage` 回写主站，回传本局成长分、星星、命中率、关卡、主角和地图主题
+- 主站新增 `petbank_word_memory_map_progress` 本地进度存档，记录累计通关张图、累计星星、累计成长分、最佳命中率、最高解锁关卡、最近通关关卡、最近主角与最近地图
+- `单词记忆射击场` 子页顶部新增主站 summary 面板，直接展示成长摘要，不改原型内部词库、主角选择、关卡和投掷逻辑
+- 游乐场浏览器合同测试新增 `word-memory-map` 桥接回写断言，覆盖 iframe 发消息后主站涨分、刷新摘要和写入最近活动
+- 回归验证通过：`node prj/playground_hanzi_hub.test.mjs`（37/37）、`node prj/url_routing_and_settings_subpages.test.mjs`（29/29）、`node prj/route_aware_shell_contract.test.mjs`（17/17）、`node prj/单词记忆射击场原型/verify.mjs`
+
 ## [v0.7.21] - 2026-07-10
 ### 🎮 学习机小游戏接入游乐场 + Agnes 合集封面 + 主站桥接
 

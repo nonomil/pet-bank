@@ -1,0 +1,14 @@
+{
+  "sourceImage": "prj/单词记忆射击场原型/assets/背景图片/背景图1--农场--9连图.png",
+  "boxes": "prj/单词记忆射击场原型/assets/generated/world-bg-tiles/farm-9grid-boxes.json",
+  "manifest": "prj/单词记忆射击场原型/assets/generated/world-bg-tiles/farm-gpt-9grid-manifest.json",
+  "tilesDir": "prj/单词记忆射击场原型/assets/generated/world-bg-tiles/farm-gpt-9grid",
+  "exportScript": "prj/单词记忆射击场原型/scripts/export_world_tiles_from_boxes.py",
+  "workflowScript": "prj/单词记忆射击场原型/scripts/generate_farm_gpt_9grid.py",
+  "promptFile": "prj/单词记忆射击场原型/assets/generated/reference/farm-gpt-9grid-20260710/farm-gpt-9grid.prompt.txt",
+  "exportedAt": "2026-07-10",
+  "generatedViaBee": false,
+  "prefix": "farm-gpt-9grid-source",
+  "tileCount": 9,
+  "notes": "Parallel farm GPT preview pack. Default farm manifest remains unchanged until manual switch."
+}
