@@ -83,6 +83,16 @@ function copyFile(fileName, destName = fileName) {
     fs.copyFileSync(src, dest);
 }
 
+function copyMappedFile(srcName, destName) {
+    const src = path.join(repoRoot, srcName);
+    const dest = path.join(outDir, destName);
+    if (!fs.existsSync(src)) {
+        throw new Error(`Missing required file: ${srcName}`);
+    }
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(src, dest);
+}
+
 function copyOptionalCloudConfigStub(fileName) {
     const src = path.join(repoRoot, fileName);
     const dest = path.join(outDir, fileName);
@@ -131,6 +141,22 @@ function copyDirWithFilter(dirName, includeRelativePath) {
     });
 }
 
+function copyDirWithFilterTo(srcName, destName, includeRelativePath) {
+    const src = path.join(repoRoot, srcName);
+    const dest = path.join(outDir, destName);
+    if (!fs.existsSync(src)) {
+        throw new Error(`Missing required directory: ${srcName}`);
+    }
+    fs.cpSync(src, dest, {
+        recursive: true,
+        filter(srcPath) {
+            const rel = toPosix(path.relative(src, srcPath));
+            if (!rel || rel === '.') return true;
+            return includeRelativePath(rel);
+        },
+    });
+}
+
 function isDirectChildOf(parent, target) {
     return target === parent || target.startsWith(`${parent}/`);
 }
@@ -166,12 +192,10 @@ function includeLearningArcadeRuntime(rel) {
 
 function includeTypingDefenseRuntime(rel) {
     const exactFiles = new Set([
-        'web/index.html',
-        'web/styles.css',
-        'web/game.js',
         'assets/creeper-bow-scene-chatgpt-raw.png',
     ]);
     const allowedPrefixes = [
+        'web',
         'assets/generated/audio',
         'assets/generated/minecraft-typing-defense',
         'assets/generated/typing-defense-assets',
@@ -218,6 +242,10 @@ for (const dirName of ['css', 'js', 'assets', 'data', 'app']) {
 copyDirWithFilter('prj/学习机玩法原型', includeLearningArcadeRuntime);
 copyDirWithFilter('prj/消灭苦力怕打字游戏', includeTypingDefenseRuntime);
 copyDirWithFilter('prj/单词记忆射击场原型', includeWordMemoryRuntime);
+copyMappedFile('prj/消灭苦力怕打字游戏/web/index.html', 'prj/消灭苦力怕打字游戏/web/index.html');
+copyMappedFile('prj/消灭苦力怕打字游戏/web/styles.css', 'prj/消灭苦力怕打字游戏/web/styles.css');
+copyMappedFile('prj/消灭苦力怕打字游戏/web/game.js', 'prj/消灭苦力怕打字游戏/web/game.js');
+copyDirWithFilterTo('prj/消灭苦力怕打字游戏', 'app/playground/typing-defense-runtime', includeTypingDefenseRuntime);
 
 fs.writeFileSync(path.join(outDir, '.nojekyll'), '');
 
