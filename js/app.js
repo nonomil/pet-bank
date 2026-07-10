@@ -572,6 +572,7 @@ function getExploreStageSummary() {
 
 const TYPING_DEFENSE_PROGRESS_KEY = 'petbank_typing_defense_progress';
 const LEARNING_ARCADE_SETTINGS_KEY = 'learning-arcade-settings-v1';
+const LEARNING_ARCADE_PROGRESS_KEY = 'petbank_learning_arcade_progress';
 
 function readTypingDefenseProgress() {
     try {
@@ -633,6 +634,43 @@ function readLearningArcadeSettings() {
     }
 }
 
+function readLearningArcadeProgress() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(LEARNING_ARCADE_PROGRESS_KEY) || '{}');
+        return {
+            launches: Number(raw.launches || 0),
+            completedRounds: Number(raw.completedRounds || 0),
+            lastGame: raw.lastGame || '',
+            lastTitle: raw.lastTitle || '',
+            gameCounts: raw.gameCounts && typeof raw.gameCounts === 'object' ? raw.gameCounts : {},
+            updatedAt: raw.updatedAt || ''
+        };
+    } catch (_) {
+        return {
+            launches: 0,
+            completedRounds: 0,
+            lastGame: '',
+            lastTitle: '',
+            gameCounts: {},
+            updatedAt: ''
+        };
+    }
+}
+
+function writeLearningArcadeProgress(progress) {
+    try {
+        localStorage.setItem(LEARNING_ARCADE_PROGRESS_KEY, JSON.stringify(progress || {}));
+    } catch (_) {}
+}
+
+function friendlyLearningArcadeGameLabel(gameId) {
+    return ({
+        'word-shooter': '飞机大战',
+        'word-cannon': '拼音赛车',
+        'pinyin-snake': '贪吃蛇'
+    })[gameId] || '学习机小游戏';
+}
+
 function friendlyLearningArcadeDifficultyLabel(level) {
     return ({
         basic: '基础',
@@ -653,22 +691,33 @@ function friendlyLearningArcadePackLabel(packId) {
 
 function getLearningArcadeSummary() {
     const settings = readLearningArcadeSettings();
+    const progress = readLearningArcadeProgress();
     const starterCount = Number(settings.pinyinStarterSeen) + Number(settings.snakeStarterSeen);
     const introLabel = starterCount >= 2
         ? '已完成首玩引导'
         : starterCount === 1
             ? '已完成一半引导'
             : '建议先从认汉字开始';
+    const gameEntries = Object.entries(progress.gameCounts || {})
+        .map(([gameId, count]) => ({ gameId, count: Number(count || 0), label: friendlyLearningArcadeGameLabel(gameId) }))
+        .filter((item) => item.count > 0)
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 4);
     return {
         games: 3,
         difficultyLabel: friendlyLearningArcadeDifficultyLabel(settings.wordDifficulty),
         hanziPackLabel: friendlyLearningArcadePackLabel(settings.hanziPack),
         introLabel,
+        launches: progress.launches,
+        completedRounds: progress.completedRounds,
+        lastGameLabel: friendlyLearningArcadeGameLabel(progress.lastGame),
+        lastTitle: progress.lastTitle || '还没打完一局',
         chips: [
             { label: '飞机大战', value: '练字母' },
             { label: '拼音赛车', value: settings.explicitHanziPack ? settings.hanziPack === 'kindergarten-pinyin' ? '练拼音' : '认汉字' : '认汉字' },
             { label: '贪吃蛇', value: '方向键' }
-        ]
+        ],
+        gameEntries
     };
 }
 
@@ -686,6 +735,20 @@ function renderLearningArcadeSummaryPanel() {
                 <strong>${summary.games} 个</strong>
             </article>
             <article class="typing-defense-summary-card">
+                <small>已开局</small>
+                <strong>${summary.launches} 次</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>已完成局数</small>
+                <strong>${summary.completedRounds} 局</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>最近在玩</small>
+                <strong>${summary.lastGameLabel}</strong>
+            </article>
+        </div>
+        <div class="typing-defense-summary-grid">
+            <article class="typing-defense-summary-card">
                 <small>当前难度</small>
                 <strong>${summary.difficultyLabel}</strong>
             </article>
@@ -697,8 +760,15 @@ function renderLearningArcadeSummaryPanel() {
                 <small>上手状态</small>
                 <strong>${summary.introLabel}</strong>
             </article>
+            <article class="typing-defense-summary-card">
+                <small>最近结果</small>
+                <strong>${summary.lastTitle}</strong>
+            </article>
         </div>
         <div class="typing-defense-mode-strip">${chips}</div>
+        <div class="typing-defense-mode-strip">${summary.gameEntries.length
+            ? summary.gameEntries.map((item) => `<span class="typing-defense-mode-chip">${item.label}<strong>${item.count} 次</strong></span>`).join('')
+            : '<span class="typing-defense-mode-chip">还没有游玩记录<strong>先开一局</strong></span>'}</div>
     `;
 }
 
@@ -2299,6 +2369,8 @@ function updateParentHomePage() {
 
 const TYPING_DEFENSE_BRIDGE_SOURCE = 'petbank-typing-defense';
 const typingDefenseBridgeSeen = new Set();
+const LEARNING_ARCADE_BRIDGE_SOURCE = 'petbank-learning-arcade';
+const learningArcadeBridgeSeen = new Set();
 
 function syncTypingDefenseHostPoints() {
     const pgPoints = document.getElementById('pg-points');
@@ -2352,6 +2424,74 @@ function handleTypingDefenseBridgeMessage(event) {
 }
 
 window.addEventListener('message', handleTypingDefenseBridgeMessage);
+
+function handleLearningArcadeBridgeMessage(event) {
+    const data = event && event.data;
+    if (!data || data.source !== LEARNING_ARCADE_BRIDGE_SOURCE) return;
+    const frame = document.getElementById('learning-arcade-frame');
+    if (frame && frame.contentWindow && event.source !== frame.contentWindow) return;
+    if (event.origin && window.location.origin && event.origin !== window.location.origin) return;
+
+    const sessionId = String(data.sessionId || '');
+    const seq = Number(data.seq || 0);
+    const key = `${sessionId}:${seq}`;
+    if (!sessionId || !Number.isFinite(seq) || learningArcadeBridgeSeen.has(key)) return;
+    learningArcadeBridgeSeen.add(key);
+    if (learningArcadeBridgeSeen.size > 600) {
+        const staleKey = learningArcadeBridgeSeen.values().next().value;
+        if (staleKey) learningArcadeBridgeSeen.delete(staleKey);
+    }
+
+    const payload = data.payload || {};
+    if (data.kind === 'settings') {
+        renderLearningArcadeSummaryPanel();
+        return;
+    }
+
+    const progress = readLearningArcadeProgress();
+    if (data.kind === 'start') {
+        const gameId = String(payload.gameId || '');
+        if (!gameId) return;
+        const next = {
+            ...progress,
+            launches: progress.launches + 1,
+            lastGame: gameId,
+            gameCounts: Object.assign({}, progress.gameCounts, {
+                [gameId]: Number(progress.gameCounts && progress.gameCounts[gameId] || 0) + 1
+            }),
+            updatedAt: new Date().toISOString()
+        };
+        writeLearningArcadeProgress(next);
+        renderLearningArcadeSummaryPanel();
+        return;
+    }
+
+    if (data.kind === 'result') {
+        const gameId = String(payload.gameId || progress.lastGame || '');
+        const gameLabel = payload.gameLabel || friendlyLearningArcadeGameLabel(gameId);
+        const title = payload.title || '完成一局';
+        const next = {
+            ...progress,
+            completedRounds: progress.completedRounds + 1,
+            lastGame: gameId,
+            lastTitle: title,
+            updatedAt: new Date().toISOString()
+        };
+        writeLearningArcadeProgress(next);
+        renderLearningArcadeSummaryPanel();
+        pushBattleRecentActivity({
+            id: `learning_arcade_${Date.now()}`,
+            mode: 'learning-arcade',
+            title: `${gameLabel} · ${title}`,
+            detail: '学习机小游戏合集已回写主站记录。'
+        });
+        if (typeof showToast === 'function') {
+            showToast(`${gameLabel} 已同步回主站`);
+        }
+    }
+}
+
+window.addEventListener('message', handleLearningArcadeBridgeMessage);
 
 function ensureTypingDefenseEmbed() {
     const frame = document.getElementById('typing-defense-frame');

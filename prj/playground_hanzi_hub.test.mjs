@@ -109,6 +109,40 @@ check('word memory map page mounts iframe container', wordMemoryMap.hasFrame && 
 check('word memory map host page exposes mode summary', /俯视地图|经典炮弹|支援道具/.test(wordMemoryMap.pageText), wordMemoryMap.pageText);
 check('word memory map iframe inherits embed sizing', /760px|620px/.test(wordMemoryMap.minHeight), wordMemoryMap.minHeight);
 
+await page.evaluate(() => {
+    localStorage.removeItem('petbank_learning_arcade_progress');
+    window.switchPage('learning-arcade');
+});
+await page.waitForFunction(() => document.getElementById('learning-arcade-frame')?.getAttribute('src')?.includes('/prj/'), { timeout: 15000 });
+await page.waitForFunction(() => /已开局|最近结果/.test(document.getElementById('learningArcadeSummary')?.innerText || ''), { timeout: 5000 });
+const arcadeSummaryBefore = await page.evaluate(() => document.getElementById('learningArcadeSummary')?.innerText || '');
+check('learning arcade summary starts with zeroed bridge progress', /已开局\s*0 次/.test(arcadeSummaryBefore) && /已完成局数\s*0 局/.test(arcadeSummaryBefore), arcadeSummaryBefore);
+const arcadeFrame = page.frameLocator('#learning-arcade-frame');
+await arcadeFrame.locator('[data-game="word-shooter"]').click();
+await page.waitForFunction(() => /已开局\s*1 次/.test(document.getElementById('learningArcadeSummary')?.innerText || ''), { timeout: 10000 });
+const arcadeAfterStart = await page.evaluate(() => document.getElementById('learningArcadeSummary')?.innerText || '');
+check('learning arcade start sync updates host summary', /已开局\s*1 次/.test(arcadeAfterStart) && /最近在玩\s*飞机大战/.test(arcadeAfterStart), arcadeAfterStart);
+await arcadeFrame.locator('body').evaluate(() => {
+    window.parent.postMessage({
+        source: 'petbank-learning-arcade',
+        kind: 'result',
+        sessionId: 'learning-arcade-test',
+        seq: 2,
+        payload: {
+            gameId: 'word-shooter',
+            gameLabel: '飞机大战',
+            title: '满星通关'
+        }
+    }, window.location.origin);
+});
+await page.waitForFunction(() => /已完成局数\s*1 局/.test(document.getElementById('learningArcadeSummary')?.innerText || ''), { timeout: 10000 });
+const arcadeAfterResult = await page.evaluate(() => ({
+    summaryText: document.getElementById('learningArcadeSummary')?.innerText || '',
+    activityItems: JSON.parse(localStorage.getItem('petbank_battle_recent_activity') || '[]')
+}));
+check('learning arcade result sync updates host summary', /已完成局数\s*1 局/.test(arcadeAfterResult.summaryText) && /最近结果\s*满星通关/.test(arcadeAfterResult.summaryText), arcadeAfterResult.summaryText);
+check('learning arcade result sync writes recent activity', Array.isArray(arcadeAfterResult.activityItems) && arcadeAfterResult.activityItems.some((item) => /飞机大战/.test(item?.title || '') && /学习机小游戏合集已回写主站记录/.test(item?.detail || '')), JSON.stringify(arcadeAfterResult.activityItems));
+
 await page.evaluate(() => window.switchPage('hanzi'));
 await page.waitForFunction(() => document.querySelectorAll('#page-hanzi .hz-level-card').length >= 4, { timeout: 15000 });
 const hanzi = await page.evaluate(() => ({

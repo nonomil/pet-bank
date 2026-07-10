@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 const html = readFileSync('index.html', 'utf8');
 const appJs = readFileSync('js/app.js', 'utf8');
 const artifactJs = readFileSync('scripts/assemble-pages-artifact.mjs', 'utf8');
+const wordMemoryMapRouteHtml = readFileSync('app/playground/word-memory-map/index.html', 'utf8');
 
 const results = [];
 function check(name, cond, detail = '') {
@@ -21,14 +22,16 @@ check('child app canonical routes live under /app namespace', [
     /today:\s*['"]\/app\/today['"]/.test(appJs),
     /learn:\s*['"]\/app\/learn['"]/.test(appJs),
     /pet:\s*['"]\/app\/pet['"]/.test(appJs),
-    /playground:\s*['"]\/app\/playground['"]/.test(appJs)
+    /playground:\s*['"]\/app\/playground['"]/.test(appJs),
+    /['"]word-memory-map['"]:\s*['"]\/app\/playground\/word-memory-map['"]/.test(appJs)
 ].every(Boolean));
 check('legacy child routes remain compatibility aliases', [
     /['"]\/['"]\s*:\s*\{\s*page:\s*['"]map['"]/.test(appJs),
     /['"]\/today['"]\s*:\s*\{\s*page:\s*['"]today['"]/.test(appJs),
     /['"]\/learn['"]\s*:\s*\{\s*page:\s*['"]learn['"]/.test(appJs),
     /['"]\/pet['"]\s*:\s*\{\s*page:\s*['"]pet['"]/.test(appJs),
-    /['"]\/playground['"]\s*:\s*\{\s*page:\s*['"]playground['"]/.test(appJs)
+    /['"]\/playground['"]\s*:\s*\{\s*page:\s*['"]playground['"]/.test(appJs),
+    /['"]\/playground\/word-memory-map['"]\s*:\s*\{\s*page:\s*['"]word-memory-map['"]/.test(appJs)
 ].every(Boolean));
 check('parent settings namespace aliases map to settings sections', [
     /['"]\/parent\/settings['"]\s*:\s*\{\s*page:\s*['"]settings['"],\s*settingsSection:\s*['"]home['"]/.test(appJs),
@@ -62,8 +65,11 @@ check('settings sections keep existing mount ids', [
     'diagnostics-root'
 ].every((id) => html.includes(`id="${id}"`)));
 check('index declares a static base before relative assets on deep routes', /<base\s+id="routeBase"\s+href="\/">/.test(html) && html.indexOf('<base id="routeBase"') < html.indexOf('<link rel="preload"'));
+check('index can restore direct subpage routes from route query', /searchParams\.get\(['"]route['"]\)/.test(html) && /history\.replaceState\s*\(/.test(html), 'route hydration');
 check('route base script updates the static base element', /getElementById\(['"]routeBase['"]\)/.test(html) && /setAttribute\(['"]href['"],\s*base\)/.test(html));
 check('base href route prefixes include app namespace', /routePrefixes\s*=\s*\[[^\]]*['"]\/app['"]/.test(html));
+check('index loads playground shell styles for embedded game pages', /href="css\/playground\.css"/.test(html));
+check('word memory map static route entry redirects back into root shell', /\.\.\/\.\.\/\.\.\/index\.html/.test(wordMemoryMapRouteHtml) && /route/.test(wordMemoryMapRouteHtml) && /word-memory-map/.test(wordMemoryMapRouteHtml));
 check('Pages artifact emits 404 fallback for deep links', /404\.html/.test(artifactJs) && /copyFile\('index\.html',\s*'404\.html'\)/.test(artifactJs));
 
 const failed = results.filter((item) => !item.pass);
