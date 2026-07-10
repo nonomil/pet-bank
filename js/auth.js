@@ -70,7 +70,6 @@
         const client = getClient();
         const normalized = normalizeInviteCode(inviteCode);
         if (!client) throw new Error('当前还没有配置云端账号，请先注入 Supabase 配置。');
-        if (!normalized) throw new Error('请输入注册邀请码。');
 
         const result = await client.functions.invoke('validate-registration-invite', {
             body: { inviteCode: normalized }
@@ -236,7 +235,7 @@
                 <input class="text-input" type="email" name="email" placeholder="家长邮箱" required>
                 <input class="text-input" type="password" name="password" placeholder="登录密码（至少 6 位）" minlength="6" required>
                 <input class="text-input" type="text" name="parentName" placeholder="家长称呼（可选）">
-                ${state.mode === 'signup' ? '<input class="text-input" type="text" name="inviteCode" placeholder="注册邀请码" required>' : ''}
+                ${state.mode === 'signup' ? '<input class="text-input" type="text" name="inviteCode" placeholder="注册邀请码（首次部署的第一个家长可留空）">' : ''}
                 <button class="btn-primary auth-submit" type="submit">${state.loading ? '提交中…' : (state.mode === 'signup' ? '注册并绑定家庭' : '登录并继续')}</button>
             </form>
         `;
@@ -377,6 +376,7 @@
         const password = String(formData.get('password') || '').trim();
         const parentName = String(formData.get('parentName') || '').trim();
         const inviteCode = normalizeInviteCode(formData.get('inviteCode'));
+        let inviteValidation = null;
         let restoreResult = null;
 
         state.loading = true;
@@ -385,18 +385,23 @@
         try {
             let result;
             if (state.mode === 'signup') {
-                await validateRegistrationInvite(inviteCode);
+                inviteValidation = await validateRegistrationInvite(inviteCode);
+                const metadata = {
+                    parent_name: parentName
+                };
+                if (inviteCode) {
+                    metadata.registration_invite_code = inviteCode;
+                }
                 result = await client.auth.signUp({
                     email,
                     password,
                     options: {
-                        data: {
-                            parent_name: parentName,
-                            registration_invite_code: inviteCode
-                        }
+                        data: metadata
                     }
                 });
-                state.info = '注册请求已提交。邀请码会在首次成功登录时自动核销。';
+                state.info = inviteValidation && inviteValidation.bootstrapAllowed
+                    ? '首个家长账号注册请求已提交。登录后可先创建家庭，再签发后续家长的邀请码。'
+                    : '注册请求已提交。邀请码会在首次成功登录时自动核销。';
             } else {
                 result = await client.auth.signInWithPassword({
                     email,

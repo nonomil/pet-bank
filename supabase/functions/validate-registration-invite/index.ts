@@ -13,6 +13,11 @@ function normalizeInviteCode(value: unknown) {
   return String(value || '').trim().toUpperCase();
 }
 
+function isInitialOwnerBootstrapEnabled() {
+  const raw = String(Deno.env.get('PETBANK_ENABLE_INITIAL_OWNER_SIGNUP') || 'true').trim().toLowerCase();
+  return !(raw === 'false' || raw === '0' || raw === 'off' || raw === 'no');
+}
+
 Deno.serve(async (request) => {
   if (request.method !== 'POST') {
     return json({ error: 'Method not allowed' }, { status: 405 });
@@ -20,9 +25,6 @@ Deno.serve(async (request) => {
 
   const body = await request.json().catch(() => ({}));
   const inviteCode = normalizeInviteCode(body.inviteCode);
-  if (!inviteCode) {
-    return json({ error: 'inviteCode is required' }, { status: 400 });
-  }
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL');
   const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
@@ -31,6 +33,32 @@ Deno.serve(async (request) => {
   }
 
   const adminClient = createClient(supabaseUrl, serviceRoleKey);
+  if (!inviteCode) {
+    if (!isInitialOwnerBootstrapEnabled()) {
+      return json({ error: 'inviteCode is required' }, { status: 400 });
+    }
+
+    const accountsCountResult = await adminClient
+      .from('accounts')
+      .select('id', { count: 'exact', head: true });
+
+    if (accountsCountResult.error) {
+      return json({ error: accountsCountResult.error.message }, { status: 500 });
+    }
+
+    const accountCount = Number(accountsCountResult.count || 0);
+    if (accountCount === 0) {
+      return json({
+        ok: true,
+        bootstrapAllowed: true,
+        bootstrapMode: 'initial-owner',
+        message: 'Initial owner signup is allowed because no parent accounts exist yet.',
+      });
+    }
+
+    return json({ error: 'inviteCode is required' }, { status: 400 });
+  }
+
   const inviteResult = await adminClient
     .from('registration_invites')
     .select('id,invite_code,status,label,expires_at,claimed_by_account_id')

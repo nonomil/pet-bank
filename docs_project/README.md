@@ -40,6 +40,7 @@
 | 文档 | 内容 |
 |------|------|
 | [testing-and-release.md](runbooks/testing-and-release.md) | 本地启动、全量回归、smoke、验证入口 |
+| [account-auth-supabase-deploy.md](runbooks/account-auth-supabase-deploy.md) | 家长账号、Supabase、邀请码、Hermes 部署与首账号初始化 |
 
 ## 数据契约
 

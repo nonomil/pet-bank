@@ -8,7 +8,7 @@
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
 [![Version: v0.7.18](https://img.shields.io/badge/Version-v0.7.18-brightgreen.svg)](CHANGELOG.md)
 
-📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [更新日志](CHANGELOG.md)
+📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [账号与 Supabase 部署手册](docs_project/runbooks/account-auth-supabase-deploy.md) ｜ [更新日志](CHANGELOG.md)
 
 🌐 **在线访问**：<https://summer-bank.nonom.top>
 🌐 **GitHub Pages**：<https://nonomil.github.io/pet-bank/>
