@@ -6,11 +6,8 @@
 node_modules/
 
 # --- 大文件 / 项目副本 / 视频（本地保留，不纳入版本控制）---
-# prj/ 含 138MB 的 pet-bank-main.zip 与项目冗余副本（放行自建的 TTS 服务）
+# prj/ 含原型、工具链、语音服务和外部参考副本；默认不纳入版本控制，只放行根目录测试与少量明确要发布的原型。
 prj/*
-!prj/tts/
-!prj/tts-portable/
-!prj/browser-act-imagegen/
 !prj/学习机玩法原型/
 !prj/学习机玩法原型/**
 !prj/消灭苦力怕打字游戏/
@@ -24,8 +21,14 @@ prj/消灭苦力怕打字游戏/browser-screenshots/
 prj/消灭苦力怕打字游戏/tmp/
 prj/学习机玩法原型/**/__pycache__/
 prj/学习机玩法原型/**/*.pyc
-# docs/参考案例/ 含 12MB mp4 与视频抽帧图片，整体不入库
-docs/参考案例/
+prj/GPT生图--Lottie动画/
+prj/GPT生图--UI设计/
+prj/browser-act-imagegen/
+prj/tts/
+prj/tts-portable/
+# docs/ 是本地方案/调研/会话材料区；远端只保留 docs/README.md 说明入口。
+docs/*
+!docs/README.md
 *.zip
 *.mp4
 
@@ -73,4 +76,11 @@ data/*.rescan-report.json
 tmp/
 tmp_*.png
 tmp_*.log
+tmp-*.png
+tmp-*.log
 chatgpt-sprite-page.png
+farm-gpt-*.png
+playground-word-memory-*.png
+word-shooter-*.png
+CLAUDE.md
+HANDOFF.md
