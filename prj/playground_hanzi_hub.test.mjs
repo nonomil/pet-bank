@@ -34,7 +34,7 @@ async function waitForSection(pageName, expectedTab) {
     }, { name: pageName, tab: expectedTab }, { timeout: 15000 });
 }
 
-const gamePages = ['playground', 'mathpk', 'hanzi', 'typing-defense', 'leaderboard'];
+const gamePages = ['playground', 'mathpk', 'hanzi', 'typing-defense', 'learning-arcade', 'word-memory-map', 'leaderboard'];
 for (const pageName of gamePages) {
     await page.evaluate((name) => window.switchPage(name), pageName);
     await waitForSection(pageName, 'playground');
@@ -57,7 +57,7 @@ const playgroundMenu = await page.evaluate(() => ({
     hidden: document.querySelector('#topHubMenu')?.hidden ?? true
 }));
 check('playground top menu opens', playgroundMenu.hidden === false);
-check('playground top menu only exposes play entries', /数学 PK/.test(playgroundMenu.text) && /汉字游戏/.test(playgroundMenu.text) && /打字防线/.test(playgroundMenu.text) && /卡牌对战/.test(playgroundMenu.text) && /排行榜/.test(playgroundMenu.text), playgroundMenu.text);
+check('playground top menu only exposes play entries', /数学 PK/.test(playgroundMenu.text) && /汉字游戏/.test(playgroundMenu.text) && /打字防线/.test(playgroundMenu.text) && /学习机小游戏/.test(playgroundMenu.text) && /单词记忆射击场/.test(playgroundMenu.text) && /卡牌对战/.test(playgroundMenu.text) && /排行榜/.test(playgroundMenu.text), playgroundMenu.text);
 check('playground top menu hides management entries', !/成长作品|工具箱|设置/.test(playgroundMenu.text), playgroundMenu.text);
 
 const managementShortcut = await page.evaluate(() => ({
@@ -68,11 +68,12 @@ check('top nav exposes a separate parent shortcut', managementShortcut.exists &&
 
 const playground = await page.evaluate(() => ({
     cards: Array.from(document.querySelectorAll('#page-playground .playground-grid .pg-img-card img')).map((el) => el.getAttribute('alt')?.trim()).filter(Boolean),
-    hasFeaturedTypingDefense: /打字防线/.test(document.querySelector('#page-playground .playground-feature-shell')?.innerText || '')
+    featureText: document.querySelector('#page-playground .playground-feature-shell')?.innerText || ''
 }));
 check('playground hub shows 4 entry cards', playground.cards.length === 4, `got ${playground.cards.length}`);
 check('playground hub includes Hanzi entry', playground.cards.includes('汉字游戏'));
-check('playground hub exposes typing defense featured entry', playground.hasFeaturedTypingDefense);
+check('playground hub exposes typing defense featured entry', /打字防线/.test(playground.featureText), playground.featureText);
+check('playground hub exposes word memory map featured entry', /单词记忆射击场/.test(playground.featureText), playground.featureText);
 
 await page.evaluate(() => window.switchPage('typing-defense'));
 await page.waitForFunction(() => document.getElementById('typing-defense-frame')?.getAttribute('src')?.includes('/prj/'), { timeout: 15000 });
@@ -94,6 +95,19 @@ await page.waitForFunction((before) => Number(localStorage.getItem('petbank_poin
 const hostPointsAfter = await page.evaluate(() => Number(localStorage.getItem('petbank_points') || '0'));
 check('typing defense reward sync increases host points', hostPointsAfter > hostPointsBefore, `${hostPointsBefore} -> ${hostPointsAfter}`);
 await page.waitForFunction(() => /最近主练|累计通关/.test(document.getElementById('typingDefenseSummary')?.innerText || ''), { timeout: 5000 });
+
+await page.evaluate(() => window.switchPage('word-memory-map'));
+await page.waitForFunction(() => document.getElementById('word-memory-map-frame')?.getAttribute('src')?.includes('/prj/'), { timeout: 15000 });
+const wordMemoryMap = await page.evaluate(() => ({
+    status: document.getElementById('word-memory-map-status')?.textContent?.trim() || '',
+    hasFrame: !!document.getElementById('word-memory-map-frame'),
+    link: document.getElementById('word-memory-map-launch')?.getAttribute('href') || '',
+    pageText: document.getElementById('page-word-memory-map')?.textContent?.trim() || '',
+    minHeight: window.getComputedStyle(document.getElementById('word-memory-map-frame') || document.body).minHeight || ''
+}));
+check('word memory map page mounts iframe container', wordMemoryMap.hasFrame && /\/prj\//.test(wordMemoryMap.link), JSON.stringify(wordMemoryMap));
+check('word memory map host page exposes mode summary', /俯视地图|经典炮弹|支援道具/.test(wordMemoryMap.pageText), wordMemoryMap.pageText);
+check('word memory map iframe inherits embed sizing', /760px|620px/.test(wordMemoryMap.minHeight), wordMemoryMap.minHeight);
 
 await page.evaluate(() => window.switchPage('hanzi'));
 await page.waitForFunction(() => document.querySelectorAll('#page-hanzi .hz-level-card').length >= 4, { timeout: 15000 });

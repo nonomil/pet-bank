@@ -571,6 +571,7 @@ function getExploreStageSummary() {
 }
 
 const TYPING_DEFENSE_PROGRESS_KEY = 'petbank_typing_defense_progress';
+const LEARNING_ARCADE_SETTINGS_KEY = 'learning-arcade-settings-v1';
 
 function readTypingDefenseProgress() {
     try {
@@ -605,6 +606,100 @@ function writeTypingDefenseProgress(progress) {
     try {
         localStorage.setItem(TYPING_DEFENSE_PROGRESS_KEY, JSON.stringify(progress || {}));
     } catch (_) {}
+}
+
+function readLearningArcadeSettings() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(LEARNING_ARCADE_SETTINGS_KEY) || '{}');
+        return {
+            wordDifficulty: raw.wordDifficulty || 'basic',
+            hanziPack: raw.hanziPack || 'kindergarten-hanzi',
+            wordPack: raw.wordPack || 'minecraft',
+            explicitWordDifficulty: Boolean(raw._explicitWordDifficulty),
+            explicitHanziPack: Boolean(raw._explicitHanziPack),
+            pinyinStarterSeen: Boolean(raw._pinyinStarterSeen),
+            snakeStarterSeen: Boolean(raw._snakeStarterSeen)
+        };
+    } catch (_) {
+        return {
+            wordDifficulty: 'basic',
+            hanziPack: 'kindergarten-hanzi',
+            wordPack: 'minecraft',
+            explicitWordDifficulty: false,
+            explicitHanziPack: false,
+            pinyinStarterSeen: false,
+            snakeStarterSeen: false
+        };
+    }
+}
+
+function friendlyLearningArcadeDifficultyLabel(level) {
+    return ({
+        basic: '基础',
+        intermediate: '进阶',
+        full: '完整'
+    })[level] || '基础';
+}
+
+function friendlyLearningArcadePackLabel(packId) {
+    return ({
+        'kindergarten-hanzi': '认汉字',
+        'kindergarten-pinyin': '拼音启蒙',
+        'bridge-hanzi': '幼小衔接',
+        'grade1-ready': '一年级预备',
+        all: '全部题卡'
+    })[packId] || '认汉字';
+}
+
+function getLearningArcadeSummary() {
+    const settings = readLearningArcadeSettings();
+    const starterCount = Number(settings.pinyinStarterSeen) + Number(settings.snakeStarterSeen);
+    const introLabel = starterCount >= 2
+        ? '已完成首玩引导'
+        : starterCount === 1
+            ? '已完成一半引导'
+            : '建议先从认汉字开始';
+    return {
+        games: 3,
+        difficultyLabel: friendlyLearningArcadeDifficultyLabel(settings.wordDifficulty),
+        hanziPackLabel: friendlyLearningArcadePackLabel(settings.hanziPack),
+        introLabel,
+        chips: [
+            { label: '飞机大战', value: '练字母' },
+            { label: '拼音赛车', value: settings.explicitHanziPack ? settings.hanziPack === 'kindergarten-pinyin' ? '练拼音' : '认汉字' : '认汉字' },
+            { label: '贪吃蛇', value: '方向键' }
+        ]
+    };
+}
+
+function renderLearningArcadeSummaryPanel() {
+    const root = document.getElementById('learningArcadeSummary');
+    if (!root) return;
+    const summary = getLearningArcadeSummary();
+    const chips = summary.chips.map((item) => `
+        <span class="typing-defense-mode-chip">${item.label}<strong>${item.value}</strong></span>
+    `).join('');
+    root.innerHTML = `
+        <div class="typing-defense-summary-grid">
+            <article class="typing-defense-summary-card">
+                <small>收录玩法</small>
+                <strong>${summary.games} 个</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>当前难度</small>
+                <strong>${summary.difficultyLabel}</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>拼音包</small>
+                <strong>${summary.hanziPackLabel}</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>上手状态</small>
+                <strong>${summary.introLabel}</strong>
+            </article>
+        </div>
+        <div class="typing-defense-mode-strip">${chips}</div>
+    `;
 }
 
 function friendlyTypingDefenseModeLabel(mode) {
@@ -1566,6 +1661,7 @@ const PAGE_TO_TAB = {
     mathpk: 'playground', hanzi: 'playground',                  // 数学PK/汉字 → 游乐场
     'typing-defense': 'playground',
     'learning-arcade': 'playground',
+    'word-memory-map': 'playground',
     leaderboard: 'playground',                                  // 排行榜 → 游乐场
     pet: 'pet', home: 'pet', 'home-visit': 'pet', card: 'pet', walk: 'pet',          // 宠物
     explore: 'explore',                                         // 探索（含成长地图）
@@ -1600,6 +1696,7 @@ const APP_SHELL_PAGES = new Set([
     'hanzi',
     'typing-defense',
     'learning-arcade',
+    'word-memory-map',
     'leaderboard'
 ]);
 
@@ -1647,6 +1744,7 @@ const PAGE_ROUTE_MAP = {
     hanzi: '/app/playground/hanzi',
     'typing-defense': '/app/playground/typing-defense',
     'learning-arcade': '/app/playground/learning-arcade',
+    'word-memory-map': '/app/playground/word-memory-map',
     leaderboard: '/app/playground/leaderboard',
     parent: '/parent',
     works: '/parent/works',
@@ -1679,6 +1777,7 @@ const ROUTE_TO_PAGE = {
     '/app/playground/hanzi': { page: 'hanzi' },
     '/app/playground/typing-defense': { page: 'typing-defense' },
     '/app/playground/learning-arcade': { page: 'learning-arcade' },
+    '/app/playground/word-memory-map': { page: 'word-memory-map' },
     '/app/playground/leaderboard': { page: 'leaderboard' },
     '/today': { page: 'today' },
     '/today/learning-sheet': { page: 'learning-sheet' },
@@ -1703,6 +1802,7 @@ const ROUTE_TO_PAGE = {
     '/playground/hanzi': { page: 'hanzi' },
     '/playground/typing-defense': { page: 'typing-defense' },
     '/playground/learning-arcade': { page: 'learning-arcade' },
+    '/playground/word-memory-map': { page: 'word-memory-map' },
     '/playground/leaderboard': { page: 'leaderboard' },
     '/parent': { page: 'parent' },
     '/parent/works': { page: 'works' },
@@ -1843,7 +1943,7 @@ function getParentShellNavKey(page) {
 
 function getAppShellSurface(page) {
     const tabPage = PAGE_TO_TAB[page] || page;
-    if (page === 'mathpk' || page === 'hanzi' || page === 'typing-defense' || page === 'leaderboard') return 'game';
+    if (page === 'mathpk' || page === 'hanzi' || page === 'typing-defense' || page === 'word-memory-map' || page === 'leaderboard') return 'game';
     if (tabPage === 'explore' || tabPage === 'playground') return 'scene';
     if (tabPage === 'today' || tabPage === 'learn') return 'focus';
     if (tabPage === 'pet') return 'studio';
@@ -1937,6 +2037,7 @@ const TOP_HUB_MENU_CONFIG = {
         { page: 'hanzi', label: '汉字游戏' },
         { page: 'typing-defense', label: '打字防线' },
         { page: 'learning-arcade', label: '学习机小游戏' },
+        { page: 'word-memory-map', label: '单词记忆射击场' },
         { action: 'cardArena', label: '卡牌对战' },
         { page: 'leaderboard', label: '排行榜' }
     ]
@@ -2294,6 +2395,27 @@ function ensureLearningArcadeEmbed() {
     frame.src = src;
 }
 
+function ensureWordMemoryMapEmbed() {
+    const frame = document.getElementById('word-memory-map-frame');
+    if (!frame) return;
+    const src = withRouteBase('/prj/%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E5%B0%84%E5%87%BB%E5%9C%BA%E5%8E%9F%E5%9E%8B/index.html');
+    const launchLink = document.getElementById('word-memory-map-launch');
+    const status = document.getElementById('word-memory-map-status');
+    if (launchLink) launchLink.href = src;
+    if (frame.dataset.loaded === '1') return;
+    if (status) status.textContent = '正在加载单词记忆射击场...';
+    frame.addEventListener('load', function onLoad() {
+        frame.dataset.loaded = '1';
+        if (status) status.textContent = '已加载，可直接开始。保留地图探索、经典炮弹和支援道具两套节奏。';
+        frame.removeEventListener('load', onLoad);
+    });
+    frame.addEventListener('error', function onError() {
+        if (status) status.textContent = '加载失败，请检查单词记忆射击场原型的静态资源路径。';
+        frame.removeEventListener('error', onError);
+    });
+    frame.src = src;
+}
+
 function runPageActivation(page) {
     if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     if (page === 'parent') updateParentHomePage();
@@ -2323,7 +2445,11 @@ function runPageActivation(page) {
         ensureTypingDefenseEmbed();
     }
     if (page === 'learning-arcade') {
+        renderLearningArcadeSummaryPanel();
         ensureLearningArcadeEmbed();
+    }
+    if (page === 'word-memory-map') {
+        ensureWordMemoryMapEmbed();
     }
     if (page === 'review' && window.FamilyReview && typeof window.FamilyReview.refresh === 'function') void FamilyReview.refresh('family-review-root');
     if (page === 'leaderboard' && window.Leaderboard) {
