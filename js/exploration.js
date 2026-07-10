@@ -475,7 +475,10 @@ const ExplorationSystem = (function () {
         const arenaChapter = (MAP_LAYOUT.find(m => m.id === scene.id) || {}).chapter || 1;
         currentBattle = {
             scene,
-            monster: Object.assign({}, monster, { current_hp: monster.hp }),
+            monster: Object.assign({}, monster, {
+                exp: Number(monster.exp != null ? monster.exp : monster.reward_exp) || 0,
+                current_hp: monster.hp
+            }),
             pet_max_hp: pet.hp,
             log: [],
             turn: 1,
