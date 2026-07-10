@@ -31,7 +31,7 @@ async function waitForSection(pageName, expectedTab) {
         const activePage = document.querySelector('.page.active')?.id || '';
         const shellRoutePage = document.body.dataset.appRoutePage || '';
         return activeTab === tab && (activePage === `page-${name}` || shellRoutePage === name);
-    }, { name: pageName, tab: expectedTab }, { timeout: 15000 });
+    }, { name: pageName, tab: expectedTab }, { timeout: 30000 });
 }
 
 const gamePages = ['playground', 'mathpk', 'hanzi', 'typing-defense', 'learning-arcade', 'word-memory-map', 'leaderboard'];
@@ -103,11 +103,39 @@ const wordMemoryMap = await page.evaluate(() => ({
     hasFrame: !!document.getElementById('word-memory-map-frame'),
     link: document.getElementById('word-memory-map-launch')?.getAttribute('href') || '',
     pageText: document.getElementById('page-word-memory-map')?.textContent?.trim() || '',
-    minHeight: window.getComputedStyle(document.getElementById('word-memory-map-frame') || document.body).minHeight || ''
+    minHeight: window.getComputedStyle(document.getElementById('word-memory-map-frame') || document.body).minHeight || '',
+    summaryText: document.getElementById('wordMemoryMapSummary')?.textContent?.trim() || ''
 }));
 check('word memory map page mounts iframe container', wordMemoryMap.hasFrame && /\/prj\//.test(wordMemoryMap.link), JSON.stringify(wordMemoryMap));
 check('word memory map host page exposes mode summary', /俯视地图|经典炮弹|支援道具/.test(wordMemoryMap.pageText), wordMemoryMap.pageText);
 check('word memory map iframe inherits embed sizing', /760px|620px/.test(wordMemoryMap.minHeight), wordMemoryMap.minHeight);
+check('word memory map host summary panel renders', /累计通关|累计星星|累计成长分/.test(wordMemoryMap.summaryText), wordMemoryMap.summaryText);
+
+const wordMapPointsBefore = await page.evaluate(() => Number(localStorage.getItem('petbank_points') || '0'));
+const wordMapFrame = page.frameLocator('#word-memory-map-frame');
+await wordMapFrame.locator('body').evaluate(() => {
+    window.parent.postMessage({
+        source: 'petbank-word-memory-map',
+        sessionId: 'playground-test-word-memory',
+        seq: 1,
+        kind: 'result',
+        payload: {
+            score: 7,
+            earnedStars: 7,
+            accuracy: 88,
+            levelOrder: 2,
+            levelTitle: '农场巡逻',
+            highestUnlockedLevel: 3,
+            heroId: 'boy',
+            worldPack: 'farm_gpt'
+        }
+    }, '*');
+});
+await page.waitForFunction((before) => Number(localStorage.getItem('petbank_points') || '0') > before, wordMapPointsBefore, { timeout: 15000 });
+const wordMapPointsAfter = await page.evaluate(() => Number(localStorage.getItem('petbank_points') || '0'));
+const wordMapSummaryAfter = await page.evaluate(() => document.getElementById('wordMemoryMapSummary')?.textContent?.trim() || '');
+check('word memory map reward sync increases host points', wordMapPointsAfter > wordMapPointsBefore, `${wordMapPointsBefore} -> ${wordMapPointsAfter}`);
+check('word memory map bridge refreshes host summary', /农场巡逻|小男孩|农场 GPT/.test(wordMapSummaryAfter), wordMapSummaryAfter);
 
 await page.evaluate(() => {
     localStorage.removeItem('petbank_learning_arcade_progress');

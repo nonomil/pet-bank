@@ -52,6 +52,7 @@
 
 - [混合式英语学习资料包方案](./混合式英语学习资料包方案.md)
 - [外链与自定义资料包接口草案](./外链与自定义资料包接口草案.md)
+- [单词记忆游戏学习提示与迭代方案](./单词记忆游戏学习提示与迭代方案.md)
 - [Learning Center English Hybrid Design](../plans/2026-07-05-learning-center-english-hybrid-design.md)
 - [Learning Center English Hybrid Implementation Plan](../plans/2026-07-05-learning-center-english-hybrid-implementation.md)
 
