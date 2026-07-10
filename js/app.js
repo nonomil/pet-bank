@@ -570,6 +570,152 @@ function getExploreStageSummary() {
     };
 }
 
+const TYPING_DEFENSE_PROGRESS_KEY = 'petbank_typing_defense_progress';
+
+function readTypingDefenseProgress() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(TYPING_DEFENSE_PROGRESS_KEY) || '{}');
+        return {
+            sessions: Number(raw.sessions || 0),
+            wins: Number(raw.wins || 0),
+            totalStars: Number(raw.totalStars || 0),
+            totalPoints: Number(raw.totalPoints || 0),
+            bestScore: Number(raw.bestScore || 0),
+            bestCombo: Number(raw.bestCombo || 0),
+            lastMode: raw.lastMode || 'words',
+            modeCounts: raw.modeCounts && typeof raw.modeCounts === 'object' ? raw.modeCounts : {},
+            updatedAt: raw.updatedAt || ''
+        };
+    } catch (_) {
+        return {
+            sessions: 0,
+            wins: 0,
+            totalStars: 0,
+            totalPoints: 0,
+            bestScore: 0,
+            bestCombo: 0,
+            lastMode: 'words',
+            modeCounts: {},
+            updatedAt: ''
+        };
+    }
+}
+
+function writeTypingDefenseProgress(progress) {
+    try {
+        localStorage.setItem(TYPING_DEFENSE_PROGRESS_KEY, JSON.stringify(progress || {}));
+    } catch (_) {}
+}
+
+function friendlyTypingDefenseModeLabel(mode) {
+    const labels = {
+        words: '年级单词',
+        pinyin: '拼音',
+        letters: '字母',
+        mathEasy20: '加减起步',
+        mathEasy100: '加减进阶',
+        mathMul: '乘法启程',
+        numbers: '数字'
+    };
+    return labels[mode] || '打字训练';
+}
+
+function getTypingDefenseStageSummary() {
+    const progress = readTypingDefenseProgress();
+    const modeCounts = progress.modeCounts || {};
+    const modeEntries = Object.entries(modeCounts)
+        .map(([mode, count]) => ({ mode, count: Number(count || 0), label: friendlyTypingDefenseModeLabel(mode) }))
+        .filter((item) => item.count > 0)
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 4);
+    return {
+        label: friendlyTypingDefenseModeLabel(progress.lastMode),
+        sessions: progress.sessions,
+        wins: progress.wins,
+        totalStars: progress.totalStars,
+        totalPoints: progress.totalPoints,
+        bestScore: progress.bestScore,
+        bestCombo: progress.bestCombo,
+        modeVariety: modeEntries.length,
+        modeEntries,
+        stageRewards: [
+            { threshold: 1, label: '第一次通关', unlocked: progress.wins >= 1 },
+            { threshold: 5, label: '星星收集起步', unlocked: progress.totalStars >= 5 },
+            { threshold: 3, label: '稳定练习节奏', unlocked: progress.sessions >= 3 },
+            { threshold: 300, label: '键盘熟悉感', unlocked: progress.totalPoints >= 300 }
+        ],
+        nextStep: progress.sessions === 0
+            ? '先打一局年级单词，让孩子熟悉键盘输入和瞄准反馈。'
+            : progress.wins === 0
+                ? '先把一整局打完，比追高分更重要。'
+                : progress.bestCombo >= 4
+                    ? '下一步可以切到拼音或加减法，开始练模式切换。'
+                    : '先把连续命中拉起来，孩子会更容易形成键盘节奏。'
+    };
+}
+
+function recordTypingDefenseResult(payload) {
+    const progress = readTypingDefenseProgress();
+    const mode = String(payload.mode || 'words');
+    const score = Math.max(0, Math.floor(Number(payload.score) || 0));
+    const stars = Math.max(0, Math.floor(Number(payload.earnedStars) || 0));
+    const bestCombo = Math.max(0, Math.floor(Number(payload.bestCombo) || 0));
+    const wins = payload.won ? 1 : 0;
+    const next = {
+        sessions: progress.sessions + 1,
+        wins: progress.wins + wins,
+        totalStars: progress.totalStars + stars,
+        totalPoints: progress.totalPoints + score,
+        bestScore: Math.max(progress.bestScore, score),
+        bestCombo: Math.max(progress.bestCombo, bestCombo),
+        lastMode: mode,
+        modeCounts: Object.assign({}, progress.modeCounts, {
+            [mode]: Number(progress.modeCounts && progress.modeCounts[mode] || 0) + 1
+        }),
+        updatedAt: new Date().toISOString()
+    };
+    writeTypingDefenseProgress(next);
+    pushBattleRecentActivity({
+        id: `typing_defense_${Date.now()}`,
+        mode: 'typing-defense',
+        title: payload.won
+            ? `打字防线通关 · ${friendlyTypingDefenseModeLabel(mode)}`
+            : `打字防线练习 · ${friendlyTypingDefenseModeLabel(mode)}`,
+        detail: `同步 ${score} 成长分，拿到 ${stars} 颗星，最高连击 ${bestCombo}`
+    });
+    return next;
+}
+
+function renderTypingDefenseSummaryPanel() {
+    const root = document.getElementById('typingDefenseSummary');
+    if (!root) return;
+    const summary = getTypingDefenseStageSummary();
+    const chips = summary.modeEntries.length
+        ? summary.modeEntries.map((item) => `<span class="typing-defense-mode-chip">${item.label}<strong>${item.count} 局</strong></span>`).join('')
+        : '<span class="typing-defense-mode-chip">还没有模式记录<strong>先打一局</strong></span>';
+    root.innerHTML = `
+        <div class="typing-defense-summary-grid">
+            <article class="typing-defense-summary-card">
+                <small>累计通关</small>
+                <strong>${summary.wins} 局</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>累计星星</small>
+                <strong>${summary.totalStars}</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>最佳连击</small>
+                <strong>${summary.bestCombo}</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>最近主练</small>
+                <strong>${summary.label}</strong>
+            </article>
+        </div>
+        <div class="typing-defense-mode-strip">${chips}</div>
+    `;
+}
+
 const BATTLE_MILESTONE_REWARD_KEY = 'petbank_battle_milestone_rewards';
 const BATTLE_RECENT_ACTIVITY_KEY = 'petbank_battle_recent_activity';
 
@@ -611,6 +757,32 @@ const BATTLE_MILESTONES = [
         },
         reward() {
             return { itemId: 'battle_heal_potion', itemCount: 1 };
+        }
+    },
+    {
+        id: 'typing_first_win',
+        mode: 'typing-defense',
+        title: '打字防线开张',
+        desc: '打字防线累计通关至少 1 局。',
+        rewardText: '+15 成长分',
+        isComplete(summary) {
+            return Number(summary.typingDefense.wins || 0) >= 1;
+        },
+        reward() {
+            return { points: 15 };
+        }
+    },
+    {
+        id: 'typing_three_modes',
+        mode: 'typing-defense',
+        title: '三种训练都碰过',
+        desc: '打字防线至少体验 3 种不同训练模式。',
+        rewardText: '+20 成长分',
+        isComplete(summary) {
+            return Number(summary.typingDefense.modeVariety || 0) >= 3;
+        },
+        reward() {
+            return { points: 20 };
         }
     },
     {
@@ -689,7 +861,10 @@ function formatBattleRecentTime(isoText) {
 
 function getBattleRecentActivitySummary() {
     const items = readBattleRecentActivity();
-    const todayMomentum = getMathPkStageSummary().totalStars + getArenaStageSummary().clearedCount + getExploreStageSummary().wins;
+    const todayMomentum = getMathPkStageSummary().totalStars
+        + getArenaStageSummary().clearedCount
+        + getExploreStageSummary().wins
+        + getTypingDefenseStageSummary().wins;
     return {
         items,
         todayMomentum
@@ -740,7 +915,8 @@ function getBattleMilestoneSummary() {
     const summary = {
         math: getMathPkStageSummary(),
         arena: getArenaStageSummary(),
-        explore: getExploreStageSummary()
+        explore: getExploreStageSummary(),
+        typingDefense: getTypingDefenseStageSummary()
     };
     const claimed = readBattleMilestoneRewards();
     const milestones = BATTLE_MILESTONES.map((item) => {
@@ -910,7 +1086,8 @@ function renderPlaygroundProgressBoard() {
     const math = getMathPkStageSummary();
     const arena = getArenaStageSummary();
     const explore = getExploreStageSummary();
-    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins;
+    const typingDefense = getTypingDefenseStageSummary();
+    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins + typingDefense.wins;
     const mathRewardPreview = Array.isArray(math.stageRewards)
         ? math.stageRewards.map((item) => `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}★ ${item.label}</span>`).join('')
         : '';
@@ -920,6 +1097,12 @@ function renderPlaygroundProgressBoard() {
     const exploreRewardPreview = Array.isArray(explore.stageRewards)
         ? explore.stageRewards.map((item) => {
             const unit = item.threshold === 3 ? '次' : item.threshold === 5 ? '景' : '场';
+            return `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}${unit} ${item.label}</span>`;
+        }).join('')
+        : '';
+    const typingRewardPreview = Array.isArray(typingDefense.stageRewards)
+        ? typingDefense.stageRewards.map((item) => {
+            const unit = item.threshold === 300 ? '分' : (item.threshold === 3 ? '局' : (item.threshold === 5 ? '星' : '胜'));
             return `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}${unit} ${item.label}</span>`;
         }).join('')
         : '';
@@ -979,6 +1162,21 @@ function renderPlaygroundProgressBoard() {
                 <div class="playground-progress-next"><strong>下一步</strong>${explore.nextStep}</div>
                 <button class="playground-progress-action" type="button" onclick="switchPage('explore')">继续探索</button>
             </article>
+            <article class="playground-progress-card" data-mode="typing-defense">
+                <div class="playground-progress-top">
+                    <div>
+                        <span class="playground-progress-kicker">打字防线</span>
+                        <h4 class="playground-progress-title">${typingDefense.label}</h4>
+                    </div>
+                </div>
+                <div class="playground-progress-metrics">
+                    <span><small>已通关</small><strong>${typingDefense.wins} 局</strong></span>
+                    <span><small>最佳连击</small><strong>${typingDefense.bestCombo}</strong></span>
+                </div>
+                <div class="playground-goal-strip">${typingRewardPreview}</div>
+                <div class="playground-progress-next"><strong>下一步</strong>${typingDefense.nextStep}</div>
+                <button class="playground-progress-action" type="button" onclick="switchPage('typing-defense')">继续打字防线</button>
+            </article>
         </div>
         <div id="playgroundBattleRecent"></div>
         <div id="playgroundBattleMilestones"></div>
@@ -994,7 +1192,8 @@ function renderReviewBattleBoard() {
     const math = getMathPkStageSummary();
     const arena = getArenaStageSummary();
     const explore = getExploreStageSummary();
-    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins;
+    const typingDefense = getTypingDefenseStageSummary();
+    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins + typingDefense.wins;
     if (momentumEl) momentumEl.textContent = String(totalMomentum);
 
     const cards = [
@@ -1039,6 +1238,20 @@ function renderReviewBattleBoard() {
                 : '先出去走一趟，让路线、掉落和战斗真正连起来。',
             next: explore.nextStep,
             action: `<button class="review-battle-action" type="button" onclick="switchPage('explore')">继续探索</button>`
+        },
+        {
+            mode: 'typing-defense',
+            kicker: '打字防线',
+            title: typingDefense.label,
+            metrics: [
+                { label: '通关局数', value: String(typingDefense.wins) },
+                { label: '最佳连击', value: String(typingDefense.bestCombo) }
+            ],
+            growth: typingDefense.sessions > 0
+                ? '已经把键盘输入、视觉定位和即时反馈连成同一件事。'
+                : '先打一局，让孩子先对“打字会触发结果”建立直接感受。',
+            next: typingDefense.nextStep,
+            action: `<button class="review-battle-action" type="button" onclick="switchPage('typing-defense')">继续打字防线</button>`
         }
     ];
 
@@ -1351,6 +1564,8 @@ const PAGE_TO_TAB = {
     'learn-lesson': 'learn', 'learn-print': 'learn',
     playground: 'playground',                                   // 游乐场（hub）
     mathpk: 'playground', hanzi: 'playground',                  // 数学PK/汉字 → 游乐场
+    'typing-defense': 'playground',
+    'learning-arcade': 'playground',
     leaderboard: 'playground',                                  // 排行榜 → 游乐场
     pet: 'pet', home: 'pet', 'home-visit': 'pet', card: 'pet', walk: 'pet',          // 宠物
     explore: 'explore',                                         // 探索（含成长地图）
@@ -1383,6 +1598,8 @@ const APP_SHELL_PAGES = new Set([
     'card',
     'mathpk',
     'hanzi',
+    'typing-defense',
+    'learning-arcade',
     'leaderboard'
 ]);
 
@@ -1428,6 +1645,8 @@ const PAGE_ROUTE_MAP = {
     playground: '/app/playground',
     mathpk: '/app/playground/math-pk',
     hanzi: '/app/playground/hanzi',
+    'typing-defense': '/app/playground/typing-defense',
+    'learning-arcade': '/app/playground/learning-arcade',
     leaderboard: '/app/playground/leaderboard',
     parent: '/parent',
     works: '/parent/works',
@@ -1458,6 +1677,8 @@ const ROUTE_TO_PAGE = {
     '/app/playground': { page: 'playground' },
     '/app/playground/math-pk': { page: 'mathpk' },
     '/app/playground/hanzi': { page: 'hanzi' },
+    '/app/playground/typing-defense': { page: 'typing-defense' },
+    '/app/playground/learning-arcade': { page: 'learning-arcade' },
     '/app/playground/leaderboard': { page: 'leaderboard' },
     '/today': { page: 'today' },
     '/today/learning-sheet': { page: 'learning-sheet' },
@@ -1480,6 +1701,8 @@ const ROUTE_TO_PAGE = {
     '/playground': { page: 'playground' },
     '/playground/math-pk': { page: 'mathpk' },
     '/playground/hanzi': { page: 'hanzi' },
+    '/playground/typing-defense': { page: 'typing-defense' },
+    '/playground/learning-arcade': { page: 'learning-arcade' },
     '/playground/leaderboard': { page: 'leaderboard' },
     '/parent': { page: 'parent' },
     '/parent/works': { page: 'works' },
@@ -1620,7 +1843,7 @@ function getParentShellNavKey(page) {
 
 function getAppShellSurface(page) {
     const tabPage = PAGE_TO_TAB[page] || page;
-    if (page === 'mathpk' || page === 'hanzi' || page === 'leaderboard') return 'game';
+    if (page === 'mathpk' || page === 'hanzi' || page === 'typing-defense' || page === 'leaderboard') return 'game';
     if (tabPage === 'explore' || tabPage === 'playground') return 'scene';
     if (tabPage === 'today' || tabPage === 'learn') return 'focus';
     if (tabPage === 'pet') return 'studio';
@@ -1712,6 +1935,8 @@ const TOP_HUB_MENU_CONFIG = {
         { page: 'playground', label: '游乐场首页' },
         { page: 'mathpk', label: '数学 PK' },
         { page: 'hanzi', label: '汉字游戏' },
+        { page: 'typing-defense', label: '打字防线' },
+        { page: 'learning-arcade', label: '学习机小游戏' },
         { action: 'cardArena', label: '卡牌对战' },
         { page: 'leaderboard', label: '排行榜' }
     ]
@@ -1971,6 +2196,104 @@ function updateParentHomePage() {
     childNameEl.textContent = activeProfile && activeProfile.name ? activeProfile.name : fallbackName;
 }
 
+const TYPING_DEFENSE_BRIDGE_SOURCE = 'petbank-typing-defense';
+const typingDefenseBridgeSeen = new Set();
+
+function syncTypingDefenseHostPoints() {
+    const pgPoints = document.getElementById('pg-points');
+    if (pgPoints) pgPoints.textContent = String(totalPoints || 0);
+    const status = document.getElementById('typing-defense-status');
+    if (status) status.textContent = `主站积分已同步：${totalPoints || 0}`;
+    renderTypingDefenseSummaryPanel();
+}
+
+function handleTypingDefenseBridgeMessage(event) {
+    const data = event && event.data;
+    if (!data || data.source !== TYPING_DEFENSE_BRIDGE_SOURCE) return;
+    const frame = document.getElementById('typing-defense-frame');
+    if (frame && frame.contentWindow && event.source !== frame.contentWindow) return;
+    if (event.origin && window.location.origin && event.origin !== window.location.origin) return;
+
+    const sessionId = String(data.sessionId || '');
+    const seq = Number(data.seq || 0);
+    const key = `${sessionId}:${seq}`;
+    if (!sessionId || !Number.isFinite(seq) || typingDefenseBridgeSeen.has(key)) return;
+    typingDefenseBridgeSeen.add(key);
+    if (typingDefenseBridgeSeen.size > 600) {
+        const staleKey = typingDefenseBridgeSeen.values().next().value;
+        if (staleKey) typingDefenseBridgeSeen.delete(staleKey);
+    }
+
+    const payload = data.payload || {};
+    if (data.kind === 'reward') {
+        const points = Math.max(0, Math.floor(Number(payload.points) || 0));
+        if (points > 0) {
+            addGrowthPoints(points);
+            syncTypingDefenseHostPoints();
+        }
+        return;
+    }
+
+    if (data.kind === 'result') {
+        const progress = recordTypingDefenseResult(payload);
+        syncTypingDefenseHostPoints();
+        renderPlaygroundProgressBoard();
+        renderReviewBattleBoard();
+        if (typeof showToast === 'function') {
+            const score = Math.max(0, Math.floor(Number(payload.score) || 0));
+            const stars = Math.max(0, Math.floor(Number(payload.earnedStars) || 0));
+            const summary = payload.won
+                ? `打字防线通关，本局已同步 ${score} 成长分，拿到 ${stars} 颗星，累计通关 ${progress.wins} 局`
+                : `打字防线结束，本局已同步 ${score} 成长分`;
+            showToast(summary);
+        }
+    }
+}
+
+window.addEventListener('message', handleTypingDefenseBridgeMessage);
+
+function ensureTypingDefenseEmbed() {
+    const frame = document.getElementById('typing-defense-frame');
+    if (!frame) return;
+    const src = withRouteBase('/prj/%E6%B6%88%E7%81%AD%E8%8B%A6%E5%8A%9B%E6%80%95%E6%89%93%E5%AD%97%E6%B8%B8%E6%88%8F/web/index.html');
+    const launchLink = document.getElementById('typing-defense-launch');
+    const status = document.getElementById('typing-defense-status');
+    if (launchLink) launchLink.href = src;
+    if (frame.dataset.loaded === '1') return;
+    if (status) status.textContent = '正在加载打字防线...';
+    frame.addEventListener('load', function onLoad() {
+        frame.dataset.loaded = '1';
+        if (status) status.textContent = `已加载，可直接开始。当前主站积分 ${totalPoints || 0}`;
+        frame.removeEventListener('load', onLoad);
+    });
+    frame.addEventListener('error', function onError() {
+        if (status) status.textContent = '加载失败，请检查本地静态资源路径。';
+        frame.removeEventListener('error', onError);
+    });
+    frame.src = src;
+}
+
+function ensureLearningArcadeEmbed() {
+    const frame = document.getElementById('learning-arcade-frame');
+    if (!frame) return;
+    const src = withRouteBase('/prj/%E5%AD%A6%E4%B9%A0%E6%9C%BA%E7%8E%A9%E6%B3%95%E5%8E%9F%E5%9E%8B/index.html');
+    const launchLink = document.getElementById('learning-arcade-launch');
+    const status = document.getElementById('learning-arcade-status');
+    if (launchLink) launchLink.href = src;
+    if (frame.dataset.loaded === '1') return;
+    if (status) status.textContent = '正在加载学习机小游戏...';
+    frame.addEventListener('load', function onLoad() {
+        frame.dataset.loaded = '1';
+        if (status) status.textContent = '已加载，可直接开始。合集里包含三个小游戏。';
+        frame.removeEventListener('load', onLoad);
+    });
+    frame.addEventListener('error', function onError() {
+        if (status) status.textContent = '加载失败，请检查学习机玩法原型的静态资源路径。';
+        frame.removeEventListener('error', onError);
+    });
+    frame.src = src;
+}
+
 function runPageActivation(page) {
     if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
     if (page === 'parent') updateParentHomePage();
@@ -1995,6 +2318,13 @@ function runPageActivation(page) {
     if (page === 'review') renderReviewBattleBoard();
     if (page === 'mathpk' && window.MathPKGame) MathPKGame.renderUI('math-pk-container');
     if (page === 'hanzi' && window.HanziGame) HanziGame.renderUI('hanzi-container');
+    if (page === 'typing-defense') {
+        renderTypingDefenseSummaryPanel();
+        ensureTypingDefenseEmbed();
+    }
+    if (page === 'learning-arcade') {
+        ensureLearningArcadeEmbed();
+    }
     if (page === 'review' && window.FamilyReview && typeof window.FamilyReview.refresh === 'function') void FamilyReview.refresh('family-review-root');
     if (page === 'leaderboard' && window.Leaderboard) {
         switchLeaderboardTab(window._lbCurrentGame || 'mathpk');

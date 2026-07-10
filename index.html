@@ -563,6 +563,17 @@
                     <div class="growth-legend"><span><i class="is-done"></i>已打卡</span><span><i></i>未打卡</span></div>
                     <div class="growth-habit-list" id="growthHabitRows"></div>
                 </section>
+                <section class="review-battle-board" aria-label="跨玩法成长复盘">
+                    <div class="review-battle-board-head">
+                        <div>
+                            <p class="growth-report-kicker">跨玩法成长复盘</p>
+                            <h2>把练习、对战和探索串成一条会继续推进的路线</h2>
+                            <p>不是只看一次胜负，而是看今天已经会了什么、下一步该去哪里继续。</p>
+                        </div>
+                        <div class="review-battle-board-badge"><span>🎮</span><strong id="reviewBattleMomentum">0</strong></div>
+                    </div>
+                    <div id="reviewBattleBoard"></div>
+                </section>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">每周家庭复盘</h2><p class="text-xs mt-1 text-muted">5-10 分钟，看清进度，下周再调整节奏</p></div>
                     <div class="card-body">
@@ -711,6 +722,33 @@
                     </button>
                 </section>
 
+                <section class="playground-progress-shell" id="playgroundProgressBoard" aria-label="游乐场作战看板"></section>
+
+                <section class="playground-feature-shell" aria-label="游乐场特色玩法">
+                    <button class="playground-feature-card" type="button" onclick="switchPage('typing-defense')">
+                        <div class="playground-feature-art">
+                            <img src="prj/%E6%B6%88%E7%81%AD%E8%8B%A6%E5%8A%9B%E6%80%95%E6%89%93%E5%AD%97%E6%B8%B8%E6%88%8F/assets/generated/typing-defense-assets/creeper_gpt_walk_0.png" alt="打字防线" loading="lazy" decoding="async">
+                        </div>
+                        <div class="playground-feature-copy">
+                            <span class="playground-feature-kicker">特色玩法</span>
+                            <h3>打字防线</h3>
+                            <p>英文单词、拼音、100 以内加减法放到同一个远程射箭小游戏里，适合接蓝牙键盘练输入。</p>
+                            <span class="playground-feature-action">进入玩法</span>
+                        </div>
+                    </button>
+                    <button class="playground-feature-card" type="button" onclick="switchPage('learning-arcade')">
+                        <div class="playground-feature-art">
+                            <img src="prj/%E5%AD%A6%E4%B9%A0%E6%9C%BA%E7%8E%A9%E6%B3%95%E5%8E%9F%E5%9E%8B/assets/generated/home-card-word-shooter.png" alt="学习机小游戏" loading="lazy" decoding="async">
+                        </div>
+                        <div class="playground-feature-copy">
+                            <span class="playground-feature-kicker">新入口</span>
+                            <h3>学习机小游戏</h3>
+                            <p>把飞机大战、拼音赛车、贪吃蛇整合成一个全屏小合集，适合短时间切换着玩，先找键盘和方向键的感觉。</p>
+                            <span class="playground-feature-action">打开合集</span>
+                        </div>
+                    </button>
+                </section>
+
                 <!-- 读取 localStorage petbank_points 实时刷新金币徽章 -->
                 <script>
                 (function () {
@@ -757,9 +795,51 @@
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">成长作品收集</h2></div>
                     <div class="card-body space-y-4">
-                        <input type="text" class="text-input" placeholder="作品名称">
-                        <textarea class="text-input h-24 resize-none" placeholder="作品背后的故事..."></textarea>
-                        <button class="btn-primary"><i data-lucide="archive" class="w-4 h-4"></i>存入成长档案</button>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="text-xs font-bold block mb-2 text-sage">作品名称</label>
+                                    <input id="worksTitleInput" type="text" class="text-input" placeholder="例如：暑假数学闯关海报">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold block mb-2 text-sage">作品类型</label>
+                                    <select id="worksTypeSelect" class="text-input">
+                                        <option value="绘画">绘画</option>
+                                        <option value="手工">手工</option>
+                                        <option value="写作">写作</option>
+                                        <option value="学习成果">学习成果</option>
+                                        <option value="照片记录">照片记录</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold block mb-2 text-sage">背后的故事</label>
+                                    <textarea id="worksStoryInput" class="text-input h-24 resize-none" placeholder="写下孩子完成这个作品时的亮点、困难或有趣瞬间..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold block mb-2 text-sage">家长备注</label>
+                                    <input id="worksNoteInput" type="text" class="text-input" placeholder="例如：第一次独立完成，值得复盘鼓励">
+                                </div>
+                                <button id="worksSaveBtn" class="btn-primary" type="button" onclick="saveGrowthWork()"><i data-lucide="archive" class="w-4 h-4"></i>存入成长档案</button>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="card" style="border-radius:12px;">
+                                    <div class="card-body">
+                                        <p class="text-xs text-muted mb-2">当前孩子</p>
+                                        <div class="text-sm font-bold" id="worksActiveChild">默认孩子</div>
+                                        <div class="text-xs text-muted mt-2" id="worksSummaryText">还没有保存作品，先记录一条今天的小成果。</div>
+                                    </div>
+                                </div>
+                                <div class="card" style="border-radius:12px;">
+                                    <div class="card-body">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <strong class="text-sm">最近成长档案</strong>
+                                            <span class="text-xs text-muted" id="worksCountText">0 条</span>
+                                        </div>
+                                        <div id="worksList" class="space-y-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -997,6 +1077,56 @@
             <!-- PAGE: 汉字挑战 -->
             <div class="page" id="page-hanzi">
                 <div id="hanzi-container"></div>
+            </div>
+
+            <!-- PAGE: 打字防线 -->
+            <div class="page" id="page-typing-defense">
+                <section class="playground-embed-shell">
+                    <div class="playground-embed-head">
+                        <div>
+                            <p class="playground-embed-kicker">游乐场 / 打字防线</p>
+                            <h2>打字防线</h2>
+                            <p class="playground-embed-copy">保留独立原型运行时，先以子页方式接入主项目。后续要接积分、勋章、周报，再逐步做主站事件桥接。</p>
+                        </div>
+                        <div class="playground-embed-actions">
+                            <button class="section-shortcut-btn" type="button" onclick="switchPage('playground')">返回游乐场</button>
+                            <a class="section-shortcut-btn" id="typing-defense-launch" href="#" target="_blank" rel="noopener noreferrer">独立打开</a>
+                        </div>
+                    </div>
+                    <div class="playground-embed-status" id="typing-defense-status">等待加载打字防线...</div>
+                    <div class="typing-defense-summary" id="typingDefenseSummary"></div>
+                    <div class="playground-embed-frame-shell">
+                        <iframe id="typing-defense-frame" title="打字防线" loading="lazy" referrerpolicy="no-referrer"></iframe>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PAGE: 学习机小游戏 -->
+            <div class="page" id="page-learning-arcade">
+                <section class="playground-embed-shell">
+                    <div class="playground-embed-head">
+                        <div>
+                            <p class="playground-embed-kicker">游乐场 / 学习机小游戏</p>
+                            <h2>学习机小游戏</h2>
+                            <p class="playground-embed-copy">保留独立原型的全屏游戏舞台，先作为游乐场里的合集入口接入主站。当前包含飞机大战、拼音赛车、贪吃蛇三个玩法。</p>
+                        </div>
+                        <div class="playground-embed-actions">
+                            <button class="section-shortcut-btn" type="button" onclick="switchPage('playground')">返回游乐场</button>
+                            <a class="section-shortcut-btn" id="learning-arcade-launch" href="#" target="_blank" rel="noopener noreferrer">独立打开</a>
+                        </div>
+                    </div>
+                    <div class="playground-embed-status" id="learning-arcade-status">等待加载学习机小游戏...</div>
+                    <div class="typing-defense-summary">
+                        <div class="typing-defense-mode-strip">
+                            <span class="typing-defense-mode-chip">飞机大战<strong>练字母</strong></span>
+                            <span class="typing-defense-mode-chip">拼音赛车<strong>认汉字</strong></span>
+                            <span class="typing-defense-mode-chip">贪吃蛇<strong>方向键</strong></span>
+                        </div>
+                    </div>
+                    <div class="playground-embed-frame-shell">
+                        <iframe class="playground-embed-frame" id="learning-arcade-frame" title="学习机小游戏" loading="lazy" referrerpolicy="no-referrer"></iframe>
+                    </div>
+                </section>
             </div>
 
             <!-- PAGE: 排行榜 -->

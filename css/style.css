@@ -3705,7 +3705,7 @@ body.shell-parent .app-bottom-dock {
 
 .review-battle-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 14px;
 }
 
@@ -3797,6 +3797,10 @@ body.shell-parent .app-bottom-dock {
     border-color: rgba(212, 185, 106, 0.48);
 }
 
+.battle-recent-item[data-mode="typing-defense"] {
+    border-color: rgba(110, 121, 214, 0.44);
+}
+
 .battle-recent-item[data-mode="all"] {
     border-color: rgba(185, 137, 58, 0.42);
 }
@@ -3879,6 +3883,10 @@ body.shell-parent .app-bottom-dock {
 
 .review-battle-card[data-mode="explore"] {
     border-color: rgba(212, 185, 106, 0.48);
+}
+
+.review-battle-card[data-mode="typing-defense"] {
+    border-color: rgba(110, 121, 214, 0.4);
 }
 
 .review-battle-top {

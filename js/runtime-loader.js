@@ -394,6 +394,7 @@
                 return ensureShopFeature();
             case 'mathpk':
             case 'hanzi':
+            case 'typing-defense':
             case 'leaderboard':
             case 'tools':
                 return ensurePlaygroundFeature();
