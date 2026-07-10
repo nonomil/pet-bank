@@ -83,6 +83,24 @@ function copyFile(fileName, destName = fileName) {
     fs.copyFileSync(src, dest);
 }
 
+function copyOptionalCloudConfigStub(fileName) {
+    const src = path.join(repoRoot, fileName);
+    const dest = path.join(outDir, fileName);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    if (fs.existsSync(src)) {
+        fs.copyFileSync(src, dest);
+        return;
+    }
+    fs.writeFileSync(dest, [
+        'window.__PETBANK_CLOUD_CONFIG__ = window.__PETBANK_CLOUD_CONFIG__ || {',
+        "    supabaseUrl: '',",
+        "    supabaseAnonKey: '',",
+        "    siteUrl: ''",
+        '};',
+        '',
+    ].join('\n'));
+}
+
 function copyDir(dirName) {
     const src = path.join(repoRoot, dirName);
     const dest = path.join(outDir, dirName);
@@ -187,9 +205,10 @@ assertSafeOutput(outDir);
 fs.rmSync(outDir, { recursive: true, force: true });
 fs.mkdirSync(outDir, { recursive: true });
 
-for (const fileName of ['index.html', 'admin.html', 'cloud-config.local.js']) {
+for (const fileName of ['index.html', 'admin.html']) {
     copyFile(fileName);
 }
+copyOptionalCloudConfigStub('cloud-config.local.js');
 copyFile('index.html', '404.html');
 
 for (const dirName of ['css', 'js', 'assets', 'data', 'app']) {
