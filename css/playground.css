@@ -475,7 +475,8 @@
 
 .playground-embed-frame,
 #typing-defense-frame,
-#learning-arcade-frame {
+#learning-arcade-frame,
+#word-memory-map-frame {
     display: block;
     width: 100%;
     min-height: 760px;
@@ -498,5 +499,6 @@
     .playground-embed-frame-shell,
     .playground-embed-frame,
     #typing-defense-frame,
-    #learning-arcade-frame { min-height: 620px; }
+    #learning-arcade-frame,
+    #word-memory-map-frame { min-height: 620px; }
 }
