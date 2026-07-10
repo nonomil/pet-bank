@@ -9,6 +9,8 @@ const ToolboxSystem = (function() {
         activeTool: null, // 'picker' or 'pomodoro'
         familyMembers: ["爸爸", "妈妈", "我", "奶奶", "爷爷"],
         pomodoroCountToday: 0,
+        lastTool: '',
+        toolHistory: [],
         timerInterval: null,
         timerRemaining: 0,
         timerTotal: 0,
@@ -18,7 +20,9 @@ const ToolboxSystem = (function() {
 
     const STORAGE_KEYS = {
         FAMILY: 'petbank_family_members',
-        POMODORO_TODAY: 'petbank_pomodoro_today'
+        POMODORO_TODAY: 'petbank_pomodoro_today',
+        LAST_TOOL: 'petbank_toolbox_last_tool',
+        TOOL_HISTORY: 'petbank_toolbox_history'
     };
     const ADVANCED_TOOLS_FLAG = 'petbank_parent_admin_tools';
 
@@ -43,11 +47,68 @@ const ToolboxSystem = (function() {
         if (savedPomodoro) {
             state.pomodoroCountToday = parseInt(savedPomodoro, 10) || 0;
         }
+        state.lastTool = localStorage.getItem(STORAGE_KEYS.LAST_TOOL) || '';
+        try {
+            state.toolHistory = JSON.parse(localStorage.getItem(STORAGE_KEYS.TOOL_HISTORY) || '[]');
+            if (!Array.isArray(state.toolHistory)) state.toolHistory = [];
+        } catch (e) {
+            state.toolHistory = [];
+        }
     };
 
     const _saveState = () => {
         localStorage.setItem(STORAGE_KEYS.FAMILY, JSON.stringify(state.familyMembers));
         localStorage.setItem(STORAGE_KEYS.POMODORO_TODAY, state.pomodoroCountToday.toString());
+        localStorage.setItem(STORAGE_KEYS.LAST_TOOL, state.lastTool || '');
+        localStorage.setItem(STORAGE_KEYS.TOOL_HISTORY, JSON.stringify(Array.isArray(state.toolHistory) ? state.toolHistory.slice(0, 8) : []));
+    };
+
+    const _recordToolUsage = (toolKey, detail) => {
+        const labelMap = {
+            picker: '随机点名',
+            pomodoro: '番茄计时',
+            data_io: '数据管理'
+        };
+        state.lastTool = toolKey;
+        state.toolHistory = Array.isArray(state.toolHistory) ? state.toolHistory : [];
+        state.toolHistory.unshift({
+            id: `tool_${Date.now()}`,
+            toolKey,
+            label: labelMap[toolKey] || toolKey,
+            detail: detail || '',
+            ts: Date.now()
+        });
+        state.toolHistory = state.toolHistory.slice(0, 8);
+        _saveState();
+    };
+
+    const _toolLabel = (toolKey) => {
+        return toolKey === 'pomodoro'
+            ? '番茄计时'
+            : toolKey === 'picker'
+                ? '随机点名'
+                : toolKey === 'data_io'
+                    ? '数据管理'
+                    : '还没有使用';
+    };
+
+    const _refreshSummary = () => {
+        const lastToolEl = document.getElementById('toolbox-last-tool');
+        const pomodoroEl = document.getElementById('toolbox-pomodoro-count');
+        const familyEl = document.getElementById('toolbox-family-count');
+        const historyEl = document.getElementById('toolbox-history-list');
+        if (lastToolEl) lastToolEl.textContent = _toolLabel(state.lastTool);
+        if (pomodoroEl) pomodoroEl.textContent = String(state.pomodoroCountToday || 0);
+        if (familyEl) familyEl.textContent = String((state.familyMembers || []).length);
+        if (historyEl) {
+            const recentHistory = Array.isArray(state.toolHistory) ? state.toolHistory.slice(0, 4) : [];
+            historyEl.innerHTML = recentHistory.length ? recentHistory.map((item) => `
+                <div style="padding:10px 12px;border-radius:12px;background:#f8faf8;">
+                    <div style="font-size:13px;font-weight:800;color:#2f3d36;">${item.label}</div>
+                    <div style="font-size:12px;color:#6b7280;line-height:1.5;margin-top:4px;">${item.detail || '已进入这个工具。'}</div>
+                </div>
+            `).join('') : '<div style="font-size:12px;color:#6b7280;line-height:1.6;">还没有使用记录。下次点名、计时或导入导出后，会在这里留下痕迹。</div>';
+        }
     };
 
     const _beep = (frequency = 440, duration = 200) => {
@@ -336,6 +397,7 @@ const ToolboxSystem = (function() {
             const lines = textarea.value.split('\\n').map(s => s.trim()).filter(s => s !== "");
             state.familyMembers = lines;
             _saveState();
+            _recordToolUsage('picker', `已保存 ${lines.length} 位家庭成员名单`);
             alert("名单已保存！");
         };
     };
@@ -423,6 +485,7 @@ const ToolboxSystem = (function() {
                 // Success!
                 state.pomodoroCountToday++;
                 _saveState();
+                _recordToolUsage('pomodoro', `完成 1 次 25 分钟番茄，今日共 ${state.pomodoroCountToday} 次`);
                 
                 // Call global functions if they exist
                 if (typeof window.addGrowthPoints === 'function') {
@@ -433,6 +496,7 @@ const ToolboxSystem = (function() {
                 }
                 alert("🍅 番茄钟完成！获得 +5 成长分！");
             } else {
+                _recordToolUsage('pomodoro', `完成 1 次 ${state.currentTimerMode === 'short' ? '5' : '15'} 分钟休息计时`);
                 alert("☕ 休息结束，准备好继续了吗？");
             }
         };
@@ -482,6 +546,39 @@ const ToolboxSystem = (function() {
                 margin: 0 auto;
             `;
 
+            const recentHistory = Array.isArray(state.toolHistory) ? state.toolHistory.slice(0, 4) : [];
+            const summary = document.createElement('div');
+            summary.style.cssText = `
+                display:grid;
+                grid-template-columns:1.15fr .85fr;
+                gap:16px;
+                align-items:stretch;
+            `;
+            summary.innerHTML = `
+                <div style="background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 4px 12px rgba(0,0,0,.08);">
+                    <div style="font-size:12px;color:#7b8b83;font-weight:800;margin-bottom:8px;">家长区 / 工具箱</div>
+                    <div style="font-size:20px;font-weight:900;color:#2f3d36;">低频工具中心</div>
+                    <div style="font-size:13px;color:#6b7280;line-height:1.6;margin-top:8px;">把随机点名、番茄计时和数据管理集中在一处。用的时候很快，不用打断孩子的主流程。</div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+                        <span style="padding:6px 10px;border-radius:999px;background:#f4f7f4;font-size:12px;font-weight:800;color:#58705f;">最近使用：<b id="toolbox-last-tool" style="font-weight:800;">${_toolLabel(state.lastTool)}</b></span>
+                        <span style="padding:6px 10px;border-radius:999px;background:#fff5f5;font-size:12px;font-weight:800;color:#d15555;">今日番茄：<b id="toolbox-pomodoro-count" style="font-weight:800;">${state.pomodoroCountToday}</b> 次</span>
+                        <span style="padding:6px 10px;border-radius:999px;background:#f3f0ff;font-size:12px;font-weight:800;color:#6d46c2;">家庭成员：<b id="toolbox-family-count" style="font-weight:800;">${state.familyMembers.length}</b> 人</span>
+                    </div>
+                </div>
+                <div style="background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 4px 12px rgba(0,0,0,.08);">
+                    <div style="font-size:12px;color:#7b8b83;font-weight:800;margin-bottom:8px;">最近使用</div>
+                    <div id="toolbox-history-list" style="display:flex;flex-direction:column;gap:10px;">
+                        ${recentHistory.length ? recentHistory.map((item) => `
+                            <div style="padding:10px 12px;border-radius:12px;background:#f8faf8;">
+                                <div style="font-size:13px;font-weight:800;color:#2f3d36;">${item.label}</div>
+                                <div style="font-size:12px;color:#6b7280;line-height:1.5;margin-top:4px;">${item.detail || '已进入这个工具。'}</div>
+                            </div>
+                        `).join('') : '<div style="font-size:12px;color:#6b7280;line-height:1.6;">还没有使用记录。下次点名、计时或导入导出后，会在这里留下痕迹。</div>'}
+                    </div>
+                </div>
+            `;
+            mainWrapper.appendChild(summary);
+
             // 1. Top Entry Cards
             const cardRow = document.createElement('div');
             cardRow.style.cssText = `
@@ -517,6 +614,7 @@ const ToolboxSystem = (function() {
             mainWrapper.appendChild(toolArea);
 
             container.appendChild(mainWrapper);
+            _refreshSummary();
         },
 
         openTool: function(toolKey, container) {
@@ -524,6 +622,12 @@ const ToolboxSystem = (function() {
             toolArea.innerHTML = '';
             toolArea.style.display = 'flex';
             state.activeTool = toolKey;
+            _recordToolUsage(toolKey, toolKey === 'picker'
+                ? `准备从 ${state.familyMembers.length} 位家庭成员里随机点名`
+                : toolKey === 'pomodoro'
+                    ? '准备开始一轮专注计时'
+                    : '准备进行数据导入或导出');
+            _refreshSummary();
 
             // Reset state for new tool session
             if (toolKey === 'picker') {
