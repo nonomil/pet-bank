@@ -3,6 +3,7 @@
 .codex/
 .playwright-mcp/
 .tmp/
+_site/
 node_modules/
 archive/
 design/
