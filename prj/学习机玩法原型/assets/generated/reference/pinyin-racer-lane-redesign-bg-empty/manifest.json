@@ -1,0 +1,11 @@
+{
+  "runs": [
+    {
+      "prefix": "pinyin-racer-lane-bg-empty",
+      "model": "gpt-image-2",
+      "sizeRequested": "1024x1024",
+      "image": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\pinyin-racer-lane-redesign-bg-empty\\pinyin-racer-lane-bg-empty.png",
+      "createdAt": "2026-07-10T00:27:25"
+    }
+  ]
+}

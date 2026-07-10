@@ -2,6 +2,19 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.21] - 2026-07-10
+### 🎮 学习机小游戏接入游乐场 + Agnes 合集封面 + 主站桥接
+
+- `prj/学习机玩法原型` 正式作为 `游乐场` 子页接入主项目，新增 `learning-arcade` 路由、导航归属、独立打开入口与 iframe 承载页
+- 游乐场新增 `学习机小游戏` 特色入口卡，集合 `飞机大战 / 拼音赛车 / 贪吃蛇` 三个低龄短局玩法，不再只暴露单一原型链接
+- `学习机玩法原型` 侧新增最小 `postMessage` 桥接：进入某个游戏时发送 `start`，完成一局时发送 `result`，设置变化时发送 `settings`
+- 主站新增 `petbank_learning_arcade_progress` 本地进度存档，记录开局次数、完成局数、最近游玩游戏、最近结果和各小游戏切换分布
+- `学习机小游戏` 子页顶部新增主站 summary 面板，显示 `收录玩法 / 已开局 / 完成局数 / 最近在玩 / 当前难度 / 拼音包 / 上手状态 / 最近结果`
+- 游乐场总看板和每周复盘现已纳入 `学习机小游戏` 作为第五条成长线，`当前势头` 也会累计它的完成局数
+- 使用 Agnes `agnes-image-2.1-flash` 生成新的 `学习机小游戏` 合集封面，并替换主站游乐场入口图；首张因伪文字弃用，第二张保留为空白牌面版本
+- 为后续飞机大战美术重做补充 `docs/plans/2026-07-10-word-shooter-art-refresh-design.md` 与 `scripts/gen_word_shooter_art_refresh.ps1`，形成 Agnes / GPT 图像收口入口
+- 回归验证通过：`node --check js/app.js`、`node --check prj/学习机玩法原型/game.js`、`prj/学习机玩法原型/scripts/test-full-prototype-smoke.mjs`
+
 ## [v0.7.20] - 2026-07-10
 ### 🎯 打字防线接入游乐场 + 成长战绩同步
 

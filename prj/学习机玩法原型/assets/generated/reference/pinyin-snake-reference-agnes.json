@@ -1,0 +1,7 @@
+{
+  "model": "agnes-image-2.1-flash",
+  "size": "1536x1024",
+  "prompt": "Create a polished 16:9 children's web game mockup for a pinyin snake game inspired by a simple classroom snake game screen. Scene: a pale blue-white grid arena, a long rounded green snake made of soft circular body segments, cute white eyes on the head, small colorful round food dots scattered around the grid, and one target food with a floating bracket label area like a blank bracket plaque near it. Put only blank placeholder label shapes, no readable letters or numbers in the generated image because HTML will render the real pinyin. Minimal top-left stat area with blank space only, no text. Style: clean learning-machine screen, bright and simple, not dark, not cyberpunk, not crowded, readable for a 6-year-old child, soft 3D clay meets flat web game UI. Keep large empty grid space and clear target visibility. No watermark, no logo, no real text, no Chinese characters, no pinyin, no numbers.",
+  "path": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\pinyin-snake-reference-agnes.png",
+  "bytes": 1120213
+}

@@ -1,0 +1,5 @@
+Create one isolated game sprite on a perfectly flat solid #00ff00 chroma-key background.
+
+Subject: a small futuristic blue-white race car, top-down / rear-overhead view, perfectly vertical, nose pointing straight upward. It must look like it is driving up the screen in a three-lane racing game.
+
+No side-view, no diagonal pose, no perspective tilt, no road, no shadow outside the car, no text, no letters, no numbers, no Chinese, no pinyin, no logos, no watermark. Keep generous green margin around the car.

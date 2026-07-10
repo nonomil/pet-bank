@@ -1,0 +1,11 @@
+{
+  "runs": [
+    {
+      "prefix": "pinyin-racer-long-track-strip",
+      "model": "gpt-image-2",
+      "sizeRequested": "1024x1792",
+      "image": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\pinyin-racer-long-track-strip\\pinyin-racer-long-track-strip.png",
+      "createdAt": "2026-07-10T01:20:01"
+    }
+  ]
+}

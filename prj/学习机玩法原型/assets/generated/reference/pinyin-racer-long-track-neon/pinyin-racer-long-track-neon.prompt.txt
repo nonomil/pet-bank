@@ -1,0 +1,5 @@
+Create a 1024x1792 vertical seamless long-track image for a children's pinyin racing web game.
+
+Scene: a polished sci-fi neon training tunnel highway, not dark, safe for children. View from behind and slightly above. A believable straight road goes upward through the whole image. Three clear lanes, realistic road texture, glowing side rails, cool blue and cyan lighting. The top and bottom edges should tile smoothly in a vertical scrolling game.
+
+No car, no vehicles, no characters, no pinyin cards, no signs, no UI, no text, no letters, no Chinese characters, no pinyin, no numbers, no fake writing, no logos, no watermark. Keep the center road readable and uncluttered.

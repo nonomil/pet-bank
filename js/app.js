@@ -571,8 +571,157 @@ function getExploreStageSummary() {
 }
 
 const TYPING_DEFENSE_PROGRESS_KEY = 'petbank_typing_defense_progress';
+const WORD_MEMORY_MAP_PROGRESS_KEY = 'petbank_word_memory_map_progress';
 const LEARNING_ARCADE_SETTINGS_KEY = 'learning-arcade-settings-v1';
 const LEARNING_ARCADE_PROGRESS_KEY = 'petbank_learning_arcade_progress';
+
+function readWordMemoryMapProgress() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(WORD_MEMORY_MAP_PROGRESS_KEY) || '{}');
+        return {
+            sessions: Number(raw.sessions || 0),
+            totalStars: Number(raw.totalStars || 0),
+            totalPoints: Number(raw.totalPoints || 0),
+            bestAccuracy: Number(raw.bestAccuracy || 0),
+            highestLevel: Number(raw.highestLevel || 0),
+            lastLevelOrder: Number(raw.lastLevelOrder || 0),
+            lastLevelTitle: raw.lastLevelTitle || '',
+            lastHeroId: raw.lastHeroId || 'boy',
+            lastWorldPack: raw.lastWorldPack || 'farm_gpt',
+            updatedAt: raw.updatedAt || ''
+        };
+    } catch (_) {
+        return {
+            sessions: 0,
+            totalStars: 0,
+            totalPoints: 0,
+            bestAccuracy: 0,
+            highestLevel: 0,
+            lastLevelOrder: 0,
+            lastLevelTitle: '',
+            lastHeroId: 'boy',
+            lastWorldPack: 'farm_gpt',
+            updatedAt: ''
+        };
+    }
+}
+
+function writeWordMemoryMapProgress(progress) {
+    try {
+        localStorage.setItem(WORD_MEMORY_MAP_PROGRESS_KEY, JSON.stringify(progress || {}));
+    } catch (_) {}
+}
+
+function friendlyWordMemoryHeroLabel(heroId) {
+    return ({
+        boy: '小男孩',
+        golem: '铁傀儡'
+    })[heroId] || '冒险主角';
+}
+
+function friendlyWordMemoryWorldLabel(worldPack) {
+    return ({
+        farm: '农场',
+        farm_gpt: '农场 GPT',
+        forest: '森林',
+        grassland: '草原',
+        ocean: '海洋',
+        sky: '天空',
+        space: '太空',
+        alien: '外星球'
+    })[worldPack] || '地图探索';
+}
+
+function getWordMemoryMapStageSummary() {
+    const progress = readWordMemoryMapProgress();
+    const highestLevelLabel = progress.highestLevel > 0 ? `第 ${progress.highestLevel} 关` : '还没通关';
+    const lastStageLabel = progress.lastLevelOrder > 0
+        ? `第 ${progress.lastLevelOrder} 关${progress.lastLevelTitle ? ` · ${progress.lastLevelTitle}` : ''}`
+        : '先打一张大地图';
+    return {
+        sessions: progress.sessions,
+        totalStars: progress.totalStars,
+        totalPoints: progress.totalPoints,
+        bestAccuracy: progress.bestAccuracy,
+        highestLevelLabel,
+        lastStageLabel,
+        heroLabel: friendlyWordMemoryHeroLabel(progress.lastHeroId),
+        worldLabel: friendlyWordMemoryWorldLabel(progress.lastWorldPack)
+    };
+}
+
+function recordWordMemoryMapResult(payload) {
+    const progress = readWordMemoryMapProgress();
+    const points = Math.max(0, Math.floor(Number(payload.score) || 0));
+    const stars = Math.max(0, Math.floor(Number(payload.earnedStars) || 0));
+    const accuracy = Math.max(0, Math.min(100, Math.floor(Number(payload.accuracy) || 0)));
+    const highestLevel = Math.max(0, Math.floor(Number(payload.highestUnlockedLevel) || 0));
+    const lastLevelOrder = Math.max(0, Math.floor(Number(payload.levelOrder) || 0));
+    const next = {
+        sessions: progress.sessions + 1,
+        totalStars: progress.totalStars + stars,
+        totalPoints: progress.totalPoints + points,
+        bestAccuracy: Math.max(progress.bestAccuracy, accuracy),
+        highestLevel: Math.max(progress.highestLevel, highestLevel, lastLevelOrder),
+        lastLevelOrder,
+        lastLevelTitle: payload.levelTitle || '',
+        lastHeroId: payload.heroId || progress.lastHeroId || 'boy',
+        lastWorldPack: payload.worldPack || progress.lastWorldPack || 'farm_gpt',
+        updatedAt: new Date().toISOString()
+    };
+    writeWordMemoryMapProgress(next);
+    pushBattleRecentActivity({
+        id: `word_memory_map_${Date.now()}`,
+        mode: 'word-memory-map',
+        title: `单词记忆射击场通关 · ${lastLevelOrder > 0 ? `第 ${lastLevelOrder} 关` : '大地图'}`,
+        detail: `同步 ${points} 成长分，点亮 ${stars} 颗星，命中率 ${accuracy}%`
+    });
+    return next;
+}
+
+function renderWordMemoryMapSummaryPanel() {
+    const root = document.getElementById('wordMemoryMapSummary');
+    if (!root) return;
+    const summary = getWordMemoryMapStageSummary();
+    root.innerHTML = `
+        <div class="typing-defense-summary-grid">
+            <article class="typing-defense-summary-card">
+                <small>累计通关</small>
+                <strong>${summary.sessions} 张图</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>累计星星</small>
+                <strong>${summary.totalStars}</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>累计成长分</small>
+                <strong>${summary.totalPoints}</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>最佳命中率</small>
+                <strong>${summary.bestAccuracy}%</strong>
+            </article>
+        </div>
+        <div class="typing-defense-summary-grid">
+            <article class="typing-defense-summary-card">
+                <small>最高解锁</small>
+                <strong>${summary.highestLevelLabel}</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>最近通关</small>
+                <strong>${summary.lastStageLabel}</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>最近主角</small>
+                <strong>${summary.heroLabel}</strong>
+            </article>
+            <article class="typing-defense-summary-card">
+                <small>最近地图</small>
+                <strong>${summary.worldLabel}</strong>
+            </article>
+        </div>
+    `;
+}
 
 function readTypingDefenseProgress() {
     try {
@@ -712,6 +861,13 @@ function getLearningArcadeSummary() {
         completedRounds: progress.completedRounds,
         lastGameLabel: friendlyLearningArcadeGameLabel(progress.lastGame),
         lastTitle: progress.lastTitle || '还没打完一局',
+        nextStep: progress.launches === 0
+            ? '先从飞机大战或拼音赛车开始，建立“按键马上有反馈”的感觉。'
+            : progress.completedRounds === 0
+                ? '先完整打完一局，再决定孩子更喜欢哪个入口。'
+                : progress.lastGame === 'word-cannon'
+                    ? '如果今天已经认过字，可以切到贪吃蛇或飞机大战换换手感。'
+                    : '继续在三个小游戏之间轮换，保持兴趣比追求高难更重要。',
         chips: [
             { label: '飞机大战', value: '练字母' },
             { label: '拼音赛车', value: settings.explicitHanziPack ? settings.hanziPack === 'kindergarten-pinyin' ? '练拼音' : '认汉字' : '认汉字' },
@@ -1252,7 +1408,8 @@ function renderPlaygroundProgressBoard() {
     const arena = getArenaStageSummary();
     const explore = getExploreStageSummary();
     const typingDefense = getTypingDefenseStageSummary();
-    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins + typingDefense.wins;
+    const learningArcade = getLearningArcadeSummary();
+    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins + typingDefense.wins + learningArcade.completedRounds;
     const mathRewardPreview = Array.isArray(math.stageRewards)
         ? math.stageRewards.map((item) => `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}★ ${item.label}</span>`).join('')
         : '';
@@ -1271,6 +1428,12 @@ function renderPlaygroundProgressBoard() {
             return `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}${unit} ${item.label}</span>`;
         }).join('')
         : '';
+    const learningArcadeRewardPreview = [
+        { threshold: 1, unit: '次', label: '先点进去看看', unlocked: learningArcade.launches >= 1 },
+        { threshold: 1, unit: '局', label: '完整打一局', unlocked: learningArcade.completedRounds >= 1 },
+        { threshold: 3, unit: '局', label: '找到喜欢的节奏', unlocked: learningArcade.completedRounds >= 3 },
+        { threshold: 2, unit: '种', label: '换玩法不腻', unlocked: learningArcade.gameEntries.length >= 2 }
+    ].map((item) => `<span class="playground-goal-chip ${item.unlocked ? 'is-unlocked' : ''}">${item.threshold}${item.unit} ${item.label}</span>`).join('');
 
     root.innerHTML = `
         <div class="playground-progress-head">
@@ -1342,6 +1505,21 @@ function renderPlaygroundProgressBoard() {
                 <div class="playground-progress-next"><strong>下一步</strong>${typingDefense.nextStep}</div>
                 <button class="playground-progress-action" type="button" onclick="switchPage('typing-defense')">继续打字防线</button>
             </article>
+            <article class="playground-progress-card" data-mode="learning-arcade">
+                <div class="playground-progress-top">
+                    <div>
+                        <span class="playground-progress-kicker">学习机小游戏</span>
+                        <h4 class="playground-progress-title">${learningArcade.lastGameLabel}</h4>
+                    </div>
+                </div>
+                <div class="playground-progress-metrics">
+                    <span><small>已开局</small><strong>${learningArcade.launches} 次</strong></span>
+                    <span><small>完成局数</small><strong>${learningArcade.completedRounds}</strong></span>
+                </div>
+                <div class="playground-goal-strip">${learningArcadeRewardPreview}</div>
+                <div class="playground-progress-next"><strong>下一步</strong>${learningArcade.nextStep}</div>
+                <button class="playground-progress-action" type="button" onclick="switchPage('learning-arcade')">继续小游戏合集</button>
+            </article>
         </div>
         <div id="playgroundBattleRecent"></div>
         <div id="playgroundBattleMilestones"></div>
@@ -1358,7 +1536,8 @@ function renderReviewBattleBoard() {
     const arena = getArenaStageSummary();
     const explore = getExploreStageSummary();
     const typingDefense = getTypingDefenseStageSummary();
-    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins + typingDefense.wins;
+    const learningArcade = getLearningArcadeSummary();
+    const totalMomentum = math.totalStars + arena.clearedCount + explore.wins + typingDefense.wins + learningArcade.completedRounds;
     if (momentumEl) momentumEl.textContent = String(totalMomentum);
 
     const cards = [
@@ -1417,6 +1596,20 @@ function renderReviewBattleBoard() {
                 : '先打一局，让孩子先对“打字会触发结果”建立直接感受。',
             next: typingDefense.nextStep,
             action: `<button class="review-battle-action" type="button" onclick="switchPage('typing-defense')">继续打字防线</button>`
+        },
+        {
+            mode: 'learning-arcade',
+            kicker: '学习机小游戏',
+            title: learningArcade.lastGameLabel,
+            metrics: [
+                { label: '已开局', value: `${learningArcade.launches} 次` },
+                { label: '完成局数', value: String(learningArcade.completedRounds) }
+            ],
+            growth: learningArcade.launches > 0
+                ? '已经开始把字母、拼音和方向键练习装进同一个合集里轮换。'
+                : '先点进去玩一局，看看孩子更容易被哪个入口吸引住。',
+            next: learningArcade.nextStep,
+            action: `<button class="review-battle-action" type="button" onclick="switchPage('learning-arcade')">继续小游戏合集</button>`
         }
     ];
 
@@ -2369,6 +2562,8 @@ function updateParentHomePage() {
 
 const TYPING_DEFENSE_BRIDGE_SOURCE = 'petbank-typing-defense';
 const typingDefenseBridgeSeen = new Set();
+const WORD_MEMORY_MAP_BRIDGE_SOURCE = 'petbank-word-memory-map';
+const wordMemoryMapBridgeSeen = new Set();
 const LEARNING_ARCADE_BRIDGE_SOURCE = 'petbank-learning-arcade';
 const learningArcadeBridgeSeen = new Set();
 
@@ -2378,6 +2573,14 @@ function syncTypingDefenseHostPoints() {
     const status = document.getElementById('typing-defense-status');
     if (status) status.textContent = `主站积分已同步：${totalPoints || 0}`;
     renderTypingDefenseSummaryPanel();
+}
+
+function syncWordMemoryMapHostPoints() {
+    const pgPoints = document.getElementById('pg-points');
+    if (pgPoints) pgPoints.textContent = String(totalPoints || 0);
+    const status = document.getElementById('word-memory-map-status');
+    if (status) status.textContent = `主站积分已同步：${totalPoints || 0}`;
+    renderWordMemoryMapSummaryPanel();
 }
 
 function handleTypingDefenseBridgeMessage(event) {
@@ -2424,6 +2627,41 @@ function handleTypingDefenseBridgeMessage(event) {
 }
 
 window.addEventListener('message', handleTypingDefenseBridgeMessage);
+
+function handleWordMemoryMapBridgeMessage(event) {
+    const data = event && event.data;
+    if (!data || data.source !== WORD_MEMORY_MAP_BRIDGE_SOURCE) return;
+    const frame = document.getElementById('word-memory-map-frame');
+    if (frame && frame.contentWindow && event.source !== frame.contentWindow) return;
+    if (event.origin && window.location.origin && event.origin !== window.location.origin) return;
+
+    const sessionId = String(data.sessionId || '');
+    const seq = Number(data.seq || 0);
+    const key = `${sessionId}:${seq}`;
+    if (!sessionId || !Number.isFinite(seq) || wordMemoryMapBridgeSeen.has(key)) return;
+    wordMemoryMapBridgeSeen.add(key);
+    if (wordMemoryMapBridgeSeen.size > 600) {
+        const staleKey = wordMemoryMapBridgeSeen.values().next().value;
+        if (staleKey) wordMemoryMapBridgeSeen.delete(staleKey);
+    }
+
+    const payload = data.payload || {};
+    if (data.kind !== 'result') return;
+    const points = Math.max(0, Math.floor(Number(payload.score) || 0));
+    if (points > 0) {
+        addGrowthPoints(points);
+    }
+    const progress = recordWordMemoryMapResult(payload);
+    syncWordMemoryMapHostPoints();
+    renderPlaygroundProgressBoard();
+    renderReviewBattleBoard();
+    if (typeof showToast === 'function') {
+        const stars = Math.max(0, Math.floor(Number(payload.earnedStars) || 0));
+        showToast(`单词记忆射击场通关，本局已同步 ${points} 成长分，拿到 ${stars} 颗星，累计通关 ${progress.sessions} 张图`);
+    }
+}
+
+window.addEventListener('message', handleWordMemoryMapBridgeMessage);
 
 function handleLearningArcadeBridgeMessage(event) {
     const data = event && event.data;
@@ -2546,7 +2784,7 @@ function ensureWordMemoryMapEmbed() {
     if (status) status.textContent = '正在加载单词记忆射击场...';
     frame.addEventListener('load', function onLoad() {
         frame.dataset.loaded = '1';
-        if (status) status.textContent = '已加载，可直接开始。保留地图探索、经典炮弹和支援道具两套节奏。';
+        if (status) status.textContent = `已加载，可直接开始。当前主站积分 ${totalPoints || 0}`;
         frame.removeEventListener('load', onLoad);
     });
     frame.addEventListener('error', function onError() {
@@ -2589,6 +2827,7 @@ function runPageActivation(page) {
         ensureLearningArcadeEmbed();
     }
     if (page === 'word-memory-map') {
+        renderWordMemoryMapSummaryPanel();
         ensureWordMemoryMapEmbed();
     }
     if (page === 'review' && window.FamilyReview && typeof window.FamilyReview.refresh === 'function') void FamilyReview.refresh('family-review-root');

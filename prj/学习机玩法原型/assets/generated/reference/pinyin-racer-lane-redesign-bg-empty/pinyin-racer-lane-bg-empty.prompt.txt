@@ -1,0 +1,7 @@
+Create a polished full-screen 16:9 landscape background for a children's pinyin lane racing web game.
+
+View from behind and slightly above an empty simple straight vertical road. The road has three clear lanes from bottom to top, clean lane boundaries, subtle speed streaks, and a bright sci-fi toy racing atmosphere. Keep the road simple and readable, not curved.
+
+Leave safe blank UI space at top-left, top-right, and bottom-center. Do not include any car, vehicle, character, large roadside signboards, baked-in labels, text panels, word cards, letters, Chinese characters, pinyin, numbers, fake writing, logos, or watermark. Any decorations must stay near the road edges and must not cover the center playfield.
+
+Style: cool polished children's arcade, blue daylight sky city, clean contrast, not overly cute, not dark, not cluttered.

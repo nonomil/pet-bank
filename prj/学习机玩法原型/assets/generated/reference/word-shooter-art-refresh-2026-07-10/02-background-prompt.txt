@@ -1,0 +1,9 @@
+Bright sci-fi typing shooter gameplay background only, no characters, no text, no UI labels. Child-friendly arcade action background for a side-view word shooter.
+
+Scene layout: a futuristic training lane or open sci-fi battle corridor. The left side should feel like the player ship area. The right side should feel like the enemy approach area. The top portion should leave clean readable space for enemy word tags and HUD overlay. The lower portion should leave visual breathing room for keyboard and feedback UI overlay.
+
+Style: bright neon teal, cyan, blue-green, touches of yellow-orange, polished arcade lighting, clean depth, soft energy rails, subtle moving-lane feel, exciting but not cluttered. The center action field must stay readable and not too busy.
+
+Do not paint characters, spaceships, letters, icons, buttons, scoreboards, or decorative fake symbols. No text, no letters, no numbers, no Chinese characters, no pinyin, no logos, no watermark.
+
+Make it feel energetic, cool, welcoming, and easy for a 6-year-old to understand at a glance.

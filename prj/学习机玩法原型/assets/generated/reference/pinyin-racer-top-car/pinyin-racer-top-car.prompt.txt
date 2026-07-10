@@ -1,0 +1,10 @@
+Create a 1024x1024 chroma-key asset sheet for a children's pinyin lane racing game.
+
+Perfectly flat solid #00ff00 chroma-key background only. No shadows, gradients, texture, reflections, floor plane, or lighting variation on the background. Do not use #00ff00 anywhere inside the assets.
+
+Place exactly three isolated complete assets with generous spacing:
+1. A small futuristic race car from top-down / rear-overhead view, perfectly vertical, nose pointing straight upward.
+2. The same car slightly drifting left, still mostly vertical and nose pointing upward.
+3. The same car slightly drifting right, still mostly vertical and nose pointing upward.
+
+The car should be cool sci-fi blue-white, polished, readable at small game size, not cute, not side-view, not diagonal, not front-facing toward camera. No text, no letters, no Chinese characters, no pinyin, no numbers, no fake writing, no logos, no watermark.

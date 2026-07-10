@@ -1,0 +1,11 @@
+Children's sci-fi typing shooter home card illustration, bright arcade style, wide-eyed excitement but not babyish, cool and energetic, clean polished digital art.
+
+Composition: a small heroic player spaceship on the left or lower-left, facing right. Three to four enemy fighter drones on the right side flying toward the player. One bright laser beam is actively hitting an enemy ship. Add a strong hit flash and a tiny energy explosion. Show clear chase and attack rhythm. Leave several blank floating panel shapes near the top area for future UI overlay, but keep them empty.
+
+Visual style: bright teal, cyan, lime glow, warm orange highlights, slightly glossy toy-like spaceship surfaces, readable silhouettes, dynamic motion streaks, exciting but clean, child-friendly sci-fi arcade poster, not dark horror, not gritty military realism.
+
+Important gameplay feeling: this should feel like "press a key and fire immediately", with clear cause and effect, strong hit feedback, and a feeling of collecting upgrades and stars.
+
+Background: futuristic open training corridor or space hangar with depth, but brighter and more inviting than a dark spaceship interior. Keep the center play area readable.
+
+No text, no letters, no numbers, no Chinese characters, no pinyin, no logos, no watermark, no fake writing.

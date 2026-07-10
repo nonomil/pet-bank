@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: chroma-key asset explosion sheet for a children's pinyin racing browser game
+Primary request: Create an isolated reusable asset sheet for the pinyin racing game, matching a polished colorful 3D sci-fi children's arcade racing style.
+Canvas: 16:9 landscape asset sheet, 1536x1024.
+Background: perfectly flat solid #00ff00 chroma-key background for local background removal. The background must be one uniform color with no shadows, gradients, texture, reflections, floor plane, or lighting variation. Do not use #00ff00 anywhere in the assets.
+Components, isolated with generous spacing and no overlap: small futuristic race car front/top-front view, small race car side view, small race car boost version, blank road-sign target panel, blank road-sign target panel active/glowing version, blank checkpoint arch, rounded blank HUD panel, blank typing input panel, coin reward, star reward, diamond reward, tire upgrade icon, nitro boost icon, engine upgrade icon.
+Style/medium: high-quality colorful 3D game UI assets, clean silhouettes, crisp edges, premium children's arcade learning game, sci-fi but friendly, not overly cute.
+Composition/framing: Each component must be complete, centered inside its own empty space, with shadow/glow kept close to the object so it can be cropped. No component should touch another component or touch the canvas edge.
+Text: No text.
+Constraints: No readable text, no letters, no pinyin, no Chinese characters, no numbers, no fake writing, no logos, no watermark. Every sign, panel, dashboard, button, license plate, and UI surface must be completely blank.
+Avoid: No cannons, no missiles, no guns, no explosions as the main theme, no copyrighted characters, no dense tiny details, no oversized mascot.

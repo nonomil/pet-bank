@@ -1,0 +1,38 @@
+{
+  "generator": "agnes-image-2.1-flash",
+  "generatedAt": "2026-07-09T10:30:07.316313+00:00",
+  "assets": [
+    {
+      "id": "learning-arcade-stage",
+      "file": "learning-arcade-stage.png",
+      "size": "1792x1024",
+      "prompt": "A bright modern children's keyboard learning game stage background for a web app. Soft 3D clay toy UI style, gentle classroom-playground atmosphere, pastel sky, subtle block world objects, blank learning cards, star rewards, rounded toy-like props. Keep the center and lower-middle spacious and calm so HTML cards and buttons can sit on top. Every card, tile, button, note and board face must be completely blank. No letters, no numbers, no Chinese characters, no pinyin, no fake writing, no glyphs, no logos, no characters, no official Minecraft branding, no clutter, no dark mood.",
+      "bytes": 1058391,
+      "status": "generated"
+    },
+    {
+      "id": "home-card-word-shooter",
+      "file": "home-card-word-shooter.png",
+      "size": "1024x1024",
+      "prompt": "A square game selection card illustration for a children's English typing space shooter. Cool sci-fi but still friendly for a 6 year old: a small left-side player starfighter fires thin glowing beams toward several smaller enemy drones approaching from the right, with blank floating target panels above the drones. Cinematic neon teal, yellow and red accents, clean composition, not cute, not oversized, usable inside a web UI card. All panels must be completely blank. No readable text, no letters, no numbers, no Chinese characters, no logos, no clutter.",
+      "bytes": 1329587,
+      "status": "generated"
+    },
+    {
+      "id": "home-card-word-cannon",
+      "file": "home-card-word-cannon.png",
+      "size": "1024x1024",
+      "prompt": "A square game selection card illustration for a pinyin cannon word game. A compact sci-fi toy cannon sits near the bottom of a circular arena, shooting elegant light trajectories up toward several small blank target blocks in the upper half. Beautiful circular radar ring, glassy blue-green arena, gold coin and star reward sparks, balanced spacing, polished web game style. Every target and panel must be blank. No readable text, no pinyin, no letters, no numbers, no Chinese characters, no logos, no clutter.",
+      "bytes": 1533435,
+      "status": "generated"
+    },
+    {
+      "id": "home-card-pinyin-snake",
+      "file": "home-card-pinyin-snake.png",
+      "size": "1024x1024",
+      "prompt": "A square game selection card illustration for a pinyin snake keyboard game. Full-screen style rounded grid board viewed slightly from above, a sleek small snake path curves through the grid, with colorful dot foods and a few blank floating tile markers. Fresh arcade look, bright but not childish, clean professional web UI card image, stable readable empty spaces. All tiles and markers must be blank. No readable text, no pinyin, no letters, no numbers, no Chinese characters, no logos, no clutter.",
+      "bytes": 1256803,
+      "status": "generated"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "model": "agnes-image-2.1-flash",
+  "size": "1536x1024",
+  "results": [
+    {
+      "ok": true,
+      "slug": "map-metal-corridor",
+      "title": "金属走廊",
+      "path": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\word-cannon-maps\\map-metal-corridor.png",
+      "size_kb": 1619.7,
+      "elapsed": 73.2,
+      "prompt": "cinematic sci-fi side arena background for a children's typing cannon web game, sleek metallic corridor, warm gold guide lights on the floor, dark steel wall panels, subtle hologram lane marks in the center, clear open vertical combat lane, readable negative space for small falling targets, polished arcade style, cool and official, not cute, not crowded, no characters, no cannon, no words, no text, no watermark, no UI"
+    },
+    {
+      "ok": true,
+      "slug": "map-space-hangar",
+      "title": "太空机库",
+      "path": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\word-cannon-maps\\map-space-hangar.png",
+      "size_kb": 1653.3,
+      "elapsed": 72.7,
+      "prompt": "cinematic sci-fi arena background for a typing cannon game, futuristic space hangar with distant ships and docking arms, soft blue rim lights, amber runway strips, deep perspective center lane, smoky depth, high-tech but clean composition, room for gameplay elements in the middle, polished web game background, not cute, no characters, no labels, no text, no watermark, no UI"
+    },
+    {
+      "ok": true,
+      "slug": "map-future-training",
+      "title": "未来训练场",
+      "path": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\word-cannon-maps\\map-future-training.png",
+      "size_kb": 1538.2,
+      "elapsed": 25.0,
+      "prompt": "futuristic training arena background for a sci-fi word cannon game, modular simulation chamber, teal holographic target rails, glowing floor rings, brushed alloy surfaces, balanced contrast, wide clean center area for gameplay, premium arcade look, not crowded, not cute, no characters, no cannon, no readable text, no watermark, no UI"
+    },
+    {
+      "ok": true,
+      "slug": "map-forge-industrial",
+      "title": "熔炉工业区",
+      "path": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\word-cannon-maps\\map-forge-industrial.png",
+      "size_kb": 1505.2,
+      "elapsed": 40.7,
+      "prompt": "high-energy industrial sci-fi arena background for a typing cannon game, molten forge facility, orange furnace glow, heavy steel platforms, vapor haze, ember reflections, clear vertical central lane and readable foreground floor, stylized but polished, official arcade feel, not cute, no characters, no cannon, no text, no watermark, no UI"
+    }
+  ],
+  "total_elapsed": 213.1
+}

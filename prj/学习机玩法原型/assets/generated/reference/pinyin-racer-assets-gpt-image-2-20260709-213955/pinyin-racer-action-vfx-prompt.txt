@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: chroma-key action pose and VFX sheet for a children's pinyin racing browser game
+Primary request: Create isolated reusable action poses and visual effects for the pinyin racing game, matching a polished colorful 3D sci-fi children's arcade racing style.
+Canvas: 16:9 landscape asset sheet, 1536x1024.
+Background: perfectly flat solid #00ff00 chroma-key background for local background removal. The background must be one uniform color with no shadows, gradients, texture, reflections, floor plane, or lighting variation. Do not use #00ff00 anywhere in the assets.
+Components, isolated with generous spacing and no overlap: race car idle pose, race car accelerating pose with small glow, race car drift-left pose, race car drift-right pose, race car shield/protection pose, race car finish-line celebration pose, short cyan speed trail, long cyan-yellow speed trail, nitro burst cloud, safe soft collision puff, coin sparkle burst, star sparkle burst, checkpoint glow ring, road lane glow strip, small confetti burst.
+Style/medium: high-quality colorful 3D game UI assets, clean silhouettes, crisp edges, premium children's arcade learning game, sci-fi but friendly, energetic, readable at small size.
+Composition/framing: Each component must be complete, centered inside its own empty space, with shadow/glow kept close to the object so it can be cropped. No component should touch another component or touch the canvas edge.
+Text: No text.
+Constraints: No readable text, no letters, no pinyin, no Chinese characters, no numbers, no fake writing, no logos, no watermark. Keep effects playful and non-violent.
+Avoid: No weapons, no missiles, no guns, no large explosions, no copyrighted characters, no dense tiny details, no oversized mascot.

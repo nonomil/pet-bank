@@ -1,0 +1,414 @@
+{
+  "source": "assets/generated/reference/word-shooter-assets-sheet-chatgpt-clean.png",
+  "alphaThreshold": 24,
+  "assets": [
+    {
+      "name": "pilot_ship_idle",
+      "file": "assets/generated/word-shooter-assets/pilot_ship_idle.png",
+      "bbox": [
+        18,
+        15,
+        281,
+        222
+      ],
+      "crop": [
+        10,
+        7,
+        297,
+        238
+      ],
+      "opaquePixels": 38847
+    },
+    {
+      "name": "pilot_ship_blink",
+      "file": "assets/generated/word-shooter-assets/pilot_ship_blink.png",
+      "bbox": [
+        354,
+        18,
+        280,
+        215
+      ],
+      "crop": [
+        346,
+        10,
+        296,
+        231
+      ],
+      "opaquePixels": 35726
+    },
+    {
+      "name": "pilot_ship_cheer",
+      "file": "assets/generated/word-shooter-assets/pilot_ship_cheer.png",
+      "bbox": [
+        770,
+        17,
+        250,
+        217
+      ],
+      "crop": [
+        762,
+        9,
+        266,
+        233
+      ],
+      "opaquePixels": 35635
+    },
+    {
+      "name": "target_balloon",
+      "file": "assets/generated/word-shooter-assets/target_balloon.png",
+      "bbox": [
+        1062,
+        2,
+        270,
+        375
+      ],
+      "crop": [
+        1054,
+        -6,
+        286,
+        391
+      ],
+      "opaquePixels": 62730
+    },
+    {
+      "name": "target_paper_plane",
+      "file": "assets/generated/word-shooter-assets/target_paper_plane.png",
+      "bbox": [
+        0,
+        293,
+        283,
+        191
+      ],
+      "crop": [
+        -8,
+        285,
+        299,
+        207
+      ],
+      "opaquePixels": 27740
+    },
+    {
+      "name": "target_treasure_chest",
+      "file": "assets/generated/word-shooter-assets/target_treasure_chest.png",
+      "bbox": [
+        344,
+        272,
+        240,
+        216
+      ],
+      "crop": [
+        336,
+        264,
+        256,
+        232
+      ],
+      "opaquePixels": 44657
+    },
+    {
+      "name": "target_planet",
+      "file": "assets/generated/word-shooter-assets/target_planet.png",
+      "bbox": [
+        638,
+        262,
+        251,
+        231
+      ],
+      "crop": [
+        630,
+        254,
+        267,
+        247
+      ],
+      "opaquePixels": 38429
+    },
+    {
+      "name": "target_cloud",
+      "file": "assets/generated/word-shooter-assets/target_cloud.png",
+      "bbox": [
+        914,
+        316,
+        291,
+        169
+      ],
+      "crop": [
+        906,
+        308,
+        307,
+        185
+      ],
+      "opaquePixels": 31142
+    },
+    {
+      "name": "target_block_cube",
+      "file": "assets/generated/word-shooter-assets/target_block_cube.png",
+      "bbox": [
+        27,
+        504,
+        191,
+        191
+      ],
+      "crop": [
+        19,
+        496,
+        207,
+        207
+      ],
+      "opaquePixels": 30584
+    },
+    {
+      "name": "projectile_blue",
+      "file": "assets/generated/word-shooter-assets/projectile_blue.png",
+      "bbox": [
+        264,
+        567,
+        142,
+        80
+      ],
+      "crop": [
+        256,
+        559,
+        158,
+        96
+      ],
+      "opaquePixels": 7696
+    },
+    {
+      "name": "projectile_green",
+      "file": "assets/generated/word-shooter-assets/projectile_green.png",
+      "bbox": [
+        428,
+        565,
+        146,
+        84
+      ],
+      "crop": [
+        420,
+        557,
+        162,
+        100
+      ],
+      "opaquePixels": 8094
+    },
+    {
+      "name": "projectile_pink",
+      "file": "assets/generated/word-shooter-assets/projectile_pink.png",
+      "bbox": [
+        608,
+        566,
+        141,
+        82
+      ],
+      "crop": [
+        600,
+        558,
+        157,
+        98
+      ],
+      "opaquePixels": 7678
+    },
+    {
+      "name": "impact_flash_star",
+      "file": "assets/generated/word-shooter-assets/impact_flash_star.png",
+      "bbox": [
+        791,
+        538,
+        130,
+        142
+      ],
+      "crop": [
+        783,
+        530,
+        146,
+        158
+      ],
+      "opaquePixels": 8329
+    },
+    {
+      "name": "impact_burst_gold",
+      "file": "assets/generated/word-shooter-assets/impact_burst_gold.png",
+      "bbox": [
+        963,
+        524,
+        168,
+        160
+      ],
+      "crop": [
+        955,
+        516,
+        184,
+        176
+      ],
+      "opaquePixels": 15159
+    },
+    {
+      "name": "sparkle_teal",
+      "file": "assets/generated/word-shooter-assets/sparkle_teal.png",
+      "bbox": [
+        928,
+        0,
+        42,
+        45
+      ],
+      "crop": [
+        920,
+        -8,
+        58,
+        61
+      ],
+      "opaquePixels": 481
+    },
+    {
+      "name": "sparkle_pink",
+      "file": "assets/generated/word-shooter-assets/sparkle_pink.png",
+      "bbox": [
+        967,
+        44,
+        34,
+        37
+      ],
+      "crop": [
+        959,
+        36,
+        50,
+        53
+      ],
+      "opaquePixels": 274
+    },
+    {
+      "name": "sparkle_star_yellow",
+      "file": "assets/generated/word-shooter-assets/sparkle_star_yellow.png",
+      "bbox": [
+        1044,
+        516,
+        47,
+        38
+      ],
+      "crop": [
+        1036,
+        508,
+        63,
+        54
+      ],
+      "opaquePixels": 576
+    },
+    {
+      "name": "prompt_panel_long",
+      "file": "assets/generated/word-shooter-assets/prompt_panel_long.png",
+      "bbox": [
+        33,
+        718,
+        663,
+        108
+      ],
+      "crop": [
+        25,
+        710,
+        679,
+        124
+      ],
+      "opaquePixels": 70087
+    },
+    {
+      "name": "prompt_panel_compact",
+      "file": "assets/generated/word-shooter-assets/prompt_panel_compact.png",
+      "bbox": [
+        735,
+        712,
+        345,
+        115
+      ],
+      "crop": [
+        727,
+        704,
+        361,
+        131
+      ],
+      "opaquePixels": 38335
+    },
+    {
+      "name": "reward_card_small",
+      "file": "assets/generated/word-shooter-assets/reward_card_small.png",
+      "bbox": [
+        1116,
+        713,
+        170,
+        118
+      ],
+      "crop": [
+        1108,
+        705,
+        186,
+        134
+      ],
+      "opaquePixels": 19164
+    },
+    {
+      "name": "reward_star_badge",
+      "file": "assets/generated/word-shooter-assets/reward_star_badge.png",
+      "bbox": [
+        115,
+        845,
+        177,
+        175
+      ],
+      "crop": [
+        107,
+        837,
+        193,
+        191
+      ],
+      "opaquePixels": 21233
+    },
+    {
+      "name": "medal_badge_ribbon",
+      "file": "assets/generated/word-shooter-assets/medal_badge_ribbon.png",
+      "bbox": [
+        392,
+        852,
+        169,
+        168
+      ],
+      "crop": [
+        384,
+        844,
+        185,
+        184
+      ],
+      "opaquePixels": 19461
+    },
+    {
+      "name": "paw_coin_badge",
+      "file": "assets/generated/word-shooter-assets/paw_coin_badge.png",
+      "bbox": [
+        695,
+        853,
+        160,
+        165
+      ],
+      "crop": [
+        687,
+        845,
+        176,
+        181
+      ],
+      "opaquePixels": 20923
+    },
+    {
+      "name": "back_button_round",
+      "file": "assets/generated/word-shooter-assets/back_button_round.png",
+      "bbox": [
+        976,
+        870,
+        139,
+        145
+      ],
+      "crop": [
+        968,
+        862,
+        155,
+        161
+      ],
+      "opaquePixels": 15787
+    }
+  ]
+}

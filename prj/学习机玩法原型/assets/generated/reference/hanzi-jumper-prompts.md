@@ -1,0 +1,9 @@
+# Hanzi Jumper image prompts
+
+## Full reference
+
+Create a polished child-friendly 2D web game screenshot for a Chinese character learning jumping game, inspired by Doodle Jump and hanzi matching. Landscape mobile viewport, simple and readable for 5-7 year old children. A bright sky classroom playground with soft clouds and floating paper lantern platforms. A cute round learning mascot jumps upward between platforms. Each platform has a large empty center area where a Chinese character will be overlaid later by HTML, so do not draw any text. At the top is a simple prompt plaque with an empty cream center area, no readable text. Use warm greens, sky blue, coral, sunny yellow, and cream. Modern casual game UI, not retro console shell, not complex, no dense text, no Minecraft blocks, no dark theme. Clean vector-like 3D illustration, soft shadows, rounded shapes, high quality, full game screenshot.
+
+## Exploded transparent asset sheet
+
+Create a clean exploded UI asset sheet for the same child-friendly Chinese character jumping game. Transparent background PNG. Separate components with generous empty space so they can be cropped automatically. No readable text anywhere. Include: 1 sky playground background panel, 1 cute round jumper mascot facing forward, 1 mascot jump pose, 5 floating cloud/lantern platforms with blank cream centers for HTML characters, 1 correct-answer glowing platform frame, 1 prompt plaque with blank center, 1 star reward badge, 1 soft cloud, 1 sparkle burst, 1 small home/back icon button, 1 score badge. Keep every component isolated, complete, not overlapping, with soft shadows contained inside each component. Same palette as the full reference: sky blue, leaf green, coral, sunny yellow, cream. Modern polished educational web game assets, vector-like 3D, high resolution, transparent background.

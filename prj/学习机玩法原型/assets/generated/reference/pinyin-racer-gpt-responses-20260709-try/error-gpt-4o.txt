@@ -1,0 +1,1 @@
+{"error":{"code":"image_generation_not_enabled","message":"Image generation is not enabled for this API key route pool. Add or enable a channel with Responses image_generation support.","type":"image_generation_not_enabled"}}

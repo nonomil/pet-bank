@@ -171,6 +171,10 @@
     background: linear-gradient(180deg, rgba(243, 246, 255, 0.96), rgba(255, 255, 255, 0.92));
 }
 
+.playground-progress-card[data-mode="learning-arcade"] {
+    background: linear-gradient(180deg, rgba(236, 252, 248, 0.96), rgba(255, 255, 255, 0.92));
+}
+
 .playground-progress-top {
     display: flex;
     align-items: flex-start;
@@ -203,6 +207,11 @@
 .playground-progress-card[data-mode="typing-defense"] .playground-progress-kicker {
     background: rgba(118, 132, 220, 0.14);
     color: #5763a4;
+}
+
+.playground-progress-card[data-mode="learning-arcade"] .playground-progress-kicker {
+    background: rgba(65, 191, 170, 0.14);
+    color: #2f7f73;
 }
 
 .playground-progress-title {
@@ -285,6 +294,11 @@
 .playground-progress-card[data-mode="typing-defense"] .playground-progress-action {
     background: #6e79d6;
     box-shadow: 0 8px 18px rgba(110, 121, 214, 0.24);
+}
+
+.playground-progress-card[data-mode="learning-arcade"] .playground-progress-action {
+    background: #38a99c;
+    box-shadow: 0 8px 18px rgba(56, 169, 156, 0.24);
 }
 
 .playground-feature-shell {

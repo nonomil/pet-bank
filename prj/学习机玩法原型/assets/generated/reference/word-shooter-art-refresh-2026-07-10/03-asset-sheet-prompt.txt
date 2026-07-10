@@ -1,0 +1,29 @@
+Create a clean game asset sheet for a children's sci-fi typing shooter.
+
+Perfectly flat solid #00ff00 chroma-key background only. No shadows, gradients, texture, reflections, floor plane, or lighting variation on the background. Do not use #00ff00 anywhere inside the assets.
+
+Generate isolated complete assets with generous spacing between them. Keep soft glow close to each object so auto-crop works. No overlap. No text, no letters, no numbers, no Chinese characters, no pinyin, no logos, no watermark, no fake writing.
+
+Style: bright sci-fi arcade, polished digital illustration, readable silhouettes, slightly toy-like but still cool, teal/cyan glow with orange highlights.
+
+Please include these isolated assets:
+
+1. player spaceship idle pose, facing right
+2. player spaceship firing pose, facing right
+3. player spaceship boost pose, facing right
+4. small enemy fighter drone
+5. medium enemy armored drone
+6. floating blank enemy label pod or sign frame
+7. basic laser beam
+8. triple laser beam
+9. homing missile with glow trail
+10. piercing energy beam
+11. hit flash burst
+12. circular energy explosion ring
+13. spark fragment explosion
+14. triple-shot pickup icon
+15. missile pickup icon
+16. shield or power pickup icon
+17. star reward icon
+
+Everything must be separated, centered, complete, and easy to split into individual transparent PNGs later.
