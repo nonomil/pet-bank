@@ -2,8 +2,8 @@ from pathlib import Path
 
 
 def test_index_loads_family_social_scope_script():
-    html = Path("index.html").read_text(encoding="utf-8")
-    assert "js/family-social-scope.js" in html
+    loader = Path("js/runtime-loader.js").read_text(encoding="utf-8")
+    assert "js/family-social-scope.js" in loader
 
 
 def test_family_social_scope_defaults_to_minimal_v1():

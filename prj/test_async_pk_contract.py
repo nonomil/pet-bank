@@ -7,7 +7,7 @@ def test_async_pk_schema_contains_question_sets():
 
 
 def test_frontend_loads_pk_service_and_issue_hook():
-    html = Path("index.html").read_text(encoding="utf-8")
+    loader = Path("js/runtime-loader.js").read_text(encoding="utf-8")
     js = Path("js/pk-service.js").read_text(encoding="utf-8")
-    assert "js/pk-service.js" in html
+    assert "js/pk-service.js" in loader
     assert "issue-pk-match" in js

@@ -2,9 +2,9 @@ from pathlib import Path
 
 
 def test_frontend_loads_cloud_sync_service():
-    html = Path("index.html").read_text(encoding="utf-8")
+    loader = Path("js/runtime-loader.js").read_text(encoding="utf-8")
     js = Path("js/cloud-sync.js").read_text(encoding="utf-8")
-    assert "js/cloud-sync.js" in html
+    assert "js/cloud-sync.js" in loader
     assert "syncActiveChildState" in js
 
 

@@ -3,8 +3,9 @@ from pathlib import Path
 
 def test_review_page_loads_family_review_mount_and_script():
     html = Path("index.html").read_text(encoding="utf-8")
+    loader = Path("js/runtime-loader.js").read_text(encoding="utf-8")
     assert 'id="family-review-root"' in html
-    assert "js/family-review.js" in html
+    assert "js/family-review.js" in loader
 
 
 def test_family_review_service_aggregates_household_social_and_pk_state():

@@ -3,8 +3,9 @@ from pathlib import Path
 
 def test_settings_page_contains_cloud_diagnostics_mount_and_script():
     html = Path("index.html").read_text(encoding="utf-8")
+    loader = Path("js/runtime-loader.js").read_text(encoding="utf-8")
     assert 'id="diagnostics-root"' in html
-    assert "js/cloud-diagnostics.js" in html
+    assert "js/cloud-diagnostics.js" in loader
 
 
 def test_cloud_diagnostics_service_aggregates_family_social_debug_state():

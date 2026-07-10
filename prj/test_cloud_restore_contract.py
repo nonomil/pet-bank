@@ -2,8 +2,8 @@ from pathlib import Path
 
 
 def test_frontend_loads_cloud_restore_service():
-    html = Path("index.html").read_text(encoding="utf-8")
-    assert "js/cloud-restore.js" in html
+    loader = Path("js/runtime-loader.js").read_text(encoding="utf-8")
+    assert "js/cloud-restore.js" in loader
 
 
 def test_cloud_restore_service_handles_cloud_snapshots_and_safe_restore():
@@ -17,6 +17,7 @@ def test_cloud_restore_service_handles_cloud_snapshots_and_safe_restore():
 def test_app_boot_hydrates_from_cloud_before_loading_local_state():
     js = Path("js/app.js").read_text(encoding="utf-8")
     assert "CloudRestore.hydrateFromCloud" in js
+    assert "RuntimeLoader.ensureCloudFeature" in js
 
 
 def test_auth_flow_triggers_cloud_restore_after_successful_login():

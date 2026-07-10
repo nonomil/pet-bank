@@ -7,7 +7,7 @@ def test_friend_graph_migration_contains_child_friendships():
 
 
 def test_frontend_loads_social_service_and_friend_redeem_hook():
-    html = Path("index.html").read_text(encoding="utf-8")
+    loader = Path("js/runtime-loader.js").read_text(encoding="utf-8")
     js = Path("js/social.js").read_text(encoding="utf-8")
-    assert "js/social.js" in html
+    assert "js/social.js" in loader
     assert "redeem-friend-code" in js

@@ -13,9 +13,9 @@ def test_activity_feed_migration_contains_table_and_triggers():
 
 
 def test_frontend_loads_activity_feed_service():
-    html = Path("index.html").read_text(encoding="utf-8")
+    loader = Path("js/runtime-loader.js").read_text(encoding="utf-8")
     js = Path("js/activity-feed.js").read_text(encoding="utf-8")
-    assert "js/activity-feed.js" in html
+    assert "js/activity-feed.js" in loader
     assert ".from('activity_feed')" in js
     assert "ActivityFeedSystem" in js
 
