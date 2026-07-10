@@ -13,7 +13,7 @@ const page = await browser.newPage({
 
 await page.goto(PROTOTYPE_URL, { waitUntil: 'domcontentloaded' });
 await page.waitForSelector('.hero-sprite');
-await page.waitForTimeout(320);
+await page.waitForFunction(() => window.__wordMemoryReady === true, null, { timeout: 5000 });
 
 const missionRail = page.locator('#missionRail');
 await assert.doesNotReject(async () => {

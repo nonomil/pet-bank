@@ -62,7 +62,7 @@ async function openPage() {
   await page.goto(`${PROTOTYPE_URL}?bomb-throw=${Date.now()}`, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('.hero-sprite');
   await page.waitForSelector('[data-orb-id]');
-  await page.waitForTimeout(320);
+  await page.waitForFunction(() => window.__wordMemoryReady === true, null, { timeout: 5000 });
   return { browser, page };
 }
 
@@ -140,6 +140,14 @@ async function firstVisibleId(page, selector, attr) {
   const targetId = `target-${orbId.replace(/^orb-/, '')}`;
   const scoreBefore = Number(await page.locator('#scoreText').textContent());
   await page.locator(`[data-target-id="${targetId}"]`).click({ force: true });
+  await page.waitForFunction(() => {
+    return document.querySelectorAll('.shot-aim-line').length > 0
+      && document.querySelectorAll('.shot-trail-ghost').length > 1;
+  }, null, { timeout: 1200 });
+  const targetedFx = await page.evaluate(() => ({
+    lineCount: document.querySelectorAll('.shot-aim-line').length,
+    ghostCount: document.querySelectorAll('.shot-trail-ghost').length
+  }));
   await page.waitForFunction(({ id, score }) => {
     const targetGone = !document.querySelector(`[data-target-id="${id}"]`);
     const nextScore = Number(document.querySelector('#scoreText')?.textContent || 0);
@@ -185,6 +193,8 @@ async function firstVisibleId(page, selector, attr) {
     y: parseFloat(element.style.top)
   })).catch(() => null);
   assert.ok(movedShotPoint, 'the thrown bomb should remain visible long enough to read its trajectory');
+  assert.ok(targetedFx.lineCount >= 1, 'targeted throws should draw a visible dashed aim line while in flight');
+  assert.ok(targetedFx.ghostCount >= 2, 'targeted throws should render multiple bomb ghost markers along the path');
   assert.ok(
     Math.abs(movedShotPoint.x - firstShotPoint.x) > 2 || Math.abs(movedShotPoint.y - firstShotPoint.y) > 2,
     'the thrown bomb should move continuously after launch'

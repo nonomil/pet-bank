@@ -8,6 +8,7 @@ const PROTOTYPE_URL = process.env.WORD_MEMORY_MAP_URL
 async function installVoiceMocks(page, mode) {
   await page.addInitScript(({ activeMode }) => {
     const voiceEvents = [];
+    const remoteVoiceEvents = [];
     const speechEvents = [];
     const realFetch = window.fetch.bind(window);
 
@@ -45,6 +46,10 @@ async function installVoiceMocks(page, mode) {
       value: voiceEvents,
       configurable: true
     });
+    Object.defineProperty(window, '__wordMemoryRemoteVoiceEvents', {
+      value: remoteVoiceEvents,
+      configurable: true
+    });
     Object.defineProperty(window, '__wordMemorySpeechEvents', {
       value: speechEvents,
       configurable: true
@@ -77,6 +82,122 @@ async function installVoiceMocks(page, mode) {
       configurable: true
     });
 
+    if (activeMode === 'local' || activeMode === 'fallback') {
+      Object.defineProperty(window, 'WORD_MEMORY_TTS_ENDPOINT', {
+        value: '',
+        configurable: true
+      });
+    }
+
+    if (activeMode === 'remote') {
+      Object.defineProperty(window, 'WORD_MEMORY_TTS_ENDPOINT', {
+        value: 'https://tts.test/tts',
+        configurable: true
+      });
+      Object.defineProperty(window, 'fetch', {
+        value(input, init) {
+          const url = typeof input === 'string' ? input : input?.url || '';
+          if (/assets\/voice\/map\.json/.test(url)) {
+            return Promise.resolve(new Response('{}', {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' }
+            }));
+          }
+          if (/https:\/\/tts\.test\/tts/.test(url)) {
+            let body = {};
+            try {
+              body = JSON.parse(init?.body || '{}');
+            } catch (error) {
+              body = {};
+            }
+            remoteVoiceEvents.push({
+              text: body?.text || '',
+              lang: body?.lang || '',
+              voice: body?.voice || '',
+              engine: body?.engine || ''
+            });
+            return Promise.resolve(new Response(JSON.stringify({
+              audioUrl: `https://tts.test/audio/${encodeURIComponent(body?.text || 'empty')}.mp3`
+            }), {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' }
+            }));
+          }
+          return realFetch(input, init);
+        },
+        configurable: true
+      });
+      return;
+    }
+
+    if (activeMode === 'remote-timeout') {
+      Object.defineProperty(window, 'WORD_MEMORY_TTS_ENDPOINT', {
+        value: 'https://tts.test/tts',
+        configurable: true
+      });
+      Object.defineProperty(window, 'fetch', {
+        value(input, init) {
+          const url = typeof input === 'string' ? input : input?.url || '';
+          if (/assets\/voice\/map\.json/.test(url)) {
+            return Promise.resolve(new Response('{}', {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' }
+            }));
+          }
+          if (/https:\/\/tts\.test\/tts/.test(url)) {
+            return new Promise((resolve, reject) => {
+              const signal = init?.signal;
+              if (!signal || typeof signal.addEventListener !== 'function') {
+                return;
+              }
+              signal.addEventListener('abort', () => {
+                reject(new DOMException('The operation was aborted.', 'AbortError'));
+              }, { once: true });
+            });
+          }
+          return realFetch(input, init);
+        },
+        configurable: true
+      });
+      return;
+    }
+
+    if (activeMode === 'loopback-refused') {
+      Object.defineProperty(window, 'WORD_MEMORY_TTS_ENDPOINT', {
+        value: 'http://127.0.0.1:9885/tts',
+        configurable: true
+      });
+      Object.defineProperty(window, 'fetch', {
+        value(input, init) {
+          const url = typeof input === 'string' ? input : input?.url || '';
+          if (/assets\/voice\/map\.json/.test(url)) {
+            return Promise.resolve(new Response('{}', {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' }
+            }));
+          }
+          if (/127\.0\.0\.1:9885\/tts/.test(url)) {
+            let body = {};
+            try {
+              body = JSON.parse(init?.body || '{}');
+            } catch (error) {
+              body = {};
+            }
+            remoteVoiceEvents.push({
+              text: body?.text || '',
+              lang: body?.lang || '',
+              voice: body?.voice || '',
+              engine: body?.engine || ''
+            });
+            return Promise.reject(new TypeError('Failed to fetch'));
+          }
+          return realFetch(input, init);
+        },
+        configurable: true
+      });
+      return;
+    }
+
     if (activeMode === 'fallback') {
       Object.defineProperty(window, 'fetch', {
         value(input, init) {
@@ -105,13 +226,14 @@ async function openPage(mode) {
   await installVoiceMocks(page, mode);
   await page.goto(PROTOTYPE_URL, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('.hero-sprite');
-  await page.waitForTimeout(320);
+  await page.waitForFunction(() => window.__wordMemoryReady === true, null, { timeout: 5000 });
   return { browser, page };
 }
 
 async function snapshotVoice(page) {
   return page.evaluate(() => ({
     voice: window.__wordMemoryVoiceEvents.slice(),
+    remote: window.__wordMemoryRemoteVoiceEvents.slice(),
     speech: window.__wordMemorySpeechEvents.slice(),
     currentMeaning: document.querySelector('#currentMeaningText')?.textContent || '',
     visibleWords: [...document.querySelectorAll('[data-target-id]')]
@@ -193,6 +315,37 @@ async function clickFirstOrb(page) {
 }
 
 {
+  const { browser, page } = await openPage('remote');
+  const orbId = await firstVisibleId(page, '[data-orb-id]', 'data-orb-id');
+  assert.ok(orbId, 'expected an orb id to exist in remote mode');
+
+  await clickFirstOrb(page);
+  await page.waitForTimeout(240);
+
+  const afterPickup = await snapshotVoice(page);
+  assert.ok(afterPickup.remote.length >= 1, 'remote mode should request unified tts when local mp3 is unavailable');
+  assert.ok(
+    afterPickup.voice.every(event => !/assets\/voice\/[a-f0-9]{32}\.mp3/i.test(event.src)),
+    'remote mode should not resolve to packaged local mp3 assets when the map is empty'
+  );
+  assert.ok(
+    afterPickup.voice.some(event => /https:\/\/tts\.test\/audio\//.test(event.src)),
+    'remote mode should play the audio returned by the configured tts endpoint'
+  );
+  assert.equal(afterPickup.speech.length, 0, 'remote mode should not fall back to browser speech when tts endpoint succeeds');
+  assert.equal(afterPickup.remote[0].lang, 'zh-CN', 'pickup meaning should preserve Chinese lang for remote tts');
+
+  await page.locator('#speakButton').click({ force: true });
+  await page.waitForTimeout(260);
+
+  const afterSpeak = await snapshotVoice(page);
+  assert.ok(afterSpeak.remote.length >= 3, 'speak button should also use remote tts for visible words');
+  assert.ok(afterSpeak.remote.some(event => event.lang === 'en-US'), 'visible word playback should preserve English lang for remote tts');
+
+  await browser.close();
+}
+
+{
   const { browser, page } = await openPage('fallback');
   const orbId = await firstVisibleId(page, '[data-orb-id]', 'data-orb-id');
   assert.ok(orbId, 'expected an orb id to exist in fallback mode');
@@ -203,6 +356,32 @@ async function clickFirstOrb(page) {
   const afterPickup = await snapshotVoice(page);
   assert.equal(afterPickup.voice.length, 0, 'fallback mode should not have local mp3 playback');
   assert.ok(afterPickup.speech.length >= 1, 'fallback mode should use browser speech when local map is unavailable');
+
+  await browser.close();
+}
+
+{
+  const { browser, page } = await openPage('remote-timeout');
+  await clickFirstOrb(page);
+  await page.waitForTimeout(2800);
+
+  const afterPickup = await snapshotVoice(page);
+  assert.equal(afterPickup.voice.length, 0, 'timeout mode should not reach a playable remote audio url');
+  assert.ok(afterPickup.speech.length >= 1, 'timeout mode should fall back to browser speech when remote tts stalls');
+
+  await browser.close();
+}
+
+{
+  const { browser, page } = await openPage('loopback-refused');
+  await clickFirstOrb(page);
+  await page.waitForTimeout(240);
+  await page.locator('#speakButton').click({ force: true });
+  await page.waitForTimeout(260);
+
+  const snapshot = await snapshotVoice(page);
+  assert.equal(snapshot.remote.length, 1, 'loopback tts should stop retrying after the first refused local request');
+  assert.ok(snapshot.speech.length >= 2, 'loopback tts refusal should continue with browser speech fallback');
 
   await browser.close();
 }
