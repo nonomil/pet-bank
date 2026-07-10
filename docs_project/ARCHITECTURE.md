@@ -134,8 +134,7 @@
 │
 ├── docs/                   # 271 个 Markdown 文档（方案/需求/进度）
 ├── docs_project/           # 本目录 —— 结构化工程文档
-├── prj/                    # ⚠️ 旧项目快照+测试+原型（混乱）
-├── archive/                # 归档文件
+├── prj/                    # ⚠️ 本地原型/参考/临时工程区（远端仅保留少量发布内容）
 ├── .claude/                # Claude Code 配置（rules/skills/workflows）
 └── .github/workflows/      # GitHub Actions 部署
 ```
