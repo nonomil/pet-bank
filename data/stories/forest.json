@@ -10,12 +10,18 @@
     {
       "type": "narrate",
       "text": "你背着图鉴馆发下来的空白调查册走进神秘森林，树影间传来温室铃声，像在提醒你第一份登记就要开始了。",
+      "shortText": "森林里有铃声！第一条线索出现了。",
+      "detailText": "你背着图鉴馆发下来的空白调查册走进神秘森林，树影间传来温室铃声，第一份登记开始了。",
+      "petMood": "surprised",
       "id": "forest.narrate0"
     },
     {
       "type": "discover",
       "emoji": "🍄",
       "text": "潮湿的树根边压着一张叶片标签，旁边还有发光蘑菇喷出的彩色孢子，像是在提示这片林地常住伙伴的生活习惯。",
+      "shortText": "蘑菇在发光！找到森林线索。",
+      "detailText": "潮湿的树根边压着叶片标签，发光蘑菇的孢子提示着森林伙伴的生活习惯。",
+      "petMood": "happy",
       "item": "mushroom",
       "chance": 0.5,
       "id": "forest.discover1"
@@ -23,6 +29,9 @@
     {
       "type": "math",
       "text": "森林里的登记测试变成脚印比对，只有看清水边和花圃两处线索，图鉴馆才会认可你的观察记录……",
+      "shortText": "脚印题：花圃多几个？",
+      "detailText": "森林里的登记测试变成脚印比对，先看清水边和花圃两处线索。",
+      "petMood": "worried",
       "difficulty": "easy",
       "reward": {
         "exp": 15,
@@ -45,6 +54,9 @@
     {
       "type": "choice",
       "text": "前方分出水边和花圃两条调查路线，你决定先去哪里收集基础伙伴的线索？",
+      "shortText": "走水边，还是走花圃？",
+      "detailText": "前方分出水边和花圃两条调查路线，选择一条收集基础伙伴的线索。",
+      "petMood": "surprised",
       "options": [
         {
           "text": "🌿 走流水小路",
@@ -64,6 +76,9 @@
     {
       "type": "encounter",
       "text": "树洞里亮起一双圆溜溜的眼睛，这只森林伙伴像在等你通过最后的登记考核……",
+      "shortText": "树洞里有双眼睛！",
+      "detailText": "树洞里亮起一双圆溜溜的眼睛，森林伙伴正在等你通过最后的登记考核。",
+      "petMood": "proud",
       "id": "forest.encounter4"
     }
   ],

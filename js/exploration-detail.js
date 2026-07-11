@@ -140,6 +140,37 @@ const ExplorationDetail = (function () {
         else { img.style.display = 'none'; }
     }
 
+    function setPetMood(mood) {
+        const img = document.getElementById('galgamePortraitR');
+        if (!img) return;
+        img.classList.remove('mood-happy', 'mood-surprised', 'mood-worried', 'mood-proud');
+        img.classList.add(`mood-${mood || 'happy'}`);
+    }
+
+    function escapeCopy(value) {
+        return String(value || '').replace(/[&<>"']/g, (char) => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[char]));
+    }
+
+    function getEventCopy(event) {
+        return window.ExplorationCopy && typeof window.ExplorationCopy.get === 'function'
+            ? window.ExplorationCopy.get(event)
+            : { text: event?.text || '', detailText: '', mood: 'happy', isShort: false };
+    }
+
+    function copyHtml(event, className = '') {
+        const copy = getEventCopy(event);
+        const detail = copy.detailText
+            ? `<button class="galgame-detail-toggle" type="button" onclick="event.stopPropagation();ExplorationDetail.toggleDetail(this)">想知道更多</button><span class="galgame-detail" hidden>${escapeCopy(copy.detailText)}</span>`
+            : '';
+        return `<span class="${className}">${escapeCopy(copy.text)}</span>${detail}`;
+    }
+
+    function applyEventMood(event) {
+        setPetMood(getEventCopy(event).mood);
+    }
+
     // 数学解谜出题（难度分级，自实现，不依赖 math-pk 闭包）
     // mathType: 'arithmetic'(裸算式,默认) | 'word'(CMATH 应用题) | 'logic'(找规律)
     // event: 可选，携带 R3 固定场景题(question/answer/options)时优先用
@@ -243,18 +274,21 @@ const ExplorationDetail = (function () {
 
         if (event.type === 'narrate') {
             nameEl.textContent = `${currentScene.emoji} ${currentScene.name}`;
-            textEl.innerHTML = event.text;
+            textEl.innerHTML = copyHtml(event);
+            applyEventMood(event);
             setScenePortrait();
         } else if (event.type === 'discover') {
             playSfx('discover');
             const found = !!(event.item && Math.random() < event.chance);
             nameEl.textContent = '✨ 发现';
-            textEl.innerHTML = `<span style="font-size:28px">${event.emoji}</span> ${event.text}${found ? '<br><span class="galgame-found">✨ 获得物品！</span>' : ''}`;
+            textEl.innerHTML = `<span style="font-size:28px">${escapeCopy(event.emoji)}</span> ${copyHtml(event)}${found ? '<br><span class="galgame-found">✨ 获得物品！</span>' : ''}`;
+            applyEventMood(event);
             setScenePortrait();
             if (found) foundItems.push(event.item);
         } else if (event.type === 'choice') {
             nameEl.textContent = `${currentScene.emoji} ${currentScene.name}`;
-            textEl.innerHTML = event.text;
+            textEl.innerHTML = copyHtml(event);
+            applyEventMood(event);
             choicesEl.innerHTML = event.options.map((opt, i) =>
                 `<button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.choose(${eventIndex - 1},${i})">${opt.text}</button>`
             ).join('');
@@ -264,7 +298,8 @@ const ExplorationDetail = (function () {
         } else if (event.type === 'encounter') {
             playSfx('encounterWarning');
             nameEl.textContent = '⚠️ 遭遇';
-            textEl.innerHTML = `<span class="galgame-warn">${event.text}</span><br>点击准备战斗！`;
+            textEl.innerHTML = `${copyHtml(event, 'galgame-warn')}<br>点击准备战斗！`;
+            applyEventMood(event);
         } else if (event.type === 'math') {
             const q = genMathQuestion(event.mathType || 'arithmetic', event.difficulty || 'easy', event);
             const opts = q.options || genMathOptions(q.answer);
@@ -272,7 +307,8 @@ const ExplorationDetail = (function () {
             // R3: 固定场景题(长题面)用 galgame-word 样式, 仅裸算式保留 galgame-math
             const useWordStyle = !!event.question || event.mathType === 'word';
             const skillHtml = event.skill ? `<span class="galgame-skill">能力点：${event.skill}</span>` : '';
-            const qHtml = `${event.text}${skillHtml ? `<br>${skillHtml}` : ''}<br><span class="${useWordStyle ? 'galgame-word' : 'galgame-math'}">${q.text}</span>`;
+            const copy = getEventCopy(event);
+            const qHtml = `${escapeCopy(copy.text)}${skillHtml ? `<br>${skillHtml}` : ''}<br><span class="${useWordStyle ? 'galgame-word' : 'galgame-math'}">${escapeCopy(q.text)}</span>`;
             const rewardMsg = JSON.stringify(event.reward?.msg || '');
             const hint = JSON.stringify(event.hint || '');
             const explanation = JSON.stringify(event.explanation || '');
@@ -283,6 +319,15 @@ const ExplorationDetail = (function () {
             box.onclick = null;  // 等答题
             return;
         }
+    }
+
+    function toggleDetail(button) {
+        const detail = button && button.nextElementSibling;
+        if (!detail) return;
+        const hidden = detail.hasAttribute('hidden');
+        if (hidden) detail.removeAttribute('hidden');
+        else detail.setAttribute('hidden', '');
+        button.textContent = hidden ? '收起' : '想知道更多';
     }
 
     function choose(eventIdx, choiceIdx) {
@@ -375,7 +420,7 @@ const ExplorationDetail = (function () {
 
     _loadStories();  // 模块加载即预取 data/stories.json（数据驱动），show 用缓存/兜底
 
-    return { show, next, choose, exit, answerMath, isActive, showEnding };
+    return { show, next, choose, exit, answerMath, isActive, showEnding, toggleDetail };
 })();
 
 window.ExplorationDetail = ExplorationDetail;

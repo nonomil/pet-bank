@@ -202,6 +202,19 @@ const HomeSystem = (function () {
 @keyframes home-evo-shine{from{transform:translateX(-100%);}to{transform:translateX(100%);}}
 .home-evo-meta{display:flex;justify-content:space-between;font-size:10px;color:#999;margin-top:3px;}
 .home-evo-max{font-size:11px;color:#00b894;font-weight:700;}
+.home-evo-preview{display:flex;align-items:center;gap:8px;margin-top:8px;width:100%;padding:7px 9px;border:1px solid #ddd5ff;border-radius:8px;background:#fff;color:#5b4dc2;font-size:11px;font-weight:700;cursor:pointer;text-align:left;}
+.home-evo-preview:hover{background:#f6f3ff;border-color:#a29bfe;}
+.home-evo-preview-thumb{width:28px;height:28px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(70,50,120,.18));}
+.home-evo-modal{position:fixed;inset:0;z-index:9100;display:none;align-items:center;justify-content:center;background:rgba(20,15,40,.68);padding:16px;}
+.home-evo-modal.show{display:flex;animation:home-fade-in .2s ease;}
+.home-evo-dialog{width:min(420px,100%);background:#fff;border-radius:16px;padding:18px;box-shadow:0 24px 60px rgba(40,20,80,.4);}
+.home-evo-dialog-head{display:flex;justify-content:space-between;align-items:center;color:#4a3a7a;font-weight:800;font-size:17px;}
+.home-evo-dialog-close{border:0;background:transparent;color:#9388b8;font-size:24px;cursor:pointer;line-height:1;}
+.home-evo-stage-row{display:grid;grid-template-columns:1fr 34px 1fr;align-items:center;gap:8px;margin:16px 0 10px;}
+.home-evo-stage-card{min-height:126px;padding:10px;border:1px solid #e9e3fb;border-radius:12px;background:#faf9ff;text-align:center;color:#5d547b;font-size:12px;}
+.home-evo-stage-card img{width:86px;height:86px;object-fit:contain;display:block;margin:0 auto 4px;}
+.home-evo-stage-arrow{text-align:center;color:#6c5ce7;font-size:22px;font-weight:900;}
+.home-evo-dialog-tip{margin:0;color:#70678d;font-size:12px;line-height:1.5;text-align:center;}
 .home-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .home-btn{border:none;border-radius:12px;padding:12px 8px;font-size:13px;font-weight:600;cursor:pointer;color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .15s,opacity .15s;}
 .home-btn:active{transform:scale(.96);}
@@ -332,6 +345,50 @@ const HomeSystem = (function () {
         if (s.cleanliness != null && s.cleanliness < 20) return '🛁 我脏脏…';
         if (s.hp < 40) return '🤕 好虚弱…';
         return '';
+    }
+
+    function _evolutionPreview(s) {
+        const species = s && (s.species_data || (PetSystem.getAllSpecies && PetSystem.getAllSpecies().find(item => item.id === s.species)));
+        if (!s || !s.species || !window.PetEvolutionPreview || !species) return null;
+        return PetEvolutionPreview.get(s, {
+            stages: PetSystem.STAGES,
+            species,
+            maxLevel: PetSystem.MAX_LEVEL
+        });
+    }
+
+    function _evolutionImage(image, emoji) {
+        return image
+            ? `<img src="${image}" alt="" aria-hidden="true">`
+            : `<div style="font-size:48px;line-height:86px">${emoji || '🐾'}</div>`;
+    }
+
+    function openEvolutionPreview() {
+        const s = PetSystem.getState();
+        const preview = _evolutionPreview(s);
+        if (!preview) { _toast('先选择一只宠物吧'); return; }
+        let modal = document.getElementById('homeEvolutionModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'homeEvolutionModal';
+            modal.className = 'home-evo-modal';
+            modal.addEventListener('click', (event) => { if (event.target === modal) modal.classList.remove('show'); });
+            document.body.appendChild(modal);
+        }
+        const species = s.species_data || {};
+        const nextLabel = preview.isMax ? '已经长成最终形态啦！' : `再完成 ${preview.remainingLevels} 个等级，就能看到新形态`;
+        modal.innerHTML = `
+            <div class="home-evo-dialog" role="dialog" aria-modal="true" aria-label="宠物进化预览">
+                <div class="home-evo-dialog-head"><span>✨ 进化预览</span><button class="home-evo-dialog-close" type="button" aria-label="关闭">×</button></div>
+                <div class="home-evo-stage-row">
+                    <div class="home-evo-stage-card">${_evolutionImage(preview.current.image, species.emoji)}<strong>${preview.current.name}</strong></div>
+                    <div class="home-evo-stage-arrow">→</div>
+                    <div class="home-evo-stage-card">${preview.isMax ? _evolutionImage(preview.current.image, species.emoji) : _evolutionImage(preview.next.image, species.emoji)}<strong>${preview.isMax ? '最终形态' : preview.next.name}</strong></div>
+                </div>
+                <p class="home-evo-dialog-tip">${nextLabel}</p>
+            </div>`;
+        modal.querySelector('.home-evo-dialog-close').addEventListener('click', () => modal.classList.remove('show'));
+        modal.classList.add('show');
     }
 
     // ---------- 点击台词（P1-B 功能1） ----------
@@ -846,6 +903,7 @@ const HomeSystem = (function () {
 
         // 进化进度条（P1-B）：基于 PetSystem.STAGES 的 min_level 区间
         const evo = _evoProgress(s);
+        const evoPreview = _evolutionPreview(s);
         const evoHtml = s.species ? (evo.isMax
             ? `<div class="home-evo">
                    <div class="home-evo-head">
@@ -854,6 +912,7 @@ const HomeSystem = (function () {
                    </div>
                    <div class="home-evo-bar"><div class="home-evo-fill" style="width:100%"></div></div>
                    <div class="home-evo-meta"><span>已达最高进化阶段</span><span>MAX</span></div>
+                   <button class="home-evo-preview" type="button" onclick="HomeSystem.openEvolutionPreview()"><span>✨</span>再看看我的成长旅程</button>
                </div>`
             : `<div class="home-evo">
                    <div class="home-evo-head">
@@ -861,7 +920,8 @@ const HomeSystem = (function () {
                        <span class="home-evo-stage">下一阶段：${evo.nextName}（Lv.${evo.nextMin}）</span>
                    </div>
                    <div class="home-evo-bar"><div class="home-evo-fill" data-evo-fill style="width:${evo.pct}%"></div></div>
-                   <div class="home-evo-meta"><span>当前 Lv.${s.level}</span><span>需 Lv.${evo.nextMin} 进化（${evo.pct}%）</span></div>
+                   <div class="home-evo-meta"><span>当前 Lv.${s.level}</span><span>还差 ${evoPreview ? evoPreview.remainingLevels : Math.max(0, evo.nextMin - s.level)} 级</span></div>
+                   <button class="home-evo-preview" type="button" onclick="HomeSystem.openEvolutionPreview()">${evoPreview && evoPreview.next && evoPreview.next.image ? `<img class="home-evo-preview-thumb" src="${evoPreview.next.image}" alt="">` : '<span>🥚</span>'}<span>看看下一阶段会变成什么</span></button>
                </div>`) : '';
 
         const vitHtml = `
@@ -986,6 +1046,7 @@ const HomeSystem = (function () {
         placeFurniture, removeFurniture, addFurniture,
         canPlace, selectFurniture, clearSelection,
         onPetClick, setHomeBg, cycleHomeBg,
+        openEvolutionPreview,
         openManageHome, closeManageHome, buyTheme, refreshManage,
         markExit,
         loadCatalog,

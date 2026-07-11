@@ -73,11 +73,11 @@
 
     const SCRIPT_BUNDLES = {
         audio: ['js/zzfx.js', 'js/sfx.js'],
-        home: ['js/pet-care-daily.js', 'js/core-reward-feedback.js', 'js/pet-growth-history.js', 'js/task-reward-events.js', 'js/home.js'],
+        home: ['js/pet-care-daily.js', 'js/core-reward-feedback.js', 'js/pet-growth-history.js', 'js/task-reward-events.js', 'js/pet-evolution-preview.js', 'js/home.js'],
         walk: ['js/walk.js'],
         cardCollection: ['js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
-        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/exploration-detail.js'],
+        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/exploration-copy.js', 'js/exploration-detail.js'],
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=6'],
         shop: ['js/shop.js'],

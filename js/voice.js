@@ -293,7 +293,9 @@
     // 选择器规则：sel + extract(node)->string + 可选 throttle
     // 自动播报规则：只保留探索地图 galgame 对话
     var AUTOPLAY_RULES = [
-        { sel: '#galgameText', extract: function (n) { return _cleanGalgameText(n.textContent); }, throttle: 300 }
+        // innerText excludes the collapsed detail copy, keeping audio aligned
+        // with the short-first visual path.
+        { sel: '#galgameText', extract: function (n) { return _cleanGalgameText(n.innerText || n.textContent); }, throttle: 300 }
     ];
 
     function _matchAndExtract(node) {

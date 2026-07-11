@@ -10,12 +10,18 @@
     {
       "type": "narrate",
       "text": "你翻开最后一册空白图鉴，花园里的光点自动聚成一句话：只记录战斗，是看不见真正伙伴的，这里是最终登记地。",
+      "shortText": "星光聚成字！终章开始了。",
+      "detailText": "你翻开最后一册空白图鉴，花园光点提醒你：只记录战斗，看不见真正伙伴。",
+      "petMood": "surprised",
       "id": "stargarden.narrate0"
     },
     {
       "type": "discover",
       "emoji": "🌟",
       "text": "每一朵星花和每一条光路都在补足线索，像在把压轴伙伴的来历、责任与愿望一页页递到你手里。",
+      "shortText": "星花亮了！最后线索出现。",
+      "detailText": "星花和光路正在补足压轴伙伴的来历、责任与愿望。",
+      "petMood": "happy",
       "item": "star_dust",
       "chance": 0.6,
       "id": "stargarden.discover1"
@@ -25,6 +31,9 @@
       "mathType": "logic",
       "difficulty": "hard",
       "text": "这是图鉴馆的毕业考核，只有找出星花花环一圈圈增加的规律，你才有资格为终章伙伴写下完整档案……",
+      "shortText": "规律题：第四圈有几颗？",
+      "detailText": "找出星花花环一圈圈增加的规律，完成终章伙伴的记录。",
+      "petMood": "worried",
       "reward": {
         "exp": 30,
         "msg": "星座连成一线，星路打开！+30 经验"
@@ -45,6 +54,9 @@
     {
       "type": "choice",
       "text": "瑞兽路、星瞳路和幻想终章路在你面前展开，你决定先追哪一条线索去见压轴伙伴？",
+      "shortText": "追月亮灯，还是跟星狐？",
+      "detailText": "三条线索路在面前展开，选择一条去见压轴伙伴。",
+      "petMood": "surprised",
       "options": [
         {
           "text": "🌕 摘一个月亮灯笼",
@@ -64,6 +76,9 @@
     {
       "type": "encounter",
       "text": "星光里走出一位像最终审稿人一样的伙伴，它想确认你是否真的把伙伴写成了有来历、有工作、有性格的人物……",
+      "shortText": "星光伙伴来考考你！",
+      "detailText": "星光伙伴想确认你是否真的记住了伙伴的来历、工作和性格。",
+      "petMood": "proud",
       "id": "stargarden.encounter4"
     }
   ],
