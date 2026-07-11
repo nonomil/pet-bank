@@ -289,6 +289,15 @@ const PetSystem = (function () {
         return { success: true, msg: '洗澡成功！清洁 +30，快乐 +5' };
     }
 
+    // 统一亲密度入口，供奖励事件和小屋照料使用。
+    function addIntimacy(amount) {
+        const delta = Math.max(0, Math.floor(Number(amount) || 0));
+        if (!delta) return state.intimacy || 0;
+        state.intimacy = Math.max(0, (state.intimacy || 0) + delta);
+        save();
+        return state.intimacy;
+    }
+
     // 衰减结算（宠物小屋 §4.2，R4：单结算）
     // 触发点：init() 补算、home renderUI 进入结算
     // 三连守卫：ts 无效 / 未来时间 → hours=0 不扣；结算后立即写 last_home_ts=now 保证幂等
@@ -598,7 +607,7 @@ const PetSystem = (function () {
         load, save, chooseSpecies, getCurrentStage, getStageEmoji,
         getEvolutionStageIndex, getCurrentStageImage,
         addExp, takeDamage, heal, feed, play, rest, revive,
-        bath, decay, markHomeExit,
+        bath, addIntimacy, decay, markHomeExit,
         equip, unequip, addExploration, addWin, getState, getAllSpecies,
         getTotalAtk, getTotalMaxHp, getTotalDef, getTotalSpd,
         getAllSpeciesBySeries, getSpeciesByRarity, getRarityConfig, getAllSeries,

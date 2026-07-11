@@ -145,7 +145,9 @@
             receipt,
             petBefore: before,
             petAfter: after,
-            petExpApplied: after && before ? Math.max(0, (after.exp - before.exp)) : 0,
+            petExpApplied: event.rewards
+                .filter((reward) => reward.type === 'pet_exp')
+                .reduce((sum, reward) => sum + reward.amount, 0),
             leveledUp: !!(after && before && after.level > before.level),
             evolutionChanged: !!(after && before && after.stage && after.stage !== before.stage)
         };
