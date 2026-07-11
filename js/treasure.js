@@ -93,7 +93,28 @@ const TreasureChest = (function () {
         }
     }
 
-    function applyReward(reward) {
+    function applyReward(reward, chestType) {
+        const service = window.CoreRewardService;
+        const eventId = `chest:${chestType || 'unknown'}:${Date.now()}:${Math.random().toString(36).slice(2, 8)}`;
+        if (service && typeof service.claim === 'function') {
+            const rewards = reward.type === 'points'
+                ? [
+                    { type: 'growth_points', amount: reward.value },
+                    { type: 'pet_exp', amount: reward.value }
+                ]
+                : [{ type: 'item', itemId: reward.id, amount: 1 }];
+            const result = service.claim({
+                eventId,
+                profileId: window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function'
+                    ? window.ProfileManager.getActiveId()
+                    : 'local',
+                source: 'chest',
+                sourceId: chestType || 'unknown',
+                rewards
+            });
+            if (typeof renderAll === 'function' && result.accepted) renderAll();
+            return result;
+        }
         if (reward.type === 'points') {
             if (typeof window.addGrowthPoints === 'function') {
                 window.addGrowthPoints(reward.value);
@@ -133,7 +154,7 @@ const TreasureChest = (function () {
 
         // 动画
         showChestAnimation(reward, () => {
-            applyReward(reward);
+            applyReward(reward, type);
             window.sfx && sfx.coin();
         });
     }
