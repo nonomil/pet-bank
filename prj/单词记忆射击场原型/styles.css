@@ -1513,11 +1513,28 @@ button {
   line-height: 1;
 }
 
-.learning-hint-card div span:last-child {
+.learning-hint-card #learningHintMeaning {
   overflow-wrap: anywhere;
   color: var(--ink-soft);
   font-size: 14px;
   font-weight: 900;
+}
+
+.learning-hint-card .learning-hint-example,
+.learning-hint-card .learning-hint-example-zh {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  line-height: 1.32;
+}
+
+.learning-hint-card .learning-hint-example {
+  color: #324b35;
+  font-weight: 800;
+}
+
+.learning-hint-card .learning-hint-example-zh {
+  color: var(--ink-soft);
+  font-weight: 700;
 }
 
 .learning-toast {

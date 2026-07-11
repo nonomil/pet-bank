@@ -45,6 +45,7 @@ const readme = read(files.readme);
 const dataFallback = read(files.dataFallback);
 const voiceFallback = read(files.voiceFallback);
 const docs = `${read(files.design)}\n${read(files.plan)}\n${read(files.adapterPlan)}`;
+const learningLoopDesign = read(path.join(dir, '..', '..', 'docs', '打字游戏方案', '单词记忆小游戏.md'));
 const source = `${html}\n${css}\n${js}`;
 const data = JSON.parse(read(files.data));
 const sourceAndData = `${source}\n${JSON.stringify(data)}`;
@@ -143,6 +144,9 @@ assert.match(source, /speechSynthesis|SpeechSynthesisUtterance/, 'game should of
 assert.match(source, /assets\/voice\/map\.json/, 'game should load a local prototype voice map first');
 assert.match(source, /new Audio\(/, 'game should prefer local html audio playback before fallback speech');
 assert.match(source, /target-avatar|enemyImage/, 'game should render enemy artwork');
+assert.match(js, /function previewTargetWord\(target\)/, 'map targets should provide a dedicated word preview action');
+assert.match(js, /if \(!selectedOrb\(\)\) \{[\s\S]*previewTargetWord\(target\)[\s\S]*return;/, 'clicking an enemy without a Chinese orb should preview instead of firing');
+assert.match(js, /点击单词看图片、中文和发音；拿中文球后再点它发射。/, 'map guidance should explain the preview-before-fire learning loop');
 assert.match(source, /enemyFallbackImage|data-fallback-src|onerror="this\.onerror=null;this\.src=this\.dataset\.fallbackSrc;"/, 'enemy artwork should fall back locally when online images fail');
 assert.match(source, /ENEMY_IMAGE_FALLBACK_MS|armEnemyImageFallbacks|naturalWidth === 0/, 'enemy artwork should time out pending online images into local fallbacks');
 assert.match(source, /sceneButton|cycleScene|renderDecor/, 'page should offer lightweight scene switching and decor rendering');
@@ -203,6 +207,9 @@ assert.ok(
 );
 assert.match(js, /ocean:\s*\{[\s\S]*ocean-9grid-manifest\.json/s, 'ocean levels should load the stitched ocean 9-grid world');
 assert.match(js, /WORLD_THEME_ENEMY_FALLBACKS[\s\S]*ocean[\s\S]*coral-crab\.png/s, 'ocean levels should use local themed enemy fallbacks');
+assert.match(js, /farm:\s*ENEMY_FALLBACK_POOL/, 'farm levels should rotate local farm enemy art');
+assert.match(js, /WORLD_THEME_ENEMY_FALLBACKS\[currentWorldPack\(\)\?\.theme\]/, 'theme enemy selection should use the visual world theme rather than a pack variant id');
+assert.match(js, /const themePrimary = themePool\.length \? themedFallback : primary;/, 'scene-themed enemy art should take priority over generic card artwork');
 assert.ok(
   [
     'assets/generated/level-theme-assets/forest/mushroom-sprite.png',
@@ -210,10 +217,17 @@ assert.ok(
     'assets/generated/level-theme-assets/forest/pinecone-roll.png',
     'assets/generated/level-theme-assets/ocean/coral-crab.png',
     'assets/generated/level-theme-assets/ocean/shell-bubble.png',
-    'assets/generated/level-theme-assets/ocean/seagrass-jelly.png'
+    'assets/generated/level-theme-assets/ocean/seagrass-jelly.png',
+    'assets/generated/level-theme-assets/grassland/tumble-puff.png',
+    'assets/generated/level-theme-assets/grassland/cactus-hop.png',
+    'assets/generated/level-theme-assets/grassland/dandelion-float.png',
+    'assets/generated/level-theme-assets/space/meteor-jelly.png',
+    'assets/generated/level-theme-assets/space/stardust-orb.png',
+    'assets/generated/level-theme-assets/space/satellite-bot.png'
   ].every(relativePath => fs.existsSync(path.join(dir, relativePath))),
-  'referenced forest and ocean enemy fallbacks should be published'
+  'referenced forest, grassland, ocean, and space enemy fallbacks should be published'
 );
+assert.match(js, /space:\s*\[[\s\S]*meteor-jelly\.png[\s\S]*stardust-orb\.png[\s\S]*satellite-bot\.png/s, 'space levels should rotate three local themed enemy fallbacks');
 assert.equal(farmGptSourceMeta.generatedViaBrowserActChatGPT, true, 'farm GPT source meta should document the browser-act ChatGPT generation workflow');
 assert.equal(farmGptSourceMeta.tileCount, 9, 'farm GPT preview source meta should record all 9 exported tiles');
 assert.equal(farmGptSourceMeta.workflowScript, 'prj/browser-act-imagegen/README.md', 'farm GPT source meta should point at the browser-act workflow documentation');
@@ -239,6 +253,7 @@ assert.match(readme, /9 宫格|3x3|大地图|镜头跟随/i, 'README should ment
 assert.match(readme, /农场 GPT|generate_farm_gpt_9grid\.py/i, 'README should document the parallel farm GPT preview workflow');
 assert.match(readme, /任务条|连对|命中率|最长连对/i, 'README should mention the reward feedback HUD and finish stats');
 assert.match(readme, /本地 mp3|assets\/voice|generate_voice_assets\.py/i, 'README should describe the local voice workflow');
+assert.match(learningLoopDesign, /先认识，再判断，再操作，再回访/, 'design doc should record the balanced learning and combat loop');
 assert.match(readme, /127\.0\.0\.1:8000/, 'README should include local access url');
 assert.match(docs, /俯视地图版单词记忆游戏|top-down map-based word memory game/i, 'docs should record the topdown rebuild plan');
 assert.match(docs, /中文球散落地图|Chinese bomb nodes on the map/, 'docs should mention map-scattered meaning bombs');

@@ -127,11 +127,36 @@ try {
     }
     const wordMemoryJson = fs.readFileSync(path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-cards.json'), 'utf8');
     const wordMemoryFallback = fs.readFileSync(path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-cards.js'), 'utf8');
+    const coreVocabViewPath = path.join(artifactDir, 'data', 'vocab', 'core-english', 'views', 'core.json');
+    const coreVocabDbPath = path.join(artifactDir, 'data', 'vocab', 'core-english', 'core-english.db');
+    const coreWordMemoryPath = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-core-cards.json');
+    const extensionVocabViewPath = path.join(artifactDir, 'data', 'vocab', 'extension-english', 'views', 'extension.json');
+    const extensionVocabDbPath = path.join(artifactDir, 'data', 'vocab', 'extension-english', 'extension-english.db');
+    const extensionWordMemoryPath = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-extension-cards.json');
     if (/https:\/\/images\.unsplash\.com\/[^"'\s]*\?[^"'\s]*\?/.test(wordMemoryJson)) {
         fail('word memory artifact still contains malformed Unsplash image URLs');
     }
     if (/https:\/\/images\.unsplash\.com\/[^"'\s]*\?[^"'\s]*\?/.test(wordMemoryFallback)) {
         fail('word memory fallback artifact still contains malformed Unsplash image URLs');
+    }
+    if (!fs.existsSync(coreVocabViewPath) || !fs.existsSync(coreVocabDbPath) || !fs.existsSync(coreWordMemoryPath)) {
+        fail('core English vocabulary database, view, or word-memory adapter is missing from the Pages artifact');
+    }
+    const coreView = JSON.parse(fs.readFileSync(coreVocabViewPath, 'utf8'));
+    const coreCards = JSON.parse(fs.readFileSync(coreWordMemoryPath, 'utf8'));
+    if (coreView.cards.length < 100 || coreCards.cards.length !== coreView.cards.length) {
+        fail('core English runtime card count is invalid in the Pages artifact');
+    }
+    if (coreCards.cards.some((card) => !card.word || !card.translation || !card.enemyImage || !card.enemyFallbackImage)) {
+        fail('core English runtime cards must preserve text and image fallbacks');
+    }
+    if (!fs.existsSync(extensionVocabViewPath) || !fs.existsSync(extensionVocabDbPath) || !fs.existsSync(extensionWordMemoryPath)) {
+        fail('extension English vocabulary database, view, or word-memory adapter is missing from the Pages artifact');
+    }
+    const extensionView = JSON.parse(fs.readFileSync(extensionVocabViewPath, 'utf8'));
+    const extensionCards = JSON.parse(fs.readFileSync(extensionWordMemoryPath, 'utf8'));
+    if (extensionView.cards.length < 30 || extensionCards.cards.length !== extensionView.cards.length) {
+        fail('extension English runtime card count is invalid in the Pages artifact');
     }
 } finally {
     fs.rmSync(artifactDir, { recursive: true, force: true });

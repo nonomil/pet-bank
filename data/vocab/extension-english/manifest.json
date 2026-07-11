@@ -1,0 +1,21 @@
+{
+  "id": "extension-english",
+  "version": "2026-07-11",
+  "type": "game-vocab-pack",
+  "title": "第二组小学拓展英语",
+  "generatedAt": "2026-07-11T10:24:39.755300+00:00",
+  "cardCount": 70,
+  "sourceCandidates": "prj\\vocab-governance\\reports\\extension-batch-001.json",
+  "database": "data\\vocab\\extension-english\\extension-english.db",
+  "views": [
+    {
+      "id": "extension",
+      "file": "data\\vocab\\extension-english\\views\\extension.json",
+      "cardCount": 70
+    }
+  ],
+  "imageCoverage": {
+    "source": 51,
+    "fallback": 19
+  }
+}

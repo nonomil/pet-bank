@@ -1,0 +1,1340 @@
+{
+  "id": "extension-english",
+  "type": "vocab-view",
+  "sourceModuleId": "extension-english",
+  "viewId": "extension",
+  "generatedAt": "2026-07-11T10:24:39.755300+00:00",
+  "description": "Review-derived core English candidate pack. It does not replace the source graded vocabulary.",
+  "cards": [
+    {
+      "id": "extension-english-1-add",
+      "word": "add",
+      "translation": "添加",
+      "phonetic": "/æd/",
+      "example": "Add two apples to the basket.",
+      "example_zh": "把两个苹果添加到篮子里。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2795.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2795.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-2-addition",
+      "word": "addition",
+      "translation": "加法",
+      "phonetic": "/əˈdɪʃən/",
+      "example": "Addition helps us solve number puzzles.",
+      "example_zh": "加法帮助我们解决数字谜题。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2795.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2795.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-3-circle",
+      "word": "circle",
+      "translation": "圆形",
+      "phonetic": "/ˈsɜːrkəl/",
+      "example": "I drew a bright circle around the smiling sun.",
+      "example_zh": "我在微笑的太阳周围画了一个明亮的圆形。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f7e0.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f7e0.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-4-count",
+      "word": "count",
+      "translation": "数数",
+      "phonetic": "/kaʊnt/",
+      "example": "I can count to ten.",
+      "example_zh": "我会数到十。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1564171529442-439f3141b589?w=400&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-5-counting",
+      "word": "counting",
+      "translation": "数数",
+      "phonetic": "/ˈkaʊntɪŋ/",
+      "example": "Counting apples is fun with my friends.",
+      "example_zh": "和朋友一起数苹果很有趣。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1564171529442-439f3141b589?w=400&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-6-diamond",
+      "word": "diamond",
+      "translation": "菱形",
+      "phonetic": "/ˈdaɪəmənd/",
+      "example": "The diamond has four equal sides.",
+      "example_zh": "这个菱形有四条相等的边。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2666.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2666.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-7-divide",
+      "word": "divide",
+      "translation": "拆分",
+      "phonetic": "/dɪˈvaɪd/",
+      "example": "We divide eight apples equally among four friends.",
+      "example_zh": "我们把八个苹果平均分给四个朋友。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2797.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2797.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-8-equal",
+      "word": "equal",
+      "translation": "等于",
+      "phonetic": "/ˈiːkwəl/",
+      "example": "Two plus two is equal to four.",
+      "example_zh": "二加二等于四。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/3d.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/3d.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-9-grow",
+      "word": "grow",
+      "translation": "生长",
+      "phonetic": "/ɡroʊ/",
+      "example": "Plants grow toward the sunlight.",
+      "example_zh": "植物向着阳光生长。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-10-multiply",
+      "word": "multiply",
+      "translation": "乘",
+      "phonetic": "/ˈmʌltɪplaɪ/",
+      "example": "We multiply three by two.",
+      "example_zh": "我们把三乘以二。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2716.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2716.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-11-number",
+      "word": "number",
+      "translation": "数字",
+      "phonetic": "/ˈnʌmbər/",
+      "example": "I know the number of apples in the basket.",
+      "example_zh": "我知道篮子里苹果的数量。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1564171529442-439f3141b589?w=400&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-12-rectangle",
+      "word": "rectangle",
+      "translation": "长方",
+      "phonetic": "/ˈrɛktæŋɡəl/",
+      "example": "This rectangle has four straight sides.",
+      "example_zh": "这个长方形有四条直边。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f7e6.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f7e6.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-13-root",
+      "word": "root",
+      "translation": "根",
+      "phonetic": "/ruːt/",
+      "example": "A strong root helps the young plant grow.",
+      "example_zh": "强壮的根帮助幼小的植物生长。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-14-seed",
+      "word": "seed",
+      "translation": "种子",
+      "phonetic": "/siːd/",
+      "example": "A tiny seed can grow into a beautiful flower.",
+      "example_zh": "一粒小小的种子可以长成一朵美丽的花。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-15-shallow",
+      "word": "shallow",
+      "translation": "浅的",
+      "phonetic": "/ˈʃæloʊ/",
+      "example": "The shallow pond is safe for little ducks.",
+      "example_zh": "这个浅水池对小鸭子来说很安全。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f3ca.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f3ca.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-16-short",
+      "word": "short",
+      "translation": "短的",
+      "phonetic": "/ʃɔːrt/",
+      "example": "My short story made everyone smile.",
+      "example_zh": "我的短故事让大家都笑了。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f9b1.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f9b1.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-17-sleep",
+      "word": "sleep",
+      "translation": "睡觉",
+      "phonetic": "/sliːp/",
+      "example": "I sleep peacefully every night.",
+      "example_zh": "我每天晚上都安静地睡觉。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "action"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f634.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f634.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "action"
+    },
+    {
+      "id": "extension-english-18-slow",
+      "word": "slow",
+      "translation": "慢的",
+      "phonetic": "/sloʊ/",
+      "example": "The slow turtle reached the pond safely.",
+      "example_zh": "那只慢慢的乌龟安全地到达了池塘。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f6b6.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f6b6.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-19-small",
+      "word": "small",
+      "translation": "小的",
+      "phonetic": "/smɔːl/",
+      "example": "The small puppy loves to play.",
+      "example_zh": "这只小狗喜欢玩耍。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f401.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f401.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-20-soil",
+      "word": "soil",
+      "translation": "土壤",
+      "phonetic": "/sɔɪl/",
+      "example": "Plants grow well in rich soil.",
+      "example_zh": "植物在肥沃的土壤中生长得很好。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-21-speak",
+      "word": "speak",
+      "translation": "speak（英文）",
+      "phonetic": "/spiːk/",
+      "example": "I speak kindly to my friends.",
+      "example_zh": "我友善地和朋友们说话。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "action"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/signpost_wood.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1543269664-7e6d7f1f37f0?w=800&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "action"
+    },
+    {
+      "id": "extension-english-22-square",
+      "word": "square",
+      "translation": "正方",
+      "phonetic": "/skwɛr/",
+      "example": "Draw a square with four equal sides.",
+      "example_zh": "画一个四条边相等的正方形。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f7e6.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f7e6.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-23-stand",
+      "word": "stand",
+      "translation": "开始",
+      "phonetic": "/stænd/",
+      "example": "Please stand tall and smile.",
+      "example_zh": "请站直并微笑。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "action"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/signpost_wood.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "action"
+    },
+    {
+      "id": "extension-english-24-stem",
+      "word": "stem",
+      "translation": "莖 茎 [jing1]",
+      "phonetic": "/stem/",
+      "example": "The flower has a strong green stem.",
+      "example_zh": "这朵花有一根结实的绿色茎。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-25-strong",
+      "word": "strong",
+      "translation": "强壮",
+      "phonetic": "/strɔːŋ/",
+      "example": "My strong arms can lift toys.",
+      "example_zh": "我强壮的手臂能举起玩具。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1530137073521-9d4c4a413ff3?w=800&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-26-subtract",
+      "word": "subtract",
+      "translation": "减去",
+      "phonetic": "/səbˈtrækt/",
+      "example": "We subtract two apples from ten.",
+      "example_zh": "我们从十个苹果中减去两个苹果。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2796.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2796.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-27-subtraction",
+      "word": "subtraction",
+      "translation": "减法",
+      "phonetic": "/səbˈtrækʃən/",
+      "example": "Subtraction helps us solve math problems.",
+      "example_zh": "减法帮助我们解决数学问题。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2796.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2796.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-28-sunlight",
+      "word": "sunlight",
+      "translation": "阳光",
+      "phonetic": "/ˈsʌnlaɪt/",
+      "example": "Sunlight helps plants grow strong.",
+      "example_zh": "阳光帮助植物茁壮成长。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f31e.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f31e.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-29-tall",
+      "word": "tall",
+      "translation": "高的",
+      "phonetic": "/tɔːl/",
+      "example": "The tall giraffe gently waves.",
+      "example_zh": "那只高高的长颈鹿轻轻地挥手。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-30-temperature",
+      "word": "temperature",
+      "translation": "温度",
+      "phonetic": "/ˈtemprətʃər/",
+      "example": "The temperature feels warm and comfortable today.",
+      "example_zh": "今天的温度感觉温暖而舒适。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f525.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f525.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-31-thick",
+      "word": "thick",
+      "translation": "厚的",
+      "phonetic": "/θɪk/",
+      "example": "The thick book feels cozy.",
+      "example_zh": "这本厚厚的书摸起来很舒服。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-32-thin",
+      "word": "thin",
+      "translation": "薄的",
+      "phonetic": "/θɪn/",
+      "example": "The thin book fits easily in my backpack.",
+      "example_zh": "这本薄薄的书很容易放进我的书包里。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-33-touch",
+      "word": "touch",
+      "translation": "摸",
+      "phonetic": "/tʌtʃ/",
+      "example": "Please touch the soft puppy gently.",
+      "example_zh": "请轻轻地摸摸这只柔软的小狗。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "action"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f44b.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f44b.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "action"
+    },
+    {
+      "id": "extension-english-34-triangle",
+      "word": "triangle",
+      "translation": "三角",
+      "phonetic": "/ˈtraɪæŋɡəl/",
+      "example": "This triangle has three sides.",
+      "example_zh": "这个三角形有三条边。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f53a.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f53a.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-35-walk",
+      "word": "walk",
+      "translation": "走路",
+      "phonetic": "/wɔːk/",
+      "example": "We walk to school with happy smiles.",
+      "example_zh": "我们开心地笑着走路去学校。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "action"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f6b6.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f6b6.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "action"
+    },
+    {
+      "id": "extension-english-36-warm",
+      "word": "warm",
+      "translation": "温暖",
+      "phonetic": "/wɔːrm/",
+      "example": "The warm blanket feels cozy.",
+      "example_zh": "温暖的毯子让人感觉很舒适。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1512850188-0e5b0f4a0d4a?w=400&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-37-watch",
+      "word": "watch",
+      "translation": "手表",
+      "phonetic": "/wɑːtʃ/",
+      "example": "Watch the bright birds fly.",
+      "example_zh": "看明亮的鸟儿飞翔。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "action"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/signpost_wood.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "action"
+    },
+    {
+      "id": "extension-english-38-weak",
+      "word": "weak",
+      "translation": "虚弱",
+      "phonetic": "/wiːk/",
+      "example": "I felt weak, so Mom helped me.",
+      "example_zh": "我感到虚弱，所以妈妈帮助了我。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-39-weather",
+      "word": "weather",
+      "translation": "天气",
+      "phonetic": "/ˈweðər/",
+      "example": "The weather is sunny today.",
+      "example_zh": "今天天气晴朗。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2600.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2600.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-40-wet",
+      "word": "wet",
+      "translation": "湿的",
+      "phonetic": "/wet/",
+      "example": "My wet hands made the soap bubbles sparkle.",
+      "example_zh": "我湿漉漉的手让肥皂泡闪闪发光。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=400&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-41-wide",
+      "word": "wide",
+      "translation": "宽的",
+      "phonetic": "/waɪd/",
+      "example": "The wide road feels safe.",
+      "example_zh": "这条宽阔的路让人觉得安全。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "../../prj/单词记忆射击场原型/assets/generated/topdown-farm-assets/enemy_mouse.png",
+      "imageStatus": "fallback",
+      "sourceImage": "https://images.unsplash.com/photo-1511499767150-a48a237ac008?w=800&q=80&auto=format&fit=crop",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学低年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-42-adventure",
+      "word": "adventure",
+      "translation": "冒险",
+      "phonetic": "/ədˈvɛntʃər/",
+      "example": "Our adventure began with a happy song.",
+      "example_zh": "我们的冒险伴随着一首快乐的歌开始了。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f5fa.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f5fa.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-43-civilization",
+      "word": "civilization",
+      "translation": "文明",
+      "phonetic": "/ˌsɪvələˈzeɪʃən/",
+      "example": "Civilization helps people build cities, share ideas, and create art.",
+      "example_zh": "文明帮助人们建造城市、分享思想并创造艺术。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "history"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f3db.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f3db.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "history"
+    },
+    {
+      "id": "extension-english-44-computer",
+      "word": "computer",
+      "translation": "电脑",
+      "phonetic": "/kəmˈpjuːtər/",
+      "example": "My computer helps me learn.",
+      "example_zh": "我的电脑帮助我学习。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "technology"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f4bb.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f4bb.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "technology"
+    },
+    {
+      "id": "extension-english-45-continent",
+      "word": "continent",
+      "translation": "大洲",
+      "phonetic": "/ˈkɑːntənənt/",
+      "example": "Asia is the largest continent on Earth.",
+      "example_zh": "亚洲是地球上最大的大洲。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "geography"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f30d.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f30d.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "geography"
+    },
+    {
+      "id": "extension-english-46-creativity",
+      "word": "creativity",
+      "translation": "创造力",
+      "phonetic": "/ˌkriːeɪˈtɪvəti/",
+      "example": "Creativity helps us find fun ways to solve problems.",
+      "example_zh": "创造力帮助我们找到有趣的方法解决问题。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f3a8.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f3a8.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-47-curiosity",
+      "word": "curiosity",
+      "translation": "好奇",
+      "phonetic": "/ˌkjʊriˈɑːsəti/",
+      "example": "Curiosity helps us discover wonderful things every day.",
+      "example_zh": "好奇心帮助我们每天发现奇妙的事物。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f914.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f914.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-48-discovery",
+      "word": "discovery",
+      "translation": "发现",
+      "phonetic": "/dɪˈskʌvəri/",
+      "example": "Every discovery makes learning more exciting.",
+      "example_zh": "每一个发现都让学习变得更加有趣。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f50d.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f50d.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-49-division",
+      "word": "division",
+      "translation": "除法",
+      "phonetic": "/dɪˈvɪʒən/",
+      "example": "Division helps us share eight apples equally.",
+      "example_zh": "除法帮助我们把八个苹果平均分配。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2797.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2797.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-50-ecosystem",
+      "word": "ecosystem",
+      "translation": "生态系",
+      "phonetic": "/ˈiːkoʊsɪstəm/",
+      "example": "A pond ecosystem helps frogs, fish, and plants thrive.",
+      "example_zh": "池塘生态系帮助青蛙、鱼和植物茁壮成长。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f333.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f333.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-51-emergency",
+      "word": "emergency",
+      "translation": "紧急情",
+      "phonetic": "/ɪˈmɜːrdʒənsi/",
+      "example": "We calmly call for help during an emergency.",
+      "example_zh": "遇到紧急情况时，我们冷静地寻求帮助。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f6a8.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f6a8.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-52-fraction",
+      "word": "fraction",
+      "translation": "分数",
+      "phonetic": "/ˈfrækʃən/",
+      "example": "A fraction shows how much of a whole we have.",
+      "example_zh": "分数表示我们拥有整体的多少。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f967.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f967.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-53-geometry",
+      "word": "geometry",
+      "translation": "几何",
+      "phonetic": "/dʒiˈɑːmətri/",
+      "example": "Geometry helps us understand shapes.",
+      "example_zh": "几何帮助我们理解形状。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f4d0.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f4d0.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-54-gravity",
+      "word": "gravity",
+      "translation": "重力",
+      "phonetic": "/ˈɡrævəti/",
+      "example": "Gravity keeps us safely on Earth.",
+      "example_zh": "重力让我们安全地留在地球上。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f34e.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f34e.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-55-heritage",
+      "word": "heritage",
+      "translation": "遗产",
+      "phonetic": "/ˈherətɪdʒ/",
+      "example": "Our family heritage makes every celebration special.",
+      "example_zh": "我们的家庭遗产让每次庆祝都很特别。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "culture"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f3db.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f3db.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "culture"
+    },
+    {
+      "id": "extension-english-56-imagination",
+      "word": "imagination",
+      "translation": "想象",
+      "phonetic": "/ɪˌmædʒəˈneɪʃən/",
+      "example": "My imagination helps me create wonderful stories.",
+      "example_zh": "我的想象力帮助我创作精彩的故事。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f4ad.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f4ad.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-57-independence",
+      "word": "independence",
+      "translation": "独立",
+      "phonetic": "/ˌɪndɪˈpɛndəns/",
+      "example": "Independence helps us learn, grow, and make good choices.",
+      "example_zh": "独立帮助我们学习、成长并做出正确的选择。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f6b6.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f6b6.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-58-literature",
+      "word": "literature",
+      "translation": "文学",
+      "phonetic": "/ˈlɪtərətʃər/",
+      "example": "I enjoy reading children's literature before bedtime.",
+      "example_zh": "我喜欢睡前阅读儿童文学。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "literature"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f4da.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f4da.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "literature"
+    },
+    {
+      "id": "extension-english-59-molecule",
+      "word": "molecule",
+      "translation": "分子",
+      "phonetic": "/ˈmɑːlɪkjuːl/",
+      "example": "A molecule is a tiny building block of everything around us.",
+      "example_zh": "分子是我们周围一切事物的微小组成部分。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f9ea.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f9ea.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-60-multiplication",
+      "word": "multiplication",
+      "translation": "乘法",
+      "phonetic": "/ˌmʌltəpləˈkeɪʃən/",
+      "example": "Multiplication makes solving number puzzles fun.",
+      "example_zh": "乘法让解决数字谜题变得有趣。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "math"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2716.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2716.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "math"
+    },
+    {
+      "id": "extension-english-61-perseverance",
+      "word": "perseverance",
+      "translation": "坚持不懈",
+      "phonetic": "/ˌpɜːrsəˈvɪrəns/",
+      "example": "Perseverance helps us keep trying when learning feels difficult.",
+      "example_zh": "坚持不懈帮助我们在学习困难时继续努力。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f3c3.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f3c3.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-62-photosynthesis",
+      "word": "photosynthesis",
+      "translation": "光合作用",
+      "phonetic": "/ˌfoʊtoʊˈsɪnθəsɪs/",
+      "example": "Plants use photosynthesis to make food from sunlight.",
+      "example_zh": "植物利用光合作用从阳光中制造食物。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "science"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f331.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f331.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "science"
+    },
+    {
+      "id": "extension-english-63-poetry",
+      "word": "poetry",
+      "translation": "诗歌",
+      "phonetic": "/ˈpoʊətri/",
+      "example": "She loves reading poetry aloud.",
+      "example_zh": "她喜欢大声朗读诗歌。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "literature"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f4dc.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f4dc.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "literature"
+    },
+    {
+      "id": "extension-english-64-respawn",
+      "word": "respawn",
+      "translation": "重生",
+      "phonetic": "/riːˈspɔːn/",
+      "example": "In the game, friendly heroes respawn after a fun challenge.",
+      "example_zh": "在游戏中，友好的英雄在有趣的挑战后重生。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/267e.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/267e.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-65-responsibility",
+      "word": "responsibility",
+      "translation": "责任",
+      "phonetic": "/rɪˌspɑːnsəˈbɪləti/",
+      "example": "Taking care of my puppy is a big responsibility.",
+      "example_zh": "照顾我的小狗是一项重大责任。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "abstract"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f4bc.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f4bc.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "abstract"
+    },
+    {
+      "id": "extension-english-66-science",
+      "word": "science",
+      "translation": "科学",
+      "phonetic": "/ˈsaɪəns/",
+      "example": "Science helps us understand our wonderful world.",
+      "example_zh": "科学帮助我们了解奇妙的世界。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "subject"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f52c.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f52c.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "subject"
+    },
+    {
+      "id": "extension-english-67-smooth",
+      "word": "smooth",
+      "translation": "光滑",
+      "phonetic": "/smuːð/",
+      "example": "The smooth stone feels nice.",
+      "example_zh": "这块光滑的石头摸起来很舒服。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f9ca.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f9ca.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-68-solid",
+      "word": "solid",
+      "translation": "固体",
+      "phonetic": "/ˈsɑːlɪd/",
+      "example": "The ice is solid.",
+      "example_zh": "冰是固体。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1faa8.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1faa8.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "adjective"
+    },
+    {
+      "id": "extension-english-69-teleport",
+      "word": "teleport",
+      "translation": "传",
+      "phonetic": "/ˈtɛləpɔːrt/",
+      "example": "We can teleport to the moon in our dreams.",
+      "example_zh": "我们可以在梦里传送到月球。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "action"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/2728.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/2728.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "action"
+    },
+    {
+      "id": "extension-english-70-transparent",
+      "word": "transparent",
+      "translation": "透明",
+      "phonetic": "/trænsˈpɛrənt/",
+      "example": "The transparent glass lets us see the colorful fish.",
+      "example_zh": "透明的玻璃让我们看见了五彩缤纷的鱼。",
+      "level": "extension",
+      "difficulty": 1,
+      "tags": [
+        "extension-english",
+        "adjective"
+      ],
+      "image": "https://twemoji.maxcdn.com/v/latest/svg/1f9ca.svg",
+      "imageStatus": "source",
+      "sourceImage": "https://twemoji.maxcdn.com/v/latest/svg/1f9ca.svg",
+      "sourcePath": "data/vocab/单词库_分级/03_小学_高年级/小学高年级基础.js",
+      "viewCategory": "adjective"
+    }
+  ]
+}

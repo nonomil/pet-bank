@@ -95,3 +95,21 @@ node prj/单词记忆射击场原型/verify.mjs
 - 根词库只做同步副本，不手动散改。
 - 小游戏运行数据由各自适配脚本生成。
 - 若小游戏需要新增字段，写在自己的 `assets/generated` 或运行时 JSON 里。
+
+## 核心英语词库
+
+`core-english/` 是从现有分级词库筛选出的可审查核心英语学习路径，不替代 `单词库_分级/` 的素材总库：
+
+- `core-english.db`：发布的 SQLite 词库，保留词、中文、音标、主题、来源与主图状态。
+- `views/core.json`：浏览器/小游戏使用的运行时词卡视图。
+- `prj/单词记忆射击场原型/assets/word-memory-core-cards.json`：射击场专用适配数据；默认加载核心词库，添加 `?vocab=all` 可打开旧全量合并词库。
+
+`extension-english/` 是第二组小学拓展词包，和核心包使用相同的 SQLite/view 结构。射击场使用 `?vocab=extension` 加载它。
+
+更新链路：
+
+```text
+prj/vocab-governance/reports/core-800-candidates.json
+  -> python scripts/build_core_english_vocab.py
+  -> node prj/单词记忆射击场原型/scripts/build_word_memory_core_cards.cjs
+```

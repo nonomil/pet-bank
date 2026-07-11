@@ -16,6 +16,11 @@ assert.match(html, /id="childJourneyToday"[\s\S]*switchPage\('today'\)/, 'today 
 assert.match(html, /id="childJourneyPet"[\s\S]*switchPage\('pet'\)/, 'pet entry should lead to pet');
 assert.match(html, /id="childJourneyAdventure"[\s\S]*switchPage\('playground'\)/, 'adventure entry should lead to playground');
 assert.match(html, /id="childJourneyMore"[\s\S]*switchPage\('explore'\)[\s\S]*switchPage\('shop'\)/, 'more entry should retain exploration and shop');
+assert.ok(
+    html.indexOf('id="childJourneyHero"') < html.indexOf('class="child-journey-main-grid"')
+        && html.indexOf('class="child-journey-main-grid"') < html.indexOf('id="showcase"'),
+    'children should see the main journey choices before the optional showcase carousel'
+);
 
 for (const selector of ['.child-journey-hero', '.child-journey-main-grid', '.child-journey-entry:focus-visible', '@media (max-width: 760px)']) {
     assert.match(css, new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), `styles should include ${selector}`);

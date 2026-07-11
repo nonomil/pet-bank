@@ -2910,7 +2910,7 @@ window.openLearningArcadeGame = openLearningArcadeGame;
 function ensureWordMemoryMapEmbed() {
     const frame = document.getElementById('word-memory-map-frame');
     if (!frame) return;
-    const src = withRouteBase('/prj/%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E5%B0%84%E5%87%BB%E5%9C%BA%E5%8E%9F%E5%9E%8B/index.html');
+    const src = `${withRouteBase('/prj/%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E5%B0%84%E5%87%BB%E5%9C%BA%E5%8E%9F%E5%9E%8B/index.html')}?vocab=core`;
     const launchLink = document.getElementById('word-memory-map-launch');
     const status = document.getElementById('word-memory-map-status');
     if (launchLink) launchLink.href = src;

@@ -45,6 +45,14 @@
         </div>
 
         <div class="hud-actions">
+          <label class="category-control" for="vocabSelect">
+            <span>词包</span>
+            <select id="vocabSelect" aria-label="选择学习词包">
+              <option value="core">核心主线 322 词</option>
+              <option value="extension">第二组拓展 70 词</option>
+              <option value="all">全部词库</option>
+            </select>
+          </label>
           <label class="category-control world-control" for="worldSelect">
             <span>地图</span>
             <select id="worldSelect" aria-label="选择地图主题">
@@ -100,6 +108,8 @@
           <span class="hud-label">单词提示</span>
           <strong id="learningHintWord">word</strong>
           <span id="learningHintMeaning">中文</span>
+          <span class="learning-hint-example" id="learningHintExample" hidden aria-label="用一用"></span>
+          <span class="learning-hint-example-zh" id="learningHintExampleZh" hidden></span>
         </div>
         <button type="button" class="learn-speak-button" id="learningHintSpeakButton" aria-label="播放发音" title="播放发音">♪</button>
       </aside>
@@ -167,6 +177,8 @@
   </main>
 
   <script src="./assets/word-memory-cards.js?v=word-memory-topdown-v4"></script>
+  <script src="./assets/word-memory-core-cards.js?v=core-english-memory-v1"></script>
+  <script src="./assets/word-memory-extension-cards.js?v=extension-english-memory-v1"></script>
   <script src="./assets/voice/map.js?v=word-memory-topdown-v4"></script>
   <script>
     window.WORD_MEMORY_TTS_ENDPOINT = 'http://127.0.0.1:9885/tts';

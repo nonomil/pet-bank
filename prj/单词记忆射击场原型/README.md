@@ -102,7 +102,8 @@ http://127.0.0.1:8000/prj/%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E5%B0%84%E5%87%BB
 
 - `WASD / 方向键`：移动
 - `点击中文炸弹`：拿到当前义项
-- `点击英文目标`：当前炸弹自动索敌攻击
+- `未拿中文炸弹时点击英文目标`：打开右侧轻量词卡，查看主题图片、英文、中文、例句和发音，不发射
+- `拿中文炸弹后点击英文目标`：当前炸弹自动索敌攻击
 - `空格 / Enter`：朝主角面朝方向扔出当前炸弹
 - `Tab`：切换当前高亮目标
 - `R`：朗读当前场上的英文词
@@ -124,6 +125,8 @@ http://127.0.0.1:8000/prj/%E5%8D%95%E8%AF%8D%E8%AE%B0%E5%BF%86%E5%B0%84%E5%87%BB
   - `assets/generated/minecraft-memory-adapter/minecraft-word-memory-cards.json`
   - `assets/generated/minecraft-memory-adapter/manifest.json`
 - 场上目标图优先级：
+  - 当前关卡的透明主题敌人优先显示，且敌人头顶只保留英文单词：农场动物、森林蘑菇/藤蔓/松果、草原滚草/仙人掌/蒲公英、海洋螃蟹/贝壳泡泡/水母、太空陨石水母/星尘球/卫星机器人
+  - 未持球点击敌人会朗读英文并在旁边打开词卡；持球后才触发投掷，保持“预习 → 判断 → 投掷 → 回访”的学习循环
   - 本地 Minecraft 透明图或宠物姿态图，例如 `creeper_idle.png`、`mc_cat_idle.webp`
   - 词卡自带图片，例如 `assets/learn/english-vocab/*.webp`
   - 在线概念图或 Wiki 图直接加载，失败时自动退回本地 fallback

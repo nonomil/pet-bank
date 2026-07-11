@@ -1,7 +1,11 @@
 (function () {
   'use strict';
 
-  const DATA_URL = './assets/word-memory-cards.json';
+  const VOCAB_QUERY = new URLSearchParams(window.location.search).get('vocab');
+  const VOCAB_MODE = VOCAB_QUERY === 'all' ? 'all' : (VOCAB_QUERY === 'extension' ? 'extension' : 'core');
+  const DATA_URL = VOCAB_MODE === 'extension'
+    ? './assets/word-memory-extension-cards.json'
+    : (VOCAB_MODE === 'core' ? './assets/word-memory-core-cards.json' : './assets/word-memory-cards.json');
   const VOICE_MAP_URL = './assets/voice/map.json';
   const WORLD_PACK_REGISTRY = {
     farm: {
@@ -90,15 +94,26 @@
     `${ASSET_BASE}/enemy_mouse.png`
   ];
   const WORLD_THEME_ENEMY_FALLBACKS = {
+    farm: ENEMY_FALLBACK_POOL,
     forest: [
       './assets/generated/level-theme-assets/forest/mushroom-sprite.png',
       './assets/generated/level-theme-assets/forest/vine-sprout.png',
       './assets/generated/level-theme-assets/forest/pinecone-roll.png'
     ],
+    grassland: [
+      './assets/generated/level-theme-assets/grassland/tumble-puff.png',
+      './assets/generated/level-theme-assets/grassland/cactus-hop.png',
+      './assets/generated/level-theme-assets/grassland/dandelion-float.png'
+    ],
     ocean: [
       './assets/generated/level-theme-assets/ocean/coral-crab.png',
       './assets/generated/level-theme-assets/ocean/shell-bubble.png',
       './assets/generated/level-theme-assets/ocean/seagrass-jelly.png'
+    ],
+    space: [
+      './assets/generated/level-theme-assets/space/meteor-jelly.png',
+      './assets/generated/level-theme-assets/space/stardust-orb.png',
+      './assets/generated/level-theme-assets/space/satellite-bot.png'
     ]
   };
   const ROUND_SIZE = 3;
@@ -340,6 +355,17 @@
       accent: 'combo'
     }
   ];
+  const WORLD_THEME_SUPPORT_ICONS = {
+    grassland: {
+      speed_boots: './assets/generated/level-theme-assets/items/grassland-wind-speed.png'
+    },
+    ocean: {
+      auto_star: './assets/generated/level-theme-assets/items/ocean-pearl-auto.png'
+    },
+    space: {
+      combo_badge: './assets/generated/level-theme-assets/items/space-comet-combo.png'
+    }
+  };
   const DEFAULT_WORLD_TILES = [
     { id: 'tile-1', label: '农场入口', row: 0, col: 0, src: './assets/背景图片/01.png' },
     { id: 'tile-2', label: '河岸温室', row: 0, col: 1, src: './assets/背景图片/02.png' },
@@ -485,7 +511,7 @@
     sparks: [],
     player: { x: PLAYER_START.x, y: PLAYER_START.y },
     keys: new Set(),
-    message: '点中文炸弹拿起，再点英文目标自动攻击。',
+    message: '点击单词看图片、中文和发音；拿中文球后再点它发射。',
     busy: false,
     finished: false,
     lastFrame: 0,
@@ -561,6 +587,8 @@
     learningHintImage: document.getElementById('learningHintImage'),
     learningHintWord: document.getElementById('learningHintWord'),
     learningHintMeaning: document.getElementById('learningHintMeaning'),
+    learningHintExample: document.getElementById('learningHintExample'),
+    learningHintExampleZh: document.getElementById('learningHintExampleZh'),
     learningHintSpeakButton: document.getElementById('learningHintSpeakButton'),
     learningToast: document.getElementById('learningToast'),
     learningToastWord: document.getElementById('learningToastWord'),
@@ -572,6 +600,7 @@
     sceneButton: document.getElementById('sceneButton'),
     levelButton: document.getElementById('levelButton'),
     modeButton: document.getElementById('modeButton'),
+    vocabSelect: document.getElementById('vocabSelect'),
     worldSelect: document.getElementById('worldSelect'),
     categorySelect: document.getElementById('categorySelect'),
     soundButton: document.getElementById('soundButton'),
@@ -678,18 +707,21 @@
 
   async function loadCards() {
     let data = null;
-    if (window.location.protocol === 'file:' && window.WORD_MEMORY_CARDS_DATA) {
-      data = window.WORD_MEMORY_CARDS_DATA;
+    const fallbackData = VOCAB_MODE === 'extension'
+      ? window.WORD_MEMORY_EXTENSION_CARDS_DATA
+      : (VOCAB_MODE === 'core' ? window.WORD_MEMORY_CORE_CARDS_DATA : window.WORD_MEMORY_CARDS_DATA);
+    if (window.location.protocol === 'file:' && fallbackData) {
+      data = fallbackData;
     } else {
       try {
         const response = await fetch(DATA_URL, { cache: 'no-store' });
         data = await response.json();
       } catch (error) {
-        if (!window.WORD_MEMORY_CARDS_DATA) {
+        if (!fallbackData) {
           throw error;
         }
         console.warn('[word-memory] card json unavailable, using browser fallback data', error);
-        data = window.WORD_MEMORY_CARDS_DATA;
+        data = fallbackData;
       }
     }
     state.cards = Array.isArray(data.cards)
@@ -1120,11 +1152,12 @@
     if (!target?.card) {
       return null;
     }
+    const enemyRuntime = enemyImageRuntime(target.card);
     return {
       word: target.card.word,
       meaning: target.card.translation,
-      image: target.card.enemyImage,
-      fallbackImage: target.card.enemyFallbackImage,
+      image: enemyRuntime.src,
+      fallbackImage: enemyRuntime.fallbackSrc || target.card.enemyFallbackImage,
       card: target.card
     };
   }
@@ -1154,9 +1187,17 @@
     }
     const card = state.learningHintCard;
     els.learningHintWord.textContent = card.word;
-    els.learningHintMeaning.textContent = card.hintText
-      ? `${card.meaning} · ${card.hintText}`
-      : card.meaning;
+    els.learningHintMeaning.textContent = card.meaning;
+    const example = String(card.card?.example || '').trim();
+    const exampleZh = String(card.card?.exampleZh || '').trim();
+    els.learningHintExample.textContent = example ? `用一用：${example}` : '';
+    els.learningHintExample.hidden = !example;
+    els.learningHintExampleZh.textContent = exampleZh;
+    els.learningHintExampleZh.hidden = !exampleZh;
+    if (!example && card.hintText) {
+      els.learningHintExample.textContent = `提示：${card.hintText}`;
+      els.learningHintExample.hidden = false;
+    }
     els.learningHintImage.src = card.image || '';
     els.learningHintImage.alt = card.word;
     if (card.fallbackImage && card.fallbackImage !== card.image) {
@@ -1339,13 +1380,14 @@
 
   function makeSupportDrop(typeId, x, y, waveIndex = state.waveIndex) {
     const item = supportItemById(typeId);
+    const themedIconSrc = WORLD_THEME_SUPPORT_ICONS[currentLevel()?.worldPack]?.[item.id] || item.iconSrc || '';
     return {
       id: `support-${item.id}-${Date.now()}-${Math.random()}`,
       typeId: item.id,
       label: item.label,
       shortLabel: item.shortLabel,
       icon: item.icon,
-      iconSrc: item.iconSrc || '',
+      iconSrc: themedIconSrc,
       accent: item.accent,
       waveIndex,
       x: clamp(x, MAP_BOUNDS.minX, MAP_BOUNDS.maxX),
@@ -1897,19 +1939,20 @@
   }
 
   function enemyImageRuntime(card) {
-    const themePool = WORLD_THEME_ENEMY_FALLBACKS[currentLevel()?.worldPack] || [];
+    const themePool = WORLD_THEME_ENEMY_FALLBACKS[currentWorldPack()?.theme] || [];
     const themedFallback = themePool.length
       ? themePool[(Number(card?.themeEnemyIndex) || 0) % themePool.length]
       : '';
     const primary = String(card?.enemyImage || '').trim();
-    const fallback = themedFallback || String(card?.enemyFallbackImage || '').trim();
+    const themePrimary = themePool.length ? themedFallback : primary;
+    const fallback = String(card?.enemyFallbackImage || '').trim();
     const failureKey = enemyRemoteImageFailureKey(primary);
     const blockedPrimary = Boolean(failureKey) && state.blockedEnemyImageKeys.has(failureKey);
-    const useFallbackFirst = isRemoteImageSource(primary) && fallback && fallback !== primary;
+    const useFallbackFirst = !themePool.length && isRemoteImageSource(primary) && fallback && fallback !== primary;
     return {
-      src: blockedPrimary ? (fallback || primary) : (useFallbackFirst ? fallback : (primary || fallback)),
+      src: blockedPrimary ? (fallback || themePrimary || primary) : (useFallbackFirst ? fallback : (themePrimary || fallback)),
       primarySrc: useFallbackFirst && !blockedPrimary ? primary : '',
-      fallbackSrc: fallback && fallback !== primary ? fallback : ''
+      fallbackSrc: fallback && fallback !== themePrimary ? fallback : ''
     };
   }
 
@@ -2394,6 +2437,21 @@
       return;
     }
     speakLines(lines);
+  }
+
+  function previewTargetWord(target) {
+    if (!target?.alive) {
+      return;
+    }
+    state.focusedTargetId = target.id;
+    state.learningHintCard = learningCardFromTarget(target);
+    renderLearningHint();
+    ensureAudio();
+    playSfx('pickup');
+    emitSpeechDebugEvent(target.card.word, 'en-US', 'target-preview');
+    speak(target.card.word, 'en-US');
+    setMessage(`预习：${target.card.word} · ${target.card.translation}`);
+    render();
   }
 
   function selectOrb(orbId, shouldSpeak) {
@@ -3198,6 +3256,13 @@
     setMessage(`${categoryLabel(state.selectedCategory)}：从 ${count} 个词里抽本局。`);
   }
 
+  function changeVocabPack() {
+    const nextMode = els.vocabSelect.value || 'core';
+    const url = new URL(window.location.href);
+    url.searchParams.set('vocab', ['core', 'extension', 'all'].includes(nextMode) ? nextMode : 'core');
+    window.location.assign(url.toString());
+  }
+
   async function changeWorldPack() {
     const nextPack = els.worldSelect.value || 'farm';
     state.selectedWorldPack = Object.prototype.hasOwnProperty.call(WORLD_PACK_REGISTRY, nextPack)
@@ -3415,6 +3480,10 @@
         return;
       }
       state.focusedTargetId = target.id;
+      if (!selectedOrb()) {
+        previewTargetWord(target);
+        return;
+      }
       throwHeldBomb(targetPosition(target), target.id);
     });
 
@@ -3487,6 +3556,8 @@
     });
     els.modeButton.addEventListener('click', toggleViewMode);
     els.classicModeButton.addEventListener('click', toggleViewMode);
+    els.vocabSelect.value = VOCAB_MODE;
+    els.vocabSelect.addEventListener('change', changeVocabPack);
     if (ENABLE_AUTOMATION_WORLD_CONTROLS) {
       els.worldSelect.addEventListener('change', () => {
         changeWorldPack().catch(error => {
