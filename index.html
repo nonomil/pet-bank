@@ -275,6 +275,18 @@
                     </div>
                 </section>
 
+                <section class="child-journey-feedback" id="childJourneyFeedback" hidden aria-live="polite" aria-labelledby="childJourneyFeedbackTitle">
+                    <div class="child-journey-feedback-copy">
+                        <span class="child-journey-step">小伙伴收到啦</span>
+                        <h2 id="childJourneyFeedbackTitle">你完成了一件很棒的小事！</h2>
+                        <p id="childJourneyFeedbackText">小伙伴正在为你鼓掌。</p>
+                    </div>
+                    <div class="child-journey-feedback-actions">
+                        <button type="button" onclick="switchPage('pet')">看看伙伴</button>
+                        <button type="button" class="is-quiet" onclick="switchPage('map')">回到首页</button>
+                    </div>
+                </section>
+
                 <section class="map-warehouse-panel" id="treasureWarehouseCard">
                     <div class="map-panel-head">
                         <div>
@@ -1513,6 +1525,7 @@
     <script src="js/lucide-lite.js"></script>
     <script src="js/battle-fx.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/child-journey-feedback.js"></script>
     <script src="js/showcase.js"></script>
 </body>
 </html>

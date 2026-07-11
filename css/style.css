@@ -3045,6 +3045,28 @@ body.shell-parent .app-bottom-dock {
     .child-journey-entry { transition: none; }
     .child-journey-entry:hover { transform: none; }
 }
+.child-journey-feedback {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: center;
+    margin: 14px 0;
+    padding: 19px 22px;
+    border: 1px solid rgba(133, 183, 145, 0.62);
+    border-radius: 22px;
+    background: linear-gradient(135deg, #eefaf0, #fffceb);
+    box-shadow: 0 12px 24px rgba(65, 115, 77, 0.12);
+}
+.child-journey-feedback[hidden] { display: none; }
+.child-journey-feedback h2 { margin: 7px 0 4px; color: #365043; font-size: 21px; }
+.child-journey-feedback p { margin: 0; color: #5c7164; font-size: 14px; }
+.child-journey-feedback-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.child-journey-feedback-actions button { padding: 10px 13px; border: 0; border-radius: 12px; background: #52755d; color: #fff; cursor: pointer; font: inherit; font-size: 13px; font-weight: 900; }
+.child-journey-feedback-actions .is-quiet { border: 1px solid rgba(166, 190, 170, 0.88); background: #fff; color: #52755d; }
+.child-journey-feedback-actions button:focus-visible { outline: 3px solid #e2ae3e; outline-offset: 3px; }
+@media (max-width: 760px) {
+    .child-journey-feedback { grid-template-columns: 1fr; }
+}
 
 /* 首页回到原 dashboard 骨架，仅压缩比例与统一色调。 */
 .home-stage-stack {
