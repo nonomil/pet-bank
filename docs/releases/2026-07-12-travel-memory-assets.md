@@ -52,7 +52,9 @@ node --check js/runtime-loader.js
 - 浏览器脚本还比较渲染前后的 `petbank_cards`、套票、竞技场积分、成长积分和宠物状态，结果保持一致。
 - 本轮组合卡阶段新增方案：`docs/plans/2026-07-12-travel-card-composition-design.md`、`docs/plans/2026-07-12-travel-card-composition-implementation.md`。
 - 真实探索闭环验收：`node scripts/test-travel-memory-real-journey.mjs`，从森林 UI 推进到战斗胜利，自动生成宠物快照并在完成页/图鉴显示森林旅行卡；截图：`docs/releases/travel-memory-real-journey-desktop.png`。
-- 该门禁使用可见故事按钮、数学选项、路线选项和战斗“攻击”按钮推进，没有直接调用 `TravelMemory.record()`；森林战斗 4 回合胜利，快照与出发前宠物状态一致。
+- 该门禁使用可见故事按钮、数学选项、路线选项和战斗“攻击”按钮推进，没有直接调用 `TravelMemory.record()`；三场景战斗胜利，快照与出发前宠物状态一致。现有战斗胜利的随机宠物卡奖励单独保留，旅行卡不会写入 `petbank_cards`。
+- 三样板结果：森林 1 回合胜利、海滩 2 回合胜利、星光花园 4 回合胜利；三条记录均在完成页显示徽章，并在图鉴累计显示 1/2/3 张旅行卡。
+- 三样板完成页截图：`docs/releases/travel-memory-real-journey-forest.png`、`docs/releases/travel-memory-real-journey-beach.png`、`docs/releases/travel-memory-real-journey-stargarden.png`。
 - 桌面：`1280x720`，小屋显示 3 件冰箱贴，图鉴显示 3 张旅行卡，相关图片 `naturalWidth=1024`，无横向溢出。
 - 移动：`390x844`，小屋/图鉴收藏区可见，相关图片 `naturalWidth=1024`，`bodyWidth=384`，无横向溢出。
 - 原收藏截图：`docs/releases/travel-memory-assets-desktop.png`、`docs/releases/travel-memory-assets-mobile.png`
