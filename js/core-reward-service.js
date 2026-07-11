@@ -157,5 +157,35 @@
         return Object.values(readReceipts());
     }
 
-    root.CoreRewardService = { claim, getHistory, normalizeEvent, STORAGE_KEY, POLICY_VERSION };
+    function toPresentation(result) {
+        const safe = result && typeof result === 'object' ? result : {};
+        const event = safe.event || {};
+        const rewards = Array.isArray(event.rewards) ? event.rewards : [];
+        const lines = rewards.map((reward) => {
+            const amount = Number(reward.amount || 0);
+            if (reward.type === 'growth_points') return `成长分 +${amount}`;
+            if (reward.type === 'pet_exp') return `宠物经验 +${amount}`;
+            if (reward.type === 'intimacy') return `亲密度 +${amount}`;
+            if (reward.type === 'item') return `获得道具 ${reward.itemId || '物品'} ×${amount}`;
+            if (reward.type === 'furniture') return `获得家具 ×${amount}`;
+            if (reward.type === 'theme') return `解锁主题 ×${amount}`;
+            return '';
+        }).filter(Boolean);
+        if (safe.leveledUp) lines.push(`宠物升级到 Lv.${safe.petAfter && safe.petAfter.level ? safe.petAfter.level : ''}`.trim());
+        if (safe.evolutionChanged) lines.push(`宠物进化为 ${safe.petAfter && safe.petAfter.stage ? safe.petAfter.stage : '新形态'}`);
+        if (safe.duplicate) lines.push('这份奖励已经领取过了');
+        const nextAction = safe.nextAction && typeof safe.nextAction === 'object'
+            ? { action: String(safe.nextAction.action || ''), label: String(safe.nextAction.label || ''), reason: String(safe.nextAction.reason || '') }
+            : null;
+        return {
+            accepted: safe.accepted === true,
+            duplicate: safe.duplicate === true,
+            title: safe.duplicate ? '奖励已领取' : (safe.accepted ? '获得新奖励' : '奖励未发放'),
+            lines,
+            nextAction,
+            eventId: String(event.eventId || '')
+        };
+    }
+
+    root.CoreRewardService = { claim, getHistory, normalizeEvent, toPresentation, STORAGE_KEY, POLICY_VERSION };
 })(typeof window !== 'undefined' ? window : globalThis);
