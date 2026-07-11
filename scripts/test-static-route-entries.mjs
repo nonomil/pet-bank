@@ -48,6 +48,9 @@ try {
     }
 
     const appSource = fs.readFileSync(path.join(artifactDir, 'index.html'), 'utf8');
+    if (!appSource.includes('<base id="routeBase" href="./">')) {
+        fail('index.html must use a relative initial route base before the browser preloads assets');
+    }
     if (!appSource.includes('routeBasePrefix')) {
         fail('index.html does not retain the GitHub Pages repository base when restoring route queries');
     }
