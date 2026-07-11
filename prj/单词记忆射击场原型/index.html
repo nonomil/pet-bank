@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>单词记忆地图 | Word Memory Map</title>
+  <title>像素探险 | Pixel Adventure</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./styles.css?v=word-memory-topdown-v4">
 </head>
@@ -26,7 +26,7 @@
       </div>
       <section class="projectile-layer viewport-projectiles" id="projectileLayer" aria-hidden="true"></section>
 
-      <header class="hud">
+      <header class="hud hud-minimal">
         <div class="hud-cluster">
           <div class="hud-pill hud-score" aria-label="当前星星">
             <span class="hud-label">星星</span>
@@ -66,7 +66,7 @@
         </div>
       </header>
 
-      <aside class="level-panel" id="levelPanel" aria-label="关卡选择">
+      <aside class="level-panel" id="levelPanel" aria-label="关卡选择" hidden>
         <div class="level-panel-head">
           <span class="hud-label">当前关卡</span>
           <strong id="levelText">第 1 关</strong>
@@ -75,7 +75,7 @@
         <div class="level-list" id="levelList"></div>
       </aside>
 
-      <aside class="current-meaning" id="currentMeaning" aria-live="polite">
+      <aside class="current-meaning" id="currentMeaning" aria-live="polite" hidden>
         <span class="hud-label">当前中文球</span>
         <strong id="currentMeaningText">点中文炸弹</strong>
         <div class="current-meaning-actions">
@@ -84,7 +84,7 @@
         </div>
       </aside>
 
-      <aside class="support-tray" id="supportTray" aria-live="polite" aria-label="支援道具">
+      <aside class="support-tray" id="supportTray" aria-live="polite" aria-label="支援道具" hidden>
         <div class="support-tray-head">
           <span class="hud-label">支援道具</span>
           <strong id="supportTrayTitle">地图上会掉落新的小道具</strong>
@@ -92,7 +92,7 @@
         <div class="support-slot-list" id="supportSlotList"></div>
       </aside>
 
-      <aside class="world-overview" id="worldOverview" aria-label="地图总览"></aside>
+      <aside class="world-overview" id="worldOverview" aria-label="地图总览" hidden></aside>
 
       <aside class="learning-hint-card" id="learningHintCard" hidden aria-live="polite">
         <img id="learningHintImage" src="" alt="" decoding="async">
@@ -110,7 +110,7 @@
         <span id="learningToastMeaning">中文</span>
       </section>
 
-      <section class="mission-rail" id="missionRail" aria-live="polite">
+      <section class="mission-rail" id="missionRail" aria-live="polite" hidden>
         <div class="mission-rail-top">
           <div class="mission-copy">
             <span class="hud-label">本图任务</span>
@@ -133,7 +133,7 @@
         <strong id="chapterTitle">晴天果园</strong>
       </section>
 
-      <div class="message-bar" id="messageText">清空当前大地图的全部敌人，才会进入下一关。</div>
+      <div class="message-bar" id="messageText" hidden>清空当前大地图的全部敌人，才会进入下一关。</div>
     </section>
 
     <section class="classic-stage" id="classicStage" hidden aria-label="经典炮弹单词射击">

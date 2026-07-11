@@ -673,7 +673,7 @@ function recordWordMemoryMapResult(payload) {
     pushBattleRecentActivity({
         id: `word_memory_map_${Date.now()}`,
         mode: 'word-memory-map',
-        title: `单词记忆射击场通关 · ${lastLevelOrder > 0 ? `第 ${lastLevelOrder} 关` : '大地图'}`,
+        title: `像素探险通关 · ${lastLevelOrder > 0 ? `第 ${lastLevelOrder} 关` : '大地图'}`,
         detail: `同步 ${points} 成长分，点亮 ${stars} 颗星，命中率 ${accuracy}%`
     });
     return next;
@@ -2267,7 +2267,7 @@ const TOP_HUB_MENU_CONFIG = {
         { page: 'hanzi', label: '汉字游戏' },
         { page: 'typing-defense', label: '消灭苦力怕' },
         { page: 'learning-arcade', label: '学习机小游戏' },
-        { page: 'word-memory-map', label: '单词记忆射击场' },
+        { page: 'word-memory-map', label: '像素探险' },
         { action: 'cardArena', label: '卡牌对战' },
         { page: 'leaderboard', label: '排行榜' }
     ]
@@ -2624,7 +2624,7 @@ function handleWordMemoryMapBridgeMessage(event) {
     renderReviewBattleBoard();
     if (typeof showToast === 'function') {
         const stars = Math.max(0, Math.floor(Number(payload.earnedStars) || 0));
-        showToast(`单词记忆射击场通关，本局已同步 ${points} 成长分，拿到 ${stars} 颗星，累计通关 ${progress.sessions} 张图`);
+        showToast(`像素探险通关，本局已同步 ${points} 成长分，拿到 ${stars} 颗星，累计通关 ${progress.sessions} 张图`);
     }
 }
 
@@ -2701,19 +2701,30 @@ window.addEventListener('message', handleLearningArcadeBridgeMessage);
 function ensureTypingDefenseEmbed() {
     const frame = document.getElementById('typing-defense-frame');
     if (!frame) return;
-    const src = withRouteBase('/prj/%E6%B6%88%E7%81%AD%E8%8B%A6%E5%8A%9B%E6%80%95%E6%89%93%E5%AD%97%E6%B8%B8%E6%88%8F/web/index.html');
+    const src = withRouteBase('/app/playground/typing-defense-runtime/web/index.html');
     const launchLink = document.getElementById('typing-defense-launch');
     const status = document.getElementById('typing-defense-status');
     if (launchLink) launchLink.href = src;
     if (frame.dataset.loaded === '1') return;
-    if (status) status.textContent = '正在加载消灭苦力怕...';
+    if (status) {
+        status.classList.remove('is-ready');
+        status.textContent = '正在加载消灭苦力怕...';
+    }
     frame.addEventListener('load', function onLoad() {
         frame.dataset.loaded = '1';
-        if (status) status.textContent = `已加载，可直接开始。当前主站积分 ${totalPoints || 0}`;
+        if (status) {
+            status.textContent = `已加载，可直接开始。当前主站积分 ${totalPoints || 0}`;
+            window.setTimeout(function () {
+                status.classList.add('is-ready');
+            }, 260);
+        }
         frame.removeEventListener('load', onLoad);
     });
     frame.addEventListener('error', function onError() {
-        if (status) status.textContent = '加载失败，请检查消灭苦力怕的静态资源路径。';
+        if (status) {
+            status.classList.remove('is-ready');
+            status.textContent = '加载失败，请检查消灭苦力怕的静态资源路径。';
+        }
         frame.removeEventListener('error', onError);
     });
     frame.src = src;
@@ -2728,14 +2739,25 @@ function ensureLearningArcadeEmbed() {
     const status = document.getElementById('learning-arcade-status');
     if (launchLink) launchLink.href = src;
     if (frame.dataset.loaded === '1') return;
-    if (status) status.textContent = '正在加载学习机小游戏...';
+    if (status) {
+        status.classList.remove('is-ready');
+        status.textContent = '正在加载学习机小游戏...';
+    }
     frame.addEventListener('load', function onLoad() {
         frame.dataset.loaded = '1';
-        if (status) status.textContent = '已加载，可直接开始。合集里包含三个小游戏。';
+        if (status) {
+            status.textContent = '已加载，可直接开始。合集里包含三个小游戏。';
+            window.setTimeout(function () {
+                status.classList.add('is-ready');
+            }, 260);
+        }
         frame.removeEventListener('load', onLoad);
     });
     frame.addEventListener('error', function onError() {
-        if (status) status.textContent = '加载失败，请检查学习机玩法原型的静态资源路径。';
+        if (status) {
+            status.classList.remove('is-ready');
+            status.textContent = '加载失败，请检查学习机玩法原型的静态资源路径。';
+        }
         frame.removeEventListener('error', onError);
     });
     frame.src = src;
@@ -2773,14 +2795,25 @@ function ensureWordMemoryMapEmbed() {
     const status = document.getElementById('word-memory-map-status');
     if (launchLink) launchLink.href = src;
     if (frame.dataset.loaded === '1') return;
-    if (status) status.textContent = '正在加载单词记忆射击场...';
+    if (status) {
+        status.classList.remove('is-ready');
+        status.textContent = '正在加载像素探险...';
+    }
     frame.addEventListener('load', function onLoad() {
         frame.dataset.loaded = '1';
-        if (status) status.textContent = `已加载，可直接开始。当前主站积分 ${totalPoints || 0}`;
+        if (status) {
+            status.textContent = `已加载，可直接开始。当前主站积分 ${totalPoints || 0}`;
+            window.setTimeout(function () {
+                status.classList.add('is-ready');
+            }, 260);
+        }
         frame.removeEventListener('load', onLoad);
     });
     frame.addEventListener('error', function onError() {
-        if (status) status.textContent = '加载失败，请检查单词记忆射击场原型的静态资源路径。';
+        if (status) {
+            status.classList.remove('is-ready');
+            status.textContent = '加载失败，请检查像素探险原型的静态资源路径。';
+        }
         frame.removeEventListener('error', onError);
     });
     frame.src = src;

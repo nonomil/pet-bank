@@ -2455,7 +2455,7 @@ body.shell-app[data-app-surface="scene"] {
     background-color: #edf8f6;
 }
 body.shell-app[data-app-surface="game"] {
-    background-color: #f8f3ea;
+    background-color: #f5f8fb;
 }
 body.shell-app[data-app-surface="home"] .page-shell,
 body.shell-app[data-app-surface="focus"] .page-shell,
@@ -2468,6 +2468,21 @@ body.shell-app[data-app-surface="scene"] .page-shell,
 body.shell-app[data-app-surface="game"] .page-shell {
     padding-left: clamp(12px, 2.2vw, 32px);
     padding-right: clamp(12px, 2.2vw, 32px);
+}
+body.shell-app[data-app-surface="game"] .app-shell-bar,
+body.shell-app[data-app-surface="game"] .app-bottom-dock {
+    display: none;
+}
+body.shell-app[data-app-surface="game"] {
+    scroll-padding-top: 0;
+    scroll-padding-bottom: 0;
+}
+body.shell-app[data-app-surface="game"] .page-shell {
+    min-height: 100svh;
+    padding: 0;
+}
+body.shell-app[data-app-surface="game"] .main-content {
+    min-height: 100svh;
 }
 body.shell-app[data-app-page="playground"] .page-shell,
 body.shell-app[data-app-page="explore"] .page-shell {

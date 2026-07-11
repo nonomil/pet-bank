@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.18](https://img.shields.io/badge/Version-v0.7.18-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.23](https://img.shields.io/badge/Version-v0.7.23-brightgreen.svg)](CHANGELOG.md)
 
 📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [账号与 Supabase 部署手册](docs_project/runbooks/account-auth-supabase-deploy.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,16 +27,16 @@
 
 ---
 
-## 🎉 最近更新（v0.7.18）
+## 🎉 最近更新（v0.7.23）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
-- 🧭 **页面边界路径化**：孩子主应用走 `/app/*`，家长区走 `/parent/*`，设置管理支持 `/settings/*` 与 `/parent/settings/*` 直达，不再只靠根路径里的 `switchPage()` 体感切页
-- ⚙️ **设置页分区收口**：设置页改成“设置首页 + 子页入口 + 分区面板”，账号、家庭云端、学习与题目、规则模板、高级操作各自有更清晰边界
-- 🎮 **孩子端导航壳分层**：`/app`、积分、学习、宠物、探索、游乐场等一级 tab 保留旧版顶部主导航；沉浸壳只留给数学 PK、汉字游戏、宠物散步/卡牌等深层玩法页
-- 👨‍👩‍👧 **家长管理导航壳**：`/parent`、`/settings/*` 显示专用管理导航，收纳家长首页、设置管理、成长作品、工具箱与进入孩子端
-- 🔗 **深链接资源修复**：`/app/playground/math-pk`、`/parent/settings/account` 这类 URL 可直接打开，资源不再误请求到 `/app/css/...` 或 `/parent/settings/js/...`
-- 🧪 **IA 合同测试补齐**：新增/扩展 URL 路由、设置子页、家长区、route-aware shell 与深链接 base 验证，并用浏览器冒烟确认无 404/console/page error
+- 🎴 **游乐场卡片统一**：游戏入口统一改成“上图下文”的单卡，去掉彩色标签带；`数学PK`、`卡牌对战` 换成新的 `VS` 风格图卡
+- 🧼 **沉浸子页再收口**：游戏子页统一隐藏主站顶部状态条和底部 dock，打开后只保留左上 `首页` 与右上 `关闭`
+- 🧭 **像素探险改名落地**：`单词记忆射击场` 在主站正式更名为 `像素探险`，入口、标题、通关提示和最近活动文案同步
+- 🗺️ **像素探险大地图升级**：原型支持单张全景大地图模式，默认切到 `farm_gpt`，并已验证可在 `farm_gpt / space` 间切换
+- 🕹️ **像素探险轻 UI 化**：隐藏顶部统计、关卡侧栏、世界总览和任务栏，保留大地图、角色选择、分类与地图切换，整体更接近直接开玩的全屏体验
+- 🏃 **主角右走动作修正**：补齐小男孩朝右移动的真实行走帧，右移不再像静止滑动
 
 ---
 

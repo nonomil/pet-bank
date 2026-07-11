@@ -206,7 +206,6 @@
                     <div class="hz-page-actions">
                         <button class="hz-page-btn" type="button" onclick="switchPage('map')">首页</button>
                         <div class="hz-page-actions-right">
-                            <button class="hz-page-btn" type="button" onclick="switchPage('leaderboard')">排行榜</button>
                             <button class="hz-page-btn is-close" type="button" onclick="switchPage('playground')">关闭</button>
                         </div>
                     </div>

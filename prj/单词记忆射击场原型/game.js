@@ -6,42 +6,42 @@
   const WORLD_PACK_REGISTRY = {
     farm: {
       label: '农场',
-      manifestUrl: './assets/generated/world-bg-tiles/farm-9grid-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/farm-single-manifest.json',
       theme: 'farm'
     },
     farm_gpt: {
       label: '农场 GPT',
-      manifestUrl: './assets/generated/world-bg-tiles/farm-gpt-9grid-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/farm-gpt-single-manifest.json',
       theme: 'farm'
     },
     forest: {
       label: '森林',
-      manifestUrl: './assets/generated/world-bg-tiles/forest-9grid-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/forest-single-manifest.json',
       theme: 'forest'
     },
     grassland: {
       label: '草原',
-      manifestUrl: './assets/generated/world-bg-tiles/grassland-9grid-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/grassland-single-manifest.json',
       theme: 'grassland'
     },
     ocean: {
       label: '海洋',
-      manifestUrl: './assets/generated/world-bg-tiles/ocean-9grid-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/ocean-single-manifest.json',
       theme: 'ocean'
     },
     sky: {
       label: '天空',
-      manifestUrl: './assets/generated/world-bg-tiles/sky-9grid-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/sky-single-manifest.json',
       theme: 'sky'
     },
     space: {
       label: '太空',
-      manifestUrl: './assets/generated/world-bg-tiles/space-9grid-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/space-single-manifest.json',
       theme: 'space'
     },
     alien: {
       label: '外星球',
-      manifestUrl: './assets/generated/world-bg-tiles/alien-9grid-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/alien-single-manifest.json',
       theme: 'alien'
     }
   };
@@ -59,7 +59,7 @@
     : 'auto';
   const DEBUG_QUERY = new URLSearchParams(window.location.search);
   const DEBUG_AUTO_START = DEBUG_QUERY.get('autostart') === '1';
-  const DEBUG_WORLD_CONTROLS = false;
+  const DEBUG_WORLD_CONTROLS = true;
   const AUTO_START_PLAY_SESSION = !!window.navigator?.webdriver;
   const ENABLE_AUTOMATION_WORLD_CONTROLS = DEBUG_WORLD_CONTROLS || AUTO_START_PLAY_SESSION || DEBUG_AUTO_START;
   window.__wordMemoryReady = false;
@@ -93,17 +93,25 @@
   const WORLD_COLS = 3;
   const WORLD_ROWS = 3;
   const WORLD_TILE_COUNT = WORLD_COLS * WORLD_ROWS;
-  const WORLD_SCREEN_WIDTH = 160;
-  const WORLD_SCREEN_HEIGHT = 90;
+  const BASE_WORLD_SCREEN_WIDTH = 160;
+  const BASE_WORLD_SCREEN_HEIGHT = 90;
+  const WORLD_SCALE = 1.75;
+  const scaleDistance = (value) => Math.round(value * WORLD_SCALE * 100) / 100;
+  const scaleWorldPoint = (point) => ({
+    x: scaleDistance(point.x),
+    y: scaleDistance(point.y)
+  });
+  const WORLD_SCREEN_WIDTH = Math.round(BASE_WORLD_SCREEN_WIDTH * WORLD_SCALE);
+  const WORLD_SCREEN_HEIGHT = Math.round(BASE_WORLD_SCREEN_HEIGHT * WORLD_SCALE);
   const WORLD_WIDTH = WORLD_COLS * WORLD_SCREEN_WIDTH;
   const WORLD_HEIGHT = WORLD_ROWS * WORLD_SCREEN_HEIGHT;
-  const PICKUP_RADIUS = 7.2;
-  const MOVE_SPEED = 0.036;
+  const PICKUP_RADIUS = scaleDistance(7.2);
+  const MOVE_SPEED = 0.04;
   const THROW_SPEED = 0.079;
   const TARGETED_THROW_SPEED_MULTIPLIER = 2.45;
   const THROW_MAX_MS = 920;
   const THROW_HOMING_MAX_MS = 1600;
-  const THROW_HIT_RADIUS = 7.4;
+  const THROW_HIT_RADIUS = scaleDistance(7.4);
   const THROW_ARM_MS = 150;
   const HERO_WALK_FRAME_MS = 180;
   const HERO_WALK_FRAME_COUNT = 3;
@@ -112,12 +120,12 @@
   const HERO_STEP_DUST_MS = HERO_WALK_FRAME_MS * 2;
   const MAX_SHIELD = 3;
   const HERO_HIT_INVINCIBLE_MS = 920;
-  const HERO_KNOCKBACK_DISTANCE = 9.2;
-  const ENEMY_CHASE_SPEED = 0.0028;
-  const ENEMY_ATTACK_RADIUS = 6.8;
+  const HERO_KNOCKBACK_DISTANCE = scaleDistance(9.2);
+  const ENEMY_CHASE_SPEED = 0.0031;
+  const ENEMY_ATTACK_RADIUS = scaleDistance(6.8);
   const ENEMY_ATTACK_COOLDOWN_MS = 1680;
   const ENEMY_IMAGE_FALLBACK_MS = 1800;
-  const SUPPORT_PICKUP_RADIUS = 7.4;
+  const SUPPORT_PICKUP_RADIUS = scaleDistance(7.4);
   const SUPPORT_DROP_EVERY_SCORE = 2;
   const SUPPORT_SLOW_MS = 9000;
   const SUPPORT_AUTO_AIM_SHOTS = 2;
@@ -130,12 +138,12 @@
   const HOST_BRIDGE_SESSION_ID = `word-memory-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
   let hostBridgeSeq = 0;
   const MAP_BOUNDS = {
-    minX: 10,
-    maxX: WORLD_WIDTH - 10,
-    minY: 9,
-    maxY: WORLD_HEIGHT - 9
+    minX: scaleDistance(10),
+    maxX: WORLD_WIDTH - scaleDistance(10),
+    minY: scaleDistance(9),
+    maxY: WORLD_HEIGHT - scaleDistance(9)
   };
-  const PLAYER_START = { x: 34, y: 62 };
+  const PLAYER_START = scaleWorldPoint({ x: 34, y: 62 });
   const TARGET_SLOTS = [
     { x: 84, y: 25 },
     { x: 116, y: 28 },
@@ -143,7 +151,7 @@
     { x: 98, y: 58 },
     { x: 76, y: 63 },
     { x: 118, y: 66 }
-  ];
+  ].map(scaleWorldPoint);
   const ORB_SLOTS = [
     { x: 26, y: 24 },
     { x: 44, y: 20 },
@@ -151,7 +159,7 @@
     { x: 30, y: 57 },
     { x: 50, y: 63 },
     { x: 42, y: 76 }
-  ];
+  ].map(scaleWorldPoint);
   const FARM_ASSETS = {
     heroLegacy: `${ASSET_BASE}/guardian_golem.png`,
     heroDirectional: {
@@ -331,6 +339,24 @@
     { id: 'tile-8', label: '南路草坡', row: 2, col: 1, src: './assets/背景图片/08.png' },
     { id: 'tile-9', label: '围栏岔口', row: 2, col: 2, src: './assets/背景图片/09.png' }
   ];
+  const DEFAULT_WORLD_BACKDROP = {
+    mode: 'tiles',
+    image: '',
+    labels: DEFAULT_WORLD_TILES.map(tile => tile.label)
+  };
+
+  function tilesFromLabels(labels, src) {
+    const safeLabels = Array.isArray(labels) && labels.length
+      ? labels
+      : DEFAULT_WORLD_TILES.map(tile => tile.label);
+    return Array.from({ length: WORLD_TILE_COUNT }, (_, index) => ({
+      id: `tile-${index + 1}`,
+      label: safeLabels[index] || `区域 ${index + 1}`,
+      row: Math.floor(index / WORLD_COLS),
+      col: index % WORLD_COLS,
+      src: src || DEFAULT_WORLD_TILES[index]?.src || DEFAULT_WORLD_TILES[0].src
+    }));
+  }
   const CATEGORY_LABELS = {
     actions: '动作',
     animals: '动物',
@@ -463,6 +489,7 @@
     lastPromptOrbId: null,
     sceneIndex: 0,
     worldTiles: DEFAULT_WORLD_TILES,
+    worldBackdrop: DEFAULT_WORLD_BACKDROP,
     camera: { x: 0, y: 0 },
     audioEnabled: true,
     audioReady: false,
@@ -482,7 +509,7 @@
     supportComboBonus: 0,
     viewMode: 'map',
     selectedCategory: 'all',
-    selectedWorldPack: 'farm',
+    selectedWorldPack: 'farm_gpt',
     selectedHeroId: 'boy',
     heroSelectOpen: true,
     currentLevelId: 'level-1',
@@ -907,6 +934,7 @@
     const pack = WORLD_PACK_REGISTRY[state.selectedWorldPack] || currentWorldPack();
     if (window.location.protocol === 'file:') {
       state.worldTiles = DEFAULT_WORLD_TILES;
+      state.worldBackdrop = DEFAULT_WORLD_BACKDROP;
       els.mapScene.dataset.sceneTheme = pack.theme;
       return;
     }
@@ -916,12 +944,30 @@
         throw new Error(`world tile manifest http ${response.status}`);
       }
       const data = await response.json();
-      state.worldTiles = Array.isArray(data.tiles) && data.tiles.length
-        ? data.tiles
-        : DEFAULT_WORLD_TILES;
+      if (data && data.mode === 'single' && data.image) {
+        const labels = Array.isArray(data.labels) && data.labels.length
+          ? data.labels
+          : (Array.isArray(data.tiles) ? data.tiles.map(tile => tile.label) : []);
+        state.worldTiles = tilesFromLabels(labels, data.image);
+        state.worldBackdrop = {
+          mode: 'single',
+          image: data.image,
+          labels
+        };
+      } else {
+        state.worldTiles = Array.isArray(data.tiles) && data.tiles.length
+          ? data.tiles
+          : DEFAULT_WORLD_TILES;
+        state.worldBackdrop = {
+          mode: 'tiles',
+          image: '',
+          labels: state.worldTiles.map(tile => tile.label)
+        };
+      }
     } catch (error) {
       console.warn(`[word-memory] world tile manifest unavailable for ${state.selectedWorldPack}, using fallback tiles`, error);
       state.worldTiles = DEFAULT_WORLD_TILES;
+      state.worldBackdrop = DEFAULT_WORLD_BACKDROP;
     }
     els.mapScene.dataset.sceneTheme = pack.theme;
   }
@@ -1619,23 +1665,29 @@
 
   function renderDecor() {
     els.mapScene.dataset.sceneTheme = currentWorldPack().theme;
-    els.sceneBackdrop.innerHTML = state.worldTiles.map(tile => `
-      <figure
-        class="world-tile-frame"
-        data-tile-theme="${currentWorldPack().theme}"
-        style="left:${(tile.col / WORLD_COLS) * 100}%; top:${(tile.row / WORLD_ROWS) * 100}%; width:${100 / WORLD_COLS}%; height:${100 / WORLD_ROWS}%; position:absolute; margin:0;"
-      >
-        <img
-          class="world-tile"
-          src="${tile.src}"
-          alt=""
-          decoding="async"
-          style="left:0; top:0;"
+    if (state.worldBackdrop?.mode === 'single' && state.worldBackdrop.image) {
+      els.sceneBackdrop.innerHTML = `
+        <figure class="world-single-frame" data-tile-theme="${currentWorldPack().theme}">
+          <img class="world-panorama" src="${state.worldBackdrop.image}" alt="" decoding="async">
+        </figure>
+      `;
+    } else {
+      els.sceneBackdrop.innerHTML = state.worldTiles.map(tile => `
+        <figure
+          class="world-tile-frame"
+          data-tile-theme="${currentWorldPack().theme}"
+          style="left:${(tile.col / WORLD_COLS) * 100}%; top:${(tile.row / WORLD_ROWS) * 100}%; width:${100 / WORLD_COLS}%; height:${100 / WORLD_ROWS}%; position:absolute; margin:0;"
         >
-
-        <figcaption class="world-tile-label">${tile.label}</figcaption>
-      </figure>
-    `).join('');
+          <img
+            class="world-tile"
+            src="${tile.src}"
+            alt=""
+            decoding="async"
+            style="left:0; top:0;"
+          >
+        </figure>
+      `).join('');
+    }
     els.decorLayer.innerHTML = '';
   }
 

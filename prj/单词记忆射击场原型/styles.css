@@ -32,9 +32,7 @@ body {
 body {
   font-family: "Trebuchet MS", "YouYuan", "Microsoft YaHei", sans-serif;
   color: var(--ink);
-  background:
-    radial-gradient(circle at top, rgba(186, 231, 173, 0.18), transparent 28%),
-    linear-gradient(180deg, #16311f 0%, #132418 100%);
+  background: linear-gradient(180deg, #dff0ff 0%, #f4f9ff 100%);
   overflow: hidden;
 }
 
@@ -180,10 +178,7 @@ button {
 .map-scene {
   position: relative;
   overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 24%),
-    radial-gradient(circle at center, rgba(255, 248, 214, 0.1), transparent 48%),
-    #7ebb4f;
+  background: linear-gradient(180deg, #d8eeff 0%, #c4e0ff 100%);
   cursor: crosshair;
   transition: background-image 220ms ease, filter 220ms ease;
 }
@@ -192,7 +187,7 @@ button {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 20%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 22%);
   pointer-events: none;
 }
 
@@ -200,8 +195,7 @@ button {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at center, transparent 56%, rgba(10, 20, 12, 0.16) 100%);
+  background: radial-gradient(circle at center, transparent 62%, rgba(62, 100, 146, 0.18) 100%);
   pointer-events: none;
 }
 
@@ -297,6 +291,23 @@ button {
 
 .world-tile-frame {
   overflow: hidden;
+}
+
+.world-single-frame {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.world-panorama {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  image-rendering: auto;
+  user-select: none;
+  pointer-events: none;
 }
 
 .world-tile-frame::after {
@@ -396,6 +407,34 @@ button {
   backdrop-filter: blur(4px);
 }
 
+.world-single-frame[data-tile-theme="farm"] .world-panorama {
+  filter: saturate(1.02) contrast(1.02);
+}
+
+.world-single-frame[data-tile-theme="forest"] .world-panorama {
+  filter: saturate(0.92) hue-rotate(26deg) brightness(0.84) contrast(1.08);
+}
+
+.world-single-frame[data-tile-theme="grassland"] .world-panorama {
+  filter: saturate(1.04) hue-rotate(-14deg) brightness(1.08);
+}
+
+.world-single-frame[data-tile-theme="ocean"] .world-panorama {
+  filter: hue-rotate(148deg) saturate(1.08) brightness(0.96);
+}
+
+.world-single-frame[data-tile-theme="sky"] .world-panorama {
+  filter: hue-rotate(168deg) saturate(0.86) brightness(1.14);
+}
+
+.world-single-frame[data-tile-theme="space"] .world-panorama {
+  filter: saturate(1.04) brightness(0.84) contrast(1.1);
+}
+
+.world-single-frame[data-tile-theme="alien"] .world-panorama {
+  filter: hue-rotate(228deg) saturate(1.06) brightness(0.92);
+}
+
 .world-overview {
   position: absolute;
   right: 16px;
@@ -409,6 +448,15 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.42);
   box-shadow: 0 14px 28px rgba(17, 33, 24, 0.12);
   backdrop-filter: blur(8px) saturate(0.92);
+}
+
+.level-panel[hidden],
+.current-meaning[hidden],
+.support-tray[hidden],
+.world-overview[hidden],
+.mission-rail[hidden],
+.message-bar[hidden] {
+  display: none !important;
 }
 
 .world-overview-head {
@@ -875,6 +923,30 @@ button {
   justify-content: space-between;
   gap: 18px;
   pointer-events: none;
+}
+
+.hud.hud-minimal {
+  inset: auto 18px 18px 18px;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.hud.hud-minimal .hud-cluster {
+  display: none;
+}
+
+.hud.hud-minimal .hud-actions {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(196, 214, 233, 0.92);
+  box-shadow: 0 14px 28px rgba(82, 117, 157, 0.18);
+}
+
+.hud.hud-minimal #sceneButton,
+.hud.hud-minimal #levelButton,
+.hud.hud-minimal #modeButton,
+.hud.hud-minimal #speakButton {
+  display: none;
 }
 
 .hud-cluster,
