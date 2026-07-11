@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const source = fs.readFileSync('js/pet-growth-history.js', 'utf8');
+const data = new Map();
+const context = { console, Date, globalThis: null, localStorage: { getItem: (k) => data.get(k) || null, setItem: (k, v) => data.set(k, v) } };
+context.globalThis = context;
+vm.runInNewContext(source, context, { filename: 'js/pet-growth-history.js' });
+const history = context.PetGrowthHistory;
+for (let i = 0; i < 35; i += 1) history.append({ source: 'test', index: i });
+assert.equal(history.getRecent(100).length, 30);
+assert.equal(history.getRecent(1)[0].index, 34);
+assert.equal(history.markCare(new Date('2026-07-10T12:00:00')).streak, 1);
+assert.equal(history.markCare(new Date('2026-07-11T12:00:00')).streak, 2);
+assert.equal(history.markCare(new Date('2026-07-11T18:00:00')).streak, 2);
+assert.equal(history.markCare(new Date('2026-07-13T12:00:00')).streak, 1);
+console.log('pet growth history tests passed');
