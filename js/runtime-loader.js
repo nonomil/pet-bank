@@ -16,6 +16,22 @@
         const eventId = String(input.eventId || '').trim();
         const points = Math.floor(Number(input.points) || 0);
         if (!source || !eventId || points <= 0) return { accepted: false, reason: 'invalid' };
+
+        // Bridge all game point rewards into the core loop. The legacy receipt
+        // below remains for compatibility with existing game progress views.
+        if (window.CoreRewardService && typeof window.CoreRewardService.claim === 'function') {
+            const coreResult = window.CoreRewardService.claim({
+                eventId: `${source}:${eventId}`,
+                profileId,
+                source: 'game',
+                sourceId: source,
+                rewards: [
+                    { type: 'growth_points', amount: points },
+                    { type: 'pet_exp', amount: points }
+                ]
+            });
+            if (!coreResult.accepted) return { accepted: false, reason: 'duplicate', receipt: coreResult.receipt };
+        }
         const key = `${profileId}:${source}:${eventId}`;
         const receipts = readGameRewardReceipts();
         if (receipts[key]) return { accepted: false, reason: 'duplicate', receipt: receipts[key] };
