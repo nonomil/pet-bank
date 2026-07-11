@@ -2,6 +2,15 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.32] - 2026-07-11
+### 👥 英语词汇进度显式档案隔离
+
+- 英语词汇 progress 与奖励由固定 localStorage 键改为按当前 Profile 的 scoped 键，A/B 档案的 streak 和兑换券不再依赖隐式全量快照隔离
+- 兼容旧固定键：每个既有 Profile 恢复其快照后可独立、幂等地迁入自己的 scoped 进度与奖励；已有新键不会被旧数据覆盖
+- ProfileManager 未就绪时写入 fallback 状态，后续真实档案可安全认领；新建档案不会继承其他档案的旧英语数据
+- 新增真实 A/B Profile swap、fallback 认领、旧键保留、同 ID 快照恢复等回归测试
+- 验证通过：`node scripts/test-english-vocab-profile-scope.mjs`、每日状态 5/5 和静态路由 40 routes
+
 ## [v0.7.31] - 2026-07-11
 ### 📅 每日任务与宝箱状态日期化
 

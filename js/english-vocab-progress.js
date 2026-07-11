@@ -3,6 +3,7 @@
 
     const PROGRESS_KEY = 'petbank_learning_vocab_progress';
     const REWARD_KEY = 'petbank_learning_english_rewards';
+    const SCOPE_MIGRATION_PREFIX = 'petbank_english_vocab_scope_migration_v2_';
     const MASTERED_STREAK = 2;
     const COMMON_VOUCHER_ID = 'minecraft-card-common-10';
 
@@ -21,20 +22,81 @@
         } catch (err) {}
     }
 
+    function activeProfileScope() {
+        try {
+            if (window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function') {
+                const id = window.ProfileManager.getActiveId();
+                if (id) return { id, resolved: true };
+            }
+        } catch (err) {}
+        return { id: 'default', resolved: false };
+    }
+
+    function activeProfileId() {
+        return activeProfileScope().id;
+    }
+
+    function scopedKey(key) {
+        return `${key}_${activeProfileId()}`;
+    }
+
+    function migrationKey(profileId) {
+        return `${SCOPE_MIGRATION_PREFIX}${profileId}`;
+    }
+
+    function copyKeyIfMissing(sourceKey, targetKey) {
+        if (localStorage.getItem(targetKey) !== null) return;
+        const raw = localStorage.getItem(sourceKey);
+        if (raw !== null) localStorage.setItem(targetKey, raw);
+    }
+
+    // Keep legacy fixed keys for rollback. A fallback copy remains pending until a real profile resolves.
+    function ensureScopedMigration() {
+        try {
+            const scope = activeProfileScope();
+            const markerKey = migrationKey(scope.id);
+            const marker = localStorage.getItem(markerKey);
+            const progressKey = `${PROGRESS_KEY}_${scope.id}`;
+            const rewardKey = `${REWARD_KEY}_${scope.id}`;
+            if (!scope.resolved) {
+                if (marker) return;
+                copyKeyIfMissing(PROGRESS_KEY, progressKey);
+                copyKeyIfMissing(REWARD_KEY, rewardKey);
+                localStorage.setItem(markerKey, 'fallback');
+                return;
+            }
+            if (marker && marker !== 'fallback') return;
+            const fallbackMarkerKey = migrationKey('default');
+            if (scope.id !== 'default' && localStorage.getItem(fallbackMarkerKey) === 'fallback') {
+                copyKeyIfMissing(`${PROGRESS_KEY}_default`, progressKey);
+                copyKeyIfMissing(`${REWARD_KEY}_default`, rewardKey);
+                localStorage.setItem(fallbackMarkerKey, `claimed:${scope.id}`);
+            } else {
+                copyKeyIfMissing(PROGRESS_KEY, progressKey);
+                copyKeyIfMissing(REWARD_KEY, rewardKey);
+            }
+            localStorage.setItem(markerKey, '1');
+        } catch (err) {}
+    }
+
     function read() {
-        return readKey(PROGRESS_KEY, {});
+        ensureScopedMigration();
+        return readKey(scopedKey(PROGRESS_KEY), {});
     }
 
     function write(data) {
-        writeKey(PROGRESS_KEY, data || {});
+        ensureScopedMigration();
+        writeKey(scopedKey(PROGRESS_KEY), data || {});
     }
 
     function readRewards() {
-        return readKey(REWARD_KEY, {});
+        ensureScopedMigration();
+        return readKey(scopedKey(REWARD_KEY), {});
     }
 
     function writeRewards(rewards) {
-        writeKey(REWARD_KEY, rewards || {});
+        ensureScopedMigration();
+        writeKey(scopedKey(REWARD_KEY), rewards || {});
     }
 
     function get(cardId) {
