@@ -91,6 +91,9 @@ const ExplorationDetail = (function () {
         currentScene = scenes.find(s => s.id === sceneId);
         if (!currentScene) return;
         await _loadStories();
+        if (window.TravelMemory && typeof window.TravelMemory.load === 'function') {
+            await window.TravelMemory.load();
+        }
         // 故事未加载(file://协议或fetch失败) → 明确提示，不再静默回退兜底（R1 单一源）
         if (!sceneEvents[currentScene.id]) {
             switchPage('explore');
@@ -368,9 +371,20 @@ const ExplorationDetail = (function () {
             const battle = ExplorationSystem.startBattle(result.battle.scene, result.battle.monster);
             showBattleModal(battle);
         } else {
+            const memoryResult = recordTravelMemory();
+            if (memoryResult?.accepted) showToast(memoryResult.memory.returnText);
             showToast(result.msg);
             exit();
         }
+    }
+
+    function recordTravelMemory() {
+        if (!currentScene || !window.TravelMemory || typeof window.TravelMemory.record !== 'function') return null;
+        const result = window.TravelMemory.record({ sceneId: currentScene.id });
+        if (result.accepted && result.memory.itemId && !foundItems.includes(result.memory.itemId) && window.InventorySystem) {
+            window.InventorySystem.addItem(result.memory.itemId, 1);
+        }
+        return result;
     }
 
     function next() {
@@ -409,9 +423,12 @@ const ExplorationDetail = (function () {
         const textEl = document.getElementById('galgameText');
         const box = document.getElementById('galgameBox');
         if (!msg || !nameEl || !textEl) { exit(); return; }
+        const memoryResult = recordTravelMemory();
+        const memory = memoryResult?.memory || (window.TravelMemory?.getAll?.() || []).find(item => item.sceneId === currentScene.id);
         document.getElementById('galgameChoices').innerHTML = '';
         nameEl.textContent = '🎉 冒险完成';
-        textEl.innerHTML = `<span class="galgame-found">${msg}</span>`;
+        textEl.innerHTML = `<span class="galgame-found">${escapeCopy(msg)}</span>${memory ? `<div class="travel-memory-card"><div class="travel-memory-icon">${escapeCopy(memory.icon)}</div><div><strong>${escapeCopy(memory.title)}</strong><span>${escapeCopy(memory.returnText)}</span><small>${escapeCopy(memory.nextPreview)}</small></div></div>` : ''}`;
+        setPetMood('proud');
         box.onclick = () => ExplorationDetail.exit();
     }
 

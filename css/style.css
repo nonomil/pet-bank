@@ -6348,6 +6348,12 @@ body.shell-parent .app-bottom-dock {
 .galgame-detail-toggle { display: inline-block; margin: 10px 0 0 8px; padding: 3px 8px; border: 1px solid rgba(255,216,120,0.55); border-radius: 999px; background: rgba(255,216,120,0.12); color: #ffd87a; font-size: 12px; cursor: pointer; }
 .galgame-detail { display: block; margin-top: 8px; padding: 8px 10px; border-left: 3px solid rgba(255,216,120,0.65); color: rgba(255,255,255,0.78); font-size: 14px; line-height: 1.55; }
 .galgame-explanation { display: block; margin-top: 8px; color: #bbf7d0; font-size: 16px; line-height: 1.7; }
+.travel-memory-card { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 10px 12px; border: 1px solid rgba(126,230,138,0.45); border-radius: 12px; background: rgba(126,230,138,0.12); color: #fff; }
+.travel-memory-icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.16); font-size: 26px; flex: 0 0 auto; }
+.travel-memory-card strong, .travel-memory-card span, .travel-memory-card small { display: block; }
+.travel-memory-card strong { color: #bbf7d0; font-size: 14px; }
+.travel-memory-card span { margin-top: 2px; color: #fff; font-size: 13px; }
+.travel-memory-card small { margin-top: 4px; color: #fde68a; font-size: 12px; }
 @media (max-width: 768px) {
   .galgame-portrait { max-height: 36vh; }
   .galgame-text { font-size: 17px; }

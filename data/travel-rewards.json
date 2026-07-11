@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "scenes": {
+    "forest": {
+      "memoryTitle": "森林贴纸",
+      "memoryIcon": "🍄",
+      "itemId": "mushroom",
+      "nextPreview": "下一站：蔚蓝海滩",
+      "returnText": "宠物把发光蘑菇贴纸带回家啦！"
+    },
+    "beach": {
+      "memoryTitle": "海滩贝壳",
+      "memoryIcon": "🐚",
+      "itemId": "shell",
+      "nextPreview": "下一站：星光花园",
+      "returnText": "宠物把海风和一枚贝壳带回家啦！"
+    },
+    "stargarden": {
+      "memoryTitle": "星光照片",
+      "memoryIcon": "🌟",
+      "itemId": "star_dust",
+      "nextPreview": "下一站：新的伙伴故事",
+      "returnText": "宠物把星光照片放进成长相册啦！"
+    }
+  }
+}

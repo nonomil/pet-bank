@@ -4,7 +4,16 @@ import vm from 'node:vm';
 
 function loadGlobal(file, name) {
   const source = fs.readFileSync(file, 'utf8');
-  const context = { console, globalThis: null, window: null };
+  const storage = new Map();
+  const context = {
+    console,
+    globalThis: null,
+    window: null,
+    localStorage: {
+      getItem(key) { return storage.has(key) ? storage.get(key) : null; },
+      setItem(key, value) { storage.set(key, String(value)); }
+    }
+  };
   context.globalThis = context;
   context.window = context;
   vm.runInNewContext(source, context, { filename: file });
@@ -55,6 +64,18 @@ assert.equal(legacyEvent.text, '旧故事文本');
 assert.equal(legacyEvent.detailText, '');
 assert.equal(legacyEvent.mood, 'happy');
 assert.equal(legacyEvent.isShort, false);
+
+const travel = loadGlobal('js/travel-memory.js', 'TravelMemory');
+const travelCatalog = JSON.parse(fs.readFileSync('data/travel-rewards.json', 'utf8'));
+travel.configure(travelCatalog.scenes);
+const firstMemory = travel.record({ sceneId: 'forest' });
+assert.equal(firstMemory.accepted, true);
+assert.equal(firstMemory.memory.sceneId, 'forest');
+assert.ok(firstMemory.memory.itemId);
+assert.ok(firstMemory.memory.nextPreview);
+const duplicateMemory = travel.record({ sceneId: 'forest' });
+assert.equal(duplicateMemory.accepted, false);
+assert.equal(duplicateMemory.reason, 'duplicate');
 
 const runtime = fs.readFileSync('js/runtime-loader.js', 'utf8');
 assert.match(runtime, /home:\s*\[[\s\S]*pet-evolution-preview\.js/);
