@@ -51,7 +51,7 @@
 
     const SCRIPT_BUNDLES = {
         audio: ['js/zzfx.js', 'js/sfx.js'],
-        home: ['js/home.js'],
+        home: ['js/pet-care-daily.js', 'js/home.js'],
         walk: ['js/walk.js'],
         cardCollection: ['js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],

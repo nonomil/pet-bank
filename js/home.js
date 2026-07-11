@@ -172,6 +172,14 @@ const HomeSystem = (function () {
 .home-side{display:flex;flex-direction:column;gap:14px;}
 .home-card{background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
 .home-card h4{font-size:13px;font-weight:700;margin:0 0 10px;color:#444;}
+.home-care-daily{margin:-2px 0 12px;padding:10px 11px;border:1px solid #e7e1fb;border-radius:10px;background:#faf9ff;}
+.home-care-head{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#4b3fa3;}
+.home-care-head span{color:#7c73a8;font-size:11px;}
+.home-care-track{height:7px;margin:7px 0 5px;border-radius:5px;background:#ece9f8;overflow:hidden;}
+.home-care-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#6c5ce7,#00b894);transition:width .3s ease;}
+.home-care-meta{font-size:11px;color:#777;line-height:1.45;}
+.home-care-next{width:100%;margin-top:7px;padding:6px 8px;border:1px solid #d9d0ff;border-radius:8px;background:#fff;color:#5b4dc2;font-size:11px;text-align:left;cursor:pointer;}
+.home-care-next:hover{background:#f2efff;}
 .home-vit{display:flex;flex-direction:column;gap:10px;}
 .home-vit-row{font-size:12px;}
 .home-vit-head{display:flex;justify-content:space-between;margin-bottom:4px;color:#555;}
@@ -423,6 +431,7 @@ const HomeSystem = (function () {
         }
         // 走新语义：扣 10 分 + 饱食/exp/happiness
         const res = PetSystem.feed(null, { homeContext: true });
+        if (res.success && window.PetCareDaily) window.PetCareDaily.recordAction('feed');
         _toast(res.msg || (res.success ? '喂食成功' : '喂食失败'));
         window.sfx && sfx.click();
         if (window.updateStats) window.updateStats();
@@ -435,6 +444,7 @@ const HomeSystem = (function () {
         if (!s.species) { _toast('请先选择一只宠物'); return; }
         if (s.hp <= 0) { _toast('宠物倒下了，请先救援'); return; }
         const res = PetSystem.play();
+        if (res.success && window.PetCareDaily) window.PetCareDaily.recordAction('play');
         _toast(res.msg || (res.success ? '玩耍成功' : '玩耍失败'));
         window.sfx && sfx.click();
         renderUI(_lastContainer);
@@ -446,6 +456,7 @@ const HomeSystem = (function () {
         if (!s.species) { _toast('请先选择一只宠物'); return; }
         if (s.hp <= 0) { _toast('宠物倒下了，请先救援'); return; }
         const res = PetSystem.bath();
+        if (res.success && window.PetCareDaily) window.PetCareDaily.recordAction('bath');
         _toast(res.msg || (res.success ? '洗澡成功' : '洗澡失败'));
         window.sfx && sfx.click();
         renderUI(_lastContainer);
@@ -457,6 +468,7 @@ const HomeSystem = (function () {
         if (!s.species) { _toast('请先选择一只宠物'); return; }
         if (s.hp <= 0) { _toast('宠物倒下了，请先救援'); return; }
         const res = PetSystem.rest();
+        if (res.success && window.PetCareDaily) window.PetCareDaily.recordAction('rest');
         _toast(res.msg || (res.success ? '治疗成功' : '治疗失败'));
         window.sfx && sfx.click();
         renderUI(_lastContainer);
@@ -805,6 +817,22 @@ const HomeSystem = (function () {
         const hpWarn = (s.hp > 0 && s.hp < 40) ? `<div class="home-vit-warn home-vit-danger">⚠️ HP 过低，建议治疗或救援</div>` : '';
         const hungerWarn = (hungerVal != null && hungerVal < 20) ? `<div class="home-vit-warn">⚠️ 饥饿中，请喂食</div>` : '';
 
+        const careState = window.PetCareDaily && typeof window.PetCareDaily.getState === 'function'
+            ? window.PetCareDaily.getState()
+            : { progress: 0, total: 4, complete: false, remaining: [], labels: {} };
+        const nextCare = window.PetCareDaily && typeof window.PetCareDaily.getNextAction === 'function'
+            ? window.PetCareDaily.getNextAction(s)
+            : null;
+        const careRemaining = careState.remaining.map((action) => careState.labels[action] || action).join('、');
+        const careHtml = `
+            <div class="home-care-daily" data-home-care-daily>
+                <div class="home-care-head"><strong>今日照料 ${careState.progress}/${careState.total}</strong><span>${careState.complete ? '🎉 已完成' : '再照顾几步吧'}</span></div>
+                <div class="home-care-track"><div class="home-care-fill" style="width:${Math.round((careState.progress / careState.total) * 100)}%"></div></div>
+                <div class="home-care-meta">${careState.complete ? '今天的宠物照料完成啦！' : `还需要：${careRemaining || '无'}`}</div>
+                ${nextCare ? `<button class="home-care-next" type="button" onclick="HomeSystem.on${nextCare.action.charAt(0).toUpperCase() + nextCare.action.slice(1)}()">${nextCare.label}：${nextCare.reason}</button>` : ''}
+            </div>
+        `;
+
         // 进化进度条（P1-B）：基于 PetSystem.STAGES 的 min_level 区间
         const evo = _evoProgress(s);
         const evoHtml = s.species ? (evo.isMax
@@ -858,6 +886,7 @@ const HomeSystem = (function () {
         const actionsHtml = `
             <div class="home-card">
                 <h4>互动（喂食消耗 10 成长分）</h4>
+                ${careHtml}
                 <div class="home-actions">
                     <button class="home-btn feed" ${btnDisabled} onclick="HomeSystem.onFeed()"><span class="ico">🍕</span>喂食</button>
                     <button class="home-btn play" ${btnDisabled} onclick="HomeSystem.onPlay()"><span class="ico">🎾</span>玩耍</button>
