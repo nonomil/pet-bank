@@ -1,7 +1,7 @@
 version: 1
 project:
   name: pet-bank
-  type: static-site-with-supabase
+  type: static-site-with-optional-supabase-and-self-hosted-api
   workspaceRoot: .
   primaryBranch: main
 
@@ -45,6 +45,23 @@ supabase:
     - SUPABASE_DB_PASSWORD
     - SUPABASE_SERVICE_ROLE_KEY
 
+selfHostedApi:
+  status: bootstrap-only
+  sourceDir: prj/petbank-server
+  healthCheck: http://127.0.0.1:3000/api/v1/health
+  persistentPaths:
+    - /srv/pet-bank/shared/data
+    - /srv/pet-bank/shared/backups
+    - /srv/pet-bank/shared/server.env
+  releaseRoot: /srv/pet-bank/releases
+  currentReleaseLink: /srv/pet-bank/current
+  deployGuide: docs/self-hosted/AI-HERMES-DEPLOY.md
+  rules:
+    - never-delete-shared-directory
+    - migration-files-are-additive-only
+    - backup-before-schema-change
+    - health-check-before-current-link-switch
+
 admin:
   authModel: shared-auth-shared-users
   roleSource: public.user_roles
@@ -54,6 +71,7 @@ admin:
 
 verification:
   commands:
+    - node --test prj/petbank-server/test/*.test.mjs
     - python -m pytest (Get-ChildItem 'prj' -Filter 'test_*.py' | Sort-Object Name | ForEach-Object { $_.FullName }) -q
     - node scripts/family-social-ops.mjs pilot:doctor --json
     - node --check js/auth.js

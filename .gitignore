@@ -17,6 +17,9 @@ prj/*
 !prj/消灭苦力怕打字游戏/**
 !prj/单词记忆射击场原型/
 !prj/单词记忆射击场原型/**
+!prj/petbank-server/
+!prj/petbank-server/**
+prj/petbank-server/node_modules/
 prj/学习机玩法原型/tmp-screenshots/
 prj/消灭苦力怕打字游戏/browser-screenshots/
 prj/消灭苦力怕打字游戏/tmp/
@@ -30,6 +33,8 @@ prj/tts-portable/
 # docs/ 是本地方案/调研/会话材料区；远端只保留 docs/README.md 说明入口。
 docs/*
 !docs/README.md
+!docs/self-hosted/
+!docs/self-hosted/**
 *.zip
 *.mp4
 
