@@ -157,6 +157,55 @@ function copyDirWithFilterTo(srcName, destName, includeRelativePath) {
     });
 }
 
+const STATIC_ROUTE_ENTRIES = [
+    '/app',
+    '/app/today',
+    '/app/learn',
+    '/app/pet',
+    '/app/explore',
+    '/app/playground',
+    '/parent',
+    '/parent/works',
+    '/parent/tools',
+    '/parent/settings',
+    '/settings',
+    '/settings/account',
+    '/settings/family',
+    '/settings/learning',
+    '/settings/rules',
+    '/settings/advanced',
+];
+
+function writeStaticRouteEntry(route) {
+    const segments = route.split('/').filter(Boolean);
+    const relativeIndex = `${'../'.repeat(segments.length)}index.html`;
+    const encodedRoute = encodeURIComponent(route);
+    const entryPath = path.join(outDir, ...segments, 'index.html');
+    const title = `正在打开 ${route}...`;
+    const source = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <meta http-equiv="refresh" content="0; url=${relativeIndex}?route=${encodedRoute}">
+    <script>
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            params.set('route', '${route}');
+            var nextUrl = '${relativeIndex}?' + params.toString();
+            if (window.location.hash) nextUrl += window.location.hash;
+            window.location.replace(nextUrl);
+        })();
+    </script>
+</head>
+<body><p>${title}</p></body>
+</html>
+`;
+    fs.mkdirSync(path.dirname(entryPath), { recursive: true });
+    fs.writeFileSync(entryPath, source);
+}
+
 function isDirectChildOf(parent, target) {
     return target === parent || target.startsWith(`${parent}/`);
 }
@@ -246,6 +295,10 @@ copyMappedFile('prj/消灭苦力怕打字游戏/web/index.html', 'prj/消灭苦�
 copyMappedFile('prj/消灭苦力怕打字游戏/web/styles.css', 'prj/消灭苦力怕打字游戏/web/styles.css');
 copyMappedFile('prj/消灭苦力怕打字游戏/web/game.js', 'prj/消灭苦力怕打字游戏/web/game.js');
 copyDirWithFilterTo('prj/消灭苦力怕打字游戏', 'app/playground/typing-defense-runtime', includeTypingDefenseRuntime);
+
+for (const route of STATIC_ROUTE_ENTRIES) {
+    writeStaticRouteEntry(route);
+}
 
 fs.writeFileSync(path.join(outDir, '.nojekyll'), '');
 

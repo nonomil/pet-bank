@@ -25,7 +25,10 @@
             route = route.trim();
             if (!route) return;
             if (route.charAt(0) !== '/') route = `/${route.replace(/^\/+/, '')}`;
-            currentUrl.pathname = route;
+            // Keep the repository prefix when the static site is hosted at /<repo>/.
+            // Route shims redirect to index.html?route=..., including on GitHub Pages.
+            var routeBasePrefix = currentUrl.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '');
+            currentUrl.pathname = `${routeBasePrefix}${route}`;
             currentUrl.searchParams.delete('route');
             var nextUrl = `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`;
             window.history.replaceState(window.history.state, '', nextUrl);
@@ -42,11 +45,7 @@
                     var prefix = routePrefixes[i];
                     var index = path.indexOf(prefix);
                     var nextChar = path.charAt(index + prefix.length);
-                    if (
-                        index >= 0 &&
-                        (index === 0 || path.charAt(index - 1) === '/') &&
-                        (!nextChar || nextChar === '/')
-                    ) {
+                    if (index >= 0 && (!nextChar || nextChar === '/')) {
                         base = path.slice(0, index) || '/';
                         if (base !== '/' && !/\/$/.test(base)) base += '/';
                         break;
