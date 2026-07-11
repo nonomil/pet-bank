@@ -15,6 +15,7 @@ const files = {
   voiceFallback: path.join(dir, 'assets', 'voice', 'map.js'),
   assetManifest: path.join(dir, 'assets', 'generated', 'topdown-farm-assets', 'manifest.json'),
   farmGptManifest: path.join(dir, 'assets', 'generated', 'world-bg-tiles', 'farm-gpt-9grid-manifest.json'),
+  oceanManifest: path.join(dir, 'assets', 'generated', 'world-bg-tiles', 'ocean-9grid-manifest.json'),
   farmGptSourceMeta: path.join(dir, 'assets', 'generated', 'world-bg-tiles', 'farm-gpt-9grid-source.json'),
   boyHeroManifest: path.join(dir, 'assets', 'generated', 'hero-boy-assets', 'manifest.json'),
   adapterScript: path.join(dir, 'scripts', 'build_word_memory_cards_from_minecraft.cjs'),
@@ -50,6 +51,7 @@ const sourceAndData = `${source}\n${JSON.stringify(data)}`;
 const voiceMap = JSON.parse(read(files.voiceMap));
 const assetManifest = JSON.parse(read(files.assetManifest));
 const farmGptManifest = JSON.parse(read(files.farmGptManifest));
+const oceanManifest = JSON.parse(read(files.oceanManifest));
 const farmGptSourceMeta = JSON.parse(read(files.farmGptSourceMeta));
 const boyHeroManifest = JSON.parse(read(files.boyHeroManifest));
 const adapterManifest = JSON.parse(read(files.adapterManifest));
@@ -189,6 +191,29 @@ assert.ok(Array.isArray(assetManifest.assets), 'asset manifest should include as
 assert.ok(assetManifest.assets.length >= 16, 'asset manifest should publish a meaningful subset of the farm assets');
 assert.equal(farmGptManifest.id, 'farm-gpt-9grid-world', 'farm GPT preview manifest should have a stable world id');
 assert.equal(farmGptManifest.tiles.length, 9, 'farm GPT preview manifest should list 9 runtime tiles');
+assert.equal(oceanManifest.id, 'ocean-9grid-world', 'ocean world should use a stable 9-grid manifest id');
+assert.equal(oceanManifest.tiles.length, 9, 'ocean world should list 9 runtime tiles');
+assert.ok(
+  oceanManifest.tiles.every(tile => {
+    const source = String(tile.src || '').replace(/^\.\//, '').split('?')[0];
+    const file = path.join(dir, source);
+    return source.includes('ocean-gpt-9grid/') && fs.existsSync(file) && fs.statSync(file).size > 1000;
+  }),
+  'ocean manifest tiles should resolve to published local ocean artwork'
+);
+assert.match(js, /ocean:\s*\{[\s\S]*ocean-9grid-manifest\.json/s, 'ocean levels should load the stitched ocean 9-grid world');
+assert.match(js, /WORLD_THEME_ENEMY_FALLBACKS[\s\S]*ocean[\s\S]*coral-crab\.png/s, 'ocean levels should use local themed enemy fallbacks');
+assert.ok(
+  [
+    'assets/generated/level-theme-assets/forest/mushroom-sprite.png',
+    'assets/generated/level-theme-assets/forest/vine-sprout.png',
+    'assets/generated/level-theme-assets/forest/pinecone-roll.png',
+    'assets/generated/level-theme-assets/ocean/coral-crab.png',
+    'assets/generated/level-theme-assets/ocean/shell-bubble.png',
+    'assets/generated/level-theme-assets/ocean/seagrass-jelly.png'
+  ].every(relativePath => fs.existsSync(path.join(dir, relativePath))),
+  'referenced forest and ocean enemy fallbacks should be published'
+);
 assert.equal(farmGptSourceMeta.generatedViaBrowserActChatGPT, true, 'farm GPT source meta should document the browser-act ChatGPT generation workflow');
 assert.equal(farmGptSourceMeta.tileCount, 9, 'farm GPT preview source meta should record all 9 exported tiles');
 assert.equal(farmGptSourceMeta.workflowScript, 'prj/browser-act-imagegen/README.md', 'farm GPT source meta should point at the browser-act workflow documentation');

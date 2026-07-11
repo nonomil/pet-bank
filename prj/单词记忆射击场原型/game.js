@@ -26,7 +26,7 @@
     },
     ocean: {
       label: '海洋',
-      manifestUrl: './assets/generated/world-bg-tiles/ocean-single-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/ocean-9grid-manifest.json',
       theme: 'ocean'
     },
     sky: {
@@ -89,6 +89,18 @@
     `${ASSET_BASE}/enemy_boar.png`,
     `${ASSET_BASE}/enemy_mouse.png`
   ];
+  const WORLD_THEME_ENEMY_FALLBACKS = {
+    forest: [
+      './assets/generated/level-theme-assets/forest/mushroom-sprite.png',
+      './assets/generated/level-theme-assets/forest/vine-sprout.png',
+      './assets/generated/level-theme-assets/forest/pinecone-roll.png'
+    ],
+    ocean: [
+      './assets/generated/level-theme-assets/ocean/coral-crab.png',
+      './assets/generated/level-theme-assets/ocean/shell-bubble.png',
+      './assets/generated/level-theme-assets/ocean/seagrass-jelly.png'
+    ]
+  };
   const ROUND_SIZE = 3;
   const WORLD_COLS = 3;
   const WORLD_ROWS = 3;
@@ -683,6 +695,7 @@
     state.cards = Array.isArray(data.cards)
       ? data.cards.map((card, index) => ({
         ...card,
+        themeEnemyIndex: index,
         labelImage: FARM_ASSETS.labels[index % FARM_ASSETS.labels.length],
         bombImage: card.bombImage || `${ASSET_BASE}/bomb_plain.png`,
         burstImage: card.burstImage || FARM_ASSETS.bursts[index % FARM_ASSETS.bursts.length],
@@ -1884,8 +1897,12 @@
   }
 
   function enemyImageRuntime(card) {
+    const themePool = WORLD_THEME_ENEMY_FALLBACKS[currentLevel()?.worldPack] || [];
+    const themedFallback = themePool.length
+      ? themePool[(Number(card?.themeEnemyIndex) || 0) % themePool.length]
+      : '';
     const primary = String(card?.enemyImage || '').trim();
-    const fallback = String(card?.enemyFallbackImage || '').trim();
+    const fallback = themedFallback || String(card?.enemyFallbackImage || '').trim();
     const failureKey = enemyRemoteImageFailureKey(primary);
     const blockedPrimary = Boolean(failureKey) && state.blockedEnemyImageKeys.has(failureKey);
     const useFallbackFirst = isRemoteImageSource(primary) && fallback && fallback !== primary;

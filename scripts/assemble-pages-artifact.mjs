@@ -326,6 +326,8 @@ function includeWordMemoryRuntime(rel) {
         'assets/voice',
         'assets/generated/hero-boy-assets',
         'assets/generated/topdown-farm-assets',
+        'assets/generated/level-theme-assets/forest',
+        'assets/generated/level-theme-assets/ocean',
         'assets/generated/world-bg-tiles',
         'assets/背景图片',
         'assets/MineCraft宠物图片/poses',
