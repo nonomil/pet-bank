@@ -6,6 +6,12 @@
   "chapter_name": "海边集市",
   "min_level": 3,
   "danger_level": 3,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [0, 1],
+    "choose": 3,
+    "challenge": { "math": 2, "battle": 4 }
+  },
   "events": [
     {
       "type": "narrate",

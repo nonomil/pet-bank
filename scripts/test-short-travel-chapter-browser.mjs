@@ -26,6 +26,7 @@ async function prepare() {
     localStorage.removeItem('petbank_travel_memory_v1');
     localStorage.removeItem('petbank_exploration_progress_v1:forest');
     localStorage.removeItem('petbank_exploration_progress_v1:beach');
+    localStorage.removeItem('petbank_exploration_progress_v1:underwater');
   });
 }
 
@@ -105,7 +106,7 @@ try {
   assert.equal(await page.locator('#battleModal.show').count(), 0);
 
   await page.evaluate(() => window.ExplorationDetail.exit());
-  await page.evaluate(async () => { localStorage.removeItem('petbank_exploration_progress_v1:candy'); await window.ExplorationDetail.show('candy'); });
+  await page.evaluate(async () => { localStorage.removeItem('petbank_exploration_progress_v1:underwater'); await window.ExplorationDetail.show('underwater'); });
   await page.waitForSelector('#galgameBox');
   await page.locator('#galgameBox').click();
   await page.locator('#galgameBox').click();
