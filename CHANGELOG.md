@@ -2,6 +2,15 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.33] - 2026-07-11
+### ✅ GitHub Pages 快速发布门禁
+
+- GitHub Pages 工作流在组装制品前固定使用 Node 20，运行门禁自身合约、`js/app.js` 语法、静态入口、运行时资源基址、深路由壳和 Profile 隔离六项无服务验证
+- 新增 workflow 顺序契约，锁定所有门禁命令位于 `Run Pages fast gate` 的 run 块中且早于静态制品组装，防止后续调整绕过发布检查
+- 新增 VM 深路由回归：`/pet-bank/app/today/index.html?route=/app/learn` 会恢复为 `/pet-bank/app/learn`，不再错误拼接当前子路由
+- 将三条根级 `prj/*.mjs` 契约明确放行纳入版本控制，并在测试与发布手册中记录对应命令
+- 验证通过：六项 Pages 快速门禁均可离线执行
+
 ## [v0.7.32] - 2026-07-11
 ### 👥 英语词汇进度显式档案隔离
 

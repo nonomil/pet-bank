@@ -22,7 +22,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - uses: actions/configure-pages@v4
+      - name: Run Pages fast gate
+        run: |
+          node scripts/test-pages-fast-gate-contract.mjs
+          node --check js/app.js
+          node scripts/test-static-route-entries.mjs
+          node prj/runtime_loader_route_base_contract.test.mjs
+          node prj/route_aware_shell_contract.test.mjs
+          node prj/profile_isolation_journey_simulation.mjs
       - name: Assemble static site artifact
         run: node scripts/assemble-pages-artifact.mjs _site
       - uses: actions/upload-pages-artifact@v3

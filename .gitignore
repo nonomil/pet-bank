@@ -21,6 +21,9 @@ prj/*
 !prj/单词记忆射击场原型/**
 !prj/petbank-server/
 !prj/petbank-server/**
+!prj/runtime_loader_route_base_contract.test.mjs
+!prj/route_aware_shell_contract.test.mjs
+!prj/profile_isolation_journey_simulation.mjs
 prj/petbank-server/node_modules/
 prj/学习机玩法原型/tmp-screenshots/
 prj/消灭苦力怕打字游戏/browser-screenshots/

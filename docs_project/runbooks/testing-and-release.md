@@ -96,6 +96,18 @@ node scripts/run-full-regression.mjs
 node scripts/smoke.mjs
 ```
 
+### GitHub Pages 快速发布门禁
+
+GitHub Pages 发布会在组装静态制品前运行以下无需本地服务的门禁；任一失败都会阻止制品上传与部署。该门禁不运行要求本地 HTTP 服务的全量回归。
+
+```bash
+node --check js/app.js
+node scripts/test-static-route-entries.mjs
+node prj/runtime_loader_route_base_contract.test.mjs
+node prj/route_aware_shell_contract.test.mjs
+node prj/profile_isolation_journey_simulation.mjs
+```
+
 ### 学习中心专项
 
 ```bash

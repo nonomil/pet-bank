@@ -28,6 +28,8 @@
             // Keep the repository prefix when the static site is hosted at /<repo>/.
             // Route shims redirect to index.html?route=..., including on GitHub Pages.
             var routeBasePrefix = currentUrl.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '');
+            var routeRootMatch = routeBasePrefix.match(/\/(?:app|parent|settings)(?:\/|$)/);
+            if (routeRootMatch) routeBasePrefix = routeBasePrefix.slice(0, routeRootMatch.index);
             currentUrl.pathname = `${routeBasePrefix}${route}`;
             currentUrl.searchParams.delete('route');
             var nextUrl = `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`;
