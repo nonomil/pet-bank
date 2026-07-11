@@ -197,7 +197,7 @@
                     </div>
                     <button class="home-summary-pet" type="button" onclick="switchPage('pet')">
                         <span class="home-summary-avatar">
-                            <img id="mapCompanionImg" src="assets/pets/poses/dog_idle.webp" alt="当前同行宠物" decoding="async">
+                            <img id="mapCompanionImg" alt="当前同行宠物" decoding="async">
                         </span>
                         <span class="home-summary-pet-copy">
                             <span class="home-summary-pet-kicker">同行伙伴</span>
@@ -494,7 +494,7 @@
                     <!-- 可点击宠物形象卡：点击弹出加分/扣分项目弹窗 -->
                     <div class="reward-pet-card agnes-score-card" id="rewardPetCard" onclick="openPointItemModal()" role="button" tabindex="0" title="点击给 TA 加分或扣分">
                         <div class="reward-pet-avatar">
-                            <img id="rewardPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物立绘" loading="lazy" decoding="async" fetchpriority="low">
+                            <img id="rewardPetImg" alt="宠物立绘" loading="lazy" decoding="async" fetchpriority="low">
                         </div>
                         <div class="reward-pet-copy">
                             <p class="reward-pet-kicker">给 <span id="rewardChildName">宝贝</span> 加分 / 扣分</p>
@@ -955,7 +955,7 @@
                             <p class="text-xs text-muted tracking-wide mb-2">成长档案 / 形态预览</p>
                             <h2 class="text-lg font-bold mb-3">🐾 我的宠物成长档案</h2>
                             <div class="pet-display-area" id="petDisplayArea">
-                                <img id="petDisplayImg" class="pet-sprite" src="assets/pets/poses/dog_idle.webp" alt="宠物" onclick="onPetSpriteClick()" loading="lazy" decoding="async" fetchpriority="low" style="width:160px;height:160px;object-fit:contain;image-rendering:pixelated;cursor:pointer;">
+                                <img id="petDisplayImg" class="pet-sprite" alt="宠物" onclick="onPetSpriteClick()" loading="lazy" decoding="async" fetchpriority="low" style="width:160px;height:160px;object-fit:contain;image-rendering:pixelated;cursor:pointer;">
                                 <div class="pet-pose-btns" id="petPoseBtns" style="display:none; margin-top:8px;">
                                     <button class="btn-tiny" onclick="setPetPose('idle')">😊 待机</button>
                                     <button class="btn-tiny" onclick="setPetPose('happy')">😄 开心</button>
@@ -1452,7 +1452,7 @@
         <div class="modal-content pi-modal">
             <div class="pi-header">
                 <button class="pi-close" onclick="closePointItemModal()" aria-label="关闭">&times;</button>
-                <div class="pi-pet"><img id="piPetImg" src="assets/pets/poses/dog_idle.webp" alt="宠物" loading="lazy" decoding="async" fetchpriority="low"></div>
+                <div class="pi-pet"><img id="piPetImg" alt="宠物" loading="lazy" decoding="async" fetchpriority="low"></div>
                 <h3 class="pi-title">选择项目</h3>
                 <p class="pi-sub">给 <span class="pi-child" id="piChildName">宝贝</span> <span id="piModeText">加分</span></p>
             </div>

@@ -186,11 +186,17 @@ const LOCAL_WORD_CARD_ASSETS = {
   panda: "../assets/generated/word-cards/panda.webp"
 };
 
+function normalizeWordCardImage(src) {
+  const value = String(src || "").trim();
+  if (!value || /^(https?:)?\/\//.test(value)) {
+    return "../../../../assets/learn/english-vocab/minecraft-card.webp";
+  }
+  return value.replace(/^\.\.\/\.\.\/\.\.\/assets\//, "../../../../assets/");
+}
+
 function preloadWordCardSrc(task) {
   const src = String(task?.image || "").trim();
-  if (!src) return "";
-  if (/^(https?:)?\/\//.test(src)) return "../../../assets/learn/english-vocab/minecraft-card.webp";
-  return src;
+  return src ? normalizeWordCardImage(src) : "";
 }
 
 const preloadedWordCards = [...new Set([
@@ -1208,14 +1214,14 @@ function updateMathSupportControls() {
 function normalizeVocabBankTasks(bank) {
   if (!bank || !Array.isArray(bank.words)) return [];
   const fallbackBankKey = bank.kind === "pinyin" ? "pinyin" : "words";
-  const fallbackImage = "../../../assets/learn/english-vocab/minecraft-card.webp";
+  const fallbackImage = "../../../../assets/learn/english-vocab/minecraft-card.webp";
   return bank.words
     .map((task) => ({
       ...task,
       target: String(task.target || "").trim().toLowerCase(),
       image: !String(task.image || "").trim()
         ? fallbackImage
-        : (/^(https?:)?\/\//.test(String(task.image || "")) ? fallbackImage : task.image),
+        : normalizeWordCardImage(task.image),
       bankKey: task.bankKey || fallbackBankKey
     }))
     .filter((task) => task.target);
@@ -1335,7 +1341,7 @@ function taskAudioPath(task) {
 
 function wordCardSrcFor(task) {
   if (!isWordTask(task)) return "";
-  return task.image || LOCAL_WORD_CARD_ASSETS[task.target] || "../../../assets/learn/english-vocab/minecraft-card.webp";
+  return normalizeWordCardImage(task.image) || LOCAL_WORD_CARD_ASSETS[task.target] || "../../../../assets/learn/english-vocab/minecraft-card.webp";
 }
 
 function taskTranslation(task) {

@@ -58,6 +58,9 @@ try {
     }
 
     const appSource = fs.readFileSync(path.join(artifactDir, 'index.html'), 'utf8');
+    if (appSource.includes('src="assets/pets/poses/dog_idle.webp"')) {
+        fail('index.html must not preload the default pet image with a deep-route-relative src');
+    }
     if (/assets\/ui\/pg-card-[^"']+\.png/i.test(appSource)) {
         fail('index.html still references a PNG playground card that Pages excludes from the artifact');
     }
@@ -76,6 +79,11 @@ try {
     }
     if (!appSource.includes('routeBasePrefix')) {
         fail('index.html does not retain the GitHub Pages repository base when restoring route queries');
+    }
+
+    const typingDefenseSource = fs.readFileSync(path.join(artifactDir, 'app', 'playground', 'typing-defense-runtime', 'web', 'game.js'), 'utf8');
+    if (/["']\.\.\/\.\.\/\.\.\/assets\/learn\/english-vocab\/minecraft-card\.webp/.test(typingDefenseSource)) {
+        fail('typing defense fallback image does not climb out of the nested runtime path');
     }
 } finally {
     fs.rmSync(artifactDir, { recursive: true, force: true });
