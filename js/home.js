@@ -436,6 +436,7 @@ const HomeSystem = (function () {
         window.sfx && sfx.click();
         if (window.updateStats) window.updateStats();
         renderUI(_lastContainer);
+        if (res.success && window.CoreRewardFeedback && window.CoreRewardService) window.CoreRewardFeedback.show(window.CoreRewardService.toPresentation({ accepted: true, event: { eventId: `home:feed:${Date.now()}`, rewards: [{ type: 'pet_exp', amount: 10 }] } }));
         _scheduleCloudSync('home_feed');
     }
 
@@ -448,6 +449,7 @@ const HomeSystem = (function () {
         _toast(res.msg || (res.success ? '玩耍成功' : '玩耍失败'));
         window.sfx && sfx.click();
         renderUI(_lastContainer);
+        if (res.success && window.CoreRewardFeedback) window.CoreRewardFeedback.show({ accepted: true, event: { eventId: `home:play:${Date.now()}`, rewards: [{ type: 'pet_exp', amount: 5 }, { type: 'intimacy', amount: 5 }] } });
         _scheduleCloudSync('home_play');
     }
 
@@ -460,6 +462,7 @@ const HomeSystem = (function () {
         _toast(res.msg || (res.success ? '洗澡成功' : '洗澡失败'));
         window.sfx && sfx.click();
         renderUI(_lastContainer);
+        if (res.success && window.CoreRewardFeedback) window.CoreRewardFeedback.show({ accepted: true, event: { eventId: `home:bath:${Date.now()}`, rewards: [{ type: 'intimacy', amount: 1 }] } });
         _scheduleCloudSync('home_bath');
     }
 
@@ -472,6 +475,7 @@ const HomeSystem = (function () {
         _toast(res.msg || (res.success ? '治疗成功' : '治疗失败'));
         window.sfx && sfx.click();
         renderUI(_lastContainer);
+        if (res.success && window.CoreRewardFeedback) window.CoreRewardFeedback.show({ accepted: true, event: { eventId: `home:rest:${Date.now()}`, rewards: [{ type: 'intimacy', amount: 2 }] } });
         _scheduleCloudSync('home_rest');
     }
 
@@ -921,6 +925,7 @@ const HomeSystem = (function () {
                 <div class="home-side">
                     <div class="home-card">
                         <h4>${nameHtml} · ${s.stage ? s.stage.name : ''}</h4>
+                        <div id="core-reward-feedback" class="core-reward-feedback" hidden></div>
                         ${vitHtml}
                     </div>
                     ${actionsHtml}

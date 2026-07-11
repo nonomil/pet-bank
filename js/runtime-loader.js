@@ -26,11 +26,17 @@
                 source: 'game',
                 sourceId: source,
                 rewards: [
-                    { type: 'growth_points', amount: points },
                     { type: 'pet_exp', amount: points }
                 ]
             });
             if (!coreResult.accepted) return { accepted: false, reason: 'duplicate', receipt: coreResult.receipt };
+            if (window.CoreRewardFeedback && typeof window.CoreRewardFeedback.show === 'function') {
+                const feedbackResult = {
+                    ...coreResult,
+                    event: { ...coreResult.event, rewards: [{ type: 'growth_points', amount: points }, ...coreResult.event.rewards] }
+                };
+                window.CoreRewardFeedback.show(feedbackResult);
+            }
         }
         const key = `${profileId}:${source}:${eventId}`;
         const receipts = readGameRewardReceipts();

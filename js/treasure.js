@@ -112,6 +112,9 @@ const TreasureChest = (function () {
                 sourceId: chestType || 'unknown',
                 rewards
             });
+            if (result.accepted && window.CoreRewardFeedback && typeof window.CoreRewardFeedback.show === 'function') {
+                window.CoreRewardFeedback.show(result);
+            }
             if (typeof renderAll === 'function' && result.accepted) renderAll();
             return result;
         }

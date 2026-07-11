@@ -44,6 +44,12 @@
             ? service.toPresentation(result)
             : { title: '奖励结果', lines: [], accepted: false };
         const document = root.document;
+        if (document && !document.getElementById('core-reward-feedback-style')) {
+            const style = document.createElement('style');
+            style.id = 'core-reward-feedback-style';
+            style.textContent = '.core-reward-card{margin:8px 0;padding:10px 12px;border:1px solid #d9d0ff;border-radius:10px;background:#faf9ff;color:#4a3a7a;font-size:12px}.core-reward-card strong{display:block;margin-bottom:5px}.core-reward-lines{margin:0;padding-left:18px}.core-reward-next{margin:7px 0 0;color:#5b4dc2;font-weight:600}';
+            document.head && document.head.appendChild(style);
+        }
         const selector = options.selector || '#core-reward-feedback';
         const container = options.container || (document && document.querySelector(selector));
         if (container && render(container, model)) {
