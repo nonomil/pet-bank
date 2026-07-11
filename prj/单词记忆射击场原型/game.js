@@ -11,12 +11,12 @@
     },
     farm_gpt: {
       label: '农场 GPT',
-      manifestUrl: './assets/generated/world-bg-tiles/farm-gpt-single-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/farm-gpt-9grid-manifest.json',
       theme: 'farm'
     },
     forest: {
       label: '森林',
-      manifestUrl: './assets/generated/world-bg-tiles/forest-single-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/forest-9grid-manifest.json',
       theme: 'forest'
     },
     grassland: {
@@ -36,7 +36,7 @@
     },
     space: {
       label: '太空',
-      manifestUrl: './assets/generated/world-bg-tiles/space-single-manifest.json',
+      manifestUrl: './assets/generated/world-bg-tiles/space-9grid-manifest.json',
       theme: 'space'
     },
     alien: {
@@ -59,7 +59,7 @@
     : 'auto';
   const DEBUG_QUERY = new URLSearchParams(window.location.search);
   const DEBUG_AUTO_START = DEBUG_QUERY.get('autostart') === '1';
-  const DEBUG_WORLD_CONTROLS = true;
+  const DEBUG_WORLD_CONTROLS = false;
   const AUTO_START_PLAY_SESSION = !!window.navigator?.webdriver;
   const ENABLE_AUTOMATION_WORLD_CONTROLS = DEBUG_WORLD_CONTROLS || AUTO_START_PLAY_SESSION || DEBUG_AUTO_START;
   window.__wordMemoryReady = false;

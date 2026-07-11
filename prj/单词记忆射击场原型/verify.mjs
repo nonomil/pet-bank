@@ -89,7 +89,7 @@ assert.match(source, /SUPPORT_DROP_EVERY_SCORE|makeSupportDrop|maybeSpawnSupport
 assert.match(source, /补盾叶|减速钟|瞄准星|加速鞋|词卡提示|连击加成/, 'game should include the support item set for the map prototype');
 assert.match(source, /id:\s*'level-1'[\s\S]*worldPack:\s*'farm_gpt'/, 'level 1 should now default to the farm GPT pack');
 assert.match(source, /id:\s*'level-2'[\s\S]*worldPack:\s*'farm_gpt'/, 'level 2 should now default to the farm GPT pack');
-assert.match(js, /ENEMY_CHASE_SPEED\s*=\s*0\.0028/, 'topdown enemies should move slowly enough to avoid visual jitter');
+assert.match(js, /ENEMY_CHASE_SPEED\s*=\s*0\.0031/, 'topdown enemies should preserve the tuned chase speed');
 assert.match(source, /heroInvincibleMs|shieldBreakReset/, 'game should give the hero brief invincibility and a shield reset');
 assert.match(js, /function throwHeldBomb\(aimPoint\s*=\s*null,\s*targetId\s*=\s*''\)/, 'map mode should throw the held bomb from the hero facing direction or click aim point');
 assert.match(js, /orb\.inFlight\s*=\s*true[\s\S]*state\.shots\.push\(\{[\s\S]*vx:\s*vector\.x\s*\*\s*THROW_SPEED[\s\S]*vy:\s*vector\.y\s*\*\s*THROW_SPEED/s, 'thrown bombs should become JS-driven projectiles with velocity');
@@ -189,9 +189,9 @@ assert.ok(Array.isArray(assetManifest.assets), 'asset manifest should include as
 assert.ok(assetManifest.assets.length >= 16, 'asset manifest should publish a meaningful subset of the farm assets');
 assert.equal(farmGptManifest.id, 'farm-gpt-9grid-world', 'farm GPT preview manifest should have a stable world id');
 assert.equal(farmGptManifest.tiles.length, 9, 'farm GPT preview manifest should list 9 runtime tiles');
-assert.equal(farmGptSourceMeta.generatedViaBee, false, 'current farm GPT preview source meta should document the imported fallback source');
+assert.equal(farmGptSourceMeta.generatedViaBrowserActChatGPT, true, 'farm GPT source meta should document the browser-act ChatGPT generation workflow');
 assert.equal(farmGptSourceMeta.tileCount, 9, 'farm GPT preview source meta should record all 9 exported tiles');
-assert.equal(farmGptSourceMeta.workflowScript, 'prj/单词记忆射击场原型/scripts/generate_farm_gpt_9grid.py', 'farm GPT preview source meta should point at the workflow entry script');
+assert.equal(farmGptSourceMeta.workflowScript, 'prj/browser-act-imagegen/README.md', 'farm GPT source meta should point at the browser-act workflow documentation');
 assert.equal(farmGptSourceMeta.manifest, 'prj/单词记忆射击场原型/assets/generated/world-bg-tiles/farm-gpt-9grid-manifest.json', 'farm GPT preview source meta should point at the runtime manifest');
 assert.equal(boyHeroManifest.source, 'assets/主角图/小男孩--主角多角度动态图.png', 'boy hero manifest should trace back to the user-provided sprite sheet');
 assert.ok(

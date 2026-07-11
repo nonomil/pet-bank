@@ -1,14 +1,15 @@
 {
-  "sourceImage": "prj/单词记忆射击场原型/assets/背景图片/背景图1--农场--9连图.png",
-  "boxes": "prj/单词记忆射击场原型/assets/generated/world-bg-tiles/farm-9grid-boxes.json",
+  "sourceImage": "prj/单词记忆射击场原型/assets/generated/world-bg-tiles/farm-gpt-9grid/farm_tile_r1_c1.png ... farm_tile_r3_c3.png",
+  "boxes": "",
   "manifest": "prj/单词记忆射击场原型/assets/generated/world-bg-tiles/farm-gpt-9grid-manifest.json",
   "tilesDir": "prj/单词记忆射击场原型/assets/generated/world-bg-tiles/farm-gpt-9grid",
-  "exportScript": "prj/单词记忆射击场原型/scripts/export_world_tiles_from_boxes.py",
-  "workflowScript": "prj/单词记忆射击场原型/scripts/generate_farm_gpt_9grid.py",
-  "promptFile": "prj/单词记忆射击场原型/assets/generated/reference/farm-gpt-9grid-20260710/farm-gpt-9grid.prompt.txt",
-  "exportedAt": "2026-07-10",
+  "exportScript": "prj/browser-act-imagegen/scripts/download_chatgpt_estuary_current.ps1",
+  "workflowScript": "prj/browser-act-imagegen/README.md",
+  "promptFile": "ChatGPT conversation: Farm Adventure Game Map (browser-act chrome-direct)",
+  "exportedAt": "2026-07-11",
   "generatedViaBee": false,
-  "prefix": "farm-gpt-9grid-source",
+  "generatedViaBrowserActChatGPT": true,
+  "prefix": "farm-9grid",
   "tileCount": 9,
-  "notes": "Parallel farm GPT preview pack. Default farm manifest remains unchanged until manual switch."
+  "notes": "Nine native ChatGPT-generated farm regions. Each image is independently playable and uses coordinated road and water exits for 3x3 map travel."
 }

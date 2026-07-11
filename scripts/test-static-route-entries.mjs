@@ -112,6 +112,9 @@ try {
     if (!typingDefenseSource.includes('const BASE_WORD_TASKS = TASK_BANKS.words.map')) {
         fail('typing defense initial word tasks do not normalize their nested image paths');
     }
+    if (fs.existsSync(path.join(artifactDir, 'prj', '消灭苦力怕打字游戏'))) {
+        fail('typing defense development prototype must not be duplicated in the Pages artifact');
+    }
 
     const farmPanorama = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'generated', 'world-bg-single', 'farm-gpt-panorama.png');
     if (!fs.existsSync(farmPanorama)) {
@@ -121,6 +124,14 @@ try {
         if (fs.existsSync(path.join(path.dirname(farmPanorama), excludedPanorama))) {
             fail(`word memory optional panorama ${excludedPanorama} exceeds the Pages artifact budget`);
         }
+    }
+    const wordMemoryJson = fs.readFileSync(path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-cards.json'), 'utf8');
+    const wordMemoryFallback = fs.readFileSync(path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-cards.js'), 'utf8');
+    if (/https:\/\/images\.unsplash\.com\/[^"'\s]*\?[^"'\s]*\?/.test(wordMemoryJson)) {
+        fail('word memory artifact still contains malformed Unsplash image URLs');
+    }
+    if (/https:\/\/images\.unsplash\.com\/[^"'\s]*\?[^"'\s]*\?/.test(wordMemoryFallback)) {
+        fail('word memory fallback artifact still contains malformed Unsplash image URLs');
     }
 } finally {
     fs.rmSync(artifactDir, { recursive: true, force: true });

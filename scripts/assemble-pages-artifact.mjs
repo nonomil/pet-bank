@@ -157,6 +157,40 @@ function copyDirWithFilterTo(srcName, destName, includeRelativePath) {
     });
 }
 
+function normalizePublishedWordMemoryImageUrl(value) {
+    const source = String(value || '').trim();
+    if (!/^https:\/\/images\.unsplash\.com\//i.test(source)) return source;
+    const firstQuestion = source.indexOf('?');
+    const secondQuestion = firstQuestion < 0 ? -1 : source.indexOf('?', firstQuestion + 1);
+    if (secondQuestion < 0) return source;
+    return `${source.slice(0, secondQuestion)}&${source.slice(secondQuestion + 1)}`;
+}
+
+function sanitizePublishedWordMemoryCards() {
+    const assetDir = path.join(outDir, 'prj', '单词记忆射击场原型', 'assets');
+    const jsonPath = path.join(assetDir, 'word-memory-cards.json');
+    const fallbackPath = path.join(assetDir, 'word-memory-cards.js');
+    const raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    let normalizedCount = 0;
+
+    for (const card of raw.cards || []) {
+        const normalized = normalizePublishedWordMemoryImageUrl(card.enemyImage);
+        if (normalized !== card.enemyImage) {
+            card.enemyImage = normalized;
+            normalizedCount += 1;
+        }
+    }
+
+    fs.writeFileSync(jsonPath, `${JSON.stringify(raw, null, 2)}\n`);
+    const fallback = fs.readFileSync(fallbackPath, 'utf8');
+    const assignment = 'window.WORD_MEMORY_CARDS_DATA = ';
+    if (!fallback.startsWith(assignment) || !fallback.trimEnd().endsWith(';')) {
+        throw new Error('Unexpected word-memory fallback card data format.');
+    }
+    fs.writeFileSync(fallbackPath, `${assignment}${JSON.stringify(raw, null, 2)};\n`);
+    console.log(`[pages-artifact] normalized ${normalizedCount} malformed word-memory remote image URLs`);
+}
+
 const STATIC_ROUTE_ENTRIES = [
     '/app',
     '/app/today',
@@ -317,12 +351,9 @@ for (const dirName of ['css', 'js', 'assets', 'data', 'app']) {
 }
 
 copyDirWithFilter('prj/学习机玩法原型', includeLearningArcadeRuntime);
-copyDirWithFilter('prj/消灭苦力怕打字游戏', includeTypingDefenseRuntime);
 copyDirWithFilter('prj/单词记忆射击场原型', includeWordMemoryRuntime);
-copyMappedFile('prj/消灭苦力怕打字游戏/web/index.html', 'prj/消灭苦力怕打字游戏/web/index.html');
-copyMappedFile('prj/消灭苦力怕打字游戏/web/styles.css', 'prj/消灭苦力怕打字游戏/web/styles.css');
-copyMappedFile('prj/消灭苦力怕打字游戏/web/game.js', 'prj/消灭苦力怕打字游戏/web/game.js');
 copyDirWithFilterTo('prj/消灭苦力怕打字游戏', 'app/playground/typing-defense-runtime', includeTypingDefenseRuntime);
+sanitizePublishedWordMemoryCards();
 
 for (const route of STATIC_ROUTE_ENTRIES) {
     writeStaticRouteEntry(route);

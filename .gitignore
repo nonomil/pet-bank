@@ -33,6 +33,8 @@ prj/tts-portable/
 # docs/ 是本地方案/调研/会话材料区；远端只保留 docs/README.md 说明入口。
 docs/*
 !docs/README.md
+!docs/项目全景优化方案-2026-07/
+!docs/项目全景优化方案-2026-07/**
 *.zip
 *.mp4
 
