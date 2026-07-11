@@ -19,6 +19,20 @@
             foundItems: Array.isArray(input.foundItems) ? [...new Set(input.foundItems)] : [],
             nodeId: String(input.nodeId || 'see')
         };
+        if (input.flowMode === 'short') {
+            value.flowMode = 'short';
+            value.flowPhase = String(input.flowPhase || 'see');
+            value.seeCursor = Math.max(0, Number(input.seeCursor) || 0);
+            value.challengeStatus = String(input.challengeStatus || 'available');
+            if (input.choiceFeedback && typeof input.choiceFeedback === 'object') {
+                value.choiceFeedback = {
+                    text: String(input.choiceFeedback.text || ''),
+                    reward: String(input.choiceFeedback.reward || ''),
+                    found: Boolean(input.choiceFeedback.found),
+                    item: input.choiceFeedback.item ? String(input.choiceFeedback.item) : ''
+                };
+            }
+        }
         try { root.localStorage?.setItem(key(sceneId), JSON.stringify(value)); } catch (error) { return { accepted: false, reason: 'storage_error' }; }
         return { accepted: true, value };
     }

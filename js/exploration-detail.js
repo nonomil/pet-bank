@@ -8,6 +8,12 @@ const ExplorationDetail = (function () {
     let eventIndex = 0;
     let foundItems = [];
     let currentChapter = null;
+    let shortFlow = null;
+    let shortFlowPhase = 'see';
+    let shortSeeCursor = 0;
+    let shortChallengeStatus = 'available';
+    let shortChoiceFeedback = null;
+    let foundItemsGranted = false;
     const EXPLORE_SHELL_HTML = document.getElementById('page-explore')?.innerHTML || '';
     const EXPLORE_ACTIVE_HTML = '<div id="exploreContainer"></div>';
 
@@ -109,9 +115,22 @@ const ExplorationDetail = (function () {
         }
         const events = storyData[currentScene.id]?.events || [];
         currentChapter = window.ExplorationChapter?.build?.(events) || null;
+        shortFlow = window.ExplorationChapter?.buildShortFlow?.(storyData[currentScene.id]) || null;
         const saved = window.ExplorationProgress?.load?.(currentScene.id) || null;
         eventIndex = saved && saved.activeEventIndex < events.length ? saved.activeEventIndex : 0;
         foundItems = saved && Array.isArray(saved.foundItems) ? [...saved.foundItems] : [];
+        foundItemsGranted = false;
+        if (shortFlow && saved?.flowMode === 'short') {
+            shortFlowPhase = saved.flowPhase || 'see';
+            shortSeeCursor = Math.min(shortFlow.see.length, Number(saved.seeCursor) || 0);
+            shortChallengeStatus = saved.challengeStatus || 'available';
+            shortChoiceFeedback = saved.choiceFeedback || null;
+        } else {
+            shortFlowPhase = 'see';
+            shortSeeCursor = 0;
+            shortChallengeStatus = 'available';
+            shortChoiceFeedback = null;
+        }
         _ensureCmathPool();  // 后台预加载应用题库（CMATH）
 
         switchPage('explore');
@@ -140,7 +159,8 @@ const ExplorationDetail = (function () {
                 </div>
             </div>
         `;
-        showNextEvent();
+        if (shortFlow) renderShortPhase();
+        else showNextEvent();
     }
 
     function chapterNode(eventIdx) {
@@ -161,14 +181,22 @@ const ExplorationDetail = (function () {
 
     function saveProgress(activeEventIndex = eventIndex, awaitingInput = false) {
         if (!currentScene || !window.ExplorationProgress?.save) return;
-        window.ExplorationProgress.save({
+        const input = {
             sceneId: currentScene.id,
             eventIndex,
             activeEventIndex,
             awaitingInput,
             foundItems,
             nodeId: chapterNode(activeEventIndex).id
-        });
+        };
+        if (shortFlow) {
+            input.flowMode = 'short';
+            input.flowPhase = shortFlowPhase;
+            input.seeCursor = shortSeeCursor;
+            input.challengeStatus = shortChallengeStatus;
+            input.choiceFeedback = shortChoiceFeedback;
+        }
+        window.ExplorationProgress.save(input);
     }
 
     function clearProgress() {
@@ -300,8 +328,180 @@ const ExplorationDetail = (function () {
             textEl.innerHTML = parts.join('<br>');
         }
         choicesEl.innerHTML = '';
+        if (shortFlow && shortFlowPhase === 'math') {
+            if (correct) {
+                shortFlowPhase = 'battle';
+                shortChallengeStatus = 'math-complete';
+                box.onclick = () => renderShortBattlePrompt();
+            } else {
+                shortFlowPhase = 'math';
+                box.onclick = () => renderShortMath();
+            }
+            saveProgress(eventIndex, false);
+            return;
+        }
         box.onclick = () => ExplorationDetail.next();
         saveProgress(eventIndex, false);
+    }
+
+    function renderShortPhase() {
+        if (!shortFlow || !currentScene) return;
+        if (shortFlowPhase === 'see') {
+            const eventIndexForPhase = shortFlow.see[Math.min(shortSeeCursor, shortFlow.see.length - 1)];
+            renderChapterProgress(eventIndexForPhase);
+            const event = window.ExplorationChapter.getShortFlowEvent(shortFlow, 'see', shortSeeCursor);
+            if (!event) {
+                shortFlowPhase = 'choose';
+                renderShortPhase();
+                return;
+            }
+            renderShortStoryEvent(event, eventIndexForPhase);
+            return;
+        }
+        if (shortFlowPhase === 'choose') {
+            renderShortChoice();
+            return;
+        }
+        if (shortFlowPhase === 'math') {
+            renderShortMath();
+            return;
+        }
+        if (shortFlowPhase === 'battle') {
+            renderShortBattlePrompt();
+        }
+    }
+
+    function renderShortStoryEvent(event, activeEventIndex) {
+        const nameEl = document.getElementById('galgameName');
+        const textEl = document.getElementById('galgameText');
+        const choicesEl = document.getElementById('galgameChoices');
+        const box = document.getElementById('galgameBox');
+        if (!nameEl || !textEl || !choicesEl || !box) return;
+        choicesEl.innerHTML = '';
+        if (event.type === 'discover') {
+            playSfx('discover');
+            const found = !!(event.item && Math.random() < event.chance);
+            textEl.innerHTML = `<span style="font-size:28px">${escapeCopy(event.emoji)}</span> ${copyHtml(event)}${found ? '<br><span class="galgame-found">✨ 获得物品！</span>' : ''}`;
+            if (found && !foundItems.includes(event.item)) foundItems.push(event.item);
+            nameEl.textContent = '✨ 发现';
+        } else {
+            nameEl.textContent = `${currentScene.emoji} ${currentScene.name}`;
+            textEl.innerHTML = copyHtml(event);
+        }
+        applyEventMood(event);
+        setScenePortrait();
+        box.onclick = () => {
+            if (shortSeeCursor < shortFlow.see.length - 1) {
+                shortSeeCursor += 1;
+                saveProgress(activeEventIndex, false);
+                renderShortPhase();
+            } else {
+                shortFlowPhase = 'choose';
+                saveProgress(shortFlow.choose, true);
+                renderShortPhase();
+            }
+        };
+        saveProgress(activeEventIndex, false);
+    }
+
+    function renderShortChoice() {
+        const event = window.ExplorationChapter.getShortFlowEvent(shortFlow, 'choose');
+        const nameEl = document.getElementById('galgameName');
+        const textEl = document.getElementById('galgameText');
+        const choicesEl = document.getElementById('galgameChoices');
+        const box = document.getElementById('galgameBox');
+        if (!event || !nameEl || !textEl || !choicesEl || !box) return;
+        renderChapterProgress(shortFlow.choose);
+        nameEl.textContent = `${currentScene.emoji} ${currentScene.name}`;
+        textEl.innerHTML = shortChoiceFeedback
+            ? `<span class="galgame-reward">${escapeCopy(shortChoiceFeedback.text)}</span><br>${escapeCopy(shortChoiceFeedback.reward)}${shortChoiceFeedback.found ? '<br><span class="galgame-found">✨ 获得物品！</span>' : ''}`
+            : copyHtml(event);
+        applyEventMood(event);
+        if (shortChoiceFeedback) {
+            choicesEl.innerHTML = '<button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.completeShortJourney()">🏠 带回家</button><button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.startShortChallenge()">⚔️ 挑战一下</button>';
+            box.onclick = null;
+            return;
+        }
+        choicesEl.innerHTML = event.options.map((opt, i) =>
+            `<button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.choose(${shortFlow.choose},${i})">${escapeCopy(opt.text)}</button>`
+        ).join('');
+        box.onclick = null;
+        saveProgress(shortFlow.choose, true);
+    }
+
+    function renderShortMath() {
+        const event = window.ExplorationChapter.getShortFlowEvent(shortFlow, 'math');
+        if (!event) return;
+        shortFlowPhase = 'math';
+        eventIndex = shortFlow.challenge.math;
+        renderChapterProgress(eventIndex);
+        const q = genMathQuestion(event.mathType || 'arithmetic', event.difficulty || 'easy', event);
+        const opts = q.options || genMathOptions(q.answer);
+        const nameEl = document.getElementById('galgameName');
+        const textEl = document.getElementById('galgameText');
+        const choicesEl = document.getElementById('galgameChoices');
+        const box = document.getElementById('galgameBox');
+        if (!nameEl || !textEl || !choicesEl || !box) return;
+        nameEl.textContent = '🔢 可选挑战';
+        const copy = getEventCopy(event);
+        const skillHtml = event.skill ? `<span class="galgame-skill">能力点：${escapeCopy(event.skill)}</span>` : '';
+        textEl.innerHTML = `${escapeCopy(copy.text)}${skillHtml ? `<br>${skillHtml}` : ''}<br><span class="galgame-word">${escapeCopy(q.text)}</span>`;
+        const rewardMsg = JSON.stringify(event.reward?.msg || '');
+        const hint = JSON.stringify(event.hint || '');
+        const explanation = JSON.stringify(event.explanation || '');
+        choicesEl.innerHTML = opts.map(o =>
+            `<button class="galgame-choice" onclick='event.stopPropagation();ExplorationDetail.answerMath(${o === q.answer}, ${event.reward?.exp || 0}, ${rewardMsg}, ${hint}, ${explanation})'>${escapeCopy(o)}</button>`
+        ).join('');
+        box.onclick = null;
+        saveProgress(eventIndex, true);
+    }
+
+    function renderShortBattlePrompt() {
+        const event = window.ExplorationChapter.getShortFlowEvent(shortFlow, 'battle');
+        const nameEl = document.getElementById('galgameName');
+        const textEl = document.getElementById('galgameText');
+        const choicesEl = document.getElementById('galgameChoices');
+        const box = document.getElementById('galgameBox');
+        if (!event || !nameEl || !textEl || !choicesEl || !box) return;
+        eventIndex = shortFlow.challenge.battle;
+        renderChapterProgress(eventIndex);
+        nameEl.textContent = '⚔️ 可选挑战';
+        textEl.innerHTML = `${copyHtml(event, 'galgame-warn')}<br>准备好就出发！`;
+        choicesEl.innerHTML = '<button class="galgame-choice" onclick="event.stopPropagation();ExplorationDetail.startShortBattle()">⚔️ 开始挑战</button>';
+        box.onclick = null;
+        saveProgress(eventIndex, true);
+    }
+
+    function completeShortJourney() {
+        if (!shortFlow) return;
+        shortChallengeStatus = 'skipped';
+        shortFlowPhase = 'return';
+        grantFoundItems();
+        clearProgress();
+        showEnding();
+    }
+
+    function grantFoundItems() {
+        if (foundItemsGranted || !foundItems.length || !window.InventorySystem?.addItem) return;
+        foundItems.forEach((itemId) => window.InventorySystem.addItem(itemId, 1));
+        foundItemsGranted = true;
+        if (typeof window.showToast === 'function') window.showToast(`探索中发现了 ${foundItems.length} 件物品！`);
+    }
+
+    function startShortChallenge() {
+        if (!shortFlow) return;
+        shortChallengeStatus = 'active';
+        shortFlowPhase = 'math';
+        saveProgress(shortFlow.challenge.math, true);
+        renderShortMath();
+    }
+
+    function startShortBattle() {
+        if (!shortFlow) return;
+        shortChallengeStatus = 'battle';
+        shortFlowPhase = 'battle';
+        saveProgress(shortFlow.challenge.battle, true);
+        triggerBattle();
     }
 
     function showNextEvent() {
@@ -393,6 +593,19 @@ const ExplorationDetail = (function () {
         const box = document.getElementById('galgameBox');
         if (!textEl) return;
         playSfx('choiceConfirm');
+        if (shortFlow && eventIdx === shortFlow.choose) {
+            shortChoiceFeedback = {
+                text: choice.text,
+                reward: choice.reward,
+                found,
+                item: found ? choice.item : ''
+            };
+            if (found && !foundItems.includes(choice.item)) foundItems.push(choice.item);
+            shortFlowPhase = 'choose';
+            saveProgress(shortFlow.choose, true);
+            renderShortChoice();
+            return;
+        }
         textEl.innerHTML = `<span class="galgame-reward">${choice.text}</span><br>${choice.reward}${found ? '<br><span class="galgame-found">✨ 获得物品！</span>' : ''}`;
         choicesEl.innerHTML = '';
         box.onclick = () => ExplorationDetail.next();  // 恢复点击推进
@@ -408,13 +621,8 @@ const ExplorationDetail = (function () {
             exit();
             return;
         }
-        // 给予发现的物品
-        foundItems.forEach(itemId => {
-            InventorySystem.addItem(itemId, 1);
-        });
-        if (foundItems.length > 0) {
-            showToast(`探索中发现了 ${foundItems.length} 件物品！`);
-        }
+        // 给予发现的物品（短路径和 legacy 路径共用幂等发放）
+        grantFoundItems();
 
         if (result.battle) {
             playSfx('battleStart');
@@ -424,7 +632,8 @@ const ExplorationDetail = (function () {
             const memoryResult = recordTravelMemory();
             if (memoryResult?.accepted) showToast(memoryResult.memory.returnText);
             showToast(result.msg);
-            exit();
+            if (shortFlow) showEnding();
+            else exit();
         }
     }
 
@@ -448,7 +657,8 @@ const ExplorationDetail = (function () {
 
     function next() {
         playSfx('dialogueNext');
-        showNextEvent();  // galgame 单条推进（无堆叠，无需 disable）
+        if (shortFlow) renderShortPhase();
+        else showNextEvent();  // galgame 单条推进（无堆叠，无需 disable）
     }
 
     function exit() {
@@ -460,6 +670,12 @@ const ExplorationDetail = (function () {
         currentScene = null;
         eventIndex = 0;
         foundItems = [];
+        foundItemsGranted = false;
+        shortFlow = null;
+        shortFlowPhase = 'see';
+        shortSeeCursor = 0;
+        shortChallengeStatus = 'available';
+        shortChoiceFeedback = null;
 
         const pageExplore = document.getElementById('page-explore');
         if (pageExplore) {
@@ -498,7 +714,10 @@ const ExplorationDetail = (function () {
 
     _loadStories();  // 模块加载即预取各场景 JSON
 
-    return { show, next, choose, exit, answerMath, isActive, showEnding, toggleDetail };
+    return {
+        show, next, choose, exit, answerMath, isActive, showEnding, toggleDetail,
+        completeShortJourney, startShortChallenge, startShortBattle
+    };
 })();
 
 window.ExplorationDetail = ExplorationDetail;

@@ -95,6 +95,21 @@ assert.equal(chapter.getNodeForEvent(chapterModel, 3).id, 'choose');
 assert.equal(chapter.getNodeForEvent(chapterModel, 4).id, 'return');
 assert.equal(chapter.getNodeForEvent(chapterModel, 2).id, 'challenge');
 
+const shortStory = {
+  events: chapterEvents,
+  chapter_flow: { mode: 'short', see: [0, 1], choose: 3, challenge: { math: 2, battle: 4 } }
+};
+const shortFlow = chapter.buildShortFlow(shortStory);
+assert.deepEqual(shortFlow.see, [0, 1]);
+assert.equal(shortFlow.choose, 3);
+assert.equal(shortFlow.challenge.math, 2);
+assert.equal(shortFlow.challenge.battle, 4);
+assert.equal(chapter.getShortFlowEvent(shortFlow, 'see', 1).id, 'demo.discover');
+assert.equal(chapter.getShortFlowEvent(shortFlow, 'choose').id, 'demo.choice');
+assert.equal(chapter.getShortFlowEvent(shortFlow, 'math').id, 'demo.math');
+assert.equal(chapter.getShortFlowEvent(shortFlow, 'battle').id, 'demo.encounter');
+assert.equal(chapter.buildShortFlow({ events: chapterEvents, chapter_flow: { mode: 'short', see: [0], choose: 2, challenge: { math: 3, battle: 4 } } }), null);
+
 const savedProgress = progress.save({
   sceneId: 'demo',
   eventIndex: 3,
@@ -115,6 +130,19 @@ assert.deepEqual(JSON.parse(JSON.stringify(progress.load('demo'))), {
 });
 progress.clear('demo');
 assert.equal(progress.load('demo'), null);
+const shortProgress = progress.save({
+  sceneId: 'forest',
+  flowMode: 'short',
+  flowPhase: 'choose',
+  seeCursor: 2,
+  challengeStatus: 'available',
+  choiceFeedback: { text: '走花香小路', reward: '得到星星石头', found: true, item: 'stone' }
+});
+assert.equal(shortProgress.value.flowMode, 'short');
+assert.equal(shortProgress.value.flowPhase, 'choose');
+assert.equal(shortProgress.value.seeCursor, 2);
+assert.equal(progress.load('forest').choiceFeedback.item, 'stone');
+progress.clear('forest');
 
 const runtime = fs.readFileSync('js/runtime-loader.js', 'utf8');
 assert.match(runtime, /home:\s*\[[\s\S]*pet-evolution-preview\.js/);
@@ -124,6 +152,10 @@ assert.match(runtime, /explore:\s*\[[\s\S]*exploration-progress\.js/);
 const detailSource = fs.readFileSync('js/exploration-detail.js', 'utf8');
 assert.match(detailSource, /STORY_DATA_VERSION/);
 assert.match(detailSource, /cache:\s*'no-store'/);
+assert.match(detailSource, /buildShortFlow/);
+assert.match(detailSource, /completeShortJourney/);
+assert.match(detailSource, /startShortChallenge/);
+assert.match(detailSource, /startShortBattle/);
 
 for (const sceneId of ['forest', 'beach', 'candy', 'waterfall', 'underwater', 'desert', 'mountain', 'cave', 'castle', 'volcano', 'space', 'stargarden']) {
   const story = JSON.parse(fs.readFileSync(`data/stories/${sceneId}.json`, 'utf8'));
@@ -133,6 +165,18 @@ for (const sceneId of ['forest', 'beach', 'candy', 'waterfall', 'underwater', 'd
     assert.ok(event.shortText.length <= 24, `${sceneId}:${event.id} shortText should stay compact`);
     assert.ok(['happy', 'surprised', 'worried', 'proud'].includes(event.petMood), `${sceneId}:${event.id} petMood`);
   }
+}
+
+for (const sceneId of ['forest', 'beach', 'stargarden']) {
+  const story = JSON.parse(fs.readFileSync(`data/stories/${sceneId}.json`, 'utf8'));
+  assert.equal(story.chapter_flow.mode, 'short', `${sceneId} short flow mode`);
+  assert.deepEqual(story.chapter_flow.see, [0, 1], `${sceneId} short flow see`);
+  assert.equal(story.chapter_flow.choose, 3, `${sceneId} short flow choose`);
+  assert.deepEqual(story.chapter_flow.challenge, { math: 2, battle: 4 }, `${sceneId} short flow challenge`);
+}
+for (const sceneId of ['candy', 'waterfall', 'underwater', 'desert', 'mountain', 'cave', 'castle', 'volcano', 'space']) {
+  const story = JSON.parse(fs.readFileSync(`data/stories/${sceneId}.json`, 'utf8'));
+  assert.equal(story.chapter_flow, undefined, `${sceneId} remains legacy flow`);
 }
 
 console.log('pet adventure retention contract tests passed');

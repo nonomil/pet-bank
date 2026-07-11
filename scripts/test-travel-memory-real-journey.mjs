@@ -72,20 +72,21 @@ async function completeScenario(scenario, expectedPet, expectedCollectionCount) 
   await clickStoryBox();
   beats.push(await page.locator('#galgameName').textContent());
 
-  const mathOptions = page.locator('#galgameChoices button');
-  assert.equal(await mathOptions.count(), 4, `${scenario.id} math options visible`);
-  await mathOptions.filter({ hasText: new RegExp(`^${scenario.answer}$`) }).first().click();
-  await page.waitForTimeout(120);
-  assert.match(await page.locator('#galgameText').textContent(), /记录|答对|路线|星座/);
-  await clickStoryBox();
-
   const routeOptions = page.locator('#galgameChoices button');
   assert.equal(await routeOptions.count(), 2, `${scenario.id} route choices visible`);
   await routeOptions.first().click();
   await page.waitForTimeout(120);
-  await clickStoryBox();
+  const shortActions = page.locator('#galgameChoices button');
+  assert.equal(await shortActions.count(), 2, `${scenario.id} short return actions visible`);
+  await shortActions.filter({ hasText: '挑战一下' }).click();
+  await page.waitForTimeout(120);
+  assert.equal(await page.locator('#galgameChoices button').count(), 4, `${scenario.id} optional math options visible`);
+  await page.locator('#galgameChoices button').filter({ hasText: new RegExp(`^${scenario.answer}$`) }).first().click();
+  await page.waitForTimeout(120);
+  await page.locator('#galgameBox').click();
+  await page.waitForTimeout(120);
   assert.match(await page.locator('#galgameText').textContent(), /守卫|伙伴|眼睛|沙堡|星光/);
-  await clickStoryBox();
+  await page.locator('#galgameChoices button').filter({ hasText: '开始挑战' }).click();
 
   await page.waitForSelector('#battleModal.show');
   let battleStatus = await page.evaluate(() => window.ExplorationSystem.getCurrentBattle()?.status);
