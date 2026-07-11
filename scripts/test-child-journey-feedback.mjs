@@ -16,5 +16,9 @@ assert.match(css, /\.child-journey-feedback/, 'styles should include the feedbac
 assert.match(feedback, /window\.toggleTask/, 'feedback should wrap the existing task action');
 assert.match(feedback, /wasCompleted/, 'feedback should distinguish new completion from task cancellation');
 assert.match(feedback, /childJourneyFeedback/, 'feedback should target the feedback card');
+assert.match(feedback, /addEventListener\('message'/, 'feedback should listen for iframe game results');
+assert.match(feedback, /petbank-typing-defense/, 'feedback should recognize typing-defense results');
+assert.match(feedback, /petbank-word-memory-map/, 'feedback should recognize word-memory results');
+assert.match(feedback, /data\.kind !== 'result'/, 'feedback should ignore non-result game events');
 
 console.log('PASS child journey feedback contract');

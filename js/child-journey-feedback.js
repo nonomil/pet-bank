@@ -24,6 +24,22 @@
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
+    function handleGameResult(event) {
+        const data = event && event.data;
+        if (!data || !['petbank-typing-defense', 'petbank-word-memory-map'].includes(data.source)) return;
+        if (event.origin && window.location.origin && event.origin !== window.location.origin) return;
+        if (data.kind !== 'result') return;
+
+        const payload = data.payload || {};
+        const points = data.source === 'petbank-word-memory-map'
+            ? payload.score
+            : payload.score;
+        const title = data.source === 'petbank-typing-defense'
+            ? (payload.won ? '打字防线通关' : '打字防线练习')
+            : '像素探险清关';
+        showFeedback(title, points);
+    }
+
     function wrapTaskToggle() {
         if (typeof window.toggleTask !== 'function' || window.toggleTask.__childJourneyWrapped) return;
         const originalToggleTask = window.toggleTask;
@@ -43,4 +59,6 @@
     } else {
         wrapTaskToggle();
     }
+
+    window.addEventListener('message', handleGameResult);
 }());
