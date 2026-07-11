@@ -33,8 +33,6 @@ prj/tts-portable/
 # docs/ 是本地方案/调研/会话材料区；远端只保留 docs/README.md 说明入口。
 docs/*
 !docs/README.md
-!docs/self-hosted/
-!docs/self-hosted/**
 *.zip
 *.mp4
 

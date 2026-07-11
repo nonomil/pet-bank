@@ -29,4 +29,4 @@ node src/main.mjs
 - 密钥：`/srv/pet-bank/shared/server.env`
 - 备份：`/srv/pet-bank/shared/backups/`
 
-详细流程见 [部署手册](../../docs/self-hosted/README.md)。
+详细流程见 [部署手册](../../docs_project/runbooks/self-hosted/README.md)。

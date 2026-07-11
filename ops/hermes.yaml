@@ -55,7 +55,7 @@ selfHostedApi:
     - /srv/pet-bank/shared/server.env
   releaseRoot: /srv/pet-bank/releases
   currentReleaseLink: /srv/pet-bank/current
-  deployGuide: docs/self-hosted/AI-HERMES-DEPLOY.md
+  deployGuide: docs_project/runbooks/self-hosted/AI-HERMES-DEPLOY.md
   rules:
     - never-delete-shared-directory
     - migration-files-are-additive-only

@@ -10,6 +10,6 @@
 - [更新日志](../CHANGELOG.md)
 - [工程文档索引](../docs_project/README.md)
 - [技术架构](../docs_project/ARCHITECTURE.md)
-- [自托管后端与腾讯云部署](self-hosted/README.md)
+- 本地技术方案：`自托管后端方案/`（不推送远端）
 
 本地仍可保留完整 `docs/` 工作材料；这些文件会被 `.gitignore` 忽略。
