@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.23](https://img.shields.io/badge/Version-v0.7.23-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.24](https://img.shields.io/badge/Version-v0.7.24-brightgreen.svg)](CHANGELOG.md)
 
 📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [账号与 Supabase 部署手册](docs_project/runbooks/account-auth-supabase-deploy.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,11 +27,12 @@
 
 ---
 
-## 🎉 最近更新（v0.7.23）
+## 🎉 最近更新（v0.7.24）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
 - 🧭 **可直达子页面**：GitHub Pages 构建会为孩子端、家长区与 `/settings/*` 生成静态入口；直接打开或刷新链接可正确恢复页面，不再依赖先进入首页
+- 🖥️ **自托管后端基础**：新增轻量 Node.js + SQLite 服务骨架、健康检查、增量迁移、Docker/Nginx 模板，以及面向腾讯云与 Hermes 的发布、备份、回滚手册；业务数据固定放在服务器共享目录，不随网站升级覆盖
 - 🎴 **游乐场卡片统一**：游戏入口统一改成“上图下文”的单卡，去掉彩色标签带；`数学PK`、`卡牌对战` 换成新的 `VS` 风格图卡
 - 🧼 **沉浸子页再收口**：游戏子页统一隐藏主站顶部状态条和底部 dock，打开后只保留左上 `首页` 与右上 `关闭`
 - 🧭 **像素探险改名落地**：`单词记忆射击场` 在主站正式更名为 `像素探险`，入口、标题、通关提示和最近活动文案同步

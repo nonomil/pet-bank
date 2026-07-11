@@ -2,6 +2,17 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.24] - 2026-07-11
+### 🖥️ 静态直链部署修复 + 轻量自托管后端基础
+
+- GitHub Pages 构建新增 `/app/*`、`/parent/*`、`/settings/*` 静态入口页；直接访问或刷新这些路径会恢复到正确页面，不再依赖先进入首页
+- 修复仓库子路径部署下的资源基址识别，`/pet-bank/settings/*`、`/pet-bank/parent/*` 与孩子端路径不会错误请求到子目录中的 CSS/JS
+- 新增 `prj/petbank-server/`：单 Node.js API 进程、SQLite 数据库、版本化迁移、健康检查、Docker Compose 与 Nginx 反向代理模板
+- 新增账号、家庭、孩子、状态快照的基础数据表；数据库强制放在 `/srv/pet-bank/shared/data/`，与 release 代码目录隔离
+- 新增 `docs/self-hosted/` 正式部署资料，覆盖腾讯云首次部署、AI/Hermes 执行规则、更新、备份、恢复、回滚及后续 API 演进约束
+- `ops/hermes.yaml` 记录自托管 API 的共享数据目录、健康检查和增量迁移策略，明确禁止发布流程删除共享目录
+- 验证通过：静态入口构建契约、根路径与 `/pet-bank/` 子路径浏览器直链测试；`petbank-server` 配置/迁移测试 3/3 与本地健康检查
+
 ## [v0.7.23] - 2026-07-11
 ### 🎡 游乐场卡片统一 + 像素探险大地图升级
 
