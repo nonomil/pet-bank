@@ -11,7 +11,8 @@ function loadGlobal(file, name) {
     window: null,
     localStorage: {
       getItem(key) { return storage.has(key) ? storage.get(key) : null; },
-      setItem(key, value) { storage.set(key, String(value)); }
+      setItem(key, value) { storage.set(key, String(value)); },
+      removeItem(key) { storage.delete(key); }
     }
   };
   context.globalThis = context;
@@ -77,9 +78,49 @@ const duplicateMemory = travel.record({ sceneId: 'forest' });
 assert.equal(duplicateMemory.accepted, false);
 assert.equal(duplicateMemory.reason, 'duplicate');
 
+const chapter = loadGlobal('js/exploration-chapter.js', 'ExplorationChapter');
+const progress = loadGlobal('js/exploration-progress.js', 'ExplorationProgress');
+const chapterEvents = [
+  { id: 'demo.narrate', type: 'narrate' },
+  { id: 'demo.discover', type: 'discover' },
+  { id: 'demo.math', type: 'math' },
+  { id: 'demo.choice', type: 'choice' },
+  { id: 'demo.encounter', type: 'encounter' }
+];
+const chapterModel = chapter.build(chapterEvents);
+assert.deepEqual(Array.from(chapterModel.nodes, node => node.id), ['see', 'choose', 'return']);
+assert.deepEqual(Array.from(chapterModel.optional.challenge), [2]);
+assert.equal(chapter.getNodeForEvent(chapterModel, 0).id, 'see');
+assert.equal(chapter.getNodeForEvent(chapterModel, 3).id, 'choose');
+assert.equal(chapter.getNodeForEvent(chapterModel, 4).id, 'return');
+assert.equal(chapter.getNodeForEvent(chapterModel, 2).id, 'challenge');
+
+const savedProgress = progress.save({
+  sceneId: 'demo',
+  eventIndex: 3,
+  activeEventIndex: 3,
+  awaitingInput: true,
+  foundItems: ['leaf'],
+  nodeId: 'choose'
+});
+assert.equal(savedProgress.accepted, true);
+assert.deepEqual(JSON.parse(JSON.stringify(progress.load('demo'))), {
+  schemaVersion: 1,
+  sceneId: 'demo',
+  eventIndex: 3,
+  activeEventIndex: 3,
+  awaitingInput: true,
+  foundItems: ['leaf'],
+  nodeId: 'choose'
+});
+progress.clear('demo');
+assert.equal(progress.load('demo'), null);
+
 const runtime = fs.readFileSync('js/runtime-loader.js', 'utf8');
 assert.match(runtime, /home:\s*\[[\s\S]*pet-evolution-preview\.js/);
 assert.match(runtime, /explore:\s*\[[\s\S]*exploration-copy\.js/);
+assert.match(runtime, /explore:\s*\[[\s\S]*exploration-chapter\.js/);
+assert.match(runtime, /explore:\s*\[[\s\S]*exploration-progress\.js/);
 const detailSource = fs.readFileSync('js/exploration-detail.js', 'utf8');
 assert.match(detailSource, /STORY_DATA_VERSION/);
 assert.match(detailSource, /cache:\s*'no-store'/);

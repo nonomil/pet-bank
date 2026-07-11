@@ -7,6 +7,7 @@ const ExplorationDetail = (function () {
     let currentScene = null;
     let eventIndex = 0;
     let foundItems = [];
+    let currentChapter = null;
     const EXPLORE_SHELL_HTML = document.getElementById('page-explore')?.innerHTML || '';
     const EXPLORE_ACTIVE_HTML = '<div id="exploreContainer"></div>';
 
@@ -108,8 +109,11 @@ const ExplorationDetail = (function () {
             currentScene = null;
             return;
         }
-        eventIndex = 0;
-        foundItems = [];
+        const events = sceneEvents[currentScene.id] || [];
+        currentChapter = window.ExplorationChapter?.build?.(events) || null;
+        const saved = window.ExplorationProgress?.load?.(currentScene.id) || null;
+        eventIndex = saved && saved.activeEventIndex < events.length ? saved.activeEventIndex : 0;
+        foundItems = saved && Array.isArray(saved.foundItems) ? [...saved.foundItems] : [];
         _ensureCmathPool();  // 后台预加载应用题库（CMATH）
 
         switchPage('explore');
@@ -129,6 +133,7 @@ const ExplorationDetail = (function () {
                 <img class="galgame-portrait galgame-portrait-left" id="galgamePortraitL" style="display:none">
                 <img class="galgame-portrait galgame-portrait-right" id="galgamePortraitR" src="${PetSystem.getCurrentStageImage ? PetSystem.getCurrentStageImage() : ''}" alt="宠物">
                 <button class="galgame-back" onclick="ExplorationDetail.exit()">← 退出探索</button>
+                <div class="galgame-chapter-progress" id="galgameChapterProgress"></div>
                 <div class="galgame-box" id="galgameBox" onclick="ExplorationDetail.next()">
                     <div class="galgame-name" id="galgameName">${currentScene.emoji} ${currentScene.name}</div>
                     <div class="galgame-text" id="galgameText"></div>
@@ -138,6 +143,38 @@ const ExplorationDetail = (function () {
             </div>
         `;
         showNextEvent();
+    }
+
+    function chapterNode(eventIdx) {
+        return currentChapter && window.ExplorationChapter?.getNodeForEvent
+            ? window.ExplorationChapter.getNodeForEvent(currentChapter, eventIdx)
+            : { id: 'see' };
+    }
+
+    function renderChapterProgress(eventIdx) {
+        const el = document.getElementById('galgameChapterProgress');
+        if (!el) return;
+        const rawActive = chapterNode(eventIdx).id;
+        const active = rawActive === 'challenge' ? 'see' : rawActive;
+        const labels = [['see', '看见'], ['choose', '选择'], ['return', '带回家']];
+        const activeIndex = labels.findIndex(([id]) => id === active);
+        el.innerHTML = labels.map(([id, label], index) => `<span class="${id === active ? 'active' : ''} ${activeIndex > index ? 'done' : ''}">${index + 1} ${label}</span>`).join('<b>·</b>');
+    }
+
+    function saveProgress(activeEventIndex = eventIndex, awaitingInput = false) {
+        if (!currentScene || !window.ExplorationProgress?.save) return;
+        window.ExplorationProgress.save({
+            sceneId: currentScene.id,
+            eventIndex,
+            activeEventIndex,
+            awaitingInput,
+            foundItems,
+            nodeId: chapterNode(activeEventIndex).id
+        });
+    }
+
+    function clearProgress() {
+        if (currentScene && window.ExplorationProgress?.clear) window.ExplorationProgress.clear(currentScene.id);
     }
 
     // 设置左侧角色立绘（场景对应角色）
@@ -266,6 +303,7 @@ const ExplorationDetail = (function () {
         }
         choicesEl.innerHTML = '';
         box.onclick = () => ExplorationDetail.next();
+        saveProgress(eventIndex, false);
     }
 
     function showNextEvent() {
@@ -277,7 +315,9 @@ const ExplorationDetail = (function () {
         const choicesEl = document.getElementById('galgameChoices');
         const box = document.getElementById('galgameBox');
         if (!nameEl || !textEl) return;
+        const activeEventIndex = eventIndex;
         eventIndex++;
+        renderChapterProgress(activeEventIndex);
         choicesEl.innerHTML = '';
         box.onclick = () => ExplorationDetail.next();  // 默认点击对话框推进
 
@@ -286,6 +326,7 @@ const ExplorationDetail = (function () {
             textEl.innerHTML = copyHtml(event);
             applyEventMood(event);
             setScenePortrait();
+            saveProgress(activeEventIndex, false);
         } else if (event.type === 'discover') {
             playSfx('discover');
             const found = !!(event.item && Math.random() < event.chance);
@@ -294,6 +335,7 @@ const ExplorationDetail = (function () {
             applyEventMood(event);
             setScenePortrait();
             if (found) foundItems.push(event.item);
+            saveProgress(activeEventIndex, false);
         } else if (event.type === 'choice') {
             nameEl.textContent = `${currentScene.emoji} ${currentScene.name}`;
             textEl.innerHTML = copyHtml(event);
@@ -303,12 +345,14 @@ const ExplorationDetail = (function () {
             ).join('');
             box.onclick = null;  // choice 时禁点击推进，等选择
             eventIndex--;  // undo，等 choose 推进
+            saveProgress(activeEventIndex, true);
             return;
         } else if (event.type === 'encounter') {
             playSfx('encounterWarning');
             nameEl.textContent = '⚠️ 遭遇';
             textEl.innerHTML = `${copyHtml(event, 'galgame-warn')}<br>点击准备战斗！`;
             applyEventMood(event);
+            saveProgress(activeEventIndex, true);
         } else if (event.type === 'math') {
             const q = genMathQuestion(event.mathType || 'arithmetic', event.difficulty || 'easy', event);
             const opts = q.options || genMathOptions(q.answer);
@@ -326,6 +370,7 @@ const ExplorationDetail = (function () {
                 `<button class="galgame-choice" onclick='event.stopPropagation();ExplorationDetail.answerMath(${o === q.answer}, ${event.reward?.exp || 0}, ${rewardMsg}, ${hint}, ${explanation})'>${o}</button>`
             ).join('');
             box.onclick = null;  // 等答题
+            saveProgress(activeEventIndex, true);
             return;
         }
     }
@@ -355,6 +400,7 @@ const ExplorationDetail = (function () {
         box.onclick = () => ExplorationDetail.next();  // 恢复点击推进
         if (found) foundItems.push(choice.item);
         eventIndex++;
+        saveProgress(eventIndex, false);
     }
 
     function triggerBattle() {
@@ -403,6 +449,7 @@ const ExplorationDetail = (function () {
             VoiceSystem.stop();
         }
         const sceneId = currentScene?.id;
+        clearProgress();
         currentScene = null;
         eventIndex = 0;
         foundItems = [];
@@ -432,6 +479,7 @@ const ExplorationDetail = (function () {
         const memoryResult = recordTravelMemory();
         const memory = memoryResult?.memory || (window.TravelMemory?.getAll?.() || []).find(item => item.sceneId === currentScene.id);
         document.getElementById('galgameChoices').innerHTML = '';
+        clearProgress();
         nameEl.textContent = '🎉 冒险完成';
         textEl.innerHTML = `<span class="galgame-found">${escapeCopy(msg)}</span>${memory ? `<div class="travel-memory-card"><div class="travel-memory-icon">${escapeCopy(memory.icon)}</div><div><strong>${escapeCopy(memory.title)}</strong><span>${escapeCopy(memory.returnText)}</span><small>${escapeCopy(memory.nextPreview)}</small></div></div>` : ''}`;
         setPetMood('proud');
