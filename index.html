@@ -223,6 +223,17 @@
         <main class="main-content" id="mainContent" tabindex="-1">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
+                <section class="child-journey-hero" id="childJourneyHero" aria-labelledby="childJourneyTitle">
+                    <div class="child-journey-hero-copy">
+                        <span class="child-journey-step">今天第 1 步</span>
+                        <h2 id="childJourneyTitle">先完成一件小事</h2>
+                        <p>完成今天的任务，再带小伙伴去看看有什么新变化。</p>
+                    </div>
+                    <button class="child-journey-hero-action" type="button" onclick="switchPage('today')">
+                        <span>开始今天的任务</span>
+                        <small>约 3 分钟 · 完成后有成长分</small>
+                    </button>
+                </section>
                 <div class="home-stage-stack">
                     <section class="showcase" id="showcase" aria-label="首页栏目轮播">
                         <div class="showcase-track" id="showcaseTrack"></div>
@@ -232,21 +243,35 @@
                     </section>
                 </div>
 
-                <section class="dash-launcher" aria-label="首页快捷入口">
+                <section class="dash-launcher child-journey-launcher" aria-label="孩子主线入口">
                     <div class="dash-launcher-head">
                         <div>
-                            <p class="home-summary-kicker">首页入口</p>
-                            <h2>常用入口</h2>
+                            <p class="home-summary-kicker">接下来去哪儿</p>
+                            <h2>选一条小路继续</h2>
                         </div>
-                        <span>点图卡直接进入</span>
+                        <span>先做今天，再陪伙伴冒险</span>
                     </div>
-                    <div class="dash-cards">
-                        <button class="dash-card c-today" type="button" onclick="switchPage('today')"><span class="dash-emoji">📝</span><span class="dash-title">今日打卡</span><span class="dash-sub">完成任务赚积分</span></button>
-                        <button class="dash-card c-learn" type="button" onclick="switchPage('learn')"><span class="dash-emoji">📚</span><span class="dash-title">学习中心</span><span class="dash-sub">汉字 / 英语 / 计划</span></button>
-                        <button class="dash-card c-playground" type="button" onclick="switchPage('playground')"><span class="dash-emoji">🎡</span><span class="dash-title">游乐场</span><span class="dash-sub">数学 / 汉字 / 排行</span></button>
-                        <button class="dash-card c-pet" type="button" onclick="switchPage('pet')"><span class="dash-emoji">🐾</span><span class="dash-title">我的宠物</span><span class="dash-sub">喂食互动成长</span></button>
-                        <button class="dash-card c-explore" type="button" onclick="switchPage('explore')"><span class="dash-emoji">🗺️</span><span class="dash-title">探索冒险</span><span class="dash-sub">点亮场景故事</span></button>
-                        <button class="dash-card c-shop" type="button" onclick="switchPage('shop')"><span class="dash-emoji">🎁</span><span class="dash-title">兑换商店</span><span class="dash-sub">积分换奖励</span></button>
+                    <div class="child-journey-main-grid">
+                        <button class="child-journey-entry is-today" id="childJourneyToday" type="button" onclick="switchPage('today')">
+                            <span class="child-journey-entry-icon" aria-hidden="true">📝</span>
+                            <span class="child-journey-entry-copy"><strong>今天</strong><small>任务、学习和今天的目标</small></span>
+                            <span class="child-journey-arrow" aria-hidden="true">→</span>
+                        </button>
+                        <button class="child-journey-entry is-pet" id="childJourneyPet" type="button" onclick="switchPage('pet')">
+                            <span class="child-journey-entry-icon" aria-hidden="true">🐾</span>
+                            <span class="child-journey-entry-copy"><strong>伙伴</strong><small>看看小伙伴今天怎么样</small></span>
+                            <span class="child-journey-arrow" aria-hidden="true">→</span>
+                        </button>
+                        <button class="child-journey-entry is-adventure" id="childJourneyAdventure" type="button" onclick="switchPage('playground')">
+                            <span class="child-journey-entry-icon" aria-hidden="true">🎮</span>
+                            <span class="child-journey-entry-copy"><strong>冒险</strong><small>选一局短挑战，练习新本领</small></span>
+                            <span class="child-journey-arrow" aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                    <div class="child-journey-more" id="childJourneyMore">
+                        <span>还想看看？</span>
+                        <button type="button" onclick="switchPage('explore')">去探索故事</button>
+                        <button type="button" onclick="switchPage('shop')">去兑换奖励</button>
                     </div>
                 </section>
 
