@@ -167,16 +167,12 @@ for (const sceneId of ['forest', 'beach', 'candy', 'waterfall', 'underwater', 'd
   }
 }
 
-for (const sceneId of ['forest', 'beach', 'stargarden', 'candy', 'waterfall', 'desert']) {
+for (const sceneId of ['forest', 'beach', 'stargarden', 'candy', 'waterfall', 'desert', 'underwater', 'mountain', 'cave', 'castle', 'volcano', 'space']) {
   const story = JSON.parse(fs.readFileSync(`data/stories/${sceneId}.json`, 'utf8'));
   assert.equal(story.chapter_flow.mode, 'short', `${sceneId} short flow mode`);
   assert.deepEqual(story.chapter_flow.see, [0, 1], `${sceneId} short flow see`);
   assert.equal(story.chapter_flow.choose, 3, `${sceneId} short flow choose`);
   assert.deepEqual(story.chapter_flow.challenge, { math: 2, battle: 4 }, `${sceneId} short flow challenge`);
-}
-for (const sceneId of ['underwater', 'mountain', 'cave', 'castle', 'volcano', 'space']) {
-  const story = JSON.parse(fs.readFileSync(`data/stories/${sceneId}.json`, 'utf8'));
-  assert.equal(story.chapter_flow, undefined, `${sceneId} remains legacy flow`);
 }
 
 console.log('pet adventure retention contract tests passed');

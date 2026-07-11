@@ -74,15 +74,15 @@
   underwater.json, volcano.json, space.json, stargarden.json
 ```
 
-#### 三样板短旅行章节
+#### 短旅行章节
 
-`forest`、`beach`、`stargarden` 额外声明 `chapter_flow.mode = "short"`，默认主路径为：
+12 个场景均声明 `chapter_flow.mode = "short"`，默认主路径为：
 
 ```text
 看见（旁白 + 发现） → 选择（一次路线选择） → 带回家（旅行纪念物）
 ```
 
-这三个场景的数学题和遭遇战仍保留在原事件数组，但只有孩子点击“挑战一下”时才进入；挑战路径继续复用现有数学题、探索战斗、经验和掉落规则。未声明 `chapter_flow` 的其余 9 个场景继续使用旧的五事件链，保证旧存档和旧故事兼容。
+每个场景的数学题和遭遇战仍保留在原事件数组，但只有孩子点击“挑战一下”时才进入；挑战路径继续复用现有数学题、探索战斗、经验和掉落规则。旅行记忆目录覆盖 12 个场景，其中 3 个使用已验证 Agnes 图片，9 个使用 placeholder 状态和 emoji/CSS 回退；所有场景都有可收入小屋的装饰 ID。
 
 短流程状态由 `js/exploration-progress.js` 写入同一场景进度键的附加字段（`flowMode`、`flowPhase`、`challengeStatus`），刷新从根入口恢复；直接访问静态服务器的 `/app/explore` 仍会 404，真实验收必须从 `/` 进入。
 
@@ -126,7 +126,7 @@
 | `ExplorationDetail.answerMath(correct, exp, msg, hint, explanation)` | exploration-detail.js:205 | 处理探索数学小题答题反馈和奖励 |
 | `ExplorationDetail.choose(eventIdx, choiceIdx)` | exploration-detail.js:288 | 处理探索事件选项 |
 | `ExplorationDetail.next()` | exploration-detail.js | 推进 legacy 事件或 short flow |
-| `ExplorationDetail.completeShortJourney()` | exploration-detail.js | 跳过可选挑战并完成三样板短旅行 |
+| `ExplorationDetail.completeShortJourney()` | exploration-detail.js | 跳过可选挑战并完成短旅行 |
 | `ExplorationDetail.startShortChallenge()` | exploration-detail.js | 从短旅行进入数学挑战 |
 | `ExplorationDetail.startShortBattle()` | exploration-detail.js | 从短旅行进入遭遇战 |
 | `ExplorationDetail.exit()` | exploration-detail.js | 退出详情页并恢复地图 |

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const sceneIds = ['forest', 'beach', 'mountain', 'space', 'candy', 'cave', 'waterfall', 'desert', 'underwater', 'castle', 'volcano', 'stargarden'];
 const storyTypes = ['narrate', 'discover', 'math', 'choice', 'encounter'];
-const travelRewardScenes = ['forest', 'beach', 'stargarden'];
+const travelRewardScenes = sceneIds;
 
 function readJson(relativePath) {
     return JSON.parse(fs.readFileSync(path.join(repo, relativePath), 'utf8'));
@@ -50,8 +50,13 @@ for (const sceneId of travelRewardScenes) {
     const scene = rewards.scenes?.[sceneId];
     assert.ok(scene, `travel reward missing: ${sceneId}`);
     for (const field of ['asset', 'cardAsset', 'fridgeAsset', 'petCardAsset']) {
-        assert.equal(scene.assetStatuses?.[field], 'verified', `${sceneId}: ${field} is not verified`);
-        assert.ok(fs.existsSync(path.join(repo, scene[field])), `${sceneId}: missing ${scene[field]}`);
+        if (scene.assetStatus === 'verified') {
+            assert.equal(scene.assetStatuses?.[field], 'verified', `${sceneId}: ${field} is not verified`);
+            assert.ok(fs.existsSync(path.join(repo, scene[field])), `${sceneId}: missing ${scene[field]}`);
+        } else {
+            assert.equal(scene.assetStatuses?.[field], 'placeholder', `${sceneId}: ${field} placeholder status`);
+            assert.equal(scene[field], '', `${sceneId}: ${field} placeholder value`);
+        }
     }
 }
 

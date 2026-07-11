@@ -4,7 +4,7 @@
 
 **目标：** 将 12 个探索故事的真实完成状态固化为可重复审计，并让运行时只从场景 JSON 读取事件和结尾文案；同时把旅行纪念图片的生成、验收和扩展边界写清楚。
 
-**架构：** `data/stories/*.json` 是叙事单一来源，`js/exploration-detail.js` 只保存已加载的场景对象。`assets/generated/travel-memory/` 是可选视觉增强层，已有森林、海滩、星光花园三样板通过 Agnes 生成、alpha/尺寸/浏览器检查；其他场景暂不批量生图，继续使用现有场景图和 emoji/CSS 回退。
+**架构：** `data/stories/*.json` 是叙事单一来源，`js/exploration-detail.js` 只保存已加载的场景对象。`data/travel-rewards.json` 覆盖 12 个场景的纪念物元数据；`assets/generated/travel-memory/` 中 3 个场景有 Agnes 已验证图片，其他场景明确使用 placeholder 和 emoji/CSS 回退。
 
 **技术栈：** 原生浏览器 JavaScript、Node.js ESM 契约脚本、JSON、Agnes `agnes-image-2.1-flash` 本地生成脚本。
 
@@ -20,7 +20,7 @@
 **步骤：**
 1. 断言 12 个故事均有 `chapter_skill`、`ending_text` 和五种固定事件。
 2. 断言短文案、宠物情绪、数学题选项、选择奖励和遭遇文案完整。
-3. 断言三样板旅行资产的四类引用都存在且状态为 `verified`。
+3. 断言 12 个场景的旅行元数据、小屋装饰 ID 和 placeholder/verified 状态一致。
 4. 断言运行时不存在 `sceneEvents`、`SCENE_ENDING` 第二来源。
 5. 运行 `node scripts/test-narrative-closure.mjs`，预期输出 `narrative closure contract passed`。
 
@@ -47,7 +47,7 @@
 1. 生成前只在本机读取 `docs/GPT生图/Agnes生图key.md`，不输出 key。
 2. 每批保存 prompt、原始结果、处理结果和 manifest；图片内不烧录文字。
 3. 用 alpha、尺寸、naturalWidth 和浏览器截图验收后才写入 `data/travel-rewards.json`。
-4. 先扩展一个场景做 A/B 体验验证，再决定是否生成剩余 9 个场景。
+4. 先扩展一个场景做 A/B 体验验证，再决定是否为 placeholder 场景生成图片。
 5. 若 Agnes 请求失败，保留脱敏失败证据，不伪造 `verified` 状态。
 
 ### 任务 4：最终文档同步

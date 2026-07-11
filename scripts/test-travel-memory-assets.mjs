@@ -22,12 +22,13 @@ function loadTravelMemory(initial = {}) {
 }
 
 const catalog = JSON.parse(fs.readFileSync('data/travel-rewards.json', 'utf8'));
+const furnitureCatalog = JSON.parse(fs.readFileSync('data/furniture.json', 'utf8'));
 const manifest = JSON.parse(fs.readFileSync('assets/generated/travel-memory/manifest.json', 'utf8'));
 const allowedSources = new Set(['existing', 'Agnes', 'Bee/Grok', 'ChatGPT-web', 'manual']);
 const allowedStatuses = new Set(['placeholder', 'candidate', 'verified', 'published']);
 
 assert.equal(catalog.version, 2);
-assert.deepEqual(Object.keys(catalog.scenes).sort(), ['beach', 'forest', 'stargarden']);
+assert.deepEqual(Object.keys(catalog.scenes).sort(), ['beach', 'candy', 'castle', 'cave', 'desert', 'forest', 'mountain', 'space', 'stargarden', 'underwater', 'volcano', 'waterfall']);
 assert.equal(manifest.status, 'verified');
 assert.equal(manifest.assets.length, 10);
 for (const asset of manifest.assets) {
@@ -47,8 +48,14 @@ for (const [sceneId, scene] of Object.entries(catalog.scenes)) {
   assert.ok(allowedStatuses.has(scene.assetStatus), `${sceneId} assetStatus`);
   for (const key of ['asset', 'cardAsset', 'fridgeAsset', 'petCardAsset']) {
     assert.equal(typeof scene[key], 'string', `${sceneId} ${key}`);
-    assert.ok(scene[key].startsWith('assets/generated/travel-memory/'), `${sceneId} ${key} path`);
+    if (scene.assetStatus === 'verified') {
+      assert.ok(scene[key].startsWith('assets/generated/travel-memory/'), `${sceneId} ${key} path`);
+    } else {
+      assert.equal(scene[key], '', `${sceneId} ${key} placeholder`);
+    }
   }
+  assert.ok(scene.fridgeFurnitureId, `${sceneId} fridge furniture id`);
+  assert.ok(furnitureCatalog.furniture.some((item) => item.id === scene.fridgeFurnitureId), `${sceneId} fridge furniture exists`);
 }
 
 const travel = loadTravelMemory();

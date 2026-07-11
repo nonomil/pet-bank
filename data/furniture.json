@@ -175,6 +175,96 @@
       "description": "星光花园旅行带回来的纪念贴纸",
       "image": "assets/generated/travel-memory/fridge-magnets/stargarden-star-magnet.png",
       "source": "travel-memory"
+    },
+    {
+      "id": "travel_candy_magnet",
+      "name": "糖果王国贴纸",
+      "icon": "🍬",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "糖果王国旅行带回来的纪念贴纸",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_waterfall_magnet",
+      "name": "彩虹露珠贴纸",
+      "icon": "💧",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "彩虹瀑布旅行带回来的纪念贴纸",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_desert_magnet",
+      "name": "沙漠珍珠贴纸",
+      "icon": "🤎",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "沙漠绿洲旅行带回来的纪念贴纸",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_underwater_magnet",
+      "name": "荧光水母贴纸",
+      "icon": "🪼",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "珊瑚王国旅行带回来的纪念贴纸",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_mountain_magnet",
+      "name": "雪山冰晶贴纸",
+      "icon": "❄️",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "雪山之巅旅行带回来的纪念贴纸",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_cave_magnet",
+      "name": "洞穴水晶贴纸",
+      "icon": "💎",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "水晶洞窟旅行带回来的纪念贴纸",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_castle_magnet",
+      "name": "城堡徽章贴纸",
+      "icon": "🛡️",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "云端城堡旅行带回来的纪念贴纸",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_volcano_magnet",
+      "name": "火山鳞片贴纸",
+      "icon": "🔥",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "温暖火山旅行带回来的纪念贴纸",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_space_magnet",
+      "name": "太空岩石贴纸",
+      "icon": "🪨",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "太空站旅行带回来的纪念贴纸",
+      "source": "travel-memory"
     }
   ]
 }

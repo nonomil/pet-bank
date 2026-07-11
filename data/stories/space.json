@@ -6,6 +6,12 @@
   "chapter_name": "星空终点",
   "min_level": 5,
   "danger_level": 4,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [0, 1],
+    "choose": 3,
+    "challenge": { "math": 2, "battle": 4 }
+  },
   "events": [
     {
       "type": "narrate",

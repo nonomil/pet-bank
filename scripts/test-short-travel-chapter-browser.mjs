@@ -26,7 +26,7 @@ async function prepare() {
     localStorage.removeItem('petbank_travel_memory_v1');
     localStorage.removeItem('petbank_exploration_progress_v1:forest');
     localStorage.removeItem('petbank_exploration_progress_v1:beach');
-    localStorage.removeItem('petbank_exploration_progress_v1:underwater');
+    localStorage.removeItem('petbank_exploration_progress_v1:castle');
   });
 }
 
@@ -105,12 +105,27 @@ try {
   await page.waitForSelector('.travel-memory-card');
   assert.equal(await page.locator('#battleModal.show').count(), 0);
 
-  await page.evaluate(() => window.ExplorationDetail.exit());
-  await page.evaluate(async () => { localStorage.removeItem('petbank_exploration_progress_v1:underwater'); await window.ExplorationDetail.show('underwater'); });
-  await page.waitForSelector('#galgameBox');
-  await page.locator('#galgameBox').click();
-  await page.locator('#galgameBox').click();
-  assert.equal(await page.locator('#galgameChoices button').count(), 4, 'legacy flow still reaches math after two story cards');
+  const allSceneIds = ['forest', 'beach', 'mountain', 'space', 'candy', 'cave', 'waterfall', 'desert', 'underwater', 'castle', 'volcano', 'stargarden'];
+  for (const sceneId of allSceneIds) {
+    await page.evaluate(async (id) => {
+      localStorage.removeItem(`petbank_exploration_progress_v1:${id}`);
+      await window.ExplorationDetail.exit();
+      await window.ExplorationDetail.show(id);
+    }, sceneId);
+    await page.waitForSelector('#galgameBox');
+    await page.locator('#galgameBox').click();
+    await page.locator('#galgameBox').click();
+    assert.equal(await page.locator('#galgameChoices button').count(), 2, `${sceneId} short flow choice visible`);
+    await page.locator('#galgameChoices button').first().click();
+    await page.locator('#galgameChoices button').filter({ hasText: '带回家' }).click();
+    await page.waitForFunction(() => document.querySelector('#galgameName')?.textContent.includes('冒险完成'));
+    assert.equal(await page.evaluate((id) => Boolean(JSON.parse(localStorage.getItem('petbank_travel_memory_v1') || '{}')[id]), sceneId), true, `${sceneId} travel memory persisted`);
+  }
+
+  await page.evaluate(async () => { await window.PetBankRuntime.ensurePage('home'); window.switchPage('home'); });
+  await page.waitForFunction(() => document.querySelector('.travel-memory-collection')?.querySelectorAll('article').length === 12);
+  assert.equal(await page.locator('.travel-memory-collection article').count(), 12, 'home shows all twelve travel keepsakes');
+  assert.equal(await page.locator('.travel-memory-collection button').count(), 12, 'home exposes a claim action for all twelve keepsakes');
 
   await page.setViewportSize({ width: 390, height: 844 });
   const layout = await page.evaluate(() => ({ bodyWidth: document.body.scrollWidth, viewportWidth: innerWidth }));

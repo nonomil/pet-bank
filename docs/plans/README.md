@@ -29,8 +29,8 @@
 | `PLAN-2026-06-30-04` | [2026-06-30-叙事收口与文案优化-实施计划](./2026-06-30-叙事收口与文案优化-实施计划.md) | 实施计划 | 当前最高优先 | 以数据优先、运行时次之、文档回填收尾的分批实施计划 |
 | `TASK-2026-06-30-01` | [2026-06-30-叙事收口与文案优化-任务清单](./2026-06-30-叙事收口与文案优化-任务清单.md) | 任务清单 | 当前最高优先 | 给 CC 直接执行的扁平任务列表与分批验收清单 |
 | `PLAN-2026-07-12-NARRATIVE-CLOSURE` | [2026-07-12-叙事闭环与旅行素材审计-implementation](./2026-07-12-叙事闭环与旅行素材审计-implementation.md) | 实施计划 | 当前批次 | 12 场景叙事契约、运行时单一来源与 Agnes 旅行素材扩展边界 |
-| `DESIGN-2026-07-12-SHORT-TRAVEL` | [2026-07-12-short-travel-chapter-design](./2026-07-12-short-travel-chapter-design.md) | 设计稿 | 当前批次 | 三样板真正短旅行：看见→选择→带回家，可选数学/战斗挑战 |
-| `PLAN-2026-07-12-SHORT-TRAVEL` | [2026-07-12-short-travel-chapter-implementation](./2026-07-12-short-travel-chapter-implementation.md) | 实施计划 | 当前批次 | 三样板短流程状态机、断点恢复、浏览器验收与旧链路兼容 |
+| `DESIGN-2026-07-12-SHORT-TRAVEL` | [2026-07-12-short-travel-chapter-design](./2026-07-12-short-travel-chapter-design.md) | 设计稿 | 已落地 | 12 场景短旅行：看见→选择→带回家，可选数学/战斗挑战 |
+| `PLAN-2026-07-12-SHORT-TRAVEL` | [2026-07-12-short-travel-chapter-implementation](./2026-07-12-short-travel-chapter-implementation.md) | 实施计划 | 已落地 | 12 场景短流程状态机、断点恢复、浏览器验收和旅行记忆回家闭环 |
 | `HANDOFF-2026-06-30-01` | [2026-06-30-叙事收口与文案优化-CC完整指令](./2026-06-30-叙事收口与文案优化-CC完整指令.md) | 交接指令 | 当前最高优先 | 可直接复制给 CC 的完整执行指令，含阅读顺序、批次、边界、提交节奏与验收标准 |
 | `TOPIC-CARD-SYSTEM` | [../卡牌系统/README](../卡牌系统/README.md) | 专题索引 | 当前活跃 | 卡牌系统相关设计稿、实施计划、方案、调研已移入专题目录统一维护 |
 | `TOPIC-ROUTE-MAP` | [../路线地图大富翁融合/README](../路线地图大富翁融合/README.md) | 专题索引 | 当前活跃 | 路线地图专题已收口为轻量多圈层重构，执行入口与 CC 提示词统一维护 |
