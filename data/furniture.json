@@ -142,6 +142,39 @@
       "defaultOwned": false,
       "image": "assets/decor/cloud_shelf.webp",
       "description": "云朵造型壁架"
+    },
+    {
+      "id": "travel_forest_magnet",
+      "name": "森林蘑菇冰箱贴",
+      "icon": "🍄",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "森林旅行带回来的纪念贴纸",
+      "image": "assets/generated/travel-memory/fridge-magnets/forest-mushroom-magnet.png",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_beach_magnet",
+      "name": "海滩贝壳冰箱贴",
+      "icon": "🐚",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "海滩旅行带回来的纪念贴纸",
+      "image": "assets/generated/travel-memory/fridge-magnets/beach-shell-magnet.png",
+      "source": "travel-memory"
+    },
+    {
+      "id": "travel_stargarden_magnet",
+      "name": "星花冰箱贴",
+      "icon": "🌟",
+      "price": 0,
+      "slotType": "backdrop",
+      "defaultOwned": false,
+      "description": "星光花园旅行带回来的纪念贴纸",
+      "image": "assets/generated/travel-memory/fridge-magnets/stargarden-star-magnet.png",
+      "source": "travel-memory"
     }
   ]
 }

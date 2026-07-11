@@ -156,3 +156,7 @@ key: petbank_points          → 积分（解锁消耗扣减）(exploration.js:3
 - BLANK_CELLS 仅作路线装饰点，不可点击。
 - 螺旋布局方案经过 3 版迭代（S0→S1→S2），当前 min_level 决定圈层而非 chapter。
 - 探索小题、探索战斗失败和数学 PK 结算反馈属于同一轮"引导式反馈闭环"，但实现位置分离。
+
+## 旅行纪念资产
+
+三条样板路线（森林、海滩、星光花园）在 `data/travel-rewards.json` 声明徽章、旅行卡底图、冰箱贴和宠物旅行卡框。图片来源、版本和逐类状态由 `assetSource`、`assetVersion`、`assetStatuses` 记录；网页文字仍由 DOM 渲染，图片加载失败回退到场景 emoji。原始图、提示词、像素验收和 manifest 位于 `assets/generated/travel-memory/`。

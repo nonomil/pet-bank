@@ -741,6 +741,17 @@ const CardCollection = (function() {
             : '每一座分馆都会进入独立图鉴页，里面有代表卡、馆藏说明和完整宠物卡。';
 
         let html = `<div class="card-collection-shell">`;
+        const travelMemories = window.TravelMemory?.getAll?.() || [];
+        const travelCardsHtml = travelMemories.length
+            ? `<section class="travel-memory-gallery" aria-label="旅行记忆收藏"><div class="travel-memory-gallery-head"><div><div class="card-overview-kicker">旅行记忆</div><h3>宠物带回来的小卡片</h3></div><span>${travelMemories.length} 张</span></div><div class="travel-memory-gallery-grid">${travelMemories.map((memory) => {
+                const hasArt = window.TravelMemory?.isRenderableAsset?.(memory, 'cardAsset');
+                const visual = hasArt
+                    ? `<img src="${escapeHtmlAttr(memory.cardAsset)}" alt="${escapeHtmlAttr(memory.title)}" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>${escapeHtmlAttr(memory.icon)}</span>`
+                    : `<span>${escapeHtmlAttr(memory.icon)}</span>`;
+                return `<article class="travel-memory-gallery-card"><div class="travel-memory-gallery-art">${visual}</div><strong>${escapeHtmlAttr(memory.title)}</strong><small>${escapeHtmlAttr(memory.returnText)}</small><em>${escapeHtmlAttr(memory.nextPreview)}</em></article>`;
+            }).join('')}</div></section>`
+            : '';
+        html += travelCardsHtml;
 
         // === 图鉴馆首页总览 ===
         html += `<section class="card-overview-panel"><div class="card-overview-grid">

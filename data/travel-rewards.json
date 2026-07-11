@@ -1,10 +1,24 @@
 {
-  "version": 1,
+  "version": 2,
   "scenes": {
     "forest": {
       "memoryTitle": "森林贴纸",
       "memoryIcon": "🍄",
       "itemId": "mushroom",
+      "asset": "assets/generated/travel-memory/badges/forest-badge.png",
+      "cardAsset": "assets/generated/travel-memory/cards/forest-card-bg.png",
+      "fridgeAsset": "assets/generated/travel-memory/fridge-magnets/forest-mushroom-magnet.png",
+      "petCardAsset": "assets/generated/travel-memory/pet-cards/pet-travel-card-frame.png",
+      "assetVersion": "v1",
+      "assetSource": "Agnes",
+      "assetStatus": "verified",
+      "assetStatuses": {
+        "asset": "verified",
+        "cardAsset": "verified",
+        "fridgeAsset": "verified",
+        "petCardAsset": "verified"
+      },
+      "fridgeFurnitureId": "travel_forest_magnet",
       "nextPreview": "下一站：蔚蓝海滩",
       "returnText": "宠物把发光蘑菇贴纸带回家啦！"
     },
@@ -12,6 +26,20 @@
       "memoryTitle": "海滩贝壳",
       "memoryIcon": "🐚",
       "itemId": "shell",
+      "asset": "assets/generated/travel-memory/badges/beach-badge.png",
+      "cardAsset": "assets/generated/travel-memory/cards/beach-card-bg.png",
+      "fridgeAsset": "assets/generated/travel-memory/fridge-magnets/beach-shell-magnet.png",
+      "petCardAsset": "assets/generated/travel-memory/pet-cards/pet-travel-card-frame.png",
+      "assetVersion": "v1",
+      "assetSource": "Agnes",
+      "assetStatus": "verified",
+      "assetStatuses": {
+        "asset": "verified",
+        "cardAsset": "verified",
+        "fridgeAsset": "verified",
+        "petCardAsset": "verified"
+      },
+      "fridgeFurnitureId": "travel_beach_magnet",
       "nextPreview": "下一站：星光花园",
       "returnText": "宠物把海风和一枚贝壳带回家啦！"
     },
@@ -19,6 +47,20 @@
       "memoryTitle": "星光照片",
       "memoryIcon": "🌟",
       "itemId": "star_dust",
+      "asset": "assets/generated/travel-memory/badges/stargarden-badge.png",
+      "cardAsset": "assets/generated/travel-memory/cards/stargarden-card-bg.png",
+      "fridgeAsset": "assets/generated/travel-memory/fridge-magnets/stargarden-star-magnet.png",
+      "petCardAsset": "assets/generated/travel-memory/pet-cards/pet-travel-card-frame.png",
+      "assetVersion": "v1",
+      "assetSource": "Agnes",
+      "assetStatus": "verified",
+      "assetStatuses": {
+        "asset": "verified",
+        "cardAsset": "verified",
+        "fridgeAsset": "verified",
+        "petCardAsset": "verified"
+      },
+      "fridgeFurnitureId": "travel_stargarden_magnet",
       "nextPreview": "下一站：新的伙伴故事",
       "returnText": "宠物把星光照片放进成长相册啦！"
     }

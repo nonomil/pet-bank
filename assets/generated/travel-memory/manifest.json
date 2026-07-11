@@ -1,0 +1,129 @@
+{
+  "version": 2,
+  "generatedAt": "2026-07-11T17:07:16.245689+00:00",
+  "source": "Agnes",
+  "model": "agnes-image-2.1-flash",
+  "status": "verified",
+  "assets": [
+    {
+      "name": "forest-badge",
+      "file": "assets/generated/travel-memory/badges/forest-badge.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGBA",
+      "edgeAlphaMax": 0,
+      "greenLikePixels": 0,
+      "opaquePixels": 150751
+    },
+    {
+      "name": "beach-badge",
+      "file": "assets/generated/travel-memory/badges/beach-badge.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGBA",
+      "edgeAlphaMax": 0,
+      "greenLikePixels": 0,
+      "opaquePixels": 321124
+    },
+    {
+      "name": "stargarden-badge",
+      "file": "assets/generated/travel-memory/badges/stargarden-badge.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGBA",
+      "edgeAlphaMax": 0,
+      "greenLikePixels": 0,
+      "opaquePixels": 248785
+    },
+    {
+      "name": "forest-mushroom-magnet",
+      "file": "assets/generated/travel-memory/fridge-magnets/forest-mushroom-magnet.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGBA",
+      "edgeAlphaMax": 0,
+      "greenLikePixels": 0,
+      "opaquePixels": 266610
+    },
+    {
+      "name": "beach-shell-magnet",
+      "file": "assets/generated/travel-memory/fridge-magnets/beach-shell-magnet.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGBA",
+      "edgeAlphaMax": 0,
+      "greenLikePixels": 0,
+      "opaquePixels": 308436
+    },
+    {
+      "name": "stargarden-star-magnet",
+      "file": "assets/generated/travel-memory/fridge-magnets/stargarden-star-magnet.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGBA",
+      "edgeAlphaMax": 0,
+      "greenLikePixels": 0,
+      "opaquePixels": 300413
+    },
+    {
+      "name": "forest-card-bg",
+      "file": "assets/generated/travel-memory/cards/forest-card-bg.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGB",
+      "edgeAlphaMax": null,
+      "greenLikePixels": null,
+      "opaquePixels": 1048576
+    },
+    {
+      "name": "beach-card-bg",
+      "file": "assets/generated/travel-memory/cards/beach-card-bg.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGB",
+      "edgeAlphaMax": null,
+      "greenLikePixels": null,
+      "opaquePixels": 1048576
+    },
+    {
+      "name": "stargarden-card-bg",
+      "file": "assets/generated/travel-memory/cards/stargarden-card-bg.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGB",
+      "edgeAlphaMax": null,
+      "greenLikePixels": null,
+      "opaquePixels": 1048576
+    },
+    {
+      "name": "pet-travel-card-frame",
+      "file": "assets/generated/travel-memory/pet-cards/pet-travel-card-frame.png",
+      "source": "Agnes",
+      "status": "verified",
+      "width": 1024,
+      "height": 1024,
+      "colorMode": "RGB",
+      "edgeAlphaMax": null,
+      "greenLikePixels": null,
+      "opaquePixels": 1048576
+    }
+  ]
+}

@@ -481,7 +481,10 @@ const ExplorationDetail = (function () {
         document.getElementById('galgameChoices').innerHTML = '';
         clearProgress();
         nameEl.textContent = '🎉 冒险完成';
-        textEl.innerHTML = `<span class="galgame-found">${escapeCopy(msg)}</span>${memory ? `<div class="travel-memory-card"><div class="travel-memory-icon">${escapeCopy(memory.icon)}</div><div><strong>${escapeCopy(memory.title)}</strong><span>${escapeCopy(memory.returnText)}</span><small>${escapeCopy(memory.nextPreview)}</small></div></div>` : ''}`;
+        const badgeHtml = memory && window.TravelMemory?.isRenderableAsset?.(memory, 'asset')
+            ? `<img class="travel-memory-art" src="${escapeCopy(memory.asset)}" alt="${escapeCopy(memory.title)}" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="travel-memory-icon" hidden>${escapeCopy(memory.icon)}</div>`
+            : (memory ? `<div class="travel-memory-icon">${escapeCopy(memory.icon)}</div>` : '');
+        textEl.innerHTML = `<span class="galgame-found">${escapeCopy(msg)}</span>${memory ? `<div class="travel-memory-card"><div class="travel-memory-visual">${badgeHtml}</div><div><strong>${escapeCopy(memory.title)}</strong><span>${escapeCopy(memory.returnText)}</span><small>${escapeCopy(memory.nextPreview)}</small></div></div>` : ''}`;
         setPetMood('proud');
         box.onclick = () => ExplorationDetail.exit();
     }

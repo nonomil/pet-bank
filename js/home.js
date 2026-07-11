@@ -616,6 +616,37 @@ const HomeSystem = (function () {
         }
     }
 
+    function claimTravelMemory(sceneId) {
+        const id = String(sceneId || '').trim();
+        const memory = window.TravelMemory?.getAll?.().find((item) => item.sceneId === id);
+        if (!memory || !memory.fridgeFurnitureId) return false;
+        const alreadyOwned = Array.isArray(furniture) && furniture.indexOf(memory.fridgeFurnitureId) >= 0;
+        addFurniture(memory.fridgeFurnitureId);
+        renderUI(_lastContainer);
+        if (!alreadyOwned && typeof window.showToast === 'function') window.showToast(`${memory.title} 已收入小屋收藏！`);
+        return !alreadyOwned;
+    }
+
+    function _escapeTravelHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[char]));
+    }
+
+    function renderTravelMemoryCollection() {
+        const memories = window.TravelMemory?.getAll?.() || [];
+        if (!memories.length) return '';
+        const cards = memories.map((memory) => {
+            const hasArt = window.TravelMemory?.isRenderableAsset?.(memory, 'fridgeAsset');
+            const visual = hasArt
+                ? `<img class="travel-memory-collection-art" src="${_escapeTravelHtml(memory.fridgeAsset)}" alt="${_escapeTravelHtml(memory.title)}" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>${_escapeTravelHtml(memory.icon)}</span>`
+                : `<span>${_escapeTravelHtml(memory.icon)}</span>`;
+            const owned = Array.isArray(furniture) && furniture.indexOf(memory.fridgeFurnitureId) >= 0;
+            return `<article class="travel-memory-collection-card"><div class="travel-memory-collection-artbox">${visual}</div><div class="travel-memory-collection-copy"><strong>${_escapeTravelHtml(memory.title)}</strong><small>${_escapeTravelHtml(memory.nextPreview)}</small>${owned ? '<span class="travel-memory-owned">已收入小屋</span>' : `<button type="button" onclick="HomeSystem.claimTravelMemory('${_escapeTravelHtml(memory.sceneId)}')">收入小屋</button>`}</div></article>`;
+        }).join('');
+        return `<section class="home-card travel-memory-collection" aria-label="旅行纪念物"><div class="travel-memory-collection-head"><h4>旅行纪念物</h4><span>${memories.length} 件</span></div><p>把旅途中带回来的小东西，挑一件摆进小屋。</p><div class="travel-memory-collection-grid">${cards}</div></section>`;
+    }
+
     // ---------- 未摆放家具选择态（Task 4） ----------
     let _selectedFurniture = null;
     function selectFurniture(furnId) {
@@ -996,6 +1027,7 @@ const HomeSystem = (function () {
                         ${vitHtml}
                     </div>
                     ${actionsHtml}
+                    ${renderTravelMemoryCollection()}
                     <div id="home-visit-slot"></div>
                     <div id="home-social-panel"></div>
                     ${trayHtml}
@@ -1045,7 +1077,7 @@ const HomeSystem = (function () {
         onFeed, onPlay, onBath, onRest, onRescue,
         placeFurniture, removeFurniture, addFurniture,
         canPlace, selectFurniture, clearSelection,
-        onPetClick, setHomeBg, cycleHomeBg,
+        onPetClick, setHomeBg, cycleHomeBg, claimTravelMemory,
         openEvolutionPreview,
         openManageHome, closeManageHome, buyTheme, refreshManage,
         markExit,

@@ -3,6 +3,8 @@
     'use strict';
 
     const STORAGE_KEY = 'petbank_travel_memory_v1';
+    const ASSET_SOURCES = ['existing', 'Agnes', 'Bee/Grok', 'ChatGPT-web', 'manual'];
+    const ASSET_STATUSES = ['placeholder', 'candidate', 'verified', 'published'];
     let scenes = {};
 
     function read() {
@@ -22,6 +24,8 @@
         scenes = catalog && typeof catalog === 'object' && !Array.isArray(catalog) ? catalog : {};
         return scenes;
     }
+
+    function getCatalog() { return { ...scenes }; }
 
     async function load() {
         if (Object.keys(scenes).length) return scenes;
@@ -45,9 +49,35 @@
             title: scene.memoryTitle || '旅行纪念物',
             icon: scene.memoryIcon || '📸',
             itemId: scene.itemId || null,
+            asset: typeof scene.asset === 'string' ? scene.asset : '',
+            cardAsset: typeof scene.cardAsset === 'string' ? scene.cardAsset : '',
+            fridgeAsset: typeof scene.fridgeAsset === 'string' ? scene.fridgeAsset : '',
+            petCardAsset: typeof scene.petCardAsset === 'string' ? scene.petCardAsset : '',
+            assetVersion: scene.assetVersion || 'v1',
+            assetSource: ASSET_SOURCES.includes(scene.assetSource) ? scene.assetSource : 'manual',
+            assetStatus: ASSET_STATUSES.includes(scene.assetStatus) ? scene.assetStatus : 'placeholder',
+            assetStatuses: normalizeAssetStatuses(scene.assetStatuses, scene.assetStatus),
+            fridgeFurnitureId: scene.fridgeFurnitureId || null,
             nextPreview: scene.nextPreview || '下一站正在准备中',
             returnText: scene.returnText || '宠物带着旅行纪念物回家啦！'
         };
+    }
+
+    function normalizeAssetStatuses(statuses, fallback) {
+        const result = {};
+        ['asset', 'cardAsset', 'fridgeAsset', 'petCardAsset'].forEach((field) => {
+            const value = statuses && statuses[field];
+            result[field] = ASSET_STATUSES.includes(value)
+                ? value
+                : (ASSET_STATUSES.includes(fallback) ? fallback : 'placeholder');
+        });
+        return result;
+    }
+
+    function isRenderableAsset(memory, field) {
+        const candidate = memory && memory[field];
+        const status = memory?.assetStatuses?.[field] || memory?.assetStatus;
+        return Boolean(candidate && ['verified', 'published'].includes(status));
     }
 
     function record(input = {}) {
@@ -68,5 +98,40 @@
 
     function getAll() { return Object.values(read()); }
 
-    root.TravelMemory = { STORAGE_KEY, configure, load, getSceneMemory, record, getAll };
+    function hydrateStoredMemories() {
+        const memories = read();
+        let changed = false;
+        Object.keys(memories).forEach((sceneId) => {
+            const template = getSceneMemory(sceneId);
+            if (!template) return;
+            const current = memories[sceneId];
+            const merged = { ...template, ...current };
+            ['asset', 'cardAsset', 'fridgeAsset', 'petCardAsset', 'assetVersion', 'assetSource', 'assetStatus', 'assetStatuses', 'fridgeFurnitureId'].forEach((key) => {
+                if (current[key] !== merged[key]) changed = true;
+            });
+            memories[sceneId] = merged;
+        });
+        if (changed) write(memories);
+        return Object.values(memories);
+    }
+
+    function getOwnedAssets(kind) {
+        const field = kind === 'fridge' ? 'fridgeAsset' : kind === 'card' ? 'cardAsset' : kind === 'badge' ? 'asset' : '';
+        return getAll().filter(memory => !field || memory[field]);
+    }
+
+    root.TravelMemory = {
+        STORAGE_KEY,
+        ASSET_SOURCES,
+        ASSET_STATUSES,
+        configure,
+        load,
+        getCatalog,
+        getSceneMemory,
+        isRenderableAsset,
+        record,
+        getAll,
+        hydrateStoredMemories,
+        getOwnedAssets
+    };
 })(typeof window !== 'undefined' ? window : globalThis);

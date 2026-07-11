@@ -1,0 +1,17 @@
+{
+  "source": "Agnes",
+  "model": "agnes-image-2.1-flash",
+  "status": "failed_then_retried",
+  "assets": [
+    "cards/forest-card-bg",
+    "cards/beach-card-bg",
+    "cards/stargarden-card-bg"
+  ],
+  "error": {
+    "httpStatus": 400,
+    "code": "content_policy_violation",
+    "message": "Unable to generate this content. Please modify your prompt and try again."
+  },
+  "action": "Simplified the prompt to a neutral collectible card background and retried successfully.",
+  "keyRecorded": false
+}

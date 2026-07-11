@@ -1857,3 +1857,16 @@
         min-height: 320px;
     }
 }
+ .travel-memory-gallery { margin: 0 0 18px; padding: 16px; border: 1px solid #e4dcfb; border-radius: 18px; background: linear-gradient(135deg, #fffaf0, #f6f2ff); }
+.travel-memory-gallery-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.travel-memory-gallery-head h3 { margin: 3px 0 0; color: #4e3b82; font-size: 20px; }
+.travel-memory-gallery-head > span { color: #6c5ce7; font-size: 13px; font-weight: 800; }
+.travel-memory-gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.travel-memory-gallery-card { display: grid; gap: 6px; min-width: 0; padding: 10px; border: 1px solid #ece5ff; border-radius: 14px; background: rgba(255,255,255,.8); }
+.travel-memory-gallery-art { display: grid; place-items: center; min-height: 128px; border-radius: 11px; background: linear-gradient(180deg, #f2efff, #fff); overflow: hidden; }
+.travel-memory-gallery-art img { width: 100%; height: 128px; object-fit: contain; }
+.travel-memory-gallery-art span { font-size: 48px; }
+.travel-memory-gallery-card strong { overflow: hidden; color: #4b3b76; text-overflow: ellipsis; white-space: nowrap; }
+.travel-memory-gallery-card small { min-height: 2.8em; color: #6f6a7c; font-size: 11px; line-height: 1.45; }
+.travel-memory-gallery-card em { color: #b07b32; font-size: 11px; font-style: normal; }
+@media (max-width: 640px) { .travel-memory-gallery-grid { grid-template-columns: 1fr; } .travel-memory-gallery-card { grid-template-columns: 90px minmax(0, 1fr); align-items: center; } .travel-memory-gallery-card strong, .travel-memory-gallery-card small, .travel-memory-gallery-card em { grid-column: 2; } .travel-memory-gallery-art { grid-row: span 3; min-height: 90px; } .travel-memory-gallery-art img { height: 90px; } }

@@ -1,0 +1,85 @@
+{
+  "model": "agnes-image-2.1-flash",
+  "size": "1024x1024",
+  "source": "Agnes",
+  "results": [
+    {
+      "name": "badges/forest-badge",
+      "title": "森林旅行纪念徽章",
+      "status": "skipped",
+      "file": "assets/generated/travel-memory/badges/forest-badge.png"
+    },
+    {
+      "name": "badges/beach-badge",
+      "title": "海滩旅行纪念徽章",
+      "status": "skipped",
+      "file": "assets/generated/travel-memory/badges/beach-badge.png"
+    },
+    {
+      "name": "badges/stargarden-badge",
+      "title": "星光花园旅行纪念徽章",
+      "status": "skipped",
+      "file": "assets/generated/travel-memory/badges/stargarden-badge.png"
+    },
+    {
+      "name": "fridge-magnets/forest-mushroom-magnet",
+      "title": "森林蘑菇冰箱贴",
+      "status": "skipped",
+      "file": "assets/generated/travel-memory/fridge-magnets/forest-mushroom-magnet.png"
+    },
+    {
+      "name": "fridge-magnets/beach-shell-magnet",
+      "title": "海滩贝壳冰箱贴",
+      "status": "skipped",
+      "file": "assets/generated/travel-memory/fridge-magnets/beach-shell-magnet.png"
+    },
+    {
+      "name": "fridge-magnets/stargarden-star-magnet",
+      "title": "星花冰箱贴",
+      "status": "skipped",
+      "file": "assets/generated/travel-memory/fridge-magnets/stargarden-star-magnet.png"
+    },
+    {
+      "name": "cards/forest-card-bg",
+      "title": "森林旅行纪念卡底图",
+      "status": "raw",
+      "file": "assets/generated/travel-memory/cards/forest-card-bg.png",
+      "responseKeys": [
+        "b64_json",
+        "revised_prompt",
+        "url"
+      ],
+      "hasRevisedPrompt": false
+    },
+    {
+      "name": "cards/beach-card-bg",
+      "title": "海滩旅行纪念卡底图",
+      "status": "raw",
+      "file": "assets/generated/travel-memory/cards/beach-card-bg.png",
+      "responseKeys": [
+        "b64_json",
+        "revised_prompt",
+        "url"
+      ],
+      "hasRevisedPrompt": false
+    },
+    {
+      "name": "cards/stargarden-card-bg",
+      "title": "星光花园旅行纪念卡底图",
+      "status": "raw",
+      "file": "assets/generated/travel-memory/cards/stargarden-card-bg.png",
+      "responseKeys": [
+        "b64_json",
+        "revised_prompt",
+        "url"
+      ],
+      "hasRevisedPrompt": false
+    },
+    {
+      "name": "pet-cards/pet-travel-card-frame",
+      "title": "宠物旅行卡牌统一卡框",
+      "status": "skipped",
+      "file": "assets/generated/travel-memory/pet-cards/pet-travel-card-frame.png"
+    }
+  ]
+}

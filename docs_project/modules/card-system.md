@@ -115,3 +115,7 @@ key: arena_points → 竞技场积分 (card-arena-ui.js:1392)
 - CardArena 是纯逻辑层，不碰 DOM；CardArenaUI 负责渲染
 - BattleEngine 被探索和卡牌对战共享，通过 useDef 参数区分
 - PvP 本地热座（pvpTeamA/pvpTeamB）是彩蛋功能，未正式启用
+
+## 旅行记忆收藏
+
+卡片图鉴顶部额外展示已完成探索的旅行卡。旅行卡只读展示地点、完成时间和下一站预告，不进入 `CardArena` 队伍，也不改变现有系列收集奖励、经验或战斗数值；卡底图加载失败时回退到旅行 emoji。
