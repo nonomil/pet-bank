@@ -145,6 +145,127 @@ let completedTasks = new Set();
 let activeExploreSceneId = null;
 let pageActivationToken = 0;
 const GROWTH_WORKS_KEY = 'petbank_growth_works';
+const DAILY_STATE_KEY = 'petbank_daily_state';
+const DAILY_STATE_MIGRATED_KEY = 'petbank_daily_state_migrated';
+const DAILY_CHEST_INITIAL_COUNT = 1;
+
+function getLocalDateKey() {
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${now.getFullYear()}-${month}-${day}`;
+}
+
+function getActiveDailyProfileId() {
+    return window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function'
+        ? (window.ProfileManager.getActiveId() || 'p_default')
+        : 'p_default';
+}
+
+function parseDailyState(raw) {
+    try {
+        const value = raw ? JSON.parse(raw) : null;
+        return value && typeof value === 'object' ? value : null;
+    } catch (error) {
+        return null;
+    }
+}
+
+function syncLegacyDailyTaskKeys(tasks) {
+    const list = [...tasks];
+    localStorage.setItem('petbank_completed', JSON.stringify(list));
+    localStorage.setItem('petbank_tasks_completed_today', String(list.length));
+}
+
+function normalizeDailyChestCount(value) {
+    return typeof value === 'number' && Number.isInteger(value) && value >= 0
+        ? value
+        : DAILY_CHEST_INITIAL_COUNT;
+}
+
+function didLegacyDailyChestClaimToday() {
+    const claimedDate = localStorage.getItem('petbank_daily_claim_date');
+    return claimedDate === getLocalDateKey() || claimedDate === new Date().toLocaleDateString();
+}
+
+function getMigratedDailyChestCount(dailyChestClaimed) {
+    if (dailyChestClaimed) return 0;
+    const inventory = parseDailyState(localStorage.getItem('petbank_chests'));
+    const savedCount = inventory && inventory.daily;
+    return typeof savedCount === 'number' && Number.isInteger(savedCount) && savedCount >= 0
+        ? Math.max(DAILY_CHEST_INITIAL_COUNT, savedCount)
+        : DAILY_CHEST_INITIAL_COUNT;
+}
+
+function readDailyState() {
+    const date = getLocalDateKey();
+    const profileId = getActiveDailyProfileId();
+    const saved = parseDailyState(localStorage.getItem(DAILY_STATE_KEY));
+    if (saved && saved.date === date && saved.profileId === profileId && Array.isArray(saved.completedTasks)) {
+        const dailyChestCount = normalizeDailyChestCount(saved.dailyChestCount);
+        if (dailyChestCount !== saved.dailyChestCount) {
+            localStorage.setItem(DAILY_STATE_KEY, JSON.stringify({ ...saved, dailyChestCount }));
+        }
+        return {
+            completedTasks: new Set(saved.completedTasks),
+            dailyChestClaimed: Boolean(saved.dailyChestClaimed),
+            dailyChestCount
+        };
+    }
+
+    let completedTasks = [];
+    const dailyChestClaimed = !saved && didLegacyDailyChestClaimToday();
+    if (!saved && localStorage.getItem(DAILY_STATE_MIGRATED_KEY) !== '1') {
+        const legacy = parseDailyState(localStorage.getItem('petbank_completed'));
+        completedTasks = Array.isArray(legacy) ? legacy : [];
+        localStorage.setItem(DAILY_STATE_MIGRATED_KEY, '1');
+    }
+    const dailyChestCount = saved ? DAILY_CHEST_INITIAL_COUNT : getMigratedDailyChestCount(dailyChestClaimed);
+    const state = { date, profileId, completedTasks, dailyChestClaimed, dailyChestCount };
+    localStorage.setItem(DAILY_STATE_KEY, JSON.stringify(state));
+    syncLegacyDailyTaskKeys(completedTasks);
+    return { completedTasks: new Set(completedTasks), dailyChestClaimed, dailyChestCount };
+}
+
+function writeDailyState(tasks, dailyChestClaimed, dailyChestCount) {
+    const completed = [...tasks];
+    localStorage.setItem(DAILY_STATE_KEY, JSON.stringify({
+        date: getLocalDateKey(),
+        profileId: getActiveDailyProfileId(),
+        completedTasks: completed,
+        dailyChestClaimed: Boolean(dailyChestClaimed),
+        dailyChestCount: normalizeDailyChestCount(dailyChestCount)
+    }));
+    localStorage.setItem(DAILY_STATE_MIGRATED_KEY, '1');
+    syncLegacyDailyTaskKeys(completed);
+}
+
+window.PetBankDailyState = {
+    localDate: getLocalDateKey,
+    load: readDailyState,
+    save(tasks) {
+        const current = readDailyState();
+        writeDailyState(tasks, current.dailyChestClaimed, current.dailyChestCount);
+    },
+    getCompletedCount() {
+        return readDailyState().completedTasks.size;
+    },
+    hasClaimedDaily() {
+        return readDailyState().dailyChestClaimed;
+    },
+    claimDaily() {
+        const current = readDailyState();
+        writeDailyState(current.completedTasks, true, current.dailyChestCount);
+        localStorage.setItem('petbank_daily_claim_date', new Date().toLocaleDateString());
+    },
+    getDailyChestCount() {
+        return readDailyState().dailyChestCount;
+    },
+    setDailyChestCount(count) {
+        const current = readDailyState();
+        writeDailyState(current.completedTasks, current.dailyChestClaimed, count);
+    }
+};
 
 Object.defineProperty(window, 'totalPoints', {
     configurable: true,
@@ -161,13 +282,11 @@ Object.defineProperty(window, 'totalPoints', {
 function saveAppState() {
     window.totalPoints = totalPoints;
     localStorage.setItem('petbank_points', totalPoints.toString());
-    localStorage.setItem('petbank_completed', JSON.stringify([...completedTasks]));
+    window.PetBankDailyState.save(completedTasks);
 }
 function loadAppState() {
     totalPoints = parseInt(localStorage.getItem('petbank_points') || '0');
-    const saved = localStorage.getItem('petbank_completed');
-    if (saved) completedTasks = new Set(JSON.parse(saved));
-    localStorage.setItem('petbank_tasks_completed_today', String(completedTasks.size));
+    completedTasks = window.PetBankDailyState.load().completedTasks;
     window.totalPoints = totalPoints;
 }
 
@@ -291,6 +410,7 @@ function getActivePageId() {
 
 // ============ 任务系统 ============
 function toggleTask(dim, taskName, pts) {
+    completedTasks = window.PetBankDailyState.load().completedTasks;
     const tid = `${dim}-${taskName}`;
     if (completedTasks.has(tid)) {
         completedTasks.delete(tid);

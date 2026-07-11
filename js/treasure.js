@@ -33,6 +33,9 @@ const TreasureChest = (function () {
 
     // ============ 日常宝箱 ============
     function hasClaimedDaily() {
+        if (window.PetBankDailyState && typeof window.PetBankDailyState.hasClaimedDaily === 'function') {
+            return window.PetBankDailyState.hasClaimedDaily();
+        }
         const last = localStorage.getItem(DAILY_DATE_KEY);
         if (!last) return false;
         return last === new Date().toLocaleDateString();
@@ -40,7 +43,9 @@ const TreasureChest = (function () {
 
     function canOpenDaily() {
         if (hasClaimedDaily()) return { can: false, msg: '今日已领取' };
-        const done = parseInt(localStorage.getItem('petbank_tasks_completed_today') || '0');
+        const done = window.PetBankDailyState && typeof window.PetBankDailyState.getCompletedCount === 'function'
+            ? window.PetBankDailyState.getCompletedCount()
+            : parseInt(localStorage.getItem('petbank_tasks_completed_today') || '0');
         if (done < 1) return { can: false, msg: '完成至少1个任务后可领取' };
         return { can: true };
     }
@@ -109,7 +114,14 @@ const TreasureChest = (function () {
             const check = canOpenDaily();
             if (!check.can) { alert(check.msg); return; }
             inventory.daily = Math.max(0, inventory.daily - 1);
-            localStorage.setItem(DAILY_DATE_KEY, new Date().toLocaleDateString());
+            if (window.PetBankDailyState && typeof window.PetBankDailyState.claimDaily === 'function') {
+                if (typeof window.PetBankDailyState.setDailyChestCount === 'function') {
+                    window.PetBankDailyState.setDailyChestCount(inventory.daily);
+                }
+                window.PetBankDailyState.claimDaily();
+            } else {
+                localStorage.setItem(DAILY_DATE_KEY, new Date().toLocaleDateString());
+            }
         } else {
             if (inventory[type] <= 0) { alert('没有可用的宝箱！'); return; }
             inventory[type] -= 1;
@@ -187,8 +199,12 @@ const TreasureChest = (function () {
     // ============ 初始化 ============
     function init() {
         load().then(() => {
+            if (window.PetBankDailyState && typeof window.PetBankDailyState.getDailyChestCount === 'function') {
+                inventory.daily = window.PetBankDailyState.getDailyChestCount();
+                save();
+            }
             // 初始给1个日常宝箱
-            if (!hasClaimedDaily() && inventory.daily === 0) {
+            if (!window.PetBankDailyState && !hasClaimedDaily() && inventory.daily === 0) {
                 inventory.daily = 1;
                 save();
             }
@@ -198,7 +214,7 @@ const TreasureChest = (function () {
     }
 
     return {
-        init, openChest, addExploreChest, checkMilestones, renderInventory
+        init, openChest, addExploreChest, checkMilestones, renderInventory, canOpenDaily
     };
 })();
 

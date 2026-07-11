@@ -2,6 +2,15 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.31] - 2026-07-11
+### 📅 每日任务与宝箱状态日期化
+
+- 新增共享 `PetBankDailyState` 契约，任务完成状态、每日宝箱领取和库存按设备本地日期与当前 Profile 统一管理
+- 跨日会重置任务、领取状态和一个日常宝箱；同日刷新保留状态，Profile 切换继续依赖既有业务快照隔离
+- 首次升级会迁移旧 `petbank_completed`、`petbank_tasks_completed_today` 与同日 `petbank_daily_claim_date`，避免当天完成或领取记录丢失/重复领取
+- 加入对损坏 localStorage、非法宝箱库存和共享 API 回退路径的回归测试
+- 验证通过：`node --test scripts/test-daily-state.mjs`（5/5）与 `node scripts/test-static-route-entries.mjs`（40 routes）
+
 ## [v0.7.30] - 2026-07-11
 ### 🗺️ 像素探险 9 格世界与发布产物收口
 
