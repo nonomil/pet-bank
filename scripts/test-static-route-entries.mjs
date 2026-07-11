@@ -23,6 +23,16 @@ const expectedRoutes = [
     '/settings/rules',
     '/settings/advanced',
 ];
+const playgroundCardAssets = [
+    'pg-card-mathpk.webp',
+    'pg-card-hanzi.webp',
+    'pg-card-arena.webp',
+    'pg-card-typing-defense.webp',
+    'pg-card-word-shooter.webp',
+    'pg-card-word-cannon.webp',
+    'pg-card-pinyin-snake.webp',
+    'pg-card-word-memory.webp',
+];
 
 function fail(message) {
     console.error(`FAIL ${message}`);
@@ -48,6 +58,19 @@ try {
     }
 
     const appSource = fs.readFileSync(path.join(artifactDir, 'index.html'), 'utf8');
+    if (/assets\/ui\/pg-card-[^"']+\.png/i.test(appSource)) {
+        fail('index.html still references a PNG playground card that Pages excludes from the artifact');
+    }
+    for (const name of playgroundCardAssets) {
+        const assetPath = path.join(artifactDir, 'assets', 'ui', name);
+        if (!fs.existsSync(assetPath)) {
+            fail(`playground card ${name} is missing from the Pages artifact`);
+            continue;
+        }
+        if (fs.statSync(assetPath).size > 250 * 1024) {
+            fail(`playground card ${name} exceeds the 250KB publish budget`);
+        }
+    }
     if (!appSource.includes('<base id="routeBase" href="./">')) {
         fail('index.html must use a relative initial route base before the browser preloads assets');
     }
