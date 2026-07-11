@@ -28,7 +28,7 @@ const ExplorationDetail = (function () {
         if (window.sfx && typeof window.sfx.play === 'function') window.sfx.play(name);
     }
 
-    // 探索故事事件（数据驱动 data/stories/ 文件夹，每场景一个 json；fetch 失败回退硬编码 sceneEvents 兜底）
+    // 探索故事数据（每个场景一个 JSON，运行时只使用该数据源）
     const STORY_SCENE_IDS = ['forest', 'beach', 'mountain', 'space', 'candy', 'cave', 'waterfall', 'desert', 'underwater', 'castle', 'volcano', 'stargarden'];
     let _storiesLoaded = false;
     let _storiesLoadingPromise = null;
@@ -49,8 +49,7 @@ const ExplorationDetail = (function () {
                 }
             }));
             results.forEach((s, i) => {
-                    if (s && s.events) sceneEvents[STORY_SCENE_IDS[i]] = s.events;
-                    if (s && s.ending_text) SCENE_ENDING[STORY_SCENE_IDS[i]] = s.ending_text;
+                    if (s && s.events) storyData[STORY_SCENE_IDS[i]] = s;
             });
             _storiesLoaded = true;
             _storiesLoadingPromise = null;
@@ -58,8 +57,7 @@ const ExplorationDetail = (function () {
         return _storiesLoadingPromise;
     }
 
-    // 每个场景的探索事件序列（R1 单一源：data/stories/*.json 唯一正式源，_loadStories 加载填充）
-    let sceneEvents = {};
+    let storyData = {};
 
     // galgame 立绘映射（场景 → 角色立绘图，Agnes 生图后填路径）
     const SCENE_CHAR_PORTRAIT = {
@@ -102,14 +100,14 @@ const ExplorationDetail = (function () {
             await window.TravelMemory.load();
         }
         // 故事未加载(file://协议或fetch失败) → 明确提示，不再静默回退兜底（R1 单一源）
-        if (!sceneEvents[currentScene.id]) {
+        if (!storyData[currentScene.id]) {
             switchPage('explore');
             const pe = document.getElementById('page-explore');
             if (pe) pe.innerHTML = '<div style="padding:60px;text-align:center;color:#fbbf24;font-size:18px;line-height:1.8;">📖 故事加载失败<br><span style="font-size:14px;color:#888;">请用本地服务器打开：<code>python -m http.server 8000</code><br>然后访问 http://localhost:8000/</span></div>';
             currentScene = null;
             return;
         }
-        const events = sceneEvents[currentScene.id] || [];
+        const events = storyData[currentScene.id]?.events || [];
         currentChapter = window.ExplorationChapter?.build?.(events) || null;
         const saved = window.ExplorationProgress?.load?.(currentScene.id) || null;
         eventIndex = saved && saved.activeEventIndex < events.length ? saved.activeEventIndex : 0;
@@ -307,7 +305,7 @@ const ExplorationDetail = (function () {
     }
 
     function showNextEvent() {
-        const events = sceneEvents[currentScene.id] || [];
+        const events = storyData[currentScene.id]?.events || [];
         if (eventIndex >= events.length) { triggerBattle(); return; }
         const event = events[eventIndex];
         const nameEl = document.getElementById('galgameName');
@@ -385,7 +383,7 @@ const ExplorationDetail = (function () {
     }
 
     function choose(eventIdx, choiceIdx) {
-        const events = sceneEvents[currentScene.id] || [];
+        const events = storyData[currentScene.id]?.events || [];
         const event = events[eventIdx];
         if (!event) return;
         const choice = event.options[choiceIdx];
@@ -475,12 +473,9 @@ const ExplorationDetail = (function () {
         }
     }
 
-    // 场景结束叙事（"奖励→回家"，01 成功标准：进入感+结束感；先配 3 样板场景）
-    let SCENE_ENDING = {};
-
-    // 战斗胜利后显示结束叙事（点 ▶ 回场景列表），无结束语的场景直接 exit
+    // 战斗胜利后显示结束叙事（点 ▶ 回场景列表）
     function showEnding() {
-        const msg = currentScene && SCENE_ENDING[currentScene.id];
+        const msg = currentScene && storyData[currentScene.id]?.ending_text;
         const nameEl = document.getElementById('galgameName');
         const textEl = document.getElementById('galgameText');
         const box = document.getElementById('galgameBox');
@@ -501,7 +496,7 @@ const ExplorationDetail = (function () {
     // 是否处于 galgame 探索中（战斗结束后判断要不要回场景列表）
     function isActive() { return currentScene != null; }
 
-    _loadStories();  // 模块加载即预取 data/stories.json（数据驱动），show 用缓存/兜底
+    _loadStories();  // 模块加载即预取各场景 JSON
 
     return { show, next, choose, exit, answerMath, isActive, showEnding, toggleDetail };
 })();

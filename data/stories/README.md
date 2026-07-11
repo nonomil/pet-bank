@@ -1,8 +1,8 @@
 # 探索故事文本（数据驱动）
 
 > 每个场景一个 JSON，含事件序列 narrate/discover/math/choice/encounter。
-> exploration-detail.js 启动时并发加载本目录 12 个文件 -> sceneEvents。
-> 硬编码 sceneEvents 作兜底（fetch 失败回退）。
+> exploration-detail.js 启动时并发加载本目录 12 个文件，并把完整场景对象放入 `storyData`。
+> `data/stories/*.json` 是唯一正式来源；fetch 失败时页面显示明确的本地服务器提示，不使用硬编码故事兜底。
 
 事件可选短句字段：
 
@@ -16,7 +16,7 @@
 }
 ```
 
-`shortText` 建议不超过 24 个汉字；`petMood` 使用 `happy`、`surprised`、`worried`、`proud` 之一。旧事件缺少这些字段时，运行时回退到 `text` 和 `happy`。
+`shortText` 建议不超过 24 个汉字；`petMood` 使用 `happy`、`surprised`、`worried`、`proud` 之一。旧事件缺少这些字段时，运行时回退到 `text` 和 `happy`；当前 12 个正式场景均已补齐。
 
 ## 文件结构
 
