@@ -100,5 +100,15 @@ local-playground-*.png
 playwright-home-*.png
 prj/单词记忆射击场原型/.visual-*.png
 prj/单词记忆射击场原型/test-artifacts/
+# 像素探险的本地原始备份、导入参考与生成中间物；正式发布资源在 world-bg-tiles 清单中单独跟踪。
+prj/单词记忆射击场原型/assets/MineCraft宠物图片/poses-originals/
+prj/单词记忆射击场原型/assets/generated/minecraft-memory-adapter/
+prj/单词记忆射击场原型/assets/generated/reference/
+prj/单词记忆射击场原型/assets/stage-background.png
+prj/单词记忆射击场原型/assets/word-memory-cards.js
+prj/单词记忆射击场原型/assets/主角图/
+prj/单词记忆射击场原型/assets/背景图--太空/
+assets/ui/pg-card-*-agnes.*
+assets/石质守护精灵.png
 CLAUDE.md
 HANDOFF.md
