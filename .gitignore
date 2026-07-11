@@ -4,6 +4,8 @@
 .playwright-mcp/
 .tmp/
 _site/
+_site_check*/
+_pages_test_root/
 node_modules/
 archive/
 design/
@@ -93,5 +95,10 @@ math-page*.png
 playground-after.png
 typing-defense-page.png
 word-memory-map-page.png
+live-home-*.png
+local-playground-*.png
+playwright-home-*.png
+prj/单词记忆射击场原型/.visual-*.png
+prj/单词记忆射击场原型/test-artifacts/
 CLAUDE.md
 HANDOFF.md
