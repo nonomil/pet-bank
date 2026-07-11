@@ -51,6 +51,8 @@ node --check js/runtime-loader.js
 - 组合卡验收：三张卡均包含 `cardAsset`、`petCardAsset` 和宠物主体容器，不写入 `petbank_cards`，不进入 `CardArena`。
 - 浏览器脚本还比较渲染前后的 `petbank_cards`、套票、竞技场积分、成长积分和宠物状态，结果保持一致。
 - 本轮组合卡阶段新增方案：`docs/plans/2026-07-12-travel-card-composition-design.md`、`docs/plans/2026-07-12-travel-card-composition-implementation.md`。
+- 真实探索闭环验收：`node scripts/test-travel-memory-real-journey.mjs`，从森林 UI 推进到战斗胜利，自动生成宠物快照并在完成页/图鉴显示森林旅行卡；截图：`docs/releases/travel-memory-real-journey-desktop.png`。
+- 该门禁使用可见故事按钮、数学选项、路线选项和战斗“攻击”按钮推进，没有直接调用 `TravelMemory.record()`；森林战斗 4 回合胜利，快照与出发前宠物状态一致。
 - 桌面：`1280x720`，小屋显示 3 件冰箱贴，图鉴显示 3 张旅行卡，相关图片 `naturalWidth=1024`，无横向溢出。
 - 移动：`390x844`，小屋/图鉴收藏区可见，相关图片 `naturalWidth=1024`，`bodyWidth=384`，无横向溢出。
 - 原收藏截图：`docs/releases/travel-memory-assets-desktop.png`、`docs/releases/travel-memory-assets-mobile.png`
