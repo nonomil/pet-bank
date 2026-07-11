@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.37](https://img.shields.io/badge/Version-v0.7.37-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.38](https://img.shields.io/badge/Version-v0.7.38-brightgreen.svg)](CHANGELOG.md)
 
 📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [账号与 Supabase 部署手册](docs_project/runbooks/account-auth-supabase-deploy.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,12 +27,13 @@
 
 ---
 
-## 🎉 最近更新（v0.7.37）
+## 🎉 最近更新（v0.7.38）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
 - 📚 **像素探险学习闭环**：英文敌人头顶只显示单词；未持球点击先打开主题图片、英文、中文、例句与发音词卡，持中文球后再投掷，形成“预习 → 判断 → 操作 → 回访”节奏
 - 🎮 **游乐场更沉浸**：打字防线点击后优先加载 Pages 运行时，卡牌对战会自动隐藏非游戏界面并提供固定的返回/关闭栏；三张玩法卡同步优化主体居中裁切
+- 🧾 **游戏奖励防重放**：打字防线、像素探险和数学 PK 的成长分奖励新增 Profile + 来源 + 事件 receipt；刷新、重复 iframe 消息和重复结算不会再次加分
 - 🌍 **主题敌人与核心词库**：农场、森林、草原、海洋、太空使用各自本地透明敌人轮换；主站默认进入核心英语词库，并可使用独立的拓展词包
 - 🧭 **可直达子页面**：GitHub Pages 构建会为孩子端、家长区与 `/settings/*` 生成静态入口；直接打开或刷新链接可正确恢复页面，不再依赖先进入首页
 - 🩹 **GitHub Pages 首屏热修复**：资源初始基址改为相对当前目录，避免仓库子路径部署时浏览器预加载错误请求站点根目录的 CSS、JS 和宠物图片

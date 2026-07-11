@@ -2695,7 +2695,16 @@ function handleTypingDefenseBridgeMessage(event) {
     const payload = data.payload || {};
     if (data.kind === 'reward') {
         const points = Math.max(0, Math.floor(Number(payload.points) || 0));
-        if (points > 0) {
+        const receipt = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
+            ? window.GameRewardReceipts.claim({
+                profileId: getActiveDailyProfileId(),
+                source: 'typing-defense',
+                eventId: `${sessionId}:${seq}:reward`,
+                points,
+                localDate: getLocalDateKey()
+            })
+            : { accepted: points > 0 };
+        if (receipt.accepted) {
             addGrowthPoints(points);
             syncTypingDefenseHostPoints();
         }
@@ -2740,7 +2749,16 @@ function handleWordMemoryMapBridgeMessage(event) {
     const payload = data.payload || {};
     if (data.kind !== 'result') return;
     const points = Math.max(0, Math.floor(Number(payload.score) || 0));
-    if (points > 0) {
+    const receipt = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
+        ? window.GameRewardReceipts.claim({
+            profileId: getActiveDailyProfileId(),
+            source: 'word-memory-map',
+            eventId: `${sessionId}:${seq}:result`,
+            points,
+            localDate: getLocalDateKey()
+        })
+        : { accepted: points > 0 };
+    if (receipt.accepted) {
         addGrowthPoints(points);
     }
     const progress = recordWordMemoryMapResult(payload);

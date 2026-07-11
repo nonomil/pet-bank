@@ -1817,9 +1817,24 @@
             const earnedPoints = state.score + (win ? CONFIG.WIN_BONUS : 0);
 
             // 写入成长分主链路
-            if (typeof window.addGrowthPoints === 'function') {
+            const profileId = window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function'
+                ? (window.ProfileManager.getActiveId() || 'p_default')
+                : 'p_default';
+            const localDate = window.PetBankDailyState && typeof window.PetBankDailyState.localDate === 'function'
+                ? window.PetBankDailyState.localDate()
+                : new Date().toLocaleDateString();
+            const receipt = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
+                ? window.GameRewardReceipts.claim({
+                    profileId,
+                    source: 'math-pk',
+                    eventId: `${state.matchStartTs || Date.now()}:${state.mathDifficulty}:${state.mode}`,
+                    points: earnedPoints,
+                    localDate
+                })
+                : { accepted: earnedPoints > 0 };
+            if (receipt.accepted && typeof window.addGrowthPoints === 'function') {
                 window.addGrowthPoints(earnedPoints);
-            } else if (window.totalPoints !== undefined) {
+            } else if (receipt.accepted && window.totalPoints !== undefined) {
                 window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + earnedPoints);
                 if (typeof window.saveAppState === 'function') window.saveAppState();
                 if (typeof window.updateStats === 'function') window.updateStats();

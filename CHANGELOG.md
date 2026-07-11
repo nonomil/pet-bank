@@ -2,6 +2,15 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.38] - 2026-07-11
+### 🧾 游戏奖励 receipt 幂等
+
+- 新增持久化 `petbank_game_reward_receipts_v1`，以 `profileId + source + eventId` 识别已经领取的游戏奖励
+- 打字防线命中奖励、像素探险结算和数学 PK 结算均先领取 receipt，再写入成长分；重复消息、刷新重放和重复结算只会生效一次
+- 非法来源、空事件和非正积分不会创建 receipt；receipt 保留 schemaVersion、日期和领取时间，最多保留最近 600 条
+- 保留旧桥兼容回退，新增 receipt 服务不可用时不阻塞原有本地玩法
+- 新增奖励 receipt 契约测试；静态路由、Pages 门禁和 JS 语法验证通过
+
 ## [v0.7.37] - 2026-07-11
 ### 🎮 游乐场沉浸与直达
 

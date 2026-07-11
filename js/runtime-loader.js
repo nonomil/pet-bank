@@ -1,6 +1,40 @@
 (function () {
     'use strict';
 
+    const GAME_REWARD_RECEIPT_KEY = 'petbank_game_reward_receipts_v1';
+    function readGameRewardReceipts() {
+        try {
+            const raw = JSON.parse(localStorage.getItem(GAME_REWARD_RECEIPT_KEY) || '{}');
+            return raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+        } catch (error) {
+            return {};
+        }
+    }
+    function claimGameRewardReceipt(input = {}) {
+        const profileId = String(input.profileId || 'p_default').trim() || 'p_default';
+        const source = String(input.source || '').trim();
+        const eventId = String(input.eventId || '').trim();
+        const points = Math.floor(Number(input.points) || 0);
+        if (!source || !eventId || points <= 0) return { accepted: false, reason: 'invalid' };
+        const key = `${profileId}:${source}:${eventId}`;
+        const receipts = readGameRewardReceipts();
+        if (receipts[key]) return { accepted: false, reason: 'duplicate', receipt: receipts[key] };
+        receipts[key] = {
+            profileId,
+            source,
+            eventId,
+            points,
+            localDate: String(input.localDate || new Date().toLocaleDateString()),
+            claimedAt: new Date().toISOString(),
+            schemaVersion: 1
+        };
+        const keys = Object.keys(receipts);
+        if (keys.length > 600) keys.slice(0, keys.length - 600).forEach((oldKey) => delete receipts[oldKey]);
+        try { localStorage.setItem(GAME_REWARD_RECEIPT_KEY, JSON.stringify(receipts)); } catch (error) {}
+        return { accepted: true, receipt: receipts[key] };
+    }
+    window.GameRewardReceipts = { claim: claimGameRewardReceipt, key: GAME_REWARD_RECEIPT_KEY };
+
     const scriptPromises = new Map();
     const stylePromises = new Map();
     const featurePromises = new Map();
