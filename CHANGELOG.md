@@ -2,6 +2,14 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.29] - 2026-07-11
+### 🧹 独立游戏 iframe 图片与发布体积收口
+
+- 打字防线初始词库任务现在与切换词库使用同一图片路径规范化层，`world / light / stone / hello / look / block / minecraft-card` 等词图不再错误请求到 `/app/assets/...`
+- 像素探险默认农场 GPT 单图地图 `farm-gpt-panorama.png` 被加入 Pages 精确白名单，独立玩法加载大地图不再 404
+- 构建过滤器只放行默认 2.5MB 农场图，并显式排除同目录的 30MB `farm-panorama.png` 与 22MB `space-panorama.png`，避免修复缺图时带来 50MB 以上发布体积回归
+- 静态入口契约补充初始词库路径和默认全景图检查；本地 iframe 浏览器回归确认打字防线与像素探险均为 HTTP 200、图片请求 0 个 404
+
 ## [v0.7.28] - 2026-07-11
 ### 🔗 全量叶子路由静态入口 + 全站图片巡检收口
 

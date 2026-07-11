@@ -109,6 +109,19 @@ try {
     if (/["']\.\.\/\.\.\/\.\.\/assets\/learn\/english-vocab\/minecraft-card\.webp/.test(typingDefenseSource)) {
         fail('typing defense fallback image does not climb out of the nested runtime path');
     }
+    if (!typingDefenseSource.includes('const BASE_WORD_TASKS = TASK_BANKS.words.map')) {
+        fail('typing defense initial word tasks do not normalize their nested image paths');
+    }
+
+    const farmPanorama = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'generated', 'world-bg-single', 'farm-gpt-panorama.png');
+    if (!fs.existsSync(farmPanorama)) {
+        fail('word memory default farm panorama is missing from the Pages artifact');
+    }
+    for (const excludedPanorama of ['farm-panorama.png', 'space-panorama.png']) {
+        if (fs.existsSync(path.join(path.dirname(farmPanorama), excludedPanorama))) {
+            fail(`word memory optional panorama ${excludedPanorama} exceeds the Pages artifact budget`);
+        }
+    }
 } finally {
     fs.rmSync(artifactDir, { recursive: true, force: true });
 }

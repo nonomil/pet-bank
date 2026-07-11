@@ -171,7 +171,10 @@ const GAME_MODES = {
   numbers: { label: "数字", banks: ["numbers"], speed: 13200 }
 };
 
-const BASE_WORD_TASKS = [...TASK_BANKS.words];
+const BASE_WORD_TASKS = TASK_BANKS.words.map((task) => ({
+  ...task,
+  image: normalizeWordCardImage(task.image)
+}));
 const BASE_PINYIN_TASKS = [...TASK_BANKS.pinyin];
 installVocabBankTasks(getVocabBank(activeVocabId));
 

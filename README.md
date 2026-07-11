@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.28](https://img.shields.io/badge/Version-v0.7.28-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.29](https://img.shields.io/badge/Version-v0.7.29-brightgreen.svg)](CHANGELOG.md)
 
 📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [账号与 Supabase 部署手册](docs_project/runbooks/account-auth-supabase-deploy.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,7 +27,7 @@
 
 ---
 
-## 🎉 最近更新（v0.7.28）
+## 🎉 最近更新（v0.7.29）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
@@ -36,6 +36,7 @@
 - 🖼️ **游乐场卡图 WebP 化**：8 个玩法入口统一使用 960px WebP 发布图，总体积从约 5MB 降至约 270KB，并保证静态构建产物包含全部卡图
 - 🩹 **深层页面图片巡检修复**：修正深层路由默认宠物图与打字防线词卡回退图的相对路径，宠物子页和游乐场独立玩法不再产生图片 404
 - 🔗 **叶子路由完整直达**：静态发布入口扩展至全部 40 个公开路径，宠物小屋、打字防线、像素探险等深层 URL 直接打开不再落到 `404.html` 兜底页
+- 🧹 **独立游戏图片收口**：打字防线词库图片和像素探险默认全景图均已纳入正确发布路径，两个 iframe 页面不再产生图片 404
 - 🖥️ **自托管后端基础**：新增轻量 Node.js + SQLite 服务骨架、健康检查、增量迁移、Docker/Nginx 模板，以及面向腾讯云与 Hermes 的发布、备份、回滚手册；业务数据固定放在服务器共享目录，不随网站升级覆盖
 - 🎴 **游乐场卡片统一**：游戏入口统一改成“上图下文”的单卡，去掉彩色标签带；`数学PK`、`卡牌对战` 换成新的 `VS` 风格图卡
 - 🧼 **沉浸子页再收口**：游戏子页统一隐藏主站顶部状态条和底部 dock，打开后只保留左上 `首页` 与右上 `关闭`

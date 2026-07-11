@@ -286,6 +286,7 @@ function includeWordMemoryRuntime(rel) {
         'assets/word-memory-cards.json',
         'assets/stage-background.png',
         'assets/generated/reference/topdown-clean-bg-chatgpt.png',
+        'assets/generated/world-bg-single/farm-gpt-panorama.png',
     ]);
     const allowedPrefixes = [
         'assets/voice',
@@ -295,6 +296,9 @@ function includeWordMemoryRuntime(rel) {
         'assets/背景图片',
         'assets/MineCraft宠物图片/poses',
     ];
+    if (exactFiles.has(rel) || [...exactFiles].some((filePath) => filePath.startsWith(`${rel}/`))) {
+        return true;
+    }
     return includeWhenAnyDescendantMatches(rel, exactFiles, allowedPrefixes);
 }
 
