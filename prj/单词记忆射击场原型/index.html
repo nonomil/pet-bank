@@ -11,10 +11,15 @@
   <main class="topdown-memory" data-prototype="word-memory-topdown">
     <section class="hero-select-overlay" id="heroSelectOverlay" aria-label="选择角色">
       <div class="hero-select-card">
-        <span class="hud-label">选择角色</span>
-        <strong>今天想用谁来冒险？</strong>
-        <div class="hero-select-grid" id="heroSelectGrid"></div>
-        <button type="button" class="hero-select-start" id="heroSelectStartButton">开始游戏</button>
+        <span class="hud-label" id="onboardingStep">准备出发</span>
+        <strong id="onboardingTitle">像素探险</strong>
+        <p class="onboarding-copy" id="onboardingCopy">先选好伙伴和地图，再开始今天的单词冒险。</p>
+        <div class="onboarding-welcome" id="onboardingWelcome">
+          <span>英文怪物头顶有单词；先点词卡预习，拿中文球后再投掷。</span>
+        </div>
+        <div class="hero-select-grid" id="heroSelectGrid" hidden></div>
+        <div class="world-option-grid" id="worldOptionGrid" hidden></div>
+        <button type="button" class="hero-select-start" id="onboardingNextButton">进入游戏</button>
       </div>
     </section>
 

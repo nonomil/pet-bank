@@ -75,6 +75,10 @@ assert.match(source, /key === 'enter' \|\| key === ' '/, 'game should support fi
 assert.match(source, /map-scene|world-scene/, 'page should expose a dedicated map scene container');
 assert.match(source, /heroSelectOverlay|heroSelectGrid|heroSelectStartButton/, 'page should expose a hero selection overlay');
 assert.match(js, /DEBUG_WORLD_CONTROLS\s*=\s*false/, 'normal gameplay should disable manual world switching controls');
+assert.match(source, /onboardingStep|onboardingNextButton|worldOptionGrid/, 'page should expose the enter-game, hero, and world onboarding controls');
+assert.match(js, /function renderOnboarding\(\)/, 'game should render a staged onboarding flow');
+assert.match(js, /onboardingStep === 'welcome'[\s\S]*onboardingStep = 'hero'[\s\S]*onboardingStep === 'hero'[\s\S]*onboardingStep = 'world'/, 'onboarding should progress from entering the game to hero and world selection');
+assert.match(js, /function selectOnboardingWorld\(worldPackId\)/, 'world selection should be handled before the play overlay closes');
 assert.match(source, /entity-layer/, 'page should render map entities in a separate layer');
 assert.match(source, /enemy-word/, 'page should render floating English labels above enemies');
 assert.match(source, /meaning-orb|bomb-node/, 'page should render Chinese meaning bomb nodes on the map');

@@ -550,6 +550,7 @@
     selectedWorldPack: 'farm_gpt',
     selectedHeroId: 'boy',
     heroSelectOpen: true,
+    onboardingStep: 'welcome',
     currentLevelId: 'level-1',
     highestUnlockedLevel: 1,
     levelPanelCollapsed: !AUTO_START_PLAY_SESSION,
@@ -563,7 +564,12 @@
   const els = {
     heroSelectOverlay: document.getElementById('heroSelectOverlay'),
     heroSelectGrid: document.getElementById('heroSelectGrid'),
-    heroSelectStartButton: document.getElementById('heroSelectStartButton'),
+    onboardingStep: document.getElementById('onboardingStep'),
+    onboardingTitle: document.getElementById('onboardingTitle'),
+    onboardingCopy: document.getElementById('onboardingCopy'),
+    onboardingWelcome: document.getElementById('onboardingWelcome'),
+    worldOptionGrid: document.getElementById('worldOptionGrid'),
+    onboardingNextButton: document.getElementById('onboardingNextButton'),
     mapScene: document.getElementById('mapScene'),
     worldStage: document.getElementById('worldStage'),
     sceneBackdrop: document.getElementById('sceneBackdrop'),
@@ -816,6 +822,7 @@
       ? saved
       : 'boy';
     state.heroSelectOpen = !(AUTO_START_PLAY_SESSION || DEBUG_AUTO_START);
+    state.onboardingStep = state.heroSelectOpen ? 'welcome' : 'world';
     window.localStorage?.setItem(HERO_SELECTION_KEY, state.selectedHeroId);
   }
 
@@ -898,7 +905,7 @@
     return HERO_REGISTRY[state.selectedHeroId] || HERO_REGISTRY.boy;
   }
 
-  function renderHeroSelect() {
+  function renderOnboarding() {
     els.heroSelectGrid.innerHTML = Object.values(HERO_REGISTRY).map(hero => `
       <button
         class="hero-option${hero.id === state.selectedHeroId ? ' is-selected' : ''}"
@@ -915,6 +922,29 @@
         </span>
       </button>
     `).join('');
+    els.worldOptionGrid.innerHTML = Object.entries(WORLD_PACK_REGISTRY).map(([id, pack]) => `
+      <button
+        class="world-option${id === state.selectedWorldPack ? ' is-selected' : ''}"
+        type="button"
+        data-world-pack-id="${id}"
+        aria-pressed="${id === state.selectedWorldPack ? 'true' : 'false'}"
+      >
+        <strong>${pack.label}</strong>
+        <span>${id === 'farm_gpt' ? '阳光农场' : '主题探索地图'}</span>
+      </button>
+    `).join('');
+    const step = state.onboardingStep;
+    els.onboardingStep.textContent = step === 'welcome' ? '准备出发' : (step === 'hero' ? '第 1 步 · 选择角色' : '第 2 步 · 选择地图');
+    els.onboardingTitle.textContent = step === 'welcome' ? '像素探险' : (step === 'hero' ? '今天想用谁来冒险？' : '去哪个世界学单词？');
+    els.onboardingCopy.textContent = step === 'welcome'
+      ? '先选好伙伴和地图，再开始今天的单词冒险。'
+      : (step === 'hero' ? '角色不会影响难度，选喜欢的就好。' : '每张地图都有自己的主题敌人，敌人头顶只显示英文单词。');
+    els.onboardingWelcome.hidden = step !== 'welcome';
+    els.heroSelectGrid.hidden = step !== 'hero';
+    els.worldOptionGrid.hidden = step !== 'world';
+    els.onboardingNextButton.textContent = step === 'welcome'
+      ? '进入游戏'
+      : (step === 'hero' ? '下一步：选地图' : '开始探索');
     els.heroSelectOverlay.hidden = !state.heroSelectOpen;
   }
 
@@ -926,9 +956,28 @@
     if (persist) {
       saveHeroSelection();
     }
-    renderHeroSelect();
+    renderOnboarding();
     renderEntities();
     syncDynamicEntities();
+  }
+
+  function selectOnboardingWorld(worldPackId) {
+    if (!Object.prototype.hasOwnProperty.call(WORLD_PACK_REGISTRY, worldPackId)) {
+      return;
+    }
+    state.selectedWorldPack = worldPackId;
+    renderOnboarding();
+  }
+
+  async function startOnboardingWorld() {
+    await loadWorldTiles();
+    renderWorldSelect();
+    renderDecor();
+    startGame({ applyLevel: false });
+    state.heroSelectOpen = false;
+    renderOnboarding();
+    setMessage(`${currentHeroPack().label}来到${currentWorldPack().label}。点击英文先预习，拿中文球后再投掷。`);
+    render();
   }
 
   function renderWorldSelect() {
@@ -3409,11 +3458,26 @@
       }
       selectHero(button.dataset.heroId, true);
     });
-    els.heroSelectStartButton.addEventListener('click', () => {
-      state.heroSelectOpen = false;
-      renderHeroSelect();
-      setMessage(`${currentHeroPack().label} 出发。清空当前大地图的全部敌人，才会进入下一关。`);
-      render();
+    els.worldOptionGrid.addEventListener('click', event => {
+      const button = event.target.closest('[data-world-pack-id]');
+      if (button) {
+        selectOnboardingWorld(button.dataset.worldPackId);
+      }
+    });
+    els.onboardingNextButton.addEventListener('click', () => {
+      if (state.onboardingStep === 'welcome') {
+        state.onboardingStep = 'hero';
+        renderOnboarding();
+        return;
+      }
+      if (state.onboardingStep === 'hero') {
+        state.onboardingStep = 'world';
+        renderOnboarding();
+        return;
+      }
+      startOnboardingWorld().catch(error => {
+        console.error('[word-memory] failed to start selected world', error);
+      });
     });
     document.addEventListener('keydown', event => {
       const key = event.key.toLowerCase();
@@ -3600,7 +3664,7 @@
     ]);
     renderWorldSelect();
     renderCategorySelect();
-    renderHeroSelect();
+    renderOnboarding();
     bindEvents();
     hideWorldDebugControls();
     renderDecor();

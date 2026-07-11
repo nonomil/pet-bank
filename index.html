@@ -162,6 +162,15 @@
         </button>
     </div>
 
+    <div class="playground-arena-shell-bar" id="playgroundArenaShellBar" aria-label="卡牌对战快捷栏" hidden>
+        <button class="playground-stage-btn" type="button" onclick="switchPage('map')">回到首页</button>
+        <div class="playground-arena-shell-title">
+            <span>游乐场对战</span>
+            <strong>卡牌对战</strong>
+        </div>
+        <button class="playground-stage-btn is-close" type="button" onclick="closeCardArenaEntry()">关闭</button>
+    </div>
+
     <div class="page-shell max-w-7xl mx-auto px-6 py-6 flex gap-6">
         <!-- LEFT SIDEBAR -->
         <aside class="sidebar">
@@ -835,8 +844,8 @@
                             <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
                         </button>
                         <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('word-cannon')">
-                            <span class="pg-card-media pg-card-media-crop-right">
-                                <img src="assets/ui/pg-card-word-cannon.webp?v=20260711c" alt="拼音赛车" loading="lazy" decoding="async" fetchpriority="low">
+                            <span class="pg-card-media pg-card-media-crop-center">
+                                <img src="assets/ui/pg-card-word-cannon.webp?v=20260711d" alt="拼音赛车" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="pg-card-copy">
                                 <span class="pg-card-kicker">合集子游戏</span>
@@ -846,8 +855,8 @@
                             <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
                         </button>
                         <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('pinyin-snake')">
-                            <span class="pg-card-media pg-card-media-crop-right">
-                                <img src="assets/ui/pg-card-pinyin-snake.webp?v=20260711c" alt="贪吃蛇" loading="lazy" decoding="async" fetchpriority="low">
+                            <span class="pg-card-media pg-card-media-crop-center">
+                                <img src="assets/ui/pg-card-pinyin-snake.webp?v=20260711d" alt="贪吃蛇" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="pg-card-copy">
                                 <span class="pg-card-kicker">合集子游戏</span>
@@ -857,7 +866,7 @@
                             <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
                         </button>
                         <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('word-memory-map')">
-                            <span class="pg-card-media pg-card-media-crop-right">
+                            <span class="pg-card-media pg-card-media-crop-center">
                                 <img src="assets/ui/pg-card-word-memory.webp?v=20260711c" alt="像素探险" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
                             <span class="pg-card-copy">

@@ -129,6 +129,12 @@
     transform-origin: right center;
 }
 
+.pg-feature-card .pg-card-media.pg-card-media-crop-center img {
+    object-position: center;
+    transform: scale(1.08);
+    transform-origin: center;
+}
+
 .pg-card-copy {
     display: grid;
     gap: 8px;

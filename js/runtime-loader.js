@@ -433,6 +433,12 @@
         }
         try {
             await ensureCardArenaFeature();
+            if (typeof window.switchPage === 'function') {
+                window.switchPage('playground');
+            }
+            document.body.classList.add('card-arena-shell-active');
+            const shellBar = document.getElementById('playgroundArenaShellBar');
+            if (shellBar) shellBar.hidden = false;
             if (window.CardArenaUI && typeof window.CardArenaUI.openStages === 'function') {
                 window.CardArenaUI.openStages();
                 return true;
@@ -444,6 +450,24 @@
                 window.showToast('卡牌对战加载失败，请稍后再试');
             }
             return false;
+        }
+    }
+
+    function closeCardArenaEntry() {
+        document.body.classList.remove('card-arena-shell-active');
+        const shellBar = document.getElementById('playgroundArenaShellBar');
+        if (shellBar) shellBar.hidden = true;
+        if (window.CardArenaUI) {
+            try {
+                if (typeof window.CardArenaUI.closeBattleModal === 'function') window.CardArenaUI.closeBattleModal();
+                if (typeof window.CardArenaUI.closeTeamModal === 'function') window.CardArenaUI.closeTeamModal();
+                if (typeof window.CardArenaUI.closeStages === 'function') window.CardArenaUI.closeStages();
+            } catch (error) {
+                console.warn('[runtime-loader] close card arena entry failed:', error);
+            }
+        }
+        if (typeof window.switchPage === 'function') {
+            window.switchPage('playground');
         }
     }
 
@@ -461,4 +485,5 @@
     };
     window.resolvePetBankAssetUrl = resolveAssetUrl;
     window.openCardArenaEntry = openCardArenaEntry;
+    window.closeCardArenaEntry = closeCardArenaEntry;
 })();

@@ -2500,6 +2500,11 @@ document.addEventListener('keydown', (event) => {
 function switchPage(page, options = {}) {
     closeSectionMenus();
     closeTopHubMenus();
+    if (page !== 'playground' && document.body.classList.contains('card-arena-shell-active')) {
+        document.body.classList.remove('card-arena-shell-active');
+        const shellBar = document.getElementById('playgroundArenaShellBar');
+        if (shellBar) shellBar.hidden = true;
+    }
     if (page === 'settings') {
         activeSettingsSection = normalizeSettingsSection(options.settingsSection || activeSettingsSection || 'home');
     }
@@ -2821,33 +2826,57 @@ window.addEventListener('message', handleLearningArcadeBridgeMessage);
 function ensureTypingDefenseEmbed() {
     const frame = document.getElementById('typing-defense-frame');
     if (!frame) return;
-    const src = withRouteBase('/app/playground/typing-defense-runtime/web/index.html');
     const launchLink = document.getElementById('typing-defense-launch');
     const status = document.getElementById('typing-defense-status');
-    if (launchLink) launchLink.href = src;
-    if (frame.dataset.loaded === '1') return;
+    if (frame.dataset.loaded === '1' || frame.dataset.loading === '1') return;
+    frame.dataset.loading = '1';
     if (status) {
         status.classList.remove('is-ready');
         status.textContent = '正在加载消灭苦力怕...';
     }
-    frame.addEventListener('load', function onLoad() {
-        frame.dataset.loaded = '1';
-        if (status) {
-            status.textContent = `已加载，可直接开始。当前主站积分 ${totalPoints || 0}`;
-            window.setTimeout(function () {
-                status.classList.add('is-ready');
-            }, 260);
-        }
-        frame.removeEventListener('load', onLoad);
-    });
-    frame.addEventListener('error', function onError() {
+    resolveTypingDefenseEmbedSrc().then(function (src) {
+        if (launchLink) launchLink.href = src;
+        frame.addEventListener('load', function onLoad() {
+            frame.dataset.loaded = '1';
+            frame.dataset.loading = '0';
+            if (status) {
+                status.textContent = `已加载，可直接开始。当前主站积分 ${totalPoints || 0}`;
+                window.setTimeout(function () {
+                    status.classList.add('is-ready');
+                }, 260);
+            }
+            frame.removeEventListener('load', onLoad);
+        });
+        frame.addEventListener('error', function onError() {
+            frame.dataset.loading = '0';
+            if (status) {
+                status.classList.remove('is-ready');
+                status.textContent = '加载失败，请检查消灭苦力怕的静态资源路径。';
+            }
+            frame.removeEventListener('error', onError);
+        });
+        frame.src = src;
+    }).catch(function () {
+        frame.dataset.loading = '0';
         if (status) {
             status.classList.remove('is-ready');
             status.textContent = '加载失败，请检查消灭苦力怕的静态资源路径。';
         }
-        frame.removeEventListener('error', onError);
     });
-    frame.src = src;
+}
+
+let typingDefenseEmbedSrcPromise = null;
+
+function resolveTypingDefenseEmbedSrc() {
+    if (typingDefenseEmbedSrcPromise) return typingDefenseEmbedSrcPromise;
+    const runtimeSrc = withRouteBase('/app/playground/typing-defense-runtime/web/index.html');
+    const sourceSrc = withRouteBase('/prj/%E6%B6%88%E7%81%AD%E8%8B%A6%E5%8A%9B%E6%80%95%E6%89%93%E5%AD%97%E6%B8%B8%E6%88%8F/web/index.html');
+    typingDefenseEmbedSrcPromise = fetch(runtimeSrc, { method: 'HEAD' }).then(function (response) {
+        return response.ok ? runtimeSrc : sourceSrc;
+    }).catch(function () {
+        return sourceSrc;
+    });
+    return typingDefenseEmbedSrcPromise;
 }
 
 function ensureLearningArcadeEmbed() {

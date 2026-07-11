@@ -90,10 +90,52 @@ button {
   line-height: 1.08;
 }
 
+.onboarding-copy,
+.onboarding-welcome {
+  margin: 0;
+  color: rgba(255, 248, 228, 0.78);
+  line-height: 1.5;
+}
+
+.onboarding-welcome {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .hero-select-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+}
+
+.world-option-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.world-option {
+  min-height: 92px;
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  color: #fffdf2;
+  background: rgba(255, 255, 255, 0.07);
+  cursor: pointer;
+}
+
+.world-option.is-selected {
+  border-color: rgba(255, 219, 118, 0.72);
+  background: rgba(255, 219, 118, 0.18);
+}
+
+.world-option span {
+  color: rgba(255, 248, 228, 0.68);
+  font-size: 12px;
 }
 
 .hero-option {
