@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const source = fs.readFileSync('js/task-reward-events.js', 'utf8');
+const data = new Map();
+const context = { console, Date, globalThis: null, localStorage: { getItem: (k) => data.get(k) || null, setItem: (k, v) => data.set(k, v) }, PetGrowthHistory: { append() {} } };
+context.globalThis = context;
+vm.runInNewContext(source, context, { filename: 'js/task-reward-events.js' });
+const events = context.TaskRewardEvents;
+const first = events.record({ profileId: 'p1', date: '2026-07-11', taskId: 'read', points: 10, operation: 'complete' });
+const undo = events.record({ profileId: 'p1', date: '2026-07-11', taskId: 'read', points: 10, operation: 'undo' });
+const again = events.record({ profileId: 'p1', date: '2026-07-11', taskId: 'read', points: 10, operation: 'complete' });
+assert.equal(first.operation, 'complete');
+assert.equal(undo.operation, 'undo');
+assert.notEqual(undo.eventId, again.eventId);
+assert.equal(events.getRecent(10).length, 3);
+assert.equal(events.getRecent(10)[0].operation, 'complete');
+console.log('task reward events tests passed');

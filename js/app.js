@@ -412,12 +412,22 @@ function getActivePageId() {
 function toggleTask(dim, taskName, pts) {
     completedTasks = window.PetBankDailyState.load().completedTasks;
     const tid = `${dim}-${taskName}`;
+    const wasCompleted = completedTasks.has(tid);
     if (completedTasks.has(tid)) {
         completedTasks.delete(tid);
         totalPoints -= pts;
     } else {
         completedTasks.add(tid);
         totalPoints += pts;
+    }
+    if (window.TaskRewardEvents && typeof window.TaskRewardEvents.record === 'function') {
+        window.TaskRewardEvents.record({
+            profileId: window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function' ? window.ProfileManager.getActiveId() : 'local',
+            date: typeof getLocalDateKey === 'function' ? getLocalDateKey() : new Date().toLocaleDateString(),
+            taskId: tid,
+            points: pts,
+            operation: wasCompleted ? 'undo' : 'complete'
+        });
     }
     localStorage.setItem('petbank_tasks_completed_today', String(completedTasks.size));
     saveAppState();
@@ -1159,6 +1169,35 @@ function renderTypingDefenseSummaryPanel() {
 
 const BATTLE_MILESTONE_REWARD_KEY = 'petbank_battle_milestone_rewards';
 const BATTLE_RECENT_ACTIVITY_KEY = 'petbank_battle_recent_activity';
+const GUIDED_FEEDBACK_HISTORY_KEY = 'petbank_guided_feedback_history';
+
+function readGuidedFeedbackHistory() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(GUIDED_FEEDBACK_HISTORY_KEY) || '[]');
+        return Array.isArray(raw) ? raw : [];
+    } catch (_) {
+        return [];
+    }
+}
+
+function recordGuidedFeedback(entry) {
+    if (!entry || !entry.mode || !entry.nextStep) return;
+    const next = readGuidedFeedbackHistory();
+    next.unshift({
+        id: entry.id || `guided_feedback_${Date.now()}`,
+        mode: entry.mode,
+        cause: entry.cause || 'unknown',
+        note: entry.note || '',
+        nextStep: entry.nextStep,
+        timestamp: entry.timestamp || new Date().toISOString()
+    });
+    try {
+        localStorage.setItem(GUIDED_FEEDBACK_HISTORY_KEY, JSON.stringify(next.slice(0, 12)));
+    } catch (_) {}
+}
+
+window.readGuidedFeedbackHistory = readGuidedFeedbackHistory;
+window.recordGuidedFeedback = recordGuidedFeedback;
 
 const BATTLE_MILESTONES = [
     {
@@ -2901,7 +2940,10 @@ function ensureLearningArcadeEmbed() {
     const frame = document.getElementById('learning-arcade-frame');
     if (!frame) return;
     const requestedGame = String(frame.dataset.requestedGame || '').trim();
-    const src = withRouteBase(`/prj/%E5%AD%A6%E4%B9%A0%E6%9C%BA%E7%8E%A9%E6%B3%95%E5%8E%9F%E5%9E%8B/index.html${requestedGame ? `?game=${encodeURIComponent(requestedGame)}` : ''}`);
+    const params = new URLSearchParams();
+    if (requestedGame) params.set('game', requestedGame);
+    params.set('v', 'learning-arcade-fullscreen-20260711n');
+    const src = withRouteBase(`/prj/%E5%AD%A6%E4%B9%A0%E6%9C%BA%E7%8E%A9%E6%B3%95%E5%8E%9F%E5%9E%8B/index.html?${params.toString()}`);
     const launchLink = document.getElementById('learning-arcade-launch');
     const status = document.getElementById('learning-arcade-status');
     if (launchLink) launchLink.href = src;
