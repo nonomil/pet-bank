@@ -31,22 +31,28 @@ const ExplorationDetail = (function () {
     const STORY_SCENE_IDS = ['forest', 'beach', 'mountain', 'space', 'candy', 'cave', 'waterfall', 'desert', 'underwater', 'castle', 'volcano', 'stargarden'];
     let _storiesLoaded = false;
     let _storiesLoadingPromise = null;
+    const STORY_DATA_VERSION = '20260711-short-copy-v1';
     async function _loadStories() {
         if (_storiesLoaded) return;
         if (_storiesLoadingPromise) return _storiesLoadingPromise;
         _storiesLoadingPromise = (async () => {
-            try {
-                const results = await Promise.all(STORY_SCENE_IDS.map(id => fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(`data/stories/${id}.json`) : `data/stories/${id}.json`).then(r => r.json())));
-                results.forEach((s, i) => {
+            const results = await Promise.all(STORY_SCENE_IDS.map(async id => {
+                try {
+                    const rawUrl = window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(`data/stories/${id}.json`) : `data/stories/${id}.json`;
+                    const response = await fetch(`${rawUrl}${rawUrl.includes('?') ? '&' : '?'}v=${STORY_DATA_VERSION}`, { cache: 'no-store' });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return await response.json();
+                } catch (error) {
+                    console.warn(`[ExplorationDetail] story load failed: ${id}`, error);
+                    return null;
+                }
+            }));
+            results.forEach((s, i) => {
                     if (s && s.events) sceneEvents[STORY_SCENE_IDS[i]] = s.events;
                     if (s && s.ending_text) SCENE_ENDING[STORY_SCENE_IDS[i]] = s.ending_text;
-                });
-                _storiesLoaded = true;
-            } catch (e) {
-                console.warn('stories folder load failed', e);
-            } finally {
-                _storiesLoadingPromise = null;
-            }
+            });
+            _storiesLoaded = true;
+            _storiesLoadingPromise = null;
         })();
         return _storiesLoadingPromise;
     }

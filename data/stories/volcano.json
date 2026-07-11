@@ -10,12 +10,18 @@
     {
       "type": "narrate",
       "text": "火山边的热流吹开图鉴馆的红封条，露出一句提示：请记录它温柔的一面，这次调查要纠正大家对力量型伙伴的偏见。",
+      "shortText": "红封条打开了！",
+      "detailText": "这次调查要记录力量型伙伴温柔的一面。",
+      "petMood": "surprised",
       "id": "volcano.narrate0"
     },
     {
       "type": "discover",
       "emoji": "🔥",
       "text": "冷却岩浆石、锻造台和热能晶石散在路边，像在告诉你这些看起来暴躁的伙伴其实也负责照明、锻造和护送。",
+      "shortText": "火山伙伴也会照料人！",
+      "detailText": "岩浆石、锻造台和晶石说明力量型伙伴也负责照明、锻造与护送。",
+      "petMood": "happy",
       "item": "fire_scale",
       "chance": 0.5,
       "id": "volcano.discover1"
@@ -25,6 +31,9 @@
       "mathType": "arithmetic",
       "difficulty": "hard",
       "text": "这里的题目像高温环境下的工作记录，只有把冷却台每轮处理多少火石算清楚，图鉴馆才会相信你的判断足够可靠……",
+      "shortText": "火石题：三轮能处理多少？",
+      "detailText": "算清冷却台每轮处理多少火石，完成高温工作记录。",
+      "petMood": "worried",
       "reward": {
         "exp": 28,
         "msg": "岩浆缓缓退去，道路浮现！+28 经验"
@@ -45,6 +54,9 @@
     {
       "type": "choice",
       "text": "你可以先去矿炉、火口边或余温洞，不同路线会先遇到力量型、灵兽型或像素工坊支线伙伴。",
+      "shortText": "去矿炉，还是火口边？",
+      "detailText": "不同路线会先遇到力量型、灵兽型或工坊伙伴。",
+      "petMood": "surprised",
       "options": [
         {
           "text": "♨️ 在温泉休息一下",
@@ -64,6 +76,9 @@
     {
       "type": "encounter",
       "text": "岩浆里冒出一位滚着火星的高温伙伴，它把这场遭遇当成试火礼，想看看你能不能读懂它外热内稳的性格……",
+      "shortText": "火星伙伴来试火啦！",
+      "detailText": "高温伙伴想看看你能否读懂它外热内稳的性格。",
+      "petMood": "proud",
       "id": "volcano.encounter4"
     }
   ],

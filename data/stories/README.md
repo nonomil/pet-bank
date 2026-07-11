@@ -4,6 +4,20 @@
 > exploration-detail.js 启动时并发加载本目录 12 个文件 -> sceneEvents。
 > 硬编码 sceneEvents 作兜底（fetch 失败回退）。
 
+事件可选短句字段：
+
+```json
+{
+  "type": "narrate",
+  "text": "完整故事文本，保留给详情和兼容路径",
+  "shortText": "默认先显示的一句短话",
+  "detailText": "点击“想知道更多”后展开的详情",
+  "petMood": "happy"
+}
+```
+
+`shortText` 建议不超过 24 个汉字；`petMood` 使用 `happy`、`surprised`、`worried`、`proud` 之一。旧事件缺少这些字段时，运行时回退到 `text` 和 `happy`。
+
 ## 文件结构
 
 每个 {scene}.json:

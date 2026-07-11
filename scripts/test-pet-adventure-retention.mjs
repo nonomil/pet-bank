@@ -80,8 +80,11 @@ assert.equal(duplicateMemory.reason, 'duplicate');
 const runtime = fs.readFileSync('js/runtime-loader.js', 'utf8');
 assert.match(runtime, /home:\s*\[[\s\S]*pet-evolution-preview\.js/);
 assert.match(runtime, /explore:\s*\[[\s\S]*exploration-copy\.js/);
+const detailSource = fs.readFileSync('js/exploration-detail.js', 'utf8');
+assert.match(detailSource, /STORY_DATA_VERSION/);
+assert.match(detailSource, /cache:\s*'no-store'/);
 
-for (const sceneId of ['forest', 'beach', 'stargarden']) {
+for (const sceneId of ['forest', 'beach', 'candy', 'waterfall', 'underwater', 'desert', 'mountain', 'cave', 'castle', 'volcano', 'space', 'stargarden']) {
   const story = JSON.parse(fs.readFileSync(`data/stories/${sceneId}.json`, 'utf8'));
   assert.equal(story.events.length, 5);
   for (const event of story.events) {

@@ -10,12 +10,18 @@
     {
       "type": "narrate",
       "text": "瀑布边的雾气里悬着一排湿润标签，每张都写着岗位尚未登记，图鉴馆要你补完这些照料型伙伴的职责。",
+      "shortText": "雾里飘着岗位标签！",
+      "detailText": "图鉴馆要你补完照料型伙伴的职责记录。",
+      "petMood": "surprised",
       "id": "waterfall.narrate0"
     },
     {
       "type": "discover",
       "emoji": "🌈",
       "text": "石台旁留下了发光水珠和小小储物袋，像是在提醒你这里的伙伴平时负责恢复、清洁还是引路。",
+      "shortText": "发光水珠留下线索！",
+      "detailText": "水珠和储物袋提示伙伴负责恢复、清洁或引路。",
+      "petMood": "happy",
       "item": "rainbow_dew",
       "chance": 0.5,
       "id": "waterfall.discover1"
@@ -25,6 +31,9 @@
       "mathType": "word",
       "difficulty": "easy",
       "text": "瀑布秘境的登记题围绕补水轮值展开，只有把每轮照料数量算明白，图鉴馆才会把你的记录盖章……",
+      "shortText": "补水题：两轮有几片？",
+      "detailText": "算清每轮照料数量，完成瀑布轮值记录。",
+      "petMood": "worried",
       "reward": {
         "exp": 16,
         "msg": "轮值表补齐，青蛙呱呱叫好！+16 经验"
@@ -45,6 +54,9 @@
     {
       "type": "choice",
       "text": "你可以先去浅滩、瀑顶或洞口继续调查，不同路线会更早遇到温柔辅助型或谨慎守护型伙伴。",
+      "shortText": "去浅滩，还是瀑顶？",
+      "detailText": "不同路线会先遇到辅助型或守护型伙伴。",
+      "petMood": "surprised",
       "options": [
         {
           "text": "🐸 跟着青蛙走",
@@ -64,6 +76,9 @@
     {
       "type": "encounter",
       "text": "水帘后伸出一只金灿灿的蛙掌，这位照料型伙伴像在用上岗考试确认你是否值得被它信任……",
+      "shortText": "金色蛙掌伸出来了！",
+      "detailText": "照料型伙伴要确认你是否值得被它信任。",
+      "petMood": "proud",
       "id": "waterfall.encounter4"
     }
   ],

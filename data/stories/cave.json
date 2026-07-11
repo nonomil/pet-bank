@@ -10,12 +10,18 @@
     {
       "type": "narrate",
       "text": "洞口的石牌写着别急着抓，先学会看，图鉴馆把这一章交给你，是想补完洞穴伙伴最难发现的隐藏档案。",
+      "shortText": "石牌说：先看，再出发。",
+      "detailText": "图鉴馆希望你补完洞穴伙伴最难发现的隐藏档案。",
+      "petMood": "surprised",
       "id": "cave.narrate0"
     },
     {
       "type": "discover",
       "emoji": "💎",
       "text": "反光矿石、掉落羽片和储物刻痕散在地上，像是在提醒你这些洞穴伙伴更习惯先留下证据，再决定要不要现身。",
+      "shortText": "矿石和羽片留下线索！",
+      "detailText": "矿石、羽片和刻痕说明洞穴伙伴会先留下证据。",
+      "petMood": "happy",
       "item": "crystal_shard",
       "chance": 0.6,
       "id": "cave.discover1"
@@ -24,6 +30,9 @@
       "type": "math",
       "difficulty": "hard",
       "text": "这道题更像一次洞窟考古登记，只有把火把编号的机关顺序理清楚，图鉴馆才会相信你的推理足够细致……",
+      "shortText": "机关题：火把怎么排？",
+      "detailText": "理清火把编号的机关顺序，完成洞窟考古登记。",
+      "petMood": "worried",
       "reward": {
         "exp": 28,
         "msg": "石门轰隆打开，深处的光涌出来！+28 经验"
@@ -45,6 +54,9 @@
     {
       "type": "choice",
       "text": "你可以走矿道、回声道或旧仓道，先去追哪一条线索，会影响你最先遇见的洞穴族群。",
+      "shortText": "走矿道，还是回声道？",
+      "detailText": "不同路线会让你先遇见不同的洞穴族群。",
+      "petMood": "surprised",
       "options": [
         {
           "text": "💧 走有水声的路",
@@ -64,6 +76,9 @@
     {
       "type": "encounter",
       "text": "石壁缝里挤出一位发着紫光的洞穴伙伴，它更在意你有没有看懂它留下的线索，而不是只会冲上去战斗……",
+      "shortText": "紫光伙伴从石缝出现！",
+      "detailText": "洞穴伙伴在意你是否看懂线索，而不是只会战斗。",
+      "petMood": "proud",
       "id": "cave.encounter4"
     }
   ],

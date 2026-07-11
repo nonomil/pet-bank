@@ -10,12 +10,18 @@
     {
       "type": "narrate",
       "text": "水泡里漂着图鉴馆送来的防水札记，提醒你这次调查要重点观察海底伙伴的分工、巡逻路线和协作方式。",
+      "shortText": "防水札记漂来了！",
+      "detailText": "这次调查要观察海底伙伴的分工、巡逻路线与合作方式。",
+      "petMood": "surprised",
       "id": "underwater.narrate0"
     },
     {
       "type": "discover",
       "emoji": "🪼",
       "text": "珊瑚缝里藏着发光水母留下的轨迹和小贝珠，像在提示这里的伙伴各自负责巡逻、搬运还是守门。",
+      "shortText": "珊瑚里有发光轨迹！",
+      "detailText": "轨迹和小贝珠提示伙伴各自负责巡逻、搬运或守门。",
+      "petMood": "happy",
       "item": "glow_jelly",
       "chance": 0.6,
       "id": "underwater.discover1"
@@ -25,6 +31,9 @@
       "mathType": "word",
       "difficulty": "medium",
       "text": "海底王国的登记题变成了巡逻分组记录，只有算对阵型，图鉴馆才会相信你真的看懂了它们的协作规则……",
+      "shortText": "组队题：能分几组？",
+      "detailText": "算对巡逻阵型，完成海底伙伴的分组记录。",
+      "petMood": "worried",
       "reward": {
         "exp": 22,
         "msg": "巡逻阵型登记完成，海螺指向正确的洋流！+22 经验"
@@ -45,6 +54,9 @@
     {
       "type": "choice",
       "text": "前方的路线会通向珊瑚林、沉船仓或潮汐门，你想先调查哪一群海底伙伴的岗位？",
+      "shortText": "去珊瑚林，还是沉船仓？",
+      "detailText": "三条路线藏着不同海底伙伴的岗位线索。",
+      "petMood": "surprised",
       "options": [
         {
           "text": "🌊 顺着洋流游",
@@ -64,6 +76,9 @@
     {
       "type": "encounter",
       "text": "一串泡泡里游来一位会摆出阵型的深水伙伴，它显然想先看看你能不能读懂它留下的秩序线索……",
+      "shortText": "深水伙伴排好阵型了！",
+      "detailText": "深水伙伴留下秩序线索，等你读懂它的阵型。",
+      "petMood": "proud",
       "id": "underwater.encounter4"
     }
   ],
