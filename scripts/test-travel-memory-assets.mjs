@@ -65,9 +65,26 @@ assert.equal(memory.assetStatuses.cardAsset, 'verified');
 assert.equal(travel.isRenderableAsset(memory, 'asset'), true);
 assert.equal(travel.isRenderableAsset(memory, 'cardAsset'), true);
 
-const result = travel.record({ sceneId: 'forest', completedAt: '2026-07-12T00:00:00.000Z' });
+const result = travel.record({
+  sceneId: 'forest',
+  completedAt: '2026-07-12T00:00:00.000Z',
+  pet: {
+    speciesId: 'demo-pet',
+    name: '小森林',
+    emoji: '🦊',
+    image: 'assets/pets/demo.webp',
+    stage: '幼崽'
+  }
+});
 assert.equal(result.accepted, true);
 assert.equal(result.memory.fridgeAsset, catalog.scenes.forest.fridgeAsset);
+assert.deepEqual(JSON.parse(JSON.stringify(result.memory.pet || null)), {
+  speciesId: 'demo-pet',
+  name: '小森林',
+  emoji: '🦊',
+  image: 'assets/pets/demo.webp',
+  stage: '幼崽'
+});
 assert.deepEqual(JSON.parse(JSON.stringify(travel.getOwnedAssets('fridge'))), JSON.parse(JSON.stringify([result.memory])));
 assert.deepEqual(JSON.parse(JSON.stringify(travel.getOwnedAssets('card'))), JSON.parse(JSON.stringify([result.memory])));
 assert.equal(travel.record({ sceneId: 'forest' }).reason, 'duplicate');
@@ -89,15 +106,21 @@ legacyStorage.configure(catalog.scenes);
 const hydrated = legacyStorage.hydrateStoredMemories().find((item) => item.sceneId === 'beach');
 assert.equal(hydrated.cardAsset, catalog.scenes.beach.cardAsset);
 assert.equal(hydrated.fridgeFurnitureId, catalog.scenes.beach.fridgeFurnitureId);
+assert.equal(hydrated.pet, null);
 
 const detailSource = fs.readFileSync('js/exploration-detail.js', 'utf8');
 assert.match(detailSource, /isRenderableAsset\?\.\(memory, 'asset'\)/);
 assert.match(detailSource, /travel-memory-art/);
+assert.match(detailSource, /TravelMemory\.record\(\{ sceneId: currentScene\.id, pet \}\)/);
 const homeSource = fs.readFileSync('js/home.js', 'utf8');
 assert.match(homeSource, /TravelMemory/);
 assert.match(homeSource, /travel-memory-collection/);
 const cardSource = fs.readFileSync('js/card-collection.js', 'utf8');
 assert.match(cardSource, /travel-memory-gallery/);
+assert.match(cardSource, /petCardAsset/);
+assert.match(cardSource, /travel-memory-card-frame/);
+assert.match(cardSource, /travel-memory-pet/);
+assert.match(cardSource, /memory\.pet/);
 const runtimeSource = fs.readFileSync('js/runtime-loader.js', 'utf8');
 assert.match(runtimeSource, /home: \[[\s\S]*js\/travel-memory\.js/);
 assert.match(runtimeSource, /cardCollection: \[[\s\S]*js\/travel-memory\.js/);

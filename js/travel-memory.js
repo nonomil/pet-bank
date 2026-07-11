@@ -25,6 +25,21 @@
         return scenes;
     }
 
+    function normalizePetSnapshot(input) {
+        if (!input || typeof input !== 'object' || Array.isArray(input)) return null;
+        const hasValue = ['speciesId', 'name', 'emoji', 'image', 'stage'].some((key) => input[key] != null && String(input[key]).trim());
+        if (!hasValue) return null;
+        const value = (key, fallback = '') => String(input[key] ?? fallback).trim().slice(0, 160);
+        const snapshot = {
+            speciesId: value('speciesId'),
+            name: value('name', '我的宠物'),
+            emoji: value('emoji', '🐾'),
+            image: value('image'),
+            stage: value('stage', '成长中')
+        };
+        return snapshot.speciesId || snapshot.name || snapshot.image ? snapshot : null;
+    }
+
     function getCatalog() { return { ...scenes }; }
 
     async function load() {
@@ -58,6 +73,7 @@
             assetStatus: ASSET_STATUSES.includes(scene.assetStatus) ? scene.assetStatus : 'placeholder',
             assetStatuses: normalizeAssetStatuses(scene.assetStatuses, scene.assetStatus),
             fridgeFurnitureId: scene.fridgeFurnitureId || null,
+            pet: null,
             nextPreview: scene.nextPreview || '下一站正在准备中',
             returnText: scene.returnText || '宠物带着旅行纪念物回家啦！'
         };
@@ -88,6 +104,7 @@
         if (memories[sceneId]) return { accepted: false, reason: 'duplicate', memory: memories[sceneId] };
         const memory = {
             ...template,
+            pet: normalizePetSnapshot(input.pet),
             completedAt: input.completedAt || new Date().toISOString(),
             schemaVersion: 1
         };
@@ -106,7 +123,7 @@
             if (!template) return;
             const current = memories[sceneId];
             const merged = { ...template, ...current };
-            ['asset', 'cardAsset', 'fridgeAsset', 'petCardAsset', 'assetVersion', 'assetSource', 'assetStatus', 'assetStatuses', 'fridgeFurnitureId'].forEach((key) => {
+            ['asset', 'cardAsset', 'fridgeAsset', 'petCardAsset', 'assetVersion', 'assetSource', 'assetStatus', 'assetStatuses', 'fridgeFurnitureId', 'pet'].forEach((key) => {
                 if (current[key] !== merged[key]) changed = true;
             });
             memories[sceneId] = merged;
@@ -128,6 +145,7 @@
         load,
         getCatalog,
         getSceneMemory,
+        normalizePetSnapshot,
         isRenderableAsset,
         record,
         getAll,

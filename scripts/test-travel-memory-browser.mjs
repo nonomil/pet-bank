@@ -3,8 +3,8 @@ import { chromium } from 'playwright';
 import { browserLaunchOpts } from './playwright-browser.mjs';
 
 const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:9077/';
-const desktopShot = 'docs/releases/travel-memory-assets-desktop.png';
-const mobileShot = 'docs/releases/travel-memory-assets-mobile.png';
+const desktopShot = 'docs/releases/travel-card-composition-desktop.png';
+const mobileShot = 'docs/releases/travel-card-composition-mobile.png';
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -22,11 +22,11 @@ async function waitForTravelPage(page, pageName, selector) {
   await sleep(250);
 }
 
-async function inspect(page, pageName, selector, assetSelector) {
+async function inspect(page, pageName, selector, assetSelector, imageSelector = 'img') {
   await waitForTravelPage(page, pageName, selector);
-  const result = await page.evaluate((target) => {
-    const root = document.querySelector(target);
-    const images = Array.from(root?.querySelectorAll('img') || []);
+  const result = await page.evaluate(({ assetTarget, imageTarget }) => {
+    const root = document.querySelector(assetTarget);
+    const images = Array.from(root?.querySelectorAll(imageTarget) || []);
     return {
       collectionVisible: Boolean(root && root.offsetParent !== null),
       cardCount: root?.querySelectorAll('article').length || 0,
@@ -36,7 +36,7 @@ async function inspect(page, pageName, selector, assetSelector) {
       viewportWidth: window.innerWidth,
       cssLoaded: Array.from(document.styleSheets).some((sheet) => sheet.href?.includes('travel-memory.css'))
     };
-  }, assetSelector);
+  }, { assetTarget: assetSelector, imageTarget: imageSelector });
   assert.equal(result.collectionVisible, true, `${pageName} collection visible`);
   assert.equal(result.cardCount, 3, `${pageName} card count`);
   assert.equal(result.assetCount, 3, `${pageName} image count`);
@@ -60,23 +60,103 @@ try {
   await page.waitForFunction(() => window.PetBankRuntime && window.PetSystem, { timeout: 20000 });
   await page.evaluate(async () => {
     await window.PetBankRuntime.ensurePage('home');
-    await window.TravelMemory.load();
-    ['forest', 'beach', 'stargarden'].forEach((sceneId) => window.TravelMemory.record({ sceneId }));
+    const species = window.PetSystem.getAllSpecies()[0];
+    if (species && !window.PetSystem.getState().species) window.PetSystem.chooseSpecies(species.id);
+    await window.PetBankRuntime.ensurePage('card');
+    window.switchPage('card');
   });
-  const desktopHome = await inspect(page, 'home', '#home-container', '.travel-memory-collection');
+  await page.waitForFunction(() => document.querySelector('#card-collection-container')?.innerHTML.includes('card-collection-shell'), { timeout: 20000 });
+  await sleep(300);
+  const collectionBefore = await page.evaluate(() => {
+    let pet = null;
+    try {
+      pet = JSON.parse(localStorage.getItem('petbank_pet') || 'null');
+      if (pet) delete pet.last_home_ts;
+    } catch {}
+    return {
+      cards: localStorage.getItem('petbank_cards'),
+      awardedSeries: localStorage.getItem('petbank_awarded_series'),
+      arenaPoints: localStorage.getItem('arena_points'),
+      points: localStorage.getItem('petbank_points'),
+      pet
+    };
+  });
+  await page.evaluate(async () => {
+    await window.PetBankRuntime.ensurePage('home');
+    await window.TravelMemory.load();
+    const species = window.PetSystem.getAllSpecies()[0];
+    if (species && !window.PetSystem.getState().species) window.PetSystem.chooseSpecies(species.id);
+    const state = window.PetSystem.getState();
+    const pet = state.species ? {
+      speciesId: state.species,
+      name: state.species_data?.name || '测试宠物',
+      emoji: state.species_data?.emoji || '🐾',
+      image: window.PetSystem.getCurrentStageImage?.() || '',
+      stage: state.stage?.name || '成长中'
+    } : null;
+    ['forest', 'beach', 'stargarden'].forEach((sceneId) => window.TravelMemory.record({ sceneId, pet }));
+  });
+  const desktopHome = await inspect(page, 'home', '#home-container', '.travel-memory-collection', '.travel-memory-collection-art');
   await page.screenshot({ path: desktopShot, fullPage: true });
-  const desktopCard = await inspect(page, 'card', '#card-collection-container', '.travel-memory-gallery');
+  const desktopCard = await inspect(page, 'card', '#card-collection-container', '.travel-memory-gallery', '.travel-memory-card-bg');
+  const desktopComposition = await page.evaluate(() => ({
+    cards: document.querySelectorAll('.travel-memory-card-composition').length,
+    frames: document.querySelectorAll('.travel-memory-card-frame').length,
+    pets: document.querySelectorAll('.travel-memory-card-pet').length,
+    backgrounds: document.querySelectorAll('.travel-memory-card-bg').length
+  }));
+  assert.deepEqual(desktopComposition, { cards: 3, frames: 3, pets: 3, backgrounds: 3 });
+  const desktopLayerWidths = await page.evaluate(() => ({
+    frames: Array.from(document.querySelectorAll('.travel-memory-card-frame')).map((image) => image.naturalWidth),
+    backgrounds: Array.from(document.querySelectorAll('.travel-memory-card-bg')).map((image) => image.naturalWidth),
+    pets: Array.from(document.querySelectorAll('.travel-memory-card-pet img')).map((image) => image.naturalWidth)
+  }));
+  assert.deepEqual(desktopLayerWidths.frames, [1024, 1024, 1024]);
+  assert.deepEqual(desktopLayerWidths.backgrounds, [1024, 1024, 1024]);
+  assert.ok(desktopLayerWidths.pets.every((width) => width > 0));
+  await page.screenshot({ path: desktopShot, fullPage: true });
   assert.equal(desktopHome.bodyWidth <= desktopHome.viewportWidth, true);
   assert.equal(desktopCard.bodyWidth <= desktopCard.viewportWidth, true);
 
   await page.setViewportSize({ width: 390, height: 844 });
-  const mobileHome = await inspect(page, 'home', '#home-container', '.travel-memory-collection');
+  const mobileHome = await inspect(page, 'home', '#home-container', '.travel-memory-collection', '.travel-memory-collection-art');
   await page.screenshot({ path: mobileShot, fullPage: true });
-  const mobileCard = await inspect(page, 'card', '#card-collection-container', '.travel-memory-gallery');
+  const mobileCard = await inspect(page, 'card', '#card-collection-container', '.travel-memory-gallery', '.travel-memory-card-bg');
+  const mobileComposition = await page.evaluate(() => ({
+    cards: document.querySelectorAll('.travel-memory-card-composition').length,
+    frames: document.querySelectorAll('.travel-memory-card-frame').length,
+    pets: document.querySelectorAll('.travel-memory-card-pet').length,
+    backgrounds: document.querySelectorAll('.travel-memory-card-bg').length
+  }));
+  assert.deepEqual(mobileComposition, { cards: 3, frames: 3, pets: 3, backgrounds: 3 });
+  const mobileLayerWidths = await page.evaluate(() => ({
+    frames: Array.from(document.querySelectorAll('.travel-memory-card-frame')).map((image) => image.naturalWidth),
+    backgrounds: Array.from(document.querySelectorAll('.travel-memory-card-bg')).map((image) => image.naturalWidth),
+    pets: Array.from(document.querySelectorAll('.travel-memory-card-pet img')).map((image) => image.naturalWidth)
+  }));
+  assert.deepEqual(mobileLayerWidths.frames, [1024, 1024, 1024]);
+  assert.deepEqual(mobileLayerWidths.backgrounds, [1024, 1024, 1024]);
+  assert.ok(mobileLayerWidths.pets.every((width) => width > 0));
+  await page.screenshot({ path: mobileShot, fullPage: true });
   assert.equal(mobileHome.bodyWidth <= mobileHome.viewportWidth, true);
   assert.equal(mobileCard.bodyWidth <= mobileCard.viewportWidth, true);
+  const collectionAfter = await page.evaluate(() => {
+    let pet = null;
+    try {
+      pet = JSON.parse(localStorage.getItem('petbank_pet') || 'null');
+      if (pet) delete pet.last_home_ts;
+    } catch {}
+    return {
+      cards: localStorage.getItem('petbank_cards'),
+      awardedSeries: localStorage.getItem('petbank_awarded_series'),
+      arenaPoints: localStorage.getItem('arena_points'),
+      points: localStorage.getItem('petbank_points'),
+      pet
+    };
+  });
+  assert.deepEqual(collectionAfter, collectionBefore, 'travel cards do not mutate progression state');
   assert.deepEqual(errors, [], 'browser console errors');
-  console.log(JSON.stringify({ desktopHome, desktopCard, mobileHome, mobileCard, errors }));
+  console.log(JSON.stringify({ desktopHome, desktopCard, desktopComposition, desktopLayerWidths, mobileHome, mobileCard, mobileComposition, mobileLayerWidths, collectionBefore, collectionAfter, errors }));
 } finally {
   await browser.close();
 }

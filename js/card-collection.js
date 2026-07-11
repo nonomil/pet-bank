@@ -744,11 +744,20 @@ const CardCollection = (function() {
         const travelMemories = window.TravelMemory?.getAll?.() || [];
         const travelCardsHtml = travelMemories.length
             ? `<section class="travel-memory-gallery" aria-label="旅行记忆收藏"><div class="travel-memory-gallery-head"><div><div class="card-overview-kicker">旅行记忆</div><h3>宠物带回来的小卡片</h3></div><span>${travelMemories.length} 张</span></div><div class="travel-memory-gallery-grid">${travelMemories.map((memory) => {
-                const hasArt = window.TravelMemory?.isRenderableAsset?.(memory, 'cardAsset');
-                const visual = hasArt
-                    ? `<img src="${escapeHtmlAttr(memory.cardAsset)}" alt="${escapeHtmlAttr(memory.title)}" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>${escapeHtmlAttr(memory.icon)}</span>`
-                    : `<span>${escapeHtmlAttr(memory.icon)}</span>`;
-                return `<article class="travel-memory-gallery-card"><div class="travel-memory-gallery-art">${visual}</div><strong>${escapeHtmlAttr(memory.title)}</strong><small>${escapeHtmlAttr(memory.returnText)}</small><em>${escapeHtmlAttr(memory.nextPreview)}</em></article>`;
+                const hasBackground = window.TravelMemory?.isRenderableAsset?.(memory, 'cardAsset');
+                const hasFrame = window.TravelMemory?.isRenderableAsset?.(memory, 'petCardAsset');
+                const pet = memory.pet || null;
+                const petImage = pet?.image
+                    ? `<img class="travel-memory-pet" src="${escapeHtmlAttr(pet.image)}" alt="${escapeHtmlAttr(pet.name || '我的宠物')}" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="travel-memory-pet-fallback" hidden>${escapeHtmlAttr(pet.emoji || memory.icon || '🐾')}</span>`
+                    : `<span class="travel-memory-pet-fallback">${escapeHtmlAttr(pet?.emoji || memory.icon || '🐾')}</span>`;
+                const background = hasBackground
+                    ? `<img class="travel-memory-card-bg" src="${escapeHtmlAttr(memory.cardAsset)}" alt="" aria-hidden="true" onerror="this.hidden=true">`
+                    : '';
+                const frame = hasFrame
+                    ? `<img class="travel-memory-card-frame" src="${escapeHtmlAttr(memory.petCardAsset)}" alt="" aria-hidden="true" onerror="this.hidden=true">`
+                    : '';
+                const petLabel = pet ? `${pet.name || '我的宠物'} · ${pet.stage || '成长中'}` : '我的宠物 · 旅行中';
+                return `<article class="travel-memory-gallery-card"><div class="travel-memory-gallery-art travel-memory-card-composition">${background}<div class="travel-memory-card-css-fallback" aria-hidden="true">${escapeHtmlAttr(memory.icon)}</div>${frame}<div class="travel-memory-card-pet">${petImage}</div></div><strong>${escapeHtmlAttr(memory.title)}</strong><small>${escapeHtmlAttr(petLabel)}<br>${escapeHtmlAttr(memory.returnText)}</small><em>${escapeHtmlAttr(memory.nextPreview)}</em></article>`;
             }).join('')}</div></section>`
             : '';
         html += travelCardsHtml;

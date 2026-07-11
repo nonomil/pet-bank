@@ -1866,7 +1866,15 @@
 .travel-memory-gallery-art { display: grid; place-items: center; min-height: 128px; border-radius: 11px; background: linear-gradient(180deg, #f2efff, #fff); overflow: hidden; }
 .travel-memory-gallery-art img { width: 100%; height: 128px; object-fit: contain; }
 .travel-memory-gallery-art span { font-size: 48px; }
+.travel-memory-card-composition { position: relative; min-height: 190px; isolation: isolate; background: linear-gradient(135deg, #fff6e8, #e9e4ff); }
+.travel-memory-card-composition > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.travel-memory-card-composition .travel-memory-card-bg { z-index: 0; }
+.travel-memory-card-composition .travel-memory-card-css-fallback { position: absolute; inset: 0; display: grid; place-items: center; color: #6c5ce7; font-size: 48px; z-index: 0; }
+.travel-memory-card-composition .travel-memory-card-frame { z-index: 1; opacity: .82; }
+.travel-memory-card-pet { position: absolute; inset: 22% 25% 24%; display: grid; place-items: center; z-index: 2; }
+.travel-memory-card-pet img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 4px rgba(50, 40, 80, .24)); }
+.travel-memory-card-pet .travel-memory-pet-fallback { font-size: 54px; }
 .travel-memory-gallery-card strong { overflow: hidden; color: #4b3b76; text-overflow: ellipsis; white-space: nowrap; }
 .travel-memory-gallery-card small { min-height: 2.8em; color: #6f6a7c; font-size: 11px; line-height: 1.45; }
 .travel-memory-gallery-card em { color: #b07b32; font-size: 11px; font-style: normal; }
-@media (max-width: 640px) { .travel-memory-gallery-grid { grid-template-columns: 1fr; } .travel-memory-gallery-card { grid-template-columns: 90px minmax(0, 1fr); align-items: center; } .travel-memory-gallery-card strong, .travel-memory-gallery-card small, .travel-memory-gallery-card em { grid-column: 2; } .travel-memory-gallery-art { grid-row: span 3; min-height: 90px; } .travel-memory-gallery-art img { height: 90px; } }
+@media (max-width: 640px) { .travel-memory-gallery-grid { grid-template-columns: 1fr; } .travel-memory-gallery-card { grid-template-columns: 90px minmax(0, 1fr); align-items: center; } .travel-memory-gallery-card strong, .travel-memory-gallery-card small, .travel-memory-gallery-card em { grid-column: 2; } .travel-memory-gallery-art { grid-row: span 3; min-height: 90px; } .travel-memory-gallery-art > img { height: 90px; } .travel-memory-card-pet { inset: 18% 20% 20%; } }

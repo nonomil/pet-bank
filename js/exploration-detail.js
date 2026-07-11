@@ -432,7 +432,16 @@ const ExplorationDetail = (function () {
 
     function recordTravelMemory() {
         if (!currentScene || !window.TravelMemory || typeof window.TravelMemory.record !== 'function') return null;
-        const result = window.TravelMemory.record({ sceneId: currentScene.id });
+        const petState = window.PetSystem?.getState?.() || null;
+        const species = petState?.species_data || null;
+        const pet = petState?.species ? {
+            speciesId: petState.species,
+            name: species?.name || '我的宠物',
+            emoji: species?.emoji || petState.stage_emoji || '🐾',
+            image: window.PetSystem?.getCurrentStageImage?.() || species?.imageUrl || '',
+            stage: petState.stage?.name || '成长中'
+        } : null;
+        const result = window.TravelMemory.record({ sceneId: currentScene.id, pet });
         if (result.accepted && result.memory.itemId && !foundItems.includes(result.memory.itemId) && window.InventorySystem) {
             window.InventorySystem.addItem(result.memory.itemId, 1);
         }
