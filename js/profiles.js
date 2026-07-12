@@ -19,6 +19,7 @@
     const META_KEY = 'petbank_profiles_meta';
     const ACTIVE_KEY = 'petbank_active_profile';
     const DATA_PREFIX = 'petbank_profile_data_';
+    const CLOUD_OUTBOX_KEY = 'petbank_self_hosted_snapshot_outbox_v1';
     const SELF_HOSTED_AUTH_KEYS = new Set([
         'petbank_self_hosted_access_token',
         'petbank_self_hosted_refresh_token',
@@ -52,7 +53,7 @@
     ];
 
     // 全局共享键前缀（不属于任何 profile，切换时不搬动）
-    const RESERVED_KEYS = new Set([META_KEY, ACTIVE_KEY, ...SELF_HOSTED_AUTH_KEYS]);
+    const RESERVED_KEYS = new Set([META_KEY, ACTIVE_KEY, CLOUD_OUTBOX_KEY, ...SELF_HOSTED_AUTH_KEYS]);
 
     /**
      * 判断一个 localStorage key 是否是 profile 数据快照键（petbank_profile_data_xxx）
@@ -412,17 +413,20 @@
                 return saved;
             } catch (error) {
                 if (error.code === 'SNAPSHOT_REVISION_CONFLICT') {
+                    let latestRevision = Number(profile.cloudRevision || 0);
                     try {
                         const latest = await api.latestSnapshot(profile.cloudChildId);
-                        const latestRevision = Number(latest?.snapshot?.revision || 0);
+                        latestRevision = Number(latest?.snapshot?.revision || 0);
                         updateCloudProfileMeta(profile.id, latestRevision);
-                        queueCloudSnapshot(profile, snapshot, revision, error, {
-                            status: 'conflict',
-                            attempts: Number(pending?.attempts || 0) + 1,
-                            nextAttemptAt: 0,
-                            remoteRevision: latestRevision
-                        });
-                    } catch (ignored) {}
+                    } catch (latestError) {
+                        console.warn('[ProfileManager] 无法读取冲突快照的远端版本', latestError);
+                    }
+                    queueCloudSnapshot(profile, snapshot, revision, error, {
+                        status: 'conflict',
+                        attempts: Number(pending?.attempts || 0) + 1,
+                        nextAttemptAt: 0,
+                        remoteRevision: latestRevision
+                    });
                 } else {
                     queueCloudSnapshot(profile, snapshot, revision, error, {
                         attempts: Number(pending?.attempts || 0) + 1,
