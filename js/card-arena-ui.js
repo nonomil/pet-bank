@@ -387,12 +387,12 @@ const CardArenaUI = (function () {
         return (st && st.enemyMult) ? st.enemyMult : null;
     }
 
-    // 读取已收集的卡 id（CardCollection 私有，读同名 localStorage）
+    // 读取已收集的卡 id；CardCollection 是卡牌存储的唯一 owner。
     function _getCollectedIds() {
-        try {
-            const raw = localStorage.getItem('petbank_cards');
-            return raw ? JSON.parse(raw) : [];
-        } catch (e) { return []; }
+        if (window.CardCollection && typeof window.CardCollection.getCollectedIds === 'function') {
+            return window.CardCollection.getCollectedIds();
+        }
+        return [];
     }
 
     // 打赢随机奖励：从全量 species 随机抽 1，未拥有→addCard，已拥有→addExp(20)；返回提示文本

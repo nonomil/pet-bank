@@ -646,10 +646,22 @@ const CardCollection = (function() {
     }
 
     function init() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        _cards = saved ? JSON.parse(saved) : [];
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            const parsed = saved ? JSON.parse(saved) : [];
+            _cards = Array.isArray(parsed)
+                ? parsed.filter((id) => typeof id === 'string' && id.length > 0)
+                : [];
+        } catch (error) {
+            _cards = [];
+            console.warn('[CardCollection] failed to parse stored cards; using an empty collection', error);
+        }
         syncSpeciesFromPetSystem();
         void loadLoreData();
+    }
+
+    function getCollectedIds() {
+        return _cards.slice();
     }
 
     function addCard(petId) {
@@ -1066,7 +1078,7 @@ const CardCollection = (function() {
         }
     }
 
-    return { init, renderUI, addCard, showDetail, closeDetail, setView, openStageLightbox, closeStageLightbox, openSceneInvestigation, handleComposedCardImageError };
+    return { init, renderUI, addCard, getCollectedIds, showDetail, closeDetail, setView, openStageLightbox, closeStageLightbox, openSceneInvestigation, handleComposedCardImageError };
 })();
 
 window.CardCollection = CardCollection;

@@ -26,6 +26,10 @@ async function loadProfileStoragePolicy() {
   return window.PetBankProfileStoragePolicy;
 }
 
+async function readSource(relativePath) {
+  return fs.readFile(path.join(ROOT, relativePath), 'utf8');
+}
+
 function createStorage(initial = {}) {
   const values = new Map(Object.entries(initial));
   return {
@@ -71,6 +75,15 @@ test('runtime profile policy matches every explicit non-profile registry entry',
 test('source scan has no unregistered localStorage keys', async () => {
   const report = await scanLocalStorageKeys();
   assert.deepEqual(report.unknown, [], `unregistered keys:\n${report.unknown.join('\n')}`);
+});
+
+test('card storage has one owner and arena uses its public read API', async () => {
+  const collection = await readSource(path.join('js', 'card-collection.js'));
+  const arena = await readSource(path.join('js', 'card-arena-ui.js'));
+  assert.match(collection, /function getCollectedIds\(\)/);
+  assert.match(collection, /return _cards\.slice\(\)/);
+  assert.doesNotMatch(arena, /localStorage\.getItem\(['"]petbank_cards['"]\)/);
+  assert.match(arena, /CardCollection\.getCollectedIds\(\)/);
 });
 
 test('legacy storage value migrates to the registered key exactly once', async () => {
