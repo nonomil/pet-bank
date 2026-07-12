@@ -44,10 +44,10 @@
                     </div>
                     <span class="parent-account-state">${register ? '注册' : '登录'}</span>
                 </div>
-                <p class="parent-account-copy">孩子端继续使用本机档案；账号只用于家庭、孩子和跨设备数据管理。</p>
+                <p class="parent-account-copy">先登录家长账号，再创建或选择家庭，孩子档案会挂靠在当前家庭下面。</p>
                 <form id="parent-account-form" class="parent-account-form">
                     ${register ? '<label>显示名称<input name="displayName" autocomplete="name" maxlength="80" placeholder="例如：妈妈" required></label>' : ''}
-                    <label>手机号或邮箱<input name="identifier" autocomplete="username" inputmode="email" placeholder="手机号或邮箱" required></label>
+                    <label>用户名<input name="username" autocomplete="username" autocapitalize="none" maxlength="32" placeholder="例如：mama_01" required></label>
                     <label>密码<input name="password" type="password" autocomplete="${register ? 'new-password' : 'current-password'}" minlength="8" maxlength="128" placeholder="至少 8 个字符" required></label>
                     <div class="parent-account-actions">
                         <button class="btn-primary" type="submit">${buttonLabel()}</button>
@@ -77,7 +77,7 @@
                     </div>
                     <button class="btn-secondary parent-account-logout" type="button" data-parent-logout>退出</button>
                 </div>
-                <p class="parent-account-copy">${escapeHtml(state.account.identifier)} · 家庭数据由 VPS SQLite 保存。</p>
+                <p class="parent-account-copy">用户名：${escapeHtml(state.account.username)} · 家庭数据由 VPS SQLite 保存。</p>
                 <div class="parent-account-inline-actions">
                     <button class="btn-secondary" type="button" data-parent-refresh>刷新家庭</button>
                     <button class="btn-secondary" type="button" data-parent-create-household>新建家庭</button>
@@ -125,7 +125,7 @@
                 <div class="parent-member-list">${state.members.length ? state.members.map(member => {
                     const isCurrent = member.account.id === state.account.id;
                     const role = member.role === 'owner' ? '家庭所有者' : '家长成员';
-                    return `<div class="parent-member-item"><span class="parent-member-avatar">${isCurrent ? '★' : '家'}</span><div class="parent-member-copy"><strong>${escapeHtml(member.account.displayName)}</strong><small>${escapeHtml(member.account.identifier)} · ${role}</small></div>${isCurrent ? '<span class="parent-member-current">当前</span>' : canManageHousehold && member.role !== 'owner' ? `<button class="parent-row-action is-danger" type="button" data-parent-remove-member="${escapeHtml(member.account.id)}">移除</button>` : ''}</div>`;
+                    return `<div class="parent-member-item"><span class="parent-member-avatar">${isCurrent ? '★' : '家'}</span><div class="parent-member-copy"><strong>${escapeHtml(member.account.displayName)}</strong><small>${escapeHtml(member.account.username)} · ${role}</small></div>${isCurrent ? '<span class="parent-member-current">当前</span>' : canManageHousehold && member.role !== 'owner' ? `<button class="parent-row-action is-danger" type="button" data-parent-remove-member="${escapeHtml(member.account.id)}">移除</button>` : ''}</div>`;
                 }).join('') : '<div class="parent-account-empty">暂时没有成员信息。</div>'}</div>
             </div>
             <div class="parent-account-section-head"><h5>孩子档案</h5><button class="btn-primary" type="button" data-parent-add-child>添加孩子</button></div>
@@ -149,8 +149,8 @@
         renderSignedOut();
         try {
             const payload = state.mode === 'register'
-                ? await SelfHostedApi.register(data.get('identifier'), data.get('password'), data.get('displayName'))
-                : await SelfHostedApi.login(data.get('identifier'), data.get('password'));
+                ? await SelfHostedApi.register(data.get('username'), data.get('password'), data.get('displayName'))
+                : await SelfHostedApi.login(data.get('username'), data.get('password'));
             state.account = payload.account;
             await loadData();
             if (typeof window.showToast === 'function') window.showToast('家长账号已连接');
@@ -252,8 +252,8 @@
     }
 
     async function deleteAccount() {
-        const identifier = state.account?.identifier || '';
-        const password = window.prompt(`删除账号 ${identifier} 前请输入当前密码：`, '');
+        const username = state.account?.username || '';
+        const password = window.prompt(`删除账号 ${username} 前请输入当前密码：`, '');
         if (!password) return;
         if (!window.confirm('确定删除账号？账号不能恢复；如果名下还有家庭，服务端会拒绝删除。')) return;
         try {
@@ -312,6 +312,10 @@
     }
 
     function openChildDialog() {
+        if (!root() || !root().offsetParent || !state.account || !state.activeHouseholdId) {
+            startChildSetup();
+            return;
+        }
         const existing = document.getElementById('parent-child-dialog');
         if (existing) return;
         const dialog = document.createElement('div');
@@ -325,7 +329,7 @@
                     <label>孩子昵称<input name="name" maxlength="80" placeholder="例如：小星" required></label>
                     <label>头像<select name="emoji"><option value="🧒">🧒 小朋友</option><option value="👧">👧 女孩</option><option value="👦">👦 男孩</option><option value="🐣">🐣 小伙伴</option></select></label>
                     <p class="parent-account-status" data-child-dialog-status role="status"></p>
-                    <div class="parent-account-actions"><button class="btn-primary" type="submit">创建并进入</button><button class="btn-secondary" type="button" data-child-dialog-cancel>取消</button></div>
+                    <div class="parent-account-actions"><button class="btn-primary" type="submit">创建并挂靠</button><button class="btn-secondary" type="button" data-child-dialog-cancel>取消</button></div>
                 </form>
             </section>
         `;
@@ -391,10 +395,34 @@
         }
     }
 
+    function startChildSetup() {
+        if (!root() || !root().offsetParent) {
+            if (typeof window.switchPage === 'function') window.switchPage('settings', { settingsSection: 'family' });
+            window.setTimeout(startChildSetup, 50);
+            return;
+        }
+        if (!state.account && !SelfHostedApi.isSignedIn()) {
+            state.mode = 'login';
+            renderSignedOut();
+            setStatus('请先登录家长账号；登录后再创建或选择家庭。', '');
+            document.querySelector('#parent-account-form input[name="username"]')?.focus();
+            return;
+        }
+        void loadData().then(() => {
+            if (!state.activeHouseholdId) {
+                setStatus('请先新建家庭或兑换家庭邀请码，孩子才能挂靠到家庭下面。', '');
+                document.querySelector('[data-parent-create-household]')?.focus();
+                return;
+            }
+            openChildDialog();
+        });
+    }
+
     window.ParentAccountUI = {
         render,
         refresh: loadData,
         openChildDialog,
+        startChildSetup,
         getState: () => ({ ...state, households: [...state.households], members: [...state.members], children: [...state.children] })
     };
 })();

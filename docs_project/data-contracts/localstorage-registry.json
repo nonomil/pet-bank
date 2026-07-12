@@ -11,6 +11,7 @@
     {"pattern":"petbank_daily_state_migrated","owner":"app.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_daily_claim_date","owner":"app.js/treasure.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_pet","owner":"pet.js","scope":"profile","snapshot":true},
+    {"pattern":"petbank_pet_story_cases_v1","owner":"pet-story-cases.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_growth_history_v1","owner":"pet-growth-history.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_growth_works","owner":"app.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_care_streak_v1","owner":"pet-growth-history.js","scope":"profile","snapshot":true},
@@ -78,6 +79,7 @@
     {"pattern":"petbank_self_hosted_access_token","owner":"self-hosted-api.js","scope":"parent","snapshot":false},
     {"pattern":"petbank_self_hosted_refresh_token","owner":"self-hosted-api.js","scope":"parent","snapshot":false},
     {"pattern":"petbank_self_hosted_api_base_url","owner":"self-hosted-api.js","scope":"parent","snapshot":false},
+    {"pattern":"petbank_self_hosted_snapshot_outbox_v1","owner":"cloud-sync-outbox.js","scope":"parent","snapshot":false},
     {"pattern":"arena_points","owner":"card-arena-ui.js","scope":"legacy","snapshot":false},
     {"pattern":"learning-arcade-settings-v1","owner":"app.js","scope":"legacy","snapshot":false}
   ]

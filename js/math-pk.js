@@ -1734,18 +1734,23 @@
             const localDate = window.PetBankDailyState && typeof window.PetBankDailyState.localDate === 'function'
                 ? window.PetBankDailyState.localDate()
                 : new Date().toLocaleDateString();
-            const receipt = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
-                ? window.GameRewardReceipts.claim({
+            const receiptService = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
+                ? window.GameRewardReceipts
+                : null;
+            if (receiptService) {
+                const receipt = receiptService.claim({
                     profileId,
                     source: 'math-pk',
                     eventId: `${state.matchStartTs || Date.now()}:${state.mathDifficulty}:${state.mode}`,
                     points: earnedPoints,
                     localDate
-                })
-                : { accepted: earnedPoints > 0 };
-            if (receipt.accepted && typeof window.addGrowthPoints === 'function') {
+                });
+                if (!receipt.accepted && typeof window.showToast === 'function') {
+                    window.showToast('本局奖励已经领取过了');
+                }
+            } else if (typeof window.addGrowthPoints === 'function') {
                 window.addGrowthPoints(earnedPoints);
-            } else if (receipt.accepted && window.totalPoints !== undefined) {
+            } else if (window.totalPoints !== undefined) {
                 window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + earnedPoints);
                 if (typeof window.saveAppState === 'function') window.saveAppState();
                 if (typeof window.updateStats === 'function') window.updateStats();

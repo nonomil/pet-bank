@@ -90,11 +90,14 @@ try {
         console.error(`[browser:diagnostic] body=${(await page.locator('body').innerText()).slice(0, 2000)}`);
         throw error;
     }
-    const identifier = `13${String(Date.now()).slice(-9)}`;
+    await page.goto(`http://127.0.0.1:${staticPort}/parent/index.html`, { waitUntil: 'networkidle' });
+    await page.click('.parent-home-primary-action.is-featured');
+    await page.waitForSelector('#parent-account-form');
     await page.click('[data-parent-account-toggle]');
     await page.waitForSelector('[name="displayName"]');
+    const username = `browser_parent_${String(Date.now()).slice(-6)}`;
     await page.fill('[name="displayName"]', '浏览器家长');
-    await page.fill('[name="identifier"]', identifier);
+    await page.fill('[name="username"]', username);
     await page.fill('[name="password"]', 'BrowserPass123!');
     await page.click('#parent-account-form button[type="submit"]');
     await page.waitForSelector('[data-parent-create-household]');
@@ -107,11 +110,16 @@ try {
         advancedOpen: Boolean(document.querySelector('.parent-home-more details[open]')),
         bodyText: document.querySelector('#page-parent')?.textContent || '',
     }));
-    assert.deepEqual(parentHome.primaryActions, ['添加孩子', '添加家长', '查看成长']);
-    assert.equal(parentHome.hasAdvancedDetails, true);
+    assert.deepEqual(parentHome.primaryActions, ['添加孩子']);
+    assert.equal(parentHome.hasAdvancedDetails, false);
     assert.equal(parentHome.advancedOpen, false);
-    assert.doesNotMatch(parentHome.bodyText, /Parent Console|页面边界|\/settings\/\*|\/app\/\*/);
+    assert.doesNotMatch(parentHome.bodyText, /Parent Console|页面边界|更多管理|\/settings\/\*|\/app\/\*/);
 
+    await page.goto(`http://127.0.0.1:${staticPort}/settings/index.html`, { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => document.querySelector('[data-settings-nav="family"]')?.classList.contains('is-current'));
+
+    await page.goto(`http://127.0.0.1:${staticPort}/parent/settings/family/index.html`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('#parent-account-root');
     const parentChrome = await page.evaluate(() => ({
         bodyClass: document.body.className,
         profileDisplay: getComputedStyle(document.getElementById('profileSwitcher')).display,
@@ -147,6 +155,8 @@ try {
     assert.equal(parentManagement.hasDeleteChild, true);
     assert.equal(parentManagement.hasDeleteAccount, true);
     assert.equal(parentManagement.childEndpoint, true);
+    const accountText = await page.locator('#parent-account-root').textContent();
+    assert.doesNotMatch(accountText, /手机号或邮箱/);
     const parentNav = await page.locator('.parent-shell-nav-item').allTextContents();
     assert.deepEqual(parentNav.map((text) => text.trim()), ['管理大厅', '设置管理', '成长作品', '工具箱', '进入孩子端']);
     assert.equal(await page.locator('.parent-shell-context-copy small').textContent(), '当前家庭');

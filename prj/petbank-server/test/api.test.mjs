@@ -5,6 +5,39 @@ import path from 'node:path';
 import test from 'node:test';
 
 import { createServer } from '../src/server.mjs';
+
+test('registration and login use a username and reject phone or email identifiers', async () => {
+    await withApi(async ({ request }) => {
+        const registered = await request('POST', '/api/v1/auth/register', {
+            username: 'demo_parent',
+            password: 'StrongPass123!',
+            displayName: '用户名家长',
+        });
+        assert.equal(registered.response.status, 201);
+        assert.equal(registered.data.account.username, 'demo_parent');
+        assert.equal(registered.data.account.username, 'demo_parent');
+
+        const login = await request('POST', '/api/v1/auth/login', {
+            username: 'demo_parent',
+            password: 'StrongPass123!',
+        });
+        assert.equal(login.response.status, 200);
+
+        const phone = await request('POST', '/api/v1/auth/register', {
+            username: '13800138000',
+            password: 'StrongPass123!',
+        });
+        assert.equal(phone.response.status, 400);
+        assert.equal(phone.data.error.code, 'INVALID_USERNAME');
+
+        const email = await request('POST', '/api/v1/auth/register', {
+            username: 'parent@example.com',
+            password: 'StrongPass123!',
+        });
+        assert.equal(email.response.status, 400);
+        assert.equal(email.data.error.code, 'INVALID_USERNAME');
+    });
+});
 import { openDatabase } from '../src/database.mjs';
 
 async function withApi(run) {
@@ -50,17 +83,17 @@ async function withApi(run) {
 test('account, household, child and snapshot journey enforces ownership and revision conflicts', async () => {
     await withApi(async ({ request }) => {
         const register = await request('POST', '/api/v1/auth/register', {
-            identifier: '13800138000',
+            username: 'parent_a',
             password: 'StrongPass123!',
             displayName: '家长A',
         });
         assert.equal(register.response.status, 201);
         assert.ok(register.data.accessToken);
         assert.ok(register.data.refreshToken);
-        assert.equal(register.data.account.identifier, '13800138000');
+        assert.equal(register.data.account.username, 'parent_a');
 
         const duplicate = await request('POST', '/api/v1/auth/register', {
-            identifier: '13800138000',
+            username: 'parent_a',
             password: 'StrongPass123!',
             displayName: '重复账号',
         });
@@ -68,7 +101,7 @@ test('account, household, child and snapshot journey enforces ownership and revi
         assert.equal(duplicate.data.error.code, 'ACCOUNT_EXISTS');
 
         const login = await request('POST', '/api/v1/auth/login', {
-            identifier: '13800138000',
+            username: 'parent_a',
             password: 'StrongPass123!',
         });
         assert.equal(login.response.status, 200);
@@ -126,7 +159,7 @@ test('account, household, child and snapshot journey enforces ownership and revi
 test('household invite joins a second account and blocks unrelated access', async () => {
     await withApi(async ({ request }) => {
         const first = await request('POST', '/api/v1/auth/register', {
-            identifier: '13900139000', password: 'StrongPass123!', displayName: '家长一',
+            username: 'parent_one', password: 'StrongPass123!', displayName: '家长一',
         });
         const firstToken = first.data.accessToken;
         const household = await request('POST', '/api/v1/households', { name: '共享家庭' }, firstToken);
@@ -137,7 +170,7 @@ test('household invite joins a second account and blocks unrelated access', asyn
         assert.match(invite.data.invite.code, /^[A-Z0-9]{8}$/);
 
         const second = await request('POST', '/api/v1/auth/register', {
-            identifier: '13700137000', password: 'StrongPass123!', displayName: '家长二',
+            username: 'parent_two', password: 'StrongPass123!', displayName: '家长二',
         });
         const secondToken = second.data.accessToken;
 
@@ -154,7 +187,7 @@ test('household invite joins a second account and blocks unrelated access', asyn
         assert.equal(members.response.status, 200);
         assert.equal(members.data.members.length, 2);
 
-        const memberId = members.data.members.find((member) => member.account.identifier === '13700137000').account.id;
+        const memberId = members.data.members.find((member) => member.account.username === 'parent_two').account.id;
         const removed = await request('DELETE', `/api/v1/households/${householdId}/members/${memberId}`, undefined, firstToken);
         assert.equal(removed.response.status, 204);
         const membersAfterRemoval = await request('GET', `/api/v1/households/${householdId}/members`, undefined, firstToken);
@@ -169,7 +202,7 @@ test('household invite joins a second account and blocks unrelated access', asyn
 test('owner can delete a child and its snapshots but cannot remove the household owner', async () => {
     await withApi(async ({ request }) => {
         const registered = await request('POST', '/api/v1/auth/register', {
-            identifier: '13500135000', password: 'StrongPass123!', displayName: '家庭所有者',
+            username: 'owner_parent', password: 'StrongPass123!', displayName: '家庭所有者',
         });
         const token = registered.data.accessToken;
         const household = await request('POST', '/api/v1/households', { name: '可管理家庭' }, token);
@@ -194,7 +227,7 @@ test('owner can delete a child and its snapshots but cannot remove the household
 test('account deletion requires the current password and removes the account session', async () => {
     await withApi(async ({ request }) => {
         const registered = await request('POST', '/api/v1/auth/register', {
-            identifier: '13400134000', password: 'StrongPass123!', displayName: '待删除家长',
+            username: 'delete_parent', password: 'StrongPass123!', displayName: '待删除家长',
         });
         const token = registered.data.accessToken;
         const wrongPassword = await request('DELETE', '/api/v1/auth/account', { password: 'wrong-password' }, token);
@@ -212,11 +245,11 @@ test('account deletion requires the current password and removes the account ses
 test('refresh token and password material are never returned by the account endpoint', async () => {
     await withApi(async ({ request }) => {
         const registered = await request('POST', '/api/v1/auth/register', {
-            identifier: '13600136000', password: 'StrongPass123!', displayName: '家长三',
+            username: 'parent_three', password: 'StrongPass123!', displayName: '家长三',
         });
         const response = await request('GET', '/api/v1/auth/me', undefined, registered.data.accessToken);
         assert.equal(response.response.status, 200);
-        assert.deepEqual(Object.keys(response.data.account).sort(), ['createdAt', 'displayName', 'id', 'identifier']);
+        assert.deepEqual(Object.keys(response.data.account).sort(), ['createdAt', 'displayName', 'id', 'username']);
         assert.doesNotMatch(JSON.stringify(response.data), /password_hash|refreshToken|jwtSecret/i);
     });
 });

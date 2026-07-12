@@ -101,6 +101,44 @@
             : null;
     }
 
+    function cloudSyncOutbox() {
+        const outbox = window.PetBankCloudSyncOutbox;
+        return outbox && typeof outbox.upsert === 'function' ? outbox : null;
+    }
+
+    function cloudOutboxId(profileId, childId) {
+        return `${String(profileId || '').trim()}:${String(childId || '').trim()}`;
+    }
+
+    function updateCloudProfileMeta(profileId, revision) {
+        const list = safeParse(localStorage.getItem(META_KEY), []);
+        const current = list.find(item => item.id === profileId);
+        if (!current) return;
+        current.cloudRevision = Math.max(Number(current.cloudRevision || 0), Number(revision || 0));
+        current.lastCloudSyncAt = Date.now();
+        localStorage.setItem(META_KEY, JSON.stringify(list));
+    }
+
+    function queueCloudSnapshot(profile, snapshot, revision, error, options) {
+        const outbox = cloudSyncOutbox();
+        if (!outbox || !profile?.cloudChildId) return false;
+        const previous = outbox.get(localStorage, cloudOutboxId(profile.id, profile.cloudChildId));
+        const config = options || {};
+        return outbox.upsert(localStorage, {
+            id: cloudOutboxId(profile.id, profile.cloudChildId),
+            profileId: profile.id,
+            childId: profile.cloudChildId,
+            revision,
+            payload: snapshot,
+            status: config.status || 'pending',
+            attempts: config.attempts ?? Number(previous?.attempts || 0),
+            nextAttemptAt: config.nextAttemptAt ?? Date.now(),
+            queuedAt: previous?.queuedAt || Date.now(),
+            lastError: error ? String(error.message || error) : String(previous?.lastError || ''),
+            remoteRevision: config.remoteRevision ?? previous?.remoteRevision
+        });
+    }
+
     function cloudProfileId(childId) {
         return `p_cloud_${String(childId || '').replace(/[^a-zA-Z0-9_-]/g, '')}`;
     }
@@ -295,6 +333,49 @@
             return snapshot;
         },
 
+        async flushCloudOutbox() {
+            const api = selfHostedApi();
+            const outbox = cloudSyncOutbox();
+            if (!api || !outbox || !api.isSignedIn()) return { skipped: true, reason: 'not-ready' };
+            const results = [];
+            for (const entry of outbox.list(localStorage)) {
+                if (entry.status !== 'pending' || Number(entry.nextAttemptAt || 0) > Date.now()) continue;
+                const profile = this.get(entry.profileId);
+                if (!profile || profile.cloudChildId !== entry.childId) continue;
+                try {
+                    const payload = await api.pushSnapshot(entry.childId, entry.revision, entry.payload);
+                    const saved = payload?.snapshot || {};
+                    updateCloudProfileMeta(profile.id, Number(saved.revision || entry.revision));
+                    outbox.remove(localStorage, entry.id);
+                    results.push({ id: entry.id, status: 'synced', revision: Number(saved.revision || entry.revision) });
+                } catch (error) {
+                    if (error.code === 'SNAPSHOT_REVISION_CONFLICT') {
+                        let remoteRevision = 0;
+                        try {
+                            const latest = await api.latestSnapshot(entry.childId);
+                            remoteRevision = Number(latest?.snapshot?.revision || 0);
+                            updateCloudProfileMeta(profile.id, remoteRevision);
+                        } catch (_) {}
+                        queueCloudSnapshot(profile, entry.payload, entry.revision, error, {
+                            status: 'conflict',
+                            attempts: Number(entry.attempts || 0) + 1,
+                            nextAttemptAt: 0,
+                            remoteRevision
+                        });
+                        results.push({ id: entry.id, status: 'conflict', remoteRevision });
+                    } else {
+                        const attempts = Number(entry.attempts || 0) + 1;
+                        queueCloudSnapshot(profile, entry.payload, entry.revision, error, {
+                            attempts,
+                            nextAttemptAt: Date.now() + Math.min(300000, 1000 * (2 ** Math.min(attempts, 8)))
+                        });
+                        results.push({ id: entry.id, status: 'queued', attempts });
+                    }
+                }
+            }
+            return results;
+        },
+
         async syncActiveToCloud() {
             if (this._cloudSyncPromise) return this._cloudSyncPromise;
             const run = this._syncActiveToCloudOnce();
@@ -313,30 +394,41 @@
                 return { skipped: true, reason: 'not-linked' };
             }
             const snapshot = this._writeLiveSnapshot(profile.id);
-            const revision = Number(profile.cloudRevision || 0) + 1;
+            const outbox = cloudSyncOutbox();
+            const outboxId = cloudOutboxId(profile.id, profile.cloudChildId);
+            const pending = outbox?.get(localStorage, outboxId);
+            if (pending?.status === 'conflict') {
+                const conflict = new Error('本地快照与云端版本冲突，需要先处理冲突再同步');
+                conflict.code = 'SNAPSHOT_REVISION_CONFLICT';
+                conflict.remoteRevision = pending.remoteRevision;
+                throw conflict;
+            }
+            const revision = Number(pending?.revision || 0) || Number(profile.cloudRevision || 0) + 1;
             try {
                 const payload = await api.pushSnapshot(profile.cloudChildId, revision, snapshot);
                 const saved = payload?.snapshot || {};
-                const list = this._readMeta();
-                const current = list.find(item => item.id === profile.id);
-                if (current) {
-                    current.cloudRevision = Number(saved.revision || revision);
-                    current.lastCloudSyncAt = Date.now();
-                    this._writeMeta(list);
-                }
+                updateCloudProfileMeta(profile.id, Number(saved.revision || revision));
+                outbox?.remove(localStorage, outboxId);
                 return saved;
             } catch (error) {
                 if (error.code === 'SNAPSHOT_REVISION_CONFLICT') {
                     try {
                         const latest = await api.latestSnapshot(profile.cloudChildId);
                         const latestRevision = Number(latest?.snapshot?.revision || 0);
-                        const list = this._readMeta();
-                        const current = list.find(item => item.id === profile.id);
-                        if (current && latestRevision > Number(current.cloudRevision || 0)) {
-                            current.cloudRevision = latestRevision;
-                            this._writeMeta(list);
-                        }
+                        updateCloudProfileMeta(profile.id, latestRevision);
+                        queueCloudSnapshot(profile, snapshot, revision, error, {
+                            status: 'conflict',
+                            attempts: Number(pending?.attempts || 0) + 1,
+                            nextAttemptAt: 0,
+                            remoteRevision: latestRevision
+                        });
                     } catch (ignored) {}
+                } else {
+                    queueCloudSnapshot(profile, snapshot, revision, error, {
+                        attempts: Number(pending?.attempts || 0) + 1,
+                        nextAttemptAt: Date.now() + Math.min(300000, 1000 * (2 ** Math.min(Number(pending?.attempts || 0) + 1, 8)))
+                    });
+                    return { queued: true, revision, reason: error.code || 'network-error' };
                 }
                 throw error;
             }
@@ -383,11 +475,14 @@
             this._cloudLifecycleInstalled = true;
             const flush = (force) => {
                 if (force || document.visibilityState === 'hidden' || !document.visibilityState) {
-                    void this.syncActiveToCloud().catch(() => null);
+                    void this.flushCloudOutbox()
+                        .then(() => this.syncActiveToCloud())
+                        .catch(() => null);
                 }
             };
             document.addEventListener('visibilitychange', flush);
             window.addEventListener('pagehide', () => flush(true));
+            window.addEventListener('online', () => { void this.flushCloudOutbox().catch(() => null); });
         },
 
         /**
@@ -498,6 +593,11 @@
 
         getSnapshotKey(id) {
             return DATA_PREFIX + id;
+        },
+
+        getCloudSyncOutbox() {
+            const outbox = cloudSyncOutbox();
+            return outbox ? outbox.list(localStorage) : [];
         },
 
         getProfileSnapshot(id) {

@@ -8,7 +8,7 @@ import {
     createRefreshToken,
     hashPassword,
     hashRefreshToken,
-    normalizeIdentifier,
+    normalizeUsername,
     verifyAccessToken,
     verifyPassword,
 } from './security.mjs';
@@ -35,7 +35,7 @@ function sendError(response, statusCode, code, message, config, details) {
 function accountView(row) {
     return {
         id: row.id,
-        identifier: row.identifier || row.email,
+        username: row.username || row.identifier || row.email,
         displayName: row.display_name,
         createdAt: row.created_at,
     };
@@ -150,7 +150,7 @@ function publicInvite(row) {
 
 function mapKnownError(error) {
     if (error?.code === 'SQLITE_CONSTRAINT_UNIQUE') return { statusCode: 409, code: 'ALREADY_EXISTS', message: 'The requested record already exists.' };
-    if (error?.message === 'INVALID_IDENTIFIER') return { statusCode: 400, code: 'INVALID_IDENTIFIER', message: '请输入有效的手机号或邮箱。' };
+    if (error?.message === 'INVALID_USERNAME') return { statusCode: 400, code: 'INVALID_USERNAME', message: '用户名需为 3 到 32 位字母、数字或下划线，且以字母开头。' };
     if (error?.message === 'INVALID_PASSWORD') return { statusCode: 400, code: 'INVALID_PASSWORD', message: '密码长度需为 8 到 128 个字符。' };
     if (error?.message === 'INVALID_JSON') return { statusCode: 400, code: 'INVALID_JSON', message: '请求数据格式不正确。' };
     if (error?.message === 'BODY_TOO_LARGE') return { statusCode: 413, code: 'BODY_TOO_LARGE', message: '请求内容过大。' };
@@ -196,14 +196,14 @@ export function createServer({ config, database }) {
             if (request.method === 'POST' && url.pathname === '/api/v1/auth/register') {
                 if (!config.enableRegistration) throw new Error('REGISTRATION_DISABLED');
                 const body = await parseJsonBody(request);
-                const identifier = normalizeIdentifier(body.identifier);
+                const username = normalizeUsername(body.username);
                 assertPassword(body.password);
                 const displayName = validateName(body.displayName || '家长', 'name');
                 const accountId = createId();
-                const email = identifier.includes('@') ? identifier : `${identifier}@local.petbank.invalid`;
+                const email = `${username}@local.petbank.invalid`;
                 try {
-                    database.prepare(`insert into accounts (id, email, identifier, password_hash, display_name) values (?, ?, ?, ?, ?)`)
-                        .run(accountId, email, identifier, hashPassword(body.password), displayName);
+                    database.prepare(`insert into accounts (id, email, identifier, username, password_hash, display_name) values (?, ?, ?, ?, ?, ?)`)
+                        .run(accountId, email, username, username, hashPassword(body.password), displayName);
                 } catch (error) {
                     if (String(error?.message).includes('UNIQUE')) throw Object.assign(new Error('ACCOUNT_EXISTS'), { statusCode: 409 });
                     throw error;
@@ -215,8 +215,8 @@ export function createServer({ config, database }) {
 
             if (request.method === 'POST' && url.pathname === '/api/v1/auth/login') {
                 const body = await parseJsonBody(request);
-                const identifier = normalizeIdentifier(body.identifier);
-                const account = database.prepare('select * from accounts where identifier = ? or email = ?').get(identifier, identifier);
+                const username = normalizeUsername(body.username);
+                const account = database.prepare('select * from accounts where username = ? or identifier = ?').get(username, username);
                 if (!account || !verifyPassword(body.password, account.password_hash)) throw new Error('INVALID_CREDENTIALS');
                 return json(response, 200, { ...issueSession(database, config, account.id), account: accountView(account) });
             }
@@ -287,7 +287,7 @@ export function createServer({ config, database }) {
             if (request.method === 'GET' && membersMatch) {
                 const householdId = membersMatch[1];
                 requireMember(database, account.id, householdId);
-                const members = database.prepare(`select a.id, a.identifier, a.email, a.display_name, a.created_at, hm.role, hm.created_at as joined_at from household_members hm join accounts a on a.id = hm.account_id where hm.household_id = ? order by hm.created_at`).all(householdId);
+                const members = database.prepare(`select a.id, a.username, a.identifier, a.email, a.display_name, a.created_at, hm.role, hm.created_at as joined_at from household_members hm join accounts a on a.id = hm.account_id where hm.household_id = ? order by hm.created_at`).all(householdId);
                 return json(response, 200, { members: members.map((member) => ({ account: accountView(member), role: member.role, joinedAt: member.joined_at })) });
             }
 
@@ -406,7 +406,7 @@ export function createServer({ config, database }) {
             return sendError(response, 404, 'NOT_FOUND', 'API route not found.', config);
         } catch (error) {
             const mapped = mapKnownError(error);
-            if (error?.message === 'ACCOUNT_EXISTS') return sendError(response, 409, 'ACCOUNT_EXISTS', '该手机号或邮箱已注册。', config);
+            if (error?.message === 'ACCOUNT_EXISTS') return sendError(response, 409, 'ACCOUNT_EXISTS', '该用户名已注册。', config);
             return sendError(response, mapped.statusCode, mapped.code, mapped.message, config);
         }
     });

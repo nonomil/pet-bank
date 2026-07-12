@@ -23,16 +23,10 @@ function signJwt(input, secret) {
     return createHmac('sha256', secret).update(input).digest('base64url');
 }
 
-export function normalizeIdentifier(value) {
-    const identifier = String(value || '').trim();
-    if (identifier.includes('@')) {
-        const email = identifier.toLowerCase();
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('INVALID_IDENTIFIER');
-        return email;
-    }
-    const phone = identifier.replace(/[\s-]/g, '');
-    if (!/^\+?[0-9]{7,20}$/.test(phone)) throw new Error('INVALID_IDENTIFIER');
-    return phone;
+export function normalizeUsername(value) {
+    const username = String(value || '').trim().toLowerCase();
+    if (!/^[a-z][a-z0-9_]{2,31}$/.test(username)) throw new Error('INVALID_USERNAME');
+    return username;
 }
 
 export function assertPassword(password) {

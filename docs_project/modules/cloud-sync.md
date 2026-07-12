@@ -22,7 +22,7 @@
 
 当前已提供的 API facade（最后两项由 Profile 生命周期调用）：
 
-- `signIn(identifier, password)`
+- `signIn(username, password)`
 - `signOut()` / `refreshSession()`
 - `listChildren()` / `createChild()`
 - `pushSnapshot(childId, revision, payload)`
