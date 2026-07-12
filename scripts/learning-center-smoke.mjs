@@ -551,6 +551,7 @@ async function main() {
       localStorage.removeItem('petbank_learning_rewards');
       localStorage.removeItem('petbank_learning_vocab_progress');
       localStorage.removeItem('petbank_learning_english_rewards');
+      window.EnglishVocabProgress?.reset?.();
       const currentPoints = parseInt(localStorage.getItem('petbank_points') || '0', 10);
       if (typeof window.addGrowthPoints === 'function') {
         if (currentPoints < 50) window.addGrowthPoints(50 - currentPoints);
@@ -660,7 +661,7 @@ async function main() {
       if (window.LearnCenter?.openLesson) window.LearnCenter.openLesson('english-mc-hybrid-2026', 'minecraft-vocab', 'vocab-practice');
       await sleep(350);
       const vocabRewardPage = document.getElementById('page-learn-lesson');
-      const englishRewardsRaw = localStorage.getItem('petbank_learning_english_rewards') || '';
+      const englishRewardsRaw = JSON.stringify(window.EnglishVocabProgress?.readRewards?.() || {});
       const englishRewardText = vocabRewardPage?.querySelector('[data-learn-english-rewards]')?.textContent || '';
 
       return {

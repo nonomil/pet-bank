@@ -44,7 +44,7 @@ try {
     const species = window.PetSystem.getAllSpecies()[0];
     if (!window.PetSystem.getState().species && species) window.PetSystem.chooseSpecies(species.id);
     await window.switchPage('explore');
-    await window.renderExplorePage();
+    await window.renderExplorePage('space-growth-detective');
     window.SpaceGrowthDetective.prepareTestPet();
   });
   await dismissTransientOverlays();

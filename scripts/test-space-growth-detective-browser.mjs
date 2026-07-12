@@ -28,9 +28,11 @@ async function prepareWithPet() {
     localStorage.setItem('petbank_pet', JSON.stringify(pet));
     window.PetSystem.load();
     await window.switchPage('explore');
-    await window.renderExplorePage();
+    await window.renderExplorePage('space-growth-detective');
   });
   assert.equal(await page.evaluate(() => Boolean(window.PetStoryCases)), true, 'explore bundle loads story case module');
+  await page.locator('[data-explore-mode="adventure"]').click();
+  await page.waitForSelector('[data-space-growth-map]', { state: 'attached' });
   assert.equal(await page.locator('[data-space-growth-map]').count(), 1, 'second story map is mounted');
   assert.equal(await page.locator('[data-space-growth-node]').count(), 5, 'second story map renders five nodes');
   await page.waitForSelector('#petStoryCasePanel .story-case-card', { state: 'attached' });

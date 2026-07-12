@@ -1,6 +1,6 @@
 # 学习中心 (LearnCenter)
 
-> 核心文件: [js/learn-center.js](../../js/learn-center.js) (3656行) —— 当前最大业务模块，行号按 2026-07-12 基线
+> 核心文件: [js/learn-center.js](../../js/learn-center.js)（约 3800 行）—— 当前最大业务模块，行号会随内容调整漂移
 > 数据文件: [data/learn/](../../data/learn/) (catalog + 3个学习包)
 > Smoke: [scripts/learning-center-smoke.mjs](../../scripts/learning-center-smoke.mjs)
 
@@ -86,7 +86,7 @@ catalog.json → pack manifest.json → module json → lesson (content)
 | `LearnCenter.openPlan(packId)` | :3818 | 切换到周计划页 |
 | `LearnCenter.openPrint(packId)` | :3829 | 切换到打印页 |
 | **课时完成** | | |
-| `LearnCenter.completeLesson(packId, moduleId, lessonId, rewardPoints)` | :3749 | 标记课时完成 + 积分奖励 + 连续学习奖励 |
+| `LearnCenter.completeLesson(packId, moduleId, lessonId, rewardPoints)` | 约 :3780 | 标记课时完成 + 积分奖励 + 连续学习奖励；返回 `persisted: false` 表示本次没有完成结算 |
 | `LearnCenter.isLessonCompleted(packId, moduleId, lessonId)` | :455 | 检查课时是否已完成 |
 | **每日学习单** | | |
 | `LearnCenter.getDailySheetMode()` | :269 | 获取当前选定的学习单模板 |
@@ -100,6 +100,16 @@ catalog.json → pack manifest.json → module json → lesson (content)
 | `LearnCenter.getModuleProgress(packId, module)` | :419 | 获取模块学习进度 |
 | `LearnCenter.getPackProgress(packId, modulesById)` | :439 | 获取资料包整体进度 |
 | `LearnCenter.getContinueLessonId(packId, module)` | :582 | 获取下一个待学课时 id |
+
+### 课时完成与奖励持久化顺序
+
+`completeLesson()` 的结算顺序是固定的：
+
+1. 写入 `petbank_learning_progress`；失败立即返回 `persisted: false`，不发积分。
+2. 写入 `petbank_learning_rewards`，包含课时奖励、每日 bundle 和资料包连续奖励；失败会回滚本次学习进度，不发积分。
+3. 通过 `PetBankPoints.add()` 发放本次合计积分；积分 API 不可用时恢复本次修改前的进度和奖励记录，并返回失败。
+
+完成按钮只有收到 `persisted: true` 才显示成功状态。英语词卡由 `EnglishVocabProgress` 管理显式 Profile 键：`record()` 返回 `persisted: false` 时，界面只提示重试，不推进词卡；里程碑兑换券写入失败时不会渲染为已获得。
 
 ### 课时类型渲染路由
 

@@ -12,6 +12,7 @@
             const raw = localStorage.getItem(key);
             return raw ? JSON.parse(raw) : fallback;
         } catch (err) {
+            console.warn('[EnglishVocabProgress] failed to read storage; using fallback', key, err);
             return fallback;
         }
     }
@@ -19,7 +20,11 @@
     function writeKey(key, value) {
         try {
             localStorage.setItem(key, JSON.stringify(value || {}));
-        } catch (err) {}
+            return true;
+        } catch (err) {
+            console.warn('[EnglishVocabProgress] failed to write storage', key, err);
+            return false;
+        }
     }
 
     function activeProfileScope() {
@@ -28,7 +33,9 @@
                 const id = window.ProfileManager.getActiveId();
                 if (id) return { id, resolved: true };
             }
-        } catch (err) {}
+        } catch (err) {
+            console.warn('[EnglishVocabProgress] failed to migrate profile-scoped storage', err);
+        }
         return { id: 'default', resolved: false };
     }
 
@@ -86,7 +93,7 @@
 
     function write(data) {
         ensureScopedMigration();
-        writeKey(scopedKey(PROGRESS_KEY), data || {});
+        return writeKey(scopedKey(PROGRESS_KEY), data || {});
     }
 
     function readRewards() {
@@ -96,7 +103,7 @@
 
     function writeRewards(rewards) {
         ensureScopedMigration();
-        writeKey(scopedKey(REWARD_KEY), rewards || {});
+        return writeKey(scopedKey(REWARD_KEY), rewards || {});
     }
 
     function get(cardId) {
@@ -125,8 +132,8 @@
         item.status = item.streak >= MASTERED_STREAK ? 'mastered' : 'learning';
         item.updatedAt = new Date().toISOString();
         data[cardId] = item;
-        write(data);
-        return item;
+        const persisted = write(data);
+        return Object.assign({}, item, { persisted });
     }
 
     function stats(cards) {
@@ -152,7 +159,9 @@
                 masteredCount: cardStats.mastered,
                 createdAt: new Date().toISOString()
             };
-            writeRewards(rewards);
+            if (!writeRewards(rewards)) {
+                delete rewards[COMMON_VOUCHER_ID];
+            }
         }
         return rewards;
     }

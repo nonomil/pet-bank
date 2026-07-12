@@ -5,11 +5,15 @@ import vm from 'node:vm';
 const source = fs.readFileSync(new URL('../js/english-vocab-progress.js', import.meta.url), 'utf8');
 const profileSource = fs.readFileSync(new URL('../js/profiles.js', import.meta.url), 'utf8');
 
-function createStorage(initial = {}) {
+function createStorage(initial = {}, failKeys = []) {
     const data = new Map(Object.entries(initial));
+    const failures = new Set(failKeys);
     return {
         getItem(key) { return data.has(key) ? data.get(key) : null; },
-        setItem(key, value) { data.set(key, String(value)); },
+        setItem(key, value) {
+            if (failures.has(key)) throw new Error(`write blocked: ${key}`);
+            data.set(key, String(value));
+        },
         removeItem(key) { data.delete(key); },
         get length() { return data.size; },
         key(index) { return [...data.keys()][index] || null; },
@@ -149,6 +153,29 @@ const rewardKey = (id) => `${legacyRewardKey}_${id}`;
     profiles.applySnapshotForProfile('profile-a', exported.snapshot, { activate: true });
     const progress = loadProgress(storage, () => profiles.getActiveId());
     assert.equal(progress.get('apple').streak, 2, 'same-profile restore makes scoped English progress readable');
+}
+
+{
+    const progressKeyForProfile = `${legacyProgressKey}_profile-a`;
+    const storage = createStorage({}, [progressKeyForProfile]);
+    const progress = loadProgress(storage, () => 'profile-a');
+    const result = progress.record('blocked', true);
+    assert.equal(result.persisted, false, 'record reports a progress write failure');
+    assert.equal(storage.dump(progressKeyForProfile), undefined, 'failed progress write does not claim persisted state');
+}
+
+{
+    const rewardKeyForProfile = `${legacyRewardKey}_profile-a`;
+    const storage = createStorage({}, [rewardKeyForProfile]);
+    const progress = loadProgress(storage, () => 'profile-a');
+    const cards = Array.from({ length: 10 }, (_, index) => ({ id: `blocked-${index}` }));
+    cards.forEach((card) => {
+        progress.record(card.id, true);
+        progress.record(card.id, true);
+    });
+    const rewards = progress.claimMilestoneRewards(cards);
+    assert.equal(rewards['minecraft-card-common-10'], undefined, 'failed reward write does not expose an unpersisted voucher');
+    assert.equal(storage.dump(rewardKeyForProfile), undefined, 'failed reward write leaves no reward record');
 }
 
 console.log('english vocab profile scope: PASS');

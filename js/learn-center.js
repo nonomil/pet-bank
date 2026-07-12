@@ -66,6 +66,7 @@
             const raw = localStorage.getItem(key);
             return raw ? JSON.parse(raw) : fallback;
         } catch (err) {
+            console.warn('[LearnCenter] failed to read storage; using fallback', key, err);
             return fallback;
         }
     }
@@ -73,7 +74,11 @@
     function writeStorage(key, value) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
-        } catch (err) {}
+            return true;
+        } catch (err) {
+            console.warn('[LearnCenter] failed to write storage', key, err);
+            return false;
+        }
     }
 
     function playSfx(name) {
@@ -193,7 +198,7 @@
     }
 
     function saveProgressState(progress) {
-        writeStorage(STORAGE_KEYS.progress, progress);
+        return writeStorage(STORAGE_KEYS.progress, progress);
     }
 
     function getRewardState() {
@@ -201,7 +206,7 @@
     }
 
     function saveRewardState(rewards) {
-        writeStorage(STORAGE_KEYS.rewards, rewards);
+        return writeStorage(STORAGE_KEYS.rewards, rewards);
     }
 
     function getQuizAttempts() {
@@ -236,6 +241,9 @@
     }
 
     function getDateKey(date) {
+        if (window.PetBankTime && typeof window.PetBankTime.localDate === 'function') {
+            return window.PetBankTime.localDate(date);
+        }
         const target = date instanceof Date ? date : new Date();
         const year = target.getFullYear();
         const month = String(target.getMonth() + 1).padStart(2, '0');
@@ -2608,6 +2616,12 @@
                 const cardId = button.dataset.learnVocabPractice || '';
                 const next = progressApi.record(cardId, true);
                 const entry = cardsById[cardId];
+                if (next.persisted === false) {
+                    if (typeof window.showToast === 'function') {
+                        window.showToast('英语词卡记录保存失败，本次未更新，请稍后重试。');
+                    }
+                    return;
+                }
                 if (next.status === 'mastered' && entry) {
                     setVocabFocusIndex(module, entry.index + 1);
                 } else if (entry) {
@@ -2626,6 +2640,12 @@
                 const cardId = button.dataset.learnVocabMiss || '';
                 const next = progressApi.record(cardId, false);
                 const entry = cardsById[cardId];
+                if (next.persisted === false) {
+                    if (typeof window.showToast === 'function') {
+                        window.showToast('英语词卡记录保存失败，本次未更新，请稍后重试。');
+                    }
+                    return;
+                }
                 if (entry) setVocabFocusIndex(module, entry.index);
                 if (typeof window.showToast === 'function') {
                     window.showToast(`再看一次：${entry?.card?.word || cardId}，当前 ${getVocabStatusLabel(next.status)}`);
@@ -3519,6 +3539,13 @@
         if (completeBtn) {
             completeBtn.addEventListener('click', () => {
                 const result = completeLesson(packId, moduleId, lessonId, rewardPoints);
+                if (result.persisted === false) {
+                    completeBtn.disabled = false;
+                    if (typeof window.showToast === 'function') {
+                        window.showToast('学习记录保存失败，本次未发放成长分，请稍后重试。');
+                    }
+                    return;
+                }
                 const completionBadge = container.querySelector('[data-learn-completion-badge]');
                 const completeCard = container.querySelector('[data-learn-complete-card]');
                 const completeHeading = container.querySelector('[data-learn-complete-heading]');
@@ -3696,7 +3723,7 @@
 
     function maybeGrantDailyBundle(packId, lessonId, rewards) {
         const dayMatch = /^day-\d+$/.test(lessonId);
-        if (!dayMatch) return { bundleGranted: false, bundlePoints: 0 };
+        if (!dayMatch) return { bundleGranted: false, bundlePoints: 0, rewardKey: '' };
         const morningDone = isLessonCompleted(packId, 'morning-reading', lessonId);
         const literacyDone = isLessonCompleted(packId, 'literacy-45days', lessonId);
         const bundleKey = `${packId}:daily-bundle:${lessonId}`;
@@ -3705,12 +3732,9 @@
                 points: 1,
                 claimedAt: Date.now()
             };
-            if (typeof window.addGrowthPoints === 'function') {
-                window.addGrowthPoints(1);
-            }
-            return { bundleGranted: true, bundlePoints: 1 };
+            return { bundleGranted: true, bundlePoints: 1, rewardKey: bundleKey };
         }
-        return { bundleGranted: false, bundlePoints: 0 };
+        return { bundleGranted: false, bundlePoints: 0, rewardKey: '' };
     }
 
     function maybeGrantPackStreak(packId, moduleId, progress, rewards) {
@@ -3718,37 +3742,56 @@
         const streakRule = manifest?.streakRule || null;
         const moduleIds = Array.isArray(streakRule?.moduleIds) ? streakRule.moduleIds : [];
         if (!moduleIds.length || !moduleIds.includes(moduleId)) {
-            return { streakGranted: false, streakPoints: 0 };
+            return { streakGranted: false, streakPoints: 0, rewardKey: '' };
         }
         const every = Number(streakRule?.every) || 0;
         const streakPoints = Number(streakRule?.points) || Number(manifest?.rewardRules?.[streakRule?.rewardKey]) || 0;
         if (!every || !streakPoints) {
-            return { streakGranted: false, streakPoints: 0 };
+            return { streakGranted: false, streakPoints: 0, rewardKey: '' };
         }
         const completedCount = moduleIds.reduce((total, id) => {
             const completedLessons = progress?.[packId]?.modules?.[id]?.completedLessons || [];
             return total + completedLessons.length;
         }, 0);
         if (!completedCount || completedCount % every !== 0) {
-            return { streakGranted: false, streakPoints: 0 };
+            return { streakGranted: false, streakPoints: 0, rewardKey: '' };
         }
         const streakKey = `${packId}:streak:${completedCount}`;
         if (rewards[streakKey]) {
-            return { streakGranted: false, streakPoints: 0 };
+            return { streakGranted: false, streakPoints: 0, rewardKey: '' };
         }
         rewards[streakKey] = {
             points: streakPoints,
             claimedAt: Date.now()
         };
-        if (typeof window.addGrowthPoints === 'function') {
-            window.addGrowthPoints(streakPoints);
+        return { streakGranted: true, streakPoints, rewardKey: streakKey };
+    }
+
+    function grantLearningPoints(points) {
+        const amount = Number(points) || 0;
+        if (amount <= 0) return true;
+        const pointsApi = window.PetBankPoints;
+        if (!pointsApi || typeof pointsApi.add !== 'function') return false;
+        try {
+            pointsApi.add(amount);
+            return true;
+        } catch (error) {
+            console.warn('[LearnCenter] failed to grant learning points', amount, error);
+            return false;
         }
-        return { streakGranted: true, streakPoints };
+    }
+
+    function restoreCompletionState(progress, rewards) {
+        const progressRestored = saveProgressState(progress);
+        const rewardsRestored = saveRewardState(rewards);
+        return progressRestored && rewardsRestored;
     }
 
     function completeLesson(packId, moduleId, lessonId, rewardPoints) {
         const progress = getProgressState();
         const rewards = getRewardState();
+        const progressBefore = JSON.parse(JSON.stringify(progress));
+        const rewardsBefore = JSON.parse(JSON.stringify(rewards));
         if (!progress[packId]) {
             progress[packId] = { modules: {}, updatedAt: Date.now() };
         }
@@ -3761,29 +3804,62 @@
         }
         progress[packId].lastLessonId = `${moduleId}:${lessonId}`;
         progress[packId].updatedAt = Date.now();
-        saveProgressState(progress);
+        if (!saveProgressState(progress)) {
+            return {
+                persisted: false,
+                rewardGranted: false,
+                bundleGranted: false,
+                streakGranted: false,
+                totalPoints: 0,
+                error: 'progress-persist-failed'
+            };
+        }
 
         let rewardGranted = false;
         let totalPoints = 0;
+        const addedRewardKeys = [];
         const rewardKey = `${packId}:${moduleId}:${lessonId}`;
         if (!rewards[rewardKey]) {
             rewards[rewardKey] = {
-                points: rewardPoints,
+                points: Number(rewardPoints) || 0,
                 claimedAt: Date.now()
             };
-            if (typeof window.addGrowthPoints === 'function') {
-                window.addGrowthPoints(rewardPoints);
-            }
+            addedRewardKeys.push(rewardKey);
             rewardGranted = true;
-            totalPoints += rewardPoints;
+            totalPoints += Number(rewardPoints) || 0;
         }
 
         const bundle = maybeGrantDailyBundle(packId, lessonId, rewards);
         const streak = maybeGrantPackStreak(packId, moduleId, progress, rewards);
+        if (bundle.rewardKey) addedRewardKeys.push(bundle.rewardKey);
+        if (streak.rewardKey) addedRewardKeys.push(streak.rewardKey);
         totalPoints += bundle.bundlePoints;
         totalPoints += streak.streakPoints;
-        saveRewardState(rewards);
+        if (!saveRewardState(rewards)) {
+            saveProgressState(progressBefore);
+            return {
+                persisted: false,
+                rewardGranted: false,
+                bundleGranted: false,
+                streakGranted: false,
+                totalPoints: 0,
+                error: 'reward-persist-failed'
+            };
+        }
+        if (!grantLearningPoints(totalPoints)) {
+            addedRewardKeys.forEach(key => { delete rewards[key]; });
+            restoreCompletionState(progressBefore, rewardsBefore);
+            return {
+                persisted: false,
+                rewardGranted: false,
+                bundleGranted: false,
+                streakGranted: false,
+                totalPoints: 0,
+                error: 'points-grant-failed'
+            };
+        }
         return {
+            persisted: true,
             rewardGranted,
             bundleGranted: bundle.bundleGranted,
             streakGranted: streak.streakGranted,
