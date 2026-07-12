@@ -29,6 +29,8 @@ const TASKS = [
     { label: 'core reward policy', cmd: 'node', args: ['scripts/test-core-reward-policy.mjs'] },
     { label: 'core reward presentation', cmd: 'node', args: ['scripts/test-core-reward-presentation.mjs'] },
     { label: 'daily state', cmd: 'node', args: ['scripts/test-daily-state.mjs'] },
+    { label: 'date key contract', cmd: 'node', args: ['scripts/test-date-key-contract.mjs'] },
+    { label: 'page lifecycle contract', cmd: 'node', args: ['scripts/test-page-lifecycle-contract.mjs'] },
     { label: 'english vocab profile scope', cmd: 'node', args: ['scripts/test-english-vocab-profile-scope.mjs'] },
     { label: 'game reward receipts', cmd: 'node', args: ['scripts/test-game-reward-receipts.mjs'] },
     { label: 'localStorage registry', cmd: 'node', args: ['scripts/test-localstorage-registry.mjs'] },

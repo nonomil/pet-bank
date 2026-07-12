@@ -8,6 +8,14 @@ const TreasureChest = (function () {
     const DAILY_DATE_KEY = 'petbank_daily_claim_date';
     const MILESTONES_KEY = 'petbank_claimed_milestones';
 
+    function getTodayKey() {
+        if (window.PetBankDailyState && typeof window.PetBankDailyState.localDate === 'function') {
+            return window.PetBankDailyState.localDate();
+        }
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
+
     // 宝箱库存
     let inventory = { daily: 0, explore: 0, milestone: 0 };
     let itemsData = null;
@@ -38,7 +46,7 @@ const TreasureChest = (function () {
         }
         const last = localStorage.getItem(DAILY_DATE_KEY);
         if (!last) return false;
-        return last === new Date().toLocaleDateString();
+        return last === getTodayKey() || last === new Date().toLocaleDateString();
     }
 
     function canOpenDaily() {
@@ -144,7 +152,7 @@ const TreasureChest = (function () {
                 }
                 window.PetBankDailyState.claimDaily();
             } else {
-                localStorage.setItem(DAILY_DATE_KEY, new Date().toLocaleDateString());
+                localStorage.setItem(DAILY_DATE_KEY, getTodayKey());
             }
         } else {
             if (inventory[type] <= 0) { alert('没有可用的宝箱！'); return; }

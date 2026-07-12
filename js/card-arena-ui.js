@@ -33,6 +33,14 @@ const CardArenaUI = (function () {
     let stagesCache = null;       // arena-stages.json 缓存
     let pendingStageId = null;    // 当前正在打的关卡 id（null = 自由对战/随机敌人）
 
+    function getTodayKey() {
+        if (window.PetBankDailyState && typeof window.PetBankDailyState.localDate === 'function') {
+            return window.PetBankDailyState.localDate();
+        }
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
+
     function playSfx(name) {
         if (window.sfx && typeof window.sfx.play === 'function') {
             window.sfx.play(name);
@@ -288,7 +296,7 @@ const CardArenaUI = (function () {
         const pid = (window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function')
             ? (window.ProfileManager.getActiveId() || 'default') : 'default';
         const DAY_KEY = 'petbank_arena_battle_day_' + pid;
-        const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD
+        const today = getTodayKey();
         let rec = null;
         try { rec = JSON.parse(localStorage.getItem(DAY_KEY) || 'null'); } catch (e) { rec = null; }
         if (!rec || rec.date !== today) rec = { date: today, count: 0 };
@@ -315,7 +323,7 @@ const CardArenaUI = (function () {
         const pid = (window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function')
             ? (window.ProfileManager.getActiveId() || 'default') : 'default';
         const DAY_KEY = 'petbank_arena_battle_day_' + pid;
-        const today = new Date().toLocaleDateString('sv-SE');
+        const today = getTodayKey();
         try {
             const rec = JSON.parse(localStorage.getItem(DAY_KEY) || 'null');
             if (rec && rec.date === today) return rec.count || 0;

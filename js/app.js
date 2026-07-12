@@ -2562,6 +2562,12 @@ function switchPage(page, options = {}) {
     if (prevPage === 'explore' && page !== 'explore' && window.VoiceSystem && typeof VoiceSystem.stop === 'function') {
         VoiceSystem.stop();
     }
+    if (prevPage === 'tools' && page !== 'tools' && window.ToolboxSystem && typeof ToolboxSystem.destroy === 'function') {
+        ToolboxSystem.destroy();
+    }
+    if (prevPage === 'walk' && page !== 'walk' && window.WalkSystem && typeof WalkSystem.cancelActiveWalk === 'function') {
+        WalkSystem.cancelActiveWalk();
+    }
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(`page-${page}`);
     if (target) target.classList.add('active');
@@ -3319,7 +3325,7 @@ function getPetStageImageForStage(speciesData, stageIdx) {
 }
 
 function getWalkDaySummary() {
-    const today = new Date().toDateString();
+    const today = window.PetBankDailyState.localDate();
     const raw = JSON.parse(localStorage.getItem('petbank_walk_data') || '{}');
     const count = raw.date === today ? Number(raw.count || 0) : 0;
     const max = 3;

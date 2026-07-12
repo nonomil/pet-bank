@@ -55,6 +55,14 @@ const WalkSystem = (function() {
     const WALK_COST_HP = 5;
     const LOG_LIMIT = 5;
 
+    function getTodayKey() {
+        if (window.PetBankDailyState && typeof window.PetBankDailyState.localDate === 'function') {
+            return window.PetBankDailyState.localDate();
+        }
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
+
     const RANDOM_EVENTS = [
         { type: 'social', action: function() { return { msg: '🐾 遇到其他宠物，互相挥了挥爪子，亲密感也悄悄涨了一点。' }; } },
         { type: 'item', action: function() { InventorySystem.addItem('toy_ball', 1); return { msg: '🎁 在草丛边捡到了一个小球！' }; } },
@@ -75,6 +83,9 @@ const WalkSystem = (function() {
     let activeRouteId = 'park';
     let stageBubbleText = '';
     let stageBubbleTimer = null;
+    let activeWalkTimer = null;
+    let activeWalkFinishTimer = null;
+    let activeWalkOverlay = null;
 
     function escapeHtml(value) {
         return String(value == null ? '' : value)
@@ -86,7 +97,7 @@ const WalkSystem = (function() {
     }
 
     function getWalkCount() {
-        const today = new Date().toDateString();
+        const today = getTodayKey();
         const data = JSON.parse(localStorage.getItem('petbank_walk_data') || '{}');
         if (data.date !== today) return 0;
         return Number(data.count || 0);
@@ -97,7 +108,7 @@ const WalkSystem = (function() {
     }
 
     function incrementWalkCount() {
-        const today = new Date().toDateString();
+        const today = getTodayKey();
         const data = JSON.parse(localStorage.getItem('petbank_walk_data') || '{}');
         const nextCount = (data.date === today ? Number(data.count || 0) : 0) + 1;
         localStorage.setItem('petbank_walk_data', JSON.stringify({
@@ -280,7 +291,9 @@ const WalkSystem = (function() {
     }
 
     function runWalkAnimation(route, mount) {
+        cancelActiveWalk();
         const overlay = document.createElement('div');
+        activeWalkOverlay = overlay;
         overlay.className = 'walk-overlay';
         overlay.innerHTML = ''
             + '<div class="walk-modal">'
@@ -298,12 +311,14 @@ const WalkSystem = (function() {
         const intervalTime = 50;
         const step = (intervalTime / duration) * 100;
 
-        const timer = setInterval(function() {
+        activeWalkTimer = setInterval(function() {
             progress += step;
             if (progress >= 100) {
                 progress = 100;
-                clearInterval(timer);
-                setTimeout(function() {
+                clearInterval(activeWalkTimer);
+                activeWalkTimer = null;
+                activeWalkFinishTimer = setTimeout(function() {
+                    activeWalkFinishTimer = null;
                     finishWalk(route, overlay);
                 }, 450);
             }
@@ -316,7 +331,21 @@ const WalkSystem = (function() {
         }, intervalTime);
     }
 
+    function cancelActiveWalk() {
+        if (activeWalkTimer) {
+            clearInterval(activeWalkTimer);
+            activeWalkTimer = null;
+        }
+        if (activeWalkFinishTimer) {
+            clearTimeout(activeWalkFinishTimer);
+            activeWalkFinishTimer = null;
+        }
+        if (activeWalkOverlay && activeWalkOverlay.parentElement) activeWalkOverlay.remove();
+        activeWalkOverlay = null;
+    }
+
     function finishWalk(route, overlay) {
+        if (activeWalkOverlay === overlay) activeWalkOverlay = null;
         if (overlay && overlay.parentElement) {
             overlay.remove();
         }
@@ -450,6 +479,7 @@ const WalkSystem = (function() {
         onPetSceneTap: onPetSceneTap,
         handleAdventureAction: handleAdventureAction,
         startWalk: startWalk,
+        cancelActiveWalk: cancelActiveWalk,
         renderAdventureStage: renderAdventureStage,
         renderUI: renderUI
     };
