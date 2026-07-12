@@ -17,6 +17,7 @@
 | --- | --- | --- |
 | 应用壳 | 页面容器、导航、深层路由入口、inline handler | `index.html` |
 | 路由边界 | 路由表、深层路径归一化、Pages 基址推断、壳层分类 | `js/page-router.js` |
+| Profile 存储边界 | 排除设备/家长/账号键，过滤旧快照，未知业务键保持兼容纳入 | `js/profile-storage-policy.js`、`js/profiles.js` |
 | 主编排 | 积分、页面准备、页面激活、主站桥接 | `js/app.js` |
 | 任务目录 | 六维任务、首页优先任务、任务配图纯函数 | `js/task-catalog.js` |
 | 按需加载 | feature bundle、资源基址、加载去重、入口失败反馈 | `js/runtime-loader.js` |
@@ -33,7 +34,7 @@
 
 ### 3.1 首屏启动
 
-`index.html` 首先加载 `pet.js`、奖励服务、`inventory.js`、`treasure.js`、`profiles.js`、`runtime-loader.js`、图标/战斗特效、`task-catalog.js` 和 `page-router.js`，再加载 `app.js`，最后加载成长反馈与作品展示模块。`page-router.js` 只暴露 `PetBankPageRouter`，不直接操作 DOM；`app.js` 初始化 profile、读取本地状态并暴露 `switchPage`、`addGrowthPoints`、`saveAppState` 等兼容入口。任务目录只通过 `PetBankTaskCatalog` 注入，不在主编排器内重复定义。
+`index.html` 首先加载 `pet.js`、奖励服务、`inventory.js`、`treasure.js`、`cloud-sync-outbox.js`、`profile-storage-policy.js`、`profiles.js`、`runtime-loader.js`、图标/战斗特效、`task-catalog.js` 和 `page-router.js`，再加载 `app.js`，最后加载成长反馈与作品展示模块。`profile-storage-policy.js` 只定义 Profile 快照边界，`page-router.js` 只暴露 `PetBankPageRouter`，二者不直接操作 DOM；`app.js` 初始化 profile、读取本地状态并暴露 `switchPage`、`addGrowthPoints`、`saveAppState` 等兼容入口。任务目录只通过 `PetBankTaskCatalog` 注入，不在主编排器内重复定义。
 
 ### 3.2 页面按需加载
 

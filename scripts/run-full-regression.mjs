@@ -46,6 +46,7 @@ const TASKS = [
     { label: 'english vocab profile scope', cmd: 'node', args: ['scripts/test-english-vocab-profile-scope.mjs'] },
     { label: 'game reward receipts', cmd: 'node', args: ['scripts/test-game-reward-receipts.mjs'] },
     { label: 'localStorage registry', cmd: 'node', args: ['scripts/test-localstorage-registry.mjs'] },
+    { label: 'profile storage policy', cmd: 'node', args: ['scripts/test-profile-storage-policy.mjs'] },
     { label: 'narrative closure', cmd: 'node', args: ['scripts/test-narrative-closure.mjs'] },
     { label: 'Pages fast gate contract', cmd: 'node', args: ['scripts/test-pages-fast-gate-contract.mjs'] },
     { label: 'points entry contract', cmd: 'node', args: ['scripts/test-points-entry-contract.mjs'] },

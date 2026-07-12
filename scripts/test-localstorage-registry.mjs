@@ -19,6 +19,13 @@ async function loadStorageMigrations() {
   return window.PetBankStorageMigrations;
 }
 
+async function loadProfileStoragePolicy() {
+  const source = await fs.readFile(path.join(ROOT, 'js', 'profile-storage-policy.js'), 'utf8');
+  const window = {};
+  vm.runInNewContext(source, { window });
+  return window.PetBankProfileStoragePolicy;
+}
+
 function createStorage(initial = {}) {
   const values = new Map(Object.entries(initial));
   return {
@@ -45,6 +52,20 @@ test('registry declares storage ownership and scope for every static key', async
     assert.ok(['profile', 'device', 'global', 'parent', 'legacy'].includes(entry.scope));
     assert.equal(typeof entry.snapshot, 'boolean');
   }
+});
+
+test('runtime profile policy matches every explicit non-profile registry entry', async () => {
+  const registry = await loadRegistry();
+  const policy = await loadProfileStoragePolicy();
+  const expected = registry.entries
+    .filter((entry) => entry.scope !== 'profile' && entry.pattern.startsWith('petbank_'))
+    .map((entry) => entry.pattern)
+    .sort();
+  assert.deepEqual(Array.from(policy.getNonProfilePatterns()).sort(), expected);
+  assert.equal(policy.shouldSnapshot('petbank_points'), true);
+  assert.equal(policy.shouldSnapshot('petbank_new_future_key'), true);
+  assert.equal(policy.shouldSnapshot('petbank_sfx_volume'), false);
+  assert.equal(policy.shouldSnapshot('petbank_self_hosted_access_token'), false);
 });
 
 test('source scan has no unregistered localStorage keys', async () => {

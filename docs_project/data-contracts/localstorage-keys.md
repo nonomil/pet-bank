@@ -9,7 +9,7 @@
 - 新代码优先调用模块 API，不在多个模块直接写同一个 key。
 - JSON 读取必须校验顶层类型和关键字段；损坏数据返回合法默认值并记录模块警告。
 - `localStorage` 写入可能失败（配额、隐私模式、浏览器限制），关键操作不能把写入失败当成功。
-- `ProfileManager` 当前把除元数据/快照外的所有 `petbank_*` 业务键动态快照；这只是兼容方案，未来必须由 registry 白名单替代。
+- `ProfileManager` 通过 `js/profile-storage-policy.js` 排除设备、家长、账号和 Profile 元数据键；未知 `petbank_*` 仍默认动态快照，以避免漏登记造成数据隔离回归。新增非 Profile 键必须同时更新 registry、运行时策略和契约测试。
 
 ## 2. Profile 元数据与快照
 
@@ -107,4 +107,4 @@ receipt 不等于余额：奖励事件必须先校验和去重，再调用既有
 4. 旧 key 读取、一次性迁移、回滚和损坏数据行为。
 5. 对应测试：每日状态、英语 profile、奖励 receipt、Profile round-trip 或业务专项测试。
 
-建议的下一步不是立刻让 registry 接管运行时，而是先增加机器可读 registry 和“未登记 key 报告”；覆盖率验证后，再逐步把 Profile 和未来云快照改为显式白名单。
+当前运行时已先采用“显式排除 + 未知默认纳入”的过渡策略。下一步应继续补齐 key owner/schema，并在覆盖率和迁移验证充分后，再把 Profile 和未来云快照收口到显式白名单。

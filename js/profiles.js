@@ -2,8 +2,8 @@
  * profiles.js - ProfileManager（多孩子本地切换 · C 方案 swap 实现）
  *
  * 设计核心：业务代码（app/pet/inventory/exploration/walk/card/treasure/home/shop）
- * 继续读写 `petbank_*` 键（零改动）。ProfileManager 在切换 profile 时，
- * 动态遍历 localStorage 所有 `petbank_*` 业务键，把当前 profile 的数据快照
+ * 继续读写 `petbank_*` 键。ProfileManager 在切换 profile 时，
+ * 按 `PetBankProfileStoragePolicy` 排除设备/家长/账号键，再遍历 Profile 业务键，把当前 profile 的数据快照
  * 存到 `petbank_profile_data_{id}`，再加载目标 profile 的快照写回业务键，
  * 最后回到当前应用入口壳重新初始化，各模块重新读 petbank_* 完成切换。
  *
@@ -72,14 +72,24 @@
         return true;
     }
 
+    function shouldSnapshotKey(key) {
+        const policy = window.PetBankProfileStoragePolicy;
+        return !policy || typeof policy.shouldSnapshot !== 'function' || policy.shouldSnapshot(key);
+    }
+
+    function isSnapshotBusinessKey(key) {
+        return isBusinessKey(key) && shouldSnapshotKey(key);
+    }
+
     /**
-     * 动态遍历 localStorage，返回当前所有业务键（petbank_* 减去元数据/快照）
+     * 动态遍历 localStorage，返回当前应进入 Profile 快照的业务键。
+     * 未知 petbank_* 键默认保留，避免漏登记导致新功能失去隔离。
      */
     function getBusinessKeys() {
         const keys = [];
         for (let i = 0; i < localStorage.length; i++) {
             const k = localStorage.key(i);
-            if (isBusinessKey(k)) keys.push(k);
+            if (isSnapshotBusinessKey(k)) keys.push(k);
         }
         return keys;
     }
@@ -89,10 +99,18 @@
         try { return JSON.parse(raw); } catch (e) { return fallback; }
     }
 
+    function sanitizeSnapshot(snapshot) {
+        if (!snapshot || typeof snapshot !== 'object' || Array.isArray(snapshot)) return {};
+        return Object.keys(snapshot).reduce(function (result, key) {
+            if (isSnapshotBusinessKey(key)) result[key] = snapshot[key];
+            return result;
+        }, {});
+    }
+
     function hasSnapshotData(snapshot) {
         if (!snapshot || typeof snapshot !== 'object') return false;
         return Object.keys(snapshot).some(function (key) {
-            return isBusinessKey(key) || (key && key.startsWith('petbank_'));
+            return isSnapshotBusinessKey(key);
         });
     }
 
@@ -555,9 +573,9 @@
             getBusinessKeys().forEach(k => localStorage.removeItem(k));
             // 3. 加载 target 快照
             const raw = localStorage.getItem(DATA_PREFIX + targetId);
-            const snapshot = safeParse(raw, {});
+            const snapshot = sanitizeSnapshot(safeParse(raw, {}));
             Object.keys(snapshot).forEach(k => {
-                if (snapshot[k] !== null && snapshot[k] !== undefined) {
+                if (isSnapshotBusinessKey(k) && snapshot[k] !== null && snapshot[k] !== undefined) {
                     localStorage.setItem(k, snapshot[k]);
                 }
             });
@@ -712,7 +730,7 @@
                 });
                 return liveSnapshot;
             }
-            return safeParse(localStorage.getItem(DATA_PREFIX + id), {});
+            return sanitizeSnapshot(safeParse(localStorage.getItem(DATA_PREFIX + id), {}));
         },
 
         exportProfiles() {
@@ -779,9 +797,7 @@
             const config = Object.assign({
                 activate: false
             }, options || {});
-            const nextSnapshot = snapshot && typeof snapshot === 'object'
-                ? snapshot
-                : {};
+            const nextSnapshot = sanitizeSnapshot(snapshot);
 
             localStorage.setItem(DATA_PREFIX + profileId, JSON.stringify(nextSnapshot));
 
@@ -790,7 +806,7 @@
                     localStorage.removeItem(key);
                 });
                 Object.keys(nextSnapshot).forEach(function (key) {
-                    if (nextSnapshot[key] !== null && nextSnapshot[key] !== undefined) {
+                    if (isSnapshotBusinessKey(key) && nextSnapshot[key] !== null && nextSnapshot[key] !== undefined) {
                         localStorage.setItem(key, nextSnapshot[key]);
                     }
                 });
