@@ -79,12 +79,17 @@ function main() {
   const runtimeLoaderJs = readText('js/runtime-loader.js');
   const walkJs = readText('js/walk.js');
   const mathPkJs = readText('js/math-pk.js');
+  const hanziJs = readText('js/hanzi-game.js');
   const cardJs = readText('js/card-collection.js');
+  const cardArenaUiJs = readText('js/card-arena-ui.js');
   const toolsJs = readText('js/tools.js');
   const shopJs = readText('js/shop.js');
   const treasureJs = readText('js/treasure.js');
   const explorationJs = readText('js/exploration.js');
   const explorationDetailJs = readText('js/exploration-detail.js');
+
+  const usesSharedPointsApi = (source, method) =>
+    /PetBankPoints/.test(source) && new RegExp('(?:pointsApi|PetBankPoints)\\.' + method + '\\s*\\(').test(source);
 
   const itemIds = new Set((itemsJson.items || []).map((item) => item.id));
   const missingSceneItems = collectSceneItemIds(scenesJson).filter((id) => !itemIds.has(id));
@@ -102,8 +107,18 @@ function main() {
       ok: /ensurePlaygroundFeature[\s\S]*ToolboxSystem\.init\(\)/.test(runtimeLoaderJs)
     },
     {
-      name: 'Math PK uses addGrowthPoints instead of direct totalPoints mutation',
-      ok: /addGrowthPoints\(/.test(mathPkJs) && !/window\.totalPoints\s*\+=/.test(mathPkJs)
+      name: 'Math PK uses the shared points API instead of direct balance mutation',
+      ok: usesSharedPointsApi(mathPkJs, 'add') && !/window\.totalPoints\s*[+\-]=/.test(mathPkJs) && !/petbank_points/.test(mathPkJs)
+    },
+    {
+      name: 'Hanzi game uses the shared points API instead of direct balance mutation',
+      ok: usesSharedPointsApi(hanziJs, 'add') && !/window\.totalPoints\s*[+\-]=/.test(hanziJs) && !/petbank_points/.test(hanziJs)
+    },
+    {
+      name: 'Game receipt bridge has no direct points ledger fallback',
+      ok: usesSharedPointsApi(runtimeLoaderJs, 'add')
+        && !/window\.totalPoints\s*=/.test(runtimeLoaderJs)
+        && !/petbank_points/.test(runtimeLoaderJs)
     },
     {
       name: 'Math PK result return button targets math-pk container',
@@ -120,20 +135,26 @@ function main() {
       ok: !/totalPoints\s*[+\-]=/.test(cardJs) && !/petbank_points/.test(cardJs)
     },
     {
-      name: 'Toolbox rewards use addGrowthPoints instead of direct totalPoints mutation',
-      ok: /addGrowthPoints\(/.test(toolsJs) && !/totalPoints\s*\+=/.test(toolsJs)
+      name: 'Card arena does not own a second points ledger',
+      ok: !/InventorySystem\.addPoints/.test(cardArenaUiJs)
+        && !/ProfileSystem\.addPoints/.test(cardArenaUiJs)
+        && !/petbank_arena_points/.test(cardArenaUiJs)
     },
     {
-      name: 'Shop points flow avoids direct totalPoints mutation',
-      ok: /addGrowthPoints\(/.test(shopJs) && !/totalPoints\s*[+\-]=/.test(shopJs)
+      name: 'Toolbox rewards use the shared points API instead of direct balance mutation',
+      ok: usesSharedPointsApi(toolsJs, 'add') && !/totalPoints\s*[+\-]=/.test(toolsJs) && !/petbank_points/.test(toolsJs)
     },
     {
-      name: 'Treasure rewards use addGrowthPoints instead of direct totalPoints mutation',
-      ok: /addGrowthPoints\(/.test(treasureJs) && !/totalPoints\s*\+=/.test(treasureJs)
+      name: 'Shop points flow uses the shared points API instead of direct balance mutation',
+      ok: usesSharedPointsApi(shopJs, 'get') && usesSharedPointsApi(shopJs, 'add') && !/totalPoints\s*[+\-]=/.test(shopJs) && !/petbank_points/.test(shopJs)
+    },
+    {
+      name: 'Treasure rewards use the shared points API instead of direct balance mutation',
+      ok: usesSharedPointsApi(treasureJs, 'add') && !/totalPoints\s*[+\-]=/.test(treasureJs) && !/petbank_points/.test(treasureJs)
     },
     {
       name: 'Scene unlock flow uses the shared points API',
-      ok: /addGrowthPoints\(-scene\.unlock_cost\)/.test(explorationJs)
+      ok: usesSharedPointsApi(explorationJs, 'spend') && !/petbank_points/.test(explorationJs)
     },
     {
       name: 'Pet stage galleries support imageStages and legacy stages',

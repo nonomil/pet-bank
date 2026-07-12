@@ -34,16 +34,21 @@
                     { type: 'pet_exp', amount: points }
                 ]
             });
-            if (!coreResult.accepted) return { accepted: false, reason: 'duplicate', receipt: coreResult.receipt };
+            if (!coreResult.accepted) {
+                return {
+                    accepted: false,
+                    reason: coreResult.reason || (coreResult.duplicate ? 'duplicate' : 'unavailable'),
+                    receipt: coreResult.receipt
+                };
+            }
             if (window.CoreRewardFeedback && typeof window.CoreRewardFeedback.show === 'function') {
                 window.CoreRewardFeedback.show(coreResult);
             }
-        } else if (typeof window.addGrowthPoints === 'function') {
-            window.addGrowthPoints(points);
-        } else if (window.totalPoints !== undefined) {
-            window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + points);
-            if (typeof window.saveAppState === 'function') window.saveAppState();
-            if (typeof window.updateStats === 'function') window.updateStats();
+        } else if (window.PetBankPoints && typeof window.PetBankPoints.add === 'function') {
+            window.PetBankPoints.add(points);
+        } else {
+            console.warn('[GameRewardReceipts] points API unavailable; reward was not applied');
+            return { accepted: false, reason: 'unavailable' };
         }
         receipts[key] = {
             profileId,

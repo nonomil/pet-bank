@@ -486,12 +486,10 @@
             if (!receipt.accepted && typeof window.showToast === 'function') {
                 window.showToast('本局奖励已经领取过了');
             }
-        } else if (typeof window.addGrowthPoints === 'function') {
-            window.addGrowthPoints(earned);
-        } else if (window.totalPoints !== undefined) {
-            window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + earned);
-            if (typeof window.saveAppState === 'function') window.saveAppState();
-            if (typeof window.updateStats === 'function') window.updateStats();
+        } else if (window.PetBankPoints && typeof window.PetBankPoints.add === 'function') {
+            window.PetBankPoints.add(earned);
+        } else if (typeof window.showToast === 'function') {
+            window.showToast('积分系统未就绪，本局奖励未发放');
         }
         // 入榜（Bug2 守卫：实际答题数=0 时不入榜，避免假 0 分记录）
         if (state.answered > 0 && window.Leaderboard && typeof window.Leaderboard.record === 'function') {

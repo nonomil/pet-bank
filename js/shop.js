@@ -84,24 +84,14 @@ const ShopSystem = (function () {
   const getHistory = (key) => JSON.parse(localStorage.getItem(key) || '[]');
 
   const getCurrentPoints = () => {
-    if (typeof window.totalPoints === 'number') return window.totalPoints;
-    if (typeof totalPoints === 'number') return totalPoints;
-    return 0;
+    const pointsApi = window.PetBankPoints;
+    if (pointsApi && typeof pointsApi.get === 'function') return Number(pointsApi.get()) || 0;
+    return null;
   };
 
   const adjustGrowthPoints = (delta) => {
-    if (typeof window.addGrowthPoints === 'function') {
-      return window.addGrowthPoints(delta);
-    }
-
-    if (window.totalPoints !== undefined) {
-      window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + delta);
-      if (typeof window.saveAppState === 'function') window.saveAppState();
-      if (typeof window.updateStats === 'function') window.updateStats();
-      return window.totalPoints;
-    }
-
-    return null;
+    const pointsApi = window.PetBankPoints;
+    return pointsApi && typeof pointsApi.add === 'function' ? pointsApi.add(delta) : null;
   };
 
   const playSfx = (name) => {

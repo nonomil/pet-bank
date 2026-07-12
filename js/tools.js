@@ -488,11 +488,12 @@ const ToolboxSystem = (function() {
                 _recordToolUsage('pomodoro', `完成 1 次 25 分钟番茄，今日共 ${state.pomodoroCountToday} 次`);
                 
                 // Call global functions if they exist
-                if (typeof window.addGrowthPoints === 'function') {
-                    window.addGrowthPoints(5);
-                } else if (typeof saveAppState === 'function') {
-                    window.totalPoints = (window.totalPoints || 0) + 5;
-                    saveAppState();
+                const pointsApi = window.PetBankPoints;
+                if (pointsApi && typeof pointsApi.add === 'function') {
+                    pointsApi.add(5);
+                } else {
+                    alert('积分系统未就绪，本次奖励未发放');
+                    return;
                 }
                 alert("🍅 番茄钟完成！获得 +5 成长分！");
             } else {

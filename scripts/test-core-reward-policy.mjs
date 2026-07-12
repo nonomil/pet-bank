@@ -13,7 +13,7 @@ const context = {
     getItem(key) { return data.has(key) ? data.get(key) : null; },
     setItem(key, value) { data.set(key, value); }
   },
-  addGrowthPoints(amount) { calls.points.push(amount); },
+  PetBankPoints: { add(amount) { calls.points.push(amount); } },
   PetSystem: {
     state: { exp: 0, level: 1, intimacy: 0, stage: { name: '蛋' } },
     getState() { return { ...this.state }; },

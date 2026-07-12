@@ -36,7 +36,7 @@ const storage = {
 };
 const window = {
   localStorage: storage,
-  addGrowthPoints(amount) { pointCalls.push(amount); },
+  PetBankPoints: { add(amount) { pointCalls.push(amount); } },
   PetSystem: {
     state: { exp: 0, level: 1, intimacy: 0, stage: { name: '蛋' } },
     getState() { return { ...this.state }; },
@@ -60,5 +60,13 @@ assert.equal(first.accepted, true);
 assert.equal(second.accepted, false);
 assert.deepEqual(pointCalls, [12], 'one game event should apply growth points once');
 assert.deepEqual(expCalls, [12], 'one game event should apply pet exp once');
+
+const pointsApi = window.PetBankPoints;
+window.PetBankPoints = null;
+const unavailable = window.GameRewardReceipts.claim({ profileId: 'p1', source: 'demo', eventId: 'round-2', points: 8 });
+assert.equal(unavailable.accepted, false);
+assert.equal(unavailable.reason, 'unavailable');
+window.PetBankPoints = pointsApi;
+assert.deepEqual(pointCalls, [12], 'unavailable points API must not write a receipt or add points');
 
 console.log('PASS game reward receipt contract');

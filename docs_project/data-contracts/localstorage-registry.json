@@ -56,6 +56,7 @@
     {"pattern":"petbank_english_vocab_scope_migration_v2_*","owner":"english-vocab-progress.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_hanzi_progress_*","owner":"hanzi-progress.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_learning_arcade_progress","owner":"app.js","scope":"profile","snapshot":true},
+    {"pattern":"petbank_pixel_story_progress_v1","owner":"prj/学习机玩法原型/game.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_learning_arcade_settings_v1","owner":"app.js","scope":"device","snapshot":false},
     {"pattern":"petbank_typing_defense_progress","owner":"app.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_word_memory_map_progress","owner":"app.js","scope":"profile","snapshot":true},

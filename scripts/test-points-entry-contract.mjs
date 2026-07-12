@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const app = fs.readFileSync('js/app.js', 'utf8');
 const taskSource = app.match(/function toggleTask[\s\S]*?function renderTaskGrid/)?.[0] || '';
-const recommendedSource = app.match(/function completeRecommended[\s\S]*?\n}\n/)?.[0] || '';
+const recommendedSource = app.match(/function completeRecommended[\s\S]*?\r?\n}\r?\n/)?.[0] || '';
 
 assert.match(taskSource, /addGrowthPoints\(/, 'task completion should use the main points entry');
 assert.doesNotMatch(taskSource, /totalPoints\s*[+\-]=/, 'task completion must not mutate the points balance directly');

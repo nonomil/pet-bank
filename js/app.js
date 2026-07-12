@@ -1713,6 +1713,10 @@ function addGrowthPoints(delta) {
     return totalPoints;
 }
 
+function getGrowthPoints() {
+    return totalPoints;
+}
+
 // 积分预检 + 扣分（R3 定案：宠物小屋喂食等扣分入口封装）
 // 预检 totalPoints >= n，不足 alert 并 return false；足则 addGrowthPoints(-n) 返回 true
 function spendPoints(n) {
@@ -4321,9 +4325,16 @@ window.totalPoints = totalPoints;
 window.updateStats = updateStats;
 window.updateTopPoints = updateTopPoints;
 window.addGrowthPoints = addGrowthPoints;
+window.getGrowthPoints = getGrowthPoints;
 window.spendPoints = spendPoints;
 window.redeemFamilyReward = redeemFamilyReward;
 window.deductGrowthPoints = deductGrowthPoints;
+window.PetBankPoints = Object.freeze({
+    get: getGrowthPoints,
+    add: addGrowthPoints,
+    spend: spendPoints,
+    deduct: deductGrowthPoints
+});
 window.openPointItemModal = openPointItemModal;
 window.closePointItemModal = closePointItemModal;
 window.switchPiMode = switchPiMode;

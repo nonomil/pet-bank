@@ -127,13 +127,12 @@ const TreasureChest = (function () {
             return result;
         }
         if (reward.type === 'points') {
-            if (typeof window.addGrowthPoints === 'function') {
-                window.addGrowthPoints(reward.value);
-            } else if (window.totalPoints !== undefined) {
-                window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + reward.value);
-                if (typeof window.saveAppState === 'function') window.saveAppState();
-                if (typeof window.updateStats === 'function') window.updateStats();
+            const pointsApi = window.PetBankPoints;
+            if (!pointsApi || typeof pointsApi.add !== 'function') {
+                console.warn('[Treasure] points API unavailable; reward was not applied');
+                return;
             }
+            pointsApi.add(reward.value);
             if (typeof PetSystem !== 'undefined') PetSystem.addExp(reward.value);
             if (typeof renderAll === 'function') renderAll();
         } else if (reward.type === 'item' && typeof InventorySystem !== 'undefined') {

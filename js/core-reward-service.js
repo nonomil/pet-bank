@@ -90,10 +90,37 @@
         return null;
     }
 
+    function canApplyReward(reward) {
+        if (reward.amount <= 0) return true;
+        if (reward.type === 'growth_points') {
+            return !!(root.PetBankPoints && typeof root.PetBankPoints.add === 'function')
+                || typeof root.addGrowthPoints === 'function';
+        }
+        if (reward.type === 'pet_exp') {
+            return !!(root.PetSystem && typeof root.PetSystem.addExp === 'function');
+        }
+        if (reward.type === 'intimacy') {
+            return !!(root.PetSystem && typeof root.PetSystem.addIntimacy === 'function');
+        }
+        if (reward.type === 'item') {
+            return !!(reward.itemId && root.InventorySystem && typeof root.InventorySystem.addItem === 'function');
+        }
+        return false;
+    }
+
     function applyReward(reward) {
         if (reward.amount <= 0) return;
-        if (reward.type === 'growth_points' && typeof root.addGrowthPoints === 'function') {
-            root.addGrowthPoints(reward.amount);
+        if (reward.type === 'growth_points') {
+            const pointsApi = root.PetBankPoints;
+            if (pointsApi && typeof pointsApi.add === 'function') {
+                pointsApi.add(reward.amount);
+                return;
+            }
+            // Keep the old host function as a narrow bootstrap/test bridge.
+            if (typeof root.addGrowthPoints === 'function') {
+                root.addGrowthPoints(reward.amount);
+                return;
+            }
             return;
         }
         if (reward.type === 'pet_exp' && root.PetSystem && typeof root.PetSystem.addExp === 'function') {
@@ -119,6 +146,15 @@
                 duplicate: true,
                 event,
                 receipt: receipts[receiptKey]
+            };
+        }
+
+        if (!event.rewards.every(canApplyReward)) {
+            return {
+                accepted: false,
+                duplicate: false,
+                reason: 'unavailable',
+                event
             };
         }
 

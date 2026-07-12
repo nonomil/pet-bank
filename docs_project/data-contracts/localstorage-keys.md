@@ -62,6 +62,8 @@
 
 receipt 不等于余额：奖励事件必须先校验和去重，再调用既有积分/经验 API。新模块禁止另造第二套积分账本或只更新 UI。
 
+跨模块积分 API：`window.PetBankPoints.get()` 读取余额，`add(n)` 增加，`spend(n)` 消费，`deduct(n)` 记录惩罚扣减。`app.js` 的 `addGrowthPoints` 仅作为主编排器和旧兼容入口；玩法模块不得直接写 `window.totalPoints` 或 `petbank_points`。
+
 ## 5. 学习状态
 
 | Key/家族 | 类型 | Owner | Scope |
@@ -80,6 +82,8 @@ receipt 不等于余额：奖励事件必须先校验和去重，再调用既有
 | `petbank_english_vocab_scope_migration_v2_{id}` | flag | `english-vocab-progress.js` | 固定旧键迁移标记 |
 | `petbank_hanzi_progress_{id}` | JSON | `hanzi-progress.js` | 汉字 profile 进度 |
 | `petbank_learning_arcade_progress`、`petbank_learning_arcade_settings` | JSON | `app.js`/学习机桥 | 独立学习机结果与设置 |
+| `petbank_learning_arcade_word_shooter_progression_v1` | JSON object | `prj/学习机玩法原型/game.js` | 飞机大战独立机库存档：`version/level/experience/starDust/totalRuns/selectedShip/equippedWeapon/shipUpgrades`；当前原型 scope，损坏时回退默认值，不进入主站积分账本 |
+| `petbank_pixel_story_progress_v1` | JSON | `prj/学习机玩法原型/game.js` | 像素对话故事/单词射击进度；按 Profile 快照隔离 |
 
 英语当前采用显式 profile 后缀并保留旧固定键迁移；不能删除旧键直到迁移窗口和回滚验证完成。`mastered` 目前仍主要是短时连续答对语义，不能把它当作跨日保持证明。
 

@@ -1507,30 +1507,6 @@ const CardArenaUI = (function () {
         openStages();
     }
 
-    // 发放积分：优先走 addGrowthPoints（主积分），再 InventorySystem/ProfileSystem，兜底 localStorage 计数
-    function _grantReward(amount) {
-        try {
-            if (typeof window.addGrowthPoints === 'function') {
-                window.addGrowthPoints(amount);
-                return;
-            }
-            if (typeof InventorySystem !== 'undefined' && typeof InventorySystem.addPoints === 'function') {
-                InventorySystem.addPoints(amount);
-                return;
-            }
-            if (typeof ProfileSystem !== 'undefined' && typeof ProfileSystem.addPoints === 'function') {
-                ProfileSystem.addPoints(amount);
-                return;
-            }
-        } catch (e) { /* 兜底 */ }
-        // 兜底：仅保留兼容账本，主流程仍应使用统一成长分
-        try {
-            window.PetBankStorageMigrations?.migrateKey(localStorage, 'arena_points', 'petbank_arena_points');
-            const cur = parseInt(localStorage.getItem('petbank_arena_points') || '0', 10);
-            localStorage.setItem('petbank_arena_points', String(cur + amount));
-        } catch (e) {}
-    }
-
     function rematch() {
         const overlay = document.getElementById('arenaResultOverlay');
         if (overlay) overlay.classList.remove('show');

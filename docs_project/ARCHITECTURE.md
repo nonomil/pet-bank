@@ -34,7 +34,7 @@
 
 ### 3.1 首屏启动
 
-`index.html` 首先加载 `pet.js`、奖励服务、`inventory.js`、`treasure.js`、`cloud-sync-outbox.js`、`profile-storage-policy.js`、`profiles.js`、`runtime-loader.js`、图标/战斗特效、`task-catalog.js` 和 `page-router.js`，再加载 `app.js`，最后加载成长反馈与作品展示模块。`profile-storage-policy.js` 只定义 Profile 快照边界，`page-router.js` 只暴露 `PetBankPageRouter`，二者不直接操作 DOM；`app.js` 初始化 profile、读取本地状态并暴露 `switchPage`、`addGrowthPoints`、`saveAppState` 等兼容入口。任务目录只通过 `PetBankTaskCatalog` 注入，不在主编排器内重复定义。
+`index.html` 首先加载 `pet.js`、奖励服务、`inventory.js`、`treasure.js`、`cloud-sync-outbox.js`、`profile-storage-policy.js`、`profiles.js`、`runtime-loader.js`、图标/战斗特效、`task-catalog.js` 和 `page-router.js`，再加载 `app.js`，最后加载成长反馈与作品展示模块。`profile-storage-policy.js` 只定义 Profile 快照边界，`page-router.js` 只暴露 `PetBankPageRouter`，二者不直接操作 DOM；`app.js` 初始化 profile、读取本地状态并暴露 `switchPage`、`PetBankPoints`、`addGrowthPoints`、`saveAppState` 等入口。任务目录只通过 `PetBankTaskCatalog` 注入，不在主编排器内重复定义。
 
 ### 3.2 页面按需加载
 
@@ -63,7 +63,7 @@
 | 领域 | 当前模块 | 主要状态/输出 |
 | --- | --- | --- |
 | 任务积分 | `app.js` | 六个成长维度；`petbank_points` 持续累积；每日任务状态由共享日状态合同管理 |
-| 奖励闭环 | `core-reward-service.js`、`core-reward-feedback.js`、`task-reward-events.js`、`GameRewardReceipts` | 校验 source/reward、receipt 去重、反馈卡和任务操作记录；旧玩法仍有兼容积分入口 |
+| 奖励闭环 | `core-reward-service.js`、`core-reward-feedback.js`、`task-reward-events.js`、`GameRewardReceipts`、`PetBankPoints` | 校验 source/reward、receipt 去重、反馈卡和任务操作记录；玩法模块不再直接拥有积分余额写入口 |
 | 宠物养成 | `pet.js`、`pet-care-daily.js`、`pet-growth-history.js`、`pet-evolution-preview.js` | `data/pets.json` 目录、经验、进化、照料、衰减和历史 |
 | 宠物空间 | `home.js`、`walk.js`、`travel-memory.js` | 小屋家具/主题、遛弯日志、旅行记忆和收藏 |
 | 探索战斗 | `exploration*.js`、`battle-engine.js`、`battle-fx.js`、`voice.js` | 场景、章节故事、数学反馈、通用战斗、语音、特效 |
@@ -95,7 +95,7 @@ index.html / today
 learn-center / math-pk / iframe game
   -> 产生带 profileId + source + eventId 的结果
   -> CoreRewardService 或 GameRewardReceipts 去重
-  -> addGrowthPoints / 宠物经验等既有业务 API
+  -> PetBankPoints / 宠物经验等既有业务 API
   -> task/reward history + feedback + family-review 本机聚合
 ```
 
@@ -157,7 +157,7 @@ settings/family
 | P0 | `app.js` 约 4,390 行，仍承担编排、领域逻辑、UI、存储和兼容；纯路由计算已拆到 `page-router.js` | 页面生命周期和共享状态改动的 blast radius 仍最大 |
 | P0 | `learn-center.js` 约 3,656 行；`math-pk.js` 约 1,815 行；`card-arena-ui.js` 约 1,515 行 | 状态、结算和 UI 混合，难测 |
 | P0 | localStorage 虽已有 registry 和迁移门禁，但 Profile 仍使用动态全量快照 | 未登记 key、模块内存状态和快照 schema 仍可能造成隔离/恢复边界问题 |
-| P0 | 奖励层已部分统一，但旧模块仍可直接调整余额 | 需要彻底阻断重复奖励 |
+| P0 | 奖励层主要玩法已统一到 `PetBankPoints`，`app.js` 仍保留 `addGrowthPoints` 兼容入口 | 新玩法需继续经过 receipt/API，避免回退到直接余额写入 |
 | P0 | 自托管账号/家庭/孩子 API 与 Profile 快照生命周期已接入，outbox 和冲突处理已实现 | 仍不能把 revision 上传当成多端自动合并；冲突需要家长明确选择 |
 | P1 | 日切格式、秒/毫秒、timer 生命周期不完全统一 | 跨模块时间 bug |
 | P1 | `style.css` 约 6,635 行、`learn-center.css` 约 3,633 行；HTML 约 1,458 行 | 样式和结构耦合 |

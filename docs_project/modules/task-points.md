@@ -44,8 +44,9 @@
 | `saveAppState()` | app.js:282 | 持久化积分和共享每日状态 |
 | `loadAppState()` | app.js:287 | 从 localStorage 恢复状态 |
 | `renderAll()` | app.js:4645 | 全局重渲染入口 |
-| `window.addGrowthPoints(n)` | app.js:4668 | 外部增加积分 |
-| `window.spendPoints(n)` | app.js:4669 | 外部消费积分 |
+| `window.PetBankPoints.add(n)` | app.js | 跨模块统一增加积分入口 |
+| `window.PetBankPoints.spend(n)` | app.js | 跨模块统一消费积分入口 |
+| `window.addGrowthPoints(n)` | app.js | 主编排器/旧模块兼容入口；新模块不得优先调用 |
 
 ### 各维度详情
 

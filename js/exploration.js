@@ -148,13 +148,13 @@ const ExplorationSystem = (function () {
     }
 
     function getCurrentPoints() {
-        return parseInt(localStorage.getItem('petbank_points') || '0', 10);
+        const pointsApi = window.PetBankPoints;
+        return pointsApi && typeof pointsApi.get === 'function'
+            ? Number(pointsApi.get()) || 0
+            : 0;
     }
 
     function updatePointBindings() {
-        if (typeof window.totalPoints !== 'undefined') {
-            window.totalPoints = getCurrentPoints();
-        }
         if (typeof window.updateStats === 'function') {
             window.updateStats();
         }
@@ -325,10 +325,9 @@ const ExplorationSystem = (function () {
         const points = getCurrentPoints();
         if (points < scene.unlock_cost) return { success: false, msg: `积分不足（需要 ${scene.unlock_cost}）` };
 
-        if (typeof window.addGrowthPoints === 'function') {
-            window.addGrowthPoints(-scene.unlock_cost);
-        } else {
-            localStorage.setItem('petbank_points', String(Math.max(0, points - scene.unlock_cost)));
+        const pointsApi = window.PetBankPoints;
+        if (!pointsApi || typeof pointsApi.spend !== 'function' || !pointsApi.spend(scene.unlock_cost)) {
+            return { success: false, msg: '积分系统未就绪，请稍后重试' };
         }
         unlockedScenes[sceneId] = true;
         saveUnlockState();
