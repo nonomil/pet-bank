@@ -7,7 +7,7 @@ const cases = [
     { route: '/app/playground', page: 'playground', shell: 'home' },
     { route: '/parent/tools', page: 'tools', shell: 'parent' },
     { route: '/settings/family', page: 'settings', shell: 'parent', settings: 'family' },
-    { route: '/settings/account', page: 'settings', shell: 'parent', settings: 'account' },
+    { route: '/settings/account', page: 'settings', shell: 'parent', settings: 'family' },
 ];
 
 let browser;

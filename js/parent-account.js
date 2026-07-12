@@ -31,6 +31,87 @@
 
     function buttonLabel() { return state.loading ? '处理中…' : '提交'; }
 
+    function cloudConflicts() {
+        const manager = window.ProfileManager;
+        if (!manager || typeof manager.getCloudSyncOutbox !== 'function') return [];
+        return manager.getCloudSyncOutbox()
+            .filter(entry => entry && entry.status === 'conflict')
+            .map(entry => ({
+                entry,
+                profile: typeof manager.get === 'function' ? manager.get(entry.profileId) : null
+            }));
+    }
+
+    function renderCloudConflictPanel() {
+        const conflicts = cloudConflicts();
+        if (!conflicts.length) return '';
+        return `
+            <section class="parent-cloud-conflicts" aria-labelledby="parent-cloud-conflicts-title">
+                <div class="parent-account-section-head">
+                    <div><p class="parent-account-kicker">需要处理</p><h5 id="parent-cloud-conflicts-title">云端数据冲突</h5></div>
+                    <span class="parent-account-state is-warning">${conflicts.length} 条</span>
+                </div>
+                <p class="parent-account-note">本机和云端都有新进度。系统不会自动覆盖任何一方，请选择保留哪份数据，或先导出本机备份。</p>
+                <div class="parent-cloud-conflict-list">
+                    ${conflicts.map(({ entry, profile }) => `
+                        <div class="parent-cloud-conflict-item">
+                            <div class="parent-cloud-conflict-copy">
+                                <strong>${escapeHtml(profile?.name || entry.profileId)}</strong>
+                                <small>本机版本 ${entry.revision} · 云端版本 ${entry.remoteRevision || '未知'}</small>
+                            </div>
+                            <div class="parent-cloud-conflict-actions">
+                                <button class="parent-row-action" type="button" data-parent-conflict-choice="remote" data-parent-conflict-profile="${escapeHtml(entry.profileId)}">采用云端</button>
+                                <button class="parent-row-action" type="button" data-parent-conflict-choice="local" data-parent-conflict-profile="${escapeHtml(entry.profileId)}">保留本机</button>
+                                <button class="parent-row-action" type="button" data-parent-conflict-choice="export" data-parent-conflict-profile="${escapeHtml(entry.profileId)}">导出备份</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </section>
+        `;
+    }
+
+    function downloadCloudConflict(profileId) {
+        const manager = window.ProfileManager;
+        const exported = manager && typeof manager.getCloudConflictExport === 'function'
+            ? manager.getCloudConflictExport(profileId)
+            : null;
+        if (!exported) throw new Error('没有找到可导出的冲突快照');
+        const blob = new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = `petbank-cloud-conflict-${String(profileId).replace(/[^a-zA-Z0-9_-]/g, '_')}.json`;
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    }
+
+    async function handleCloudConflictChoice(event) {
+        const button = event.currentTarget;
+        const choice = button.dataset.parentConflictChoice;
+        const profileId = button.dataset.parentConflictProfile;
+        const panel = button.closest('.parent-cloud-conflicts');
+        if (!choice || !profileId || !window.ProfileManager) return;
+        panel?.querySelectorAll('button').forEach(item => { item.disabled = true; });
+        try {
+            if (choice === 'export') {
+                downloadCloudConflict(profileId);
+                setStatus('本机冲突快照已导出，请妥善保存。', 'success');
+                return;
+            }
+            const result = await window.ProfileManager.resolveCloudConflict(profileId, choice);
+            await loadData();
+            if (result.status === 'synced') setStatus('本机快照已作为新版本同步到云端。', 'success');
+            else setStatus('冲突处理结果已保存，稍后会继续同步。', 'success');
+        } catch (error) {
+            setStatus(error.message || '处理云端冲突失败。', 'error');
+        } finally {
+            panel?.querySelectorAll('button').forEach(item => { item.disabled = false; });
+        }
+    }
+
     function renderSignedOut() {
         const node = root();
         if (!node) return;
@@ -39,12 +120,12 @@
             <div class="parent-account-card">
                 <div class="parent-account-head">
                     <div>
-                        <p class="parent-account-kicker">VPS 自托管账号</p>
+                        <p class="parent-account-kicker">家长账号</p>
                         <h4>${register ? '创建家长账号' : '家长登录'}</h4>
                     </div>
                     <span class="parent-account-state">${register ? '注册' : '登录'}</span>
                 </div>
-                <p class="parent-account-copy">先登录家长账号，再创建或选择家庭，孩子档案会挂靠在当前家庭下面。</p>
+                <p class="parent-account-copy">先登录家长账号，再创建或加入家庭，孩子档案会挂靠在当前家庭下面。</p>
                 <form id="parent-account-form" class="parent-account-form">
                     ${register ? '<label>显示名称<input name="displayName" autocomplete="name" maxlength="80" placeholder="例如：妈妈" required></label>' : ''}
                     <label>用户名<input name="username" autocomplete="username" autocapitalize="none" maxlength="32" placeholder="例如：mama_01" required></label>
@@ -77,27 +158,34 @@
                     </div>
                     <button class="btn-secondary parent-account-logout" type="button" data-parent-logout>退出</button>
                 </div>
-                <p class="parent-account-copy">用户名：${escapeHtml(state.account.username)} · 家庭数据由 VPS SQLite 保存。</p>
-                <div class="parent-account-inline-actions">
-                    <button class="btn-secondary" type="button" data-parent-refresh>刷新家庭</button>
-                    <button class="btn-secondary" type="button" data-parent-create-household>新建家庭</button>
-                    <button class="btn-secondary" type="button" data-parent-redeem>兑换家庭邀请码</button>
-                    <button class="btn-secondary parent-account-danger-link" type="button" data-parent-delete-account>删除账号</button>
-                </div>
-                <label class="parent-account-select-label">当前家庭
-                    <select id="parent-household-select" ${state.households.length ? '' : 'disabled'}>
-                        ${state.households.length ? state.households.map(item => `<option value="${escapeHtml(item.id)}" ${item.id === state.activeHouseholdId ? 'selected' : ''}>${escapeHtml(item.name)}</option>`).join('') : '<option>还没有家庭</option>'}
-                    </select>
-                </label>
+                <p class="parent-account-copy">用户名：${escapeHtml(state.account.username)}</p>
+                ${renderCloudConflictPanel()}
+                ${household ? `<div class="parent-household-summary"><strong>${escapeHtml(household.name)}</strong><span>当前家庭</span></div>` : `
+                    <div class="parent-account-empty">先创建家庭，或输入邀请码加入已有家庭。</div>
+                    <div class="parent-account-inline-actions">
+                        <button class="btn-primary" type="button" data-parent-create-household>创建家庭</button>
+                        <button class="btn-secondary" type="button" data-parent-redeem>输入邀请码</button>
+                    </div>
+                `}
                 <div id="parent-household-content"></div>
+                <details class="parent-account-more-actions" data-parent-more-actions>
+                    <summary>更多操作</summary>
+                    ${household && state.households.length > 1 ? `<label class="parent-account-select-label">切换家庭
+                        <select id="parent-household-select">
+                            ${state.households.map(item => `<option value="${escapeHtml(item.id)}" ${item.id === state.activeHouseholdId ? 'selected' : ''}>${escapeHtml(item.name)}</option>`).join('')}
+                        </select>
+                    </label>` : ''}
+                    ${household ? '<button class="parent-row-action" type="button" data-parent-create-household>创建另一个家庭</button><button class="parent-row-action" type="button" data-parent-redeem>输入家庭邀请码</button>' : ''}
+                    <button class="parent-row-action is-danger" type="button" data-parent-delete-account>删除账号</button>
+                </details>
                 <p class="parent-account-status" id="parent-account-status" role="status"></p>
             </div>
         `;
         node.querySelector('[data-parent-logout]')?.addEventListener('click', handleLogout);
-        node.querySelector('[data-parent-refresh]')?.addEventListener('click', loadData);
-        node.querySelector('[data-parent-create-household]')?.addEventListener('click', createHousehold);
-        node.querySelector('[data-parent-redeem]')?.addEventListener('click', redeemInvite);
+        node.querySelectorAll('[data-parent-create-household]').forEach((button) => button.addEventListener('click', createHousehold));
+        node.querySelectorAll('[data-parent-redeem]').forEach((button) => button.addEventListener('click', redeemInvite));
         node.querySelector('[data-parent-delete-account]')?.addEventListener('click', deleteAccount);
+        node.querySelectorAll('[data-parent-conflict-choice]').forEach((button) => button.addEventListener('click', handleCloudConflictChoice));
         node.querySelector('#parent-household-select')?.addEventListener('change', (event) => {
             state.activeHouseholdId = event.target.value;
             loadChildren();
@@ -111,32 +199,21 @@
         if (!node) return;
         const household = state.households.find(item => item.id === state.activeHouseholdId);
         if (!household) {
-            node.innerHTML = '<div class="parent-account-empty">先新建家庭，或兑换其他家长发来的邀请码。</div>';
+            node.innerHTML = '';
             return;
         }
         const currentMember = state.members.find(item => item.account.id === state.account?.id);
         const canManageHousehold = currentMember?.role === 'owner';
         const canManageChildren = currentMember?.role === 'owner';
         node.innerHTML = `
-            <div class="parent-household-summary"><strong>${escapeHtml(household.name)}</strong><span>家庭 ID ${escapeHtml(household.id.slice(0, 8))}</span></div>
-            <div class="parent-account-management-block">
-                <div class="parent-account-section-head"><div><p class="parent-account-kicker">家庭成员</p><h5>家长账号</h5></div>${canManageHousehold ? '<button class="btn-secondary" type="button" data-parent-create-invite>添加家长</button>' : ''}</div>
-                <p class="parent-account-note">${canManageHousehold ? '生成邀请码后，让另一位家长用自己的账号兑换加入。每个账号独立登录，孩子数据共享。' : '你是家庭成员，可以查看共享孩子档案；添加和移除家长由家庭所有者管理。'}</p>
-                <div class="parent-member-list">${state.members.length ? state.members.map(member => {
-                    const isCurrent = member.account.id === state.account.id;
-                    const role = member.role === 'owner' ? '家庭所有者' : '家长成员';
-                    return `<div class="parent-member-item"><span class="parent-member-avatar">${isCurrent ? '★' : '家'}</span><div class="parent-member-copy"><strong>${escapeHtml(member.account.displayName)}</strong><small>${escapeHtml(member.account.username)} · ${role}</small></div>${isCurrent ? '<span class="parent-member-current">当前</span>' : canManageHousehold && member.role !== 'owner' ? `<button class="parent-row-action is-danger" type="button" data-parent-remove-member="${escapeHtml(member.account.id)}">移除</button>` : ''}</div>`;
-                }).join('') : '<div class="parent-account-empty">暂时没有成员信息。</div>'}</div>
-            </div>
             <div class="parent-account-section-head"><h5>孩子档案</h5><button class="btn-primary" type="button" data-parent-add-child>添加孩子</button></div>
             <div class="parent-child-cloud-list">${state.children.length ? state.children.map(child => `
-                <div class="parent-child-cloud-item"><span class="parent-child-cloud-avatar">🧒</span><div><strong>${escapeHtml(child.name)}</strong><small>${child.localProfileId ? `本机档案 ${escapeHtml(child.localProfileId)}` : '已在家庭中创建'}</small></div>${canManageChildren ? `<div class="parent-child-cloud-actions"><button class="parent-row-action" type="button" data-parent-rename-child="${escapeHtml(child.id)}">改名</button><button class="parent-row-action is-danger" type="button" data-parent-delete-child="${escapeHtml(child.id)}">删除</button></div>` : '<span class="parent-member-current">只读</span>'}</div>
+                <div class="parent-child-cloud-item"><span class="parent-child-cloud-avatar">🧒</span><div><strong>${escapeHtml(child.name)}</strong><small>${child.localProfileId ? '可在这台设备进入孩子端' : '已添加到当前家庭'}</small></div>${canManageChildren ? `<div class="parent-child-cloud-actions"><button class="parent-row-action" type="button" data-parent-rename-child="${escapeHtml(child.id)}">改名</button><button class="parent-row-action is-danger" type="button" data-parent-delete-child="${escapeHtml(child.id)}">删除</button></div>` : '<span class="parent-member-current">只读</span>'}</div>
             `).join('') : '<div class="parent-account-empty">这个家庭还没有孩子档案。</div>'}</div>
-            <div class="parent-account-invite-result" id="parent-invite-result">邀请码用于添加另一位家长，不用于添加孩子。</div>
+            ${canManageHousehold ? `<details class="parent-account-more-actions"><summary>邀请另一位家长</summary><p class="parent-account-note">对方注册自己的家长账号后，输入邀请码即可加入当前家庭。</p><button class="parent-row-action" type="button" data-parent-create-invite>生成邀请码</button><div class="parent-account-invite-result" id="parent-invite-result"></div></details>` : ''}
         `;
         node.querySelector('[data-parent-add-child]')?.addEventListener('click', () => openChildDialog());
         node.querySelector('[data-parent-create-invite]')?.addEventListener('click', createInvite);
-        node.querySelectorAll('[data-parent-remove-member]').forEach((button) => button.addEventListener('click', () => removeMember(button.dataset.parentRemoveMember)));
         node.querySelectorAll('[data-parent-rename-child]').forEach((button) => button.addEventListener('click', () => renameChild(button.dataset.parentRenameChild)));
         node.querySelectorAll('[data-parent-delete-child]').forEach((button) => button.addEventListener('click', () => deleteChild(button.dataset.parentDeleteChild)));
     }
@@ -324,12 +401,12 @@
         dialog.innerHTML = `
             <section class="parent-account-dialog" role="dialog" aria-modal="true" aria-labelledby="parent-child-dialog-title">
                 <div class="parent-account-head"><div><p class="parent-account-kicker">孩子档案</p><h4 id="parent-child-dialog-title">添加孩子</h4></div><button class="btn-secondary" type="button" data-child-dialog-close aria-label="关闭">关闭</button></div>
-                <p class="parent-account-copy">创建后会立即进入新孩子档案；如果云端暂时不可用，本机档案仍会保留。</p>
+                <p class="parent-account-copy">填写昵称和头像后，就能进入孩子端开始使用。</p>
                 <form class="parent-account-form" data-child-dialog-form>
                     <label>孩子昵称<input name="name" maxlength="80" placeholder="例如：小星" required></label>
                     <label>头像<select name="emoji"><option value="🧒">🧒 小朋友</option><option value="👧">👧 女孩</option><option value="👦">👦 男孩</option><option value="🐣">🐣 小伙伴</option></select></label>
                     <p class="parent-account-status" data-child-dialog-status role="status"></p>
-                    <div class="parent-account-actions"><button class="btn-primary" type="submit">创建并挂靠</button><button class="btn-secondary" type="button" data-child-dialog-cancel>取消</button></div>
+                    <div class="parent-account-actions"><button class="btn-primary" type="submit">添加孩子</button><button class="btn-secondary" type="button" data-child-dialog-cancel>取消</button></div>
                 </form>
             </section>
         `;
@@ -371,7 +448,7 @@
                 status.dataset.tone = 'error';
             }
             if (!cloudError && status) {
-                status.textContent = state.account ? '已创建并同步到当前家庭。' : '已创建本机孩子档案。';
+                status.textContent = state.account ? '孩子已添加到当前家庭。' : '孩子档案已创建。';
                 status.dataset.tone = 'success';
             }
             if (submit) submit.disabled = false;
@@ -404,13 +481,13 @@
         if (!state.account && !SelfHostedApi.isSignedIn()) {
             state.mode = 'login';
             renderSignedOut();
-            setStatus('请先登录家长账号；登录后再创建或选择家庭。', '');
+            setStatus('请先登录家长账号；登录后再创建或加入家庭。', '');
             document.querySelector('#parent-account-form input[name="username"]')?.focus();
             return;
         }
         void loadData().then(() => {
             if (!state.activeHouseholdId) {
-                setStatus('请先新建家庭或兑换家庭邀请码，孩子才能挂靠到家庭下面。', '');
+                setStatus('请先创建家庭或输入邀请码加入家庭，孩子才能挂靠到家庭下面。', '');
                 document.querySelector('[data-parent-create-household]')?.focus();
                 return;
             }

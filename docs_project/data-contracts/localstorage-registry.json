@@ -33,6 +33,7 @@
     {"pattern":"petbank_home_state","owner":"home.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_home_furniture","owner":"home.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_travel_memory_v1","owner":"travel-memory.js","scope":"profile","snapshot":true},
+    {"pattern":"petbank_space_growth_collectibles_v1","owner":"space-growth-detective.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_shop_history","owner":"shop.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_blindbox_history","owner":"shop.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_core_reward_receipts_v1","owner":"core-reward-service.js","scope":"profile","snapshot":true},

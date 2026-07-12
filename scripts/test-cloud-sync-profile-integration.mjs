@@ -26,7 +26,12 @@ function createHarness(api, consoleObject = console) {
     });
     const window = {
         SelfHostedApi: api,
-        location: { href: 'https://example.test/pet-bank/', origin: 'https://example.test', pathname: '/pet-bank/' },
+        location: {
+            href: 'https://example.test/pet-bank/',
+            origin: 'https://example.test',
+            pathname: '/pet-bank/',
+            replace(url) { this.replaced = url; this.href = url; },
+        },
         addEventListener() {},
     };
     const document = {
@@ -99,6 +104,36 @@ async function testRetrySuccessRemovesEntryAndUpdatesRevision() {
     assert.equal(profiles.get('profile-a').cloudRevision, 3);
 }
 
+async function testStalePendingRevisionAdvancesFromKnownCloudRevision() {
+    let pushedRevision = 0;
+    const api = {
+        isSignedIn: () => true,
+        listChildren: async () => ({ children: [] }),
+        pushSnapshot: async (_childId, revision, payload) => {
+            pushedRevision = revision;
+            assert.equal(payload.petbank_points, '12');
+            return { snapshot: { revision, payload } };
+        },
+    };
+    const { profiles, outbox, storage } = createHarness(api);
+    outbox.upsert(storage, {
+        id: 'profile-a:child-a',
+        profileId: 'profile-a',
+        childId: 'child-a',
+        revision: 1,
+        payload: { petbank_points: '12' },
+        nextAttemptAt: 0,
+    });
+    storage.setItem('petbank_profiles_meta', JSON.stringify([
+        { id: 'profile-a', name: 'A', emoji: 'A', createdAt: 1, cloudChildId: 'child-a', cloudRevision: 1 },
+    ]));
+
+    const result = await profiles.syncActiveToCloud();
+    assert.equal(pushedRevision, 2);
+    assert.equal(result.revision, 2);
+    assert.equal(outbox.get(storage, 'profile-a:child-a'), null);
+}
+
 async function testConflictRemainsPersistedWhenRemoteReadFails() {
     const api = {
         isSignedIn: () => true,
@@ -119,8 +154,80 @@ async function testConflictRemainsPersistedWhenRemoteReadFails() {
     assert.deepEqual(entry.payload, { petbank_points: '12' });
 }
 
+function seedConflict(outbox, storage) {
+    outbox.upsert(storage, {
+        id: 'profile-a:child-a',
+        profileId: 'profile-a',
+        childId: 'child-a',
+        revision: 2,
+        payload: { petbank_points: '12' },
+        status: 'conflict',
+        attempts: 1,
+        nextAttemptAt: 0,
+        remoteRevision: 4,
+    });
+}
+
+async function testConflictCanUseRemoteSnapshot() {
+    const api = {
+        isSignedIn: () => true,
+        listChildren: async () => ({ children: [] }),
+        latestSnapshot: async () => ({ snapshot: { revision: 4, payload: { petbank_points: '5' } } }),
+    };
+    const { profiles, outbox, storage, window } = createHarness(api);
+    seedConflict(outbox, storage);
+
+    const result = await profiles.resolveCloudConflict('profile-a', 'remote');
+    assert.equal(result.status, 'resolved');
+    assert.equal(result.choice, 'remote');
+    assert.equal(storage.getItem('petbank_points'), '5');
+    assert.equal(outbox.get(storage, 'profile-a:child-a'), null);
+    assert.equal(profiles.get('profile-a').cloudRevision, 4);
+    assert.ok(window.location.replaced, 'using the remote snapshot reloads the app shell');
+}
+
+async function testConflictCanKeepLocalAsNextRevision() {
+    let pushedRevision = 0;
+    const api = {
+        isSignedIn: () => true,
+        listChildren: async () => ({ children: [] }),
+        latestSnapshot: async () => ({ snapshot: { revision: 4, payload: { petbank_points: '5' } } }),
+        pushSnapshot: async (_childId, revision, payload) => {
+            pushedRevision = revision;
+            assert.deepEqual(payload, { petbank_points: '12' });
+            return { snapshot: { revision, payload } };
+        },
+    };
+    const { profiles, outbox, storage } = createHarness(api);
+    seedConflict(outbox, storage);
+
+    const result = await profiles.resolveCloudConflict('profile-a', 'local');
+    assert.equal(result.status, 'synced');
+    assert.equal(pushedRevision, 5);
+    assert.equal(outbox.get(storage, 'profile-a:child-a'), null);
+    assert.equal(storage.getItem('petbank_points'), '12');
+}
+
+async function testConflictCanBeExportedWithoutMutation() {
+    const api = {
+        isSignedIn: () => true,
+        listChildren: async () => ({ children: [] }),
+    };
+    const { profiles, outbox, storage } = createHarness(api);
+    seedConflict(outbox, storage);
+
+    const exported = profiles.getCloudConflictExport('profile-a');
+    assert.equal(exported.profileId, 'profile-a');
+    assert.deepEqual(exported.payload, { petbank_points: '12' });
+    assert.equal(outbox.get(storage, 'profile-a:child-a').status, 'conflict');
+}
+
 await testNetworkFailureQueuesLatestSnapshot();
 await testRetrySuccessRemovesEntryAndUpdatesRevision();
+await testStalePendingRevisionAdvancesFromKnownCloudRevision();
 await testConflictRemainsPersistedWhenRemoteReadFails();
+await testConflictCanUseRemoteSnapshot();
+await testConflictCanKeepLocalAsNextRevision();
+await testConflictCanBeExportedWithoutMutation();
 
 console.log('PASS cloud sync profile integration');

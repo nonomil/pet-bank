@@ -1,6 +1,6 @@
 # 任务积分系统
 
-> 核心文件: [js/app.js](../../js/app.js) (4411行，其中任务积分部分约 500 行；行号按 2026-07-12 基线)
+> 核心文件: [js/app.js](../../js/app.js)（积分状态、任务交互和渲染）与 [js/task-catalog.js](../../js/task-catalog.js)（6 个维度、37 个任务和配图规则；行号按 2026-07-12 基线）
 
 ---
 
@@ -34,10 +34,10 @@
 
 | 函数 | 文件:行号 | 说明 |
 |------|----------|------|
-| `DIMENSIONS` | app.js:39-107 | **6 维度** 37 任务定义（常量） |
-| `HOME_PRIORITY_TASKS` | app.js:109-113 | 首页 3 个优先任务 |
-| `POINT_TASK_ART` | app.js:115-126 | 积分任务配图 URL 映射 |
-| `getPointTaskArt(task)` | app.js:128-140 | 按任务文本正则匹配配图 |
+| `PetBankTaskCatalog.DIMENSIONS` | task-catalog.js | **6 维度** 37 任务定义（只读目录） |
+| `PetBankTaskCatalog.HOME_PRIORITY_TASKS` | task-catalog.js | 首页 3 个优先任务 |
+| `PetBankTaskCatalog.POINT_TASK_ART` | task-catalog.js | 积分任务配图 URL 映射 |
+| `PetBankTaskCatalog.getPointTaskArt(task)` | task-catalog.js | 按任务文本正则匹配配图 |
 | `toggleTask(dim, taskName, pts)` | app.js:412 | 勾选/取消任务，增减积分 |
 | `renderTaskGrid()` | app.js:437 | 渲染全部 37 个任务卡片 |
 | `renderGrowthStickerReport()` | app.js:462 | 渲染成长贴纸报告（热力图+维度进度条） |

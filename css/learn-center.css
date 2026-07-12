@@ -1193,6 +1193,90 @@ body.learn-mode .learn-lesson-hero .learn-badge {
     line-height: 1.7;
 }
 
+.settings-learning-panel .settings-panel-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.settings-learning-panel .settings-panel-tip {
+    justify-self: start;
+    min-height: 0;
+    margin-top: 10px;
+    padding: 7px 10px;
+}
+
+.settings-math-panel {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.settings-math-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.settings-math-option {
+    display: flex;
+    min-height: 142px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px;
+    border: 1px solid rgba(208, 214, 207, 0.96);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.88);
+    color: #3f5e4a;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.settings-math-option:hover,
+.settings-math-option:focus-visible {
+    border-color: rgba(126, 182, 108, 0.62);
+    box-shadow: 0 8px 18px rgba(82, 88, 77, 0.08);
+    outline: none;
+}
+
+.settings-math-option.is-active {
+    border-color: rgba(126, 182, 108, 0.34);
+    background: #72aa91;
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(86, 132, 104, 0.18);
+}
+
+.settings-math-option strong {
+    font-size: 15px;
+    line-height: 1.25;
+}
+
+.settings-math-option span,
+.settings-math-option small,
+.settings-math-option em {
+    display: block;
+    line-height: 1.45;
+}
+
+.settings-math-option span {
+    font-size: 12px;
+    opacity: 0.82;
+}
+
+.settings-math-option small {
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.settings-math-option em {
+    margin-top: auto;
+    font-size: 11px;
+    font-style: normal;
+    opacity: 0.78;
+}
+
 .learn-entry-art {
     position: relative;
     min-height: 196px;
@@ -3944,6 +4028,10 @@ body.learn-mode .learn-study-sheet {
 
     .settings-learning-advanced-toggle {
         width: 100%;
+    }
+
+    .settings-math-grid {
+        grid-template-columns: 1fr;
     }
 
     .learn-daily-task-grid,

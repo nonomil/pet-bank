@@ -76,6 +76,7 @@ function main() {
   const scenesJson = readJson('data/scenes.json');
   const indexHtml = readText('index.html');
   const appJs = readText('js/app.js');
+  const runtimeLoaderJs = readText('js/runtime-loader.js');
   const walkJs = readText('js/walk.js');
   const mathPkJs = readText('js/math-pk.js');
   const cardJs = readText('js/card-collection.js');
@@ -93,12 +94,12 @@ function main() {
 
   const checks = [
     {
-      name: 'CardCollection.init wired in app init',
-      ok: /CardCollection\.init\(\)/.test(appJs)
+      name: 'CardCollection.init wired in the lazy card bundle',
+      ok: /ensureCardFeature[\s\S]*CardCollection\.init\(\)/.test(runtimeLoaderJs)
     },
     {
-      name: 'ToolboxSystem.init wired in app init',
-      ok: /ToolboxSystem\.init\(\)/.test(appJs)
+      name: 'ToolboxSystem.init wired in the lazy playground bundle',
+      ok: /ensurePlaygroundFeature[\s\S]*ToolboxSystem\.init\(\)/.test(runtimeLoaderJs)
     },
     {
       name: 'Math PK uses addGrowthPoints instead of direct totalPoints mutation',
@@ -109,13 +110,14 @@ function main() {
       ok: /MathPKGame\.renderUI\('math-pk-container'\)/.test(mathPkJs) && !/MathPKGame\.renderUI\('page-mathpk'\)/.test(mathPkJs)
     },
     {
-      name: 'Pet page default sprite uses poses asset path',
-      ok: /id="petDisplayImg"[\s\S]*src="assets\/pets\/poses\/dog_idle\.png"/.test(indexHtml)
-        && !/id="petDisplayImg"[\s\S]*src="assets\/pets\/dog_idle\.png"/.test(indexHtml)
+      name: 'Pet page sprite is populated by the runtime pet image resolver',
+      ok: /id="petDisplayImg"/.test(indexHtml)
+        && /function getPetImagePath[\s\S]*imageStages/.test(appJs)
+        && /displayImg\.src\s*=/.test(appJs)
     },
     {
-      name: 'Card collection rewards use addGrowthPoints instead of direct totalPoints mutation',
-      ok: /addGrowthPoints\(/.test(cardJs) && !/totalPoints\s*\+=/.test(cardJs)
+      name: 'Card collection does not own a second points ledger',
+      ok: !/totalPoints\s*[+\-]=/.test(cardJs) && !/petbank_points/.test(cardJs)
     },
     {
       name: 'Toolbox rewards use addGrowthPoints instead of direct totalPoints mutation',
@@ -130,12 +132,12 @@ function main() {
       ok: /addGrowthPoints\(/.test(treasureJs) && !/totalPoints\s*\+=/.test(treasureJs)
     },
     {
-      name: 'Scene unlock flow avoids direct points storage mutation when possible',
+      name: 'Scene unlock flow uses the shared points API',
       ok: /addGrowthPoints\(-scene\.unlock_cost\)/.test(explorationJs)
     },
     {
-      name: 'Non-PVZ pets keep multi-stage lightbox galleries',
-      ok: /else if \(sp && sp\.imageStages\)/.test(appJs) && !/else if \(sp && sp\.imageStages && !style\)/.test(appJs)
+      name: 'Pet stage galleries support imageStages and legacy stages',
+      ok: /function getPetStageEntriesForSpecies[\s\S]*sp\.imageStages[\s\S]*Array\.isArray\(sp\.stages\)/.test(appJs)
     },
     {
       name: 'Banchong duplicate-stage pets have normalized display images',

@@ -28,5 +28,8 @@
   "reply": {
     "careAction": "你和小伙伴一起点亮了双星桥。两颗星之间多了一条温暖的线。",
     "fallback": "你找到了合作的办法。双星桥记下了这份伙伴心意。"
-  }
+  },
+  "node": { "caseId": "companion-link", "label": "双星桥", "shortLabel": "伙伴连线站", "image": "assets/story/space-growth-detective/nodes/companion-link.webp" },
+  "battle": { "sceneId": "space-growth-detective-link", "chapter": 4, "intro": "断线星兽把双星桥的光线缠住了。", "victory": "两颗星重新连上，桥面亮起温暖的光。", "monster": { "id": "constellation", "name": "断线星兽", "emoji": "✦", "hp": 32, "atk": 4, "exp": 14 } },
+  "rewards": { "growthPoints": 16, "petExp": 18, "cardId": "companion-link", "badgeId": "link-builder" }
 }

@@ -3,141 +3,9 @@
  * 负责：任务系统、积分系统、页面切换、UI 渲染
  */
 
-// (Styles would normally be in a CSS file, adding here via JS for ease of implementation in this task)
-const style = document.createElement('style');
-style.textContent = `
-.battle-shake { animation: shake 0.5s; }
-@keyframes shake {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-    10% { transform: translate(-1px, -2px) rotate(-1deg); }
-    20% { transform: translate(-3px, 0px) rotate(1deg); }
-    30% { transform: translate(3px, 2px) rotate(0deg); }
-    40% { transform: translate(1px, -1px) rotate(1deg); }
-    50% { transform: translate(-1px, 2px) rotate(-1deg); }
-    60% { transform: translate(-3px, 1px) rotate(0deg); }
-    70% { transform: translate(3px, 1px) rotate(-1deg); }
-    80% { transform: translate(-1px, -1px) rotate(1deg); }
-    90% { transform: translate(1px, 2px) rotate(0deg); }
-    100% { transform: translate(1px, -2px) rotate(-1deg); }
-}
-.battle-flash-red { animation: flash-red 0.5s; }
-@keyframes flash-red {
-    0% { background-color: transparent; }
-    50% { background-color: rgba(255, 0, 0, 0.3); }
-    100% { background-color: transparent; }
-}
-.log-player { color: #4ade80; }
-.log-enemy { color: #f87171; }
-.log-system { color: #94a3b8; font-style: italic; }
-.log-reward { color: #fbbf24; font-weight: bold; }
-`;
-document.head.appendChild(style);
-
-// ============ 任务维度数据 ============
-// ... (rest of the file)
-
-const DIMENSIONS = {
-    learning: {
-        name: '学习力', en: 'Learning', icon: 'book-open',
-        tasks: [
-            { name: '阅读 20 分钟', pts: 1 },
-            { name: '练字一页', pts: 1 },
-            { name: '背诵一首古诗', pts: 2 },
-            { name: '完成英语听写', pts: 2 },
-            { name: '数学专项练习', pts: 2 },
-            { name: '写日记', pts: 2 }
-        ]
-    },
-    sports: {
-        name: '运动力', en: 'Sports', icon: 'bike',
-        tasks: [
-            { name: '运动 30 分钟', pts: 1 },
-            { name: '跳绳 100 个', pts: 2 },
-            { name: '户外跑步', pts: 2 },
-            { name: '球类运动 1 小时', pts: 2 },
-            { name: '骑行 5 公里', pts: 3 },
-            { name: '早起晨练', pts: 2 }
-        ]
-    },
-    selfcontrol: {
-        name: '自控力', en: 'Self-control', icon: 'clock',
-        tasks: [
-            { name: '屏幕时间不超过 2 小时', pts: 2 },
-            { name: '整理书桌', pts: 1 },
-            { name: '制定明日计划', pts: 1 },
-            { name: '按时起床', pts: 1 },
-            { name: '独立完成作业', pts: 2 },
-            { name: '无需提醒洗漱', pts: 1 }
-        ]
-    },
-    exploration: {
-        name: '探索力', en: 'Exploration', icon: 'compass',
-        tasks: [
-            { name: '观察一种植物', pts: 1 },
-            { name: '学做一道新菜', pts: 3 },
-            { name: '阅读一本新书', pts: 2 },
-            { name: '记录一个好奇点', pts: 1 },
-            { name: '绘制一张地图', pts: 2 },
-            { name: '探索家附近新路线', pts: 1 }
-        ]
-    },
-    practice: {
-        name: '实践力', en: 'Practice', icon: 'wrench',
-        tasks: [
-            { name: '帮做家务', pts: 1 },
-            { name: '整理房间', pts: 1 },
-            { name: '浇花/养宠物', pts: 1 },
-            { name: '垃圾分类投放', pts: 1 },
-            { name: '洗自己的衣物', pts: 2 },
-            { name: '做一道家常菜', pts: 3 }
-        ]
-    },
-    petcare: {
-        name: '守护力', en: 'Pet Care', icon: 'paw-print',
-        tasks: [
-            { name: '喂食（按宠物种类按时喂）', pts: 2 },
-            { name: '清理宠物窝/笼', pts: 2 },
-            { name: '陪伴玩耍 15 分钟', pts: 2 },
-            { name: '健康检查（观察状态）', pts: 1 },
-            { name: '遛宠物（如适用）', pts: 3 },
-            { name: '给宠物梳毛/抚摸', pts: 1 },
-            { name: '记录宠物成长日记', pts: 2 }
-        ]
-    }
-};
-
-const HOME_PRIORITY_TASKS = [
-    { dim: 'learning', task: '阅读 20 分钟', pts: 1, hint: '读完就能继续点开喜欢的栏目。' },
-    { dim: 'sports', task: '运动 30 分钟', pts: 1, hint: '活动一下，再去冒险会更有精神。' },
-    { dim: 'selfcontrol', task: '屏幕时间不超过 2 小时', pts: 2, hint: '守住今天的小习惯，也算一次成长。' }
-];
-
-const POINT_TASK_ART = {
-    guide: 'assets/ui/points-exchange/kidstar-guide.webp',
-    reading: 'assets/ui/points-exchange/kidstar-reading.webp',
-    writing: 'assets/ui/points-exchange/kidstar-writing.webp',
-    math: 'assets/ui/points-exchange/kidstar-math.webp',
-    sports: 'assets/ui/points-exchange/kidstar-sports.webp',
-    clock: 'assets/ui/points-exchange/kidstar-clock.webp',
-    tidy: 'assets/ui/points-exchange/kidstar-tidy.webp',
-    explore: 'assets/ui/points-exchange/kidstar-explore.webp',
-    petcare: 'assets/ui/points-exchange/kidstar-petcare.webp',
-    cooking: 'assets/ui/points-exchange/kidstar-cooking.webp'
-};
-
-function getPointTaskArt(task) {
-    const text = `${task.dim || ''} ${task.dimName || ''} ${task.name || task.task || ''}`;
-    if (/数学|算|口算|计算|专项/.test(text)) return POINT_TASK_ART.math;
-    if (/练字|日记|写|听写|抄写/.test(text)) return POINT_TASK_ART.writing;
-    if (/阅读|背诵|古诗|英语|学习力|新书/.test(text)) return POINT_TASK_ART.reading;
-    if (/运动|跳绳|跑步|骑行|球|晨练|户外/.test(text)) return POINT_TASK_ART.sports;
-    if (/起床|屏幕|计划|自控|提醒|赖床|时间|按时|独立完成/.test(text)) return POINT_TASK_ART.clock;
-    if (/整理|家务|房间|书桌|清理|垃圾|玩具|分类|衣物/.test(text)) return POINT_TASK_ART.tidy;
-    if (/做菜|新菜|家常菜|厨房/.test(text)) return POINT_TASK_ART.cooking;
-    if (/宠物|喂食|梳毛|抚摸|遛宠物|宠物窝|清理宠物|陪伴玩耍|健康检查|成长日记|守护力/.test(text)) return POINT_TASK_ART.petcare;
-    if (/探索|观察|植物|地图|路线|好奇|记录/.test(text)) return POINT_TASK_ART.explore;
-    return POINT_TASK_ART.guide;
-}
+const taskCatalog = window.PetBankTaskCatalog;
+if (!taskCatalog) throw new Error('[app] task catalog failed to load');
+const { DIMENSIONS, HOME_PRIORITY_TASKS, POINT_TASK_ART, getPointTaskArt } = taskCatalog;
 
 // ============ 应用状态 ============
 let totalPoints = 0;
@@ -2111,8 +1979,8 @@ const SETTINGS_SECTION_ROUTES = {
 
 const SETTINGS_SECTION_LABELS = {
     home: '设置首页',
-    account: '孩子档案',
-    family: '家庭账号',
+    account: '家庭与孩子',
+    family: '家庭与孩子',
     learning: '学习与题目',
     rules: '规则模板',
     advanced: '高级与危险操作'
@@ -2202,13 +2070,13 @@ const ROUTE_TO_PAGE = {
     '/parent': { page: 'parent' },
     '/parent/works': { page: 'works' },
     '/parent/tools': { page: 'tools' },
-    '/parent/settings': { page: 'settings', settingsSection: 'home' },
+    '/parent/settings': { page: 'settings', settingsSection: 'family' },
     '/parent/settings/account': { page: 'settings', settingsSection: 'account' },
     '/parent/settings/family': { page: 'settings', settingsSection: 'family' },
     '/parent/settings/learning': { page: 'settings', settingsSection: 'learning' },
     '/parent/settings/rules': { page: 'settings', settingsSection: 'rules' },
     '/parent/settings/advanced': { page: 'settings', settingsSection: 'advanced' },
-    '/settings': { page: 'settings', settingsSection: 'home' },
+    '/settings': { page: 'settings', settingsSection: 'family' },
     '/settings/account': { page: 'settings', settingsSection: 'account' },
     '/settings/family': { page: 'settings', settingsSection: 'family' },
     '/settings/learning': { page: 'settings', settingsSection: 'learning' },
@@ -2216,7 +2084,7 @@ const ROUTE_TO_PAGE = {
     '/settings/advanced': { page: 'settings', settingsSection: 'advanced' }
 };
 
-let activeSettingsSection = 'home';
+let activeSettingsSection = 'family';
 
 function canUsePathRouting() {
     return window.location && /^https?:$/.test(window.location.protocol);
@@ -2283,7 +2151,8 @@ function resolveRouteFromLocation(locationLike) {
 }
 
 function normalizeSettingsSection(section) {
-    return SETTINGS_SECTION_ROUTES[section] ? section : 'home';
+    if (section === 'account') return 'family';
+    return SETTINGS_SECTION_ROUTES[section] ? section : 'family';
 }
 
 function getPathForPage(page, options = {}) {
@@ -2385,6 +2254,10 @@ function applySettingsSection(section) {
             item.setAttribute('aria-current', item.dataset.settingsNav === activeSettingsSection ? 'page' : 'false');
         }
     });
+    const moreSettings = document.querySelector('#page-settings .settings-subpage-nav-more');
+    if (moreSettings) {
+        moreSettings.open = ['learning', 'rules', 'advanced'].includes(activeSettingsSection);
+    }
     document.querySelectorAll('#page-settings .section-menu-current').forEach((node) => {
         node.textContent = `当前：${label}`;
     });
@@ -2396,9 +2269,9 @@ function applySettingsSection(section) {
     if (copy) {
         const copies = {
             home: '把账号、家庭云端、学习题目和危险操作拆成可直达的子页，先让家长区有清晰边界。',
-            account: '新增、改名或删除孩子账号；切换当前孩子仍然使用右上角头像。',
-            family: '登录、家庭同步、好友串门等能力集中在这里，避免散落到孩子主流程。',
-            learning: '管理学习打勾模式、数学 PK 难度等会影响孩子日常体验的配置。',
+            account: '先登录家长账号，再创建或加入家庭，最后添加孩子。',
+            family: '先登录家长账号，再创建或加入家庭，最后添加孩子。',
+            learning: '默认设置可以直接使用。需要调整时，再选择学习单或数学 PK 难度。',
             rules: '后续把阅读、数学、复盘、整理等加分/扣分项做成可编辑模板。',
             advanced: '数据导入、导出、云端诊断和覆盖类操作统一收纳到高级区。'
         };
@@ -2551,7 +2424,7 @@ function switchPage(page, options = {}) {
         if (shellBar) shellBar.hidden = true;
     }
     if (page === 'settings') {
-        activeSettingsSection = normalizeSettingsSection(options.settingsSection || activeSettingsSection || 'home');
+        activeSettingsSection = normalizeSettingsSection(options.settingsSection || activeSettingsSection || 'family');
     }
     // 离开宠物小屋：标记 exit（写 last_home_ts，下次进入结算）
     const prevPageEl = document.querySelector('.page.active');
@@ -2615,12 +2488,13 @@ function maybeSeedStarterCards() {
 
 function updateParentHomePage() {
     const childNameEl = document.getElementById('parentHomeChildName');
-    if (!childNameEl) return;
-    const activeProfile = window.ProfileManager && typeof ProfileManager.getActive === 'function'
-        ? ProfileManager.getActive()
-        : null;
-    const fallbackName = document.getElementById('profileCurName')?.textContent || '默认孩子';
-    childNameEl.textContent = activeProfile && activeProfile.name ? activeProfile.name : fallbackName;
+    if (childNameEl) {
+        const activeProfile = window.ProfileManager && typeof ProfileManager.getActive === 'function'
+            ? ProfileManager.getActive()
+            : null;
+        const fallbackName = document.getElementById('profileCurName')?.textContent || '默认孩子';
+        childNameEl.textContent = activeProfile && activeProfile.name ? activeProfile.name : fallbackName;
+    }
     const householdNameEl = document.getElementById('parentShellHouseholdName');
     if (householdNameEl) {
         const accountState = window.ParentAccountUI && typeof window.ParentAccountUI.getState === 'function'
@@ -3940,22 +3814,7 @@ function getExploreRescueCardHTML(petState) {
 
 function getExploreMapShellHTML() {
     return `
-        <section class="explore-hero">
-            <div class="explore-hero-copy" style="grid-column:1/-1">
-                <p class="map-eyebrow">探索冒险 / 场景路线</p>
-                <h2>沿着星光路线，一站站探索冒险</h2>
-                <p>点击地图上的场景卡片即可出发。金色星点已开放，灰色尚未解锁，发光路线把场景串成一条旅程。</p>
-            </div>
-        </section>
-        <section class="story-case-shell">
-            <div id="petStoryCasePanel"></div>
-        </section>
-        <section class="map-board-shell">
-            <div class="map-board-surface">
-                <div class="map-board-texture"></div>
-                <div id="sceneGrid" class="map-board"><!-- 由 exploration.js 渲染路线地图 --></div>
-            </div>
-        </section>
+        <div id="spaceGrowthDetectiveContainer"></div>
     `;
 }
 
@@ -3963,8 +3822,8 @@ function ensureExploreMapShell() {
     const pageExplore = document.getElementById('page-explore');
     if (!pageExplore) return null;
 
-    let grid = pageExplore.querySelector('#sceneGrid');
-    if (grid) return grid;
+    let storyContainer = pageExplore.querySelector('#spaceGrowthDetectiveContainer');
+    if (storyContainer) return storyContainer;
 
     const activeGalgame = pageExplore.querySelector('.galgame-stage')
         && window.ExplorationDetail
@@ -3973,12 +3832,20 @@ function ensureExploreMapShell() {
     if (activeGalgame) return null;
 
     pageExplore.innerHTML = getExploreMapShellHTML();
-    return pageExplore.querySelector('#sceneGrid');
+    return pageExplore.querySelector('#spaceGrowthDetectiveContainer');
 }
 
 async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
-    const grid = ensureExploreMapShell();
-    if (!grid) return;
+    const storyContainer = ensureExploreMapShell();
+    if (!storyContainer) return;
+
+    if (window.SpaceGrowthDetective && typeof window.SpaceGrowthDetective.render === 'function') {
+        await window.SpaceGrowthDetective.render(storyContainer.id);
+        if (window.lucide) lucide.createIcons();
+        return;
+    }
+
+    const grid = storyContainer;
 
     // 宠物小屋 R5 渲染层兜底（F1 第二道）：hp<=0 且已选宠 → 探索页不渲染场景网格
     if (window.PetSystem) {
@@ -3995,6 +3862,9 @@ async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
     ExplorationSystem.renderSceneGridMap(selectedSceneId, 'sceneGrid');
     if (window.PetStoryCases && typeof PetStoryCases.render === 'function') {
         await PetStoryCases.render('petStoryCasePanel');
+    }
+    if (window.SpaceGrowthDetective && typeof window.SpaceGrowthDetective.render === 'function') {
+        await window.SpaceGrowthDetective.render('spaceGrowthDetectiveContainer');
     }
     if (window.lucide) lucide.createIcons();
 }
@@ -4548,6 +4418,10 @@ function closeBattleModal() {
     battleUILocked = false;   // 关闭战斗时重置 UI 锁，避免残留导致下次战斗按钮全禁用
     window.removeEventListener('battle-animate', handleBattleAnimate);
     const status = ExplorationSystem.getCurrentBattle && ExplorationSystem.getCurrentBattle()?.status;
+    const storyBattleResult = window.SpaceGrowthDetective
+        && typeof window.SpaceGrowthDetective.handleBattleClosed === 'function'
+        ? window.SpaceGrowthDetective.handleBattleClosed(status)
+        : null;
     ExplorationSystem.endBattle();
     document.getElementById('battleModal').classList.remove('show');
     // 战斗从 galgame 探索进入：回到场景列表并清理 galgame 状态，
@@ -4561,6 +4435,7 @@ function closeBattleModal() {
             ExplorationDetail.exit();
         }
     } else {
+        if (storyBattleResult?.accepted) showToast('案件完成，故事卡和徽章已经收进成长册。');
         renderAll();
     }
 }

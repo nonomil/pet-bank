@@ -49,11 +49,18 @@ const ALLOWED_RASTER_EXACT = new Set([
 ]);
 
 const RASTER_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.bmp']);
+const TRAVEL_MEMORY_RUNTIME_PREFIXES = [
+    'assets/generated/travel-memory/badges/',
+    'assets/generated/travel-memory/cards/',
+    'assets/generated/travel-memory/fridge-magnets/',
+    'assets/generated/travel-memory/pet-cards/',
+];
 
 function isAllowedRuntimeRaster(rel) {
     if (ALLOWED_RASTER_EXACT.has(rel)) return true;
     if (rel.startsWith('assets/ui/hanzi-img/') && rel.endsWith('.png')) return true;
     if (rel.startsWith('assets/learn/') && rel.endsWith('.png')) return true;
+    if (TRAVEL_MEMORY_RUNTIME_PREFIXES.some((prefix) => rel.startsWith(prefix) && rel.endsWith('.png'))) return true;
     return false;
 }
 
@@ -265,6 +272,13 @@ function includeLearningArcadeRuntime(rel) {
         'styles.css',
         'game.js',
     ]);
+    const allowedReferencePrefixes = [
+        'assets/generated/reference/pinyin-racer-long-track-strip',
+        'assets/generated/reference/pinyin-racer-long-track-skybridge',
+        'assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/dawn-training-ground-clean',
+        'assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/candy-nebula-clean',
+        'assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/volcanic-meteor-belt-clean',
+    ];
     const allowedPrefixes = [
         'assets/generated',
     ];
@@ -272,8 +286,9 @@ function includeLearningArcadeRuntime(rel) {
         return false;
     }
     if (isDirectChildOf('assets/generated/reference', rel)) {
-        return isDirectChildOf('assets/generated/reference/pinyin-racer-long-track-strip', rel)
-            || isDirectChildOf('assets/generated/reference/pinyin-racer-long-track-skybridge', rel);
+        return allowedReferencePrefixes.some((prefix) =>
+            isDirectChildOf(prefix, rel) || isDirectChildOf(rel, prefix)
+        );
     }
     return !rel.endsWith('.md');
 }
@@ -335,6 +350,11 @@ for (const dirName of ['css', 'js', 'assets', 'data', 'app']) {
 }
 
 copyDirWithFilter('prj/学习机玩法原型', includeLearningArcadeRuntime);
+copyDirWithFilterTo(
+    'prj/拼音块收集台原型',
+    'prj/拼音块收集台原型',
+    (rel) => rel === 'assets' || rel === 'assets/voice' || rel.startsWith('assets/voice/')
+);
 copyDirWithFilter('prj/单词记忆射击场原型', includeWordMemoryRuntime);
 copyDirWithFilterTo('prj/消灭苦力怕打字游戏', 'app/playground/typing-defense-runtime', includeTypingDefenseRuntime);
 sanitizePublishedWordMemoryCards();

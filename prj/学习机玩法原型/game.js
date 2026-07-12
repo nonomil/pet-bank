@@ -274,9 +274,9 @@
   };
 
   const FALLBACK_VOCAB = [
-    { word: 'block', translation: '方块', image: 'assets/learn/english-vocab/block.webp', audio: 'assets/learn/english-vocab/audio/block.mp3' },
-    { word: 'world', translation: '世界', image: 'assets/learn/english-vocab/world.webp', audio: 'assets/learn/english-vocab/audio/world.mp3' },
-    { word: 'stone', translation: '石头', image: 'assets/learn/english-vocab/stone.webp', audio: 'assets/learn/english-vocab/audio/stone.mp3' }
+    { word: 'block', translation: '方块', image: '../../assets/learn/english-vocab/block.webp', audio: '../../assets/learn/english-vocab/audio/block.mp3' },
+    { word: 'world', translation: '世界', image: '../../assets/learn/english-vocab/world.webp', audio: '../../assets/learn/english-vocab/audio/world.mp3' },
+    { word: 'stone', translation: '石头', image: '../../assets/learn/english-vocab/stone.webp', audio: '../../assets/learn/english-vocab/audio/stone.mp3' }
   ];
 
   const FALLBACK_HANZI = [

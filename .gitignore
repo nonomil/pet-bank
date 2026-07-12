@@ -4,6 +4,7 @@
 .playwright-mcp/
 .tmp/
 _site/
+_site_*/
 _site_check*/
 _pages_test_root/
 node_modules/

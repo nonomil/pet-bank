@@ -28,5 +28,8 @@
   "reply": {
     "careAction": "你陪小伙伴玩了一会儿。心情云变成了轻轻发光的路标。",
     "fallback": "你找到了陪伴的办法。心情云把这条温柔提示送上天空。"
-  }
+  },
+  "node": { "caseId": "cloud-code", "label": "云朵中继", "shortLabel": "漂浮信号带", "image": "assets/story/space-growth-detective/nodes/cloud-code.webp" },
+  "battle": { "sceneId": "space-growth-detective-cloud", "chapter": 2, "intro": "云影小怪把快乐信号藏了起来。", "victory": "云朵散开了，大家找到了可以一起玩的路线。", "monster": { "id": "cloud", "name": "云影小怪", "emoji": "☁️", "hp": 22, "atk": 3, "exp": 10 } },
+  "rewards": { "growthPoints": 12, "petExp": 14, "cardId": "cloud-code", "badgeId": "cloud-companion" }
 }

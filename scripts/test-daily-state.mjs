@@ -56,7 +56,13 @@ function loadApp({ storage, profileId = 'p_default', now = '2026-07-11T09:30:00'
         fetch: window.fetch, alert: window.alert, confirm: window.confirm,
         setTimeout, clearTimeout, URL, console
     });
-    vm.runInContext(fs.readFileSync(path.join(repoRoot, 'js', 'app.js'), 'utf8'), context, { filename: 'js/app.js' });
+    for (const scriptName of ['task-catalog.js', 'app.js']) {
+        vm.runInContext(
+            fs.readFileSync(path.join(repoRoot, 'js', scriptName), 'utf8'),
+            context,
+            { filename: `js/${scriptName}` }
+        );
+    }
     return {
         window,
         loadTreasure() {

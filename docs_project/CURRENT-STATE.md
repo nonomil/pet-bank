@@ -7,7 +7,7 @@
 - 主站是 `index.html` 单页静态应用，当前有 28 个 `page-*` 页面容器。
 - 首屏脚本在 `index.html` 中加载；页面专属脚本和样式由 `js/runtime-loader.js` 按 bundle 延迟加载。
 - 项目没有 npm 构建步骤。开发预览必须通过 HTTP 服务，因为运行时会 `fetch()` 加载 JSON 和故事数据。
-- 浏览器运行态以带 `petbank_` 前缀的 `localStorage` 为主；`ProfileManager` 通过快照和 reload 切换孩子档案。
+- 浏览器运行态以带 `petbank_` 前缀的 `localStorage` 为主；`ProfileManager` 通过快照和 reload 切换孩子档案，网络失败的云端快照进入独立 outbox，不属于孩子业务快照。
 - `prj/petbank-server/` 是 SQLite 后端。账号、家庭、孩子和快照 API 已实现并由端到端测试覆盖；社交同步仍属于目标合同，不应描述为已上线能力。
 
 ## 核心入口

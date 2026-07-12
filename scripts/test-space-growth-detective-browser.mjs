@@ -31,6 +31,8 @@ async function prepareWithPet() {
     await window.renderExplorePage();
   });
   assert.equal(await page.evaluate(() => Boolean(window.PetStoryCases)), true, 'explore bundle loads story case module');
+  assert.equal(await page.locator('[data-space-growth-map]').count(), 1, 'second story map is mounted');
+  assert.equal(await page.locator('[data-space-growth-node]').count(), 5, 'second story map renders five nodes');
   await page.waitForSelector('#petStoryCasePanel .story-case-card', { state: 'attached' });
 }
 
@@ -38,17 +40,44 @@ try {
   await prepareWithPet();
   assert.match(await page.locator('#petStoryCasePanel').textContent(), /能量星尘/);
   assert.match(await page.locator('[data-story-clue]').textContent(), /需要点心/);
+  const choiceLayout = await page.locator('.story-case-answer').first().evaluate((button) => {
+    const rect = button.getBoundingClientRect();
+    const style = getComputedStyle(button);
+    return {
+      width: rect.width,
+      height: rect.height,
+      display: style.display,
+      whiteSpace: style.whiteSpace
+    };
+  });
+  assert.equal(await page.locator('.story-case-card.story-case-question').count(), 1, 'choice prompt has a dedicated layout section');
+  assert.ok(choiceLayout.width >= 160, `desktop answer button is too narrow: ${choiceLayout.width}px`);
+  assert.ok(choiceLayout.height <= 72, `desktop answer button wraps into a tall tile: ${choiceLayout.height}px`);
   await page.locator('[data-story-answer="feed-first"]').click();
   await page.locator('[data-story-care]').click();
+  await page.waitForSelector('#battleModal.show');
+  assert.equal(await page.evaluate(() => Object.keys(JSON.parse(localStorage.getItem('petbank_pet_story_cases_v1') || '{}').records || {}).length), 0, 'case receipt waits for battle victory');
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const status = await page.evaluate(() => window.ExplorationSystem.getCurrentBattle()?.status || 'missing');
+    if (status !== 'ongoing') break;
+    await page.locator('#battleActions button[onclick="battleAction(\'attack\')"]').click();
+  }
+  assert.equal(await page.evaluate(() => window.ExplorationSystem.getCurrentBattle()?.status), 'won', 'test pet wins the story battle');
+  await page.locator('#battleActions button').filter({ hasText: '继续探索' }).click();
   await page.waitForSelector('[data-story-reply]');
   const careResult = await page.evaluate(() => ({
     hunger: window.PetSystem.getState().hunger,
     records: JSON.parse(localStorage.getItem('petbank_pet_story_cases_v1') || '{}').records || {},
-    battleOpen: Boolean(document.querySelector('#battleModal.show'))
+    battleOpen: Boolean(document.querySelector('#battleModal.show')),
+    collectibles: JSON.parse(localStorage.getItem('petbank_space_growth_collectibles_v1') || '{}')
   }));
   assert.ok(careResult.hunger > 10, 'real feed action updates the pet state');
   assert.equal(Object.keys(careResult.records).length, 1, 'care completion writes one scoped story receipt');
-  assert.equal(careResult.battleOpen, false, 'detective case does not open battle UI');
+  assert.equal(careResult.battleOpen, false, 'detective case does not leave battle UI open');
+  assert.ok(JSON.stringify(careResult.collectibles).includes('energy-stardust'), 'story victory grants a story collectible');
+
+  const levelUpOverlay = page.locator('#levelUpOverlay button');
+  if (await levelUpOverlay.count()) await levelUpOverlay.click();
 
   await page.evaluate(async () => {
     localStorage.removeItem('petbank_pet_story_cases_v1');

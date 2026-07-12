@@ -16,7 +16,8 @@
 | 区域 | 职责 | 关键文件 |
 | --- | --- | --- |
 | 应用壳 | 页面容器、导航、深层路由入口、inline handler | `index.html` |
-| 主编排 | 任务、积分、路由、页面准备、主站桥接 | `js/app.js` |
+| 主编排 | 积分、路由、页面准备、主站桥接 | `js/app.js` |
+| 任务目录 | 六维任务、首页优先任务、任务配图纯函数 | `js/task-catalog.js` |
 | 按需加载 | feature bundle、资源基址、加载去重、入口失败反馈 | `js/runtime-loader.js` |
 | 核心状态 | 宠物、档案、库存、宝箱、奖励、成长历史 | `js/pet.js`、`js/profiles.js`、`js/inventory.js`、`js/treasure.js`、`js/core-reward-service.js` |
 | 宠物与冒险 | 小屋、遛弯、旅行记忆、探索、战斗、卡牌 | `js/home.js`、`js/walk.js`、`js/travel-memory.js`、`js/exploration*.js`、`js/card-*.js` |
@@ -31,7 +32,7 @@
 
 ### 3.1 首屏启动
 
-`index.html` 首先加载 `pet.js`、奖励服务、`inventory.js`、`treasure.js`、`profiles.js`、`runtime-loader.js`、图标/战斗特效和 `app.js`，然后加载成长反馈与作品展示模块。`app.js` 初始化 profile、读取本地状态并暴露 `switchPage`、`addGrowthPoints`、`saveAppState` 等兼容入口。
+`index.html` 首先加载 `pet.js`、奖励服务、`inventory.js`、`treasure.js`、`profiles.js`、`runtime-loader.js`、图标/战斗特效和 `task-catalog.js`，再加载 `app.js`，最后加载成长反馈与作品展示模块。`app.js` 初始化 profile、读取本地状态并暴露 `switchPage`、`addGrowthPoints`、`saveAppState` 等兼容入口；任务目录只通过 `PetBankTaskCatalog` 注入，不在主编排器内重复定义。
 
 ### 3.2 页面按需加载
 
@@ -121,7 +122,7 @@ settings/family
   -> ProfileManager.linkCloudChild(localProfileId, cloudChildId, householdId)
 ```
 
-当前链路能完成账号、家庭、邀请和孩子档案管理；`ProfileManager` 已在启动恢复、切换前上传、切换后恢复和页面隐藏/退出时调用 `SelfHostedApi.latestSnapshot/pushSnapshot`。当前仍只有单一 revision 拒绝冲突，没有离线 outbox、后台重试或多端合并策略。
+当前链路能完成账号、家庭、邀请和孩子档案管理；`ProfileManager` 已在启动恢复、切换前上传、切换后恢复和页面隐藏/退出时调用 `SelfHostedApi.latestSnapshot/pushSnapshot`。网络失败会进入按孩子合并的本地 outbox 并退避重试，revision 冲突会在家长设置页提供本地保留、采用云端和导出备份；当前仍没有多端自动合并策略。
 
 ## 6. 核心约定
 
@@ -153,9 +154,9 @@ settings/family
 | --- | --- | --- |
 | P0 | `app.js` 约 4,411 行，承担编排、领域逻辑、UI、存储和兼容 | 修改 blast radius 最大 |
 | P0 | `learn-center.js` 约 3,656 行；`math-pk.js` 约 1,815 行；`card-arena-ui.js` 约 1,515 行 | 状态、结算和 UI 混合，难测 |
-| P0 | localStorage 无 registry/schema/DAO，Profile 是动态全量快照 | 数据隔离、迁移和同步边界不可靠 |
+| P0 | localStorage 虽已有 registry 和迁移门禁，但 Profile 仍使用动态全量快照 | 未登记 key、模块内存状态和快照 schema 仍可能造成隔离/恢复边界问题 |
 | P0 | 奖励层已部分统一，但旧模块仍可直接调整余额 | 需要彻底阻断重复奖励 |
-| P0 | 自托管账号/家庭/孩子 API 与 Profile 快照生命周期已接入，但尚无离线 outbox、多端合并策略 | 不能把 revision 上传当成复杂冲突合并 |
+| P0 | 自托管账号/家庭/孩子 API 与 Profile 快照生命周期已接入，outbox 和冲突处理已实现 | 仍不能把 revision 上传当成多端自动合并；冲突需要家长明确选择 |
 | P1 | 日切格式、秒/毫秒、timer 生命周期不完全统一 | 跨模块时间 bug |
 | P1 | `style.css` 约 6,635 行、`learn-center.css` 约 3,633 行；HTML 约 1,458 行 | 样式和结构耦合 |
 | P1 | `prj/` 混合原型、生成物、测试和独立后端 | 清理/发布容易误删或误发 |

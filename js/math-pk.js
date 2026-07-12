@@ -1250,23 +1250,26 @@
             _lastDiffContainer = containerId;
             const cur = normalizeDifficulty(state.mathDifficulty);
             container.innerHTML = `
-                <div class="card" style="margin-top:16px;">
-                    <div class="card-header"><h3 class="text-sm font-bold">🔢 数学 PK 难度</h3></div>
-                    <div class="card-body">
-                        <p class="text-xs text-muted" style="margin-bottom:12px;">数学 PK 竞技台每局 ${CONFIG.TOTAL_ROUNDS} 轮，在此选择出题难度（也影响机器人速度）。</p>
-                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;">
+                <section class="settings-panel settings-math-panel" aria-labelledby="settings-math-title">
+                    <div class="settings-panel-head">
+                        <div>
+                            <span class="settings-panel-kicker">数学 PK</span>
+                            <h3 id="settings-math-title">选择挑战难度</h3>
+                            <p>默认从“加减起步”开始。难度越高，题目越复杂，机器人也会更快。</p>
+                        </div>
+                        <span class="settings-panel-tip">当前：${escapeHtml(DIFFICULTY_LABELS[cur])}</span>
+                    </div>
+                    <div class="settings-math-grid">
                             ${DIFFICULTY_OPTIONS.map(o => `
-                                <button data-diff="${o.id}" onclick="MathPKGame._setDifficulty('${o.id}')"
-                                    style="padding:14px 10px;border-radius:14px;cursor:pointer;text-align:left;border:2px solid ${cur === o.id ? 'transparent' : '#e5e7eb'};background:${cur === o.id ? 'var(--sage-green, #7BAE8F)' : '#f7f9f8'};color:${cur === o.id ? '#fff' : '#3f5e4a'};transition:all 0.15s;">
-                                    <div style="font-weight:800;font-size:15px;">${escapeHtml(o.label)}</div>
-                                    <div style="font-size:11px;margin-top:4px;opacity:0.85;">${escapeHtml(o.desc)}</div>
-                                    <div style="font-size:12px;margin-top:7px;font-weight:800;">${escapeHtml(o.fitFor || '')}</div>
-                                    <div style="font-size:11px;margin-top:4px;line-height:1.45;opacity:0.86;">${escapeHtml(o.reason || '')}</div>
+                                <button type="button" data-diff="${o.id}" class="settings-math-option ${cur === o.id ? 'is-active' : ''}" onclick="MathPKGame._setDifficulty('${o.id}')">
+                                    <strong>${escapeHtml(o.label)}</strong>
+                                    <span>${escapeHtml(o.desc)}</span>
+                                    <small>${escapeHtml(o.fitFor || '')}</small>
+                                    <em>${escapeHtml(o.reason || '')}</em>
                                 </button>
                             `).join('')}
-                        </div>
                     </div>
-                </div>
+                </section>
             `;
         }
     };

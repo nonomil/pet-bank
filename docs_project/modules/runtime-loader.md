@@ -28,7 +28,7 @@ Bundle 映射:
   mathpk/hanzi/leaderboard/tools → ensurePlaygroundFeature()
   learn/* → ensureLearnFeature()         → learn-center.js
   review → ensureReviewFeature()         → family-review.js（本机复盘）
-  settings → 无额外加载（本地-only 边界）
+  settings → ensureLearnFeature()（学习设置样式与模式服务，本地-only 边界）
 ```
 
 ---
@@ -77,6 +77,7 @@ Bundle 映射:
 
 - Script 加载使用 `async=false` 确保依赖顺序
 - `once()` 保证每个 feature 的初始化只执行一次（即使多次调用 ensurePage）
+- 脚本、样式或 feature 加载失败会清理失败节点和 Promise 缓存；用户再次进入页面时允许重试，不会把一次网络抖动永久缓存为失败。
 - `initFlags` 对象追踪哪些模块的 init() 已被调用
 - ensurePlaygroundFeature 中 400ms 后自动预加载卡牌对战（增强体验）
 - 账号/家庭模块不是 runtime-loader 的玩法 bundle：`index.html` 直接加载 `self-hosted-api.js`、`parent-account.js`，由家长设置页按需显示；runtime-loader 仍不加载 Supabase、旧社交或第三方云端 bundle

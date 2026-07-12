@@ -28,5 +28,8 @@
   "reply": {
     "careAction": "你给小伙伴补上了能量。星尘已经有力气继续飞行。",
     "fallback": "你找到了先补给的好办法。星尘记住了这条安全路线。"
-  }
+  },
+  "node": { "caseId": "energy-stardust", "label": "能量信号", "shortLabel": "月环补给站", "image": "assets/story/space-growth-detective/nodes/energy-stardust.webp" },
+  "battle": { "sceneId": "space-growth-detective-energy", "chapter": 1, "intro": "迷路星尘兽挡住了补给舱。", "victory": "星尘兽让开了路，补给信号重新亮起。", "monster": { "id": "asteroid", "name": "迷路星尘兽", "emoji": "☄️", "hp": 18, "atk": 2, "exp": 8 } },
+  "rewards": { "growthPoints": 10, "petExp": 12, "cardId": "energy-stardust", "badgeId": "energy-scout" }
 }

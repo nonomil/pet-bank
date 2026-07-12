@@ -134,8 +134,12 @@
             .map((record) => record.caseId);
     }
 
-    function getActiveCase(story, profileId, petIdentity) {
+    function getActiveCase(story, profileId, petIdentity, requestedCaseId = '') {
         const completed = new Set(getCompletedCaseIds(story.manifest.id, profileId, petIdentity));
+        const requested = story.cases.find((item) => item.id === requestedCaseId);
+        if (requested && !completed.has(requested.id) && (!requested.prerequisiteCaseId || completed.has(requested.prerequisiteCaseId))) {
+            return requested;
+        }
         return story.cases.find((item) => !completed.has(item.id) && (!item.prerequisiteCaseId || completed.has(item.prerequisiteCaseId))) || null;
     }
 
@@ -184,8 +188,12 @@
         const replyHtml = lastReply
             ? `<p class="story-case-reply" data-story-reply>${escapeHtml(lastReply)}</p>`
             : '';
-        const choicesHtml = item.question.answers.map((answer) => `
-            <button class="story-case-answer" type="button" data-story-answer="${escapeHtml(answer.id)}">${escapeHtml(answer.label)}</button>
+        const choicesHtml = item.question.answers.map((answer, index) => `
+            <button class="story-case-answer" type="button" data-story-answer="${escapeHtml(answer.id)}">
+                <span class="story-case-answer-index" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
+                <span class="story-case-answer-label">${escapeHtml(answer.label)}</span>
+                <span class="story-case-answer-arrow" aria-hidden="true">→</span>
+            </button>
         `).join('');
         const nextStepHtml = canAdvance
             ? `<div class="story-case-action-row">
@@ -195,11 +203,14 @@
             : '';
         container.innerHTML = `
             <section class="story-case-panel" aria-label="星光联络器">
-                <div class="story-case-heading"><span aria-hidden="true">✦</span><div><p>星光联络器</p><h3>${escapeHtml(item.title)}</h3></div></div>
+                <div class="story-case-heading"><span aria-hidden="true">✦</span><div><p>星光联络器 · 当前案件</p><h3>${escapeHtml(item.title)}</h3></div><span class="story-case-status">调查中</span></div>
                 ${replyHtml}
                 <article class="story-case-card"><span class="story-case-label">来信</span><p>${escapeHtml(item.message.text)}</p></article>
                 <article class="story-case-card"><span class="story-case-label">线索</span><p data-story-clue>${escapeHtml(clue.label)}</p></article>
-                <article class="story-case-card"><span class="story-case-label">小侦探选择</span><p>${escapeHtml(item.question.prompt)}</p><div class="story-case-answers">${choicesHtml}</div></article>
+                <article class="story-case-card story-case-question">
+                    <div class="story-case-question-head"><div><span class="story-case-label">小侦探选择</span><p class="story-case-question-prompt">${escapeHtml(item.question.prompt)}</p></div><span class="story-case-question-hint">选择一项</span></div>
+                    <div class="story-case-answers" role="group" aria-label="案件选择">${choicesHtml}</div>
+                </article>
                 ${feedback ? `<p class="story-case-feedback" role="status">${escapeHtml(feedback)}</p>` : ''}
                 ${nextStepHtml}
             </section>
@@ -226,6 +237,14 @@
                 renderCase(container, story, item, pet, selectedAnswerId, careResult?.msg || '这项照料暂时不能使用，可以先用观察结案。');
                 return;
             }
+            if (root.SpaceGrowthDetective && typeof root.SpaceGrowthDetective.startCaseBattle === 'function') {
+                lastReply = item.reply.careAction;
+                const battleResult = root.SpaceGrowthDetective.startCaseBattle({ item, selectedAnswerId });
+                if (!battleResult || !battleResult.success) {
+                    renderCase(container, story, item, pet, selectedAnswerId, battleResult?.msg || '追踪战暂时没有准备好，可以先用观察结案。');
+                }
+                return;
+            }
             const result = completeFromPanel(story, item, pet, selectedAnswerId, 'care-action', item.reply.careAction);
             if (!result.accepted && !result.duplicate) return renderCase(container, story, item, pet, selectedAnswerId, '照料完成了，但联络器没能记下回信。');
             lastReply = item.reply.careAction;
@@ -233,14 +252,14 @@
         });
     }
 
-    async function render(containerId) {
+    async function render(containerId, requestedCaseId = '') {
         const container = typeof containerId === 'string' ? root.document?.getElementById(containerId) : containerId;
         if (!container) return false;
         try {
             const story = await loadStory();
             const pet = root.PetSystem && typeof root.PetSystem.getState === 'function' ? root.PetSystem.getState() : {};
             const profileId = getProfileId();
-            const item = getActiveCase(story, profileId, scopeForPet(pet));
+            const item = getActiveCase(story, profileId, scopeForPet(pet), requestedCaseId);
             if (!item) {
                 container.innerHTML = `<section class="story-case-panel"><div class="story-case-heading"><span aria-hidden="true">✦</span><div><p>星光联络器</p><h3>星图已经亮起</h3></div></div>${lastReply ? `<p class="story-case-reply" data-story-reply>${escapeHtml(lastReply)}</p>` : ''}<p class="story-case-finish">这一季的五颗成长星点都回家了。</p></section>`;
                 return true;
@@ -268,6 +287,7 @@
         getCompletedCaseIds,
         getActiveCase,
         runCareAction,
+        completeCase: complete,
         loadStory,
         render
     };

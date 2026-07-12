@@ -9,6 +9,8 @@ const html = fs.readFileSync(path.join(prototypeDir, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(prototypeDir, 'styles.css'), 'utf8');
 
 assert.match(html, /id="wordShooterSettings"/, 'airplane battle should keep its in-game settings entry');
+assert.match(css, /\.word-shooter \.game-hud\s*\{[^}]*display:\s*none/s, 'airplane battle should hide the duplicate top status bar');
+assert.match(css, /\.word-shooter\.game-panel\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\)\s+auto\s+auto/s, 'airplane battle should give the arena the first full-height row');
 assert.match(css, /\.word-shooter \.typing-gun-ship\s*\{[^}]*animation:\s*none/s, 'player ship should keep a stable size without hover scaling');
 assert.match(css, /\.word-shooter \.typing-arena\[data-arena-shake="true"\]\s*\{[^}]*animation:\s*none/s, 'airplane battle should not shake the whole playfield');
 assert.match(css, /\.word-shooter \.typing-arena\s*\{[^}]*height:\s*100%/s, 'airplane battle arena should fill the available game window');

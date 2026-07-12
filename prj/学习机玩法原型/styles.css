@@ -2745,6 +2745,68 @@ button {
   height: clamp(70px, 10vw, 110px);
 }
 
+/* The shooter uses the arena as its primary status surface. Keep the old HUD
+   nodes for the runtime API, but remove the duplicate chrome from the view. */
+.word-shooter.game-panel {
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  gap: 8px;
+  padding: 16px 16px 12px;
+}
+
+.word-shooter .game-hud {
+  display: none;
+}
+
+.word-shooter .difficulty-badge {
+  top: 14px;
+  width: min(420px, 42vw);
+  min-height: 26px;
+  margin: 0;
+  padding: 4px 10px;
+  font-size: 11px;
+  opacity: 0.88;
+}
+
+.word-shooter .typing-arena {
+  min-height: 0;
+  height: 100%;
+}
+
+@media (max-width: 840px) {
+  .word-shooter.game-panel {
+    padding: 14px 10px 8px;
+  }
+
+  .word-shooter .difficulty-badge {
+    top: 12px;
+    width: min(340px, 54vw);
+  }
+}
+
+@media (max-width: 480px) and (orientation: portrait) {
+  .word-shooter.game-panel {
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    padding: 12px 8px 8px;
+  }
+
+  .word-shooter .stage-keyboard {
+    grid-row: auto;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .word-shooter.game-panel {
+    grid-template-rows: minmax(190px, 1fr) auto !important;
+    padding: 10px 10px 6px !important;
+  }
+
+  .word-shooter .typing-arena.splinter-stage {
+    grid-row: 1 !important;
+    min-height: 190px !important;
+    height: auto !important;
+  }
+}
+
 @media (max-width: 480px) and (orientation: portrait) {
   .word-shooter.game-panel {
     height: 100% !important;

@@ -9,5 +9,7 @@ assert.match(profiles, /status: 'conflict'/, 'revision conflicts should remain v
 assert.match(profiles, /nextAttemptAt/, 'outbox entries should carry a retry schedule');
 assert.match(profiles, /addEventListener\('online'/, 'online events should trigger outbox retries');
 assert.match(profiles, /queueCloudSnapshot/, 'network failures should queue the latest local snapshot');
+assert.match(profiles, /resolveCloudConflict/, 'conflicts should have an explicit recovery API');
+assert.match(profiles, /getCloudConflictExport/, 'conflicts should be exportable without mutation');
 
 console.log('PASS cloud sync profile contract');

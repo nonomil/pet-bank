@@ -133,7 +133,8 @@ try {
 
     page.once('dialog', (dialog) => dialog.accept('浏览器测试家庭'));
     await page.click('[data-parent-create-household]');
-    await page.waitForFunction(() => document.querySelector('#parent-household-content')?.textContent.includes('浏览器测试家庭'));
+    await page.waitForFunction(() => document.querySelector('.parent-household-summary')?.textContent.includes('浏览器测试家庭'));
+    await page.waitForFunction(() => document.querySelector('#parentShellHouseholdName')?.textContent === '浏览器测试家庭');
 
     await page.click('[data-parent-add-child]');
     await page.fill('[data-child-dialog-form] input[name="name"]', '浏览器孩子');
@@ -144,14 +145,16 @@ try {
     await page.goto(`http://127.0.0.1:${staticPort}/parent/settings/family/index.html`, { waitUntil: 'networkidle' });
     await page.waitForSelector('[data-parent-add-child]');
     const parentManagement = await page.evaluate(() => ({
-        memberText: document.querySelector('.parent-member-list')?.textContent || '',
-        hasAddParent: Boolean(document.querySelector('[data-parent-create-invite]')),
+        hasVisibleMemberList: Boolean(document.querySelector('.parent-member-list')?.offsetParent),
+        inviteAdvancedOpen: Boolean(document.querySelector('[data-parent-create-invite]')?.closest('details')?.open),
+        hasMoreActions: Boolean(document.querySelector('[data-parent-more-actions]')),
         hasDeleteChild: Boolean(document.querySelector('[data-parent-delete-child]')),
         hasDeleteAccount: Boolean(document.querySelector('[data-parent-delete-account]')),
         childEndpoint: Boolean(window.SelfHostedApi && typeof window.SelfHostedApi.deleteChild === 'function'),
     }));
-    assert.match(parentManagement.memberText, /浏览器家长/);
-    assert.equal(parentManagement.hasAddParent, true);
+    assert.equal(parentManagement.hasVisibleMemberList, false);
+    assert.equal(parentManagement.inviteAdvancedOpen, false);
+    assert.equal(parentManagement.hasMoreActions, true);
     assert.equal(parentManagement.hasDeleteChild, true);
     assert.equal(parentManagement.hasDeleteAccount, true);
     assert.equal(parentManagement.childEndpoint, true);
@@ -162,12 +165,17 @@ try {
     assert.equal(await page.locator('.parent-shell-context-copy small').textContent(), '当前家庭');
     await page.evaluate(() => switchPage('settings', { settingsSection: 'family' }));
     await page.waitForFunction(() => document.querySelector('[data-settings-nav="family"]')?.classList.contains('is-current'));
-    assert.equal(await page.locator('[data-settings-nav="family"]').textContent(), '家庭账号');
+    assert.equal(await page.locator('[data-settings-nav="family"]').textContent(), '家庭与孩子');
     await page.evaluate(() => switchPage('settings', { settingsSection: 'account' }));
-    await page.waitForFunction(() => document.querySelector('[data-settings-nav="account"]')?.classList.contains('is-current'));
-    assert.equal(await page.locator('[data-settings-nav="account"]').textContent(), '孩子档案');
+    await page.waitForFunction(() => document.querySelector('[data-settings-nav="family"]')?.classList.contains('is-current'));
     await page.goto(`http://127.0.0.1:${staticPort}/app/index.html`, { waitUntil: 'networkidle' });
+    // The previous parent page may still be finishing its pagehide snapshot push.
+    // Let that lifecycle request settle before asserting the next revision.
+    await page.waitForTimeout(500);
     await page.waitForFunction(() => window.ProfileManager && typeof window.ProfileManager.syncActiveToCloud === 'function');
+    await page.evaluate(async () => {
+        await window.ProfileManager.restoreActiveFromCloud();
+    });
     await page.evaluate(() => {
         localStorage.setItem('petbank_points', '42');
     });

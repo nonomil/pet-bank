@@ -81,7 +81,7 @@
         walk: ['js/walk.js'],
         cardCollection: ['js/travel-memory.js', 'js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
-        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js'],
+        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js'],
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=6'],
         shop: ['js/shop.js'],
@@ -144,7 +144,11 @@
             script.fetchPriority = 'high';
             script.dataset.petbankSrc = src;
             script.onload = function () { resolve(script); };
-            script.onerror = function () { reject(new Error('[runtime-loader] failed to load script: ' + src)); };
+            script.onerror = function () {
+                scriptPromises.delete(src);
+                if (typeof script.remove === 'function') script.remove();
+                reject(new Error('[runtime-loader] failed to load script: ' + src));
+            };
             document.body.appendChild(script);
         });
 
@@ -170,7 +174,11 @@
             link.fetchPriority = 'high';
             link.dataset.petbankHref = href;
             link.onload = function () { resolve(link); };
-            link.onerror = function () { reject(new Error('[runtime-loader] failed to load style: ' + href)); };
+            link.onerror = function () {
+                stylePromises.delete(href);
+                if (typeof link.remove === 'function') link.remove();
+                reject(new Error('[runtime-loader] failed to load style: ' + href));
+            };
             document.head.appendChild(link);
         });
 
@@ -188,6 +196,9 @@
         if (featurePromises.has(key)) return featurePromises.get(key);
         const promise = Promise.resolve().then(factory);
         featurePromises.set(key, promise);
+        promise.catch(function () {
+            if (featurePromises.get(key) === promise) featurePromises.delete(key);
+        });
         return promise;
     }
 
@@ -382,7 +393,7 @@
             case 'review':
                 return ensureReviewFeature();
             case 'settings':
-                return true;
+                return ensureLearnFeature();
             default:
                 return true;
         }

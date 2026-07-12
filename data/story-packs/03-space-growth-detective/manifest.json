@@ -6,7 +6,7 @@
   "active": true,
   "audience": "幼小衔接",
   "ageRange": "5-6",
-  "runtime": "explore-panel",
+  "runtime": "explore-story-map",
   "caseIds": [
     "energy-stardust",
     "cloud-code",
@@ -14,5 +14,31 @@
     "companion-link",
     "home-star-map"
   ],
-  "sourceText": "docs/探索地图故事/03-宠物手机星光成长侦探社/03-第一季故事文本.md"
+  "sourceText": "docs/探索地图故事/03-宠物手机星光成长侦探社/03-第一季故事文本.md",
+  "map": {
+    "background": "assets/story/space-growth-detective/map.webp",
+    "nodes": [
+      { "caseId": "energy-stardust", "order": 1, "label": "能量信号", "shortLabel": "月环补给站", "image": "assets/story/space-growth-detective/nodes/energy-stardust.webp", "position": { "x": 13, "y": 68 } },
+      { "caseId": "cloud-code", "order": 2, "label": "云朵中继", "shortLabel": "漂浮信号带", "image": "assets/story/space-growth-detective/nodes/cloud-code.webp", "position": { "x": 32, "y": 44 } },
+      { "caseId": "star-dust-footprints", "order": 3, "label": "星粉维修区", "shortLabel": "轨道维修区", "image": "assets/story/space-growth-detective/nodes/star-dust-footprints.webp", "position": { "x": 51, "y": 25 } },
+      { "caseId": "companion-link", "order": 4, "label": "双星桥", "shortLabel": "伙伴连线站", "image": "assets/story/space-growth-detective/nodes/companion-link.webp", "position": { "x": 70, "y": 43 } },
+      { "caseId": "home-star-map", "order": 5, "label": "回家星图", "shortLabel": "成长星图室", "image": "assets/story/space-growth-detective/nodes/home-star-map.webp", "position": { "x": 87, "y": 68 } }
+    ]
+  },
+  "collectibles": {
+    "cards": [
+      { "id": "energy-stardust", "caseId": "energy-stardust", "name": "能量星尘卡", "subtitle": "先补给，再出发", "image": "assets/story/space-growth-detective/cards/energy-stardust.webp" },
+      { "id": "cloud-code", "caseId": "cloud-code", "name": "云朵密码卡", "subtitle": "陪伴让心情发光", "image": "assets/story/space-growth-detective/cards/cloud-code.webp" },
+      { "id": "star-dust-footprints", "caseId": "star-dust-footprints", "name": "星粉脚印卡", "subtitle": "整理后才能看清", "image": "assets/story/space-growth-detective/cards/star-dust-footprints.webp" },
+      { "id": "companion-link", "caseId": "companion-link", "name": "伙伴连线卡", "subtitle": "一起完成小任务", "image": "assets/story/space-growth-detective/cards/companion-link.webp" },
+      { "id": "home-star-map", "caseId": "home-star-map", "name": "回家星图卡", "subtitle": "我会照顾伙伴", "image": "assets/story/space-growth-detective/cards/home-star-map.webp" }
+    ],
+    "badges": [
+      { "id": "energy-scout", "caseId": "energy-stardust", "name": "能量观察员", "image": "assets/story/space-growth-detective/badges/energy-scout.webp" },
+      { "id": "cloud-companion", "caseId": "cloud-code", "name": "心情陪伴员", "image": "assets/story/space-growth-detective/badges/cloud-companion.webp" },
+      { "id": "star-dust-tracker", "caseId": "star-dust-footprints", "name": "星粉追踪员", "image": "assets/story/space-growth-detective/badges/star-dust-tracker.webp" },
+      { "id": "link-builder", "caseId": "companion-link", "name": "连线搭档", "image": "assets/story/space-growth-detective/badges/link-builder.webp" },
+      { "id": "home-star-keeper", "caseId": "home-star-map", "name": "回家星图守护者", "image": "assets/story/space-growth-detective/badges/home-star-keeper.webp" }
+    ]
+  }
 }

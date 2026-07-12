@@ -28,5 +28,8 @@
   "reply": {
     "careAction": "你整理好了小伙伴的星粉外套。细细的脚印连成了一条回家线。",
     "fallback": "你发现了让脚印更清楚的办法。维修区的灯为你亮起来。"
-  }
+  },
+  "node": { "caseId": "star-dust-footprints", "label": "星粉维修区", "shortLabel": "轨道维修区", "image": "assets/story/space-growth-detective/nodes/star-dust-footprints.webp" },
+  "battle": { "sceneId": "space-growth-detective-footprints", "chapter": 3, "intro": "轨道小修灵把回家脚印弄乱了。", "victory": "维修区恢复安静，脚印又连成了回家线。", "monster": { "id": "robot", "name": "轨道小修灵", "emoji": "🤖", "hp": 26, "atk": 3, "exp": 12 } },
+  "rewards": { "growthPoints": 14, "petExp": 16, "cardId": "star-dust-footprints", "badgeId": "star-dust-tracker" }
 }

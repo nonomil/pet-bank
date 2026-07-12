@@ -28,5 +28,8 @@
   "reply": {
     "careAction": "你和小伙伴一起看完星图。最后一颗星写着：我会照顾伙伴。",
     "fallback": "你说出了最重要的成长答案。最后一颗星已经找到回家的位置。"
-  }
+  },
+  "node": { "caseId": "home-star-map", "label": "回家星图", "shortLabel": "成长星图室", "image": "assets/story/space-growth-detective/nodes/home-star-map.webp" },
+  "battle": { "sceneId": "space-growth-detective-home", "chapter": 5, "intro": "星图守门狐正在确认最后一颗成长星。", "victory": "守门狐打开星图室，最后一颗星找到了回家的位置。", "monster": { "id": "star_fox", "name": "星图守门狐", "emoji": "🦊", "hp": 38, "atk": 5, "exp": 18 } },
+  "rewards": { "growthPoints": 20, "petExp": 24, "cardId": "home-star-map", "badgeId": "home-star-keeper" }
 }

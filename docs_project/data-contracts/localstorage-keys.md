@@ -34,6 +34,7 @@
 | `petbank_pet` | JSON object | `pet.js` | 宠物完整状态、经验、进化、衰减时间 |
 | `petbank_growth_history_v1` | JSON array | 成长历史模块 | 奖励/成长事件历史 |
 | `petbank_pet_story_cases_v1` | JSON object | `pet-story-cases.js` | 当前 profile 快照内的故事案件收据；记录含 `storyId/caseId/profileId/petIdentity/receiptId`，同一 scope 不可重复结案 |
+| `petbank_space_growth_collectibles_v1` | JSON object | `space-growth-detective.js` | 当前 profile 的第二故事收藏；按 profile 隔离并进入快照 |
 | `petbank_growth_works` | JSON array | `app.js`/作品页 | 成长作品记录 |
 | `petbank_care_streak_v1` | JSON | 照料模块 | 宠物照料连续状态 |
 | `petbank_chests` | JSON object | `treasure.js` | `daily/explore/milestone` 库存 |

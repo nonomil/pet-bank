@@ -339,10 +339,20 @@
             const outbox = cloudSyncOutbox();
             if (!api || !outbox || !api.isSignedIn()) return { skipped: true, reason: 'not-ready' };
             const results = [];
-            for (const entry of outbox.list(localStorage)) {
+            for (let entry of outbox.list(localStorage)) {
                 if (entry.status !== 'pending' || Number(entry.nextAttemptAt || 0) > Date.now()) continue;
                 const profile = this.get(entry.profileId);
                 if (!profile || profile.cloudChildId !== entry.childId) continue;
+                const knownCloudRevision = Number(profile.cloudRevision || 0);
+                if (knownCloudRevision >= Number(entry.revision || 0)) {
+                    const snapshot = this._writeLiveSnapshot(profile.id);
+                    queueCloudSnapshot(profile, snapshot, knownCloudRevision + 1, null, {
+                        attempts: 0,
+                        nextAttemptAt: 0,
+                        remoteRevision: knownCloudRevision
+                    });
+                    entry = outbox.get(localStorage, entry.id) || entry;
+                }
                 try {
                     const payload = await api.pushSnapshot(entry.childId, entry.revision, entry.payload);
                     const saved = payload?.snapshot || {};
@@ -404,7 +414,9 @@
                 conflict.remoteRevision = pending.remoteRevision;
                 throw conflict;
             }
-            const revision = Number(pending?.revision || 0) || Number(profile.cloudRevision || 0) + 1;
+            const knownCloudRevision = Number(profile.cloudRevision || 0);
+            const pendingRevision = Number(pending?.revision || 0);
+            const revision = Math.max(knownCloudRevision + 1, pendingRevision || 0);
             try {
                 const payload = await api.pushSnapshot(profile.cloudChildId, revision, snapshot);
                 const saved = payload?.snapshot || {};
@@ -604,6 +616,93 @@
             return outbox ? outbox.list(localStorage) : [];
         },
 
+        getCloudConflictExport(profileId) {
+            const outbox = cloudSyncOutbox();
+            const profile = this.get(profileId || this.getActiveId());
+            if (!outbox || !profile?.cloudChildId) return null;
+            const entry = outbox.get(localStorage, cloudOutboxId(profile.id, profile.cloudChildId));
+            if (!entry || entry.status !== 'conflict') return null;
+            return {
+                version: 1,
+                exportedAt: new Date().toISOString(),
+                profileId: profile.id,
+                childId: profile.cloudChildId,
+                revision: entry.revision,
+                remoteRevision: entry.remoteRevision,
+                payload: safeParse(JSON.stringify(entry.payload), {})
+            };
+        },
+
+        async resolveCloudConflict(profileId, choice) {
+            const outbox = cloudSyncOutbox();
+            const api = selfHostedApi();
+            const profile = this.get(profileId || this.getActiveId());
+            if (!outbox || !profile?.cloudChildId) {
+                const error = new Error('找不到待处理的云端冲突');
+                error.code = 'SNAPSHOT_CONFLICT_NOT_FOUND';
+                throw error;
+            }
+            const outboxId = cloudOutboxId(profile.id, profile.cloudChildId);
+            const entry = outbox.get(localStorage, outboxId);
+            if (!entry || entry.status !== 'conflict') {
+                const error = new Error('当前 Profile 没有待处理的云端冲突');
+                error.code = 'SNAPSHOT_CONFLICT_NOT_FOUND';
+                throw error;
+            }
+            if (choice === 'export') return { status: 'exported', export: this.getCloudConflictExport(profile.id) };
+            if (!api || !api.isSignedIn()) {
+                const error = new Error('请先登录家长账号后再处理云端冲突');
+                error.code = 'SELF_HOSTED_AUTH_REQUIRED';
+                throw error;
+            }
+
+            const latest = await api.latestSnapshot(profile.cloudChildId);
+            const remote = latest?.snapshot;
+            const remoteRevision = Number(remote?.revision || entry.remoteRevision || 0);
+            if (!remote || !remote.payload || typeof remote.payload !== 'object' || !Number.isSafeInteger(remoteRevision) || remoteRevision < 1) {
+                const error = new Error('云端没有可恢复的最新快照');
+                error.code = 'SNAPSHOT_REMOTE_MISSING';
+                throw error;
+            }
+
+            if (choice === 'remote') {
+                const activate = profile.id === this.getActiveId();
+                this.applySnapshotForProfile(profile.id, remote.payload, { activate });
+                updateCloudProfileMeta(profile.id, remoteRevision);
+                outbox.remove(localStorage, outboxId);
+                if (activate && typeof window.location?.replace === 'function') reloadAppShell();
+                return { status: 'resolved', choice: 'remote', revision: remoteRevision };
+            }
+
+            if (choice === 'local') {
+                const nextRevision = remoteRevision + 1;
+                if (!outbox.upsert(localStorage, {
+                    id: outboxId,
+                    profileId: profile.id,
+                    childId: profile.cloudChildId,
+                    revision: nextRevision,
+                    payload: entry.payload,
+                    status: 'pending',
+                    attempts: 0,
+                    nextAttemptAt: 0,
+                    queuedAt: entry.queuedAt,
+                    lastError: '',
+                    remoteRevision
+                })) {
+                    const error = new Error('无法保存本地冲突处理结果');
+                    error.code = 'SNAPSHOT_CONFLICT_SAVE_FAILED';
+                    throw error;
+                }
+                const results = await this.flushCloudOutbox();
+                const result = results.find(item => item.id === outboxId);
+                return result || { status: 'pending', id: outboxId, revision: nextRevision };
+            }
+
+            const error = new Error('不支持的冲突处理方式');
+            error.code = 'SNAPSHOT_CONFLICT_CHOICE_INVALID';
+            throw error;
+        },
+
         getProfileSnapshot(id) {
             if (!id) return {};
             if (id === this.getActiveId()) {
@@ -795,10 +894,10 @@
         learningModeAdvancedExpanded: false,
         render() {
             const container = document.getElementById('settings-account-list');
-            if (!container) return;
-            const list = ProfileManager.list();
-            const activeId = ProfileManager.getActiveId();
-            const html = list.map(p => {
+            if (container) {
+                const list = ProfileManager.list();
+                const activeId = ProfileManager.getActiveId();
+                const html = list.map(p => {
                 const isActive = p.id === activeId;
                 // 默认账号 p_default 或仅剩 1 个时不显示删除
                 const canDelete = p.id !== 'p_default' && list.length > 1;
@@ -811,11 +910,12 @@
                         ${canDelete ? `<button onclick="SettingsPage.remove('${p.id}')" title="删除" style="background:none;border:none;cursor:pointer;font-size:16px;padding:4px 8px;color:#e57373;">✕</button>` : ''}
                     </div>
                 `;
-            }).join('');
-            const footer = `
+                }).join('');
+                const footer = `
                 <button onclick="SettingsPage.create()" style="margin-top:8px;width:100%;padding:12px;border:1px dashed rgba(126,182,108,0.5);border-radius:12px;background:transparent;color:var(--text-primary);cursor:pointer;font-size:14px;font-weight:600;transition:background 0.12s;" onmouseover="this.style.background='rgba(126,182,108,0.08)'" onmouseout="this.style.background='transparent'">➕ 新建孩子</button>
             `;
-            container.innerHTML = html + footer;
+                container.innerHTML = html + footer;
+            }
             this.renderLearningMode();
         },
         renderLearningMode() {
@@ -836,23 +936,23 @@
                 <section class="settings-panel settings-learning-panel">
                     <div class="settings-panel-head">
                         <div>
-                            <span class="settings-panel-kicker">学习打勾模式</span>
-                            <h3>积分区学习单显示哪种模式</h3>
-                            <p>推荐先用幼小衔接超轻量版，等孩子节奏稳了，再切到更完整的记录模板。</p>
+                            <span class="settings-panel-kicker">学习单</span>
+                            <h3>选择学习单模式</h3>
+                            <p>默认推荐最轻量的 4 项。孩子适应后，再考虑更完整的记录。</p>
                         </div>
-                        <div class="settings-panel-tip">按孩子账号分别记住</div>
+                        <div class="settings-panel-tip">每个孩子单独记住</div>
                     </div>
                     <div class="settings-learning-default">
                         <div class="settings-learning-default-copy">
-                            <strong>默认先用超轻量版</strong>
-                            <span>先把每天 4 个核心小项跑顺，后面再决定要不要升级记录强度。</span>
+                            <strong>推荐先用这个</strong>
+                            <span>每天 4 项，先把学习节奏跑顺。</span>
                         </div>
                         ${advancedModes.length ? `
                             <button
                                 class="settings-learning-advanced-toggle ${advancedExpanded ? 'is-open' : ''}"
                                 type="button"
                                 data-learning-mode-advanced-toggle="1">
-                                ${advancedExpanded ? '收起进阶模式' : `显示进阶模式（${advancedModes.length} 个）`}
+                                ${advancedExpanded ? '收起其他模式' : `查看其他模式（${advancedModes.length} 个）`}
                             </button>
                         ` : ''}
                     </div>
@@ -875,8 +975,8 @@
                     ${advancedModes.length ? `
                         <div class="settings-learning-advanced ${advancedExpanded ? 'is-open' : ''}" data-learning-mode-advanced-panel="1">
                             <div class="settings-learning-advanced-head">
-                                <strong>进阶模式</strong>
-                                <span>家长觉得孩子节奏稳定后，再考虑切到这里。</span>
+                                <strong>其他模式</strong>
+                                <span>需要更完整记录时，再从这里选择。</span>
                             </div>
                             <div class="settings-mode-grid settings-mode-grid-advanced">
                                 ${advancedModes.map(mode => `
@@ -896,7 +996,7 @@
                             </div>
                         </div>
                     ` : ''}
-                    <div class="settings-learning-foot">切换后，积分区的“学习单”子页会立即按新模式显示；lesson 的原有积分规则继续沿用。</div>
+                    <div class="settings-learning-foot">修改后，积分区的学习单会立即更新。</div>
                 </section>
             `;
 

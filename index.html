@@ -142,7 +142,7 @@
                 <i data-lucide="home" class="w-4 h-4" aria-hidden="true"></i>
                 <span>管理大厅</span>
             </button>
-            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="settings" onclick="switchPage('settings')">
+            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="settings" onclick="switchPage('settings', { settingsSection: 'family' })">
                 <i data-lucide="settings" class="w-4 h-4" aria-hidden="true"></i>
                 <span>设置管理</span>
             </button>
@@ -336,52 +336,20 @@
                     <div class="map-hero-copy">
                         <p class="map-eyebrow">家长区</p>
                         <h2>家长管理</h2>
-                        <p>先处理孩子和家庭账号，学习规则等不常用功能放在“更多管理”里。</p>
-                    </div>
-                    <div class="parent-home-status" aria-label="家长区状态">
-                        <div>
-                            <span>当前孩子</span>
-                            <strong id="parentHomeChildName">默认孩子</strong>
-                        </div>
-                        <div>
-                            <span>管理模式</span>
-                            <strong>轻量管理</strong>
-                        </div>
+                        <p>登录家长账号，创建家庭后再添加孩子。</p>
                     </div>
                 </section>
                 <section class="parent-home-primary" aria-labelledby="parent-home-primary-title">
-                    <div class="parent-home-quick-head">
-                        <div><span class="parent-home-entry-kicker">最常用</span><h3 id="parent-home-primary-title">你要做什么？</h3></div>
-                        <span>常用操作放在这里</span>
-                    </div>
+                    <span class="parent-home-entry-kicker">开始使用</span>
+                    <h3 id="parent-home-primary-title">添加孩子</h3>
+                    <p>孩子会挂靠到当前家庭；没有登录或家庭时，系统会带你先完成设置。</p>
                     <div class="parent-home-primary-actions">
                         <button type="button" class="parent-home-primary-action is-featured" onclick="window.ParentAccountUI?.startChildSetup()">
                             <i data-lucide="baby" class="w-5 h-5" aria-hidden="true"></i>
-                            <span><strong>添加孩子</strong><small>新建一个孩子档案</small></span>
-                            <b aria-hidden="true">→</b>
-                        </button>
-                        <button type="button" class="parent-home-primary-action" onclick="switchPage('settings', { settingsSection: 'family' })">
-                            <i data-lucide="users" class="w-5 h-5" aria-hidden="true"></i>
-                            <span><strong>添加家长</strong><small>邀请另一位家长加入家庭</small></span>
-                            <b aria-hidden="true">→</b>
-                        </button>
-                        <button type="button" class="parent-home-primary-action" onclick="switchPage('works')">
-                            <i data-lucide="bar-chart-3" class="w-5 h-5" aria-hidden="true"></i>
-                            <span><strong>查看成长</strong><small>看看孩子的作品和记录</small></span>
+                            <span><strong>添加孩子</strong><small>登录后创建孩子档案</small></span>
                             <b aria-hidden="true">→</b>
                         </button>
                     </div>
-                </section>
-                <section class="parent-home-more" aria-label="更多管理">
-                    <details>
-                        <summary><span><strong>更多管理</strong><small>学习设置、规则、工具和高级操作</small></span><i data-lucide="chevron-down" class="w-4 h-4" aria-hidden="true"></i></summary>
-                        <div class="parent-home-more-grid">
-                            <button type="button" onclick="switchPage('settings', { settingsSection: 'learning' })"><i data-lucide="book-open" class="w-4 h-4" aria-hidden="true"></i><span>学习设置</span><b aria-hidden="true">→</b></button>
-                            <button type="button" onclick="switchPage('settings', { settingsSection: 'rules' })"><i data-lucide="list-checks" class="w-4 h-4" aria-hidden="true"></i><span>规则模板</span><b aria-hidden="true">→</b></button>
-                            <button type="button" onclick="switchPage('tools')"><i data-lucide="wrench" class="w-4 h-4" aria-hidden="true"></i><span>工具箱</span><b aria-hidden="true">→</b></button>
-                            <button type="button" onclick="switchPage('settings', { settingsSection: 'advanced' })"><i data-lucide="shield" class="w-4 h-4" aria-hidden="true"></i><span>高级操作</span><b aria-hidden="true">→</b></button>
-                        </div>
-                    </details>
                 </section>
             </div>
 
@@ -391,20 +359,18 @@
                     <div class="map-hero-copy">
                         <p class="map-eyebrow" id="settingsHeroEyebrow">设置 / 家长区</p>
                         <h2 id="settingsHeroTitle">设置首页</h2>
-                        <p id="settingsHeroCopy">把账号、家庭云端、学习题目和危险操作拆成可直达的子页，先让家长区有清晰边界。</p>
+                        <p id="settingsHeroCopy">默认设置可以直接使用。需要调整时，再选择学习单或数学 PK 难度。</p>
                     </div>
                 </section>
                 <section class="map-stage-panel parent-settings-panel settings-subpage-shell" aria-label="家长设置分区">
                     <nav class="settings-subpage-nav" aria-label="设置子页面">
-                        <span class="settings-subpage-nav-group-label">账号与家庭</span>
-                        <a class="settings-subpage-nav-item is-current" href="/settings" data-settings-nav="home" onclick="handleSettingsNavClick(event, 'home')">设置首页</a>
-                        <a class="settings-subpage-nav-item" href="/settings/family" data-settings-nav="family" onclick="handleSettingsNavClick(event, 'family')">家庭账号</a>
-                        <a class="settings-subpage-nav-item" href="/settings/account" data-settings-nav="account" onclick="handleSettingsNavClick(event, 'account')">孩子档案</a>
-                        <span class="settings-subpage-nav-group-label">孩子体验</span>
-                        <a class="settings-subpage-nav-item" href="/settings/learning" data-settings-nav="learning" onclick="handleSettingsNavClick(event, 'learning')">学习与题目</a>
-                        <a class="settings-subpage-nav-item" href="/settings/rules" data-settings-nav="rules" onclick="handleSettingsNavClick(event, 'rules')">规则模板</a>
-                        <span class="settings-subpage-nav-group-label">系统</span>
-                        <a class="settings-subpage-nav-item" href="/settings/advanced" data-settings-nav="advanced" onclick="handleSettingsNavClick(event, 'advanced')">高级操作</a>
+                        <a class="settings-subpage-nav-item is-current" href="/settings/family" data-settings-nav="family" onclick="handleSettingsNavClick(event, 'family')">家庭与孩子</a>
+                        <details class="settings-subpage-nav-more">
+                            <summary>更多设置</summary>
+                            <a class="settings-subpage-nav-item" href="/settings/learning" data-settings-nav="learning" onclick="handleSettingsNavClick(event, 'learning')">学习与题目</a>
+                            <a class="settings-subpage-nav-item" href="/settings/rules" data-settings-nav="rules" onclick="handleSettingsNavClick(event, 'rules')">规则模板</a>
+                            <a class="settings-subpage-nav-item" href="/settings/advanced" data-settings-nav="advanced" onclick="handleSettingsNavClick(event, 'advanced')">高级操作</a>
+                        </details>
                     </nav>
                     <div class="parent-settings-shell settings-subpage-panels">
                         <section class="parent-settings-section settings-subpage-panel is-active" data-settings-section="home" aria-labelledby="parent-settings-home-title">
@@ -417,15 +383,10 @@
                             </div>
                             <p class="parent-settings-copy">设置首页只保留入口，不再把账号、云端、学习、规则和危险操作全部堆在同一屏。需要处理哪类事情，就进入对应子页。</p>
                             <div class="settings-home-grid">
-                                <a class="settings-home-entry" href="/settings/account" onclick="handleSettingsNavClick(event, 'account')">
-                                    <span class="settings-home-entry-kicker">常用</span>
-                                    <strong>孩子档案</strong>
-                                    <span>新增、改名、删除孩子档案。</span>
-                                </a>
                                 <a class="settings-home-entry" href="/settings/family" onclick="handleSettingsNavClick(event, 'family')">
-                                    <span class="settings-home-entry-kicker">家长账号</span>
-                                    <strong>家庭账号</strong>
-                                    <span>管理家长成员、邀请码、家庭和跨设备同步。</span>
+                                    <span class="settings-home-entry-kicker">常用</span>
+                                    <strong>家庭与孩子</strong>
+                                    <span>登录家长账号，创建家庭后添加孩子。</span>
                                 </a>
                                 <a class="settings-home-entry" href="/settings/learning" onclick="handleSettingsNavClick(event, 'learning')">
                                     <span class="settings-home-entry-kicker">低频调整</span>
@@ -440,27 +401,15 @@
                             </div>
                         </section>
 
-                        <section class="parent-settings-section settings-subpage-panel" data-settings-section="account" aria-labelledby="parent-settings-accounts-title">
-                            <div class="parent-settings-section-head">
-                                <div>
-                                    <p class="parent-settings-kicker">孩子档案</p>
-                                    <h3 id="parent-settings-accounts-title">孩子档案</h3>
-                                </div>
-                                <span class="parent-settings-tag">常用</span>
-                            </div>
-                            <p class="parent-settings-copy">新增、改名或删除孩子档案；切换当前孩子进入孩子端后使用头像菜单。</p>
-                            <div id="settings-account-list"></div>
-                        </section>
-
                         <section class="parent-settings-section settings-subpage-panel" data-settings-section="family" aria-labelledby="parent-settings-account-service-title">
                             <div class="parent-settings-section-head">
                                 <div>
-                            <p class="parent-settings-kicker">自托管服务</p>
-                                    <h3 id="parent-settings-account-service-title">家庭账号</h3>
+                            <p class="parent-settings-kicker">家长管理</p>
+                                    <h3 id="parent-settings-account-service-title">家庭与孩子</h3>
                                 </div>
-                                <span class="parent-settings-tag">已接入</span>
+                                <span class="parent-settings-tag">常用</span>
                             </div>
-                            <p class="parent-settings-copy">家长账号、家庭、孩子档案和快照同步由 VPS 上的 Node.js + SQLite 提供；孩子端仍保持本机离线玩法。</p>
+                            <p class="parent-settings-copy">登录家长账号，创建或加入家庭后，再添加孩子。</p>
                             <div id="parent-account-root"></div>
                         </section>
 
@@ -472,7 +421,7 @@
                                 </div>
                                 <span class="parent-settings-tag">低频调整</span>
                             </div>
-                            <p class="parent-settings-copy">管理学习打勾模式、数学 PK 难度等会影响孩子日常体验的配置。</p>
+                            <p class="parent-settings-copy">默认设置可以直接使用。需要调整时，再选择学习单或数学 PK 难度。</p>
                             <div class="parent-settings-inline-grid">
                                 <div id="settings-learning-mode"></div>
                                 <div id="settings-math-diff"></div>
@@ -1144,22 +1093,7 @@
 
             <!-- PAGE: 探索冒险（路线地图） -->
             <div class="page" id="page-explore">
-                <section class="explore-hero">
-                    <div class="explore-hero-copy" style="grid-column:1/-1">
-                        <p class="map-eyebrow">探索冒险 / 场景路线</p>
-                        <h2>沿着星光路线，一站站探索冒险</h2>
-                        <p>点击地图上的场景卡片即可出发。金色星点已开放，灰色尚未解锁，发光路线把场景串成一条旅程。</p>
-                    </div>
-                </section>
-                <section class="story-case-shell">
-                    <div id="petStoryCasePanel"></div>
-                </section>
-                <section class="map-board-shell">
-                    <div class="map-board-surface">
-                        <div class="map-board-texture"></div>
-                        <div id="sceneGrid" class="map-board"><!-- 由 exploration.js 渲染路线地图 --></div>
-                    </div>
-                </section>
+                <div id="spaceGrowthDetectiveContainer"></div>
             </div>
 
             <!-- PAGE: 数学PK -->
@@ -1481,6 +1415,7 @@
     <script src="js/runtime-loader.js?v=20260711"></script>
     <script src="js/lucide-lite.js"></script>
     <script src="js/battle-fx.js"></script>
+    <script src="js/task-catalog.js"></script>
     <script src="js/app.js"></script>
     <script src="js/child-journey-feedback.js"></script>
     <script src="js/showcase.js"></script>

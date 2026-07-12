@@ -9,6 +9,9 @@ const TASK_TIMEOUT_MS = Number(process.env.PETBANK_REGRESSION_TASK_TIMEOUT_MS ||
 
 const TASKS = [
     { label: 'regression runner integrity', cmd: 'node', args: ['scripts/test-regression-runner-integrity.mjs'] },
+    { label: 'current P0 architecture audit', cmd: 'node', args: ['scripts/p0-audit.js'] },
+    { label: 'task catalog contract', cmd: 'node', args: ['scripts/test-task-catalog.mjs'] },
+    { label: 'runtime loader retry contract', cmd: 'node', args: ['scripts/test-runtime-loader-retry.mjs'] },
     { label: 'no legacy account runtime', cmd: 'node', args: ['scripts/test-no-legacy-account-runtime.mjs'] },
     { label: 'runtime loader route base contract', cmd: 'node', args: ['prj/runtime_loader_route_base_contract.test.mjs'] },
     { label: 'route-aware shell contract', cmd: 'node', args: ['prj/route_aware_shell_contract.test.mjs'] },
@@ -21,10 +24,14 @@ const TASKS = [
     { label: 'word memory prototype', cmd: 'node', args: ['prj/单词记忆射击场原型/verify.mjs'] },
     { label: 'learning arcade prototype', cmd: 'node', args: ['prj/学习机玩法原型/verify.mjs'] },
     { label: 'learning arcade browser smoke', cmd: 'node', args: ['prj/学习机玩法原型/scripts/test-full-prototype-smoke.mjs'] },
+    { label: 'learning arcade published artifact', cmd: 'node', args: ['prj/学习机玩法原型/scripts/test-word-shooter-published-artifact.mjs'] },
     { label: 'typing defense prototype', cmd: 'node', args: ['prj/消灭苦力怕打字游戏/web/verify.mjs'] },
     { label: 'typing defense simulation', cmd: 'node', args: ['prj/消灭苦力怕打字游戏/web/simulate.mjs'] },
     { label: 'child journey feedback', cmd: 'node', args: ['scripts/test-child-journey-feedback.mjs'] },
     { label: 'child journey home', cmd: 'node', args: ['scripts/test-child-journey-home.mjs'] },
+    { label: 'space growth detective runtime', cmd: 'node', args: ['scripts/test-space-growth-detective-runtime.mjs'] },
+    { label: 'space growth detective map contract', cmd: 'node', args: ['scripts/test-space-growth-detective-map-contract.mjs'] },
+    { label: 'space growth detective browser journey', cmd: 'node', args: ['scripts/test-space-growth-detective-browser.mjs'] },
     { label: 'core reward feedback', cmd: 'node', args: ['scripts/test-core-reward-feedback.mjs'] },
     { label: 'core reward policy', cmd: 'node', args: ['scripts/test-core-reward-policy.mjs'] },
     { label: 'core reward presentation', cmd: 'node', args: ['scripts/test-core-reward-presentation.mjs'] },
@@ -33,6 +40,7 @@ const TASKS = [
     { label: 'cloud sync outbox storage', cmd: 'node', args: ['scripts/test-cloud-sync-outbox.mjs'] },
     { label: 'cloud sync profile contract', cmd: 'node', args: ['scripts/test-cloud-sync-profile-contract.mjs'] },
     { label: 'cloud sync profile integration', cmd: 'node', args: ['scripts/test-cloud-sync-profile-integration.mjs'] },
+    { label: 'cloud conflict UI contract', cmd: 'node', args: ['scripts/test-cloud-conflict-ui-contract.mjs'] },
     { label: 'page lifecycle contract', cmd: 'node', args: ['scripts/test-page-lifecycle-contract.mjs'] },
     { label: 'english vocab profile scope', cmd: 'node', args: ['scripts/test-english-vocab-profile-scope.mjs'] },
     { label: 'game reward receipts', cmd: 'node', args: ['scripts/test-game-reward-receipts.mjs'] },
@@ -50,6 +58,7 @@ const TASKS = [
     { label: 'static route entries', cmd: 'node', args: ['scripts/test-static-route-entries.mjs'] },
     { label: 'task reward events', cmd: 'node', args: ['scripts/test-task-reward-events.mjs'] },
     { label: 'travel memory assets', cmd: 'node', args: ['scripts/test-travel-memory-assets.mjs'] },
+    { label: 'travel memory published artifact', cmd: 'node', args: ['scripts/test-travel-memory-published-artifact.mjs'] },
     { label: 'travel memory browser', cmd: 'node', args: ['scripts/test-travel-memory-browser.mjs'] },
     { label: 'travel memory real journey', cmd: 'node', args: ['scripts/test-travel-memory-real-journey.mjs'] }
 ];
