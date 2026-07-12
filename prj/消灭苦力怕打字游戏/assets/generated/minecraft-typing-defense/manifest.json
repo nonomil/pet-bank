@@ -52,8 +52,11 @@
     "file": "prj/消灭苦力怕打字游戏/assets/generated/minecraft-typing-defense/vocab-banks.json",
     "runtime": "prj/消灭苦力怕打字游戏/assets/generated/minecraft-typing-defense/vocab-banks.js",
     "defaultBankId": "kindergarten",
-    "bankCount": 6,
+    "bankCount": 9,
     "bankIds": [
+      "core-english",
+      "extension-english",
+      "curriculum-all",
       "kindergarten",
       "elementary-lower",
       "elementary-upper",

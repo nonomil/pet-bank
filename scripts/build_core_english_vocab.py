@@ -11,6 +11,24 @@ DEFAULT_CANDIDATES = ROOT / 'prj' / 'vocab-governance' / 'reports' / 'core-800-c
 DEFAULT_DB = ROOT / 'data' / 'vocab' / 'core-english' / 'core-english.db'
 DEFAULT_VIEW = ROOT / 'data' / 'vocab' / 'core-english' / 'views' / 'core.json'
 DEFAULT_MANIFEST = ROOT / 'data' / 'vocab' / 'core-english' / 'manifest.json'
+TRANSLATION_OVERRIDES = {
+    'rectangle': '长方形', 'speak': '说话', 'square': '正方形', 'stand': '站立',
+    'stem': '茎', 'teleport': '瞬间传送', 'an': '一个（用于元音音素开头的词前）',
+    'on': '在……上；在……时', 'of': '……的', 'her': '她；她的', 'monster': '怪物',
+}
+CONTENT_OVERRIDES = {
+    'calm': ('The calm lake reflects the blue sky.', '平静的湖面映照着蓝天。'),
+    'cap': ('I put on my red cap.', '我戴上红色的帽子。'),
+    'cup': ('I drink water from a cup.', '我用杯子喝水。'),
+    'easy': ('This puzzle is easy for me.', '这个谜题对我来说很容易。'),
+    'few': ('A few birds sit on the tree.', '几只鸟停在树上。'),
+    'game': ('We play a fun game together.', '我们一起玩一个有趣的游戏。'),
+    'girl': ('The girl reads a storybook.', '这个女孩在读故事书。'),
+    'hat': ('The blue hat is on the chair.', '蓝色的帽子在椅子上。'),
+    'mom': ('My mom helps me plant flowers.', '妈妈帮我种花。'),
+    'new': ('I have a new schoolbag.', '我有一个新书包。'),
+    'pet': ('My pet sleeps beside me.', '我的宠物睡在我身边。'),
+}
 
 
 def fallback_image_for(category):
@@ -33,7 +51,8 @@ def fallback_image_for(category):
 
 
 def should_use_source_image(image_url):
-    return bool(image_url) and 'images.unsplash.com' not in image_url.lower()
+    normalized = str(image_url or '').strip().lower()
+    return normalized.startswith('https://twemoji.maxcdn.com/v/latest/svg/') and not normalized.endswith('/3d.svg')
 
 
 def manifest_path_value(value):
@@ -41,6 +60,13 @@ def manifest_path_value(value):
         return str(value.relative_to(ROOT)).replace('\\', '/')
     except ValueError:
         return str(value)
+
+
+def sentence_text(value, punctuation):
+    text = str(value or '').strip()
+    if text and text[-1:] not in '.!?。！？':
+        text += punctuation
+    return text
 
 
 def replace_database(database_path, replacement_path):
@@ -101,13 +127,17 @@ def build(candidates_path, database_path, view_path, manifest_path, pack_id='cor
     for index, candidate in enumerate(candidates):
         word = str(candidate.get('standardized') or candidate.get('word') or '').strip().lower()
         translation = str(candidate.get('chinese') or '').strip()
+        if pack_id == 'extension-english':
+            translation = TRANSLATION_OVERRIDES.get(word, translation)
         if not word or not translation:
             continue
         category = str(candidate.get('currentCategory') or 'general').strip() or 'general'
         enrichment = previous_enrichment.get(word, {})
         phonetic = str(enrichment.get('phonetic') or candidate.get('phonetic') or '').strip()
-        example = str(enrichment.get('example') or candidate.get('example') or '').strip()
-        example_zh = str(enrichment.get('example_zh') or candidate.get('exampleZh') or candidate.get('example_zh') or '').strip()
+        example = sentence_text(enrichment.get('example') or candidate.get('example'), '.')
+        example_zh = sentence_text(enrichment.get('example_zh') or candidate.get('exampleZh') or candidate.get('example_zh'), '。')
+        if pack_id == 'extension-english' and word in CONTENT_OVERRIDES:
+            example, example_zh = CONTENT_OVERRIDES[word]
         source_image = str(candidate.get('imageUrl') or '').strip()
         image = source_image if should_use_source_image(source_image) else fallback_image_for(category)
         image_status = 'source' if should_use_source_image(source_image) else 'fallback'

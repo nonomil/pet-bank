@@ -1,0 +1,34 @@
+{
+  "sourceDir": "assets/拼音赛车",
+  "preparedLibrary": "assets/generated/pinyin-racer-prepared-assets/catalog.json",
+  "semanticStatus": "curated reusable components; source explosion parts remain in prepared library",
+  "levels": [
+    {
+      "level": "level-01",
+      "assetCount": 11,
+      "manifest": "assets/generated/pinyin-racer-semantic-assets/level-01/manifest.json"
+    },
+    {
+      "level": "level-02",
+      "assetCount": 10,
+      "manifest": "assets/generated/pinyin-racer-semantic-assets/level-02/manifest.json"
+    },
+    {
+      "level": "level-03",
+      "assetCount": 9,
+      "manifest": "assets/generated/pinyin-racer-semantic-assets/level-03/manifest.json"
+    },
+    {
+      "level": "level-04",
+      "assetCount": 11,
+      "manifest": "assets/generated/pinyin-racer-semantic-assets/level-04/manifest.json"
+    },
+    {
+      "level": "level-05",
+      "assetCount": 6,
+      "manifest": "assets/generated/pinyin-racer-semantic-assets/level-05/manifest.json",
+      "source": "assets/拼音赛车/拼音赛车参考图-05--赛道终点--爆炸图.png"
+    }
+  ],
+  "totalCuratedAssets": 47
+}

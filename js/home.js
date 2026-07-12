@@ -469,12 +469,6 @@ const HomeSystem = (function () {
         else tab.classList.remove('home-nav-disabled');
     }
 
-    function _scheduleCloudSync(reason, options) {
-        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
-            window.CloudSync.scheduleSync(reason || 'home_runtime', options || {});
-        }
-    }
-
     // ---------- 互动按钮处理 ----------
     function onFeed() {
         const s = PetSystem.getState();
@@ -495,7 +489,6 @@ const HomeSystem = (function () {
         if (window.updateStats) window.updateStats();
         renderUI(_lastContainer);
         if (res.success && window.CoreRewardFeedback && window.CoreRewardService) window.CoreRewardFeedback.show(window.CoreRewardService.toPresentation({ accepted: true, event: { eventId: `home:feed:${Date.now()}`, rewards: [{ type: 'pet_exp', amount: 10 }] } }));
-        _scheduleCloudSync('home_feed');
     }
 
     function onPlay() {
@@ -509,7 +502,6 @@ const HomeSystem = (function () {
         window.sfx && sfx.click();
         renderUI(_lastContainer);
         if (res.success && window.CoreRewardFeedback) window.CoreRewardFeedback.show({ accepted: true, event: { eventId: `home:play:${Date.now()}`, rewards: [{ type: 'pet_exp', amount: 5 }, { type: 'intimacy', amount: 5 }] } });
-        _scheduleCloudSync('home_play');
     }
 
     function onBath() {
@@ -523,7 +515,6 @@ const HomeSystem = (function () {
         window.sfx && sfx.click();
         renderUI(_lastContainer);
         if (res.success && window.CoreRewardFeedback) window.CoreRewardFeedback.show({ accepted: true, event: { eventId: `home:bath:${Date.now()}`, rewards: [{ type: 'intimacy', amount: 1 }] } });
-        _scheduleCloudSync('home_bath');
     }
 
     function onRest() {
@@ -537,7 +528,6 @@ const HomeSystem = (function () {
         window.sfx && sfx.click();
         renderUI(_lastContainer);
         if (res.success && window.CoreRewardFeedback) window.CoreRewardFeedback.show({ accepted: true, event: { eventId: `home:rest:${Date.now()}`, rewards: [{ type: 'intimacy', amount: 2 }] } });
-        _scheduleCloudSync('home_rest');
     }
 
     // 救援 CTA
@@ -560,7 +550,6 @@ const HomeSystem = (function () {
                 });
             }
             setTimeout(() => _toast('🎉 宠物苏醒了！又可以一起去冒险啦～'), 400);
-            _scheduleCloudSync('home_rescue');
             return;
         }
         renderUI(_lastContainer);
@@ -596,7 +585,6 @@ const HomeSystem = (function () {
         _saveHomeState();
         _selectedFurniture = null; // 摆放后清空选中
         renderUI(_lastContainer);
-        _scheduleCloudSync('home_place_furniture');
         return true;
     }
 
@@ -605,7 +593,6 @@ const HomeSystem = (function () {
         homeState.slots[slot] = null;
         _saveHomeState();
         renderUI(_lastContainer);
-        _scheduleCloudSync('home_remove_furniture');
     }
 
     function addFurniture(furnId) {
@@ -702,7 +689,6 @@ const HomeSystem = (function () {
             setHomeBg(theme);
             _toast('🎉 解锁「' + t.name + '」！');
             _renderManageBgGrid();
-            _scheduleCloudSync('home_unlock_theme');
             return true;
         } catch (e) { return false; }
     }
@@ -721,7 +707,6 @@ const HomeSystem = (function () {
             if (bg) {
                 _applyBg(bg, t);
             }
-            _scheduleCloudSync('home_theme_change');
             return true;
         } catch (e) { return false; }
     }
@@ -1028,22 +1013,10 @@ const HomeSystem = (function () {
                     </div>
                     ${actionsHtml}
                     ${renderTravelMemoryCollection()}
-                    <div id="home-visit-slot"></div>
-                    <div id="home-social-panel"></div>
                     ${trayHtml}
                 </div>
             </div>
         `;
-        if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
-            void window.SocialSystem.refresh();
-        } else if (window.SocialSystem) {
-            if (typeof window.SocialSystem.renderHomeVisitSlot === 'function') {
-                window.SocialSystem.renderHomeVisitSlot('home-visit-slot');
-            }
-            if (typeof window.SocialSystem.renderHomePanel === 'function') {
-                window.SocialSystem.renderHomePanel('home-social-panel');
-            }
-        }
     }
 
     // ---------- init ----------

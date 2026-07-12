@@ -1,13 +1,36 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import { mkdir, stat } from 'node:fs/promises';
+import path from 'node:path';
 import { browserLaunchOpts } from './playwright-browser.mjs';
 
 const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:9077/';
+const artifactDir = path.resolve(process.cwd(), process.env.PETBANK_TEST_ARTIFACT_DIR || 'tmp/test-artifacts/travel-memory-real-journey');
 const scenarios = [
-  { id: 'forest', answer: '2', screenshot: 'docs/releases/travel-memory-real-journey-forest.png' },
-  { id: 'beach', answer: '10', screenshot: 'docs/releases/travel-memory-real-journey-beach.png' },
-  { id: 'stargarden', answer: '12', screenshot: 'docs/releases/travel-memory-real-journey-stargarden.png' }
+  { id: 'forest', answer: '2', screenshot: 'travel-memory-real-journey-forest.png' },
+  { id: 'beach', answer: '10', screenshot: 'travel-memory-real-journey-beach.png' },
+  { id: 'stargarden', answer: '12', screenshot: 'travel-memory-real-journey-stargarden.png' }
 ];
+
+async function assertScreenshot(filePath) {
+  const result = await stat(filePath);
+  assert.ok(result.size > 0, `screenshot should be non-empty: ${filePath}`);
+}
+
+async function captureScreenshot(page, filePath, options) {
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      await page.screenshot({ path: filePath, ...options });
+      await assertScreenshot(filePath);
+      return;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await page.waitForTimeout(250 * attempt);
+    }
+  }
+  throw lastError;
+}
 
 const browser = await chromium.launch(browserLaunchOpts());
 const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
@@ -101,7 +124,8 @@ async function completeScenario(scenario, expectedPet, expectedCollectionCount) 
   await page.locator('#battleActions button').filter({ hasText: '继续探索' }).click();
   await page.waitForTimeout(180);
   await page.waitForSelector('.travel-memory-card');
-  await page.screenshot({ path: scenario.screenshot, fullPage: false });
+  const screenshotPath = path.join(artifactDir, scenario.screenshot);
+  await captureScreenshot(page, screenshotPath, { fullPage: false });
 
   const result = await page.evaluate((sceneId) => {
     let memories = {};
@@ -133,6 +157,7 @@ async function completeScenario(scenario, expectedPet, expectedCollectionCount) 
 }
 
 try {
+  await mkdir(artifactDir, { recursive: true });
   await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 20000 });
   await page.waitForFunction(() => window.PetBankRuntime && window.PetSystem, { timeout: 20000 });
   const expectedPet = await preparePet();

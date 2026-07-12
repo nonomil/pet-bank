@@ -48,21 +48,12 @@
         asked: null,          // 本局已出 itemId 集合（Bug1：局内去重）
         roundClosing: false,
         currentQ: null,       // { char, pinyin, emoji, example, answer, opts, mode }
-        asyncMatch: null,
-        asyncQuestions: null,
         matchStartTs: 0,
-        asyncSummaryNote: ''
     };
     let containerIdArg = 'hanzi-container';   // 由 renderUI 设置，chooseLevel 刷新大厅时复用
 
-    function isAsyncMode() {
-        return state.mode === 'async';
-    }
-
     function getRoundTotal() {
-        return isAsyncMode() && Array.isArray(state.asyncQuestions) && state.asyncQuestions.length
-            ? state.asyncQuestions.length
-            : CONFIG.TOTAL_ROUNDS;
+        return CONFIG.TOTAL_ROUNDS;
     }
 
     // ---------- 工具 ----------
@@ -236,15 +227,8 @@
                         }).join('')}
                     </div>
                     <button class="hz-start-btn" type="button" onclick="HanziGame.start()">▶ 开始挑战（${CONFIG.TOTAL_ROUNDS} 题）</button>
-                    <div id="hanzi-async-root" style="margin-top:14px;"></div>
                     <div class="hz-best-hint">🥇 你的最高分：<b>${best}</b></div>
                 </div>`;
-            if (window.PKService && typeof window.PKService.renderBanner === 'function') {
-                window.PKService.renderBanner('hanzi');
-                if (typeof window.PKService.refresh === 'function') {
-                    void window.PKService.refresh();
-                }
-            }
         },
 
         _overlay() {
@@ -383,12 +367,11 @@
                 <div class="hz-stage">
                     <div class="hz-result">
                         <div class="hz-result-emoji">${emoji}</div>
-                        <div class="hz-result-title">${isAsyncMode() ? '好友异步挑战完成' : (acc >= 80 ? '太棒了！' : (acc >= 50 ? '继续努力！' : '再练一局吧'))}</div>
+                        <div class="hz-result-title">${acc >= 80 ? '太棒了！' : (acc >= 50 ? '继续努力！' : '再练一局吧')}</div>
                         <div class="hz-result-score">${state.score} 分</div>
                         <div class="hz-result-meta">答对 ${correct}/${total} · 最高连击 ${state.maxCombo} · 正确率 ${acc}%</div>
-                        ${state.asyncSummaryNote ? `<div class="hz-result-meta">${state.asyncSummaryNote}</div>` : ''}
                         <div class="hz-result-actions">
-                            <button class="hz-btn-primary" onclick="${isAsyncMode() ? "HanziGame.renderUI('hanzi-container')" : 'HanziGame.start()'}">${isAsyncMode() ? '返回大厅' : '🔁 再来一局'}</button>
+                            <button class="hz-btn-primary" onclick="HanziGame.start()">🔁 再来一局</button>
                             <button class="hz-btn-secondary" onclick="HanziGame._exit()">返回游乐场</button>
                         </div>
                     </div>
@@ -422,9 +405,6 @@
             return;
         }
         state.mode = 'solo';
-        state.asyncMatch = null;
-        state.asyncQuestions = null;
-        state.asyncSummaryNote = '';
         state.isPlaying = true;
         state.round = 0;
         state.score = 0;
@@ -439,34 +419,11 @@
         _next();
     }
 
-    async function startAsyncMatch(match) {
-        await _loadBank();
-        if (!match || !match.questionSetPayload || !Array.isArray(match.questionSetPayload.questions)) return;
-        state.mode = 'async';
-        state.asyncMatch = match;
-        state.asyncQuestions = match.questionSetPayload.questions.slice();
-        state.asyncSummaryNote = '';
-        state.isPlaying = true;
-        state.round = 0;
-        state.score = 0;
-        state.combo = 0;
-        state.maxCombo = 0;
-        state.correctCount = 0;
-        state.answered = 0;
-        state.asked = new Set();
-        state.matchStartTs = Date.now();
-        render._overlay();
-        render._scorePill();
-        _next();
-    }
-
     function _next() {
         if (state.round >= getRoundTotal()) { void _end(); return; }
         state.round++;
         state.roundClosing = false;
-        state.currentQ = isAsyncMode()
-            ? state.asyncQuestions[state.round - 1]
-            : _genQuestion();
+        state.currentQ = _genQuestion();
         if (!state.currentQ) { void _end(); return; }
         render._roundPill();
         render._fadeCard(() => {
@@ -517,34 +474,11 @@
             if (typeof window.saveAppState === 'function') window.saveAppState();
             if (typeof window.updateStats === 'function') window.updateStats();
         }
-        if (isAsyncMode()) {
-            try {
-                if (window.PKService && typeof window.PKService.submitAttempt === 'function' && state.asyncMatch) {
-                    const submitResult = await window.PKService.submitAttempt(state.asyncMatch.id, {
-                        gameType: 'hanzi',
-                        score: state.score,
-                        correctCount: state.correctCount,
-                        total: getRoundTotal(),
-                        durationMs: Date.now() - state.matchStartTs,
-                        payloadJson: {
-                            total: getRoundTotal(),
-                            questions: state.asyncQuestions
-                        }
-                    });
-                    state.asyncSummaryNote = submitResult && submitResult.message
-                        ? submitResult.message
-                        : '成绩已提交，等待好友作答。';
-                }
-            } catch (error) {
-                state.asyncSummaryNote = error && error.message ? error.message : '成绩提交失败，请稍后重试。';
-            }
-        }
         // 入榜（Bug2 守卫：实际答题数=0 时不入榜，避免假 0 分记录）
         if (state.answered > 0 && window.Leaderboard && typeof window.Leaderboard.record === 'function') {
             window.Leaderboard.record('hanzi', state.score, {
                 correct: state.correctCount,
-                total: getRoundTotal(),
-                asyncMatch: isAsyncMode()
+                total: getRoundTotal()
             });
         }
         render._result();
@@ -556,32 +490,6 @@
         if (typeof window.switchPage === 'function') switchPage('playground');
     }
 
-    async function buildAsyncQuestionSet() {
-        await _loadBank();
-        const bucket = (state.bank && state.bank.levels && state.bank.levels[state.level]) || [];
-        const sampled = _shuffle(bucket).slice(0, CONFIG.TOTAL_ROUNDS).map(function (item) {
-            const usable = (item.modes || []).filter(function (mode) {
-                return CONFIG.IMPL_MODES.indexOf(mode) >= 0;
-            });
-            const mode = usable.length ? _pick(usable) : CONFIG.IMPL_MODES[0];
-            return {
-                answer: item.answer,
-                pinyin: item.pinyin,
-                example: item.example || '',
-                opts: _shuffle(item.opts && item.opts.length ? item.opts : [item.answer]),
-                mode: mode,
-                emoji: item.emoji || '',
-                char: item.char || ''
-            };
-        });
-        return {
-            gameType: 'hanzi',
-            level: state.level,
-            totalRounds: CONFIG.TOTAL_ROUNDS,
-            questions: sampled
-        };
-    }
-
     function getLevelLabel(level) {
         const card = LEVEL_CARDS.find(function (item) {
             return String(item.lv) === String(level);
@@ -589,34 +497,6 @@
         if (!card) return '启蒙';
         if (card.lv === 'hsk1') return 'HSK 1';
         return card.tag + ' ' + card.lv;
-    }
-
-    function describeAsyncQuestionSet(payload) {
-        const level = payload && payload.level ? payload.level : state.level;
-        const questions = Array.isArray(payload && payload.questions) ? payload.questions : [];
-        const totalRounds = payload && payload.totalRounds ? payload.totalRounds : CONFIG.TOTAL_ROUNDS;
-        const uniqueModes = [...new Set(questions.map(function (item) {
-            return item && item.mode ? item.mode : '';
-        }).filter(Boolean))];
-
-        let modeLabel = '混合题型';
-        if (!uniqueModes.length) {
-            modeLabel = '识字练习';
-        } else if (uniqueModes.length === 1) {
-            modeLabel = MODE_LABELS[uniqueModes[0]] || uniqueModes[0];
-        } else {
-            modeLabel = uniqueModes.map(function (mode) {
-                return MODE_LABELS[mode] || mode;
-            }).join(' / ');
-        }
-
-        return {
-            level: level,
-            levelLabel: getLevelLabel(level),
-            modeLabel: modeLabel,
-            totalRounds: totalRounds,
-            summaryText: getLevelLabel(level) + ' · ' + modeLabel + ' · ' + totalRounds + ' 题同题挑战'
-        };
     }
 
     // ---------- 挂载 ----------
@@ -627,12 +507,9 @@
             render._lobby(containerIdArg);
         },
         start: start,
-        startAsyncMatch: startAsyncMatch,
         _answer: _answer,
         _exit: _exit,
         init: init,
-        buildAsyncQuestionSet: buildAsyncQuestionSet,
-        describeAsyncQuestionSet: describeAsyncQuestionSet,
         getLevel: function () { return state.level; }
     };
 })();

@@ -14,6 +14,8 @@ const wordCannonDesignPath = path.join(prototypeDir, '大炮打单词设计方�
 const typingViewPath = path.join(root, 'data', 'vocab', 'english-minecraft', 'views', 'typing-view.json');
 const expandedTypingPackPath = path.join(prototypeDir, 'assets', 'generated', 'minecraft-typing-expanded.json');
 const expandedTypingPackScriptPath = path.join(prototypeDir, 'assets', 'generated', 'minecraft-typing-expanded.js');
+const unifiedTypingPackPath = path.join(prototypeDir, 'assets', 'generated', 'english-typing-unified.json');
+const unifiedTypingPackScriptPath = path.join(prototypeDir, 'assets', 'generated', 'english-typing-unified.js');
 const localFileVocabFallbackTestPath = path.join(prototypeDir, 'scripts', 'test-local-file-vocab-fallback.mjs');
 const sharedHanziVoiceDir = path.join(root, 'prj', '拼音块收集台原型', 'assets', 'voice');
 const sharedHanziVoiceMapPath = path.join(sharedHanziVoiceDir, 'map.json');
@@ -21,6 +23,9 @@ const sharedHanziVoiceManifestPath = path.join(sharedHanziVoiceDir, 'manifest.js
 const pureCannonBackgroundPath = path.join(prototypeDir, 'assets', '大炮打单词', '大炮打单词参考设计-纯背景.png');
 const pinyinRacerLongTrackPath = path.join(prototypeDir, 'assets', 'generated', 'reference', 'pinyin-racer-long-track-strip', 'pinyin-racer-long-track-strip.png');
 const pinyinRacerSkybridgePath = path.join(prototypeDir, 'assets', 'generated', 'reference', 'pinyin-racer-long-track-skybridge', 'pinyin-racer-long-track-skybridge.png');
+const pinyinRacerAssetCheckPath = path.join(prototypeDir, 'scripts', 'test-pinyin-racer-assets.py');
+const pinyinRacerRethemeManifestPath = path.join(prototypeDir, 'assets', 'generated', 'pinyin-racer-retheme-assets', 'manifest.json');
+const pinyinRacerPreparedDir = path.join(prototypeDir, 'assets', '拼音赛车');
 
 function readText(filePath) {
   return fs.readFileSync(filePath, 'utf8');
@@ -36,12 +41,17 @@ assert.ok(fs.existsSync(wordCannonDesignPath), 'word cannon design method docume
 assert.ok(fs.existsSync(typingViewPath), 'root minecraft game vocab typing view should exist');
 assert.ok(fs.existsSync(expandedTypingPackPath), 'prototype expanded typing pack should exist');
 assert.ok(fs.existsSync(expandedTypingPackScriptPath), 'prototype expanded typing pack browser fallback script should exist');
+assert.ok(fs.existsSync(unifiedTypingPackPath), 'unified typing pack should exist');
+assert.ok(fs.existsSync(unifiedTypingPackScriptPath), 'unified typing pack browser fallback script should exist');
 assert.ok(fs.existsSync(localFileVocabFallbackTestPath), 'direct index.html local-file vocab fallback smoke test should exist');
 assert.ok(fs.existsSync(sharedHanziVoiceMapPath), 'shared hanzi voice map should exist in the pinyin prototype');
 assert.ok(fs.existsSync(sharedHanziVoiceManifestPath), 'shared hanzi voice manifest should exist in the pinyin prototype');
 assert.ok(fs.existsSync(pureCannonBackgroundPath), 'updated pure-background cannon arena should exist');
 assert.ok(fs.existsSync(pinyinRacerLongTrackPath), 'pinyin racer generated long track strip should exist');
 assert.ok(fs.existsSync(pinyinRacerSkybridgePath), 'pinyin racer generated skybridge long track should exist');
+assert.ok(fs.existsSync(pinyinRacerAssetCheckPath), 'pinyin racer RGBA asset check should exist');
+assert.ok(fs.existsSync(pinyinRacerRethemeManifestPath), 'pinyin racer retheme semantic asset manifest should exist');
+assert.ok(fs.existsSync(pinyinRacerPreparedDir), 'prepared pinyin racer asset directory should exist');
 
 const html = readText(htmlPath);
 const css = readText(cssPath);
@@ -53,16 +63,19 @@ const docsAndContent = [readme, wordCannonDesign, readText(contentPath)].join('\
 const content = JSON.parse(readText(contentPath));
 const typingView = JSON.parse(readText(typingViewPath));
 const expandedTypingPack = JSON.parse(readText(expandedTypingPackPath));
+const unifiedTypingPack = JSON.parse(readText(unifiedTypingPackPath));
 const sharedHanziVoiceMap = JSON.parse(readText(sharedHanziVoiceMapPath));
 const sharedHanziVoiceManifest = JSON.parse(readText(sharedHanziVoiceManifestPath));
+const pinyinRacerRethemeManifest = JSON.parse(readText(pinyinRacerRethemeManifestPath));
 const hanziQuestions = JSON.parse(readText(path.join(root, 'data', 'hanzi-questions.json')));
 
 assert.match(pageSource, /data-prototype="learning-arcade-game"/, 'page should expose arcade prototype marker');
 assert.match(pageSource, /GAME_CONTENT_URL/, 'game should load project-local content JSON');
 assert.match(pageSource, /learning-games-content\.json/, 'page should reference separated game content JSON');
-assert.match(pageSource, /assets\/generated\/minecraft-typing-expanded\.json/, 'page should load the prototype expanded typing pack');
+assert.match(pageSource, /assets\/generated\/english-typing-unified\.json/, 'page should load the unified typing pack');
 assert.match(html, /minecraft-typing-expanded\.js\?v=graded-vocab-v1/, 'directly opened index.html should preload the graded vocab data script');
-assert.match(js, /LearningArcadeTypingExpanded/, 'runtime should fall back to the preloaded vocab script when local JSON fetch is blocked');
+assert.match(html, /english-typing-unified\.js\?v=english-curriculum-v1/, 'directly opened index.html should preload the unified curriculum data script');
+assert.match(js, /LearningArcadeTypingUnified/, 'runtime should fall back to the unified preloaded vocab script when local JSON fetch is blocked');
 assert.match(readme, /sync_external_minecraft_vocab\.cjs[^]*单词库_分级/, 'README should document the formal graded vocab sync path');
 assert.doesNotMatch(js, /data\/learn\/packs/, 'game runtime should not read formal learning-pack modules directly');
 assert.doesNotMatch(js, /data\/vocab\/english-minecraft\/views\/typing-view\.json/, 'game runtime should no longer read the root official vocab view directly');
@@ -132,18 +145,37 @@ assert.match(css, /\.pinyin-race-car-img\b/, 'pinyin racing car asset should be 
 assert.match(css, /pinyin-lane-stripes|pinyin-speed-streaks/, 'pinyin racing should simulate forward motion with scrolling lane markings and speed-line layers');
 assert.doesNotMatch(css, /@keyframes race-car-sprint[^}]*scale\(/, 'pinyin racer sprint should move upward without changing car size');
 assert.doesNotMatch(css, /race-car-idle|race-car-boost/, 'pinyin racer should not use idle bobbing or scale-boost animations');
-assert.match(js, /pinyin-racer-long-track-strip\.png|speed_trail_short|road_sign_dark_blank/, 'pinyin racing game should use the generated long track strip and generated racing assets');
+assert.match(js, /assets\/拼音赛车|pinyin-racer-retheme-20260711|pinyin-racer-long-track-strip\.png|speed_trail_short|road_sign_dark_blank/, 'pinyin racing game should use the prepared rethemed track or legacy racing assets');
+assert.match(js, /pinyin-racer-retheme-assets|initial_sound_gate|picture_supply_kiosk|finish_sprint_arch/, 'pinyin racing game should use semantic retheme facility assets');
+assert.equal(pinyinRacerRethemeManifest.assets.length, 6, 'pinyin racer retheme manifest should describe six route facilities');
+assert.ok(pinyinRacerRethemeManifest.assets.every(item => fs.existsSync(path.join(root, 'prj', '学习机玩法原型', item.file))), 'pinyin racer retheme manifest should point to existing files');
 assert.match(css, /\.cannon-shot-trail\b/, 'pinyin racing speed-line trails should be styled');
 assert.match(css, /\.cannon-impact\b/, 'pinyin racing pass effects should be styled');
 assert.match(css, /\.cannon-shard\b/, 'cannon target fragments should be styled');
 assert.match(css, /\.cannon-shockwave\b/, 'cannon circular shockwave should be styled');
-assert.match(js, /pinyin-racer-long-track-skybridge\.png/, 'pinyin racing map set should include the generated skybridge long track');
+assert.match(js, /拼音赛车参考图-02-漂浮天空赛道|pinyin-racer-retheme-20260711.*level-02-cloud-fork|pinyin-racer-long-track-skybridge\.png/, 'pinyin racing map set should include the prepared cloud-fork background');
+
+assert.match(js, /PINYIN_RACER_SEGMENTS/, 'pinyin racer should define a deterministic multi-segment track catalogue');
+assert.match(js, /s-bend|fork|bridge|tunnel|finish-sprint/, 'pinyin racer should include varied track segment shapes');
+assert.match(js, /taskType|correctRoute|recoveryRoute|landmark/, 'pinyin racer segments should carry learning route metadata');
+assert.match(html, /cannonRouteLayer|route-segment|race-landmark/, 'pinyin racer stage should expose a route layer for segment landmarks');
+assert.match(css, /route-segment|race-landmark|is-fork|is-tunnel|is-boost/, 'pinyin racer should style route facilities and landmarks');
+assert.match(js, /sound-gate|image-supply|tone-sign|final-gate|taskType/, 'pinyin racer should render more than one learning task type');
 
 assert.match(pageSource, /pinyinSnake/, 'snake game should be present');
 assert.match(pageSource, /snakeBoard/, 'snake game should include a board');
 assert.match(pageSource, /snake-cell/, 'snake should render grid cells');
 assert.match(pageSource, /snakeReferenceStage|snake-target-float|snake-ref-stat|snake-food-dot/, 'snake should use the reference-style grid arena, floating target label and dot foods');
 assert.match(pageSource, /pinyin-snake-assets/, 'snake should use the generated transparent asset pack');
+assert.match(pageSource, /snakePauseButton|data-snake-action="pause"/, 'snake should expose a pause/resume control');
+assert.match(pageSource, /snakeSpeedSwitch|data-snake-speed/, 'snake should expose a slow/standard pace control');
+assert.match(pageSource, /snakeHintButton|data-snake-action="hint"/, 'snake should expose a learning hint control');
+assert.match(pageSource, /snakeTaskEmoji|snakeTaskExample/, 'snake task card should expose a semantic visual cue and example sentence');
+assert.match(js, /function useSnakeHint\(\)/, 'snake should expose a per-round hint action');
+assert.match(js, /hintUses|hintActiveUntil|data-food-hint|hintTick/, 'snake should track and render limited hint state');
+assert.match(js, /speakHanziTask\(\[/, 'snake hint should reuse the hanzi and pinyin voice path');
+assert.match(js, /function toggleSnakePause\(\)/, 'snake should support pausing without losing the current task');
+assert.match(js, /snake\.speedMs|SNAKE_SPEED_PRESETS/, 'snake should keep an explicit pace preset instead of a hard-coded timer');
 
 assert.doesNotMatch(pageSource, /vibe coding|内容和代码分开|最低门槛/i, 'visible home/game source should not show developer-facing project copy');
 assert.match(readme, /最低门槛/, 'README should record low-friction input guidance');
@@ -190,6 +222,9 @@ assert.ok(expandedTypingPack.packs.some(pack => pack.id === 'kindergarten' && pa
 assert.ok(expandedTypingPack.packs.some(pack => pack.id === 'elementary' && pack.count > 100), 'expanded typing pack should include the elementary pack option');
 assert.ok(expandedTypingPack.packs.some(pack => pack.id === 'junior_high' && pack.count > 100), 'expanded typing pack should include the junior-high pack option');
 assert.ok(expandedTypingPack.packs.some(pack => pack.id === 'minecraft' && pack.count > 100), 'expanded typing pack should include the Minecraft pack option');
+assert.ok(unifiedTypingPack.packs.some(pack => pack.id === 'core-english' && pack.count >= 300), 'unified pack should include the core curriculum');
+assert.ok(unifiedTypingPack.packs.some(pack => pack.id === 'extension-english' && pack.count >= 500), 'unified pack should include the verified extension curriculum');
+assert.ok(unifiedTypingPack.packs.some(pack => pack.id === 'curriculum-all' && pack.count >= 800), 'unified pack should include the complete curriculum');
 assert.ok(expandedTypingPack.cards.every(card => /^[a-z]{3,7}$/.test(card.word)), 'expanded typing pack should also keep short lowercase typing words');
 assert.ok(expandedTypingPack.cards.some(card => card.sourcePackGroup === 'kindergarten'), 'expanded typing pack should contain kindergarten words');
 assert.ok(expandedTypingPack.cards.some(card => card.sourcePackGroup === 'elementary'), 'expanded typing pack should contain elementary words');

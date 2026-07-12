@@ -2490,6 +2490,30 @@ body.shell-app[data-app-surface="game"] .page-shell {
 body.shell-app[data-app-surface="game"] .main-content {
     min-height: 100svh;
 }
+
+body.shell-app[data-app-surface="game"] .top-nav,
+body.shell-app[data-app-surface="game"] .app-shell-bar,
+body.shell-app[data-app-surface="game"] .app-bottom-dock,
+body.shell-app[data-app-route-page="learning-arcade"] .top-nav,
+body.shell-app[data-app-route-page="learning-arcade"] .app-shell-bar,
+body.shell-app[data-app-route-page="learning-arcade"] .app-bottom-dock,
+body.shell-app[data-app-route-page="word-memory-map"] .top-nav,
+body.shell-app[data-app-route-page="word-memory-map"] .app-shell-bar,
+body.shell-app[data-app-route-page="word-memory-map"] .app-bottom-dock {
+    display: none !important;
+}
+
+body.shell-app[data-app-surface="game"] .page-shell,
+body.shell-app[data-app-surface="game"] .main-content,
+body.shell-app[data-app-route-page="learning-arcade"] .page-shell,
+body.shell-app[data-app-route-page="learning-arcade"] .main-content,
+body.shell-app[data-app-route-page="word-memory-map"] .page-shell,
+body.shell-app[data-app-route-page="word-memory-map"] .main-content {
+    min-height: 100dvh;
+    height: 100dvh;
+    padding: 0 !important;
+    overflow: hidden;
+}
 body.shell-app[data-app-page="playground"] .page-shell,
 body.shell-app[data-app-page="explore"] .page-shell {
     padding-top: 10px;
@@ -2511,6 +2535,10 @@ body.card-arena-shell-active .page-shell {
 body.card-arena-shell-active .main-content,
 body.card-arena-shell-active #page-playground {
     min-height: 100svh;
+}
+body.card-arena-shell-active {
+    height: 100dvh;
+    overflow: hidden !important;
 }
 body.shell-app .app-shell-bar {
     position: sticky;
@@ -3586,6 +3614,65 @@ body.shell-parent .app-bottom-dock {
 .family-review-feed-body {
     margin: 8px 0 6px;
     line-height: 1.6;
+}
+
+.family-review-guided-insights {
+    margin-top: 16px;
+    padding: 16px;
+    border: 1px solid rgba(123, 174, 143, 0.34);
+    border-radius: 16px;
+    background: rgba(244, 249, 244, 0.86);
+}
+
+.family-review-insight-main {
+    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.78);
+}
+
+.family-review-insight-main strong {
+    color: #385346;
+    font-size: 15px;
+}
+
+.family-review-insight-main p {
+    margin: 7px 0 0;
+    color: #667265;
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.family-review-insight-main b {
+    margin-right: 6px;
+    color: #b07b32;
+}
+
+.family-review-insight-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.family-review-insight-item {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.64);
+}
+
+.family-review-insight-item span {
+    color: #6a805f;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.family-review-insight-item p,
+.family-review-insight-item small {
+    display: block;
+    margin: 4px 0 0;
+    color: #667265;
+    font-size: 12px;
+    line-height: 1.5;
 }
 
 .family-review-learning-shell {
@@ -6324,12 +6411,16 @@ body.shell-parent .app-bottom-dock {
 .galgame-portrait { position: absolute; bottom: 24vh; max-height: 40vh; z-index: 2; transition: opacity 0.4s; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); }
 .galgame-portrait-left { left: 3vw; max-height: 40vh; }
 .galgame-portrait-right { right: 3vw; max-height: 38vh; }
-.galgame-back { position: absolute; top: 14px; left: 14px; z-index: 5; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; }
 .galgame-portrait-right.mood-happy { filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)) saturate(1.08); }
 .galgame-portrait-right.mood-surprised { filter: drop-shadow(0 4px 16px rgba(255,210,120,0.65)) saturate(1.25) brightness(1.08); transform: translateY(-6px) scale(1.04); }
 .galgame-portrait-right.mood-worried { filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)) saturate(.72) brightness(.92); transform: translateY(3px); }
 .galgame-portrait-right.mood-proud { filter: drop-shadow(0 4px 18px rgba(126,230,138,0.68)) saturate(1.2); transform: translateY(-4px) scale(1.03); }
+.galgame-back { position: absolute; top: 14px; left: 14px; z-index: 5; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; }
 .galgame-back:hover { background: rgba(0,0,0,0.8); }
+.galgame-chapter-progress { position: absolute; top: 14px; right: 14px; z-index: 5; display: flex; align-items: center; gap: 7px; padding: 6px 9px; border-radius: 999px; background: rgba(0,0,0,0.56); color: rgba(255,255,255,0.64); font-size: 11px; }
+.galgame-chapter-progress span.active { color: #ffd87a; font-weight: 800; }
+.galgame-chapter-progress span.done { color: #7ee68a; }
+.galgame-chapter-progress b { color: rgba(255,255,255,0.35); font-weight: 400; }
 .galgame-box { position: absolute; bottom: 0; left: 0; right: 0; min-height: 24vh; background: rgba(0,0,0,0.78); backdrop-filter: blur(10px); border-top: 2px solid rgba(255,210,120,0.4); padding: 18px 26px 36px; z-index: 3; cursor: pointer; }
 .galgame-name { color: #ffd87a; font-size: 17px; font-weight: 700; margin-bottom: 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
 .galgame-text { color: #fff; font-size: 21px; line-height: 1.8; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
@@ -6344,16 +6435,10 @@ body.shell-parent .app-bottom-dock {
 .galgame-skill { display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 999px; background: rgba(253,230,138,0.16); border: 1px solid rgba(253,230,138,0.35); color: #fde68a; font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
 .galgame-math { display: inline-block; margin-top: 8px; padding: 6px 14px; background: rgba(126,230,138,0.18); border: 1px solid rgba(126,230,138,0.5); border-radius: 8px; font-size: 22px; font-weight: 700; color: #7ee68a; letter-spacing: 2px; }
 .galgame-word { display: block; margin-top: 8px; padding: 9px 14px; background: rgba(126,230,138,0.12); border: 1px solid rgba(126,230,138,0.4); border-radius: 8px; font-size: 17px; line-height: 1.65; font-weight: 500; color: #bbf7d0; }
+.galgame-detail-toggle { display: inline-block; margin: 10px 0 0 8px; padding: 3px 8px; border: 1px solid rgba(255,216,122,0.55); border-radius: 999px; background: rgba(255,216,122,0.12); color: #ffd87a; font-size: 12px; cursor: pointer; }
+.galgame-detail { display: block; margin-top: 8px; padding: 8px 10px; border-left: 3px solid rgba(255,216,122,0.65); color: rgba(255,255,255,0.78); font-size: 14px; line-height: 1.55; }
 .galgame-hint { display: block; margin-top: 8px; color: #fde68a; font-size: 16px; line-height: 1.7; }
-.galgame-detail-toggle { display: inline-block; margin: 10px 0 0 8px; padding: 3px 8px; border: 1px solid rgba(255,216,120,0.55); border-radius: 999px; background: rgba(255,216,120,0.12); color: #ffd87a; font-size: 12px; cursor: pointer; }
-.galgame-detail { display: block; margin-top: 8px; padding: 8px 10px; border-left: 3px solid rgba(255,216,120,0.65); color: rgba(255,255,255,0.78); font-size: 14px; line-height: 1.55; }
 .galgame-explanation { display: block; margin-top: 8px; color: #bbf7d0; font-size: 16px; line-height: 1.7; }
-.travel-memory-card { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 10px 12px; border: 1px solid rgba(126,230,138,0.45); border-radius: 12px; background: rgba(126,230,138,0.12); color: #fff; }
-.travel-memory-icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.16); font-size: 26px; flex: 0 0 auto; }
-.travel-memory-card strong, .travel-memory-card span, .travel-memory-card small { display: block; }
-.travel-memory-card strong { color: #bbf7d0; font-size: 14px; }
-.travel-memory-card span { margin-top: 2px; color: #fff; font-size: 13px; }
-.travel-memory-card small { margin-top: 4px; color: #fde68a; font-size: 12px; }
 @media (max-width: 768px) {
   .galgame-portrait { max-height: 36vh; }
   .galgame-text { font-size: 17px; }

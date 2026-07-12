@@ -81,31 +81,7 @@
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=6'],
         shop: ['js/shop.js'],
-        cloud: [
-            'js/vendor/supabase-js.js',
-            'js/cloud-config-loader.js',
-            'js/cloud-client.js',
-            'js/profile-sync.js',
-            'js/family-social-scope.js',
-            'js/auth.js',
-            'js/household.js',
-            'js/cloud-sync.js',
-            'js/cloud-restore.js',
-            'js/social.js',
-            'js/pk-service.js',
-            'js/activity-feed.js',
-            'js/cloud-diagnostics.js',
-            'js/family-review.js'
-        ],
-        admin: [
-            'js/vendor/supabase-js.js',
-            'js/cloud-config-loader.js',
-            'js/cloud-client.js',
-            'js/family-social-scope.js',
-            'js/auth.js',
-            'js/admin-auth.js',
-            'js/admin-console.js'
-        ]
+        review: ['js/family-review.js']
     };
 
     function findScript(src) {
@@ -355,66 +331,9 @@
         });
     }
 
-    async function ensureCloudFeature() {
-        return once('feature-cloud', async function () {
-            await loadSeries(SCRIPT_BUNDLES.cloud, loadScript);
-            if (window.__PETBANK_OPTIONAL_BOOTSTRAP__ && typeof window.__PETBANK_OPTIONAL_BOOTSTRAP__.then === 'function') {
-                try {
-                    await window.__PETBANK_OPTIONAL_BOOTSTRAP__;
-                } catch (error) {}
-            }
-            if (!initFlags.cloudBooted) {
-                if (window.AuthSystem && typeof window.AuthSystem.boot === 'function') {
-                    try {
-                        await window.AuthSystem.boot();
-                    } catch (error) {
-                        console.warn('[runtime-loader] auth boot failed:', error);
-                    }
-                }
-                if (window.CloudRestore && typeof window.CloudRestore.hydrateFromCloud === 'function') {
-                    try {
-                        await window.CloudRestore.hydrateFromCloud();
-                    } catch (error) {}
-                }
-                initFlags.cloudBooted = true;
-            }
-            if (window.HouseholdSystem && typeof window.HouseholdSystem.refresh === 'function') {
-                try {
-                    await window.HouseholdSystem.refresh('household-root');
-                } catch (error) {}
-            }
-            if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
-                try {
-                    await window.SocialSystem.refresh();
-                } catch (error) {}
-            }
-            if (window.PKService && typeof window.PKService.refresh === 'function') {
-                try {
-                    await window.PKService.refresh();
-                } catch (error) {}
-            }
-            if (window.ActivityFeedSystem && typeof window.ActivityFeedSystem.refresh === 'function') {
-                try {
-                    await window.ActivityFeedSystem.refresh();
-                } catch (error) {}
-            }
-            return true;
-        });
-    }
-
-    async function ensureAdminPage() {
-        return once('page-admin', async function () {
-            await loadSeries(SCRIPT_BUNDLES.admin, loadScript);
-            if (window.__PETBANK_OPTIONAL_BOOTSTRAP__ && typeof window.__PETBANK_OPTIONAL_BOOTSTRAP__.then === 'function') {
-                try {
-                    await window.__PETBANK_OPTIONAL_BOOTSTRAP__;
-                } catch (error) {}
-            }
-            if (window.AuthSystem && typeof window.AuthSystem.boot === 'function') {
-                try {
-                    await window.AuthSystem.boot();
-                } catch (error) {}
-            }
+    async function ensureReviewFeature() {
+        return once('feature-review', async function () {
+            await loadSeries(SCRIPT_BUNDLES.review, loadScript);
             return true;
         });
     }
@@ -433,22 +352,9 @@
                 return ensurePetCatalog();
             case 'home':
                 await ensureHomeFeature();
-                window.setTimeout(function () {
-                    ensureCloudFeature()
-                        .then(function () {
-                            const homePage = document.getElementById('page-home');
-                            if (homePage && homePage.classList.contains('active') && window.HomeSystem && typeof window.HomeSystem.renderUI === 'function') {
-                                window.HomeSystem.renderUI('home-container');
-                            }
-                        })
-                        .catch(function (error) {
-                            console.warn('[runtime-loader] home cloud background load failed:', error);
-                        });
-                }, 0);
                 return true;
             case 'walk':
                 await ensureWalkFeature();
-                await ensureCloudFeature();
                 return true;
             case 'card':
                 return ensureCardFeature();
@@ -470,13 +376,9 @@
             case 'learning-sheet':
                 return ensureLearnFeature();
             case 'review':
-                await ensureCloudFeature();
-                return true;
+                return ensureReviewFeature();
             case 'settings':
-                await ensureCloudFeature();
                 return true;
-            case 'home-visit':
-                return ensureCloudFeature();
             default:
                 return true;
         }
@@ -537,10 +439,8 @@
 
     window.PetBankRuntime = {
         ensurePage: ensurePage,
-        ensureAdminPage: ensureAdminPage,
         ensurePetCatalog: ensurePetCatalog,
         ensureAudioFeature: ensureAudioFeature,
-        ensureCloudFeature: ensureCloudFeature,
         ensureCardArenaFeature: ensureCardArenaFeature,
         resolveAssetUrl: resolveAssetUrl,
         prefetch: prefetch,

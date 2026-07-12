@@ -15,9 +15,12 @@ const KINDERGARTEN_SOURCE = path.join(SOURCE_DIR, "01_幼儿园", "幼儿园完�
 const HANZI_SOURCE = path.join(SOURCE_DIR, "06_汉字", "幼儿园汉字.js");
 const PINYIN_SOURCE = path.join(SOURCE_DIR, "07_拼音", "常用拼音.js");
 const BRIDGE_SOURCE = path.join(SOURCE_DIR, "08_幼小衔接", "幼小衔接总词库.js");
+const CORE_ENGLISH_VIEW = path.join(REPO_ROOT, "data", "vocab", "core-english", "views", "core.json");
+const EXTENSION_ENGLISH_VIEW = path.join(REPO_ROOT, "data", "vocab", "extension-english", "views", "extension.json");
 
 const MAX_BANK_ITEMS = 80;
 const MAX_WORD_BANK_ITEMS = 360;
+const MAX_CURRICULUM_WORD_ITEMS = 900;
 const MAX_PINYIN_SINGLE_ITEMS = 80;
 const MAX_PINYIN_PHRASE_ITEMS = 120;
 
@@ -185,6 +188,40 @@ function buildMinecraftBank(source) {
   };
 }
 
+function buildCurriculumBank(viewPath, metadata) {
+  const view = readJson(viewPath);
+  const words = dedupeByTarget((view.cards || []).map((card, index) => {
+    const word = normalizeWord(card.word);
+    if (!/^[a-z]{2,16}$/.test(word)) return null;
+    return {
+      id: `${metadata.id}-${word}`,
+      mode: "单词",
+      target: word,
+      hint: `${normalizeText(card.translation)} ${word}`.trim(),
+      bankKey: "words",
+      wordLength: word.length,
+      translation: normalizeText(card.translation),
+      phrase: normalizeText(card.example),
+      phraseTranslation: normalizeText(card.example_zh),
+      phonetic: normalizeText(card.phonetic),
+      category: normalizeText(card.viewCategory),
+      stage: metadata.stage,
+      difficulty: metadata.difficulty,
+      image: "",
+      sourceIndex: index
+    };
+  }).filter(Boolean)).slice(0, MAX_CURRICULUM_WORD_ITEMS);
+  return {
+    id: metadata.id,
+    title: metadata.title,
+    shortTitle: metadata.shortTitle,
+    kind: "words",
+    source: { file: repoRelative(viewPath), note: "Audited English curriculum view" },
+    words,
+    groupCounts: groupCounts(words)
+  };
+}
+
 function buildKindergartenBank() {
   return buildEnglishStageBank(KINDERGARTEN_SOURCE, "MERGED_KINDERGARTEN_VOCAB", {
     id: "kindergarten",
@@ -334,6 +371,18 @@ function updateManifest(data) {
 
 function build() {
   const minecraftTasks = readJson(MINECRAFT_TASKS_PATH);
+  const coreEnglish = buildCurriculumBank(CORE_ENGLISH_VIEW, {
+    id: "core-english", title: "核心主线 322 词", shortTitle: "核心主线", stage: "core", difficulty: "basic"
+  });
+  const extensionEnglish = buildCurriculumBank(EXTENSION_ENGLISH_VIEW, {
+    id: "extension-english", title: "可靠拓展 512 词", shortTitle: "可靠拓展", stage: "extension", difficulty: "intermediate"
+  });
+  const completeEnglish = {
+    id: "curriculum-all", title: "完整英语路径 834 词", shortTitle: "完整路径", kind: "words",
+    source: { file: "data/vocab/core-english + data/vocab/extension-english", note: "Audited combined English curriculum" },
+    words: dedupeByTarget([...coreEnglish.words, ...extensionEnglish.words]),
+    groupCounts: groupCounts(dedupeByTarget([...coreEnglish.words, ...extensionEnglish.words]))
+  };
   const data = {
     prototypeId: "minecraft-typing-defense",
     adapterVersion: "typing-defense-vocab-banks-v1",
@@ -341,6 +390,9 @@ function build() {
     defaultBankId: "kindergarten",
     sourceRoot: repoRelative(SOURCE_DIR),
     banks: [
+      coreEnglish,
+      extensionEnglish,
+      completeEnglish,
       buildKindergartenBank(),
       buildEnglishStageBank(path.join(SOURCE_DIR, "03_小学_高年级", "小学低年级基础.js"), "STAGE_ELEMENTARY_LOWER", {
         id: "elementary-lower",

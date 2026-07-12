@@ -1,0 +1,126 @@
+{
+  "level": "level-01",
+  "assets": [
+    {
+      "name": "meadow_track_straight",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_track_straight.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-01_181x294.png",
+      "size": [
+        181,
+        294
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_track_s_bend_a",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_track_s_bend_a.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-02_205x333.png",
+      "size": [
+        205,
+        333
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_track_s_bend_b",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_track_s_bend_b.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-03_228x347.png",
+      "size": [
+        228,
+        347
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_track_s_bend_c",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_track_s_bend_c.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-04_195x350.png",
+      "size": [
+        195,
+        350
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_blue_car",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_blue_car.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-07_232x200.png",
+      "size": [
+        232,
+        200
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_checkpoint_arch",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_checkpoint_arch.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-13_324x208.png",
+      "size": [
+        324,
+        208
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_arrow_blue",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_arrow_blue.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-14_91x63.png",
+      "size": [
+        91,
+        63
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_arrow_yellow",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_arrow_yellow.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-24_91x63.png",
+      "size": [
+        91,
+        63
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_arrow_red",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_arrow_red.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-26_91x63.png",
+      "size": [
+        91,
+        63
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_round_sign",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_round_sign.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-16_107x198.png",
+      "size": [
+        107,
+        198
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "meadow_flower_bed",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-01/meadow_flower_bed.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-32_189x137.png",
+      "size": [
+        189,
+        137
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 # 运行时加载器 (PetBankRuntime)
 
-> 核心文件: [js/runtime-loader.js](../../js/runtime-loader.js) (434行)
+> 核心文件: [js/runtime-loader.js](../../js/runtime-loader.js) (约 450 行)
 
 ---
 
 ## 原理
 
 ### 设计目标
-SPA 无打包工具，43 个 JS 文件和 12 个 CSS 文件不能首屏全量加载。runtime-loader 提供按需加载机制：页面首次访问时才加载对应的 JS+CSS bundle，后续访问复用缓存。
+SPA 无打包工具，40 个 JS 文件和 12 个 CSS 文件不能首屏全量加载。runtime-loader 提供按需加载机制：页面首次访问时才加载对应的 JS+CSS bundle，后续访问复用缓存。
 
 ### 核心模型
 
@@ -20,14 +20,15 @@ Bundle 映射:
   map/today/reward/inventory/works → 无额外加载（核心已预加载）
   playground → ensurePlaygroundFeature()  → math-pk + leaderboard + hanzi + tools
   pet → ensurePetCatalog()               → pet.js
-  home → ensureHomeFeature() + cloud     → home.js + 云端
-  walk → ensureWalkFeature() + cloud     → walk.js + 云端
+  home → ensureHomeFeature()             → home.js + 本地成长数据
+  walk → ensureWalkFeature()             → walk.js
   card → ensureCardFeature()             → card-collection.js
   explore → ensureExploreFeature()       → voice + battle-engine + exploration
   shop → ensureShopFeature()             → shop.js
   mathpk/hanzi/leaderboard/tools → ensurePlaygroundFeature()
   learn/* → ensureLearnFeature()         → learn-center.js
-  review/settings/home-visit → ensureCloudFeature()
+  review → ensureReviewFeature()         → family-review.js（本机复盘）
+  settings → 无额外加载（本地-only 边界）
 ```
 
 ---
@@ -54,8 +55,7 @@ Bundle 映射:
 | `ensurePlaygroundFeature()` | :227-245 | 加载游乐场（含竞技场预加载 400ms 延迟） |
 | `ensureLearnFeature()` | :247-257 | 加载学习中心（含 init） |
 | `ensureShopFeature()` | :259-265 | 加载商城（依赖 home） |
-| `ensureCloudFeature()` | :267-312 | 加载云端系统（auth boot + restore + 多模块 refresh） |
-| `ensureAdminPage()` | :314-329 | 加载管理后台 |
+| `ensureReviewFeature()` | :331-336 | 加载本机成长复盘 |
 | `prefetch(page, delayMs)` | :393-400 | 预加载页面（延迟执行） |
 | `openCardArenaEntry()` | :402-420 | 卡牌对战入口（含 toast 提示） |
 
@@ -64,10 +64,9 @@ Bundle 映射:
 | 属性/方法 | 说明 |
 |----------|------|
 | `window.PetBankRuntime.ensurePage(page)` | 确保页面依赖已加载 |
-| `window.PetBankRuntime.ensureAdminPage()` | 确保管理后台已加载 |
 | `window.PetBankRuntime.ensurePetCatalog()` | 确保宠物数据库已加载 |
 | `window.PetBankRuntime.ensureAudioFeature()` | 确保音效系统已加载 |
-| `window.PetBankRuntime.ensureCloudFeature()` | 确保云端系统已加载 |
+| `window.PetBankRuntime.ensurePage('review')` | 确保本机复盘模块已加载 |
 | `window.PetBankRuntime.ensureCardArenaFeature()` | 确保卡牌对战已加载 |
 | `window.PetBankRuntime.prefetch(page, delayMs)` | 预加载页面 |
 | `window.openCardArenaEntry()` | 打开卡牌对战入口 |
@@ -80,4 +79,5 @@ Bundle 映射:
 - `once()` 保证每个 feature 的初始化只执行一次（即使多次调用 ensurePage）
 - `initFlags` 对象追踪哪些模块的 init() 已被调用
 - ensurePlaygroundFeature 中 400ms 后自动预加载卡牌对战（增强体验）
+- 不加载账号、家庭、社交或第三方云端 bundle；这些能力等待 SQLite API 完成后按业务模块重新接入
 - 样式通过 `data-petbank-src` / `data-petbank-href` 属性追踪已加载资源

@@ -412,8 +412,8 @@
                                 </a>
                                 <a class="settings-home-entry" href="/settings/family" onclick="handleSettingsNavClick(event, 'family')">
                                     <span class="settings-home-entry-kicker">家长账号</span>
-                                    <strong>家庭云端</strong>
-                                    <span>登录、同步、家庭协作和好友边界。</span>
+                                    <strong>家庭账号</strong>
+                                    <span>自托管账号服务正在建设，当前先管理本机孩子档案。</span>
                                 </a>
                                 <a class="settings-home-entry" href="/settings/learning" onclick="handleSettingsNavClick(event, 'learning')">
                                     <span class="settings-home-entry-kicker">低频调整</span>
@@ -440,19 +440,17 @@
                             <div id="settings-account-list"></div>
                         </section>
 
-                        <section class="parent-settings-section settings-subpage-panel" data-settings-section="family" aria-labelledby="parent-settings-cloud-title">
+                        <section class="parent-settings-section settings-subpage-panel" data-settings-section="family" aria-labelledby="parent-settings-account-service-title">
                             <div class="parent-settings-section-head">
                                 <div>
-                                    <p class="parent-settings-kicker">同步与边界</p>
-                                    <h3 id="parent-settings-cloud-title">家庭云端</h3>
+                                    <p class="parent-settings-kicker">自托管服务</p>
+                                    <h3 id="parent-settings-account-service-title">家庭账号</h3>
                                 </div>
-                                <span class="parent-settings-tag">家长账号</span>
+                                <span class="parent-settings-tag">建设中</span>
                             </div>
-                            <p class="parent-settings-copy">登录、家庭同步、好友串门等能力集中在这里，避免散落到孩子主流程。</p>
-                            <div class="parent-settings-module-stack">
-                                <div id="auth-root"></div>
-                                <div id="household-root"></div>
-                                <div id="social-root"></div>
+                            <p class="parent-settings-copy">账号服务将由 VPS 上的 Node.js + SQLite 提供。当前版本不再加载 Supabase；孩子端仍可使用本机多孩子档案和离线玩法。</p>
+                            <div class="parent-settings-note">
+                                自托管账号 API 完成前，请继续使用本机孩子档案。账号、家庭邀请、跨设备同步和好友互动不会在此版本伪装成已可用。
                             </div>
                         </section>
 
@@ -493,8 +491,8 @@
                                 </div>
                                 <span class="parent-settings-tag">默认隐藏</span>
                             </div>
-                            <p class="parent-settings-copy">数据导入、导出、云端诊断和覆盖类操作统一收纳到高级区，普通模式不直接打扰家长和孩子。</p>
-                            <p class="parent-settings-note">如需临时打开数据管理，请在本地访问地址追加 <code>?parentAdmin=1</code>，操作前先导出备份。</p>
+                            <p class="parent-settings-copy">数据导入、导出、本机诊断和覆盖类操作统一收纳到高级区，普通模式不直接打扰家长和孩子。</p>
+                            <p class="parent-settings-note">自托管账号服务上线后，备份和恢复将由 VPS 发布流程管理；当前高级操作仍只作用于本机数据。</p>
                             <div id="diagnostics-root"></div>
                         </section>
                     </div>
@@ -1153,34 +1151,6 @@
                     <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
                 </div>
                 <div id="home-container"></div>
-            </div>
-
-            <!-- PAGE: 好友小屋 -->
-            <div class="page" id="page-home-visit">
-                <details class="section-menu">
-                    <summary class="section-menu-trigger">
-                        <div class="section-menu-copy">
-                            <span class="section-menu-label">宠物导航</span>
-                            <span class="section-menu-current">当前：好友小屋</span>
-                        </div>
-                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
-                    </summary>
-                    <div class="section-menu-panel">
-                        <button class="section-menu-item" type="button" onclick="switchPage('pet')">我的宠物</button>
-                        <button class="section-menu-item" type="button" onclick="switchPage('home')">宠物小屋</button>
-                        <button class="section-menu-item is-current" type="button" onclick="switchPage('home-visit')">好友小屋</button>
-                        <button class="section-menu-item" type="button" onclick="switchPage('card')">卡片图鉴</button>
-                        <button class="section-menu-item" type="button" onclick="openPetWalk()">遛弯</button>
-                    </div>
-                </details>
-                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('pet')">我的宠物</button>
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('home')">宠物小屋</button>
-                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('home-visit')">好友小屋</button>
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('card')">卡片图鉴</button>
-                    <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
-                </div>
-                <div id="friend-home-visit-root"></div>
             </div>
 
             <!-- PAGE: 探索冒险（路线地图） -->

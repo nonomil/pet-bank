@@ -564,6 +564,29 @@
     .pg-img-card { min-height: 392px; }
 }
 
+body.shell-app[data-app-surface="game"] .playground-stage-shell,
+body.shell-app[data-app-route-page="learning-arcade"] .playground-stage-shell,
+body.shell-app[data-app-route-page="word-memory-map"] .playground-stage-shell,
+body.shell-app[data-app-surface="game"] .playground-stage-frame-shell,
+body.shell-app[data-app-route-page="learning-arcade"] .playground-stage-frame-shell,
+body.shell-app[data-app-route-page="word-memory-map"] .playground-stage-frame-shell,
+body.shell-app[data-app-surface="game"] .playground-embed-frame,
+body.shell-app[data-app-route-page="learning-arcade"] .playground-embed-frame,
+body.shell-app[data-app-route-page="word-memory-map"] .playground-embed-frame,
+body.shell-app[data-app-surface="game"] #typing-defense-frame,
+body.shell-app[data-app-surface="game"] #learning-arcade-frame,
+body.shell-app[data-app-surface="game"] #word-memory-map-frame {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+}
+
+body.shell-app[data-app-route-page="learning-arcade"] #learning-arcade-frame,
+body.shell-app[data-app-route-page="word-memory-map"] #word-memory-map-frame,
+body.shell-app[data-app-route-page="typing-defense"] #typing-defense-frame {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+}
+
 @media (min-width: 561px) and (max-width: 1080px) {
     .playground-layout {
         grid-template-columns: 1fr;

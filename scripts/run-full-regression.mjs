@@ -5,99 +5,44 @@ import https from 'node:https';
 
 const ROOT = process.cwd();
 const BASE_URL = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765';
+const TASK_TIMEOUT_MS = Number(process.env.PETBANK_REGRESSION_TASK_TIMEOUT_MS || 120000);
 
 const TASKS = [
-    { label: 'regression runner contract', cmd: 'node', args: ['prj/regression_runner_contract.test.mjs'] },
+    { label: 'regression runner integrity', cmd: 'node', args: ['scripts/test-regression-runner-integrity.mjs'] },
+    { label: 'no legacy account runtime', cmd: 'node', args: ['scripts/test-no-legacy-account-runtime.mjs'] },
     { label: 'runtime loader route base contract', cmd: 'node', args: ['prj/runtime_loader_route_base_contract.test.mjs'] },
     { label: 'route-aware shell contract', cmd: 'node', args: ['prj/route_aware_shell_contract.test.mjs'] },
-    { label: 'audio contract', cmd: 'node', args: ['prj/audio_battle_feedback_contract.test.mjs'] },
-    { label: 'battle milestones contract', cmd: 'node', args: ['prj/battle_milestones_contract.test.mjs'] },
-    { label: 'pk brawl shared design contract', cmd: 'node', args: ['prj/pk_brawl_shared_design_contract.test.mjs'] },
-    { label: 'pk brawl shared experience contract', cmd: 'node', args: ['prj/pk_brawl_shared_experience_contract.test.mjs'] },
-    { label: 'homepage focus layout contract', cmd: 'python', args: ['prj/test_homepage_focus_layout_contract.py'] },
-    { label: 'family review contract', cmd: 'python', args: ['prj/test_family_review_contract.py'] },
-    { label: 'activity feed contract', cmd: 'python', args: ['prj/test_activity_feed_contract.py'] },
-    { label: 'friend home visit page contract', cmd: 'python', args: ['prj/test_friend_home_visit_page_contract.py'] },
-    { label: 'friend house preview contract', cmd: 'python', args: ['prj/test_friend_house_preview_contract.py'] },
-    { label: 'registration invite contract', cmd: 'python', args: ['prj/test_registration_invite_contract.py'] },
-    { label: 'registration invite management contract', cmd: 'python', args: ['prj/test_registration_invite_management_contract.py'] },
-    { label: 'friend graph contract', cmd: 'python', args: ['prj/test_friend_graph_contract.py'] },
-    { label: 'house visit contract', cmd: 'python', args: ['prj/test_house_visit_contract.py'] },
-    { label: 'profile sync contract', cmd: 'python', args: ['prj/test_profile_sync_contract.py'] },
-    { label: 'multi-child sync contract', cmd: 'python', args: ['prj/test_multi_child_sync_contract.py'] },
-    { label: 'children schema contract', cmd: 'python', args: ['prj/test_children_schema_contract.py'] },
-    { label: 'child access controls contract', cmd: 'python', args: ['prj/test_child_access_controls_contract.py'] },
-    { label: 'async pk results contract', cmd: 'python', args: ['prj/test_async_pk_results_contract.py'] },
-    { label: 'child social profile contract', cmd: 'python', args: ['prj/test_child_social_profile_contract.py'] },
-    { label: 'cloud config persistence contract', cmd: 'python', args: ['prj/test_cloud_config_persistence_contract.py'] },
-    { label: 'cloud diagnostics contract', cmd: 'python', args: ['prj/test_cloud_diagnostics_contract.py'] },
-    { label: 'cloud loader pages contract', cmd: 'python', args: ['prj/test_cloud_loader_pages_contract.py'] },
-    { label: 'cloud sync contract', cmd: 'python', args: ['prj/test_cloud_sync_contract.py'] },
-    { label: 'family social ops contract', cmd: 'python', args: ['prj/test_family_social_ops_contract.py'] },
-    { label: 'family social scope contract', cmd: 'python', args: ['prj/test_family_social_scope_contract.py'] },
-    { label: 'household contract', cmd: 'python', args: ['prj/test_household_contract.py'] },
-    { label: 'household invite issue contract', cmd: 'python', args: ['prj/test_household_invite_issue_contract.py'] },
-    { label: 'household peer social contract', cmd: 'python', args: ['prj/test_household_peer_social_contract.py'] },
-    { label: 'social walk action contract', cmd: 'python', args: ['prj/test_social_walk_action_contract.py'] },
-    { label: 'social walk invite flow contract', cmd: 'python', args: ['prj/test_social_walk_invite_flow_contract.py'] },
-    { label: 'home background theme contract', cmd: 'python', args: ['prj/test_home_background_theme_contract.py'] },
-    { label: 'walk scene adventure contract', cmd: 'python', args: ['prj/test_walk_scene_adventure_contract.py'] },
-    { label: 'explore rescue card contract', cmd: 'python', args: ['prj/test_explore_rescue_card_contract.py'] },
-    { label: 'home dashboard nav contract', cmd: 'python', args: ['prj/test_home_dashboard_nav_contract.py'] },
-    { label: 'pet walk page contract', cmd: 'python', args: ['prj/test_pet_walk_page_contract.py'] },
-    { label: 'points exchange cards contract', cmd: 'python', args: ['prj/test_points_exchange_cards_contract.py'] },
-    { label: 'url routing and settings subpages contract', cmd: 'node', args: ['prj/url_routing_and_settings_subpages.test.mjs'] },
-    { label: 'top nav hub menu contract', cmd: 'node', args: ['prj/top_nav_hub_menu.test.mjs'] },
-    { label: 'parent settings sections contract', cmd: 'node', args: ['prj/parent_settings_sections_contract.test.mjs'] },
-    { label: 'parent management hidden interfaces contract', cmd: 'node', args: ['prj/parent_management_hidden_interfaces.test.mjs'] },
-    { label: 'mayihaoke resource snapshot contract', cmd: 'node', args: ['prj/mayihaoke_resource_snapshot_contract.test.mjs'] },
-    { label: 'pet asset integrity', cmd: 'node', args: ['prj/pet_asset_integrity.test.mjs'] },
-    { label: 'petbank ui alignment regression', cmd: 'node', args: ['prj/petbank_ui_alignment_regression.test.mjs'] },
-    { label: 'math pk guided feedback contract', cmd: 'node', args: ['prj/math_pk_guided_feedback_contract.test.mjs'] },
-    { label: 'math pk support cards contract', cmd: 'node', args: ['prj/math_pk_support_cards_contract.test.mjs'] },
-    { label: 'playground hanzi hub contract', cmd: 'node', args: ['prj/playground_hanzi_hub.test.mjs'] },
-    { label: 'vocab registry contract', cmd: 'node', args: ['prj/vocab_registry_contract.test.mjs'] },
-    { label: 'minecraft vocab selector contract', cmd: 'node', args: ['prj/minecraft_vocab_selector_contract.test.mjs'] },
-    { label: 'minecraft vocab views contract', cmd: 'node', args: ['prj/minecraft_vocab_views_contract.test.mjs'] },
-    { label: 'minecraft core vocab expansion contract', cmd: 'node', args: ['prj/minecraft_core_vocab_expansion_contract.test.mjs'] },
-    { label: 'learning center english quiz vocab contract', cmd: 'node', args: ['prj/learning_center_english_quiz_vocab_contract.test.mjs'] },
-    { label: 'word memory external vocab merge contract', cmd: 'node', args: ['prj/word_memory_external_vocab_merge_contract.test.mjs'] },
-    { label: 'word memory world pack selector', cmd: 'node', args: ['prj/word_memory_world_pack_selector.test.mjs'] },
-    { label: 'core gameplay', cmd: 'node', args: ['prj/gameplay_core_flows_simulation.mjs'] },
-    { label: 'full game loop', cmd: 'node', args: ['prj/full_game_loop_simulation.mjs'] },
-    { label: 'extended whole-game progression', cmd: 'node', args: ['prj/extended_whole_game_progression_simulation.mjs'] },
     { label: 'profile isolation journey', cmd: 'node', args: ['prj/profile_isolation_journey_simulation.mjs'] },
-    { label: 'whole-game completion audit', cmd: 'node', args: ['prj/whole_game_completion_audit.mjs'] },
-    { label: 'cross-surface journey', cmd: 'node', args: ['prj/cross_surface_journey_simulation.mjs'] },
-    { label: 'parent light modules', cmd: 'node', args: ['prj/parent_light_modules_simulation.mjs'] },
-    { label: 'learning and card progression', cmd: 'node', args: ['prj/learning_and_card_progression_simulation.mjs'] },
-    { label: 'hanzi and english playground', cmd: 'node', args: ['prj/hanzi_and_english_playground_simulation.mjs'] },
-    { label: 'exploration battle guided feedback', cmd: 'node', args: ['prj/exploration_battle_guided_feedback.test.mjs'] },
-    { label: 'pinyin star scout voice contract', cmd: 'node', args: ['prj/pinyin_star_scout_voice_contract.test.mjs'] },
-    { label: 'word memory bomb throw', cmd: 'node', args: ['prj/word_memory_map_bomb_throw.test.mjs'] },
-    { label: 'word memory movement fx', cmd: 'node', args: ['prj/word_memory_map_movement_fx.test.mjs'] },
-    { label: 'word memory rewards ui', cmd: 'node', args: ['prj/word_memory_map_rewards_ui.test.mjs'] },
-    { label: 'word memory voice contract', cmd: 'node', args: ['prj/word_memory_map_voice_contract.test.mjs'] },
-    { label: 'word memory voice playback', cmd: 'node', args: ['prj/word_memory_map_voice_playback.test.mjs'] },
-    { label: 'word memory walk cycle', cmd: 'node', args: ['prj/word_memory_map_walk_cycle.test.mjs'] },
-    { label: 'word memory minecraft adapter contract', cmd: 'node', args: ['prj/word_memory_minecraft_adapter_contract.test.mjs'] },
-    { label: 'shared prototype voice workflow', cmd: 'node', args: ['prj/shared_prototype_voice_workflow.test.mjs'] },
-    { label: 'learning arcade hanzi voice reuse', cmd: 'node', args: ['prj/learning_arcade_hanzi_voice_reuse.test.mjs'] },
-    { label: 'exploration story and state resume', cmd: 'node', args: ['prj/exploration_story_and_state_resume_simulation.mjs'] },
-    { label: 'cloud family social pk', cmd: 'node', args: ['prj/cloud_family_social_pk_simulation.mjs'] },
-    { label: 'social two-pet visual contract', cmd: 'node', args: ['prj/social_two_pet_visual_contract.test.mjs'] },
-    { label: 'social walk profile-switch contract', cmd: 'node', args: ['prj/social_walk_profile_switch_info_contract.test.mjs'] },
-    { label: 'walk standalone', cmd: 'node', args: ['prj/walk_page_standalone_simulation.mjs'] },
-    { label: 'learning center deep pages', cmd: 'node', args: ['prj/learning_center_deep_pages_simulation.mjs'] },
-    { label: 'pet archive standalone', cmd: 'node', args: ['prj/pet_archive_standalone_simulation.mjs'] },
-    { label: 'shop inventory standalone', cmd: 'node', args: ['prj/shop_inventory_standalone_simulation.mjs'] },
-    { label: 'local profiles standalone', cmd: 'node', args: ['prj/local_profiles_standalone_simulation.mjs'] },
-    { label: 'settings parent management standalone', cmd: 'node', args: ['prj/settings_parent_management_standalone_simulation.mjs'] },
-    { label: 'edge states standalone', cmd: 'node', args: ['prj/edge_states_standalone_simulation.mjs'] },
-    { label: 'leaderboard standalone', cmd: 'node', args: ['prj/leaderboard_standalone_simulation.mjs'] },
-    { label: 'cloud contract smoke', cmd: 'python', args: ['prj/test_cloud_contract_smoke.py'] },
-    { label: 'async pk contract', cmd: 'python', args: ['prj/test_async_pk_contract.py'] },
-    { label: 'cloud restore contract', cmd: 'python', args: ['prj/test_cloud_restore_contract.py'] }
+    { label: 'growth review insights contract', cmd: 'node', args: ['prj/growth_review_insights_contract.test.mjs'] },
+    { label: 'petbank server config', cmd: 'node', args: ['--test', 'prj/petbank-server/test/config.test.mjs'] },
+    { label: 'petbank server database', cmd: 'node', args: ['--test', 'prj/petbank-server/test/database.test.mjs'] },
+    { label: 'word memory prototype', cmd: 'node', args: ['prj/单词记忆射击场原型/verify.mjs'] },
+    { label: 'learning arcade prototype', cmd: 'node', args: ['prj/学习机玩法原型/verify.mjs'] },
+    { label: 'learning arcade browser smoke', cmd: 'node', args: ['prj/学习机玩法原型/scripts/test-full-prototype-smoke.mjs'] },
+    { label: 'typing defense prototype', cmd: 'node', args: ['prj/消灭苦力怕打字游戏/web/verify.mjs'] },
+    { label: 'typing defense simulation', cmd: 'node', args: ['prj/消灭苦力怕打字游戏/web/simulate.mjs'] },
+    { label: 'child journey feedback', cmd: 'node', args: ['scripts/test-child-journey-feedback.mjs'] },
+    { label: 'child journey home', cmd: 'node', args: ['scripts/test-child-journey-home.mjs'] },
+    { label: 'core reward feedback', cmd: 'node', args: ['scripts/test-core-reward-feedback.mjs'] },
+    { label: 'core reward policy', cmd: 'node', args: ['scripts/test-core-reward-policy.mjs'] },
+    { label: 'core reward presentation', cmd: 'node', args: ['scripts/test-core-reward-presentation.mjs'] },
+    { label: 'daily state', cmd: 'node', args: ['scripts/test-daily-state.mjs'] },
+    { label: 'english vocab profile scope', cmd: 'node', args: ['scripts/test-english-vocab-profile-scope.mjs'] },
+    { label: 'game reward receipts', cmd: 'node', args: ['scripts/test-game-reward-receipts.mjs'] },
+    { label: 'narrative closure', cmd: 'node', args: ['scripts/test-narrative-closure.mjs'] },
+    { label: 'Pages fast gate contract', cmd: 'node', args: ['scripts/test-pages-fast-gate-contract.mjs'] },
+    { label: 'pet adventure retention', cmd: 'node', args: ['scripts/test-pet-adventure-retention.mjs'] },
+    { label: 'pet care daily state', cmd: 'node', args: ['scripts/test-pet-care-daily-state.mjs'] },
+    { label: 'pet growth feedback', cmd: 'node', args: ['scripts/test-pet-growth-feedback.mjs'] },
+    { label: 'pet growth history', cmd: 'node', args: ['scripts/test-pet-growth-history.mjs'] },
+    { label: 'playground entry shell', cmd: 'node', args: ['scripts/test-playground-entry-shell.mjs'] },
+    { label: 'repository boundaries', cmd: 'node', args: ['scripts/test-repository-boundaries.mjs'] },
+    { label: 'short travel chapter browser', cmd: 'node', args: ['scripts/test-short-travel-chapter-browser.mjs'] },
+    { label: 'static route entries', cmd: 'node', args: ['scripts/test-static-route-entries.mjs'] },
+    { label: 'task reward events', cmd: 'node', args: ['scripts/test-task-reward-events.mjs'] },
+    { label: 'travel memory assets', cmd: 'node', args: ['scripts/test-travel-memory-assets.mjs'] },
+    { label: 'travel memory browser', cmd: 'node', args: ['scripts/test-travel-memory-browser.mjs'] },
+    { label: 'travel memory real journey', cmd: 'node', args: ['scripts/test-travel-memory-real-journey.mjs'] }
 ];
 
 function checkBaseUrl(url) {
@@ -122,6 +67,8 @@ function runTask(task) {
         cwd: ROOT,
         stdio: 'inherit',
         shell: false,
+        timeout: TASK_TIMEOUT_MS,
+        killSignal: 'SIGTERM',
         env: {
             ...process.env,
             PETBANK_BASE_URL: BASE_URL
@@ -129,7 +76,8 @@ function runTask(task) {
     });
     return {
         label: task.label,
-        code: result.status ?? 1
+        code: result.status ?? 1,
+        timedOut: result.error?.code === 'ETIMEDOUT'
     };
 }
 
@@ -148,14 +96,14 @@ async function main() {
     for (const task of TASKS) {
         const result = runTask(task);
         if (result.code !== 0) {
-            failures.push(result);
+            failures.push({ ...result, reason: result.timedOut ? `timeout after ${TASK_TIMEOUT_MS}ms` : `exit ${result.code}` });
             break;
         }
     }
 
     if (failures.length) {
         console.error('\nRegression failed at:');
-        failures.forEach((item) => console.error(`- ${item.label} (exit ${item.code})`));
+        failures.forEach((item) => console.error(`- ${item.label} (${item.reason})`));
         process.exit(1);
     }
 

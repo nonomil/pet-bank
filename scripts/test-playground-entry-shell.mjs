@@ -11,7 +11,10 @@ const css = fs.readFileSync(path.join(root, 'css', 'style.css'), 'utf8');
 const leaf = fs.readFileSync(path.join(root, 'app', 'playground', 'typing-defense', 'index.html'), 'utf8');
 
 assert.match(app, /function resolveTypingDefenseEmbedSrc\(\)/, 'typing defense should resolve a runtime source');
-assert.match(app, /fetch\(runtimeSrc, \{ method: 'HEAD' \}\)/, 'typing defense should probe the published runtime first');
+assert.match(app, /function isLocalDevelopmentHost\(\)/, 'typing defense should distinguish local development from published Pages');
+assert.match(app, /if \(isLocalDevelopmentHost\(\)\) return Promise\.resolve\(sourceSrc\);/, 'typing defense should use the source game directly in local development');
+assert.doesNotMatch(app, /fetch\(runtimeSrc, \{ method: 'HEAD' \}\)/, 'typing defense must not create a local 404 probe before loading the source game');
+assert.match(app, /typingDefenseEmbedSrcPromise = Promise\.resolve\(runtimeSrc\);/, 'typing defense should use the assembled runtime in published Pages');
 assert.match(app, /frame\.dataset\.loading/, 'typing defense should prevent duplicate iframe loading');
 assert.match(loader, /function closeCardArenaEntry\(\)/, 'card arena should have a dedicated close flow');
 assert.match(loader, /card-arena-shell-active/, 'card arena should activate an immersive shell');

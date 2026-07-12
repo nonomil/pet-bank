@@ -1,99 +1,49 @@
-# 社交+家庭组
+# 家庭与社交能力
 
-> 社交: [js/social.js](../../js/social.js) (1246行)
-> 家庭组: [js/household.js](../../js/household.js) (924行)
-> 社交开关: [js/family-social-scope.js](../../js/family-social-scope.js) (32行)
-> 成长报告: [js/family-review.js](../../js/family-review.js) (382行)
-> 动态流: [js/activity-feed.js](../../js/activity-feed.js) (~100行)
+> 当前状态：家庭账号、孩子同步、好友、串门、PK 和动态流的旧云端实现已从运行时代码移除。当前产品只保留本机多孩子档案和离线玩法；生产账号后端规划为 VPS 自托管 SQLite API。
+>
+> 方案与实施顺序：[家庭账号社交体系](../../docs/家庭账号社交体系/README.md)
 
----
+## 当前可用能力
 
-## 原理
+- `js/profiles.js`：在本机 `localStorage` 中创建、切换和隔离多个孩子档案。
+- `js/walk.js`：单机宠物遛弯路线和互动。
+- `js/home.js`：单机宠物小屋、家具和背景主题。
+- `js/leaderboard.js`：按本地 profile 隔离的个人成绩记录。
+- `js/family-review.js`：只读取 `petbank_guided_feedback_history`，展示本机复盘空态和玩法卡点建议。
 
-### 设计目标
-社交功能分两期：一期（minimal-v1）仅支持家庭组成员间的简单互动（串门/打招呼/送小花/遛弯），二期扩展为完整社交。家庭组通过邀请码机制建立，家长审核加入。成长报告（FamilyReview）给家长展示孩子的学习路径而非分数排名。
+## 当前不可用能力
 
-### FamilySocialScope（功能开关）
+以下能力不能在前端伪装成已接入：
 
-```
-DEFAULT_SCOPE = 'minimal-v1'
+- 家长注册、登录和会话刷新。
+- 家庭创建、成员邀请、多个家长协作。
+- 孩子档案上传、跨设备快照恢复。
+- 好友码、串门、动态流和跨家庭 PK。
+- 本机复盘不等于家庭同步；它不会读取账号、好友或云端数据。
 
-minimal-v1 模式下:
-  - 隐藏云端诊断面板
-  - 隐藏 PK 控制面板
-  - 家庭组内简单互动
+这些能力的后端入口统一规划为 `/api/v1/`，由 `prj/petbank-server/` 的 Node.js + SQLite API 实现。接口完成前，家长设置页只展示建设状态和本地档案管理。
 
-完整社交版:
-  - 显示所有诊断和控制
-  - 支持更丰富的社交功能
-```
+## 产品边界
 
-### 社交模型
+家长端与孩子端要分成两条路径：
 
-```
-互动动作 (ACTION_META):
-  visit: 🏠 来串门 → 可以看对方宠物小屋
-  wave:  👋 打招呼 → 门口热情打招呼
-  gift:  🌼 送小花 → 送来一朵友谊小花
-  walk:  🚶 一起遛弯 → 约伙伴去遛弯
+```text
+/app/*
+  -> 孩子端：本地学习、宠物、小屋和游戏
 
-数据流:
-  家庭组成员 → 可见 + 可互动
-  好友（已添加） → 可见 + 按 pk_access 决定是否可挑战
-  陌生人 → 不可见
+/parent/*
+  -> 家长端：账号、家庭、孩子、同步和后续社交
 ```
 
----
+家长端不应把孩子端的玩法控制和本地存储细节暴露为“账号系统”。一期先完成账号、家庭、孩子和快照，再逐项放开社交能力。
 
-## 实现
+## 后续接入顺序
 
-### SocialSystem (social.js)
+1. SQLite 认证：注册、登录、refresh、退出、当前账号。
+2. 家庭和成员：家庭创建、成员列表、家庭邀请码。
+3. 孩子和快照：local profile 映射、revision 冲突、最新快照恢复。
+4. 好友和串门：访问权限、好友码、互动记录。
+5. PK 和动态流：独立 migration、权限测试和回滚方案。
 
-| 函数 | 行号 | 说明 |
-|------|------|------|
-| `SocialSystem.refresh()` | :80 | 刷新社交状态（家庭成员+好友+串门记录） |
-| `SocialSystem.getState()` | :100 | 获取社交状态 |
-| `SocialSystem.doAction(peerId, action)` | :200 | 执行互动动作 |
-| `SocialSystem.renderFriendHomeVisit(containerId)` | :300 | 渲染串门视图（看对方小屋） |
-| `SocialSystem.addFriend(peerId)` | :400 | 添加好友 |
-| `SocialSystem.getAvailablePeers()` | :500 | 获取可互动同伴列表 |
-
-### HouseholdSystem (household.js)
-
-| 函数 | 行号 | 说明 |
-|------|------|------|
-| `HouseholdSystem.refresh(containerId)` | :100 | 刷新家庭组状态 |
-| `HouseholdSystem.createInvite()` | :200 | 生成邀请码 |
-| `HouseholdSystem.acceptInvite(code)` | :250 | 接受邀请加入家庭组 |
-| `HouseholdSystem.getMembers()` | :300 | 获取家庭成员列表 |
-| `HouseholdSystem.removeMember(id)` | :350 | 移除成员 |
-
-### PKService (pk-service.js)
-
-| 函数 | 行号 | 说明 |
-|------|------|------|
-| `PKService.refresh()` | :80 | 刷新PK匹配状态 |
-| `PKService.getAvailablePeers()` | :49 | 获取可挑战的同伴（仅家庭成员） |
-
-### FamilyReview (family-review.js)
-
-| 函数 | 行号 | 说明 |
-|------|------|------|
-| `FamilyReview.refresh(containerId)` | :30 | 刷新成长报告 |
-| `FamilyReview.renderReport()` | :100 | 渲染报告视图 |
-
-### 持久化
-
-```
-key: petbank_social_local_visits → 本地串门记录 (social.js:177)
-```
-
----
-
-## 注意事项
-
-- 社交功能在 minimal-v1 模式下大量功能被隐藏
-- 家庭组邀请码机制依赖 Supabase 后端
-- 本地串门记录存 localStorage，云端同步到 Supabase
-- PK 挑战仅限于家庭成员（PKService:12 `ONLY_HOUSEHOLD_PK_NOTICE`）
-- escapeHtml 在 social.js、household.js、pk-service.js 中各自重复实现
+在每一步完成前，保留本地离线能力作为明确降级路径，不将未实现的云端动作写入成功状态。

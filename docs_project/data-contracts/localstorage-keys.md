@@ -31,17 +31,15 @@
 | `petbank_learning_daily_sheet` | JSON | learn-center.js:75 | learn-center.js:66 | 每日学习单 |
 | `petbank_learning_sheet_mode` | string | learn-center.js:75 | learn-center.js:66 | 学习单模板 |
 | `petbank_learning_vocab_focus` | JSON | learn-center.js:75 | learn-center.js:66 | 词汇焦点 |
-| `petbank_cloud_config` | JSON | cloud-client.js:94,101 | cloud-client.js:15 | 云端配置（持久化） |
+| `petbank_guided_feedback_history` | JSON array | app.js:1172 | family-review.js:20 | 数学 PK / 探索卡点与下一步建议（本机） |
 | `petbank_custom_items` | JSON array | app.js:495,588 | app.js:474 | 自定义积分兑换项 |
 | `petbank_hanzi_progress` | JSON | hanzi-progress.js:39 | hanzi-progress.js:28 | 汉字学习进度 |
 | `petbank_english_vocab_progress` | JSON | english-vocab-progress.js:20 | english-vocab-progress.js:11 | 英语词汇进度 |
 | `petbank_mathpk_*` | JSON | math-pk.js (多处) | math-pk.js (多处) | 数学PK数据（多key） |
 | `petbank_leaderboard_*` | JSON | leaderboard.js:42 | leaderboard.js:28 | 排行榜（多key，按gameId） |
-| `petbank_social_local_visits` | JSON | social.js:177 | social.js:168,173 | 本地串门记录 |
 | `petbank_sfx_volume` | number | sfx.js:180 | sfx.js:41 | 音效音量 |
 | `petbank_sfx_muted` | flag | sfx.js:176 | sfx.js:43 | 音效静音 |
 | `petbank_advanced_tools` | flag | tools.js:552,557 | tools.js:29 | 高级工具开关 |
-| `petbank_family_members` | JSON | tools.js:49 | tools.js:38 | 家庭成员 |
 | `petbank_pomodoro_today` | number | tools.js:50 | tools.js:42 | 今日番茄钟数 |
 
 ## Profile 管理键（ProfileManager 专用）

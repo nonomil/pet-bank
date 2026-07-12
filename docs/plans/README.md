@@ -49,12 +49,7 @@
 | `PLAN-2026-07-05-LEARN-SHEET-B` | [2026-07-05-points-learning-sheet-subtab-implementation](./2026-07-05-points-learning-sheet-subtab-implementation.md) | 实施计划 | 已落地(v0.7.5) | 方案 B 的具体落地步骤、回归点与文档回填要求 |
 | `DESIGN-2026-07-05-LEARN-PORTAL-CN` | [2026-07-05-learning-center-chinese-portal-cover-design](./2026-07-05-learning-center-chinese-portal-cover-design.md) | 设计稿 | 已落地(v0.7.5) | 中文资料包入口封面改造：暖黄绘本课堂 + 课桌学习角 Agnes 主视觉 |
 | `PLAN-2026-07-05-LEARN-PORTAL-CN` | [2026-07-05-learning-center-chinese-portal-cover-implementation](./2026-07-05-learning-center-chinese-portal-cover-implementation.md) | 实施计划 | 已落地(v0.7.5) | 中文资料包入口封面图的 Agnes 生成、接图与 smoke 校验计划 |
-| `DESIGN-2026-07-05-02` | [2026-07-05-family-account-social-design](./2026-07-05-family-account-social-design.md) | 设计稿 | 实施中 | 家长账号、家庭、多孩子、串门与数学/汉字异步 PK 的正式设计稿 |
-| `PLAN-2026-07-05-02` | [2026-07-05-family-account-social-implementation](./2026-07-05-family-account-social-implementation.md) | 实施计划 | 主干已落地，待联调 | 基于 Supabase 轻后端的家庭账号社交体系分任务实施计划 |
-| `TASK-2026-07-05-02` | [2026-07-05-family-account-social-task-list](./2026-07-05-family-account-social-task-list.md) | 任务清单 | 进行中 | 扁平推进清单，当前重点转向 P6 联调上线 |
-| `PLAN-2026-07-05-03` | [2026-07-05-family-account-social-live-validation-plan](./2026-07-05-family-account-social-live-validation-plan.md) | 实施计划 | 当前活跃 | 家庭账号社交体系的真实环境部署、双设备联调、灰度与回滚计划 |
-| `DESIGN-2026-07-05-03` | [2026-07-05-admin-backoffice-hermes-design](./2026-07-05-admin-backoffice-hermes-design.md) | 设计稿 | 当前活跃 | 轻后台、数据库安全升级与 Hermes 自动部署的正式设计稿 |
-| `PLAN-2026-07-05-04` | [2026-07-05-admin-backoffice-hermes-implementation](./2026-07-05-admin-backoffice-hermes-implementation.md) | 实施计划 | 当前活跃 | 轻后台、admin 角色模型、Hermes 配置与部署约定的实施计划 |
+| `DESIGN-2026-07-05-02` | [家庭账号社交体系/SQLite自托管版](../家庭账号社交体系/SQLite自托管版/README.md) | 设计与方案 | 当前主方案 | VPS 自托管 Node.js + SQLite 账号、家庭、孩子、快照和 Hermes 发布边界 |
 | `PLAN-2026-07-07-MATH-PK-CARDS-P1` | [2026-07-07-math-pk-support-cards-p1](./2026-07-07-math-pk-support-cards-p1.md) | 实施计划 | 已落地(v0.7.14) | 数学 PK 学习支援卡 P1：三选一支援卡、三张低龄友好卡和局后 3 星结算的实施计划 |
 | `DESIGN-2026-07-08-PK-BRAWL-MOTION-01` | [2026-07-08-pk-brawl-battle-motion-design](./2026-07-08-pk-brawl-battle-motion-design.md) | 设计稿 | 已确认方向 | 数学 PK、卡牌对战、探索遭遇战统一升级为“前冲贴近 -> 命中 -> 受击 -> 回位”的共通战斗动作语言 |
 | `PLAN-2026-07-08-PK-BRAWL-MOTION-01` | [2026-07-08-pk-brawl-battle-motion-implementation](./2026-07-08-pk-brawl-battle-motion-implementation.md) | 实施计划 | 实施中 | 三套 PK 玩法的 battle motion 契约、探索动作骨架、数学 PK 贴身命中和卡牌重演出落地计划 |
@@ -63,10 +58,7 @@
 | `PLAN-2026-07-08-WORDMEM-MC-ADAPTER-01` | [2026-07-08-word-memory-minecraft-adapter-implementation](./2026-07-08-word-memory-minecraft-adapter-implementation.md) | 实施记录 | 已落地 | 单词记忆射击场引用根目录 `data/vocab/english-minecraft` 的 `memory-view`，生成活动词卡，并同步补齐本地 mp3 语音与适配验证 |
 | `DESIGN-2026-07-08-GAME-SPLIT-01` | [2026-07-08-learning-games-subject-split-design](./2026-07-08-learning-games-subject-split-design.md) | 设计稿 | 已确认方向 | 学习机玩法分工与题库分仓设计：明确打字射击练英语拼写、地图记忆练词义、拼音蛇练拼音、Math PK 练数学，并把数据收口为学科主仓 + 游戏视图 |
 | `PLAN-2026-07-08-EXP-BATTLE-FEEDBACK-01` | [2026-07-08-exploration-battle-feedback-implementation](./2026-07-08-exploration-battle-feedback-implementation.md) | 实施计划 | 已落地 | 探索战斗失败反馈计划：补齐“复盘 + 下一步”结构化提示，并纳入全量回归 |
-| `TOPIC-FAMILY-ACCOUNT-SOCIAL` | [../家庭账号社交体系/README](../家庭账号社交体系/README.md) | 专题索引 | 当前活跃 | 账号体系、家庭关系、好友串门与异步 PK 的专题目录 |
-| `ROLL-2026-07-05-01` | [../家庭账号社交体系/联调上线/manual-run-template](../家庭账号社交体系/联调上线/manual-run-template.md) | 联调模板 | 当前活跃 | 双家长 / 双设备 / 双家庭联调记录模板，可由 ops 脚本生成当天文档 |
-| `ROLL-2026-07-05-02` | [../家庭账号社交体系/联调上线/deploy-log-template](../家庭账号社交体系/联调上线/deploy-log-template.md) | 部署模板 | 当前活跃 | Supabase 部署日志模板，可由 ops 脚本生成当天文档 |
-| `ROLL-2026-07-05-03` | [../家庭账号社交体系/联调上线/go-no-go-template](../家庭账号社交体系/联调上线/go-no-go-template.md) | 决策模板 | 当前活跃 | 上线决策模板，可由 ops 脚本沉淀 go / no-go 结论 |
+| `TOPIC-FAMILY-ACCOUNT-SOCIAL` | [../家庭账号社交体系/README](../家庭账号社交体系/README.md) | 专题索引 | 当前活跃 | 账号体系、家庭关系、孩子端/家长端边界与 SQLite 实施路线 |
 
 ---
 
@@ -85,7 +77,7 @@
 - 想看“家庭账号、多孩子、多家庭互动到底怎么做”：
   先读 [../家庭账号社交体系/README.md](../家庭账号社交体系/README.md)
 - 想看“后台管理、升级不丢数据、Hermes 自动部署怎么做”：
-  先读 [2026-07-05-admin-backoffice-hermes-design](./2026-07-05-admin-backoffice-hermes-design.md) → [2026-07-05-admin-backoffice-hermes-implementation](./2026-07-05-admin-backoffice-hermes-implementation.md)
+  先读 [家庭账号社交体系/SQLite自托管版](../家庭账号社交体系/SQLite自托管版/README.md) → [Hermes 部署手册](../../docs_project/runbooks/self-hosted/AI-HERMES-DEPLOY.md)
 - 想看“卡牌系统这一轮该怎么执行”：
   直接去 [../卡牌系统/README.md](../卡牌系统/README.md)
 - 想看“路线地图这一轮到底按什么边界执行”：

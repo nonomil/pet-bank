@@ -6,8 +6,8 @@
 
 | 类别 | 目录/文件 | 规则 |
 | --- | --- | --- |
-| 网页运行时 | `index.html`、`admin.html`、`css/`、`js/`、`app/`、`assets/`、`data/`、`prj/` 中被 `scripts/assemble-pages-artifact.mjs` 精确放行的运行时 | 修改后必须运行静态路由和制品检查；不得按目录体积直接删除 |
-| 受版本控制源码 | `.github/`、`scripts/`、`supabase/`、`ops/`、`docs_project/`、受追踪的 `prj/` 与数据文件 | 必须通过 Git 变更、测试和文档同步管理 |
+| 网页运行时 | `index.html`、`css/`、`js/`、`app/`、`assets/`、`data/`、`prj/` 中被 `scripts/assemble-pages-artifact.mjs` 精确放行的运行时 | 修改后必须运行静态路由和制品检查；不得按目录体积直接删除 |
+| 受版本控制源码 | `.github/`、`scripts/`、`ops/`、`docs_project/`、`prj/petbank-server/`、受追踪的 `prj/` 与数据文件 | 必须通过 Git 变更、测试和文档同步管理 |
 | 原始素材 | `assets/pets-originals/`、原始宠物姿态、原始图包、用户提供主角/背景素材 | 仅在确认已有可恢复来源或 Git 历史后才可移动；不得作为常规垃圾清理 |
 | 可再生成产物 | 生图输出、图片切图、词库适配 JSON、Pages `_site*` 制品 | 必须记录生成脚本和验证命令；正式运行资源例外，需由发布白名单和测试证明 |
 | 本地缓存 | `tmp/`、`_site_check*/`、`_pages_test_root/`、浏览器 profile、截图、测试产物、Python/Node 缓存 | 默认不入库；确认没有运行进程使用后可删除 |

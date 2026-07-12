@@ -64,7 +64,7 @@
 | 16 | [js/profiles.js](../../js/profiles.js) | 3 套学习单模板定义（与 learn-center.js 中的重复） | 统一到一个数据源 |
 | 17 | [js/card-collection.js](../../js/card-collection.js) | 图鉴馆/系列描述文案（SOURCE_DETAIL_LABELS + GALLERY 描述） | 合并到 `data/pets.json` 的 series 段或独立 `data/pokedex-lore-draft.json` |
 | 18 | [js/card-collection.js](../../js/card-collection.js) | 宠物故事兜底文案模板 | 可保留（仅兜底），但主故事应来自数据 |
-| 19 | [js/cloud-sync.js](../../js/cloud-sync.js) | 同步理由的中文标签 | 低优先级 |
+| 19 | SQLite API 快照同步 | 同步理由和冲突提示文案 | 待 API 与前端同步层实现后再评估 |
 | 20 | [js/app.js](../../js/app.js) | HOME_TAB_MAP 导航标签中文 | 低优先级（导航结构非教育内容） |
 
 ---

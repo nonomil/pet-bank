@@ -412,10 +412,6 @@ const ExplorationSystem = (function () {
 
         PetSystem.takeDamage(scene.hp_cost);
         PetSystem.addExploration();
-        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
-            window.CloudSync.scheduleSync('exploration_start');
-        }
-
         if (scene.monsters.length > 0) {
             // 章末精英区（danger>=4）40% 概率遇 species 敌人（图鉴宠物，首胜定向掉卡）
             let monster = null;
@@ -509,6 +505,15 @@ const ExplorationSystem = (function () {
     function markBattleLost(battle, cause) {
         battle.status = 'lost';
         battle.guidedFeedback = buildBattleGuidedFeedback(battle, cause);
+        if (typeof window.recordGuidedFeedback === 'function') {
+            window.recordGuidedFeedback({
+                id: `explore_feedback_${Date.now()}`,
+                mode: 'explore',
+                cause: cause || 'battle_lost',
+                note: battle.guidedFeedback.note,
+                nextStep: battle.guidedFeedback.nextStep
+            });
+        }
         battle.log.push({ type: 'system', text: '💤 宠物需要休息一下。' });
         battle.log.push({ type: 'system', text: `复盘：${battle.guidedFeedback.note}` });
         battle.log.push({ type: 'system', text: `下一步：${battle.guidedFeedback.nextStep}` });
@@ -630,9 +635,6 @@ const ExplorationSystem = (function () {
                     const itemData = InventorySystem.getItemData(rare.item_id);
                     battle.log.push({ type: 'reward', text: `💎 发现稀有线索：${itemData?.name || rare.item_id} x1` });
                 }
-            }
-            if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
-                window.CloudSync.scheduleSync('exploration_win');
             }
             // 回合结束：CD 递减
             if (typeof PetSystem.tickCooldowns === 'function') PetSystem.tickCooldowns(cdStartedThisTurn);

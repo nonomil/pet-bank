@@ -1,0 +1,126 @@
+{
+  "level": "level-04",
+  "assets": [
+    {
+      "name": "candy_track_ramp",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_track_ramp.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-01_519x419.png",
+      "size": [
+        519,
+        419
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_track_bridge",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_track_bridge.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-03_275x349.png",
+      "size": [
+        275,
+        349
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_finish_gate",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_finish_gate.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-05_544x312.png",
+      "size": [
+        544,
+        312
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_blue_car",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_blue_car.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-06_238x184.png",
+      "size": [
+        238,
+        184
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_barrier_red",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_barrier_red.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-07_219x94.png",
+      "size": [
+        219,
+        94
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_barrier_yellow",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_barrier_yellow.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-08_198x103.png",
+      "size": [
+        198,
+        103
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_balloon_pink",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_balloon_pink.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-15_130x174.png",
+      "size": [
+        130,
+        174
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_balloon_purple",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_balloon_purple.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-16_96x135.png",
+      "size": [
+        96,
+        135
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_balloon_blue",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_balloon_blue.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-17_100x141.png",
+      "size": [
+        100,
+        141
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_floating_island",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_floating_island.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-25_172x188.png",
+      "size": [
+        172,
+        188
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "candy_waterfall",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-04/candy_waterfall.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-26_186x180.png",
+      "size": [
+        186,
+        180
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    }
+  ]
+}

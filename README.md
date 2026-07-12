@@ -6,9 +6,9 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.38](https://img.shields.io/badge/Version-v0.7.38-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.39](https://img.shields.io/badge/Version-v0.7.39-brightgreen.svg)](CHANGELOG.md)
 
-📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [账号与 Supabase 部署手册](docs_project/runbooks/account-auth-supabase-deploy.md) ｜ [更新日志](CHANGELOG.md)
+📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [SQLite 家庭账号方案](docs/家庭账号社交体系/SQLite自托管版/README.md) ｜ [更新日志](CHANGELOG.md)
 
 🌐 **在线访问**：<https://summer-bank.nonom.top>
 🌐 **GitHub Pages**：<https://nonomil.github.io/pet-bank/>
@@ -27,9 +27,13 @@
 
 ---
 
-## 🎉 最近更新（v0.7.38）
+## 🎉 最近更新（v0.7.39）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
+
+- 🏠 **本机成长复盘**：复盘页按需加载 `family-review.js`，只读取本机玩法卡点记录；无记录时显示明确空态，不连接 Supabase、家庭同步或好友数据
+- 🧪 **回归入口可靠性**：全量回归固定为当前 35 项可交付测试；每项测试有 120 秒超时，浏览器截图统一写入 `tmp/test-artifacts/`，不会污染发布文档目录
+- 🧭 **本地-only / 自托管边界**：主站继续使用 `localStorage`，账号后端由 Node.js + SQLite 逐步接入；本地 `cloud-config.local.js`、`.firecrawl/` 和测试制品保持忽略，不进入发布提交
 
 - 📚 **像素探险学习闭环**：英文敌人头顶只显示单词；未持球点击先打开主题图片、英文、中文、例句与发音词卡，持中文球后再投掷，形成“预习 → 判断 → 操作 → 回访”节奏
 - 🎮 **游乐场更沉浸**：打字防线点击后优先加载 Pages 运行时，卡牌对战会自动隐藏非游戏界面并提供固定的返回/关闭栏；三张玩法卡同步优化主体居中裁切
@@ -39,7 +43,7 @@
 - 🩹 **GitHub Pages 首屏热修复**：资源初始基址改为相对当前目录，避免仓库子路径部署时浏览器预加载错误请求站点根目录的 CSS、JS 和宠物图片
 - 🖼️ **游乐场卡图 WebP 化**：8 个玩法入口统一使用 960px WebP 发布图，总体积从约 5MB 降至约 270KB，并保证静态构建产物包含全部卡图
 - 🩹 **深层页面图片巡检修复**：修正深层路由默认宠物图与打字防线词卡回退图的相对路径，宠物子页和游乐场独立玩法不再产生图片 404
-- 🔗 **叶子路由完整直达**：静态发布入口扩展至全部 40 个公开路径，宠物小屋、打字防线、像素探险等深层 URL 直接打开不再落到 `404.html` 兜底页
+- 🔗 **叶子路由完整直达**：静态发布入口覆盖当前 39 个公开路径，宠物小屋、打字防线、像素探险等深层 URL 直接打开不再落到 `404.html` 兜底页
 - 🧹 **独立游戏图片收口**：打字防线词库图片和像素探险默认全景图均已纳入正确发布路径，两个 iframe 页面不再产生图片 404
 - 🗺️ **像素探险 9 格世界**：农场、森林和太空地图改为连贯 3×3 图块；Pages 打包不再重复携带打字防线开发原型，并会修正单词卡远程图 URL
 - 📘 **全景优化方案**：新增架构、学习、游戏体验、路线图与可执行工作包，作为后续可靠性和学习闭环改造的版本化依据
@@ -196,10 +200,10 @@ pet-bank 采用**最朴素的现代前端方案**——静态 HTML + 模块化 J
 | **样式** | Tailwind CSS (CDN) | 实用优先的 CSS 框架 |
 | **图标** | Lucide Icons | 优雅统一的 SVG 图标库 |
 | **结构** | 静态 HTML + 模块化 JS | 一个 `index.html` 入口 + 多个 JS 模块协作 |
-| **部署** | GitHub Pages / Cloudflare Tunnel / Supabase | 静态前端独立发布，云端数据库与函数单独部署 |
-| **数据** | 浏览器本地存储 + Supabase（可选） | 默认可离线本地运行，接入云端后支持账号、家庭、多孩子与互动数据 |
+| **部署** | VPS Nginx / Docker Compose / Hermes | 静态前端和 Node.js API 同域发布，SQLite 数据放在共享目录 |
+| **数据** | 浏览器本地存储 + 自托管 SQLite | 默认可离线本地运行，账号后端完成后支持家庭、多孩子与互动数据 |
 
-> 当前主站仍保持静态前端形态；配置 Supabase 后，可以渐进开启家长账号、家庭社交、后台管理壳和真实环境部署。
+> 当前主站仍保持静态前端形态；账号服务改由 `prj/petbank-server` 的 Node.js + SQLite API 承接，详见 `docs/家庭账号社交体系/SQLite自托管版/`。
 
 ### 为什么保持静态站点？
 

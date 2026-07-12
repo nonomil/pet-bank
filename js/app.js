@@ -2052,7 +2052,7 @@ const PAGE_TO_TAB = {
     'learning-arcade': 'playground',
     'word-memory-map': 'playground',
     leaderboard: 'playground',                                  // 排行榜 → 游乐场
-    pet: 'pet', home: 'pet', 'home-visit': 'pet', card: 'pet', walk: 'pet',          // 宠物
+    pet: 'pet', home: 'pet', card: 'pet', walk: 'pet',          // 宠物
     explore: 'explore',                                         // 探索（含成长地图）
     parent: 'parent',
     works: 'parent', tools: 'parent', settings: 'parent'         // 低频作品/工具/设置归右上角家长区入口
@@ -2073,7 +2073,6 @@ const CLASSIC_APP_PAGES = new Set([
     'learn-print',
     'pet',
     'home',
-    'home-visit',
     'explore',
     'playground'
 ]);
@@ -2126,7 +2125,6 @@ const PAGE_ROUTE_MAP = {
     home: '/app/pet/home',
     walk: '/app/pet/walk',
     card: '/app/pet/cards',
-    'home-visit': '/app/pet/home-visit',
     explore: '/app/explore',
     playground: '/app/playground',
     mathpk: '/app/playground/math-pk',
@@ -2159,7 +2157,6 @@ const ROUTE_TO_PAGE = {
     '/app/pet/home': { page: 'home' },
     '/app/pet/walk': { page: 'walk' },
     '/app/pet/cards': { page: 'card' },
-    '/app/pet/home-visit': { page: 'home-visit' },
     '/app/explore': { page: 'explore' },
     '/app/playground': { page: 'playground' },
     '/app/playground/math-pk': { page: 'mathpk' },
@@ -2184,7 +2181,6 @@ const ROUTE_TO_PAGE = {
     '/pet/home': { page: 'home' },
     '/pet/walk': { page: 'walk' },
     '/pet/cards': { page: 'card' },
-    '/pet/home-visit': { page: 'home-visit' },
     '/explore': { page: 'explore' },
     '/playground': { page: 'playground' },
     '/playground/math-pk': { page: 'mathpk' },
@@ -2552,9 +2548,6 @@ function switchPage(page, options = {}) {
     const prevPage = prevPageEl ? prevPageEl.id.replace('page-', '') : null;
     if (prevPage === 'home' && page !== 'home' && window.PetSystem && typeof PetSystem.markHomeExit === 'function') {
         PetSystem.markHomeExit();
-        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
-            window.CloudSync.scheduleSync('home_exit');
-        }
     }
     if (prevPage === 'explore' && page !== 'explore' && window.VoiceSystem && typeof VoiceSystem.stop === 'function') {
         VoiceSystem.stop();
@@ -2583,83 +2576,6 @@ function switchPage(page, options = {}) {
     });
     if (page === 'settings') applySettingsSection(activeSettingsSection);
     void preparePage(page);
-    /* legacy eager page activation kept disabled after runtime-loader migration
-    if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
-    if (page === 'pet') renderPetPage();
-    if (page === 'walk') {
-        renderWalkPage();
-        if (!pendingWalkRouteId && window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
-            void window.SocialSystem.refresh()
-                .then(function () {
-                    const walkPage = document.getElementById('page-walk');
-                    if (walkPage && walkPage.classList.contains('active')) renderWalkPage();
-                })
-                .catch(function () {});
-        }
-    }
-    if (page === 'home-visit' && window.SocialSystem && typeof window.SocialSystem.renderFriendHomeVisit === 'function') {
-        window.SocialSystem.renderFriendHomeVisit('friend-home-visit-root');
-    }
-    if (page === 'explore') void renderExplorePage();
-    if (page === 'mathpk') MathPKGame.renderUI('math-pk-container');
-    if (page === 'hanzi' && window.HanziGame) HanziGame.renderUI('hanzi-container');
-    if (page === 'review' && window.FamilyReview && typeof window.FamilyReview.refresh === 'function') void FamilyReview.refresh('family-review-root');
-    if (page === 'leaderboard' && window.Leaderboard) {
-        switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
-        if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
-            void window.SocialSystem.refresh()
-                .then(function () {
-                    if (window.PKService && typeof window.PKService.refresh === 'function') {
-                        return window.PKService.refresh();
-                    }
-                    return null;
-                })
-                .then(function () {
-                    const leaderboardPage = document.getElementById('page-leaderboard');
-                    if (leaderboardPage && leaderboardPage.classList.contains('active')) {
-                        switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
-                    }
-                })
-                .catch(function () {});
-        }
-    }
-    if (page === 'learn' && window.LearnCenter) void LearnCenter.renderHub('learn-container');
-    if (page === 'learn-pack' && window.LearnCenter) void LearnCenter.renderPack('learn-pack-container');
-    if (page === 'learn-plan' && window.LearnCenter) void LearnCenter.renderPlan('learn-plan-container');
-    if (page === 'learn-lesson' && window.LearnCenter) void LearnCenter.renderLesson('learn-lesson-container');
-    if (page === 'learn-print' && window.LearnCenter) void LearnCenter.renderPrint('learn-print-container');
-    if (page === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
-        void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
-    }
-    if (page === 'inventory') renderInventoryPage();
-    if (page === 'today') updateRewardPetCard();
-    if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
-    if (page === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
-    if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
-    if (page === 'home' && window.HomeSystem) HomeSystem.renderUI('home-container');
-    if (page === 'settings' && window.SettingsPage) SettingsPage.render();
-    if (page === 'settings' && window.AuthSystem && typeof window.AuthSystem.render === 'function') AuthSystem.render('auth-root');
-    if (page === 'settings' && window.HouseholdSystem && typeof window.HouseholdSystem.refresh === 'function') void HouseholdSystem.refresh('household-root');
-    if (page === 'settings' && window.SocialSystem && typeof window.SocialSystem.refresh === 'function') void SocialSystem.refresh();
-    const showDiagnostics = !window.FamilySocialScope
-        || typeof window.FamilySocialScope.shouldShowDiagnostics !== 'function'
-        || window.FamilySocialScope.shouldShowDiagnostics();
-    if (page === 'settings' && showDiagnostics && window.CloudDiagnostics && typeof window.CloudDiagnostics.render === 'function') {
-        CloudDiagnostics.render('diagnostics-root');
-        if (typeof window.CloudDiagnostics.refresh === 'function') {
-            void CloudDiagnostics.refresh('diagnostics-root');
-        }
-    } else if (page === 'settings') {
-        const diagnosticsRoot = document.getElementById('diagnostics-root');
-        if (diagnosticsRoot) diagnosticsRoot.innerHTML = '';
-    }
-    if (page === 'settings' && showDiagnostics && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') {
-        MathPKGame.renderDifficultySetting('settings-math-diff');
-    } else if (page === 'settings') {
-        const settingsMathDiff = document.getElementById('settings-math-diff');
-        if (settingsMathDiff) settingsMathDiff.innerHTML = '';
-    }
-    */
     window.sfx && sfx.click();
 }
 
@@ -2924,15 +2840,17 @@ function ensureTypingDefenseEmbed() {
 
 let typingDefenseEmbedSrcPromise = null;
 
+function isLocalDevelopmentHost() {
+    const hostname = String(window.location.hostname || '').toLowerCase();
+    return !hostname || hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
+}
+
 function resolveTypingDefenseEmbedSrc() {
     if (typingDefenseEmbedSrcPromise) return typingDefenseEmbedSrcPromise;
     const runtimeSrc = withRouteBase('/app/playground/typing-defense-runtime/web/index.html');
     const sourceSrc = withRouteBase('/prj/%E6%B6%88%E7%81%AD%E8%8B%A6%E5%8A%9B%E6%80%95%E6%89%93%E5%AD%97%E6%B8%B8%E6%88%8F/web/index.html');
-    typingDefenseEmbedSrcPromise = fetch(runtimeSrc, { method: 'HEAD' }).then(function (response) {
-        return response.ok ? runtimeSrc : sourceSrc;
-    }).catch(function () {
-        return sourceSrc;
-    });
+    if (isLocalDevelopmentHost()) return Promise.resolve(sourceSrc);
+    typingDefenseEmbedSrcPromise = Promise.resolve(runtimeSrc);
     return typingDefenseEmbedSrcPromise;
 }
 
@@ -3033,20 +2951,7 @@ function runPageActivation(page) {
     if (page === 'parent') updateParentHomePage();
     if (page === 'works') renderGrowthWorksPage();
     if (page === 'pet') renderPetPage();
-    if (page === 'walk') {
-        renderWalkPage();
-        if (!pendingWalkRouteId && window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
-            void window.SocialSystem.refresh()
-                .then(function () {
-                    const walkPage = document.getElementById('page-walk');
-                    if (walkPage && walkPage.classList.contains('active')) renderWalkPage();
-                })
-                .catch(function () {});
-        }
-    }
-    if (page === 'home-visit' && window.SocialSystem && typeof window.SocialSystem.renderFriendHomeVisit === 'function') {
-        window.SocialSystem.renderFriendHomeVisit('friend-home-visit-root');
-    }
+    if (page === 'walk') renderWalkPage();
     if (page === 'explore' && window.ExplorationSystem) void renderExplorePage();
     if (page === 'playground') renderPlaygroundProgressBoard();
     if (page === 'review') renderReviewBattleBoard();
@@ -3065,25 +2970,7 @@ function runPageActivation(page) {
         ensureWordMemoryMapEmbed();
     }
     if (page === 'review' && window.FamilyReview && typeof window.FamilyReview.refresh === 'function') void FamilyReview.refresh('family-review-root');
-    if (page === 'leaderboard' && window.Leaderboard) {
-        switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
-        if (window.SocialSystem && typeof window.SocialSystem.refresh === 'function') {
-            void window.SocialSystem.refresh()
-                .then(function () {
-                    if (window.PKService && typeof window.PKService.refresh === 'function') {
-                        return window.PKService.refresh();
-                    }
-                    return null;
-                })
-                .then(function () {
-                    const leaderboardPage = document.getElementById('page-leaderboard');
-                    if (leaderboardPage && leaderboardPage.classList.contains('active')) {
-                        switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
-                    }
-                })
-                .catch(function () {});
-        }
-    }
+    if (page === 'leaderboard' && window.Leaderboard) switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
     if (page === 'learn' && window.LearnCenter) void LearnCenter.renderHub('learn-container');
     if (page === 'learn-pack' && window.LearnCenter) void LearnCenter.renderPack('learn-pack-container');
     if (page === 'learn-plan' && window.LearnCenter) void LearnCenter.renderPlan('learn-plan-container');
@@ -3099,22 +2986,11 @@ function runPageActivation(page) {
     if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
     if (page === 'home' && window.HomeSystem) HomeSystem.renderUI('home-container');
     if (page === 'settings' && window.SettingsPage) SettingsPage.render();
-    if (page === 'settings' && window.AuthSystem && typeof window.AuthSystem.render === 'function') AuthSystem.render('auth-root');
-    if (page === 'settings' && window.HouseholdSystem && typeof window.HouseholdSystem.refresh === 'function') void HouseholdSystem.refresh('household-root');
-    if (page === 'settings' && window.SocialSystem && typeof window.SocialSystem.refresh === 'function') void SocialSystem.refresh();
-    const showDiagnostics = !window.FamilySocialScope
-        || typeof window.FamilySocialScope.shouldShowDiagnostics !== 'function'
-        || window.FamilySocialScope.shouldShowDiagnostics();
-    if (page === 'settings' && showDiagnostics && window.CloudDiagnostics && typeof window.CloudDiagnostics.render === 'function') {
-        CloudDiagnostics.render('diagnostics-root');
-        if (typeof window.CloudDiagnostics.refresh === 'function') {
-            void window.CloudDiagnostics.refresh('diagnostics-root');
-        }
-    } else if (page === 'settings') {
+    if (page === 'settings') {
         const diagnosticsRoot = document.getElementById('diagnostics-root');
         if (diagnosticsRoot) diagnosticsRoot.innerHTML = '';
     }
-    if (page === 'settings' && showDiagnostics && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') {
+    if (page === 'settings' && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') {
         MathPKGame.renderDifficultySetting('settings-math-diff');
     } else if (page === 'settings') {
         const settingsMathDiff = document.getElementById('settings-math-diff');
@@ -3125,7 +3001,7 @@ function runPageActivation(page) {
             .then(function () {
                 const settingsPage = document.getElementById('page-settings');
                 if (!settingsPage || !settingsPage.classList.contains('active')) return;
-                if (showDiagnostics && window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') {
+                if (window.MathPKGame && typeof window.MathPKGame.renderDifficultySetting === 'function') {
                     MathPKGame.renderDifficultySetting('settings-math-diff');
                 }
             })
@@ -3428,56 +3304,11 @@ function getWalkDaySummary() {
     };
 }
 
-function canWalkWithPeer(peer) {
-    return Boolean(peer) && (peer.peerType === 'household' || peer.visit_access !== 'private');
-}
-
-function canOpenPeerHome(peer) {
-    return Boolean(peer) && (peer.peerType === 'household' || peer.home_visibility !== 'private');
-}
-
-function getWalkPeerSourceLabel(peer) {
-    return peer && peer.peerType === 'household' ? '家庭成员' : '好友';
-}
-
-function getWalkPeerVisualMarkup(peer) {
-    const petSummary = peer && peer.pet_summary_json ? peer.pet_summary_json : {};
-    const imageUrl = petSummary.image_url || '';
-    if (imageUrl) {
-        return `<img class="walk-buddy-stage-img" src="${escapeAppHtml(imageUrl)}" alt="${escapeAppHtml(peer.display_name || '同行宠物')}">`;
-    }
-    return `<div class="walk-buddy-stage-emoji">${escapeAppHtml(petSummary.species_emoji || peer.emoji || '🐾')}</div>`;
-}
-
-function getFeaturedWalkPeer(combinedPeers, availablePeers, pendingInvites) {
-    if (pendingInvites.length) {
-        const invite = pendingInvites[0];
-        const matched = combinedPeers.find(function(peer) {
-            return peer && peer.id === invite.peerChildId;
-        });
-        if (matched) return matched;
-        return {
-            id: invite.peerChildId,
-            display_name: invite.peerName || '好友',
-            emoji: invite.peerEmoji || '🐾',
-            peerType: 'friend',
-            pet_summary_json: {
-                species_emoji: invite.peerEmoji || '🐾'
-            },
-            home_summary_json: {}
-        };
-    }
-    return availablePeers[0] || null;
-}
-
 function renderWalkPage() {
     const root = document.getElementById('walk-page-root');
     if (!root) return;
 
     const pet = PetSystem.getState();
-    const socialState = window.SocialSystem && typeof window.SocialSystem.getState === 'function'
-        ? window.SocialSystem.getState()
-        : { loading: false, info: '', error: '', activeCloudChild: null, householdPeers: [], friends: [], visits: [] };
     const walkSummary = getWalkDaySummary();
     const walkRoutes = window.WalkSystem && typeof WalkSystem.getRoutes === 'function'
         ? WalkSystem.getRoutes()
@@ -3529,7 +3360,7 @@ function renderWalkPage() {
             <div class="card walk-empty-card">
                 <div class="card-body text-center">
                     <h2 class="text-lg font-bold">🚶 遛弯还没开始</h2>
-                    <p class="text-sm text-muted mt-2">先去我的宠物里认养伙伴，再来这里挑路线、看好友、发起一起遛弯。</p>
+                    <p class="text-sm text-muted mt-2">先去我的宠物里认养伙伴，再来这里挑路线、一起出发。</p>
                     <button class="btn-primary mt-4" type="button" onclick="switchPage('pet')">先去认养宠物</button>
                 </div>
             </div>
@@ -3537,32 +3368,12 @@ function renderWalkPage() {
         return;
     }
 
-    const combinedPeers = [];
-    const seen = new Set();
-    socialState.householdPeers.concat(socialState.friends).forEach(function(peer) {
-        if (!peer || seen.has(peer.id)) return;
-        seen.add(peer.id);
-        combinedPeers.push(peer);
-    });
-    const availablePeers = combinedPeers.filter(canWalkWithPeer);
-    const pendingInvites = (socialState.visits || []).filter(function(visit) {
-        return visit && visit.pendingWalkInvite;
-    });
-    const featuredWalkPeer = getFeaturedWalkPeer(combinedPeers, availablePeers, pendingInvites);
-    const walkBuddyStageMarkup = featuredWalkPeer ? `
-        <div class="walk-buddy-stage-card" aria-label="同行伙伴宠物">
-            <span class="walk-buddy-stage-kicker">同行伙伴</span>
-            <div class="walk-buddy-stage-visual">${getWalkPeerVisualMarkup(featuredWalkPeer)}</div>
-            <strong>${escapeAppHtml(featuredWalkPeer.display_name || '好友')}</strong>
-            <small>${escapeAppHtml((featuredWalkPeer.pet_summary_json && featuredWalkPeer.pet_summary_json.species_name) || '一起遛弯')}</small>
-        </div>
-    ` : '';
     const walkStatusMarkup = `
         <div class="card walk-home-card">
             <div class="card-body walk-home-status">
                 <p class="walk-home-kicker">遛弯中心 / 户外版宠物小屋</p>
                 <h3>带着 ${escapeAppHtml(pet.species_data?.name || '小伙伴')} 去 ${escapeAppHtml(activeRoute ? activeRoute.sceneTitle : '户外')} 散步</h3>
-                <p class="walk-home-summary">左边保留大场景，右边只留互动、好友和路线信息，整个结构和宠物小屋保持一致。</p>
+                <p class="walk-home-summary">左边是户外场景，右边是宠物状态、互动和路线信息。</p>
                 ${vitalsMarkup}
                 <div class="walk-home-metrics">
                     <div class="walk-home-metric">
@@ -3587,95 +3398,20 @@ function renderWalkPage() {
                 </div>
                 <div class="walk-home-links">
                     <button class="btn-secondary social-mini-btn" type="button" onclick="switchPage('home')">🏠 回宠物小屋</button>
-                    <button class="btn-secondary social-mini-btn" type="button" onclick="switchPage('pet')">📘 看成长档案</button>
+                    <button class="btn-secondary" type="button" onclick="switchPage('pet')">📘 看成长档案</button>
                 </div>
             </div>
         </div>
     `;
-    const walkBuddyMarkup = socialState.loading
-        ? '<div class="walk-side-empty">正在刷新可一起遛弯的家庭成员和好友…</div>'
-        : !socialState.activeCloudChild
-            ? `
-                <div class="walk-side-empty">先在设置里登录家长账号并同步当前孩子，好友遛弯列表才会亮起来。</div>
-                <div class="social-cta-row walk-side-cta">
-                    <button class="btn-primary social-main-btn" type="button" onclick="switchPage('settings')">去设置连接账号</button>
-                </div>
-            `
-            : availablePeers.length
-                ? availablePeers.map(function(peer) {
-                    const petSummary = peer.pet_summary_json || {};
-                    const homeSummary = peer.home_summary_json || {};
-                    const peerId = escapeAppHtml(peer.id);
-                    return `
-                        <div class="walk-peer-item">
-                            <div class="walk-peer-main">
-                                <div class="walk-peer-emoji">${escapeAppHtml(peer.emoji || '🐾')}</div>
-                                <div class="walk-peer-copy">
-                                    <strong>${escapeAppHtml(peer.display_name || '未命名好友')}</strong>
-                                    <span>${escapeAppHtml(getWalkPeerSourceLabel(peer))} · ${escapeAppHtml(petSummary.species_name || '还没同步宠物')}</span>
-                                </div>
-                            </div>
-                            <div class="walk-peer-chips">
-                                <span class="walk-peer-chip">🏠 ${escapeAppHtml(homeSummary.theme_name || '默认小屋')}</span>
-                                <span class="walk-peer-chip">👀 ${escapeAppHtml(peer.home_visibility === 'private' ? '仅家庭可见' : '好友可见')}</span>
-                                <span class="walk-peer-chip">✨ ${escapeAppHtml(petSummary.wins || 0)} 胜</span>
-                            </div>
-                            <div class="walk-peer-actions">
-                                <button class="btn-primary social-mini-btn" type="button" onclick="SocialSystem.openWalkInvite('${peerId}')">🚶 约一起遛弯</button>
-                                <button class="btn-secondary social-mini-btn" type="button" onclick="SocialSystem.openPeerHome('${peerId}')" ${canOpenPeerHome(peer) ? '' : 'disabled'}>🏠 去小屋看看</button>
-                            </div>
-                        </div>
-                    `;
-                }).join('')
-                : '<div class="walk-side-empty">还没有可一起遛弯的好友。先把多个孩子同步到同一个家庭，或去设置里兑换好友码。</div>';
-    const inviteMarkup = pendingInvites.length
-        ? pendingInvites.map(function(visit) {
-            const peerId = escapeAppHtml(visit.peerChildId);
-            const visitId = escapeAppHtml(visit.id);
-            return `
-                <div class="walk-invite-item">
-                    <div class="walk-invite-title">📨 ${escapeAppHtml(visit.peerEmoji || '🐾')} ${escapeAppHtml(visit.peerName || '好友')} 邀请你一起遛弯</div>
-                    <div class="walk-invite-body">同一路线：${escapeAppHtml(visit.routeName || '好友推荐路线')}</div>
-                    <div class="walk-peer-actions">
-                        <button class="btn-primary social-mini-btn" type="button" onclick="SocialSystem.acceptWalkInvite('${visitId}')">按同路线遛弯</button>
-                        <button class="btn-secondary social-mini-btn" type="button" onclick="SocialSystem.openPeerHome('${peerId}')">先去看看小屋</button>
-                    </div>
-                </div>
-            `;
-        }).join('')
-        : '<div class="walk-side-note">暂时还没有收到一起遛弯邀请。</div>';
-    const socialNoticeMarkup = `
-        ${socialState.error ? `<div class="auth-notice auth-error">${escapeAppHtml(socialState.error)}</div>` : ''}
-        ${socialState.info ? `<div class="auth-notice auth-info">${escapeAppHtml(socialState.info)}</div>` : ''}
-    `;
-
     root.innerHTML = `
         <section class="walk-home-shell">
             <div class="walk-home-main">
                 <div class="walk-scene-stage-wrap">
                     <div id="walk-scene-stage"></div>
-                    ${walkBuddyStageMarkup}
                 </div>
             </div>
             <aside class="walk-home-side">
                 ${walkStatusMarkup}
-                <div class="card walk-home-card">
-                    <div class="card-header flex items-center justify-between">
-                        <h3 class="text-sm font-bold">👫 好友遛弯</h3>
-                        <span class="text-xs text-muted">${availablePeers.length} 位</span>
-                    </div>
-                    <div class="card-body walk-home-social">
-                        ${socialNoticeMarkup}
-                        <div class="walk-home-social-block">
-                            <div class="walk-home-block-title">待回应邀请</div>
-                            <div class="walk-home-invites is-compact">${inviteMarkup}</div>
-                        </div>
-                        <div class="walk-home-social-block">
-                            <div class="walk-home-block-title">可约伙伴</div>
-                            <div class="walk-home-peer-list is-compact">${walkBuddyMarkup}</div>
-                        </div>
-                    </div>
-                </div>
                 <div class="card walk-home-card">
                     <div class="card-header flex items-center justify-between">
                         <div>
@@ -4007,9 +3743,6 @@ function choosePetFromModal(speciesId) {
         if (window.CardCollection && typeof CardCollection.addCard === 'function') {
             CardCollection.addCard(speciesId);
         }
-        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
-            window.CloudSync.scheduleSync('pet_choose_species');
-        }
         closeAdoptModal();
         renderPetPage();
     }
@@ -4023,9 +3756,6 @@ function closeAdoptModal() {
 function choosePetSpecies(speciesId) {
     if (confirm('确定选择这只宠物吗？选择后可以重新选择，但等级会重置。')) {
         PetSystem.chooseSpecies(speciesId);
-        if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
-            window.CloudSync.scheduleSync('pet_choose_species');
-        }
         renderPetPage();
     }
 }
@@ -4043,25 +3773,16 @@ function feedPet() {
         PetSystem.feed({ effect: { hp: 10 } });
         showToast('背包中没有宠物粮，先简单恢复 10 HP');
     }
-    if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
-        window.CloudSync.scheduleSync('pet_feed_page');
-    }
     renderPetPage();
 }
 function playWithPet() {
     const result = PetSystem.play();
     showToast(result.msg);
-    if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
-        window.CloudSync.scheduleSync('pet_play_page');
-    }
     renderPetPage();
 }
 function restPet() {
     const result = PetSystem.rest();
     showToast(result.msg);
-    if (window.CloudSync && typeof window.CloudSync.scheduleSync === 'function') {
-        window.CloudSync.scheduleSync('pet_rest_page');
-    }
     renderPetPage();
 }
 
@@ -4969,21 +4690,6 @@ async function init() {
     const initialRoute = resolveRouteFromLocation(window.location);
     if (initialRoute.page === 'settings') {
         activeSettingsSection = normalizeSettingsSection(initialRoute.settingsSection);
-    }
-    const needsCloudBootstrap = ['settings', 'parent'].includes(initialRoute.page);
-    if (window.RuntimeLoader && typeof window.RuntimeLoader.ensureCloudFeature === 'function' && needsCloudBootstrap) {
-        try {
-            await window.RuntimeLoader.ensureCloudFeature();
-        } catch (error) {
-            console.warn('[app] cloud feature preload failed:', error);
-        }
-    }
-    if (window.CloudRestore && typeof window.CloudRestore.hydrateFromCloud === 'function') {
-        try {
-            await window.CloudRestore.hydrateFromCloud();
-        } catch (error) {
-            console.warn('[app] cloud restore failed during init:', error);
-        }
     }
     if (window.ProfileManager && typeof ProfileManager.ensureDefault === 'function') {
         ProfileManager.ensureDefault();

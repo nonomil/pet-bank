@@ -1,0 +1,103 @@
+{
+  "source": "assets/拼音赛车/拼音赛车参考图-05--赛道终点--爆炸图.png",
+  "sourceMode": "RGB green chroma-key source",
+  "backgroundRemoval": "green distance key with feathered edge",
+  "assets": [
+    {
+      "name": "initial_sound_gate",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-05/initial_sound_gate.png",
+      "sourceBox": [
+        0,
+        130,
+        430,
+        620
+      ],
+      "size": [
+        413,
+        365
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "fork_gate_pair",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-05/fork_gate_pair.png",
+      "sourceBox": [
+        340,
+        130,
+        890,
+        620
+      ],
+      "size": [
+        550,
+        364
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "tone_hanging_sign",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-05/tone_hanging_sign.png",
+      "sourceBox": [
+        820,
+        125,
+        1254,
+        625
+      ],
+      "size": [
+        416,
+        390
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "picture_supply_kiosk",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-05/picture_supply_kiosk.png",
+      "sourceBox": [
+        0,
+        650,
+        445,
+        1180
+      ],
+      "size": [
+        423,
+        440
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "listening_tunnel_gate",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-05/listening_tunnel_gate.png",
+      "sourceBox": [
+        355,
+        645,
+        890,
+        1180
+      ],
+      "size": [
+        535,
+        426
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "finish_sprint_arch",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-05/finish_sprint_arch.png",
+      "sourceBox": [
+        785,
+        645,
+        1254,
+        1180
+      ],
+      "size": [
+        469,
+        392
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    }
+  ]
+}

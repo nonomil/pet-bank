@@ -1,0 +1,115 @@
+{
+  "level": "level-02",
+  "assets": [
+    {
+      "name": "cloud_track_straight",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_track_straight.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-01_253x353.png",
+      "size": [
+        253,
+        353
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "cloud_fork_track",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_fork_track.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-03_432x370.png",
+      "size": [
+        432,
+        370
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "cloud_track_curve",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_track_curve.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-05_368x332.png",
+      "size": [
+        368,
+        332
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "cloud_blue_arch",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_blue_arch.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-07_259x228.png",
+      "size": [
+        259,
+        228
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "cloud_red_arch",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_red_arch.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-08_328x187.png",
+      "size": [
+        328,
+        187
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "cloud_blue_car",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_blue_car.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-10_202x164.png",
+      "size": [
+        202,
+        164
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "cloud_arrow_blue",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_arrow_blue.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-28_66x49.png",
+      "size": [
+        66,
+        49
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "cloud_arrow_yellow",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_arrow_yellow.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-29_63x47.png",
+      "size": [
+        63,
+        47
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "cloud_arrow_red",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_arrow_red.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-31_62x46.png",
+      "size": [
+        62,
+        46
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "cloud_floating_island",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-02/cloud_floating_island.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-25_182x239.png",
+      "size": [
+        182,
+        239
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    }
+  ]
+}

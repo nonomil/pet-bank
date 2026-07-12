@@ -59,12 +59,9 @@
 | `Game.renderUI(containerId)` | math-pk.js:1216 | 渲染数学 PK 主界面 |
 | `Game.start()` | math-pk.js:1227 | 开始机器人 PK |
 | `Game.startTraining()` | math-pk.js:1233 | 开始乘法启程练习 |
-| `Game.startAsyncMatch(match)` | math-pk.js:1315 | 开始好友异步 PK |
 | `Game._estimateRobotThinkMs(question, diff)` | math-pk.js:1361 | 按题型和难度估算机器人思考时间 |
 | `Game._endMatch()` | math-pk.js:1603 | 普通 PK 结算：积分、最高分、排行榜、支援星轨、引导反馈 |
 | `Game._estimateRewardStars(summary)` | math-pk.js:1720 | 估算支援卡星轨奖励 |
-| `buildAsyncQuestionSet()` | math-pk.js:1743 | 生成好友异步 PK 同题题组 |
-| `describeAsyncQuestionSet(payload)` | math-pk.js:1762 | 描述异步题组难度与题量 |
 | `window.MathPKGame.getDifficulty()` | math-pk.js:1791 | 获取当前规范化难度 |
 
 ### 引导式反馈
@@ -113,4 +110,4 @@ medium_mul 针对初学乘法做了节奏优化:
 - 当前难度 ID 是 `easy20/easy100/medium_mul/medium_mix/hard`；历史别名 `easy/medium/hard` 只在 `normalizeDifficulty()` 中兼容。
 - 乘法模式的真实 ID 是 `medium_mul`，不是旧文档里的 `mul`。
 - 支援卡系统依赖本文件自己的 `petbank_math_support_*` key，不依赖 card-collection.js 的卡牌收藏。
-- 异步 PK 结算仍走好友挑战提交流程，本期引导反馈只接入普通 PK 结算。
+- 当前仅支持本地机器人 PK；好友异步 PK 待 SQLite 账号、家庭和权限 API 完成后重新设计接入。

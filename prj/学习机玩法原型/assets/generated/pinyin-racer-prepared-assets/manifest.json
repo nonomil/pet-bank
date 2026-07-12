@@ -1,0 +1,26 @@
+{
+  "sourceDir": "assets/拼音赛车",
+  "backgrounds": [
+    {"level": 1, "source": "拼音赛车参考图-01-彩色卡通赛车道.png", "mode": "RGB", "size": [1536, 1024], "runtimeMap": true},
+    {"level": 2, "source": "拼音赛车参考图-02-漂浮天空赛道.png", "mode": "RGB", "size": [1536, 1024], "runtimeMap": true},
+    {"level": 3, "source": "拼音赛车参考图-03--玩具森林赛道png.png", "mode": "RGB", "size": [1536, 1024], "runtimeMap": true},
+    {"level": 4, "source": "拼音赛车参考图-04-梦幻通话赛道.png", "mode": "RGB", "size": [1536, 1024], "runtimeMap": true},
+    {"level": 5, "source": "拼音赛车参考图-05--赛道终点.png", "mode": "RGB", "size": [1536, 1024], "runtimeMap": true}
+  ],
+  "explosionSheets": [
+    {"level": 1, "source": "拼音赛车参考图-01-爆炸图-彩色卡通赛车道.png", "clean": "level-01/clean", "split": "level-01/split", "splitCount": 51},
+    {"level": 2, "source": "拼音赛车参考图-02-漂浮天空赛道-爆炸图-.png", "clean": "level-02/clean", "split": "level-02/split", "splitCount": 42},
+    {"level": 3, "source": "拼音赛车参考图-03--玩具森林赛道--爆炸图.png", "clean": "level-03/clean", "split": "level-03/split", "splitCount": 24},
+    {"level": 4, "source": "拼音赛车参考图-04-梦幻通话赛道--爆炸图.png", "clean": "level-04/clean", "split": "level-04/split", "splitCount": 31},
+    {"level": 5, "source": "拼音赛车参考图-05--赛道终点--爆炸图.png", "clean": "level-05/clean", "split": "level-05/split", "splitCount": 1}
+  ],
+  "runtimeFacilityPack": "assets/generated/pinyin-racer-retheme-assets/manifest.json",
+  "catalog": "assets/generated/pinyin-racer-prepared-assets/catalog.json",
+  "semanticPack": "assets/generated/pinyin-racer-semantic-assets/manifest.json",
+  "notes": [
+    "All source explosion sheets were processed with checkerboard edge-connected removal and auto component splitting.",
+    "A catalog and contact sheet are generated for all 149 split parts; large or decorative parts remain in the prepared library but are not wired blindly into the runtime.",
+    "47 reusable components are curated under assets/generated/pinyin-racer-semantic-assets; level-05 green chroma-key facilities were separately cleaned and named.",
+    "The five background files are the current runtime maps for the five pinyin racer segments."
+  ]
+}

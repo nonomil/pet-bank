@@ -133,27 +133,7 @@
     }
 
     function _playMp3(name, vol) {
-        var sound = SOUNDS[name];
-        if (!sound || !sound.mp3 || typeof Audio === 'undefined' || _mp3State[name] === false) return false;
-        try {
-            var a = new Audio(sound.mp3);
-            var fellBack = false;
-            var fallback = function () {
-                if (fellBack) return;
-                fellBack = true;
-                _mp3State[name] = false;
-                _playZzfx(name, vol);
-            };
-            a.volume = vol;
-            a.addEventListener('canplaythrough', function () { _mp3State[name] = true; }, { once: true });
-            a.addEventListener('error', fallback, { once: true });
-            var p = a.play();
-            if (p && typeof p.catch === 'function') p.catch(fallback);
-            return true;
-        } catch (e) {
-            _mp3State[name] = false;
-            return false;
-        }
+        return false;
     }
 
     function _play(name) {

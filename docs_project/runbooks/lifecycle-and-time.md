@@ -50,8 +50,6 @@
 |------|---------|
 | profiles.js:255 | 正常 profile 切换（保存当前快照） |
 | profiles.js:268 | 删除 profile 后回退启动页 |
-| auth.js:436 | 登录成功（等待 400ms） |
-| household.js:528 | 退出家庭组（等待 400ms） |
 | tools.js:163 | 数据导入完成（等待 1000ms） |
 
 ---
@@ -76,30 +74,14 @@ decay() → pet.js:295
 
 ---
 
-## 四、云端同步节流
+## 四、服务端同步预留
 
-### scheduleSync 节流
+账号 API 尚未接入运行时，当前没有服务端同步定时器。SQLite 快照同步完成后，必须把同步行为定义为显式业务动作，并在此记录节流、冲突和重试规则。
 
+```text
+目标接口：POST /api/v1/children/:id/snapshots
+当前状态：未实现；浏览器只使用 localStorage。
 ```
-cloud-sync.js:382  scheduleSync(reason, options)
-  延迟 2000ms 后执行 sync
-  多次调用: 取消前一个 timer，重新计时
-  → 最终保证仅最后一次 scheduleSync 生效
-```
-
-### 触发点
-
-| reason | 触发位置 | 频率 |
-|--------|---------|------|
-| `home_exit` | app.js:1003 | 离开小屋 |
-| `pet_choose_species` | app.js:2094,2110 | 选择宠物 |
-| `pet_feed_page` | app.js:2130 | 喂食 |
-| `pet_play_page` | app.js:2138 | 玩耍 |
-| `pet_rest_page` | app.js:2146 | 休息 |
-| `exploration_start` | exploration.js:416 | 开始探索 |
-| `exploration_win` | exploration.js:611 | 探索胜利 |
-| `home_runtime` | home.js:409 | 小屋操作 |
-| (其他) | 各模块调用 | — |
 
 ---
 
@@ -122,8 +104,6 @@ cloud-sync.js:382  scheduleSync(reason, options)
 |------|------|------|
 | runtime-loader 预取延迟 | runtime-loader.js:238,345,395 | 0/400ms |
 | Profile 操作确认后 | profiles.js:441 | 150ms |
-| 登录后 reload | auth.js:435 | ~400ms |
-| 退出家庭组 reload | household.js:528 | ~400ms |
 | 数据导入后 reload | tools.js:163 | 1000ms |
 
 ### setInterval

@@ -20,9 +20,9 @@
 
 ```
 类型:     Vanilla JS SPA（无框架、无打包、无转译）
-入口:     index.html（主应用）+ admin.html（轻后台）
-后端:     Supabase BaaS（可选，有 local-only 模式）
-存储:     localStorage 主力 + Supabase 云端同步
+入口:     index.html（主应用）
+后端:     VPS 自托管 Node.js API（当前仅健康检查）
+存储:     localStorage 主力；SQLite 账号与快照 API 分阶段接入
 音频:     ZzFX（程序化音效）+ Web Speech API（TTS 语音）
 图像:     大量 WebP 素材（GPT 生图管线产出）
 代码量:   ~41,520 行（JS ~25K + CSS ~15K + HTML ~1.5K）
@@ -33,10 +33,9 @@
 ```
 宠物积分系统/
 ├── index.html              # SPA 主入口，所有页面容器和顶级导航
-├── admin.html              # 后台管理入口（家长配置/数据诊断）
 │
-├── js/                     # 43 个 JS 文件（核心业务逻辑）
-│   ├── app.js              # 主编排器（任务/积分/页面路由/渲染）── 2963行 ⚠️
+├── js/                     # 40 个 JS 文件（核心业务逻辑）
+│   ├── app.js              # 主编排器（任务/积分/页面路由/渲染）── 4747行 ⚠️
 │   ├── runtime-loader.js   # 自定义按需加载（JS+CSS bundle 管理）
 │   ├── pet.js              # 宠物养成核心（261物种 × 5阶段 × HP/ATK/DEF/SPD）
 │   ├── home.js             # 宠物小屋（家具摆放+5维状态条+背景主题）
@@ -49,10 +48,6 @@
 │   ├── exploration.js      # 探索冒险（12场景螺旋地图+章节叙事+战斗）
 │   ├── exploration-detail.js # 探索场景详情页
 │   ├── profiles.js         # 多孩子 Profile 管理（localStorage 热切换）
-│   ├── household.js        # 家庭组管理（邀请码+成员列表）
-│   ├── social.js           # 社交互动（串门/打招呼/送小花/遛弯）
-│   ├── family-social-scope.js # 社交功能开关（minimal-v1/完整版）
-│   ├── family-review.js    # 家庭成长报告
 │   ├── walk.js             # 宠物遛弯（路线选择+场景切换+气泡互动）
 │   ├── shop.js             # 积分商城（兑换+盲盒+战斗道具）
 │   ├── inventory.js        # 道具背包（堆叠+装备）
@@ -67,25 +62,11 @@
 │   ├── zzfx.js             # ZzFX 音效引擎
 │   ├── lucide-lite.js      # 图标库精简版
 │   ├── showcase.js         # 作品展示
-│   ├── activity-feed.js    # 动态流
-│   │
-│   ├── cloud-config-loader.js  # 云端配置加载器
-│   ├── cloud-config.public.js  # 公开云端配置
-│   ├── cloud-client.js     # Supabase 客户端封装
-│   ├── cloud-sync.js       # 数据云端同步
-│   ├── cloud-restore.js    # 云端数据恢复
-│   ├── cloud-diagnostics.js # 云端诊断工具
-│   ├── profile-sync.js     # Profile 同步
-│   ├── pk-service.js       # PK 服务（云端对战）
-│   ├── auth.js             # 认证系统
-│   ├── admin-auth.js       # 管理员认证
-│   ├── admin-console.js    # 管理控制台
-│   │
-│   └── vendor/
-│       └── supabase-js.js  # Supabase SDK（2.1MB，已 vendored）
+│   ├── family-review.js    # 本机成长复盘（卡点聚合+下一步建议）
+│   └── profiles.js         # 多孩子 Profile 管理（localStorage 热切换）
 │
 ├── css/                    # 12 个 CSS 文件
-│   ├── style.css           # 全局样式 + 管理后台样式 ── 5624行 ⚠️
+│   ├── style.css           # 全局样式 ── 6992行 ⚠️
 │   ├── learn-center.css    # 学习中心专属样式 ── 4240行 ⚠️
 │   ├── walk.css            # 遛弯页样式
 │   ├── card-collection.css # 卡牌收集样式
@@ -141,7 +122,7 @@
 
 ---
 
-## 四、16 个核心业务模块
+## 四、14 个核心业务模块
 
 ### 模块全景
 
@@ -165,12 +146,10 @@
  8. 学习中心     → learn-center.js (学习包 + 每日学习单 + 英语词汇)
  9. 积分商城     → shop.js (积分兑换 + 盲盒 + 战斗道具)
 10. 宠物遛弯     → walk.js (5条路线 × 场景切换 × 气泡互动)
-11. 社交互动     → social.js (串门/打招呼/送小花/一起遛弯)
-12. 家庭组       → household.js (邀请码 + 成员管理)
-13. 宝箱系统     → treasure.js (日常/探索/里程碑 3 类宝箱)
-14. 道具背包     → inventory.js (物品堆叠 + 装备栏)
-15. 语音系统     → voice.js (Web Speech API TTS)
-16. 家长工具     → tools.js (番茄钟 + 家庭成员 + 数据导入/导出)
+11. 宝箱系统     → treasure.js (日常/探索/里程碑 3 类宝箱)
+12. 道具背包     → inventory.js (物品堆叠 + 装备栏)
+13. 语音系统     → voice.js (Web Speech API TTS)
+14. 家长工具     → tools.js (番茄钟 + 数据导入/导出)
 ```
 
 ### 模块依赖关系
@@ -180,28 +159,28 @@
                          │  app.js     │ ← 主编排器
                          └──┬──────┬───┘
                             │      │
-               ┌────────────┼──────┼────────────────┐
-               ▼            ▼      ▼                ▼
+               ┌────────────┼──────┼───────────────┐
+               ▼            ▼      ▼               ▼
          ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
-         │ pet.js   │ │ profiles │ │ runtime- │ │ cloud-*  │
-         │ (宠物核心)│ │ (多孩子) │ │ loader   │ │ (云端)   │
-         └────┬─────┘ └──────────┘ └──────────┘ └────┬─────┘
-              │                                      │
-    ┌────┬────┼────────┬───────────┐                 │
-    ▼    ▼    ▼        ▼           ▼                 ▼
- ┌────┐┌────┐┌──────┐┌────────┐┌──────────┐ ┌──────────┐
- │home││walk││explor││card-   ││battle-   │ │social    │
- │小屋││遛弯││探索  ││arena   ││engine    │ │household │
- └────┘└────┘└──┬───┘└──┬─────┘└────┬─────┘ │family-   │
-                │        │           │        │review    │
-                ▼        ▼           ▼        └──────────┘
+         │ pet.js   │ │ profiles │ │ runtime- │ │ SQLite   │
+         │ (宠物核心)│ │ (多孩子) │ │ loader   │ │ (待接入) │
+         └────┬─────┘ └──────────┘ └──────────┘ └──────────┘
+              │
+    ┌────┬────┼────────┬───────────┐
+    ▼    ▼    ▼        ▼           ▼
+ ┌────┐┌────┐┌──────┐┌────────┐┌──────────┐
+ │home││walk││explor││card-   ││battle-   │
+ │小屋││遛弯││探索  ││arena   ││engine    │
+ └────┘└────┘└──┬───┘└──┬─────┘└────┬─────┘
+                │        │           │
+                ▼        ▼           ▼
            ┌────────┐┌──────┐┌──────────┐
            │battle- ││card- ││math-pk   │
            │fx      ││collec││hanzi-game│
            └────────┘└──────┘└──────────┘
 
 独立模块: shop, inventory, treasure, voice, tools, showcase
-          learn-center, leaderboard, activity-feed
+          learn-center, leaderboard, family-review
 ```
 
 ---
@@ -212,7 +191,7 @@
 
 ```
 本地主存储:  localStorage (key 前缀 "petbank_")
-云端同步:    Supabase (可选，通过 CloudSync.scheduleSync 触发)
+账号后端:    VPS Node.js API -> SQLite（当前仅健康检查，账号 API 待实现）
 Profile:     ProfileManager 热切换（全量快照 + location.reload()）
 ```
 
@@ -268,8 +247,8 @@ window.switchPage = switchPage;
 
 | # | 问题 | 位置 | 说明 |
 |---|------|------|------|
-| 1 | **app.js 上帝对象** | [js/app.js](../js/app.js) (2963行) | 任务定义+页面路由+UI渲染+事件处理+持久化混在一起 |
-| 2 | **无模块系统** | 全部 JS | 43 文件通过 `window.Xxx` 通信，无命名冲突保护 |
+| 1 | **app.js 上帝对象** | [js/app.js](../js/app.js) (4747行) | 任务定义+页面路由+UI渲染+事件处理+持久化混在一起 |
+| 2 | **无模块系统** | 全部 JS | 40 文件通过 `window.Xxx` 通信，无命名冲突保护 |
 | 3 | **localStorage 无 DAO** | 16+ 处直接读写 | 同 key 被多模块操作，无版本/迁移/类型校验 |
 | 4 | **Profile 切换脆弱** | [js/profiles.js](../js/profiles.js) | 全量快照+reload，新 key 遗漏无提示 |
 
@@ -277,7 +256,7 @@ window.switchPage = switchPage;
 
 | # | 问题 | 位置 | 说明 |
 |---|------|------|------|
-| 5 | **超大 CSS** | [css/style.css](../css/style.css) (5624行), [css/learn-center.css](../css/learn-center.css) (4240行) | 无变量/组件化/层级 |
+| 5 | **超大 CSS** | [css/style.css](../css/style.css) (6992行), [css/learn-center.css](../css/learn-center.css) (4240行) | 无变量/组件化/层级 |
 | 6 | **JS 内嵌 CSS** | [js/app.js#L7-L34](../js/app.js#L7-L34) | 运行时注入 style 标签 |
 | 7 | **注释死代码** | [js/app.js#L1032-L1108](../js/app.js#L1032-L1108) | 77 行注释掉的旧路由逻辑 |
 | 8 | **prj/ 目录混乱** | [prj/](../prj/) | 旧快照+测试+原型混放 |
@@ -292,7 +271,7 @@ window.switchPage = switchPage;
 | 12 | 中英文混用 | 全局 |
 | 13 | 无类型/JSDoc | 全局 |
 | 14 | 无 lint/format | 根目录 |
-| 15 | escapeHtml 重复实现 | social, household, pk-service, auth 等 |
+| 15 | 账号与家庭 API 尚未接入 | `prj/petbank-server/` 目前只有健康检查 |
 
 ---
 

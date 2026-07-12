@@ -24,6 +24,7 @@ prj/*
 !prj/runtime_loader_route_base_contract.test.mjs
 !prj/route_aware_shell_contract.test.mjs
 !prj/profile_isolation_journey_simulation.mjs
+!prj/growth_review_insights_contract.test.mjs
 prj/petbank-server/node_modules/
 prj/学习机玩法原型/tmp-screenshots/
 prj/消灭苦力怕打字游戏/browser-screenshots/
@@ -57,6 +58,7 @@ docs/*
 # --- 环境配置（本地，不入库；示例见 .env.example）---
 .env
 cloud-config.local.js
+.firecrawl/
 # Agnes 生图 API 密钥（含 key，严禁入库；调用方式见 memory/agnes-image-api）
 docs/GPT生图/Agnes生图.md
 docs/GPT生图/*key.md

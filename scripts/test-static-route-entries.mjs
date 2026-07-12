@@ -22,7 +22,6 @@ const expectedRoutes = [
     '/app/pet/home',
     '/app/pet/walk',
     '/app/pet/cards',
-    '/app/pet/home-visit',
     '/app/explore',
     '/app/playground',
     '/app/playground/math-pk',

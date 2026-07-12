@@ -110,6 +110,7 @@ async function main() {
       return {
         car: imageInfo('.pinyin-race-car-img'),
         trail: imageInfo('.pinyin-race-speed-trail'),
+        checkpointArch: imageInfo('.race-checkpoint-arch'),
         sign: imageInfo('.cannon-target-frame'),
         targetCount: document.querySelectorAll('.cannon-target').length,
         targetRect: document.querySelector('.cannon-target')?.getBoundingClientRect().toJSON() || null,
@@ -121,24 +122,28 @@ async function main() {
         controlRects: [...document.querySelectorAll('.pinyin-stage-controls .key-button')].map(node => node.getBoundingClientRect().toJSON()),
         stageImage: getComputedStyle(stage).getPropertyValue('--cannon-stage-image'),
         stageRect: stage.getBoundingClientRect().toJSON(),
+        carRect: document.querySelector('.pinyin-race-car')?.getBoundingClientRect().toJSON() || null,
         feedback: document.getElementById('cannonFeedback').textContent.trim(),
         correctTarget: window.LearningArcadePrototype.wordCannon().targets.find(target => target.correct) || null,
         optionWords: window.LearningArcadePrototype.wordCannon().targets.map(target => ({
           word: target.word,
-          correct: target.correct
+          correct: target.correct,
+          cardType: target.cardType || ''
         }))
       };
     });
 
-    assert.match(before.stageImage, /pinyin-racer-long-track-strip\.png/, 'racing stage should use the generated long scrolling track strip');
+    assert.match(before.stageImage, /assets\/拼音赛车|pinyin-racer-retheme-20260711|pinyin-racer-long-track-strip\.png/, 'racing stage should use a prepared rethemed or legacy track background');
     assert.ok(before.car?.width > 0 && before.car?.height > 0, 'race car asset should load');
     assert.match(before.car.src, /race_car_top_up\.svg/, 'pinyin racer should use the clean vertical top-down car asset');
     assert.ok(before.car.height > before.car.width, 'top-down race car asset should be taller than wide so it reads as pointing upward');
     assert.equal(before.carAnimation, 'none', 'race car should not idle-bob or scale while waiting');
     assert.ok(before.trail?.width > 0 && before.trail?.height > 0, 'speed trail PNG should load');
+    assert.ok(before.checkpointArch?.width > 0 && before.checkpointArch?.height > 0, 'checkpoint arch PNG should load');
+    assert.match(before.checkpointArch.src, /pinyin-racer-assets\/checkpoint_arch\.png/, 'checkpoint arch should use the prepared transparent racer asset');
     assert.ok(before.sign?.width > 0 && before.sign?.height > 0, 'road sign PNG should load');
     assert.equal(before.targetCount, 3, 'pinyin racing should show one option card in each lane');
-    assert.deepEqual([...new Set(before.targetLabels)], ['拼音卡'], 'pinyin option cards should not reveal the correct answer before a miss');
+    assert.ok(before.targetLabels.every(label => label && label !== before.correctTarget?.word), 'pinyin facility labels should remain instructional without revealing the answer text');
     assert.ok(before.targetRect?.width <= 150, 'pinyin option cards should stay child-readable without covering the road');
     assert.ok(before.targetRect?.height <= 86, 'pinyin option cards should remain compact');
     assert.ok(before.stageRect.width >= 900 && before.stageRect.height >= 360, 'desktop racing stage should be large enough for fullscreen play');
@@ -149,6 +154,7 @@ async function main() {
     assert.ok(before.targetRects.every(rect => !overlaps(before.taskRect, rect)), 'hanzi task card should not cover pinyin option cards');
     assert.ok(before.controlRects.every(rect => !overlaps(before.taskRect, rect)), 'hanzi task card should not cover touch controls');
     assert.ok(before.correctTarget?.correct, 'one pinyin option should be marked as the correct catch target');
+    assert.ok(new Set(before.optionWords.map(item => item.cardType)).size >= 2, 'pinyin racer should render varied card facility types, not one generic card shape');
     assert.ok(/^[a-z]+$/.test(before.correctTarget?.word || ''), 'correct pinyin option should use lowercase letters');
     assert.ok(
       before.optionWords.filter(item => !item.correct).every(item => item.word[0] !== before.correctTarget.word[0]),
@@ -173,9 +179,11 @@ async function main() {
       feedback: document.getElementById('cannonFeedback').textContent.trim(),
       selectedLane: window.LearningArcadePrototype.wordCannon().playerLane,
       carSrc: document.querySelector('.pinyin-race-car-img')?.getAttribute('src') || '',
+      carRect: document.querySelector('.pinyin-race-car')?.getBoundingClientRect().toJSON() || null,
       cannon: window.LearningArcadePrototype.wordCannon(),
       targetLabels: [...document.querySelectorAll('.cannon-target small')].map(node => node.textContent.trim())
     }));
+    assert.ok(after.carRect?.y < before.carRect?.y - 1, 'race car should visibly advance upward during a wave');
     assert.equal(after.cannon.completedWords.length, 0, 'a wrong catch should not count as a completed pinyin card');
     assert.equal(after.cannon.currentTask.char, before.correctTarget.char, 'after a wrong catch, the same hanzi should be retried for learning');
     assert.equal(after.cannon.targets.find(target => target.correct)?.pinyin, before.correctTarget.pinyin, 'retry wave should keep the same correct pinyin');
@@ -183,6 +191,38 @@ async function main() {
     assert.ok(after.targetLabels.includes('再找这个'), 'retry should gently mark the correct card after a miss');
     assert.match(after.feedback, /再找/, 'wrong catch feedback should tell the child to try the same pinyin again');
     assert.match(after.carSrc, /pinyin-racer-assets\/(car_pose_drift|race_car_)/, 'car should stay on GPT-generated racer assets after moving');
+
+    const segmentTrace = [];
+    for (let wave = 0; wave < 5; wave += 1) {
+      const waveState = await page.evaluate(() => {
+        const stage = document.getElementById('cannonStage');
+        const cannon = window.LearningArcadePrototype.wordCannon();
+        const correct = cannon.targets.find(target => target.correct);
+        return {
+          segment: stage?.dataset.segment || '',
+          mapId: stage?.dataset.mapId || '',
+          route: stage?.dataset.route || '',
+          taskType: stage?.dataset.taskType || '',
+          correctLane: correct?.laneIndex ?? -1,
+          laneXs: cannon.targets.map(target => target.x),
+          completed: cannon.completedWords.length
+        };
+      });
+      assert.ok(waveState.correctLane >= 0, `wave ${wave + 1} should expose a correct lane`);
+      segmentTrace.push(waveState);
+      await page.screenshot({ path: path.join(screenshotDir, `pinyin-racer-segment-${wave + 1}.png`), fullPage: true });
+      const stageRect = await page.locator('#cannonStage').boundingBox();
+      const laneClickX = [0.28, 0.5, 0.72][waveState.correctLane];
+      await page.mouse.click(stageRect.x + stageRect.width * laneClickX, stageRect.y + stageRect.height * 0.72);
+      await page.evaluate(() => window.LearningArcadePrototype.tickWordCannonFrame(220, 40));
+      await page.waitForTimeout(60);
+      const progressed = await page.evaluate(() => window.LearningArcadePrototype.wordCannon());
+      assert.equal(progressed.completedWords.length, waveState.completed + 1, `wave ${wave + 1} should advance after the correct answer`);
+    }
+    assert.deepEqual(segmentTrace.map(item => item.segment), ['s-bend', 'fork', 'bridge', 'tunnel', 'finish-sprint'], 'five consecutive correct waves should cover the five designed race segments');
+    assert.ok(new Set(segmentTrace.map(item => item.mapId)).size >= 2, 'race segments should switch visual map backgrounds');
+    assert.ok(new Set(segmentTrace.map(item => item.laneXs.join(','))).size >= 4, 'race segments should change lane geometry');
+    assert.ok(segmentTrace.every(item => item.route), 'each segment should expose a correct or recovery route');
 
     const mobile = await browser.newPage({
       viewport: { width: 390, height: 844 },
@@ -219,7 +259,7 @@ async function main() {
 
     const badLogs = logs.filter(item => item.type === 'error' || item.type === 'pageerror');
     assert.deepEqual(badLogs, [], 'visual smoke should have no console errors');
-    console.log(JSON.stringify({ screenshot: path.join(screenshotDir, 'pinyin-racer-desktop.png'), before, after }, null, 2));
+    console.log(JSON.stringify({ screenshot: path.join(screenshotDir, 'pinyin-racer-desktop.png'), before, after, segmentTrace }, null, 2));
     console.log('PASS - pinyin racer visual smoke');
   } finally {
     await browser.close();

@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '..', '..', '..');
 const prototypePath = path.join('prj', '学习机玩法原型', 'index.html');
+const screenshotDir = path.join(repoRoot, 'prj', '学习机玩法原型', 'tmp-screenshots');
 const chromeCandidates = [
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
@@ -235,7 +236,7 @@ async function runWordCannonRound(page) {
     };
   });
   assert.match(cannonMap.title, /星光赛道|赛车/, 'pinyin racing should start with the GPT-generated racing track');
-  assert.match(cannonMap.stageImage, /pinyin-racer-long-track-strip\.png/, 'pinyin racing stage CSS should receive the generated long scrolling track strip');
+  assert.match(cannonMap.stageImage, /assets\/拼音赛车|pinyin-racer-retheme-20260711|pinyin-racer-long-track-strip\.png/, 'pinyin racing stage CSS should receive a prepared rethemed or legacy track background');
   const racerAssets = await page.evaluate(() => ({
     car: document.querySelector('.pinyin-race-car-img')?.getAttribute('src') || '',
     trail: document.querySelector('.pinyin-race-speed-trail')?.getAttribute('src') || '',
@@ -244,7 +245,7 @@ async function runWordCannonRound(page) {
   }));
   assert.match(racerAssets.car, /pinyin-racer-assets\/race_car_/, 'pinyin racing should render the GPT-generated race car PNG');
   assert.match(racerAssets.trail, /pinyin-racer-assets\/speed_trail_long\.png/, 'pinyin racing should render the GPT-generated speed trail PNG');
-  assert.match(racerAssets.sign, /pinyin-racer-assets\/road_sign_/, 'pinyin racing should render GPT-generated road-sign targets');
+  assert.match(racerAssets.sign, /pinyin-racer-semantic-assets|pinyin-racer-retheme-assets|pinyin-racer-assets\/road_sign_/, 'pinyin racing should render prepared semantic facilities or legacy road-sign targets');
   assert.match(racerAssets.feedback, /第一次玩.*认汉字.*基础/, 'pinyin racing should show a gentle first-run starter recommendation');
   assert.ok(firstTarget?.pinyin, 'pinyin racing should expose pinyin targets');
   assert.ok(/^[a-z]+$/.test(firstTarget.word), 'pinyin racing option cards should be normalized pinyin');
@@ -659,6 +660,12 @@ async function runResponsiveChecks(browser, baseUrl) {
       }
       if (metrics.stageRect) {
         assertWithinViewport(`${gameId} stage`, metrics.stageRect, metrics.viewport);
+      }
+      if (viewport.width === 844 && viewport.height === 390) {
+        await page.screenshot({
+          path: path.join(screenshotDir, `responsive-${gameId}-844x390.png`),
+          fullPage: true
+        });
       }
       await returnHome(page);
     }

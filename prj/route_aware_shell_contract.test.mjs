@@ -7,7 +7,7 @@ const routeScript = shell.match(/<script>\s*([\s\S]*?routeBasePrefix[\s\S]*?)<\/
 
 assert.ok(routeScript, 'the shell contains the route-correction bootstrap script');
 assert.match(shell, /<base id="routeBase" href="\.\/">/, 'the app shell starts with a relative route base');
-assert.match(shell, /<script src="js\/runtime-loader\.js"><\/script>/, 'the shell loads the runtime loader through the relative base');
+assert.match(shell, /<script src="js\/runtime-loader\.js(?:\?[^"']+)?"><\/script>/, 'the shell loads the runtime loader through the relative base');
 assert.doesNotMatch(shell, /<script src="\/js\//, 'the shell does not use root-relative runtime scripts that break on Pages');
 
 const location = {

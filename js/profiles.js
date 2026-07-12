@@ -91,7 +91,6 @@
     }
 
     const ROUTE_PREFIXES = [
-        '/home-visit',
         '/learning-sheet',
         '/learn-lesson',
         '/learn-print',

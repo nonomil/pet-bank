@@ -1,52 +1,23 @@
 version: 1
 project:
   name: pet-bank
-  type: static-site-with-optional-supabase-and-self-hosted-api
+  type: static-site-with-self-hosted-sqlite-api
   workspaceRoot: .
   primaryBranch: main
 
 frontend:
   publicDir: .
   entryHtml: index.html
-  adminEntryHtml: admin.html
-  adminStatus: planned
+  adminEntryHtml: null
+  adminStatus: deferred-until-self-hosted-auth
   localServeCommand: python -m http.server 8765 --bind 127.0.0.1
   localBaseUrl: http://127.0.0.1:8765
   deploy:
     provider: github-pages
     workflow: .github/workflows/deploy.yml
 
-supabase:
-  enabled: true
-  configFile: supabase/config.toml
-  migrationsDir: supabase/migrations
-  functionsDir: supabase/functions
-  deployOrder:
-    - supabase link --project-ref ${SUPABASE_PROJECT_ID}
-    - supabase db push
-    - supabase config push
-    - supabase functions deploy validate-registration-invite
-    - supabase functions deploy claim-registration-invite
-    - supabase functions deploy issue-registration-invite
-    - supabase functions deploy list-registration-invites
-    - supabase functions deploy revoke-registration-invite
-    - supabase functions deploy issue-household-invite
-    - supabase functions deploy revoke-household-invite
-    - supabase functions deploy accept-household-invite
-    - supabase functions deploy redeem-friend-code
-    - supabase functions deploy issue-pk-match
-    - supabase functions deploy submit-pk-attempt
-  requiredSecrets:
-    - APP_SUPABASE_URL
-    - APP_SUPABASE_ANON_KEY
-    - APP_SUPABASE_SITE_URL
-    - SUPABASE_PROJECT_ID
-    - SUPABASE_ACCESS_TOKEN
-    - SUPABASE_DB_PASSWORD
-    - SUPABASE_SERVICE_ROLE_KEY
-
 selfHostedApi:
-  status: bootstrap-only
+  status: primary
   sourceDir: prj/petbank-server
   healthCheck: http://127.0.0.1:3000/api/v1/health
   persistentPaths:
@@ -56,33 +27,29 @@ selfHostedApi:
   releaseRoot: /srv/pet-bank/releases
   currentReleaseLink: /srv/pet-bank/current
   deployGuide: docs_project/runbooks/self-hosted/AI-HERMES-DEPLOY.md
+  automationStatus: planned-until-auth-api-is-implemented
+  requiredSecrets:
+    - PETBANK_JWT_SECRET
+    - PETBANK_DATA_DIR
+    - PETBANK_ALLOWED_ORIGIN
   rules:
     - never-delete-shared-directory
     - migration-files-are-additive-only
     - backup-before-schema-change
     - health-check-before-current-link-switch
 
-admin:
-  authModel: shared-auth-shared-users
-  roleSource: public.user_roles
-  bootstrapMode: manual-role-grant
-  auditLogTable: public.admin_audit_logs
-  browserMayUseServiceRole: false
-
 verification:
   commands:
     - node --test prj/petbank-server/test/*.test.mjs
-    - python -m pytest (Get-ChildItem 'prj' -Filter 'test_*.py' | Sort-Object Name | ForEach-Object { $_.FullName }) -q
-    - node scripts/family-social-ops.mjs pilot:doctor --json
-    - node --check js/auth.js
-    - node --check js/social.js
+    - node --check prj/petbank-server/src/server.mjs
+    - node --check prj/petbank-server/src/config.mjs
 
 policies:
   migrationStrategy: additive-first
   destructiveMigrationsRequireSeparateRelease: true
-  requireBackupBeforeProductionDbPush: true
-  forbidServiceRoleInBrowser: true
+  requireBackupBeforeProductionMigration: true
+  forbidDatabaseOutsideSharedPath: true
 
 rollback:
-  frontend: redeploy-previous-github-pages-artifact
-  database: restore-from-supabase-backup-or-pitr
+  release: switch-current-to-previous-release
+  database: restore-from-shared-sqlite-backup-after-stopping-api

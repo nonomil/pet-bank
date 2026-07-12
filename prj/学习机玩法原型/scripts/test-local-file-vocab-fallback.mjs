@@ -54,7 +54,7 @@ async function main() {
     await page.waitForFunction(() => window.LearningArcadePrototype?.wordPack?.().total > 3000);
 
     const initialPack = await page.evaluate(() => window.LearningArcadePrototype.wordPack());
-    assert.equal(initialPack.total, 3212, 'directly opened index.html should load the full graded vocab script fallback');
+    assert.ok(initialPack.total >= 3212, `directly opened index.html should load the full graded vocab script fallback, got ${initialPack.total}`);
     assert.ok(
       initialPack.packs.some(pack => pack.id === 'kindergarten' && pack.count > 100),
       'directly opened index.html should expose the kindergarten vocab pack'

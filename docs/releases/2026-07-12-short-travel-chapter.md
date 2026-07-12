@@ -1,12 +1,12 @@
-# 三样板短旅行章节发布记录
+# 短旅行章节发布记录
 
 ## 本阶段交付
 
-- `forest`、`beach`、`stargarden` 增加 `chapter_flow.mode=short`。
+- 12 个探索场景均增加 `chapter_flow.mode=short`。
 - 默认路径变为“看见 → 选择 → 带回家”，两张短卡后即可做一次路线选择，选择反馈后可直接领取旅行纪念物。
 - 数学题和遭遇战保留为可选挑战；点击“挑战一下”后仍进入原数学题、战斗和旅行卡闭环。
-- 其余 9 个场景不带 `chapter_flow`，继续走旧五事件链。
 - 短流程进度通过既有场景进度键保存 `flowPhase`、`seeCursor`、`challengeStatus` 和选择反馈；从根入口刷新可恢复。
+- 12 个旅行记忆均有元数据和小屋装饰 ID；3 个有 verified Agnes 图片，9 个明确标为 placeholder 并使用 emoji/CSS 回退。
 
 ## 测试
 
@@ -34,5 +34,5 @@ node --check js/exploration-detail.js
 ## 已知边界
 
 - Python 静态服务器不提供 history fallback，不能直接刷新 `/app/explore`；应用使用根入口 `/`。
-- 本阶段只迁移三个样板，剩余 9 个场景待下一批按相同契约迁移。
+- 9 个 placeholder 场景尚未生成图片，不将占位图伪装为已验证素材。
 - 新短句的本地语音映射仍可能出现 VoiceSystem warning，但不影响页面功能验收。

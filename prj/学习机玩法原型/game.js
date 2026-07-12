@@ -2,8 +2,8 @@
   'use strict';
 
   const GAME_CONTENT_URL = './assets/generated/learning-games-content.json';
-  const TYPING_VIEW_URL = './assets/generated/minecraft-typing-expanded.json';
-  const TYPING_VIEW_GLOBAL = 'LearningArcadeTypingExpanded';
+  const TYPING_VIEW_URL = './assets/generated/english-typing-unified.json';
+  const TYPING_VIEW_GLOBAL = 'LearningArcadeTypingUnified';
   const HANZI_URL = '../../data/hanzi-questions.json';
   const SETTINGS_STORAGE_KEY = 'learning-arcade-settings-v1';
   const HANZI_SHARED_VOICE_MAP_URL = '../拼音块收集台原型/assets/voice/map.json';
@@ -13,6 +13,10 @@
   const WORD_SHOOTER_ASSET_BASE = './assets/generated/word-shooter-scifi-assets/';
   const WORD_CANNON_ASSET_BASE = './assets/generated/word-cannon-assets/';
   const PINYIN_RACER_ASSET_BASE = './assets/generated/pinyin-racer-assets/';
+  const PINYIN_RACER_RETHEME_BASE = './assets/generated/reference/pinyin-racer-retheme-20260711/';
+  const PINYIN_RACER_RETHEME_ASSET_BASE = './assets/generated/pinyin-racer-retheme-assets/';
+  const PINYIN_RACER_SEMANTIC_BASE = './assets/generated/pinyin-racer-semantic-assets/level-05/';
+  const PINYIN_RACER_PREPARED_BASE = './assets/拼音赛车/';
   const HANZI_JUMPER_ASSET_BASE = './assets/generated/hanzi-jumper-assets/';
   const HANZI_IMAGE_BASE = '../../assets/ui/hanzi-img/';
   const PET_JUMPER_ASSETS = {
@@ -98,6 +102,18 @@
     },
     reward: `${WORD_SHOOTER_ASSET_BASE}reward_badge_scifi.png`
   };
+  const WORD_SHOOTER_AGNES_ASSET_BASE = './assets/generated/word-shooter-agnes-assets/';
+  const WORD_SHOOTER_AGNES_ASSETS = {
+    playerShield: `${WORD_SHOOTER_AGNES_ASSET_BASE}player-shield.png`,
+    enemyBolt: `${WORD_SHOOTER_AGNES_ASSET_BASE}enemy-energy-bolt.png`,
+    hitSpark: `${WORD_SHOOTER_AGNES_ASSET_BASE}hit-spark.png`,
+    impactFlash: `${WORD_SHOOTER_AGNES_ASSET_BASE}impact-flash.png`,
+    destroyBurst: `${WORD_SHOOTER_AGNES_ASSET_BASE}destroy-burst-star.png`,
+    shieldBreakRing: `${WORD_SHOOTER_AGNES_ASSET_BASE}shield-break-ring.png`,
+    shieldRepair: `${WORD_SHOOTER_AGNES_ASSET_BASE}shield-repair-pickup.png`,
+    debris: `${WORD_SHOOTER_AGNES_ASSET_BASE}debris-shards.png`,
+    victory: `${WORD_SHOOTER_AGNES_ASSET_BASE}victory-starburst.png`
+  };
   const WORD_CANNON_ASSETS = {
     stage: './assets/generated/pinyin-racer-reference-bg.png',
     beam: `${PINYIN_RACER_ASSET_BASE}speed_trail_short.png`,
@@ -124,16 +140,25 @@
     }
   };
   const PINYIN_RACER_ASSETS = {
-    background: './assets/generated/reference/pinyin-racer-long-track-strip/pinyin-racer-long-track-strip.png',
+    background: `${PINYIN_RACER_RETHEME_BASE}level-01-meadow-sbend/level-01-meadow-sbend.png`,
+    checkpointArch: `${PINYIN_RACER_ASSET_BASE}checkpoint_arch.png`,
+    facilities: {
+      gate: `${PINYIN_RACER_SEMANTIC_BASE}initial_sound_gate.png`,
+      fork: `${PINYIN_RACER_SEMANTIC_BASE}fork_gate_pair.png`,
+      tone: `${PINYIN_RACER_SEMANTIC_BASE}tone_hanging_sign.png`,
+      supply: `${PINYIN_RACER_SEMANTIC_BASE}picture_supply_kiosk.png`,
+      tunnel: `${PINYIN_RACER_SEMANTIC_BASE}listening_tunnel_gate.png`,
+      finish: `${PINYIN_RACER_SEMANTIC_BASE}finish_sprint_arch.png`
+    },
     cars: {
       idle: `${PINYIN_RACER_ASSET_BASE}race_car_top_up.svg`,
-      boost: `${PINYIN_RACER_ASSET_BASE}race_car_top_up.svg`,
+      boost: `${PINYIN_RACER_ASSET_BASE}car_pose_accelerate.png`,
       poseIdle: `${PINYIN_RACER_ASSET_BASE}car_pose_idle.png`,
       accelerate: `${PINYIN_RACER_ASSET_BASE}car_pose_accelerate.png`,
-      driftLeft: `${PINYIN_RACER_ASSET_BASE}race_car_top_up.svg`,
-      driftRight: `${PINYIN_RACER_ASSET_BASE}race_car_top_up.svg`,
+      driftLeft: `${PINYIN_RACER_ASSET_BASE}car_pose_drift_left.png`,
+      driftRight: `${PINYIN_RACER_ASSET_BASE}car_pose_drift_right.png`,
       shield: `${PINYIN_RACER_ASSET_BASE}car_pose_shield.png`,
-      finish: `${PINYIN_RACER_ASSET_BASE}race_car_top_up.svg`
+      finish: `${PINYIN_RACER_ASSET_BASE}car_pose_finish.png`
     },
     signs: {
       idle: `${PINYIN_RACER_ASSET_BASE}road_sign_dark_blank.png`,
@@ -171,6 +196,14 @@
   const WORD_SHOOTER_LANES = [22, 34, 46, 58, 70];
   const WORD_SHOOTER_TICK_MS = 100;
   const WORD_SHOOTER_PLAYER_X = 12;
+  const WORD_SHOOTER_PLAYER_START_Y = 50;
+  const WORD_SHOOTER_PLAYER_BOUNDS = { minX: 7, maxX: 34, minY: 14, maxY: 84 };
+  const WORD_SHOOTER_PLAYER_SPEED = 24;
+  const WORD_SHOOTER_PLAYER_SHIELD = 3;
+  const WORD_SHOOTER_ENEMY_BULLET_SPEED = 24;
+  const WORD_SHOOTER_ENEMY_FIRE_INTERVAL = 1800;
+  const WORD_SHOOTER_ENEMY_BULLET_RADIUS = 3.8;
+  const WORD_SHOOTER_INVULNERABLE_MS = 900;
   const WORD_SHOOTER_COLLISION_X = 17;
   const WORD_SHOOTER_ROUND_GOAL = 6;
   const WORD_CANNON_STAGE_GOAL = 8;
@@ -183,12 +216,22 @@
   const WORD_CANNON_DEFAULT_FEEDBACK = '看汉字，左右移动车子，接住正确拼音卡。';
   const DEFAULT_HANZI_PACK_CANDIDATES = ['kindergarten-hanzi', 'kindergarten-pinyin', 'grade1-ready', 'bridge-hanzi', 'level-1', 'all'];
   const WORD_CANNON_MAPS = [
-    { id: 'pinyin-racer-city-long', title: '赛车长路', asset: PINYIN_RACER_ASSETS.background },
-    { id: 'pinyin-racer-skybridge', title: '云端高架', asset: './assets/generated/reference/pinyin-racer-long-track-skybridge/pinyin-racer-long-track-skybridge.png' },
-    { id: 'pinyin-racer-daylight', title: '晴空直道', asset: './assets/generated/pinyin-racer-lane-bg-empty.png' }
+    { id: 'pinyin-racer-meadow-sbend', title: '赛车·草地 S 弯', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-01-彩色卡通赛车道.png`, artDirection: 'retheme' },
+    { id: 'pinyin-racer-cloud-fork', title: '赛车·云桥分叉', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-02-漂浮天空赛道.png`, artDirection: 'retheme' },
+    { id: 'pinyin-racer-forest-tunnel', title: '赛车·森林隧道', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-03--玩具森林赛道png.png`, artDirection: 'retheme' },
+    { id: 'pinyin-racer-candy-bridge', title: '赛车·糖果声调桥', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-04-梦幻通话赛道.png`, artDirection: 'retheme' },
+    { id: 'pinyin-racer-finish-sprint', title: '赛车·终点冲刺', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-05--赛道终点.png`, artDirection: 'retheme' }
+  ];
+  const PINYIN_RACER_SEGMENTS = [
+    { id: 's-bend', shape: 's-bend', taskType: 'sound-gate', correctRoute: 'inner', recoveryRoute: 'wide', landmark: '声母弯道', mapIndex: 0, laneXs: [32, 50, 68] },
+    { id: 'fork', shape: 'fork', taskType: 'image-supply', correctRoute: 'shortcut', recoveryRoute: 'outer', landmark: '图片补给站', mapIndex: 1, laneXs: [24, 68, 50] },
+    { id: 'bridge', shape: 'bridge', taskType: 'tone-sign', correctRoute: 'bridge', recoveryRoute: 'slow-bridge', landmark: '声调桥', mapIndex: 3, laneXs: [31, 50, 69] },
+    { id: 'tunnel', shape: 'tunnel', taskType: 'sound-gate', correctRoute: 'lit-tunnel', recoveryRoute: 'safe-tunnel', landmark: '听音隧道', mapIndex: 2, laneXs: [43, 58, 50] },
+    { id: 'finish-sprint', shape: 'finish-sprint', taskType: 'final-gate', correctRoute: 'boost', recoveryRoute: 'buffer', landmark: '终点拼读门', mapIndex: 4, laneXs: [28, 50, 72] }
   ];
   const PINYIN_SNAKE_ROUND_GOAL = 5;
   const SNAKE_DEFAULT_FEEDBACK = '方向键移动，先吃高亮拼音块。';
+  const SNAKE_SPEED_PRESETS = { slow: 760, standard: 610 };
   const HANZI_DEFAULT_FEEDBACK = '60 秒短局，左右换平台，空格接正确气泡。';
   const WORD_DIFFICULTY_OPTIONS = [
     { id: 'basic', label: '基础', badge: '基础训练', description: '慢速、少敌机、适合热身' },
@@ -207,6 +250,26 @@
     full: {
       shooter: { roundGoal: 12, maxEnemies: 4, speedMultiplier: 0.72, crashOnly: true },
       cannon: { roundGoal: 24, stageGoal: 20, maxTargets: 4, speedMultiplier: 1.06, missLimit: 3 }
+    }
+  };
+  const WORD_SHOOTER_STAGE_THEMES = {
+    basic: {
+      id: 'dawn-training',
+      label: '晨曦训练场',
+      kicker: 'Dawn Training Ground'
+      ,background: './assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/dawn-training-ground-clean/dawn-training-ground-clean.png'
+    },
+    intermediate: {
+      id: 'candy-nebula',
+      label: '糖果星云',
+      kicker: 'Candy Nebula'
+      ,background: './assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/candy-nebula-clean/candy-nebula-clean.png'
+    },
+    full: {
+      id: 'volcanic-meteor',
+      label: '火山陨石带',
+      kicker: 'Volcanic Meteor Belt'
+      ,background: './assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/volcanic-meteor-belt-clean/volcanic-meteor-belt-clean.png'
     }
   };
 
@@ -270,8 +333,16 @@
       attackEvents: [],
       announcedKey: '',
       resolvingHit: false,
+      player: { x: WORD_SHOOTER_PLAYER_X, y: WORD_SHOOTER_PLAYER_START_Y },
+      moveInput: { up: false, down: false, left: false, right: false },
+      shield: WORD_SHOOTER_PLAYER_SHIELD,
+      invulnerableUntil: 0,
+      enemyBullets: [],
+      enemyBulletId: 0,
+      enemyFireEnabled: true,
       roundGoal: WORD_SHOOTER_ROUND_GOAL,
-      roundComplete: false
+      roundComplete: false,
+      phase: 'warmup'
     },
     wordCannon: {
       targets: [],
@@ -298,6 +369,8 @@
       roundGoal: WORD_CANNON_ROUND_GOAL,
       stageGoal: WORD_CANNON_STAGE_GOAL,
       mapIndex: 0,
+      segmentIndex: 0,
+      segment: null,
       roundComplete: false
     },
     snake: {
@@ -314,8 +387,14 @@
       lastResult: 'ready',
       feedbackTick: 0,
       currentFoodState: 'target',
+      hintUses: 2,
+      hintActiveUntil: 0,
+      hintTick: 0,
       roundGoal: PINYIN_SNAKE_ROUND_GOAL,
       roundComplete: false,
+      paused: false,
+      speedMode: 'slow',
+      speedMs: SNAKE_SPEED_PRESETS.slow,
       timer: null
     },
     jumper: {
@@ -366,17 +445,22 @@
     wordQueue: document.getElementById('wordQueue'),
     wordChinese: document.getElementById('wordChinese'),
     typingArena: document.getElementById('typingArena'),
+    typingStageBackdropImage: document.getElementById('typingStageBackdropImage'),
+    typingStageTheme: document.getElementById('typingStageTheme'),
     typingTargetRail: document.getElementById('typingTargetRail'),
     typingEnemyLayer: document.getElementById('typingEnemyLayer'),
+    typingEnemyBulletLayer: document.getElementById('typingEnemyBulletLayer'),
     typingDropLayer: document.getElementById('typingDropLayer'),
     typingProjectileLayer: document.getElementById('typingProjectileLayer'),
     typingShardLayer: document.getElementById('typingShardLayer'),
     typingTargetImage: document.getElementById('typingTargetImage'),
     typingGun: document.getElementById('typingGun'),
+    typingPlayerShield: document.getElementById('typingPlayerShield'),
     typingGunShip: document.getElementById('typingGunShip'),
     typingWeaponStatus: document.getElementById('typingWeaponStatus'),
     typingProgress: document.getElementById('typingProgress'),
     typingStreak: document.getElementById('typingStreak'),
+    typingShield: document.getElementById('typingShield'),
     wordFeedback: document.getElementById('wordFeedback'),
     wordPackSwitch: document.getElementById('wordPackSwitch'),
     wordDifficultySwitch: document.getElementById('wordDifficultySwitch'),
@@ -394,6 +478,7 @@
     cannonSettingsReset: document.getElementById('cannonSettingsReset'),
     cannonDifficultyBadge: document.getElementById('cannonDifficultyBadge'),
     cannonStage: document.getElementById('cannonStage'),
+    cannonRouteLayer: document.getElementById('cannonRouteLayer'),
     cannonTargetLayer: document.getElementById('cannonTargetLayer'),
     cannonFxLayer: document.getElementById('cannonFxLayer'),
     cannonCurrentWord: document.getElementById('cannonCurrentWord'),
@@ -402,14 +487,20 @@
     cannonKeyboard: document.getElementById('cannonKeyboard'),
     pinyinSnake: document.getElementById('pinyinSnake'),
     snakeBoard: document.getElementById('snakeBoard'),
+    snakePauseButton: document.getElementById('snakePauseButton'),
+    snakeSpeedSwitch: document.getElementById('snakeSpeedSwitch'),
     snakePrompt: document.getElementById('snakePrompt'),
     snakeTaskWord: document.getElementById('snakeTaskWord'),
+    snakeTaskEmoji: document.getElementById('snakeTaskEmoji'),
+    snakeTaskExample: document.getElementById('snakeTaskExample'),
     snakePieces: document.getElementById('snakePieces'),
     snakeTaskHint: document.getElementById('snakeTaskHint'),
     snakeStatusBadge: document.getElementById('snakeStatusBadge'),
     snakeLengthStat: document.getElementById('snakeLengthStat'),
     snakeStarStat: document.getElementById('snakeStarStat'),
     snakeScore: document.getElementById('snakeScore'),
+    snakeHintButton: document.getElementById('snakeHintButton'),
+    snakeHintUses: document.getElementById('snakeHintUses'),
     snakeFeedback: document.getElementById('snakeFeedback'),
     hanziJumper: document.getElementById('hanziJumper'),
     jumperStage: document.getElementById('jumperStage'),
@@ -740,7 +831,7 @@
       const word = String(card?.word || '').toLowerCase().replace(/[^a-z]/g, '');
       const sourcePackGroup = card.sourcePackGroup || 'minecraft';
       const seenKey = `${sourcePackGroup}:${word}`;
-      if (!/^[a-z]{3,7}$/.test(word) || seen.has(seenKey)) return;
+      if (!/^[a-z]{2,16}$/.test(word) || seen.has(seenKey)) return;
       seen.add(seenKey);
       merged.push({
         word,
@@ -780,6 +871,9 @@
   function wordsForPack(packId = state.wordPack) {
     const allWords = state.allWords.length ? state.allWords : FALLBACK_VOCAB;
     if (!allWords.length || packId === 'all') return allWords;
+    if (packId === 'curriculum-all') {
+      return allWords.filter(word => ['core-english', 'extension-english'].includes(word.sourcePackGroup));
+    }
     const filtered = allWords.filter(word => word.sourcePackGroup === packId);
     return filtered.length ? filtered : allWords;
   }
@@ -798,6 +892,22 @@
 
   function wordDifficultyTuning(level = state.wordDifficulty) {
     return WORD_DIFFICULTY_TUNING[level] || WORD_DIFFICULTY_TUNING.basic;
+  }
+
+  function wordShooterStageTheme(level = state.wordDifficulty) {
+    return WORD_SHOOTER_STAGE_THEMES[level] || WORD_SHOOTER_STAGE_THEMES.basic;
+  }
+
+  function wordShooterPhaseForCompletedWords(completedWords = state.wordShooter.completedWords.length) {
+    const tuning = wordDifficultyTuning().shooter;
+    const phaseIndex = Math.floor(Math.max(0, completedWords) / 5) % 4;
+    const phases = [
+      { id: 'warmup', label: '预热', maxEnemies: Math.min(2, tuning.maxEnemies), speedMultiplier: tuning.speedMultiplier * 0.86 },
+      { id: 'formation', label: '编队', maxEnemies: Math.min(3, tuning.maxEnemies), speedMultiplier: tuning.speedMultiplier * 0.94 },
+      { id: 'reward', label: '奖励', maxEnemies: Math.min(3, tuning.maxEnemies), speedMultiplier: tuning.speedMultiplier },
+      { id: 'climax', label: '小高潮', maxEnemies: tuning.maxEnemies, speedMultiplier: tuning.speedMultiplier * 1.08 }
+    ];
+    return phases[phaseIndex];
   }
 
   function readSavedSettings() {
@@ -1650,14 +1760,14 @@
   }
 
   function wordShooterEnemiesSorted() {
-    return [...state.wordShooter.enemies].sort((left, right) => {
+    return state.wordShooter.enemies.filter(enemy => !enemy.destroying).sort((left, right) => {
       if (left.x !== right.x) return left.x - right.x;
       return left.laneIndex - right.laneIndex;
     });
   }
 
   function getWordShooterEnemy(enemyId) {
-    return state.wordShooter.enemies.find(enemy => enemy.id === enemyId) || null;
+    return state.wordShooter.enemies.find(enemy => enemy.id === enemyId && !enemy.destroying) || null;
   }
 
   function focusWordShooterEnemy() {
@@ -1691,7 +1801,7 @@
 
   function createWordShooterEnemy(laneIndex = 0) {
     const ws = state.wordShooter;
-    const tuning = wordDifficultyTuning().shooter;
+    const phase = wordShooterPhaseForCompletedWords();
     const wordData = wordShooterWordAt(ws.spawnCursor);
     const enemyId = ws.enemyId + 1;
     const fighter = WORD_SHOOTER_ASSETS.enemyFighters[(enemyId - 1) % WORD_SHOOTER_ASSETS.enemyFighters.length];
@@ -1704,25 +1814,26 @@
       x: 88 + ((enemyId + laneIndex) % 3) * 4,
       y: WORD_SHOOTER_LANES[laneIndex],
       bobPhase: enemyId * 0.73,
-      speed: (3.2 + wordData.word.length * 0.2 + laneIndex * 0.08) * tuning.speedMultiplier,
+      speed: (3.2 + wordData.word.length * 0.2 + laneIndex * 0.08) * phase.speedMultiplier,
       asset: fighter.asset,
       hueRotate: fighter.hueRotate,
       artScale: fighter.scale,
       labelTop: fighter.labelTop,
       wordData,
       destroying: false,
-      destroyAt: 0
+      destroyAt: 0,
+      nextShotAt: ws.elapsedMs + WORD_SHOOTER_ENEMY_FIRE_INTERVAL + ((enemyId * 137) % 700)
     };
   }
 
   function ensureWordShooterEnemies() {
     const ws = state.wordShooter;
-    const tuning = wordDifficultyTuning().shooter;
-    const baseCount = Math.min(3, tuning.maxEnemies);
+    const phase = wordShooterPhaseForCompletedWords();
+    const baseCount = phase.maxEnemies;
     while (ws.enemies.length < baseCount) {
       ws.enemies.push(createWordShooterEnemy(pickWordShooterLane()));
     }
-    if (ws.enemies.length < tuning.maxEnemies && ws.enemies.every(enemy => enemy.x <= 76)) {
+    if (ws.enemies.length < phase.maxEnemies && ws.enemies.every(enemy => enemy.x <= 76)) {
       ws.enemies.push(createWordShooterEnemy(pickWordShooterLane()));
     }
   }
@@ -1873,6 +1984,16 @@
     `;
   }
 
+  function renderWordShooterEnemyBullets() {
+    if (!els.typingEnemyBulletLayer) return;
+    els.typingEnemyBulletLayer.innerHTML = state.wordShooter.enemyBullets.map(bullet => `
+      <span class="typing-enemy-bullet" data-bullet-id="${bullet.id}"
+        style="left:${bullet.x.toFixed(2)}%;top:${bullet.y.toFixed(2)}%;--bullet-angle:${(Math.atan2(bullet.vy, bullet.vx) * 180 / Math.PI).toFixed(2)}deg">
+        <img class="typing-enemy-bullet-core" src="${WORD_SHOOTER_AGNES_ASSETS.enemyBolt}" alt="" aria-hidden="true">
+      </span>
+    `).join('');
+  }
+
   function renderWordShooterShip() {
     if (!els.typingGunShip) return;
     const ws = state.wordShooter;
@@ -1892,6 +2013,7 @@
 
   function renderTypingArena() {
     const ws = state.wordShooter;
+    const stageTheme = wordShooterStageTheme();
     const focusEnemy = focusWordShooterEnemy();
     const letters = focusEnemy?.wordData.word?.split('') || [];
     const doneCount = ws.activeEnemyId === focusEnemy?.id ? ws.currentTyped.length : 0;
@@ -1902,12 +2024,26 @@
     els.typingArena.dataset.locked = ws.activeEnemyId ? 'true' : 'false';
     els.typingArena.dataset.firing = ws.firePoseUntil > ws.elapsedMs ? 'true' : 'false';
     els.typingArena.dataset.arenaShake = ws.arenaShakeUntil > ws.elapsedMs ? 'true' : 'false';
+    els.typingArena.dataset.playerHit = ws.invulnerableUntil > ws.elapsedMs ? 'true' : 'false';
+    if (els.typingPlayerShield) els.typingPlayerShield.hidden = ws.invulnerableUntil <= ws.elapsedMs;
+    els.typingArena.dataset.stageTheme = stageTheme.id;
+    if (els.typingStageBackdropImage && els.typingStageBackdropImage.dataset.src !== stageTheme.background) {
+      els.typingStageBackdropImage.dataset.src = stageTheme.background;
+      els.typingStageBackdropImage.src = stageTheme.background;
+    }
+    if (els.typingStageTheme) {
+      els.typingStageTheme.innerHTML = `<span>${stageTheme.label}</span><small>${stageTheme.kicker}</small>`;
+    }
+    els.typingArena.style.setProperty('--player-x', `${ws.player.x.toFixed(2)}%`);
+    els.typingArena.style.setProperty('--player-y', `${ws.player.y.toFixed(2)}%`);
+    if (els.typingShield) els.typingShield.textContent = `shield ${ws.shield}/3`;
     els.typingArena.style.setProperty('--arena-shake-x', ws.arenaShakeUntil > ws.elapsedMs ? `${ws.arenaShakeLevel.toFixed(1)}px` : '0px');
     els.typingArena.style.setProperty('--arena-shake-y', ws.arenaShakeUntil > ws.elapsedMs ? `${(ws.arenaShakeLevel * 0.42).toFixed(1)}px` : '0px');
     if (els.wordFeedback) els.wordFeedback.textContent = wordShooterFeedbackText();
     renderWordQueue();
     renderWordShooterWeaponStatus();
     renderWordShooterEnemies();
+    renderWordShooterEnemyBullets();
     renderWordShooterDrops();
     renderWordShooterPreviewCard(focusEnemy);
     renderWordShooterShip();
@@ -1917,6 +2053,7 @@
 
   function clearTypingFx() {
     els.typingEnemyLayer?.replaceChildren();
+    els.typingEnemyBulletLayer?.replaceChildren();
     els.typingDropLayer?.replaceChildren();
     els.typingProjectileLayer.replaceChildren();
     els.typingShardLayer.replaceChildren();
@@ -2012,8 +2149,8 @@
     impact.style.top = `${y}px`;
     impact.innerHTML = `
       <span class="typing-impact-glow"></span>
-      <img class="typing-impact-ring" src="${WORD_SHOOTER_ASSETS.impacts.ring}" alt="" aria-hidden="true">
-      <img class="typing-impact-flash" src="${WORD_SHOOTER_ASSETS.impacts.flash}" alt="" aria-hidden="true">
+      <img class="typing-impact-ring" src="${WORD_SHOOTER_AGNES_ASSETS.destroyBurst}" alt="" aria-hidden="true">
+      <img class="typing-impact-flash" src="${WORD_SHOOTER_AGNES_ASSETS.impactFlash}" alt="" aria-hidden="true">
     `;
     els.typingShardLayer.appendChild(impact);
     impact.addEventListener('animationend', () => impact.remove(), { once: true });
@@ -2407,11 +2544,103 @@
     spawnWordShooterPickup(type, Math.max(20, enemy.x - 4), Math.min(78, enemy.y + 6));
   }
 
+  function grantWordShooterComboReward() {
+    const combo = state.wordShooter.combo;
+    if (combo === 3) {
+      grantWordShooterWeapon('triple-beam', 10000);
+    } else if (combo === 5) {
+      grantWordShooterWeapon('homing-missile', 9000);
+    }
+  }
+
+  function setWordShooterMoveInput(input = {}) {
+    const moveInput = state.wordShooter.moveInput;
+    ['up', 'down', 'left', 'right'].forEach(direction => {
+      moveInput[direction] = Boolean(input[direction]);
+    });
+    return { ...moveInput };
+  }
+
+  function moveWordShooterPlayer(deltaMs) {
+    const ws = state.wordShooter;
+    const dx = Number(ws.moveInput.right) - Number(ws.moveInput.left);
+    const dy = Number(ws.moveInput.down) - Number(ws.moveInput.up);
+    if (!dx && !dy) return;
+    const length = Math.hypot(dx, dy) || 1;
+    const distance = WORD_SHOOTER_PLAYER_SPEED * (deltaMs / 1000);
+    ws.player.x = clampNumber(ws.player.x + (dx / length) * distance, WORD_SHOOTER_PLAYER_BOUNDS.minX, WORD_SHOOTER_PLAYER_BOUNDS.maxX);
+    ws.player.y = clampNumber(ws.player.y + (dy / length) * distance, WORD_SHOOTER_PLAYER_BOUNDS.minY, WORD_SHOOTER_PLAYER_BOUNDS.maxY);
+  }
+
+  function spawnWordShooterEnemyBullet(enemy) {
+    const ws = state.wordShooter;
+    const dx = ws.player.x - enemy.x;
+    const dy = ws.player.y - enemy.y;
+    const distance = Math.hypot(dx, dy) || 1;
+    const speed = WORD_SHOOTER_ENEMY_BULLET_SPEED * wordDifficultyTuning().shooter.speedMultiplier;
+    ws.enemyBulletId += 1;
+    ws.enemyBullets.push({
+      id: `enemy-bullet-${ws.enemyBulletId}`,
+      x: enemy.x - 2,
+      y: enemy.y,
+      vx: (dx / distance) * speed,
+      vy: (dy / distance) * speed,
+      sourceEnemyId: enemy.id
+    });
+  }
+
+  function resolveWordShooterPlayerHit() {
+    const ws = state.wordShooter;
+    if (ws.invulnerableUntil > ws.elapsedMs || ws.roundComplete) return false;
+    ws.shield = Math.max(0, ws.shield - 1);
+    ws.invulnerableUntil = ws.elapsedMs + WORD_SHOOTER_INVULNERABLE_MS;
+    ws.misses += 1;
+    ws.combo = 0;
+    sfx.impact('homing-missile');
+    if (ws.shield <= 0) {
+      ws.roundComplete = true;
+      finishRound('word-shooter', {
+        kicker: 'English',
+        title: '护盾耗尽',
+        copy: '躲开能量弹，再用字母锁定敌机。',
+        stats: [
+          { label: '击破单词', value: `${ws.completedWords.length}/${ws.roundGoal}` },
+          { label: '总得分', value: String(ws.score) },
+          { label: '护盾', value: '0/3' }
+        ]
+      });
+    }
+    return true;
+  }
+
+  function updateWordShooterEnemyBullets(deltaMs) {
+    const ws = state.wordShooter;
+    ws.enemies.forEach(enemy => {
+      if (enemy.destroying) return;
+      if (!ws.enemyFireEnabled) return;
+      if (ws.elapsedMs >= enemy.nextShotAt) {
+        spawnWordShooterEnemyBullet(enemy);
+        enemy.nextShotAt = ws.elapsedMs + WORD_SHOOTER_ENEMY_FIRE_INTERVAL / Math.max(0.7, wordDifficultyTuning().shooter.speedMultiplier);
+      }
+    });
+    ws.enemyBullets.forEach(bullet => {
+      bullet.x += bullet.vx * (deltaMs / 1000);
+      bullet.y += bullet.vy * (deltaMs / 1000);
+    });
+    const hit = ws.enemyBullets.find(bullet => Math.hypot(bullet.x - ws.player.x, bullet.y - ws.player.y) <= WORD_SHOOTER_ENEMY_BULLET_RADIUS);
+    if (hit) {
+      ws.enemyBullets = ws.enemyBullets.filter(bullet => bullet.id !== hit.id);
+      resolveWordShooterPlayerHit();
+    }
+    ws.enemyBullets = ws.enemyBullets.filter(bullet => bullet.x > -8 && bullet.x < 108 && bullet.y > -8 && bullet.y < 108);
+  }
+
   function updateWordShooter(deltaMs = WORD_SHOOTER_TICK_MS) {
     const ws = state.wordShooter;
     if (ws.roundComplete) return;
     ws.elapsedMs += deltaMs;
     getWordShooterWeapon();
+    moveWordShooterPlayer(deltaMs);
     ws.enemies.forEach(enemy => {
       enemy.x -= enemy.speed * (deltaMs / 1000);
     });
@@ -2442,6 +2671,8 @@
       });
       return;
     }
+    updateWordShooterEnemyBullets(deltaMs);
+    if (ws.roundComplete) return;
     if (ws.pickup) {
       ws.pickup.x += ws.pickup.vx * (deltaMs / 1000);
       ws.pickup.y += ws.pickup.vy * (deltaMs / 1000);
@@ -2455,11 +2686,12 @@
   }
 
   function wordShooterSnapshot() {
+    const phase = wordShooterPhaseForCompletedWords();
     return {
       activeEnemyId: state.wordShooter.activeEnemyId,
       currentTyped: state.wordShooter.currentTyped,
       weaponId: getWordShooterWeapon().id,
-      enemies: state.wordShooter.enemies.map(enemy => ({
+      enemies: state.wordShooter.enemies.filter(enemy => !enemy.destroying).map(enemy => ({
         id: enemy.id,
         word: enemy.wordData.word,
         level: enemy.wordData.level,
@@ -2471,9 +2703,20 @@
       combo: state.wordShooter.combo,
       misses: state.wordShooter.misses,
       score: state.wordShooter.score,
+      completedWords: state.wordShooter.completedWords.slice(),
       roundGoal: state.wordShooter.roundGoal,
+      roundComplete: state.wordShooter.roundComplete,
+      phase: phase.id,
+      phaseLabel: phase.label,
+      spawnCount: state.wordShooter.enemyId,
       difficulty: { ...wordDifficultyTuning().shooter },
       attackEvents: state.wordShooter.attackEvents.slice()
+      ,player: { x: Number(state.wordShooter.player.x.toFixed(2)), y: Number(state.wordShooter.player.y.toFixed(2)) }
+      ,shield: state.wordShooter.shield
+      ,invulnerableUntil: state.wordShooter.invulnerableUntil
+      ,enemyBullets: state.wordShooter.enemyBullets.map(bullet => ({ ...bullet }))
+      ,moveInput: { ...state.wordShooter.moveInput }
+      ,stageTheme: { ...wordShooterStageTheme() }
     };
   }
 
@@ -2522,6 +2765,13 @@
     ws.attackEvents = [];
     ws.announcedKey = '';
     ws.resolvingHit = false;
+    ws.player = { x: WORD_SHOOTER_PLAYER_X, y: WORD_SHOOTER_PLAYER_START_Y };
+    ws.moveInput = { up: false, down: false, left: false, right: false };
+    ws.shield = WORD_SHOOTER_PLAYER_SHIELD;
+    ws.invulnerableUntil = 0;
+    ws.enemyBullets = [];
+    ws.enemyBulletId = 0;
+    ws.enemyFireEnabled = true;
     ws.roundGoal = wordDifficultyTuning().shooter.roundGoal;
     ws.roundComplete = false;
     ws.spawnCursor = startWordCursor(ws.roundWords);
@@ -2576,6 +2826,7 @@
       ws.combo += 1;
       ws.score += targetEnemy.wordData.word.length;
       state.combo = ws.combo;
+      grantWordShooterComboReward();
       const finisherWeaponId = getWordShooterWeapon().id;
       window.setTimeout(() => {
         const finisherNode = targetEnemyHitNode(targetEnemy.id);
@@ -2698,6 +2949,8 @@
       pinyin: data.pinyin,
       char: data.char,
       correct: !!option.correct,
+      route: option.correct ? 'inner' : 'wide',
+      cardType: ['gate', 'boost', 'sign'][laneIndex],
       wordData: {
         ...data,
         word: option.text,
@@ -2711,6 +2964,9 @@
 
   function createPinyinRacerWave() {
     const wc = state.wordCannon;
+    const segment = PINYIN_RACER_SEGMENTS[wc.segmentIndex % PINYIN_RACER_SEGMENTS.length];
+    wc.segment = segment;
+    wc.mapIndex = segment.mapIndex;
     const retryTask = wc.retryTask;
     const wordData = retryTask || pinyinCannonItemAt(wc.spawnCursor);
     const targetNumber = wc.targetId + 1;
@@ -2719,12 +2975,26 @@
       wc.spawnCursor = (wc.spawnCursor + 1) % Math.max(1, (state.hanzi.length ? state.hanzi : FALLBACK_HANZI).length);
     }
     wc.retryTask = null;
-    const correctLane = targetNumber % WORD_CANNON_LANES.length;
+    const correctLane = segment.shape === 'fork' ? 0 : segment.shape === 'finish-sprint' ? 2 : targetNumber % WORD_CANNON_LANES.length;
     const choices = createPinyinRacerChoices(wordData, correctLane);
     wc.currentTask = wordData;
     wc.activeTargetId = null;
     wc.currentTyped = '';
-    return choices.map((choice, laneIndex) => createWordCannonTarget(laneIndex, wordData, choice, targetNumber));
+    return choices.map((choice, laneIndex) => {
+      const target = createWordCannonTarget(laneIndex, wordData, choice, targetNumber);
+      target.x = segment.laneXs?.[laneIndex] || target.x;
+      target.taskType = segment.taskType;
+      target.landmark = segment.landmark;
+      target.segmentId = segment.id;
+      target.cardType = segment.taskType === 'image-supply' && laneIndex === 1
+        ? 'supply'
+        : segment.taskType === 'tone-sign' && laneIndex === 2
+          ? 'sign'
+          : segment.taskType === 'final-gate' && laneIndex === 1
+            ? 'finish'
+            : target.cardType;
+      return target;
+    });
   }
 
   function ensureWordCannonTargets() {
@@ -2753,6 +3023,17 @@
     `;
   }
 
+  function pinyinRacerFacilityAsset(target) {
+    const segmentId = target?.segmentId || '';
+    if (segmentId === 'tunnel') return PINYIN_RACER_ASSETS.facilities.tunnel;
+    if (segmentId === 'finish-sprint' || target?.cardType === 'finish') return PINYIN_RACER_ASSETS.facilities.finish;
+    if (target?.cardType === 'supply') return PINYIN_RACER_ASSETS.facilities.supply;
+    if (target?.cardType === 'sign') return PINYIN_RACER_ASSETS.facilities.tone;
+    if (segmentId === 'fork') return PINYIN_RACER_ASSETS.facilities.fork;
+    if (target?.cardType === 'boost') return PINYIN_RACER_ASSETS.facilities.tone;
+    return PINYIN_RACER_ASSETS.facilities.gate;
+  }
+
   function renderWordCannonStage() {
     const wc = state.wordCannon;
     const focusTarget = focusWordCannonTarget();
@@ -2767,6 +3048,7 @@
         : `stage ${Math.min(currentStageIndex, currentStageGoal)}/${currentStageGoal}`;
     }
     const task = wc.currentTask || focusTarget?.wordData || null;
+    const segment = wc.segment || PINYIN_RACER_SEGMENTS[wc.segmentIndex % PINYIN_RACER_SEGMENTS.length];
     if (els.cannonPromptChinese) els.cannonPromptChinese.textContent = task?.char || '看汉字接拼音';
     if (els.cannonStage) {
       els.cannonStage.dataset.locked = wc.activeTargetId ? 'true' : 'false';
@@ -2775,7 +3057,12 @@
       els.cannonStage.dataset.sprint = wc.sprintUntil > wc.elapsedMs ? 'true' : 'false';
       els.cannonStage.dataset.hint = wc.hintUntil > wc.elapsedMs ? 'true' : 'false';
       els.cannonStage.dataset.mapId = currentMap.id;
+      els.cannonStage.dataset.artDirection = currentMap.artDirection || 'legacy';
+      els.cannonStage.dataset.segment = segment.id;
+      els.cannonStage.dataset.taskType = segment.taskType;
+      els.cannonStage.dataset.route = wc.activeTargetId ? (focusTarget?.route || segment.correctRoute) : segment.recoveryRoute;
       els.cannonStage.style.setProperty('--pinyin-car-x', `${WORD_CANNON_LANES[wc.playerLane] || 50}%`);
+      els.cannonStage.style.setProperty('--pinyin-car-progress', `${wc.carProgress || 0}px`);
       els.cannonStage.style.setProperty('--cannon-aim-x', `${focusTarget?.x || 50}%`);
       els.cannonStage.style.setProperty('--cannon-angle', `${(((WORD_CANNON_LANES[wc.playerLane] || 50) - 50) * 0.28).toFixed(2)}deg`);
       els.cannonStage.style.setProperty('--cannon-stage-image', `url("${currentMap.asset}")`);
@@ -2796,15 +3083,32 @@
         : wc.activeTargetId
           ? PINYIN_RACER_ASSETS.cars.boost
           : PINYIN_RACER_ASSETS.cars.idle;
+      const racerState = wc.roundComplete
+        ? 'finish'
+        : wc.drift
+          ? (wc.drift < 0 ? 'drift-left' : 'drift-right')
+          : wc.activeTargetId
+            ? 'boost'
+            : 'idle';
       els.cannonBase.innerHTML = `
-        <div class="pinyin-race-car" data-racer-state="${wc.activeTargetId ? 'boost' : 'idle'}" data-racer-lane="${wc.playerLane}" aria-hidden="true">
+        <div class="pinyin-race-car" data-racer-state="${racerState}" data-racer-lane="${wc.playerLane}" aria-hidden="true">
           <img class="pinyin-race-car-img" src="${carAsset}" alt="">
           <img class="pinyin-race-speed-trail" src="${PINYIN_RACER_ASSETS.fx.longTrail}" alt="">
         </div>
       `;
     }
     if (els.cannonCurrentWord) {
-      els.cannonCurrentWord.innerHTML = renderPinyinRacerTask(focusTarget);
+      els.cannonCurrentWord.innerHTML = `${renderPinyinRacerTask(focusTarget)}<em class="race-task-type">${segment.landmark}</em>`;
+    }
+    if (els.cannonRouteLayer) {
+      els.cannonRouteLayer.innerHTML = PINYIN_RACER_SEGMENTS.map((item, index) => `
+        <span class="route-segment ${item.shape} ${index === wc.segmentIndex % PINYIN_RACER_SEGMENTS.length ? 'is-current' : ''}" data-segment-id="${item.id}">
+          <b class="race-landmark">${item.landmark}</b>
+          <i class="route-path route-${item.correctRoute}"></i>
+        </span>
+      `).join('') + `
+        <img class="race-checkpoint-arch" src="${PINYIN_RACER_ASSETS.checkpointArch}" alt="" aria-hidden="true">
+      `;
     }
     if (els.cannonTargetLayer) {
       els.cannonTargetLayer.innerHTML = wordCannonTargetsSorted().map(target => {
@@ -2812,11 +3116,12 @@
         const warning = target.y >= PINYIN_RACER_CATCH_Y - 12 ? ' is-warning' : '';
         const hint = wc.hintUntil > wc.elapsedMs && target.correct;
         return `
-          <article class="cannon-target${locked ? ' is-locked' : ''}${warning}${hint ? ' is-hint-option' : ''}" data-cannon-target-id="${target.id}" data-cannon-theme="${target.theme}" data-cannon-lane="${target.laneIndex}" style="left:${target.x.toFixed(2)}%;top:${target.y.toFixed(2)}%">
-            <img class="cannon-target-frame" src="${locked ? PINYIN_RACER_ASSETS.signs.locked : PINYIN_RACER_ASSETS.signs.idle}" alt="" aria-hidden="true">
+            <article class="cannon-target cannon-card-${target.cardType || 'gate'}${locked ? ' is-locked' : ''}${warning}${hint ? ' is-hint-option' : ''}" data-cannon-target-id="${target.id}" data-cannon-theme="${target.theme}" data-cannon-lane="${target.laneIndex}" style="left:${target.x.toFixed(2)}%;top:${target.y.toFixed(2)}%">
+            <img class="cannon-target-frame" src="${pinyinRacerFacilityAsset(target)}" alt="" aria-hidden="true">
+            <span class="cannon-target-facility" aria-hidden="true">${target.cardType === 'supply' ? '◆' : target.cardType === 'finish' ? '★' : target.cardType === 'sign' ? '⌁' : target.cardType === 'boost' ? '➤' : '●'}</span>
             <div class="cannon-target-copy">
               <b class="cannon-target-word">${target.wordData.word}</b>
-              <small>${hint ? '再找这个' : '拼音卡'}</small>
+              <small>${hint ? '再找这个' : target.cardType === 'supply' ? '图片补给' : target.cardType === 'finish' ? '终点拼读门' : target.cardType === 'sign' ? '声调路牌' : target.cardType === 'boost' ? '韵母加速' : '声母门'}</small>
             </div>
           </article>
         `;
@@ -2923,6 +3228,7 @@
     const wc = state.wordCannon;
     if (wc.roundComplete) return;
     wc.elapsedMs += deltaMs;
+    wc.carProgress = Math.min(46, (wc.carProgress || 0) + deltaMs * 0.055);
     wc.targets.forEach(target => {
       target.y += target.speed * (deltaMs / 1000);
     });
@@ -2939,6 +3245,7 @@
         wc.score += Math.max(1, finishedWord.length);
         wc.combo += 1;
         wc.sprintUntil = wc.elapsedMs + 420;
+        wc.segmentIndex = (wc.segmentIndex + 1) % PINYIN_RACER_SEGMENTS.length;
         state.combo = wc.combo;
         spawnCannonImpact(caught.id, `+${Math.max(1, finishedWord.length)}`);
         sfx.impact('basic');
@@ -2960,8 +3267,7 @@
       wc.targets = [];
       wc.currentTyped = '';
       state.input = '';
-      const nextMapIndex = getWordCannonMapIndex();
-      wc.mapIndex = nextMapIndex;
+      wc.mapIndex = PINYIN_RACER_SEGMENTS[wc.segmentIndex % PINYIN_RACER_SEGMENTS.length].mapIndex;
       wc.shotTick += correct ? 1 : 0;
       wc.feedbackTick += 1;
       if (correct && wc.completedWords.length >= wc.roundGoal) {
@@ -2996,6 +3302,7 @@
         translation: target.wordData.translation || '',
         correct: !!target.correct,
         laneIndex: target.laneIndex,
+        cardType: target.cardType || 'gate',
         x: Number(target.x.toFixed(2)),
         y: Number(target.y.toFixed(2))
       })),
@@ -3055,6 +3362,9 @@
     wc.roundGoal = wordDifficultyTuning().cannon.roundGoal;
     wc.stageGoal = wordDifficultyTuning().cannon.stageGoal;
     wc.mapIndex = 0;
+    wc.segmentIndex = 0;
+    wc.segment = PINYIN_RACER_SEGMENTS[0];
+    wc.carProgress = 0;
     wc.roundComplete = false;
     state.wordIndex = 0;
     state.input = '';
@@ -3210,19 +3520,73 @@
     state.snake.lastResult = 'ready';
     state.snake.feedbackTick = 0;
     state.snake.currentFoodState = 'target';
+    state.snake.hintUses = 2;
+    state.snake.hintActiveUntil = 0;
+    state.snake.hintTick = 0;
     state.snake.roundGoal = PINYIN_SNAKE_ROUND_GOAL;
     state.snake.roundComplete = false;
+    state.snake.paused = false;
+    state.snake.speedMode = SNAKE_SPEED_PRESETS[state.snake.speedMode] ? state.snake.speedMode : 'slow';
+    state.snake.speedMs = SNAKE_SPEED_PRESETS[state.snake.speedMode];
     els.snakeFeedback.textContent = SNAKE_DEFAULT_FEEDBACK;
     refreshSnakePieces();
     makeSnakeFoods();
     renderPinyinSnake();
     stopSnake();
-    state.snake.timer = window.setInterval(stepSnake, 650);
+    state.snake.timer = window.setInterval(stepSnake, state.snake.speedMs);
   }
 
   function stopSnake() {
     if (state.snake.timer) window.clearInterval(state.snake.timer);
     state.snake.timer = null;
+  }
+
+  function toggleSnakePause() {
+    if (state.activeGame !== 'pinyin-snake' || state.snake.roundComplete) return;
+    state.snake.paused = !state.snake.paused;
+    if (state.snake.paused) {
+      stopSnake();
+      els.snakeFeedback.textContent = '已暂停，准备好后继续。';
+    } else {
+      state.snake.timer = window.setInterval(stepSnake, state.snake.speedMs);
+      els.snakeFeedback.textContent = `继续练习：先吃 ${expectedSnakePiece()}。`;
+    }
+    renderPinyinSnake();
+  }
+
+  function setSnakeSpeed(mode) {
+    if (!SNAKE_SPEED_PRESETS[mode]) return;
+    state.snake.speedMode = mode;
+    state.snake.speedMs = SNAKE_SPEED_PRESETS[mode];
+    if (!state.snake.paused && state.activeGame === 'pinyin-snake') {
+      stopSnake();
+      state.snake.timer = window.setInterval(stepSnake, state.snake.speedMs);
+    }
+    renderPinyinSnake();
+  }
+
+  function useSnakeHint() {
+    const snake = state.snake;
+    if (state.activeGame !== 'pinyin-snake' || snake.roundComplete || snake.hintUses <= 0) return;
+    snake.hintUses -= 1;
+    snake.hintActiveUntil = Date.now() + 1800;
+    snake.hintTick += 1;
+    const hintTick = snake.hintTick;
+    snake.currentFoodState = 'hint';
+    const target = currentSnakeTarget();
+    els.snakeFeedback.textContent = `提示：先吃 ${expectedSnakePiece()}，再拼成 ${normalizePinyin(target?.pinyin)}。`;
+    renderPinyinSnake();
+    speakHanziTask([
+      { text: target?.char || '', lang: 'zh-CN' },
+      { text: target?.pinyin || '', lang: 'zh-CN' }
+    ]);
+    window.setTimeout(() => {
+      if (state.activeGame !== 'pinyin-snake') return;
+      if (snake.hintTick !== hintTick) return;
+      snake.hintActiveUntil = 0;
+      snake.currentFoodState = 'target';
+      renderPinyinSnake();
+    }, 1850);
   }
 
   function snakeDirectionName(dir) {
@@ -3278,18 +3642,39 @@
     els.snakeBoard.style.setProperty('--snake-size', String(state.snake.size));
     els.pinyinSnake.dataset.snakeState = state.snake.lastResult || 'ready';
     els.pinyinSnake.dataset.feedbackTick = String(state.snake.feedbackTick || 0);
+    els.pinyinSnake.dataset.hintTick = String(state.snake.hintTick || 0);
     els.snakePrompt.textContent = pinyin;
     els.snakeScore.textContent = `${state.snake.score}/${state.snake.roundGoal}★`;
     if (els.snakeLengthStat) els.snakeLengthStat.textContent = String(state.snake.body.length);
     if (els.snakeStarStat) els.snakeStarStat.textContent = String(state.snake.score);
     els.snakeTaskWord.textContent = target?.char || '字';
     els.snakeTaskHint.textContent = `拼成 ${pinyin}，完成后点亮一颗星。`;
+    if (els.snakeTaskEmoji) {
+      els.snakeTaskEmoji.textContent = target?.emoji || '🔤';
+      els.snakeTaskEmoji.setAttribute('aria-label', `${target?.char || ''}语义图提示`);
+    }
+    if (els.snakeTaskExample) els.snakeTaskExample.textContent = cleanHanziExample(target) || `认识 ${target?.char || '这个字'}。`;
     els.snakeStatusBadge.className = `snake-status-badge${resultClass}`;
     els.snakeStatusBadge.textContent = state.snake.lastResult === 'correct'
       ? `连对 ${Math.max(1, state.snake.combo)} 次`
       : state.snake.lastResult === 'wrong'
         ? `目标 ${expected}`
         : `目标 ${expected}`;
+    if (els.snakePauseButton) {
+      els.snakePauseButton.textContent = state.snake.paused ? '继续' : '暂停';
+      els.snakePauseButton.setAttribute('aria-pressed', String(state.snake.paused));
+    }
+    if (els.snakeSpeedSwitch) {
+      els.snakeSpeedSwitch.querySelectorAll('[data-snake-speed]').forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.snakeSpeed === state.snake.speedMode));
+      });
+    }
+    if (els.snakeHintUses) els.snakeHintUses.textContent = String(state.snake.hintUses);
+    if (els.snakeHintButton) {
+      els.snakeHintButton.disabled = state.snake.hintUses <= 0;
+      els.snakeHintButton.classList.toggle('is-active', state.snake.hintActiveUntil > Date.now());
+      els.snakeHintButton.setAttribute('aria-label', state.snake.hintUses > 0 ? `显示拼音提示，剩余${state.snake.hintUses}次` : '本局提示已用完');
+    }
     els.snakePieces.innerHTML = state.snake.pieces.map((piece, index) => {
       const className = index < state.snake.pieceIndex
         ? 'snake-piece is-done'
@@ -3323,8 +3708,9 @@
             : '')
           : '';
         const foodColorIndex = food ? state.snake.foods.indexOf(food) % 4 : 0;
+        const foodHintActive = food?.correct && state.snake.hintActiveUntil > Date.now();
         const foodContent = food
-          ? `<b class="snake-food-card snake-food-dot${food.correct ? ' is-target' : ''}${foodStateClass}" data-food-state="${food.correct ? state.snake.currentFoodState : 'distractor'}" data-food-label="${food.label}" data-food-color="${foodColorIndex}">
+          ? `<b class="snake-food-card snake-food-dot${food.correct ? ' is-target' : ''}${foodStateClass}${foodHintActive ? ' is-hint-target' : ''}" data-food-state="${food.correct ? state.snake.currentFoodState : 'distractor'}" data-food-hint="${foodHintActive ? 'active' : 'none'}" data-food-label="${food.label}" data-food-color="${foodColorIndex}">
               <span class="snake-food-color" aria-hidden="true"></span>
               ${food.correct ? `<em class="snake-target-float">[${food.label}]</em>` : ''}
               <span>${food.label}</span>
@@ -3340,7 +3726,7 @@
   }
 
   function stepSnake() {
-    if (state.activeGame !== 'pinyin-snake' || state.snake.roundComplete) return;
+    if (state.activeGame !== 'pinyin-snake' || state.snake.roundComplete || state.snake.paused) return;
     const head = state.snake.body[0];
     const next = {
       x: (head.x + state.snake.dir.x + state.snake.size) % state.snake.size,
@@ -3387,6 +3773,7 @@
         }
       } else {
         state.snake.combo = 0;
+        state.snake.hintUses = Math.max(0, state.snake.hintUses - 1);
         state.snake.body = state.snake.body.slice(0, Math.max(3, state.snake.body.length - 1));
         state.snake.lastResult = 'wrong';
         state.snake.feedbackTick += 1;
@@ -3685,6 +4072,17 @@
       }
       return;
     }
+    const snakeAction = event.target.closest('[data-snake-action]');
+    if (snakeAction && state.activeGame === 'pinyin-snake') {
+      if (snakeAction.dataset.snakeAction === 'hint') useSnakeHint();
+      else toggleSnakePause();
+      return;
+    }
+    const snakeSpeed = event.target.closest('[data-snake-speed]');
+    if (snakeSpeed && state.activeGame === 'pinyin-snake') {
+      setSnakeSpeed(snakeSpeed.dataset.snakeSpeed);
+      return;
+    }
     const bubble = event.target.closest('[data-jumper-char]');
     if (bubble) {
       catchHanziBubble(
@@ -3740,10 +4138,31 @@
     }
   });
 
+  function wordShooterMovementDirection(key) {
+    return {
+      arrowup: 'up',
+      w: 'up',
+      arrowdown: 'down',
+      s: 'down',
+      arrowleft: 'left',
+      a: 'left',
+      arrowright: 'right',
+      d: 'right'
+    }[key] || '';
+  }
+
+  function shouldTreatWordShooterLetterAsTyping(key) {
+    return Boolean(key && /^[wasd]$/.test(key) && getWordShooterExpectedLetters().has(key));
+  }
+
   document.addEventListener('keydown', event => {
     const key = String(event.key || '').toLowerCase();
     const letterKey = letterFromKeyboardEvent(event);
-    if (state.activeGame === 'word-cannon' && ['arrowleft', 'arrowright', 'a', 'd'].includes(key)) {
+    const movementDirection = wordShooterMovementDirection(key);
+    if (state.activeGame === 'word-shooter' && movementDirection && !(letterKey && shouldTreatWordShooterLetterAsTyping(key))) {
+      event.preventDefault();
+      state.wordShooter.moveInput[movementDirection] = true;
+    } else if (state.activeGame === 'word-cannon' && ['arrowleft', 'arrowright', 'a', 'd'].includes(key)) {
       event.preventDefault();
       inputWordCannonLetter(key);
     } else if (state.activeGame === 'word-shooter' && letterKey) {
@@ -3752,8 +4171,12 @@
     } else if (state.activeGame === 'word-cannon' && letterKey) {
       event.preventDefault();
       inputWordCannonLetter(letterKey);
+    } else if (state.activeGame === 'pinyin-snake' && key === 'p') {
+      event.preventDefault();
+      toggleSnakePause();
     } else if (state.activeGame === 'pinyin-snake' && ['arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) {
       event.preventDefault();
+      if (state.snake.paused) return;
       const dirMap = {
         arrowup: { x: 0, y: -1 },
         arrowdown: { x: 0, y: 1 },
@@ -3771,6 +4194,19 @@
     } else if (key === 'escape') {
       showHome();
     }
+  });
+
+  document.addEventListener('keyup', event => {
+    if (state.activeGame !== 'word-shooter') return;
+    const direction = wordShooterMovementDirection(String(event.key || '').toLowerCase());
+    if (direction) {
+      event.preventDefault();
+      state.wordShooter.moveInput[direction] = false;
+    }
+  });
+
+  window.addEventListener('blur', () => {
+    setWordShooterMoveInput({});
   });
 
   els.backHomeButton.addEventListener('click', showHome);
@@ -3851,6 +4287,21 @@
       return wordShooterSnapshot();
     },
     tickWordShooterFrame,
+    setWordShooterMoveInput,
+    setWordShooterEnemyFireEnabled: enabled => {
+      state.wordShooter.enemyFireEnabled = Boolean(enabled);
+      if (!enabled) state.wordShooter.enemyBullets = [];
+      return wordShooterSnapshot();
+    },
+    debugHitWordShooterPlayer: () => {
+      resolveWordShooterPlayerHit();
+      renderTypingArena();
+      return wordShooterSnapshot();
+    },
+    debugExpireWordShooterInvulnerability: () => {
+      state.wordShooter.invulnerableUntil = 0;
+      return wordShooterSnapshot();
+    },
     setWordDifficulty: level => {
       setWordDifficulty(level, { restart: false });
       return {

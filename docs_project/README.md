@@ -27,8 +27,8 @@
 | 数学PK | [math-pk.md](modules/math-pk.md) | js/math-pk.js |
 | 学习中心 | [learn-center.md](modules/learn-center.md) | js/learn-center.js |
 | 商城+背包 | [shop-inventory.md](modules/shop-inventory.md) | js/shop.js, js/inventory.js |
-| 社交+家庭组 | [social-household.md](modules/social-household.md) | js/social.js, js/household.js |
-| 云端同步 | [cloud-sync.md](modules/cloud-sync.md) | js/cloud-*.js |
+| 社交+家庭组 | [social-household.md](modules/social-household.md) | docs/家庭账号社交体系/ |
+| 云端同步 | [cloud-sync.md](modules/cloud-sync.md) | prj/petbank-server/ |
 | 运行时加载器 | [runtime-loader.md](modules/runtime-loader.md) | js/runtime-loader.js |
 | 宠物遛弯 | [walk.md](modules/walk.md) | js/walk.js |
 | 音效/语音/汉字/宝箱/工具 | [misc.md](modules/misc.md) | js/sfx.js, js/voice.js, js/hanzi-game.js, js/treasure.js, js/tools.js |
@@ -40,7 +40,6 @@
 | 文档 | 内容 |
 |------|------|
 | [testing-and-release.md](runbooks/testing-and-release.md) | 本地启动、全量回归、smoke、验证入口 |
-| [account-auth-supabase-deploy.md](runbooks/account-auth-supabase-deploy.md) | 家长账号、Supabase、邀请码、Hermes 部署与首账号初始化 |
 | [自托管后端部署](runbooks/self-hosted/README.md) | 腾讯云轻量 API、SQLite、Hermes 更新与备份 |
 
 ## 数据契约

@@ -1,0 +1,2877 @@
+{
+  "source": "assets/拼音赛车",
+  "preparedDir": "assets/generated/pinyin-racer-prepared-assets",
+  "processing": {
+    "backgroundRemoval": "edge-connected checkerboard removal",
+    "alphaValidation": "RGBA, all four outer edges alpha=0",
+    "semanticStatus": "machine-split; review candidates before runtime wiring"
+  },
+  "levels": [
+    {
+      "level": "level-01",
+      "splitCount": 51,
+      "contactSheet": "assets/generated/pinyin-racer-prepared-assets/level-01/split/_preview_contact_sheet.jpg",
+      "assets": [
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-01_181x294.png",
+          "name": "part-01_181x294",
+          "size": [
+            181,
+            294
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.7671,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            173,
+            286
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-02_205x333.png",
+          "name": "part-02_205x333",
+          "size": [
+            205,
+            333
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4641,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            197,
+            325
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-03_228x347.png",
+          "name": "part-03_228x347",
+          "size": [
+            228,
+            347
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3975,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            220,
+            339
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-04_195x350.png",
+          "name": "part-04_195x350",
+          "size": [
+            195,
+            350
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.438,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            187,
+            342
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-05_182x342.png",
+          "name": "part-05_182x342",
+          "size": [
+            182,
+            342
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4799,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            174,
+            334
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-06_171x313.png",
+          "name": "part-06_171x313",
+          "size": [
+            171,
+            313
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4854,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            163,
+            305
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-07_232x200.png",
+          "name": "part-07_232x200",
+          "size": [
+            232,
+            200
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5882,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            224,
+            192
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-08_68x94.png",
+          "name": "part-08_68x94",
+          "size": [
+            68,
+            94
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1902,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            60,
+            86
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-09_90x97.png",
+          "name": "part-09_90x97",
+          "size": [
+            90,
+            97
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2022,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            82,
+            89
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-10_71x75.png",
+          "name": "part-10_71x75",
+          "size": [
+            71,
+            75
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2323,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            63,
+            67
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-11_277x49.png",
+          "name": "part-11_277x49",
+          "size": [
+            277,
+            49
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.402,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            269,
+            41
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-12_120x42.png",
+          "name": "part-12_120x42",
+          "size": [
+            120,
+            42
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3931,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            112,
+            34
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-13_324x208.png",
+          "name": "part-13_324x208",
+          "size": [
+            324,
+            208
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4367,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            316,
+            200
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-14_91x63.png",
+          "name": "part-14_91x63",
+          "size": [
+            91,
+            63
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.292,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            83,
+            55
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-15_91x62.png",
+          "name": "part-15_91x62",
+          "size": [
+            91,
+            62
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2972,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            83,
+            54
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-16_107x198.png",
+          "name": "part-16_107x198",
+          "size": [
+            107,
+            198
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4126,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            99,
+            190
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-17_103x165.png",
+          "name": "part-17_103x165",
+          "size": [
+            103,
+            165
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4231,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            95,
+            157
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-18_91x64.png",
+          "name": "part-18_91x64",
+          "size": [
+            91,
+            64
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.312,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            83,
+            56
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-19_91x64.png",
+          "name": "part-19_91x64",
+          "size": [
+            91,
+            64
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.313,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            83,
+            56
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-20_147x162.png",
+          "name": "part-20_147x162",
+          "size": [
+            147,
+            162
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4837,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            139,
+            154
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-21_202x99.png",
+          "name": "part-21_202x99",
+          "size": [
+            202,
+            99
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.18,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            194,
+            91
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-22_134x101.png",
+          "name": "part-22_134x101",
+          "size": [
+            134,
+            101
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1365,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            126,
+            93
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-23_129x100.png",
+          "name": "part-23_129x100",
+          "size": [
+            129,
+            100
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1848,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            121,
+            92
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-24_91x63.png",
+          "name": "part-24_91x63",
+          "size": [
+            91,
+            63
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2775,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            83,
+            55
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-25_90x63.png",
+          "name": "part-25_90x63",
+          "size": [
+            90,
+            63
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2797,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            82,
+            55
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-26_91x63.png",
+          "name": "part-26_91x63",
+          "size": [
+            91,
+            63
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2807,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            83,
+            55
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-27_90x63.png",
+          "name": "part-27_90x63",
+          "size": [
+            90,
+            63
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2847,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            82,
+            55
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-28_68x51.png",
+          "name": "part-28_68x51",
+          "size": [
+            68,
+            51
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3114,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            60,
+            43
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-29_139x85.png",
+          "name": "part-29_139x85",
+          "size": [
+            139,
+            85
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5208,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            131,
+            77
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-30_131x83.png",
+          "name": "part-30_131x83",
+          "size": [
+            131,
+            83
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5602,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            123,
+            75
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-31_131x83.png",
+          "name": "part-31_131x83",
+          "size": [
+            131,
+            83
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5685,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            123,
+            75
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-32_189x137.png",
+          "name": "part-32_189x137",
+          "size": [
+            189,
+            137
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4821,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            181,
+            129
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-33_152x105.png",
+          "name": "part-33_152x105",
+          "size": [
+            152,
+            105
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5142,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            144,
+            97
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-34_74x80.png",
+          "name": "part-34_74x80",
+          "size": [
+            74,
+            80
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3785,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            66,
+            72
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-35_114x89.png",
+          "name": "part-35_114x89",
+          "size": [
+            114,
+            89
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4527,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            106,
+            81
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-36_83x78.png",
+          "name": "part-36_83x78",
+          "size": [
+            83,
+            78
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3355,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            75,
+            70
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-37_83x78.png",
+          "name": "part-37_83x78",
+          "size": [
+            83,
+            78
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3679,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            75,
+            70
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-38_69x61.png",
+          "name": "part-38_69x61",
+          "size": [
+            69,
+            61
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.311,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            61,
+            53
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-39_138x268.png",
+          "name": "part-39_138x268",
+          "size": [
+            138,
+            268
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5533,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            130,
+            260
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-40_166x250.png",
+          "name": "part-40_166x250",
+          "size": [
+            166,
+            250
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5371,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            158,
+            242
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-41_112x136.png",
+          "name": "part-41_112x136",
+          "size": [
+            112,
+            136
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4359,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            104,
+            128
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-42_179x132.png",
+          "name": "part-42_179x132",
+          "size": [
+            179,
+            132
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4761,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            171,
+            124
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-43_114x104.png",
+          "name": "part-43_114x104",
+          "size": [
+            114,
+            104
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5453,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            106,
+            96
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-44_114x106.png",
+          "name": "part-44_114x106",
+          "size": [
+            114,
+            106
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5382,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            106,
+            98
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-45_118x189.png",
+          "name": "part-45_118x189",
+          "size": [
+            118,
+            189
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5279,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            110,
+            181
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-46_201x109.png",
+          "name": "part-46_201x109",
+          "size": [
+            201,
+            109
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.6184,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            193,
+            101
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-47_120x105.png",
+          "name": "part-47_120x105",
+          "size": [
+            120,
+            105
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5733,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            112,
+            97
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-48_164x106.png",
+          "name": "part-48_164x106",
+          "size": [
+            164,
+            106
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.6345,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            156,
+            98
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-49_122x89.png",
+          "name": "part-49_122x89",
+          "size": [
+            122,
+            89
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5086,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            114,
+            81
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-50_78x82.png",
+          "name": "part-50_78x82",
+          "size": [
+            78,
+            82
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4312,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            70,
+            74
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-01/split/part-51_134x84.png",
+          "name": "part-51_134x84",
+          "size": [
+            134,
+            84
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5228,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            126,
+            76
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        }
+      ]
+    },
+    {
+      "level": "level-02",
+      "splitCount": 42,
+      "contactSheet": "assets/generated/pinyin-racer-prepared-assets/level-02/split/_preview_contact_sheet.jpg",
+      "assets": [
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-01_253x353.png",
+          "name": "part-01_253x353",
+          "size": [
+            253,
+            353
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.6573,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            245,
+            345
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-02_46x47.png",
+          "name": "part-02_46x47",
+          "size": [
+            46,
+            47
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2197,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            38,
+            39
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-03_432x370.png",
+          "name": "part-03_432x370",
+          "size": [
+            432,
+            370
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5144,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            424,
+            362
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-04_125x374.png",
+          "name": "part-04_125x374",
+          "size": [
+            125,
+            374
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5315,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            117,
+            366
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-05_368x332.png",
+          "name": "part-05_368x332",
+          "size": [
+            368,
+            332
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4966,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            360,
+            324
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-06_51x65.png",
+          "name": "part-06_51x65",
+          "size": [
+            51,
+            65
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3011,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            43,
+            57
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-07_259x228.png",
+          "name": "part-07_259x228",
+          "size": [
+            259,
+            228
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.355,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            251,
+            220
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-08_328x187.png",
+          "name": "part-08_328x187",
+          "size": [
+            328,
+            187
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5814,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            320,
+            179
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-09_330x187.png",
+          "name": "part-09_330x187",
+          "size": [
+            330,
+            187
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5808,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            322,
+            179
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-10_202x164.png",
+          "name": "part-10_202x164",
+          "size": [
+            202,
+            164
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5518,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            194,
+            156
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-11_243x52.png",
+          "name": "part-11_243x52",
+          "size": [
+            243,
+            52
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4983,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            235,
+            44
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-12_240x52.png",
+          "name": "part-12_240x52",
+          "size": [
+            240,
+            52
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5285,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            232,
+            44
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-13_171x109.png",
+          "name": "part-13_171x109",
+          "size": [
+            171,
+            109
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2504,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            163,
+            101
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-14_59x70.png",
+          "name": "part-14_59x70",
+          "size": [
+            59,
+            70
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1358,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            51,
+            62
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-15_76x48.png",
+          "name": "part-15_76x48",
+          "size": [
+            76,
+            48
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1299,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            68,
+            40
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-16_86x98.png",
+          "name": "part-16_86x98",
+          "size": [
+            86,
+            98
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4767,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            78,
+            90
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-17_165x56.png",
+          "name": "part-17_165x56",
+          "size": [
+            165,
+            56
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4797,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            157,
+            48
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-18_64x98.png",
+          "name": "part-18_64x98",
+          "size": [
+            64,
+            98
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4332,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            56,
+            90
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-19_62x92.png",
+          "name": "part-19_62x92",
+          "size": [
+            62,
+            92
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3995,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            54,
+            84
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-20_181x113.png",
+          "name": "part-20_181x113",
+          "size": [
+            181,
+            113
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2739,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            173,
+            105
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-21_43x58.png",
+          "name": "part-21_43x58",
+          "size": [
+            43,
+            58
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1524,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            35,
+            50
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-22_54x67.png",
+          "name": "part-22_54x67",
+          "size": [
+            54,
+            67
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1816,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            46,
+            59
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-23_71x40.png",
+          "name": "part-23_71x40",
+          "size": [
+            71,
+            40
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1732,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            63,
+            32
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-24_97x53.png",
+          "name": "part-24_97x53",
+          "size": [
+            97,
+            53
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.113,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            89,
+            45
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-25_182x239.png",
+          "name": "part-25_182x239",
+          "size": [
+            182,
+            239
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5268,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            174,
+            231
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-26_166x198.png",
+          "name": "part-26_166x198",
+          "size": [
+            166,
+            198
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4835,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            158,
+            190
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-27_167x202.png",
+          "name": "part-27_167x202",
+          "size": [
+            167,
+            202
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4404,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            159,
+            194
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-28_66x49.png",
+          "name": "part-28_66x49",
+          "size": [
+            66,
+            49
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.261,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            58,
+            41
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-29_63x47.png",
+          "name": "part-29_63x47",
+          "size": [
+            63,
+            47
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2432,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            55,
+            39
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-30_67x49.png",
+          "name": "part-30_67x49",
+          "size": [
+            67,
+            49
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2641,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            59,
+            41
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-31_62x46.png",
+          "name": "part-31_62x46",
+          "size": [
+            62,
+            46
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2304,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            54,
+            38
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-32_80x175.png",
+          "name": "part-32_80x175",
+          "size": [
+            80,
+            175
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5504,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            72,
+            167
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-33_75x171.png",
+          "name": "part-33_75x171",
+          "size": [
+            75,
+            171
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5446,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            67,
+            163
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-34_86x172.png",
+          "name": "part-34_86x172",
+          "size": [
+            86,
+            172
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5053,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            78,
+            164
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-35_69x51.png",
+          "name": "part-35_69x51",
+          "size": [
+            69,
+            51
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.291,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            61,
+            43
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-36_67x49.png",
+          "name": "part-36_67x49",
+          "size": [
+            67,
+            49
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2711,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            59,
+            41
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-37_137x163.png",
+          "name": "part-37_137x163",
+          "size": [
+            137,
+            163
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4802,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            129,
+            155
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-38_69x51.png",
+          "name": "part-38_69x51",
+          "size": [
+            69,
+            51
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2984,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            61,
+            43
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-39_115x164.png",
+          "name": "part-39_115x164",
+          "size": [
+            115,
+            164
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4111,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            107,
+            156
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-40_66x48.png",
+          "name": "part-40_66x48",
+          "size": [
+            66,
+            48
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2491,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            58,
+            40
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-41_139x127.png",
+          "name": "part-41_139x127",
+          "size": [
+            139,
+            127
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4713,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            131,
+            119
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-02/split/part-42_106x115.png",
+          "name": "part-42_106x115",
+          "size": [
+            106,
+            115
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4506,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            98,
+            107
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        }
+      ]
+    },
+    {
+      "level": "level-03",
+      "splitCount": 24,
+      "contactSheet": "assets/generated/pinyin-racer-prepared-assets/level-03/split/_preview_contact_sheet.jpg",
+      "assets": [
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-01_1427x468.png",
+          "name": "part-01_1427x468",
+          "size": [
+            1427,
+            468
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.6295,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            1419,
+            460
+          ],
+          "candidateClass": "hero-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-02_115x72.png",
+          "name": "part-02_115x72",
+          "size": [
+            115,
+            72
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3614,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            107,
+            64
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-03_178x175.png",
+          "name": "part-03_178x175",
+          "size": [
+            178,
+            175
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5013,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            170,
+            167
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-04_165x143.png",
+          "name": "part-04_165x143",
+          "size": [
+            165,
+            143
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4685,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            157,
+            135
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-05_210x126.png",
+          "name": "part-05_210x126",
+          "size": [
+            210,
+            126
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3947,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            202,
+            118
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-06_193x117.png",
+          "name": "part-06_193x117",
+          "size": [
+            193,
+            117
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4801,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            185,
+            109
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-07_987x560.png",
+          "name": "part-07_987x560",
+          "size": [
+            987,
+            560
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.6872,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            979,
+            552
+          ],
+          "candidateClass": "hero-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-08_319x228.png",
+          "name": "part-08_319x228",
+          "size": [
+            319,
+            228
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4435,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            311,
+            220
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-09_141x84.png",
+          "name": "part-09_141x84",
+          "size": [
+            141,
+            84
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3688,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            133,
+            76
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-10_168x149.png",
+          "name": "part-10_168x149",
+          "size": [
+            168,
+            149
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5435,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            160,
+            141
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-11_191x209.png",
+          "name": "part-11_191x209",
+          "size": [
+            191,
+            209
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.52,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            183,
+            201
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-12_164x136.png",
+          "name": "part-12_164x136",
+          "size": [
+            164,
+            136
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5699,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            156,
+            128
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-13_125x123.png",
+          "name": "part-13_125x123",
+          "size": [
+            125,
+            123
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4153,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            117,
+            115
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-14_134x102.png",
+          "name": "part-14_134x102",
+          "size": [
+            134,
+            102
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4431,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            126,
+            94
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-15_129x85.png",
+          "name": "part-15_129x85",
+          "size": [
+            129,
+            85
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3885,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            121,
+            77
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-16_204x277.png",
+          "name": "part-16_204x277",
+          "size": [
+            204,
+            277
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5094,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            196,
+            269
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-17_274x132.png",
+          "name": "part-17_274x132",
+          "size": [
+            274,
+            132
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5001,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            266,
+            124
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-18_94x157.png",
+          "name": "part-18_94x157",
+          "size": [
+            94,
+            157
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4843,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            86,
+            149
+          ],
+          "candidateClass": "tall-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-19_107x81.png",
+          "name": "part-19_107x81",
+          "size": [
+            107,
+            81
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3469,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            99,
+            73
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-20_160x95.png",
+          "name": "part-20_160x95",
+          "size": [
+            160,
+            95
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4358,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            152,
+            87
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-21_222x152.png",
+          "name": "part-21_222x152",
+          "size": [
+            222,
+            152
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4577,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            214,
+            144
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-22_133x101.png",
+          "name": "part-22_133x101",
+          "size": [
+            133,
+            101
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4432,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            125,
+            93
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-23_248x137.png",
+          "name": "part-23_248x137",
+          "size": [
+            248,
+            137
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.495,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            240,
+            129
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-24_160x102.png",
+          "name": "part-24_160x102",
+          "size": [
+            160,
+            102
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4496,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            152,
+            94
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        }
+      ]
+    },
+    {
+      "level": "level-04",
+      "splitCount": 31,
+      "contactSheet": "assets/generated/pinyin-racer-prepared-assets/level-04/split/_preview_contact_sheet.jpg",
+      "assets": [
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-01_519x419.png",
+          "name": "part-01_519x419",
+          "size": [
+            519,
+            419
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.6125,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            511,
+            411
+          ],
+          "candidateClass": "hero-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-02_366x352.png",
+          "name": "part-02_366x352",
+          "size": [
+            366,
+            352
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.291,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            358,
+            344
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-03_275x349.png",
+          "name": "part-03_275x349",
+          "size": [
+            275,
+            349
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.7624,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            267,
+            341
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-04_588x366.png",
+          "name": "part-04_588x366",
+          "size": [
+            588,
+            366
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.6455,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            580,
+            358
+          ],
+          "candidateClass": "hero-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-05_544x312.png",
+          "name": "part-05_544x312",
+          "size": [
+            544,
+            312
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.44,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            536,
+            304
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-06_238x184.png",
+          "name": "part-06_238x184",
+          "size": [
+            238,
+            184
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5688,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            230,
+            176
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-07_219x94.png",
+          "name": "part-07_219x94",
+          "size": [
+            219,
+            94
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3886,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            211,
+            86
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-08_198x103.png",
+          "name": "part-08_198x103",
+          "size": [
+            198,
+            103
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3704,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            190,
+            95
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-09_202x51.png",
+          "name": "part-09_202x51",
+          "size": [
+            202,
+            51
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5835,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            194,
+            43
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-10_252x51.png",
+          "name": "part-10_252x51",
+          "size": [
+            252,
+            51
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.593,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            244,
+            43
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-11_205x86.png",
+          "name": "part-11_205x86",
+          "size": [
+            205,
+            86
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3604,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            197,
+            78
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-12_150x96.png",
+          "name": "part-12_150x96",
+          "size": [
+            150,
+            96
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3533,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            142,
+            88
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-13_177x109.png",
+          "name": "part-13_177x109",
+          "size": [
+            177,
+            109
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2876,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            169,
+            101
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-14_181x96.png",
+          "name": "part-14_181x96",
+          "size": [
+            181,
+            96
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.3596,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            173,
+            88
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-15_130x174.png",
+          "name": "part-15_130x174",
+          "size": [
+            130,
+            174
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4857,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            122,
+            166
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-16_96x135.png",
+          "name": "part-16_96x135",
+          "size": [
+            96,
+            135
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4314,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            88,
+            127
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-17_100x141.png",
+          "name": "part-17_100x141",
+          "size": [
+            100,
+            141
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.4161,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            92,
+            133
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-18_47x39.png",
+          "name": "part-18_47x39",
+          "size": [
+            47,
+            39
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1495,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            39,
+            31
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-19_59x46.png",
+          "name": "part-19_59x46",
+          "size": [
+            59,
+            46
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1076,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            51,
+            38
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-20_53x52.png",
+          "name": "part-20_53x52",
+          "size": [
+            53,
+            52
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.1208,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            45,
+            44
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-21_138x79.png",
+          "name": "part-21_138x79",
+          "size": [
+            138,
+            79
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2251,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            130,
+            71
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-22_206x75.png",
+          "name": "part-22_206x75",
+          "size": [
+            206,
+            75
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2333,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            198,
+            67
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-23_126x58.png",
+          "name": "part-23_126x58",
+          "size": [
+            126,
+            58
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2016,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            118,
+            50
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-24_150x56.png",
+          "name": "part-24_150x56",
+          "size": [
+            150,
+            56
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.2382,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            142,
+            48
+          ],
+          "candidateClass": "wide-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-25_172x188.png",
+          "name": "part-25_172x188",
+          "size": [
+            172,
+            188
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5222,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            164,
+            180
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-26_186x180.png",
+          "name": "part-26_186x180",
+          "size": [
+            186,
+            180
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.7003,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            178,
+            172
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-27_116x156.png",
+          "name": "part-27_116x156",
+          "size": [
+            116,
+            156
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5341,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            108,
+            148
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-28_153x153.png",
+          "name": "part-28_153x153",
+          "size": [
+            153,
+            153
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5802,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            145,
+            145
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-29_149x145.png",
+          "name": "part-29_149x145",
+          "size": [
+            149,
+            145
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5288,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            141,
+            137
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-30_126x150.png",
+          "name": "part-30_126x150",
+          "size": [
+            126,
+            150
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5672,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            118,
+            142
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        },
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-04/split/part-31_97x126.png",
+          "name": "part-31_97x126",
+          "size": [
+            97,
+            126
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.5203,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            89,
+            118
+          ],
+          "candidateClass": "compact-component",
+          "semanticStatus": "unreviewed"
+        }
+      ]
+    },
+    {
+      "level": "level-05",
+      "splitCount": 1,
+      "contactSheet": "assets/generated/pinyin-racer-prepared-assets/level-05/split/_preview_contact_sheet.jpg",
+      "assets": [
+        {
+          "file": "assets/generated/pinyin-racer-prepared-assets/level-05/split/part-01_1270x1270.png",
+          "name": "part-01_1270x1270",
+          "size": [
+            1270,
+            1270
+          ],
+          "mode": "RGBA",
+          "alphaCoverage": 0.975,
+          "edgeAlphaMax": 0,
+          "alphaBounds": [
+            8,
+            8,
+            1262,
+            1262
+          ],
+          "candidateClass": "hero-component",
+          "semanticStatus": "unreviewed"
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,9 @@ const files = {
   html: path.join(dir, 'index.html'),
   css: path.join(dir, 'styles.css'),
   js: path.join(dir, 'game.js'),
+  dataModule: path.join(dir, 'game-data.js'),
+  storage: path.join(dir, 'game-storage.js'),
+  utils: path.join(dir, 'game-utils.js'),
   readme: path.join(dir, 'README.md'),
   data: path.join(dir, 'assets', 'word-memory-cards.json'),
   dataFallback: path.join(dir, 'assets', 'word-memory-cards.js'),
@@ -41,12 +44,15 @@ Object.values(files).forEach(file => {
 const html = read(files.html);
 const css = read(files.css);
 const js = read(files.js);
+const dataModule = read(files.dataModule);
+const storage = read(files.storage);
+const utils = read(files.utils);
 const readme = read(files.readme);
 const dataFallback = read(files.dataFallback);
 const voiceFallback = read(files.voiceFallback);
 const docs = `${read(files.design)}\n${read(files.plan)}\n${read(files.adapterPlan)}`;
 const learningLoopDesign = read(path.join(dir, '..', '..', 'docs', '打字游戏方案', '单词记忆小游戏.md'));
-const source = `${html}\n${css}\n${js}`;
+const source = `${html}\n${css}\n${dataModule}\n${js}`;
 const data = JSON.parse(read(files.data));
 const sourceAndData = `${source}\n${JSON.stringify(data)}`;
 const voiceMap = JSON.parse(read(files.voiceMap));
@@ -63,10 +69,10 @@ const vocabManifest = JSON.parse(read(files.vocabManifest));
 assert.match(source, /data-prototype="word-memory-topdown"/, 'page should expose the topdown prototype marker');
 assert.match(source, /word-memory-cards\.json/, 'game should load external card data');
 assert.match(html, /word-memory-cards\.js/, 'page should include a browser fallback data script');
-assert.match(js, /WORD_MEMORY_CARDS_DATA/, 'game should use browser fallback card data when fetch is unavailable');
+assert.match(source, /WORD_MEMORY_CARDS_DATA/, 'game should use browser fallback card data when fetch is unavailable');
 assert.match(dataFallback, /window\.WORD_MEMORY_CARDS_DATA/, 'fallback script should publish card data for file protocol');
 assert.match(html, /assets\/voice\/map\.js/, 'page should include a browser fallback voice map script');
-assert.match(js, /WORD_MEMORY_VOICE_MAP/, 'game should use browser fallback voice map when fetch is unavailable');
+assert.match(source, /WORD_MEMORY_VOICE_MAP/, 'game should use browser fallback voice map when fetch is unavailable');
 assert.match(voiceFallback, /window\.WORD_MEMORY_VOICE_MAP/, 'voice fallback script should publish voice map data for file protocol');
 assert.match(source, /arrowleft|arrowright|arrowup|arrowdown/, 'game should support arrow keys');
 assert.match(source, /key === 'tab'/, 'game should support target cycling with Tab');
@@ -74,11 +80,40 @@ assert.match(source, /key === 'tab'/, 'game should support target cycling with T
 assert.match(source, /key === 'enter' \|\| key === ' '/, 'game should support firing with Enter or Space');
 assert.match(source, /map-scene|world-scene/, 'page should expose a dedicated map scene container');
 assert.match(source, /heroSelectOverlay|heroSelectGrid|heroSelectStartButton/, 'page should expose a hero selection overlay');
-assert.match(js, /DEBUG_WORLD_CONTROLS\s*=\s*false/, 'normal gameplay should disable manual world switching controls');
+assert.match(source, /DEBUG_WORLD_CONTROLS\s*=\s*false/, 'normal gameplay should disable manual world switching controls');
+assert.match(html, /game-storage\.js/, 'game should load the extracted storage module before the runtime');
+assert.match(storage, /window\.WordMemoryStorage/, 'storage module should expose the persistence boundary');
+assert.match(html, /game-utils\.js/, 'game should load the extracted utilities module before the runtime');
+assert.match(utils, /window\.WordMemoryUtils/, 'utilities module should expose shared stateless helpers');
+assert.match(html, /game-data\.js/, 'game should load the extracted data module before the runtime');
+assert.match(dataModule, /window\.WordMemoryGameData/, 'data module should expose static game configuration');
+assert.match(source, /window\.WordMemoryGameData/, 'runtime should consume static configuration from the data module');
 assert.match(source, /onboardingStep|onboardingNextButton|worldOptionGrid/, 'page should expose the enter-game, hero, and world onboarding controls');
-assert.match(js, /function renderOnboarding\(\)/, 'game should render a staged onboarding flow');
-assert.match(js, /onboardingStep === 'welcome'[\s\S]*onboardingStep = 'hero'[\s\S]*onboardingStep === 'hero'[\s\S]*onboardingStep = 'world'/, 'onboarding should progress from entering the game to hero and world selection');
-assert.match(js, /function selectOnboardingWorld\(worldPackId\)/, 'world selection should be handled before the play overlay closes');
+assert.match(source, /function renderOnboarding\(\)/, 'game should render a staged onboarding flow');
+assert.match(source, /onboardingStep === 'welcome'[\s\S]*onboardingStep = 'hero'[\s\S]*onboardingStep === 'hero'[\s\S]*onboardingStep = 'world'/, 'onboarding should progress from entering the game to hero and world selection');
+assert.match(source, /function selectOnboardingWorld\(worldPackId\)/, 'world selection should be handled before the play overlay closes');
+assert.match(source, /SESSION_WORD_TARGET\s*=\s*50/, 'a play session should require 50 words before completion');
+assert.match(source, /Math\.min\(SESSION_WORD_TARGET,\s*pool\.length\)/, 'the deck should target 50 words instead of ending at the small level count');
+assert.match(source, /finishReward|闯关奖励|rewardStars/, 'finish UI should expose explicit level rewards');
+assert.match(source, /function buildLevelReward\(unlockedNext,\s*next\)/, 'level completion should build a reward payload');
+assert.match(source, /reward:\s*state\.levelReward/, 'host bridge should receive the level reward payload');
+assert.match(source, /REWARD_PROGRESS_KEY/, 'level rewards should use a persistent local storage bank');
+assert.match(source, /function loadRewardProgress\(\)/, 'reward bank should restore across sessions');
+assert.match(source, /state\.rewardBank\.stars\s*\+=\s*state\.levelReward\.stars/, 'level rewards should accumulate stars');
+assert.match(source, /REVIEW_PROGRESS_KEY/, 'review words should use a persistent review queue');
+assert.match(source, /function rememberReviewCard\(card\)/, 'previewed or missed words should enter the review queue');
+assert.match(source, /\(index \+ 1\) \* CHECKPOINT_WORDS/, 'review words should return at each 10-word checkpoint');
+assert.match(source, /CHECKPOINT_WORDS\s*=\s*10/, 'sessions should provide feedback checkpoints every 10 words');
+assert.match(source, /function celebrateCheckpoint\(\)/, 'checkpoint rewards should be applied during play');
+assert.match(source, /checkpointSpeed/, 'enemy pace should increase across checkpoints');
+assert.match(source, /hintMode === 'image'|hintMode === 'initial'/, 'hint detail should taper as the session progresses');
+assert.match(source, /finishReport|学习报告/, 'completion should show a learning report');
+assert.match(source, /equipRewardButton|function equipLevelReward\(\)/, 'earned support items should be usable in a future round');
+assert.match(source, /category: 'environment'|category: 'animals'/, 'world packs should declare theme vocabulary categories');
+assert.match(source, /changeWorldButton|换地图再出发/, 'the finish dialog should let a player choose a map for the next level');
+assert.match(source, /startLevel\(next\.id,\s*\{\s*preserveWorld:\s*true\s*\}\)/, 'next level should preserve the selected world by default');
+assert.match(source, /function worldPreviewImage\(worldPackId\)/, 'world selector should resolve a preview image for each map');
+assert.match(source, /<img src="\$\{worldPreviewImage\(id\)\}"/, 'map options should render visual previews like hero choices');
 assert.match(source, /entity-layer/, 'page should render map entities in a separate layer');
 assert.match(source, /enemy-word/, 'page should render floating English labels above enemies');
 assert.match(source, /meaning-orb|bomb-node/, 'page should render Chinese meaning bomb nodes on the map');
@@ -96,17 +131,17 @@ assert.match(source, /SUPPORT_DROP_EVERY_SCORE|makeSupportDrop|maybeSpawnSupport
 assert.match(source, /补盾叶|减速钟|瞄准星|加速鞋|词卡提示|连击加成/, 'game should include the support item set for the map prototype');
 assert.match(source, /id:\s*'level-1'[\s\S]*worldPack:\s*'farm_gpt'/, 'level 1 should now default to the farm GPT pack');
 assert.match(source, /id:\s*'level-2'[\s\S]*worldPack:\s*'farm_gpt'/, 'level 2 should now default to the farm GPT pack');
-assert.match(js, /ENEMY_CHASE_SPEED\s*=\s*0\.0031/, 'topdown enemies should preserve the tuned chase speed');
+assert.match(source, /ENEMY_CHASE_SPEED\s*=\s*0\.0031/, 'topdown enemies should preserve the tuned chase speed');
 assert.match(source, /heroInvincibleMs|shieldBreakReset/, 'game should give the hero brief invincibility and a shield reset');
-assert.match(js, /function throwHeldBomb\(aimPoint\s*=\s*null,\s*targetId\s*=\s*''\)/, 'map mode should throw the held bomb from the hero facing direction or click aim point');
-assert.match(js, /orb\.inFlight\s*=\s*true[\s\S]*state\.shots\.push\(\{[\s\S]*vx:\s*vector\.x\s*\*\s*THROW_SPEED[\s\S]*vy:\s*vector\.y\s*\*\s*THROW_SPEED/s, 'thrown bombs should become JS-driven projectiles with velocity');
-assert.match(js, /THROW_HOMING_MAX_MS[\s\S]*function updateHomingShot\(shot\)[\s\S]*targetPosition\(target\)[\s\S]*function updateShots\(deltaMs\)[\s\S]*updateHomingShot\(shot\)[\s\S]*THROW_HIT_RADIUS[\s\S]*resolveShotHit/s, 'clicked-target projectiles should home toward enemies before resolving collisions');
-assert.match(js, /function aimVector\(aimPoint[\s\S]*throwHeldBomb\(targetPosition\(target\),\s*target\.id\)/s, 'click throws should auto-seek the clicked enemy instead of using stale facing');
-assert.match(js, /orbButton[\s\S]*selectOrb\(orbButton\.dataset\.orbId,\s*true\)/s, 'clicking a map bomb should pick it up immediately');
+assert.match(source, /function throwHeldBomb\(aimPoint\s*=\s*null,\s*targetId\s*=\s*''\)/, 'map mode should throw the held bomb from the hero facing direction or click aim point');
+assert.match(source, /orb\.inFlight\s*=\s*true[\s\S]*state\.shots\.push\(\{[\s\S]*vx:\s*vector\.x\s*\*\s*THROW_SPEED[\s\S]*vy:\s*vector\.y\s*\*\s*THROW_SPEED/s, 'thrown bombs should become JS-driven projectiles with velocity');
+assert.match(source, /THROW_HOMING_MAX_MS[\s\S]*function updateHomingShot\(shot\)[\s\S]*targetPosition\(target\)[\s\S]*function updateShots\(deltaMs\)[\s\S]*updateHomingShot\(shot\)[\s\S]*THROW_HIT_RADIUS[\s\S]*resolveShotHit/s, 'clicked-target projectiles should home toward enemies before resolving collisions');
+assert.match(source, /function aimVector\(aimPoint[\s\S]*throwHeldBomb\(targetPosition\(target\),\s*target\.id\)/s, 'click throws should auto-seek the clicked enemy instead of using stale facing');
+assert.match(source, /orbButton[\s\S]*selectOrb\(orbButton\.dataset\.orbId,\s*true\)/s, 'clicking a map bomb should pick it up immediately');
 assert.match(source, /classicStage|classic-target-row|classic-cannon-row/, 'page should keep the classic bottom-shell top-word shooting layout');
 assert.match(source, /modeButton|toggleViewMode/, 'page should provide a mode switch between topdown and classic shooting');
 assert.match(source, /classicModeButton|classicProgressText/, 'classic mode should expose its own map-return button and progress text');
-assert.match(js, /function classicFireAt\([\s\S]*state\.classicShotFx[\s\S]*state\.shotsFired/s, 'classic mode should fire a bottom shell toward a top word target');
+assert.match(source, /function classicFireAt\([\s\S]*state\.classicShotFx[\s\S]*state\.shotsFired/s, 'classic mode should fire a bottom shell toward a top word target');
 assert.match(source, /\.map-scene\s*\{[^}]*height:\s*100vh/s, 'map scene should fill the viewport');
 assert.match(source, /worldStage|sceneBackdrop|world-tile|farm-9grid-manifest|WORLD_BG_MANIFEST_URL/, 'page should expose the stitched 3x3 world map background');
 assert.match(source, /farm-gpt-9grid-manifest/, 'game should keep a parallel farm GPT preview world pack available');
@@ -148,9 +183,9 @@ assert.match(source, /speechSynthesis|SpeechSynthesisUtterance/, 'game should of
 assert.match(source, /assets\/voice\/map\.json/, 'game should load a local prototype voice map first');
 assert.match(source, /new Audio\(/, 'game should prefer local html audio playback before fallback speech');
 assert.match(source, /target-avatar|enemyImage/, 'game should render enemy artwork');
-assert.match(js, /function previewTargetWord\(target\)/, 'map targets should provide a dedicated word preview action');
-assert.match(js, /if \(!selectedOrb\(\)\) \{[\s\S]*previewTargetWord\(target\)[\s\S]*return;/, 'clicking an enemy without a Chinese orb should preview instead of firing');
-assert.match(js, /点击单词看图片、中文和发音；拿中文球后再点它发射。/, 'map guidance should explain the preview-before-fire learning loop');
+assert.match(source, /function previewTargetWord\(target\)/, 'map targets should provide a dedicated word preview action');
+assert.match(source, /if \(!selectedOrb\(\)\) \{[\s\S]*previewTargetWord\(target\)[\s\S]*return;/, 'clicking an enemy without a Chinese orb should preview instead of firing');
+assert.match(source, /点击单词看图片、中文和发音；拿中文球后再点它发射。/, 'map guidance should explain the preview-before-fire learning loop');
 assert.match(source, /enemyFallbackImage|data-fallback-src|onerror="this\.onerror=null;this\.src=this\.dataset\.fallbackSrc;"/, 'enemy artwork should fall back locally when online images fail');
 assert.match(source, /ENEMY_IMAGE_FALLBACK_MS|armEnemyImageFallbacks|naturalWidth === 0/, 'enemy artwork should time out pending online images into local fallbacks');
 assert.match(source, /sceneButton|cycleScene|renderDecor/, 'page should offer lightweight scene switching and decor rendering');
@@ -209,11 +244,11 @@ assert.ok(
   }),
   'ocean manifest tiles should resolve to published local ocean artwork'
 );
-assert.match(js, /ocean:\s*\{[\s\S]*ocean-9grid-manifest\.json/s, 'ocean levels should load the stitched ocean 9-grid world');
-assert.match(js, /WORLD_THEME_ENEMY_FALLBACKS[\s\S]*ocean[\s\S]*coral-crab\.png/s, 'ocean levels should use local themed enemy fallbacks');
-assert.match(js, /farm:\s*ENEMY_FALLBACK_POOL/, 'farm levels should rotate local farm enemy art');
-assert.match(js, /WORLD_THEME_ENEMY_FALLBACKS\[currentWorldPack\(\)\?\.theme\]/, 'theme enemy selection should use the visual world theme rather than a pack variant id');
-assert.match(js, /const themePrimary = themePool\.length \? themedFallback : primary;/, 'scene-themed enemy art should take priority over generic card artwork');
+assert.match(source, /ocean:\s*\{[\s\S]*ocean-9grid-manifest\.json/s, 'ocean levels should load the stitched ocean 9-grid world');
+assert.match(source, /WORLD_THEME_ENEMY_FALLBACKS[\s\S]*ocean[\s\S]*coral-crab\.png/s, 'ocean levels should use local themed enemy fallbacks');
+assert.match(source, /farm:\s*ENEMY_FALLBACK_POOL/, 'farm levels should rotate local farm enemy art');
+assert.match(source, /WORLD_THEME_ENEMY_FALLBACKS\[currentWorldPack\(\)\?\.theme\]/, 'theme enemy selection should use the visual world theme rather than a pack variant id');
+assert.match(source, /const themePrimary = themePool\.length \? themedFallback : primary;/, 'scene-themed enemy art should take priority over generic card artwork');
 assert.ok(
   [
     'assets/generated/level-theme-assets/forest/mushroom-sprite.png',
@@ -231,7 +266,7 @@ assert.ok(
   ].every(relativePath => fs.existsSync(path.join(dir, relativePath))),
   'referenced forest, grassland, ocean, and space enemy fallbacks should be published'
 );
-assert.match(js, /space:\s*\[[\s\S]*meteor-jelly\.png[\s\S]*stardust-orb\.png[\s\S]*satellite-bot\.png/s, 'space levels should rotate three local themed enemy fallbacks');
+assert.match(source, /space:\s*\[[\s\S]*meteor-jelly\.png[\s\S]*stardust-orb\.png[\s\S]*satellite-bot\.png/s, 'space levels should rotate three local themed enemy fallbacks');
 assert.equal(farmGptSourceMeta.generatedViaBrowserActChatGPT, true, 'farm GPT source meta should document the browser-act ChatGPT generation workflow');
 assert.equal(farmGptSourceMeta.tileCount, 9, 'farm GPT preview source meta should record all 9 exported tiles');
 assert.equal(farmGptSourceMeta.workflowScript, 'prj/browser-act-imagegen/README.md', 'farm GPT source meta should point at the browser-act workflow documentation');

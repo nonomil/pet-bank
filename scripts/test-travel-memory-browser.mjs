@@ -1,10 +1,33 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import { mkdir, stat } from 'node:fs/promises';
+import path from 'node:path';
 import { browserLaunchOpts } from './playwright-browser.mjs';
 
 const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:9077/';
-const desktopShot = 'docs/releases/travel-card-composition-desktop.png';
-const mobileShot = 'docs/releases/travel-card-composition-mobile.png';
+const artifactDir = path.resolve(process.cwd(), process.env.PETBANK_TEST_ARTIFACT_DIR || 'tmp/test-artifacts/travel-memory-browser');
+const desktopShot = path.join(artifactDir, 'travel-card-composition-desktop.png');
+const mobileShot = path.join(artifactDir, 'travel-card-composition-mobile.png');
+
+async function assertScreenshot(filePath) {
+  const result = await stat(filePath);
+  assert.ok(result.size > 0, `screenshot should be non-empty: ${filePath}`);
+}
+
+async function captureScreenshot(page, filePath, options) {
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      await page.screenshot({ path: filePath, ...options });
+      await assertScreenshot(filePath);
+      return;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await sleep(250 * attempt);
+    }
+  }
+  throw lastError;
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -97,7 +120,7 @@ try {
     ['forest', 'beach', 'stargarden'].forEach((sceneId) => window.TravelMemory.record({ sceneId, pet }));
   });
   const desktopHome = await inspect(page, 'home', '#home-container', '.travel-memory-collection', '.travel-memory-collection-art');
-  await page.screenshot({ path: desktopShot, fullPage: true });
+  await captureScreenshot(page, desktopShot, { fullPage: true });
   const desktopCard = await inspect(page, 'card', '#card-collection-container', '.travel-memory-gallery', '.travel-memory-card-bg');
   const desktopComposition = await page.evaluate(() => ({
     cards: document.querySelectorAll('.travel-memory-card-composition').length,
@@ -114,13 +137,12 @@ try {
   assert.deepEqual(desktopLayerWidths.frames, [1024, 1024, 1024]);
   assert.deepEqual(desktopLayerWidths.backgrounds, [1024, 1024, 1024]);
   assert.ok(desktopLayerWidths.pets.every((width) => width > 0));
-  await page.screenshot({ path: desktopShot, fullPage: true });
   assert.equal(desktopHome.bodyWidth <= desktopHome.viewportWidth, true);
   assert.equal(desktopCard.bodyWidth <= desktopCard.viewportWidth, true);
 
   await page.setViewportSize({ width: 390, height: 844 });
   const mobileHome = await inspect(page, 'home', '#home-container', '.travel-memory-collection', '.travel-memory-collection-art');
-  await page.screenshot({ path: mobileShot, fullPage: true });
+  await captureScreenshot(page, mobileShot, { fullPage: true });
   const mobileCard = await inspect(page, 'card', '#card-collection-container', '.travel-memory-gallery', '.travel-memory-card-bg');
   const mobileComposition = await page.evaluate(() => ({
     cards: document.querySelectorAll('.travel-memory-card-composition').length,

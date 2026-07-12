@@ -1,0 +1,104 @@
+{
+  "level": "level-03",
+  "assets": [
+    {
+      "name": "forest_track_overview",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-03/forest_track_overview.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-01_1427x468.png",
+      "size": [
+        1427,
+        468
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "forest_track_scene",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-03/forest_track_scene.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-07_987x560.png",
+      "size": [
+        987,
+        560
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "forest_bridge_arch",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-03/forest_bridge_arch.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-08_319x228.png",
+      "size": [
+        319,
+        228
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "forest_sign_white",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-03/forest_sign_white.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-10_168x149.png",
+      "size": [
+        168,
+        149
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "forest_sign_green",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-03/forest_sign_green.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-12_164x136.png",
+      "size": [
+        164,
+        136
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "forest_sign_orange",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-03/forest_sign_orange.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-13_125x123.png",
+      "size": [
+        125,
+        123
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "forest_tree",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-03/forest_tree.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-16_204x277.png",
+      "size": [
+        204,
+        277
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "forest_wood_bridge",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-03/forest_wood_bridge.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-18_94x157.png",
+      "size": [
+        94,
+        157
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    },
+    {
+      "name": "forest_water_pad",
+      "file": "assets/generated/pinyin-racer-semantic-assets/level-03/forest_water_pad.png",
+      "sourceSplit": "assets/generated/pinyin-racer-prepared-assets/level-03/split/part-20_160x95.png",
+      "size": [
+        160,
+        95
+      ],
+      "mode": "RGBA",
+      "edgeAlphaMax": 0
+    }
+  ]
+}
