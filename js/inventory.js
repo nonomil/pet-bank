@@ -25,9 +25,15 @@ const InventorySystem = (function () {
         const saved = localStorage.getItem('petbank_inventory');
         if (saved) {
             try {
-                items = JSON.parse(saved);
+                const parsed = JSON.parse(saved);
+                items = Array.isArray(parsed)
+                    ? parsed.map((entry) => ({
+                        item_id: entry && typeof entry.item_id === 'string' ? entry.item_id : '',
+                        count: Math.floor(Number(entry && entry.count) || 0)
+                    })).filter((entry) => entry.item_id && entry.count > 0)
+                    : [];
             } catch (e) {
-                console.error('Inventory load failed:', e);
+                console.warn('[InventorySystem] failed to parse stored inventory; using an empty inventory', e);
                 items = [];
             }
         }
@@ -45,14 +51,18 @@ const InventorySystem = (function () {
 
         const existing = items.find(i => i.item_id === itemId);
         const maxStack = data.stack_max || 99;
+        const requested = Math.max(1, Math.floor(Number(count) || 0));
+        const available = existing ? Math.max(0, maxStack - existing.count) : maxStack;
+        if (available <= 0) return { success: false, msg: `${data.name} 已达到堆叠上限` };
+        const added = Math.min(requested, available);
 
         if (existing) {
-            existing.count = Math.min(existing.count + count, maxStack);
+            existing.count += added;
         } else {
-            items.push({ item_id: itemId, count: Math.min(count, maxStack) });
+            items.push({ item_id: itemId, count: added });
         }
         save();
-        return { success: true, msg: `获得 ${data.name} x${count}` };
+        return { success: true, added, msg: `获得 ${data.name} x${added}` };
     }
 
     // 移除物品

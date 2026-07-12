@@ -596,11 +596,27 @@ const HomeSystem = (function () {
     }
 
     function addFurniture(furnId) {
+        if (!furnId) return false;
         if (!furniture) furniture = [];
-        if (furniture.indexOf(furnId) < 0) {
-            furniture.push(furnId);
-            _saveFurniture();
+        if (furniture.indexOf(furnId) >= 0) return false;
+        furniture.push(furnId);
+        _saveFurniture();
+        return true;
+    }
+
+    function removeFurnitureOwnership(furnId) {
+        if (!Array.isArray(furniture)) return false;
+        const index = furniture.indexOf(furnId);
+        if (index < 0) return false;
+        furniture.splice(index, 1);
+        if (homeState && homeState.slots) {
+            Object.keys(homeState.slots).forEach((slot) => {
+                if (homeState.slots[slot] === furnId) homeState.slots[slot] = null;
+            });
+            _saveHomeState();
         }
+        _saveFurniture();
+        return true;
     }
 
     function claimTravelMemory(sceneId) {
@@ -1048,7 +1064,7 @@ const HomeSystem = (function () {
         init,
         renderUI,
         onFeed, onPlay, onBath, onRest, onRescue,
-        placeFurniture, removeFurniture, addFurniture,
+        placeFurniture, removeFurniture, addFurniture, removeFurnitureOwnership,
         canPlace, selectFurniture, clearSelection,
         onPetClick, setHomeBg, cycleHomeBg, claimTravelMemory,
         openEvolutionPreview,

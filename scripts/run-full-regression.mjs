@@ -51,6 +51,7 @@ const TASKS = [
     { label: 'narrative closure', cmd: 'node', args: ['scripts/test-narrative-closure.mjs'] },
     { label: 'Pages fast gate contract', cmd: 'node', args: ['scripts/test-pages-fast-gate-contract.mjs'] },
     { label: 'points entry contract', cmd: 'node', args: ['scripts/test-points-entry-contract.mjs'] },
+    { label: 'shop transaction contract', cmd: 'node', args: ['scripts/test-shop-transaction-contract.mjs'] },
     { label: 'pet adventure retention', cmd: 'node', args: ['scripts/test-pet-adventure-retention.mjs'] },
     { label: 'pet care daily state', cmd: 'node', args: ['scripts/test-pet-care-daily-state.mjs'] },
     { label: 'pet growth feedback', cmd: 'node', args: ['scripts/test-pet-growth-feedback.mjs'] },

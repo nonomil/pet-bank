@@ -81,7 +81,15 @@ const ShopSystem = (function () {
 
   // --- Private Helpers ---
 
-  const getHistory = (key) => JSON.parse(localStorage.getItem(key) || '[]');
+  const getHistory = (key) => {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      console.warn('[ShopSystem] failed to parse history; using an empty list', key, error);
+      return [];
+    }
+  };
 
   const getCurrentPoints = () => {
     const pointsApi = window.PetBankPoints;
@@ -92,6 +100,13 @@ const ShopSystem = (function () {
   const adjustGrowthPoints = (delta) => {
     const pointsApi = window.PetBankPoints;
     return pointsApi && typeof pointsApi.add === 'function' ? pointsApi.add(delta) : null;
+  };
+
+  const spendGrowthPoints = (points) => {
+    const pointsApi = window.PetBankPoints;
+    return pointsApi && typeof pointsApi.spend === 'function'
+      ? pointsApi.spend(points) === true
+      : false;
   };
 
   const playSfx = (name) => {
@@ -210,7 +225,7 @@ const ShopSystem = (function () {
 
   // --- Private Logic ---
 
-  const buyItem = (item) => {
+  const buyItem = async (item) => {
     const currentPoints = getCurrentPoints();
     if (currentPoints === null) {
       alert('Error: totalPoints is not defined.');
@@ -221,19 +236,41 @@ const ShopSystem = (function () {
       return;
     }
 
-    adjustGrowthPoints(-item.price);
-    playSfx('purchaseConfirm');
-    playSfx('coin');
     // 对战道具进背包（InventorySystem），奖励券类仍走历史记录（不进背包保持原行为）
-    if (item.toInventory && window.InventorySystem && typeof window.InventorySystem.addItem === 'function') {
-      const res = window.InventorySystem.addItem(item.id, 1);
+    if (item.toInventory) {
+      const inventory = window.InventorySystem;
+      if (!inventory || typeof inventory.addItem !== 'function') {
+        alert('背包系统未就绪，兑换未完成。');
+        return false;
+      }
+      if (typeof inventory.loadItemsData === 'function') await inventory.loadItemsData();
+      const res = inventory.addItem(item.id, 1);
+      if (!res || !res.success) {
+        alert(`${item.name} 暂时无法放入背包，兑换未完成。`);
+        return false;
+      }
+      if (!spendGrowthPoints(item.price)) {
+        if (typeof inventory.removeItem === 'function') inventory.removeItem(item.id, 1);
+        alert('积分扣除失败，兑换未完成。');
+        return false;
+      }
+      playSfx('purchaseConfirm');
+      playSfx('coin');
       saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'battle_item' });
       playSfx('rewardClaim');
-      alert(`${res.success ? '兑换成功！' : ''}${item.name}${res.success ? '' : '（背包写入失败）'}`);
+      alert(`兑换成功！${item.name}`);
+      return true;
     } else {
+      if (!spendGrowthPoints(item.price)) {
+        alert('积分扣除失败，兑换未完成。');
+        return false;
+      }
+      playSfx('purchaseConfirm');
+      playSfx('coin');
       saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'purchase' });
       playSfx('rewardClaim');
       alert(`兑换成功！${item.name}`);
+      return true;
     }
   };
 
@@ -272,12 +309,18 @@ const ShopSystem = (function () {
       return false;
     }
 
-    adjustGrowthPoints(-item.price);
-    playSfx('purchaseConfirm');
     // 只调 HomeSystem.addFurniture，不直接写 localStorage、不进 InventorySystem
-    if (window.HomeSystem && typeof window.HomeSystem.addFurniture === 'function') {
-      window.HomeSystem.addFurniture(itemId);
+    if (!window.HomeSystem || typeof window.HomeSystem.addFurniture !== 'function') return false;
+    const added = window.HomeSystem.addFurniture(itemId);
+    if (added === false) return false;
+    if (!spendGrowthPoints(item.price)) {
+      if (typeof window.HomeSystem.removeFurnitureOwnership === 'function') {
+        window.HomeSystem.removeFurnitureOwnership(itemId);
+      }
+      alert('积分扣除失败，兑换未完成。');
+      return false;
     }
+    playSfx('purchaseConfirm');
     saveHistory('petbank_shop_history', { name: item.name, price: item.price, type: 'furniture' });
     playSfx('rewardClaim');
     renderUI('shop-ui');
@@ -295,7 +338,7 @@ const ShopSystem = (function () {
       return;
     }
 
-    adjustGrowthPoints(-box.price);
+    if (!spendGrowthPoints(box.price)) return;
     playSfx('purchaseConfirm');
     playSfx('chestOpen');
 
@@ -359,7 +402,14 @@ const ShopSystem = (function () {
         }
       } else if (result.type === 'item') {
         if (window.InventorySystem && typeof window.InventorySystem.addItem === 'function') {
-          window.InventorySystem.addItem(result.value);
+          const grant = window.InventorySystem.addItem(result.value);
+          if (!grant || !grant.success) {
+            adjustGrowthPoints(box.price);
+            result = { type: 'refund', emoji: '↩️', name: '道具暂时无法入库，已退回盒子积分', value: box.price };
+          }
+        } else {
+          adjustGrowthPoints(box.price);
+          result = { type: 'refund', emoji: '↩️', name: '背包系统未就绪，已退回盒子积分', value: box.price };
         }
       }
       playSfx('rewardClaim');
@@ -499,13 +549,12 @@ const ShopSystem = (function () {
     renderUI,
     buy: (itemId) => {
       const item = ITEMS.find(i => i.id === itemId);
-      if (item) buyItem(item);
+      return item ? buyItem(item).then(() => renderUI('shop-ui')) : Promise.resolve(false);
     },
     buyBattle: (itemId) => {
       const item = BATTLE_ITEMS.find(i => i.id === itemId);
       if (item) {
-        buyItem(item);
-        renderUI('shop-ui');
+        return buyItem(item).then(() => renderUI('shop-ui'));
       }
     },
     buyFurniture,
