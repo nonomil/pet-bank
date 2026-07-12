@@ -28,9 +28,7 @@ const files = {
   adapterSnapshot: path.join(dir, 'assets', 'generated', 'minecraft-memory-adapter', 'minecraft-word-memory-cards.json'),
   allView: path.join(dir, '..', '..', 'data', 'vocab', 'word-memory-combined', 'views', 'all.json'),
   vocabManifest: path.join(dir, '..', '..', 'data', 'vocab', 'word-memory-combined', 'manifest.json'),
-  design: path.join(dir, '..', '..', 'docs', 'plans', '2026-07-08-topdown-word-memory-design.md'),
-  plan: path.join(dir, '..', '..', 'docs', 'plans', '2026-07-08-topdown-word-memory-implementation.md'),
-  adapterPlan: path.join(dir, '..', '..', 'docs', 'plans', '2026-07-08-word-memory-minecraft-adapter-implementation.md')
+  design: path.join(dir, 'README.md')
 };
 
 function read(file) {
@@ -50,7 +48,7 @@ const utils = read(files.utils);
 const readme = read(files.readme);
 const dataFallback = read(files.dataFallback);
 const voiceFallback = read(files.voiceFallback);
-const docs = `${read(files.design)}\n${read(files.plan)}\n${read(files.adapterPlan)}`;
+const docs = read(files.design);
 const learningLoopDesign = read(path.join(dir, '..', '..', 'docs', '打字游戏方案', '单词记忆小游戏.md'));
 const source = `${html}\n${css}\n${dataModule}\n${js}`;
 const data = JSON.parse(read(files.data));

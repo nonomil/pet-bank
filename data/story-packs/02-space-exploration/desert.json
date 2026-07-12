@@ -1,0 +1,99 @@
+{
+  "id": "desert",
+  "name": "红色行星营地",
+  "emoji": "🪐",
+  "chapter": 3,
+  "chapter_name": "伙伴补给环",
+  "min_level": 3,
+  "danger_level": 3,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "红色行星营地的风把观测旗吹得呼呼响。三个小小探测员要出发，却只有两袋水光补给，星图小站请你判断够不够。",
+      "shortText": "补给袋够用吗？",
+      "detailText": "先数探测员，再数水光补给，比较两边的数量。",
+      "petMood": "surprised",
+      "id": "desert.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "营地里有四只水光袋，旁边的记录板画着四个小圆点。每个探测员需要一袋，不能把一袋分给两个人。",
+      "shortText": "一人一袋怎么分？",
+      "detailText": "用记录板上的圆点和水光袋一一对应，看看有没有多出或缺少。",
+      "petMood": "happy",
+      "emoji": "💧",
+      "item": "desert_pearl",
+      "chance": 0.5,
+      "id": "desert.discover1"
+    },
+    {
+      "type": "math",
+      "text": "营地准备了 4 袋水光补给，先用掉 2 袋修理小车。现在还剩几袋可以送给探测员？",
+      "shortText": "还剩几袋水光补给？",
+      "detailText": "从 4 袋里拿走修理小车用的 2 袋。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 20,
+        "msg": "红色营地补给分配好了！+20 经验"
+      },
+      "mathType": "word",
+      "question": "4 袋补给用掉 2 袋，还剩几袋？",
+      "answer": 2,
+      "options": [
+        1,
+        2,
+        3,
+        6
+      ],
+      "skill": "生活减法",
+      "hint": "把用掉的两袋移到另一边。",
+      "explanation": "4 袋减去 2 袋，还剩 2 袋。",
+      "id": "desert.math2"
+    },
+    {
+      "type": "choice",
+      "text": "红色营地有太阳棚和石头塔两条观察路线。你想先看补给表，还是先看探测车的脚印？",
+      "shortText": "看补给表，还是脚印？",
+      "detailText": "补给表能看数量，脚印能看探测车去了哪里。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "☀️ 看太阳棚",
+          "reward": "太阳棚下找到一枚沙地贝壳！",
+          "item": "sand_shell",
+          "chance": 0.4
+        },
+        {
+          "text": "🪨 查探测脚印",
+          "reward": "脚印旁有一颗沙漠珍珠！",
+          "item": "desert_pearl",
+          "chance": 0.3
+        }
+      ],
+      "id": "desert.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "小火星车守护员把四袋补给排成一列，邀请你检查：修车用掉两袋后，给探测员的袋子够不够。",
+      "shortText": "火星车来检查补给！",
+      "detailText": "侦探不只找谁做了什么，也要看看每个伙伴是否得到需要的东西。",
+      "petMood": "proud",
+      "id": "desert.encounter4"
+    }
+  ],
+  "chapter_skill": "life_apply",
+  "ending_text": "红色行星营地的探测员平安出发。你学会了用一一对应来分配补给，星光种子收到一条“照顾伙伴”的新信号。"
+}

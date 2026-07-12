@@ -64,9 +64,9 @@
 
 **文件：**
 - 修改：`scripts/test-travel-memory-browser.mjs`
-- 修改：`docs/releases/2026-07-12-travel-memory-assets.md`
-- 创建：`docs/releases/travel-card-composition-desktop.png`
-- 创建：`docs/releases/travel-card-composition-mobile.png`
+- 修改：`docs/发布/2026-07-12-travel-memory-assets.md`
+- 创建：`docs/发布/travel-card-composition-desktop.png`
+- 创建：`docs/发布/travel-card-composition-mobile.png`
 
 **步骤：**
 

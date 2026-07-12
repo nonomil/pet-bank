@@ -10,10 +10,10 @@
 
 ```bash
 cd /srv/pet-bank/current/prj/petbank-server/deploy
-docker compose stop api
+docker compose -p petbank-api stop api
 stamp="$(date +%Y%m%d-%H%M%S)"
 cp /srv/pet-bank/shared/data/petbank.db "/srv/pet-bank/shared/backups/petbank-$stamp.db"
-docker compose start api
+docker compose -p petbank-api start api
 curl --fail http://127.0.0.1:3000/api/v1/health
 ```
 
@@ -51,8 +51,8 @@ ln -sfn /srv/pet-bank/releases/<previous-release-id> /srv/pet-bank/current
 仅在确认数据损坏且已停止 API 后恢复：
 
 ```bash
-docker compose stop api
+docker compose -p petbank-api stop api
 cp /srv/pet-bank/shared/backups/petbank-<timestamp>.db /srv/pet-bank/shared/data/petbank.db
-docker compose start api
+docker compose -p petbank-api start api
 curl --fail http://127.0.0.1:3000/api/v1/health
 ```

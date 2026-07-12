@@ -1,0 +1,99 @@
+{
+  "id": "volcano",
+  "name": "火焰引擎港",
+  "emoji": "🔥",
+  "chapter": 4,
+  "chapter_name": "轨道维修区",
+  "min_level": 5,
+  "danger_level": 4,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "火焰引擎港的热能球正在一组一组传递。小星舟需要知道每一轮有多少颗，才能让引擎保持温暖又安全。",
+      "shortText": "热能球要分组传递！",
+      "detailText": "观察一轮有几颗，再看有几轮，帮助维修员安排顺序。",
+      "petMood": "surprised",
+      "id": "volcano.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "传送台上有三轮热能球，每轮两颗。每一轮传完，红色小灯就会亮一下。",
+      "shortText": "三轮热能球排好了！",
+      "detailText": "一轮两颗，沿着传送台数三轮，看看总数是多少。",
+      "petMood": "happy",
+      "emoji": "🔥",
+      "item": "lava_crystal",
+      "chance": 0.5,
+      "id": "volcano.discover1"
+    },
+    {
+      "type": "math",
+      "text": "引擎港有 3 轮传送，每轮传 2 颗热能球。一共传了几颗？",
+      "shortText": "一共传了几颗热能球？",
+      "detailText": "把三轮看成三组，每组都是 2 颗。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 30,
+        "msg": "火焰引擎保持稳定！+30 经验"
+      },
+      "mathType": "word",
+      "question": "3 轮，每轮 2 颗热能球，一共几颗？",
+      "answer": 6,
+      "options": [
+        4,
+        5,
+        6,
+        8
+      ],
+      "skill": "相同分组",
+      "hint": "2 加 2 再加 2。",
+      "explanation": "三轮各有 2 颗，合起来是 6 颗。",
+      "id": "volcano.math2"
+    },
+    {
+      "type": "choice",
+      "text": "火焰引擎港有矿炉通道和外环通道。你想先看热能球，还是先找安全箭头？",
+      "shortText": "看热能球，还是安全箭头？",
+      "detailText": "热能球告诉你数量，安全箭头告诉你传递方向。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "♨️ 看矿炉通道",
+          "reward": "矿炉旁找到一颗熔岩晶石！",
+          "item": "lava_crystal",
+          "chance": 0.4
+        },
+        {
+          "text": "🛡️ 看外环箭头",
+          "reward": "安全箭头下有一块火山宝石！",
+          "item": "volcano_gem",
+          "chance": 0.3
+        }
+      ],
+      "id": "volcano.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "火焰引擎守护员把热能球排成三组，请你确认每组是不是一样多。它只在看到你的观察记录后，才打开下一段轨道。",
+      "shortText": "引擎守护员来检查！",
+      "detailText": "分组时每一组一样多，传递就会稳定，伙伴也会更安全。",
+      "petMood": "proud",
+      "id": "volcano.encounter4"
+    }
+  ],
+  "chapter_skill": "mul_div_mech",
+  "ending_text": "火焰引擎港的三轮传送完成了。你把“分成一样多的小组”交给小星舟，维修轨道终于通向星际观测站。"
+}

@@ -79,5 +79,5 @@ Bundle 映射:
 - `once()` 保证每个 feature 的初始化只执行一次（即使多次调用 ensurePage）
 - `initFlags` 对象追踪哪些模块的 init() 已被调用
 - ensurePlaygroundFeature 中 400ms 后自动预加载卡牌对战（增强体验）
-- 不加载账号、家庭、社交或第三方云端 bundle；这些能力等待 SQLite API 完成后按业务模块重新接入
+- 账号/家庭模块不是 runtime-loader 的玩法 bundle：`index.html` 直接加载 `self-hosted-api.js`、`parent-account.js`，由家长设置页按需显示；runtime-loader 仍不加载 Supabase、旧社交或第三方云端 bundle
 - 样式通过 `data-petbank-src` / `data-petbank-href` 属性追踪已加载资源

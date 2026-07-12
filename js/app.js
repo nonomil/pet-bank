@@ -2101,8 +2101,8 @@ const SETTINGS_SECTION_ROUTES = {
 
 const SETTINGS_SECTION_LABELS = {
     home: '设置首页',
-    account: '账号与孩子',
-    family: '家庭云端',
+    account: '孩子档案',
+    family: '家庭账号',
     learning: '学习与题目',
     rules: '规则模板',
     advanced: '高级与危险操作'
@@ -2605,7 +2605,16 @@ function updateParentHomePage() {
         : null;
     const fallbackName = document.getElementById('profileCurName')?.textContent || '默认孩子';
     childNameEl.textContent = activeProfile && activeProfile.name ? activeProfile.name : fallbackName;
+    const householdNameEl = document.getElementById('parentShellHouseholdName');
+    if (householdNameEl) {
+        const accountState = window.ParentAccountUI && typeof window.ParentAccountUI.getState === 'function'
+            ? window.ParentAccountUI.getState()
+            : null;
+        const activeHousehold = accountState?.households?.find(item => item.id === accountState.activeHouseholdId);
+        householdNameEl.textContent = activeHousehold?.name || (accountState?.account ? '未选择家庭' : '本机家庭');
+    }
 }
+window.updateParentHomePage = updateParentHomePage;
 
 const TYPING_DEFENSE_BRIDGE_SOURCE = 'petbank-typing-defense';
 const typingDefenseBridgeSeen = new Set();
@@ -2986,6 +2995,7 @@ function runPageActivation(page) {
     if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
     if (page === 'home' && window.HomeSystem) HomeSystem.renderUI('home-container');
     if (page === 'settings' && window.SettingsPage) SettingsPage.render();
+    if (page === 'settings' && activeSettingsSection === 'family' && window.ParentAccountUI) ParentAccountUI.render();
     if (page === 'settings') {
         const diagnosticsRoot = document.getElementById('diagnostics-root');
         if (diagnosticsRoot) diagnosticsRoot.innerHTML = '';
@@ -4693,6 +4703,12 @@ async function init() {
     }
     if (window.ProfileManager && typeof ProfileManager.ensureDefault === 'function') {
         ProfileManager.ensureDefault();
+    }
+    if (window.ProfileManager && typeof ProfileManager.hydrateActiveFromCloud === 'function') {
+        await ProfileManager.hydrateActiveFromCloud();
+    }
+    if (window.ProfileManager && typeof ProfileManager.installCloudLifecycle === 'function') {
+        ProfileManager.installCloudLifecycle();
     }
     if (window.ProfileUI && typeof ProfileUI.render === 'function') {
         ProfileUI.render();

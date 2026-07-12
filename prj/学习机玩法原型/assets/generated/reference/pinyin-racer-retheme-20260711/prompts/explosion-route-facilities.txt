@@ -1,0 +1,9 @@
+Use case: background-extraction
+Asset type: transparent/chroma-key game asset explosion sheet for a child-friendly pinyin racing game
+Primary request: Create a clean isolated asset sheet in the same bright 3D toy-racing learning playground style as the level reference images. Include exactly six separate complete route facilities with generous spacing: 1) rounded red-and-yellow initial-sound gate, 2) blue-and-coral fork gate pair, 3) pastel hanging tone sign, 4) small picture supply kiosk with a blank panel, 5) friendly wooden listening tunnel entrance with soft lights, 6) bright final spelling finish arch. Every component must face the viewer in a useful game-ready angle and must be fully visible.
+Style/medium: polished 3D toy plastic, soft foam, felt and painted wood, clean silhouettes, consistent colors and proportions, web game asset sheet
+Composition/framing: square 1536x1536 sheet, six isolated components in two rows of three, large empty gaps, no overlap, no cropping
+Lighting/mood: bright studio lighting, soft contained glow only around each component
+Color palette: sky blue, mint, warm yellow, coral, white, cobalt blue
+Constraints: Perfectly flat solid #00ff00 chroma-key background only. No shadows on the background, no gradients on the background, no floor plane, no texture, no reflections. Do not use #00ff00 inside any asset. No text, no letters, no numbers, no Chinese characters, no pinyin, no logos, no watermark. Blank panels are allowed for HTML overlay.
+Avoid: fake checkerboard, overlapping parts, tiny details, cropped edges, dark sci-fi, realistic branding

@@ -1,0 +1,99 @@
+{
+  "id": "beach",
+  "name": "蓝色卫星海岸",
+  "emoji": "🛰️",
+  "chapter": 2,
+  "chapter_name": "彩色信号带",
+  "min_level": 2,
+  "danger_level": 2,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "小星舟飞到蓝色卫星海岸，海面漂来两个信号瓶。一个瓶子闪蓝光，一个瓶子闪黄光，瓶底都画着小小的方向箭头。",
+      "shortText": "信号瓶漂来了！",
+      "detailText": "先看颜色和箭头，再判断哪个瓶子在呼唤小星舟。",
+      "petMood": "surprised",
+      "id": "beach.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "蓝色瓶子里有四颗小光珠，黄色瓶子里有一张弯弯的路线卡。光珠排列成一条短短的蓝色波浪线。",
+      "shortText": "蓝色光珠排成波浪线！",
+      "detailText": "数一数蓝色光珠，并沿着波浪线找出下一站的方向。",
+      "petMood": "happy",
+      "emoji": "🔵",
+      "item": "pearl",
+      "chance": 0.5,
+      "id": "beach.discover1"
+    },
+    {
+      "type": "math",
+      "text": "海岸观测卡写着：小星舟先收到 5 个蓝色信号，风吹走了 2 个，还剩几个信号？",
+      "shortText": "还剩几个蓝色信号？",
+      "detailText": "把被风吹走的信号从 5 个里拿掉，再数剩下的。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 15,
+        "msg": "蓝色信号对上了！+15 经验"
+      },
+      "mathType": "word",
+      "question": "5 个信号被吹走 2 个，还剩几个？",
+      "answer": 3,
+      "options": [
+        2,
+        3,
+        4,
+        7
+      ],
+      "skill": "减少",
+      "hint": "从 5 个里面拿走 2 个。",
+      "explanation": "5 个减去 2 个，还剩 3 个。",
+      "id": "beach.math2"
+    },
+    {
+      "type": "choice",
+      "text": "海浪把两条线索路冲到沙滩上：一条有蓝色贝壳，一条有黄色箭头。",
+      "shortText": "先追贝壳，还是箭头？",
+      "detailText": "贝壳能告诉你信号的颜色，箭头能告诉你前进的方向。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "🐚 追蓝色贝壳",
+          "reward": "贝壳里藏着一颗清亮的海珠！",
+          "item": "pearl",
+          "chance": 0.4
+        },
+        {
+          "text": "➡️ 看黄色箭头",
+          "reward": "箭头指向一小片星尘！",
+          "item": "star_dust",
+          "chance": 0.3
+        }
+      ],
+      "id": "beach.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "潮汐守护员举起一块蓝色信号板，问小星舟：哪一种线索可以告诉我们方向？你可以用手指一指箭头。",
+      "shortText": "潮汐守护员来确认！",
+      "detailText": "箭头不是装饰，它会把小星舟带到下一站。",
+      "petMood": "proud",
+      "id": "beach.encounter4"
+    }
+  ],
+  "chapter_skill": "add_sub_apply",
+  "ending_text": "蓝色卫星海岸的信号被重新排好。你发现颜色和方向可以一起说话，小星舟沿着蓝色波浪线继续前进。"
+}

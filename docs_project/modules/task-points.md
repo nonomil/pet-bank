@@ -1,6 +1,6 @@
 # 任务积分系统
 
-> 核心文件: [js/app.js](../../js/app.js) (2963行，其中任务积分部分约 500 行)
+> 核心文件: [js/app.js](../../js/app.js) (4411行，其中任务积分部分约 500 行；行号按 2026-07-12 基线)
 
 ---
 
@@ -38,14 +38,14 @@
 | `HOME_PRIORITY_TASKS` | app.js:109-113 | 首页 3 个优先任务 |
 | `POINT_TASK_ART` | app.js:115-126 | 积分任务配图 URL 映射 |
 | `getPointTaskArt(task)` | app.js:128-140 | 按任务文本正则匹配配图 |
-| `toggleTask(dim, taskName, pts)` | app.js:179-191 | 勾选/取消任务，增减积分 |
-| `renderTaskGrid()` | app.js:193-216 | 渲染全部 37 个任务卡片 |
-| `renderGrowthStickerReport()` | app.js:218-249 | 渲染成长贴纸报告（热力图+维度进度条） |
-| `saveAppState()` | app.js:160-164 | 持久化积分和已完成任务 |
-| `loadAppState()` | app.js:165-171 | 从 localStorage 恢复状态 |
-| `renderAll()` | app.js:2884 | 全局重渲染入口 |
-| `window.addGrowthPoints(n)` | app.js:2904 | 外部增加积分 |
-| `window.spendPoints(n)` | app.js:2905 | 外部消费积分 |
+| `toggleTask(dim, taskName, pts)` | app.js:412 | 勾选/取消任务，增减积分 |
+| `renderTaskGrid()` | app.js:437 | 渲染全部 37 个任务卡片 |
+| `renderGrowthStickerReport()` | app.js:462 | 渲染成长贴纸报告（热力图+维度进度条） |
+| `saveAppState()` | app.js:282 | 持久化积分和共享每日状态 |
+| `loadAppState()` | app.js:287 | 从 localStorage 恢复状态 |
+| `renderAll()` | app.js:4645 | 全局重渲染入口 |
+| `window.addGrowthPoints(n)` | app.js:4668 | 外部增加积分 |
+| `window.spendPoints(n)` | app.js:4669 | 外部消费积分 |
 
 ### 各维度详情
 
@@ -62,8 +62,9 @@
 
 ```
 key: petbank_points              → 总积分 (number)
-key: petbank_completed           → 已完成任务 ID 集合 (JSON array)
-key: petbank_tasks_completed_today → 今日完成数 (number)
+key: petbank_daily_state          → 当前日期 + profileId + 任务/日宝箱状态 (JSON object)
+key: petbank_completed            → 旧兼容任务集合 (JSON array)
+key: petbank_tasks_completed_today → 旧兼容今日完成数 (number)
 key: petbank_custom_items        → 自定义兑换项 (JSON array)
 ```
 
@@ -87,7 +88,7 @@ key: petbank_custom_items        → 自定义兑换项 (JSON array)
 
 ## 注意事项
 
-- `totalPoints` 通过 `Object.defineProperty` 拦截 setter，确保始终为有效数字（app.js:148-157）
+- `totalPoints` 通过 `Object.defineProperty` 拦截 setter，确保始终为有效数字；每日任务通过 `PetBankDailyState` 绑定本地日和 active profile
 - `completedTasks` 是 `Set`，持久化时用 `JSON.stringify([...completedTasks])` 转为数组
 - `renderAll()` 是全局重渲染入口，在 toggleTask 中每次触发，开销大
 - petcare（守护力）是第 6 维度，与宠物小屋的照料行为紧密关联

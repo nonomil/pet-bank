@@ -1,0 +1,99 @@
+{
+  "id": "forest",
+  "name": "月光种子林",
+  "emoji": "🌙",
+  "chapter": 1,
+  "chapter_name": "月光起航",
+  "min_level": 1,
+  "danger_level": 1,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "星图小站传来第一条求助：一颗星光种子在月光种子林里变暗了。小星舟指向两条亮点不同的小路，等你找出真正的光路。",
+      "shortText": "月光种子变暗了！",
+      "detailText": "先观察两条小路上的星点，再决定从哪里开始寻找。",
+      "petMood": "surprised",
+      "id": "forest.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "树根旁有两颗银色星点，花瓣旁有三颗蓝色星点。它们都在闪，可只有一组在向小星舟打招呼。",
+      "shortText": "哪一组星点更多？",
+      "detailText": "把银色和蓝色星点分别数一数，更多的一组会留下第一颗星光信号。",
+      "petMood": "happy",
+      "emoji": "✨",
+      "item": "star_dust",
+      "chance": 0.5,
+      "id": "forest.discover1"
+    },
+    {
+      "type": "math",
+      "text": "观测卡写着：月光路上有 3 颗星点，蓝光路上有 2 颗星点。两条路一共有几颗星点？",
+      "shortText": "星点一共有几颗？",
+      "detailText": "先数第一条路，再把第二条路的星点接着数下去。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 12,
+        "msg": "第一条星光信号记下来了！+12 经验"
+      },
+      "mathType": "word",
+      "question": "月光路有 3 颗星点，蓝光路有 2 颗星点，一共有几颗？",
+      "answer": 5,
+      "options": [
+        4,
+        5,
+        6,
+        8
+      ],
+      "skill": "合起来",
+      "hint": "从 3 继续数 2 次。",
+      "explanation": "3 颗加上 2 颗是 5 颗。",
+      "id": "forest.math2"
+    },
+    {
+      "type": "choice",
+      "text": "前方有月光小路和蓝光小路，你想先观察哪一条？",
+      "shortText": "先看月光路，还是蓝光路？",
+      "detailText": "两条路都安全，先选一条观察，就能找到不同的星点线索。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "🌙 走月光小路",
+          "reward": "月光照出一片闪亮星尘！",
+          "item": "star_dust",
+          "chance": 0.4
+        },
+        {
+          "text": "💙 走蓝光小路",
+          "reward": "蓝光旁滚出一颗小星石！",
+          "item": "star_fragment",
+          "chance": 0.3
+        }
+      ],
+      "id": "forest.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "月兔守护员从小树后探出耳朵。它没有要吓你，只想请你指出哪一组星点更多，确认你真的观察过。",
+      "shortText": "月兔守护员来提问！",
+      "detailText": "指一指你刚才数过的星点，月兔就会把光路交给小星舟。",
+      "petMood": "proud",
+      "id": "forest.encounter4"
+    }
+  ],
+  "chapter_skill": "number_sense",
+  "ending_text": "第一颗星光种子重新亮起。你把“先数一数，再判断”的方法写进观测册，月兔守护员也送来一枚月光徽记。"
+}

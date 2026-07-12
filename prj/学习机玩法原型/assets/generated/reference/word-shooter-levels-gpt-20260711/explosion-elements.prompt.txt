@@ -1,0 +1,16 @@
+Create one reusable 4x3 exploded asset sheet for a children's English typing airplane battle game. Use a perfectly flat solid #00ff00 chroma-key background only. No checkerboard, no floor, no shadows on the background, no background gradients, no overlap, no clipping. Every component must be isolated with generous spacing and all glow/shadow must stay close to its own component. No readable text, no letters, no numbers, no pinyin, no Chinese characters, no logos, no watermark.
+
+Use one coherent premium 2.5D animated arcade style shared by three levels: Dawn Training Ground, Candy Nebula, and Volcanic Meteor Belt. Strong clean silhouettes, crisp edges, cyan player energy, warm orange enemy energy, friendly but not babyish. Include exactly twelve isolated components arranged as a clean 4 columns by 3 rows sheet:
+
+1. compact cyan player shield bubble, front view
+2. small orange enemy energy bolt with short trail
+3. small cyan hit spark
+4. bright circular impact flash
+5. large star-shaped destroy burst with cyan and orange rays
+6. concentric shield break ring
+7. small three-point sparkle cluster
+8. orange warning burst ring
+9. cyan shield repair pickup crystal, no symbol
+10. triple-beam pickup crystal, no symbol
+11. small smoke-free debris shard cluster
+12. clean victory starburst badge, no symbol

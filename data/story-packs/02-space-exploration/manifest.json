@@ -1,0 +1,38 @@
+{
+  "id": "02-space-exploration",
+  "title": "星际小侦探：找回失踪的星光种子",
+  "version": "20260712-space-v1",
+  "status": "draft",
+  "active": false,
+  "audience": "幼小衔接",
+  "ageRange": "5-6",
+  "sceneIds": [
+    "forest",
+    "beach",
+    "candy",
+    "waterfall",
+    "underwater",
+    "desert",
+    "mountain",
+    "cave",
+    "castle",
+    "volcano",
+    "space",
+    "stargarden"
+  ],
+  "chapterNames": {
+    "1": "月光起航",
+    "2": "彩色信号带",
+    "3": "伙伴补给环",
+    "4": "轨道维修区",
+    "5": "星光回家站"
+  },
+  "sourceReferences": [
+    "docs/探索地图故事/我给孩子们设计的阅读，当然是世上少有先例的那种：从星球大战、星际迷航到希罗多德.md",
+    "G:/UserCode/跨平台采集器/output/xiaohongshu/学习/素素不吃素_s_5a3a5cd2e8ac2b3cb62ed83e/用deepseek给娃找侦探游戏真是太方便.md"
+  ],
+  "runtime": {
+    "currentActiveSource": "data/stories/*.json",
+    "activation": "未接入；完成审稿、配音、资源和 storyId 进度隔离后再切换"
+  }
+}

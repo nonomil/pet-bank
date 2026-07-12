@@ -4,6 +4,8 @@
 
 活动词卡由根目录 `data/vocab/word-memory-combined/views/all.json` 的合并词库生成，已纳入原 Minecraft 词库和复制进来的 `Mario_Minecraft/words-0315/vocabs` English packs。俯视地图版现在默认使用用户提供的 **小男孩像素主角**，原先的铁傀儡保留为第二套可选角色；经典炮弹模式复用同一套词卡，顶部显示英文目标，底部显示中文炮弹，适合保留原先的轻量射击节奏。
 
+本原型的正式定位是 **俯视地图版单词记忆游戏**（top-down map-based word memory game）。地图中的中文球散落地图，玩家先认识中文义项，再拿球判断并投掷英文目标；Minecraft 词汇适配器使用 `Minecraft memory-view`，当前运行视图为全量词库（`all view`）。
+
 ## 原型入口
 
 - 页面：[G:\StudyCode\宠物积分系统\prj\单词记忆射击场原型\index.html](G:/StudyCode/宠物积分系统/prj/单词记忆射击场原型/index.html)

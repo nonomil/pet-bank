@@ -1,0 +1,36 @@
+{
+  "status": "failed",
+  "prefix": "level-01-meadow-sbend",
+  "model": "grok-imagine-image-quality",
+  "apiUrl": "https://beeapi.ai/v1/images/generations",
+  "sizeRequested": "1536x1024",
+  "promptFile": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\pinyin-racer-retheme-20260711\\grok\\level-01-meadow-sbend\\level-01-meadow-sbend.prompt.txt",
+  "attempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-07-11T23:49:01",
+      "response": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\pinyin-racer-retheme-20260711\\grok\\level-01-meadow-sbend\\level-01-meadow-sbend.response.attempt1.json",
+      "status": "transient-error",
+      "httpStatus": 502,
+      "body": "error code: 502\n"
+    },
+    {
+      "attempt": 2,
+      "startedAt": "2026-07-11T23:49:07",
+      "response": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\pinyin-racer-retheme-20260711\\grok\\level-01-meadow-sbend\\level-01-meadow-sbend.response.attempt2.json",
+      "status": "transient-error",
+      "httpStatus": 502,
+      "body": "error code: 502\n"
+    },
+    {
+      "attempt": 3,
+      "startedAt": "2026-07-11T23:49:19",
+      "response": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\pinyin-racer-retheme-20260711\\grok\\level-01-meadow-sbend\\level-01-meadow-sbend.response.attempt3.json",
+      "status": "transient-error",
+      "httpStatus": 502,
+      "body": "error code: 502\n"
+    }
+  ],
+  "createdAt": "2026-07-11T23:49:22",
+  "nextAction": "re-run with --resume after the provider enables the model/channel"
+}

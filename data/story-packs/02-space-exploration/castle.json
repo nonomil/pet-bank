@@ -1,0 +1,99 @@
+{
+  "id": "castle",
+  "name": "云端空间站",
+  "emoji": "☁️",
+  "chapter": 4,
+  "chapter_name": "轨道维修区",
+  "min_level": 4,
+  "danger_level": 4,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "云端空间站正在准备一次小小维修。导航员、修理员和观测员都来了，可工具箱里的工具不能随便分，必须交给真正需要它的人。",
+      "shortText": "工具要送给谁？",
+      "detailText": "先看每个伙伴的岗位标记，再把工具交到对应的手里。",
+      "petMood": "surprised",
+      "id": "castle.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "观测员胸前有星星标记，修理员胸前有扳手标记，导航员胸前有箭头标记。三种工具也画着相同的图案。",
+      "shortText": "相同图案找到主人！",
+      "detailText": "把工具图案和伙伴胸前的图案一一配对，不能只看谁离得近。",
+      "petMood": "happy",
+      "emoji": "🔧",
+      "item": "circuit",
+      "chance": 0.5,
+      "id": "castle.discover1"
+    },
+    {
+      "type": "math",
+      "text": "空间站有 3 个岗位，每个岗位需要 2 件小工具。一共需要几件小工具？",
+      "shortText": "一共需要几件工具？",
+      "detailText": "把三个岗位看成三组，每组先放 2 件。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 28,
+        "msg": "空间站工具都送到岗位了！+28 经验"
+      },
+      "mathType": "word",
+      "question": "3 个岗位，每个需要 2 件工具，一共几件？",
+      "answer": 6,
+      "options": [
+        3,
+        5,
+        6,
+        9
+      ],
+      "skill": "分组计算",
+      "hint": "2 加 2 再加 2。",
+      "explanation": "三个岗位各需要 2 件，2 加 2 加 2 等于 6 件。",
+      "id": "castle.math2"
+    },
+    {
+      "type": "choice",
+      "text": "云端空间站有观测室和天线甲板。你想先帮谁找工具？",
+      "shortText": "去观测室，还是天线甲板？",
+      "detailText": "观测室看星点，天线甲板看方向；两个岗位的标记不一样。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "🔭 去观测室",
+          "reward": "观测台下发现一颗城堡宝石！",
+          "item": "castle_gem",
+          "chance": 0.4
+        },
+        {
+          "text": "📡 上天线甲板",
+          "reward": "天线旁找到一块电路片！",
+          "item": "circuit",
+          "chance": 0.3
+        }
+      ],
+      "id": "castle.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "云端守护员把三件工具放在一起，请你帮忙找出每件工具的主人。它要确认你是在看证据，不是在猜名字。",
+      "shortText": "云端守护员来验收！",
+      "detailText": "图案是证据，岗位是线索，配对成功就是一次小小的推理。",
+      "petMood": "proud",
+      "id": "castle.encounter4"
+    }
+  ],
+  "chapter_skill": "mul_div_mech",
+  "ending_text": "云端空间站的维修顺利完成。你发现不同伙伴有不同岗位，先看标记再行动，星光种子又亮了一圈。"
+}

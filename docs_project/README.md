@@ -1,94 +1,54 @@
-# 宠物积分系统 —— 工程文档索引
+# 宠物积分系统工程文档索引
 
-> 本目录承载结构化工程文档。首次全仓库扫描生成于 2026-07-08，2026-07-08 修正。
-> 代码修改需同步更新对应文档。
+> 当前工程基线：2026-07-12。先读仓库根目录 `AGENTS.md`，再按任务进入本目录。代码和验证入口是事实来源，模块文档中的行号可能随迭代漂移。
 
 ## 快速导航
 
-| 文档 | 用途 | 读者 |
-|------|------|------|
-| [ARCHITECTURE.md](ARCHITECTURE.md) | 架构总览、模块全景、技术债清单 | 所有人 |
-| [conventions/](conventions/) | 编码规范（错误处理、命名、模块模式） | 开发者 |
-| [data-contracts/](data-contracts/) | 数据契约（localStorage keys、JSON schema） | 开发者/Codex |
-| [modules/](modules/) | 分模块实现文档（原理+函数→行号） | 开发者/Codex |
-| [review/](review/) | 审查报告（内容分离+需求对照） | 所有人 |
-| [runbooks/](runbooks/) | 运行与验证（本地启动、回归测试、smoke） | 开发者/Codex |
-| [rules/](rules/) | 维护规则（代码改了什么要同步哪些文档） | 开发者 |
+| 文档 | 用途 |
+| --- | --- |
+| [../AGENTS.md](../AGENTS.md) | 当前架构事实、核心规矩、技术债和修改流程 |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | Repo Map、启动链路、核心流程、模块和风险 |
+| [CURRENT-STATE.md](./CURRENT-STATE.md) | 当前实现快照、能力状态和代码入口 |
+| [conventions/](conventions/) | 命名、模块、错误处理和编码约定 |
+| [data-contracts/](data-contracts/) | localStorage key、宠物/内容数据契约 |
+| [modules/](modules/) | 各业务模块原理、入口和公开 API |
+| [runbooks/](runbooks/) | 本地运行、测试、发布、自托管和清理 |
+| [rules/](rules/) | 代码改动与文档同步规则 |
+| [文档生命周期](../docs/文档生命周期.md) | 活跃文档、历史方案和归档资料的边界 |
+| [../docs/方案/项目路线/07-当前扫描与优化方案-2026-07-12.md](../docs/方案/项目路线/07-当前扫描与优化方案-2026-07-12.md) | 当前扫描合并后的优化优先级、工作包和验收 |
 
-## 分模块文档
+## 当前模块文档
 
-| 模块 | 文档 | 核心文件 |
-|------|------|---------|
-| 任务积分系统 | [task-points.md](modules/task-points.md) | js/app.js |
-| 宠物养成 | [pet-system.md](modules/pet-system.md) | js/pet.js |
-| 宠物小屋 | [home-system.md](modules/home-system.md) | js/home.js |
-| 探索冒险 | [exploration.md](modules/exploration.md) | js/exploration.js |
-| 卡牌收集+对战 | [card-system.md](modules/card-system.md) | js/card-*.js |
-| 数学PK | [math-pk.md](modules/math-pk.md) | js/math-pk.js |
-| 学习中心 | [learn-center.md](modules/learn-center.md) | js/learn-center.js |
-| 商城+背包 | [shop-inventory.md](modules/shop-inventory.md) | js/shop.js, js/inventory.js |
-| 社交+家庭组 | [social-household.md](modules/social-household.md) | docs/家庭账号社交体系/ |
-| 云端同步 | [cloud-sync.md](modules/cloud-sync.md) | prj/petbank-server/ |
-| 运行时加载器 | [runtime-loader.md](modules/runtime-loader.md) | js/runtime-loader.js |
-| 宠物遛弯 | [walk.md](modules/walk.md) | js/walk.js |
-| 音效/语音/汉字/宝箱/工具 | [misc.md](modules/misc.md) | js/sfx.js, js/voice.js, js/hanzi-game.js, js/treasure.js, js/tools.js |
+| 领域 | 文档 | 当前代码 |
+| --- | --- | --- |
+| 任务与积分 | [task-points.md](modules/task-points.md) | `js/app.js`、奖励服务 |
+| 宠物养成 | [pet-system.md](modules/pet-system.md) | `js/pet.js`、照料/成长模块 |
+| 宠物小屋 | [home-system.md](modules/home-system.md) | `js/home.js`、`js/travel-memory.js` |
+| 探索冒险 | [exploration.md](modules/exploration.md) | `js/exploration*.js`、战斗/语音 |
+| 卡牌 | [card-system.md](modules/card-system.md) | `js/card-*.js` |
+| 数学 PK | [math-pk.md](modules/math-pk.md) | `js/math-pk.js` |
+| 学习中心 | [learn-center.md](modules/learn-center.md) | `js/learn-center.js`、词汇/汉字 |
+| 商城与背包 | [shop-inventory.md](modules/shop-inventory.md) | `js/shop.js`、`js/inventory.js` |
+| Runtime Loader | [runtime-loader.md](modules/runtime-loader.md) | `js/runtime-loader.js` |
+| 遛弯 | [walk.md](modules/walk.md) | `js/walk.js` |
+| 音效/语音/汉字/宝箱/工具 | [misc.md](modules/misc.md) | 对应 `js/` 模块 |
+| 本地 profile/复盘 | [social-household.md](modules/social-household.md) | `js/profiles.js`、`js/family-review.js` |
+| 自托管后端边界 | [cloud-sync.md](modules/cloud-sync.md) | `prj/petbank-server/` |
 
-> **注**: 宝箱(treasure)、语音(voice)、家长工具(tools) 当前合并在 misc.md。待模块稳定后拆分独立文档。
+`social-household.md` 和 `cloud-sync.md` 区分当前已接入的账号/家庭/孩子管理与基础快照生命周期、尚未实现的离线 outbox/复杂合并，以及仍属目标的好友/社交能力；不要把其中任一层级混写成“完整云同步已上线”。
 
-## 运行与验证
+## 数据与运行
 
-| 文档 | 内容 |
-|------|------|
-| [testing-and-release.md](runbooks/testing-and-release.md) | 本地启动、全量回归、smoke、验证入口 |
-| [自托管后端部署](runbooks/self-hosted/README.md) | 腾讯云轻量 API、SQLite、Hermes 更新与备份 |
+- [localstorage-keys.md](data-contracts/localstorage-keys.md)：运行时 key、owner、scope、迁移和共享风险。
+- [pets-schema.md](data-contracts/pets-schema.md)：`data/pets.json` 结构。
+- [testing-and-release.md](runbooks/testing-and-release.md)：静态服务、Pages 快速门禁、全量回归和制品验证。
+- [lifecycle-and-time.md](runbooks/lifecycle-and-time.md)：日切、时间单位、Profile reload、timer 生命周期。
+- [self-hosted/README.md](runbooks/self-hosted/README.md)：SQLite 后端、共享数据目录、备份和发布。
 
-## 数据契约
+## 面向 AI/开发者的最短流程
 
-| 文档 | 内容 |
-|------|------|
-| [localstorage-keys.md](data-contracts/localstorage-keys.md) | 所有 petbank_* key 的读写者清单 |
-| [pets-schema.md](data-contracts/pets-schema.md) | pets.json 字段说明（261 物种） |
-
-## 维护规则
-
-| 文档 | 内容 |
-|------|------|
-| [documentation-sync-rules.md](rules/documentation-sync-rules.md) | 代码改动→文档同步规则 |
-
-## 审查报告
-
-| 文档 | 内容 |
-|------|------|
-| [reference-case-analysis.md](review/reference-case-analysis.md) | 参考案例《我要上清北》9条设计原则逐条对照 |
-| [content-code-separation.md](review/content-code-separation.md) | 内容/代码分离审查（20项问题，分三期改造） |
-| [requirements-check.md](review/requirements-check.md) | 原始需求逐条对照审查 |
-
-## 使用方式
-
-### 对 AI/Codex
-
-```
-1. 先读 ARCHITECTURE.md 理解全局
-2. 根据任务查 modules/ 找到相关函数和行号
-3. 修改代码后同步更新模块文档
-4. 涉及存储变更时更新 data-contracts/
-5. 修改完成后参考 runbooks/ 跑验证
-```
-
-### 对人类开发者
-
-```
-1. 新增模块 → 在 modules/ 创建对应文档
-2. 修改函数签名 → 更新模块文档中的函数表
-3. 新增 localStorage key → 在 localstorage-keys.md 注册
-4. 新增测试/脚本 → 在 runbooks/ 记录
-5. 一个版本后 → 全量扫描验证行号
-```
-
-## 维护规则
-
-- **实现文档**：记载"哪个函数在哪个文件第几行"（**必须核实后写入**）
-- **原理文档**：解释"为什么这样设计"
-- 当前采取二合一模式（原理+实现在同一文件）
-- 任何代码修改需同步更新文档中的行号
-- 每周或每个版本后全量扫描一次，确保文档与代码一致
+1. 读 `AGENTS.md`、`CURRENT-STATE.md` 和 `ARCHITECTURE.md`，确认当前功能是否真的存在。
+2. 按业务进入对应 `modules/`、`data-contracts/` 和 `runbooks/`。
+3. 修改存储、奖励、时间、路由或发布资源时，先找全部读写者和验证入口。
+4. 修改实现后同步契约文档；新增测试/脚本要加入 runbook 或回归入口。
+5. 用与改动范围匹配的 contract/simulation 验证，最后复核 `git diff` 和工作树边界。

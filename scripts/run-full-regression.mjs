@@ -14,6 +14,8 @@ const TASKS = [
     { label: 'route-aware shell contract', cmd: 'node', args: ['prj/route_aware_shell_contract.test.mjs'] },
     { label: 'profile isolation journey', cmd: 'node', args: ['prj/profile_isolation_journey_simulation.mjs'] },
     { label: 'growth review insights contract', cmd: 'node', args: ['prj/growth_review_insights_contract.test.mjs'] },
+    { label: 'parent SQLite account boundary', cmd: 'node', args: ['prj/parent_sqlite_account_boundary_contract.test.mjs'] },
+    { label: 'parent account browser journey', cmd: 'node', args: ['scripts/test-parent-account-browser.mjs'] },
     { label: 'petbank server config', cmd: 'node', args: ['--test', 'prj/petbank-server/test/config.test.mjs'] },
     { label: 'petbank server database', cmd: 'node', args: ['--test', 'prj/petbank-server/test/database.test.mjs'] },
     { label: 'word memory prototype', cmd: 'node', args: ['prj/单词记忆射击场原型/verify.mjs'] },

@@ -135,6 +135,6 @@ localStorage.setItem('petbank_pet', JSON.stringify(data)); // 应走 PetSystem.s
 
 | 类型 | 建议上限 | 当前最大 |
 |------|---------|---------|
-| JS 业务模块 | 500 行 | learn-center.js 3863 行 ⚠️ |
-| CSS 文件 | 1000 行 | style.css 5624 行 ⚠️ |
-| HTML 文件 | 300 行 | index.html 1141 行 ⚠️ |
+| JS 业务模块 | 500 行 | app.js 4411 行、learn-center.js 3656 行 ⚠️ |
+| CSS 文件 | 1000 行 | style.css 6635 行、learn-center.css 3633 行 ⚠️ |
+| HTML 文件 | 300 行 | index.html 1458 行 ⚠️ |

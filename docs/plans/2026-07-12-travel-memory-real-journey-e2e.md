@@ -16,7 +16,7 @@
 
 **文件：**
 - 创建：`scripts/test-travel-memory-real-journey.mjs`
-- 修改：`docs/releases/2026-07-12-travel-memory-assets.md`
+- 修改：`docs/发布/2026-07-12-travel-memory-assets.md`
 
 **步骤：**
 
@@ -30,8 +30,8 @@
 ### 任务 2：发布证据
 
 **文件：**
-- 修改：`docs/releases/2026-07-12-travel-memory-assets.md`
-- 创建：`docs/releases/travel-memory-real-journey-desktop.png`
+- 修改：`docs/发布/2026-07-12-travel-memory-assets.md`
+- 创建：`docs/发布/travel-memory-real-journey-desktop.png`
 
 **步骤：**
 

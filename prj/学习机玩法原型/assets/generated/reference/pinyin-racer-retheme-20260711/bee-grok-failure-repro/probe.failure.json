@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "prefix": "probe",
+  "model": "gpt-image-2",
+  "apiUrl": "https://beeapi.ai/v1/images/generations",
+  "sizeRequested": "1024x1024",
+  "promptFile": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\pinyin-racer-retheme-20260711\\bee-grok-failure-repro\\probe.prompt.txt",
+  "attempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-07-11T23:48:20",
+      "response": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\pinyin-racer-retheme-20260711\\bee-grok-failure-repro\\probe.response.attempt1.json",
+      "status": "error",
+      "httpStatus": 404,
+      "body": "{\"code\":404,\"message\":\"no enabled channel for model \\\"gpt-image-2\\\"\",\"request_id\":\"fb58ad8e-46c6-455c-b00c-679bca954fda\"}"
+    }
+  ],
+  "createdAt": "2026-07-11T23:48:23",
+  "nextAction": "re-run with --resume after the provider enables the model/channel"
+}

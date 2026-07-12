@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: full visual reference for a child-friendly pinyin racing game level
+Primary request: Same bright 3D toy-racing learning playground visual language, Level 2 cloud bridge fork. Show a wide elevated road rising into a soft cloudscape and splitting into two clearly visible routes, one narrow inside shortcut and one wide recovery route. Use rounded toy bridge rails, floating checkpoint arch, large blank route gates, pastel clouds and a small blue toy race car. The fork must be visually obvious and readable at a glance, with large empty areas for HTML pinyin cards.
+Scene/backdrop: sky bridge above clouds, distant soft islands, pale turquoise sky
+Subject: road fork, two routes, blank gate frames, one small toy race car
+Style/medium: polished 3D casual mobile game concept art, soft plastic, felt and translucent acrylic, clean silhouettes, consistent with a children's learning game
+Composition/framing: landscape 1536x1024, top-down three-quarter view, road enters from bottom, fork centered, HUD-safe blank upper corners
+Lighting/mood: clear midday light, playful discovery, moderate difficulty
+Color palette: turquoise sky, cloud white, mint, sunny yellow, coral, cobalt blue
+Constraints: no text, no letters, no numbers, no Chinese characters, no pinyin, no logos, no watermark, no embedded UI; all gates and signs blank
+Avoid: dark neon, realistic highway, dense buildings, confusing overlapping roads, tiny unreadable props

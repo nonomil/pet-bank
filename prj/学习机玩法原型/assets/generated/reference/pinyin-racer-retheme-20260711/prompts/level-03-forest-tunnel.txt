@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: full visual reference for a child-friendly pinyin racing game level
+Primary request: Same bright 3D toy-racing learning playground visual language, Level 3 forest listening tunnel. Show a winding road entering a friendly hollow-tree tunnel and emerging into a bright clearing. Include repeated soft glowing tunnel lights, rounded wooden rails, a clearly framed tunnel entrance and exit, a small blue toy race car, and a calm side pull-off for a listening task card. The road must remain wide and legible.
+Scene/backdrop: colorful forest, oversized leaves, rounded tree trunks, warm light at tunnel exit
+Subject: tunnel road, soft lights, checkpoint arch, toy race car
+Style/medium: polished 3D casual mobile game concept art, toy-like wood and rubber materials, clean and inviting, not spooky
+Composition/framing: landscape 1536x1024, top-down three-quarter view, road from bottom to upper center, open empty zones for HTML overlay
+Lighting/mood: dappled daylight, reassuring adventure, medium difficulty
+Color palette: leaf green, teal, honey yellow, warm brown, sky blue, coral
+Constraints: no text, no letters, no numbers, no Chinese characters, no pinyin, no logos, no watermark, no embedded UI; blank sign surfaces
+Avoid: dark horror tunnel, fog hiding road edges, realistic animals, clutter, sharp hazards

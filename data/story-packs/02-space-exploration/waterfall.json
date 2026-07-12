@@ -1,0 +1,99 @@
+{
+  "id": "waterfall",
+  "name": "彩虹彗尾",
+  "emoji": "🌈",
+  "chapter": 3,
+  "chapter_name": "彩色信号带",
+  "min_level": 2,
+  "danger_level": 3,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "彩虹彗星拖着一条会滴落的光尾。上游的星光水滴落下，下游的信号桥却还没有完全点亮。",
+      "shortText": "信号桥还差几滴光！",
+      "detailText": "看看桥上已经有多少颗光点，再找出还需要多少。",
+      "petMood": "surprised",
+      "id": "waterfall.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "瀑布边有四颗发光水滴，桥头的记录牌写着“还差两颗”。水滴会顺着彩虹滑道自己排队。",
+      "shortText": "发光水滴排队了！",
+      "detailText": "把水滴按从上到下的方向数一遍，找到缺少的数量。",
+      "petMood": "happy",
+      "emoji": "💧",
+      "item": "rainbow_dew",
+      "chance": 0.5,
+      "id": "waterfall.discover1"
+    },
+    {
+      "type": "math",
+      "text": "彩虹桥要有 6 颗光滴，现在已经有 4 颗。还需要几颗光滴才能点亮？",
+      "shortText": "还需要几颗光滴？",
+      "detailText": "从 4 颗继续数到 6 颗，数到的步数就是答案。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 18,
+        "msg": "彩虹信号桥点亮了！+18 经验"
+      },
+      "mathType": "word",
+      "question": "桥上有 4 颗光滴，需要 6 颗，还差几颗？",
+      "answer": 2,
+      "options": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "skill": "补足数量",
+      "hint": "4 后面再数两步就到 6。",
+      "explanation": "4 加 2 等于 6，所以还需要 2 颗光滴。",
+      "id": "waterfall.math2"
+    },
+    {
+      "type": "choice",
+      "text": "彩虹彗尾分成上游水道和雾中水道。你想先观察光滴从哪里来？",
+      "shortText": "看上游，还是看彩虹雾？",
+      "detailText": "上游可以找到光滴的来源，彩虹雾可以看到光滴的颜色。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "⬆️ 看上游水道",
+          "reward": "上游送来一片亮晶晶的叶片！",
+          "item": "leaf",
+          "chance": 0.4
+        },
+        {
+          "text": "🌫️ 走彩虹雾",
+          "reward": "雾里凝成一滴彩虹露珠！",
+          "item": "rainbow_dew",
+          "chance": 0.3
+        }
+      ],
+      "id": "waterfall.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "水滴守护员用两片叶子挡住了一颗光滴，请你指出桥上还少几颗。答对后，它会把叶子移开，让信号继续流动。",
+      "shortText": "水滴守护员来确认！",
+      "detailText": "守护员想知道你是怎么数出来的，而不是只听别人说答案。",
+      "petMood": "proud",
+      "id": "waterfall.encounter4"
+    }
+  ],
+  "chapter_skill": "life_apply",
+  "ending_text": "彩虹彗尾的信号桥被补齐了。你学会了从已经有的数量出发，找出还差多少，小星舟顺利跨过彩虹。"
+}

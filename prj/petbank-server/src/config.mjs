@@ -2,6 +2,17 @@ import path from 'node:path';
 
 const MIN_JWT_SECRET_LENGTH = 32;
 
+function parseBoolean(value, fallback) {
+    if (value === undefined || value === '') return fallback;
+    return ['1', 'true', 'yes', 'on'].includes(String(value).toLowerCase());
+}
+
+function parsePositiveInteger(value, fallback, name) {
+    const result = Number.parseInt(value ?? String(fallback), 10);
+    if (!Number.isInteger(result) || result < 1) throw new Error(`${name} must be a positive integer.`);
+    return result;
+}
+
 export function loadConfig(env = process.env) {
     const production = env.NODE_ENV === 'production';
     const dataDir = String(env.PETBANK_DATA_DIR || '').trim();
@@ -27,5 +38,9 @@ export function loadConfig(env = process.env) {
         dataDir: resolvedDataDir,
         databasePath: path.join(resolvedDataDir, 'petbank.db'),
         jwtSecret,
+        accessTokenTtlSeconds: parsePositiveInteger(env.PETBANK_ACCESS_TOKEN_TTL_SECONDS, 900, 'PETBANK_ACCESS_TOKEN_TTL_SECONDS'),
+        refreshTokenTtlSeconds: parsePositiveInteger(env.PETBANK_REFRESH_TOKEN_TTL_SECONDS, 2_592_000, 'PETBANK_REFRESH_TOKEN_TTL_SECONDS'),
+        enableRegistration: parseBoolean(env.PETBANK_ENABLE_REGISTRATION, true),
+        allowedOrigin: String(env.PETBANK_ALLOWED_ORIGIN || '').trim(),
     };
 }

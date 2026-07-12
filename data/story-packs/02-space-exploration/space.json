@@ -1,0 +1,99 @@
+{
+  "id": "space",
+  "name": "星际观测站",
+  "emoji": "🚀",
+  "chapter": 5,
+  "chapter_name": "星光回家站",
+  "min_level": 5,
+  "danger_level": 5,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "星际观测站的屏幕不断闪烁：亮、暗、亮、暗。小星舟停在两个舱门中间，想知道下一次应该等哪一种信号。",
+      "shortText": "亮、暗、亮、暗……",
+      "detailText": "重复的顺序是一条线索，先找已经出现的规律，再预测下一步。",
+      "petMood": "surprised",
+      "id": "space.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "观测屏上有一颗亮星、一颗暗星、一颗亮星、一颗暗星。暗星旁边的小箭头都指向同一扇舱门。",
+      "shortText": "信号顺序在重复！",
+      "detailText": "把亮和暗按顺序读一遍，看看下一颗应该是什么。",
+      "petMood": "happy",
+      "emoji": "📡",
+      "item": "star_gem",
+      "chance": 0.5,
+      "id": "space.discover1"
+    },
+    {
+      "type": "math",
+      "text": "观测屏显示：1 颗亮星、2 颗亮星、3 颗亮星，下一格会有几颗？",
+      "shortText": "下一格有几颗亮星？",
+      "detailText": "每一格比前一格多 1 颗，继续这个顺序。",
+      "petMood": "worried",
+      "difficulty": "medium",
+      "reward": {
+        "exp": 34,
+        "msg": "观测规律确认了！+34 经验"
+      },
+      "mathType": "logic",
+      "question": "1、2、3，下一格是多少？",
+      "answer": 4,
+      "options": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "skill": "发现规律",
+      "hint": "每次只多 1 颗。",
+      "explanation": "1、2、3 每次增加 1，所以下一格是 4。",
+      "id": "space.math2"
+    },
+    {
+      "type": "choice",
+      "text": "观测站有实验室和星图室。你想先看闪烁屏，还是先看方向图？",
+      "shortText": "去实验室，还是星图室？",
+      "detailText": "实验室可以观察亮暗变化，星图室可以寻找回家方向。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "🧪 去实验室",
+          "reward": "实验台上找到一块电路片！",
+          "item": "circuit",
+          "chance": 0.4
+        },
+        {
+          "text": "🗺️ 去星图室",
+          "reward": "星图中央亮起一颗星辰碎片！",
+          "item": "star_gem",
+          "chance": 0.3
+        }
+      ],
+      "id": "space.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "星际观测员机器人把亮星和暗星的卡片重新洗牌，请你按刚才的规律摆回去。它要确认小星舟不会因为着急而走错舱门。",
+      "shortText": "观测机器人来确认！",
+      "detailText": "先找重复的规律，再让小星舟行动，探索会更稳。",
+      "petMood": "proud",
+      "id": "space.encounter4"
+    }
+  ],
+  "chapter_skill": "pattern_logic",
+  "ending_text": "星际观测站的信号顺序恢复了。你发现规律可以帮助伙伴找到方向，小星舟终于看见了星光花园的入口。"
+}

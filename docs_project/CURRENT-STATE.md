@@ -1,0 +1,47 @@
+# 当前实现快照
+
+> 核实基线：2026-07-12。本文只记录能从当前代码和验证入口复核的事实；产品设想和历史差距请看 `docs/`。
+
+## 运行形态
+
+- 主站是 `index.html` 单页静态应用，当前有 28 个 `page-*` 页面容器。
+- 首屏脚本在 `index.html` 中加载；页面专属脚本和样式由 `js/runtime-loader.js` 按 bundle 延迟加载。
+- 项目没有 npm 构建步骤。开发预览必须通过 HTTP 服务，因为运行时会 `fetch()` 加载 JSON 和故事数据。
+- 浏览器运行态以带 `petbank_` 前缀的 `localStorage` 为主；`ProfileManager` 通过快照和 reload 切换孩子档案。
+- `prj/petbank-server/` 是 SQLite 后端。账号、家庭、孩子和快照 API 已实现并由端到端测试覆盖；社交同步仍属于目标合同，不应描述为已上线能力。
+
+## 核心入口
+
+| 能力 | 当前入口 |
+| --- | --- |
+| 路由与页面编排 | `js/app.js` 的 `switchPage()`、`preparePage()` |
+| 按需加载 | `js/runtime-loader.js` 的 `SCRIPT_BUNDLES` / `STYLE_BUNDLES` |
+| 任务与积分 | `js/app.js`、`js/core-reward-service.js`、`js/task-reward-events.js` |
+| 宠物与小屋 | `js/pet.js`、`js/home.js`、`js/pet-care-daily.js` |
+| 探索与战斗 | `js/exploration*.js`、`js/battle-engine.js`、`js/battle-fx.js` |
+| 学习中心 | `js/learn-center.js`、`data/learn/` |
+| 独立学习游戏桥接 | `js/app.js` 的 iframe/message bridge，运行资源由 Pages 制品白名单控制 |
+| 发布制品 | `scripts/assemble-pages-artifact.mjs` |
+| 全量回归 | `scripts/run-full-regression.mjs` |
+
+## 数据边界
+
+- 静态业务数据位于 `data/`，当前约 87 个 JSON 文件；故事正式内容位于 `data/stories/`。
+- 学习资料包位于 `data/learn/`，由 `catalog.json` 和各 pack 的 `manifest.json`、`plan.json`、modules 组成。
+- 运行时 key 的 owner、scope 和迁移要求以 [localstorage-keys.md](data-contracts/localstorage-keys.md) 为准。
+- Pages 只发布 `assemble-pages-artifact.mjs` 明确放行的运行时；不能依据 `prj/` 或 `docs/` 目录大小批量清理。
+
+## 当前能力口径
+
+| 能力 | 状态 |
+| --- | --- |
+| 本地任务、积分、宠物成长、商城、背包、小屋、遛弯、探索 | 当前实现，需按模块测试验证 |
+| 学习中心、数学 PK、汉字、排行榜、独立学习游戏 | 当前实现或已桥接，需按专项验证入口检查 |
+| 本地多孩子档案 | 当前实现，切换会保存快照并 reload |
+| 自托管账号、家庭、孩子管理 | 当前已实现，需通过 VPS canary 验证 |
+| Profile 快照自动 push/pull | 已接入启动恢复、孩子切换前上传、页面隐藏/退出上传；冲突保留本地并提示，尚无离线 outbox |
+| 好友、串门、PK、动态流 | 尚未实现 |
+
+## 维护要求
+
+代码与旧 `docs/` 方案冲突时，以源码、测试和本目录为准，并把漂移记录到对应工程文档。功能变更完成后，不要只更新计划；必须回填模块、数据契约或 runbook。

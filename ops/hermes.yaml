@@ -27,7 +27,10 @@ selfHostedApi:
   releaseRoot: /srv/pet-bank/releases
   currentReleaseLink: /srv/pet-bank/current
   deployGuide: docs_project/runbooks/self-hosted/AI-HERMES-DEPLOY.md
-  automationStatus: planned-until-auth-api-is-implemented
+  automationStatus: implemented-scripted-canary
+  deployScript: ops/deploy-self-hosted.sh
+  backupScript: ops/backup-sqlite.sh
+  restoreScript: ops/restore-sqlite.sh
   requiredSecrets:
     - PETBANK_JWT_SECRET
     - PETBANK_DATA_DIR
@@ -41,6 +44,7 @@ selfHostedApi:
 verification:
   commands:
     - node --test prj/petbank-server/test/*.test.mjs
+    - node --test scripts/test-self-hosted-ops.mjs
     - node --check prj/petbank-server/src/server.mjs
     - node --check prj/petbank-server/src/config.mjs
 

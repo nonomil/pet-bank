@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "prefix": "probe-gpt-key",
+  "model": "gpt-image-2",
+  "apiUrl": "https://beeapi.ai/v1/images/generations",
+  "sizeRequested": "1024x1024",
+  "promptFile": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\word-shooter-levels-gpt-20260711\\probe-gpt-key\\probe-gpt-key.prompt.txt",
+  "attempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-07-11T23:47:33",
+      "response": "G:\\StudyCode\\宠物积分系统\\prj\\学习机玩法原型\\assets\\generated\\reference\\word-shooter-levels-gpt-20260711\\probe-gpt-key\\probe-gpt-key.response.attempt1.json",
+      "status": "error",
+      "httpStatus": 404,
+      "body": "{\"code\":404,\"message\":\"no enabled channel for model \\\"gpt-image-2\\\"\",\"request_id\":\"7d9097e4-da7a-40c6-bcf8-d1c86b287299\"}"
+    }
+  ],
+  "createdAt": "2026-07-11T23:47:36",
+  "nextAction": "re-run with --resume after the provider enables the model/channel"
+}

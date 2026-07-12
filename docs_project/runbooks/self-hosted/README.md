@@ -9,9 +9,9 @@
 部署或更新前，先完整阅读：
 
 1. 本文档
-2. [AI-HERMES-DEPLOY.md](AI-HERMES-DEPLOY.md)
-3. [UPGRADE-AND-BACKUP.md](UPGRADE-AND-BACKUP.md)
-4. [API-CONTRACT.md](API-CONTRACT.md)
+2. [AI-HERMES-DEPLOY.md](./AI-HERMES-DEPLOY.md)
+3. [UPGRADE-AND-BACKUP.md](./UPGRADE-AND-BACKUP.md)
+4. [API-CONTRACT.md](./API-CONTRACT.md)
 
 不得删除 `/srv/pet-bank/shared/`。不得把数据库放进 Git 工作区或 release 目录。数据库变更只能通过新的 `db/migrations/NNN_*.sql` 文件追加。
 
@@ -24,7 +24,7 @@ Internet
         -> SQLite, /srv/pet-bank/shared/data/petbank.db
 ```
 
-后端源代码在 `prj/petbank-server/`。它目前只有数据库初始化和健康检查，目的是先固定发布、数据和备份边界；前端尚未切换到它。
+后端源代码在 `prj/petbank-server/`。当前已提供注册、登录、refresh 轮换、家庭成员、家庭邀请码、孩子档案和 revision 快照 API；好友、串门、PK 和动态流仍未实现。
 
 ## 必备软件
 
@@ -55,7 +55,7 @@ sudo mkdir -p /srv/pet-bank/{releases,shared/data,shared/backups}
 sudo chown -R "$USER":"$USER" /srv/pet-bank
 ```
 
-后续每次部署都必须使用新的 `releases/<release-id>`，先运行 `node scripts/assemble-pages-artifact.mjs site` 生成静态产物，再更新 `current` 软链接。Nginx 根目录必须是 `/srv/pet-bank/current/site`，不能直接指向仓库根目录。详见 [升级与备份](UPGRADE-AND-BACKUP.md)。
+后续每次部署都必须使用新的 `releases/<release-id>`，先运行 `node scripts/assemble-pages-artifact.mjs site` 生成静态产物，再更新 `current` 软链接。Nginx 根目录必须是 `/srv/pet-bank/current/site`，不能直接指向仓库根目录。详见 [升级与备份](./UPGRADE-AND-BACKUP.md)。
 
 ## 环境文件
 
@@ -87,7 +87,7 @@ curl --fail http://127.0.0.1:3000/api/v1/health
 预期包含：
 
 ```json
-{"ok":true,"service":"petbank-server","migrationCount":1}
+{"ok":true,"service":"petbank-server","migrationCount":2}
 ```
 
-这证明容器、持久化数据卷和增量迁移可用，但不代表注册/登录已迁移完成。账号接口上线前必须遵循 [API 契约](API-CONTRACT.md) 并完成端到端测试。
+这证明容器、持久化数据卷和增量迁移可用。注册/登录、家庭、孩子和快照接口的端到端测试见 `prj/petbank-server/test/api.test.mjs`，完整接口规则见 [API 契约](./API-CONTRACT.md)。

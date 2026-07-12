@@ -67,7 +67,7 @@
 
 **文件：**
 - 修改：`docs_project/modules/exploration.md`
-- 创建：`docs/releases/2026-07-12-short-travel-chapter.md`
+- 创建：`docs/发布/2026-07-12-short-travel-chapter.md`
 
 **步骤：**
 1. 写明 12 个场景都是真正 short flow，3 个有 verified Agnes 图片，9 个使用 placeholder 回退。

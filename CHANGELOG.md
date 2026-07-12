@@ -3,10 +3,12 @@
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
 ## [v0.7.39] - 2026-07-12
-### 🧪 本地-only 回归与复盘加载修复
+### 🧪 SQLite 家庭账号与自托管发布
 
 - 修复每周复盘路由未加载 `js/family-review.js` 的问题；复盘页现在能显示本机空态或最近玩法卡点建议，并通过路由加载合同测试
-- 明确当前版本不加载 Supabase、账号、家庭同步、好友和动态流；自托管 Node.js + SQLite 仅提供健康检查和后续 API 骨架
+- 移除 Supabase 运行时，切换到 VPS 自托管 Node.js + SQLite；完成家长账号、家庭、孩子和 revision 快照 API
+- 家长端与孩子端分离，Profile 已接入启动恢复、孩子切换前上传和页面生命周期上传；好友、串门、PK、动态流仍未实现
+- 增加 Hermes release 部署、SQLite 备份/恢复/回滚脚本，并保留共享数据目录不随 release 覆盖
 - 重建全量回归入口为 35 项当前存在且可交付的测试，加入回归清单完整性检查、无遗留账号运行时门禁和单项 120 秒超时，避免缺失文件、云端残留或浏览器卡住时无期限等待
 - 旅行记忆浏览器测试的截图改写入 `tmp/test-artifacts/`，并校验截图非空；不再覆盖 `docs/releases/` 中的发布证据
 - 恢复 `.env.example` 为 Git 中的历史示例，并重新忽略本地 `cloud-config.local.js`、`.firecrawl/` 和测试制品

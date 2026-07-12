@@ -1,0 +1,99 @@
+{
+  "id": "underwater",
+  "name": "冰下海洋",
+  "emoji": "🪸",
+  "chapter": 3,
+  "chapter_name": "伙伴补给环",
+  "min_level": 4,
+  "danger_level": 3,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "小星舟来到冰下海洋，海底伙伴正在把信号贝壳分给巡游小鱼。它们需要知道：送出一些以后，还剩多少贝壳。",
+      "shortText": "贝壳补给要开始了！",
+      "detailText": "观察贝壳总数和已经送出的数量，帮助伙伴留下准确记录。",
+      "petMood": "surprised",
+      "id": "underwater.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "珊瑚边排着六只发光贝壳，其中两只已经被送给迷路的小鱼。剩下的贝壳排成一条弯弯的路线。",
+      "shortText": "贝壳排成弯弯路线！",
+      "detailText": "数清总数，再数清已经送出的数量，剩下的就是下一条路线。",
+      "petMood": "happy",
+      "emoji": "🐚",
+      "item": "shell",
+      "chance": 0.5,
+      "id": "underwater.discover1"
+    },
+    {
+      "type": "math",
+      "text": "冰下伙伴有 7 只信号贝壳，送给小鱼 3 只。现在还剩几只？",
+      "shortText": "还剩几只信号贝壳？",
+      "detailText": "把送出去的 3 只从 7 只里划掉，再数剩下的。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 20,
+        "msg": "冰下补给记录完成！+20 经验"
+      },
+      "mathType": "word",
+      "question": "7 只贝壳送出 3 只，还剩几只？",
+      "answer": 4,
+      "options": [
+        3,
+        4,
+        5,
+        10
+      ],
+      "skill": "剩余数量",
+      "hint": "从 7 开始向后数 3 步。",
+      "explanation": "7 减去 3 等于 4，所以还剩 4 只贝壳。",
+      "id": "underwater.math2"
+    },
+    {
+      "type": "choice",
+      "text": "冰下海洋有珊瑚环和安静海沟两条路线。你想先看伙伴的队伍，还是先找贝壳？",
+      "shortText": "看珊瑚环，还是海沟？",
+      "detailText": "珊瑚环能看到伙伴怎样排队，海沟能看到贝壳留下的光路。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "🪸 看珊瑚环",
+          "reward": "珊瑚环里找到一片海草信号！",
+          "item": "seaweed",
+          "chance": 0.4
+        },
+        {
+          "text": "🐚 走安静海沟",
+          "reward": "海沟深处亮起一颗海洋宝石！",
+          "item": "ocean_gem",
+          "chance": 0.3
+        }
+      ],
+      "id": "underwater.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "冰海海豚守护员用尾巴轻轻拨动贝壳，请你说出送出三只以后还剩几只。它听懂后，把回家的方向画在水泡里。",
+      "shortText": "海豚守护员来提问！",
+      "detailText": "把总数、送出的数量和剩下的数量分开看，线索就会变清楚。",
+      "petMood": "proud",
+      "id": "underwater.encounter4"
+    }
+  ],
+  "chapter_skill": "life_apply",
+  "ending_text": "冰下海洋的伙伴都收到了需要的补给。你把“送出以后还剩多少”记在观测册，小星舟带着贝壳信号继续航行。"
+}

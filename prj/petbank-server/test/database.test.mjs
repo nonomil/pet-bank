@@ -15,11 +15,19 @@ test('openDatabase applies the core migration exactly once', () => {
     const tables = database.prepare("select name from sqlite_master where type = 'table'").all().map((row) => row.name);
     database.close();
 
-    assert.deepEqual(migrations.map((row) => row.name), ['001_core.sql']);
-    assert.deepEqual(['accounts', 'households', 'children', 'state_snapshots'].every((table) => tables.includes(table)), true);
+    assert.deepEqual(migrations.map((row) => row.name), ['001_core.sql', '002_auth_sessions.sql']);
+    assert.deepEqual([
+        'accounts',
+        'households',
+        'household_members',
+        'household_invites',
+        'children',
+        'state_snapshots',
+        'auth_refresh_tokens',
+    ].every((table) => tables.includes(table)), true);
 
     const reopened = openDatabase({ databasePath });
-    assert.equal(reopened.prepare('select count(*) as count from schema_migrations').get().count, 1);
+    assert.equal(reopened.prepare('select count(*) as count from schema_migrations').get().count, 2);
     reopened.close();
     fs.rmSync(dataDir, { recursive: true, force: true });
 });

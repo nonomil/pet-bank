@@ -1,0 +1,99 @@
+{
+  "id": "cave",
+  "name": "水晶小行星洞",
+  "emoji": "💎",
+  "chapter": 4,
+  "chapter_name": "轨道维修区",
+  "min_level": 3,
+  "danger_level": 4,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "小星舟钻进水晶小行星洞，洞里的回声灯一闪一闪。星图小站说：如果顺序错了，回声就找不到出口。",
+      "shortText": "回声灯的顺序变了！",
+      "detailText": "先听清每盏灯的颜色和位置，再决定从哪一边开始。",
+      "petMood": "surprised",
+      "id": "cave.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "蓝灯、白灯、蓝灯组成一组重复回声。旁边还有两排水晶，每排三颗，正好组成一道小门。",
+      "shortText": "两排水晶组成小门！",
+      "detailText": "看清每排有几颗水晶，再找出两排合起来的数量。",
+      "petMood": "happy",
+      "emoji": "🔷",
+      "item": "crystal_shard",
+      "chance": 0.5,
+      "id": "cave.discover1"
+    },
+    {
+      "type": "math",
+      "text": "水晶门有 2 排水晶，每排 3 颗。一共有几颗水晶？",
+      "shortText": "水晶门一共有几颗？",
+      "detailText": "第一排数 3 颗，第二排再数 3 颗。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 26,
+        "msg": "水晶回声顺序对上了！+26 经验"
+      },
+      "mathType": "word",
+      "question": "2 排水晶，每排 3 颗，一共几颗？",
+      "answer": 6,
+      "options": [
+        3,
+        5,
+        6,
+        8
+      ],
+      "skill": "两组相同数量",
+      "hint": "3 加 3 就是两排的总数。",
+      "explanation": "两排各有 3 颗，3 加 3 等于 6 颗。",
+      "id": "cave.math2"
+    },
+    {
+      "type": "choice",
+      "text": "水晶洞有蓝色回声道和红色回声道。你想先追声音，还是先数水晶？",
+      "shortText": "追声音，还是数水晶？",
+      "detailText": "声音会告诉你顺序，水晶会告诉你数量。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "🔵 追蓝色回声",
+          "reward": "回声尽头有一片水晶碎片！",
+          "item": "crystal_shard",
+          "chance": 0.4
+        },
+        {
+          "text": "🔴 数红色水晶",
+          "reward": "红光照出一颗洞窟宝石！",
+          "item": "cave_gem",
+          "chance": 0.3
+        }
+      ],
+      "id": "cave.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "水晶守门员把两排水晶藏在不同的光影里，请你指出哪两排一样多。你说对后，回声门会发出温柔的叮声。",
+      "shortText": "水晶守门员来确认！",
+      "detailText": "先找重复的数量，再找重复的声音，线索会互相帮助。",
+      "petMood": "proud",
+      "id": "cave.encounter4"
+    }
+  ],
+  "chapter_skill": "mul_div_mech",
+  "ending_text": "水晶小行星洞的回声找到出口。你学会了把数量和顺序放在一起观察，小星舟记下了这条维修线索。"
+}

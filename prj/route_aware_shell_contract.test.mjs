@@ -9,6 +9,7 @@ assert.ok(routeScript, 'the shell contains the route-correction bootstrap script
 assert.match(shell, /<base id="routeBase" href="\.\/">/, 'the app shell starts with a relative route base');
 assert.match(shell, /<script src="js\/runtime-loader\.js(?:\?[^"']+)?"><\/script>/, 'the shell loads the runtime loader through the relative base');
 assert.doesNotMatch(shell, /<script src="\/js\//, 'the shell does not use root-relative runtime scripts that break on Pages');
+assert.match(shell, /matchedIndex/, 'nested parent/settings routes choose the earliest route prefix for asset resolution');
 
 const location = {
     href: 'https://example.test/pet-bank/app/today/index.html?route=/app/learn',

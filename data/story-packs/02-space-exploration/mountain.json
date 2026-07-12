@@ -1,0 +1,99 @@
+{
+  "id": "mountain",
+  "name": "冰环山维修站",
+  "emoji": "🏔️",
+  "chapter": 4,
+  "chapter_name": "轨道维修区",
+  "min_level": 3,
+  "danger_level": 4,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "冰环山的轨道维修站被雪光包住了。两支小队都要拿到保暖星毯，维修站请你看看怎样分配才公平。",
+      "shortText": "保暖星毯要公平分！",
+      "detailText": "先看有几支小队，再看每支小队需要几条星毯。",
+      "petMood": "surprised",
+      "id": "mountain.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "雪地上有两条队伍标记，每条标记旁画着两颗小星毯。星毯按队伍排好，谁也不会多拿。",
+      "shortText": "两队星毯排好了！",
+      "detailText": "把每队的星毯分别数一数，再看总共有多少。",
+      "petMood": "happy",
+      "emoji": "🧣",
+      "item": "ice_crystal",
+      "chance": 0.5,
+      "id": "mountain.discover1"
+    },
+    {
+      "type": "math",
+      "text": "维修站有 2 支小队，每支队伍需要 2 条保暖星毯。一共需要几条？",
+      "shortText": "一共需要几条星毯？",
+      "detailText": "可以先数第一队 2 条，再数第二队 2 条。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 24,
+        "msg": "维修队拿到一样多的星毯！+24 经验"
+      },
+      "mathType": "word",
+      "question": "2 支队伍，每支 2 条星毯，一共几条？",
+      "answer": 4,
+      "options": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "skill": "相同分组",
+      "hint": "两组一样多：2 加 2。",
+      "explanation": "第一队 2 条，第二队 2 条，一共 4 条。",
+      "id": "mountain.math2"
+    },
+    {
+      "type": "choice",
+      "text": "冰环山有冰洞路线和山脊路线。你想先观察队伍标记，还是先找星毯箱？",
+      "shortText": "看队伍标记，还是星毯箱？",
+      "detailText": "队伍标记告诉你有几组，星毯箱告诉你每组拿多少。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "🧊 看队伍标记",
+          "reward": "冰洞里闪出一颗冰晶！",
+          "item": "ice_crystal",
+          "chance": 0.4
+        },
+        {
+          "text": "📦 找星毯箱",
+          "reward": "箱子角落滚出一块雪山宝石！",
+          "item": "snow_gem",
+          "chance": 0.3
+        }
+      ],
+      "id": "mountain.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "冰环维修员机器人把两组星毯放错了位置，请你帮它找出每支队伍一样多的两条。",
+      "shortText": "维修机器人来请教！",
+      "detailText": "公平不是把所有东西堆在一起，而是让每一组都得到相同数量。",
+      "petMood": "proud",
+      "id": "mountain.encounter4"
+    }
+  ],
+  "chapter_skill": "mul_div_mech",
+  "ending_text": "冰环山的维修队一起完成了轨道修补。你把“每组一样多”的方法留给小星舟，下一站的轨道灯随之亮起。"
+}

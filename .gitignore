@@ -39,8 +39,10 @@ prj/tts-portable/
 # docs/ 是本地方案/调研/会话材料区；远端只保留 docs/README.md 说明入口。
 docs/*
 !docs/README.md
-!docs/项目全景优化方案-2026-07/
-!docs/项目全景优化方案-2026-07/**
+!docs/方案/
+docs/方案/*
+!docs/方案/项目路线/
+!docs/方案/项目路线/**
 *.zip
 *.mp4
 
@@ -60,8 +62,8 @@ docs/*
 cloud-config.local.js
 .firecrawl/
 # Agnes 生图 API 密钥（含 key，严禁入库；调用方式见 memory/agnes-image-api）
-docs/GPT生图/Agnes生图.md
-docs/GPT生图/*key.md
+docs/资源/生图/Agnes生图.md
+docs/资源/生图/*key.md
 prj/browser-act-imagegen/chrome-pet-sprite-profile/
 
 # --- 临时探测脚本（banchong/voxcpm 下载探测，不入库）---

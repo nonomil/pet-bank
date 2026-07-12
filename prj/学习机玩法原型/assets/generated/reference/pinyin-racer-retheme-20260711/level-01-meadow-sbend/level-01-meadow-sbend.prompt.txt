@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: full visual reference for a child-friendly pinyin racing game level
+Primary request: Bright 3D toy-racing learning playground, Level 1 meadow S-bend. Show a clearly readable wide road making a gentle S curve through a sunny green meadow, with a small rounded blue toy race car traveling upward, soft foam-like guard rails, colorful arrow markers, flower patches and a simple checkpoint arch. The road must have a broad safe lane and one gentle inside shortcut, with clear road boundaries and generous empty space for HTML task cards.
+Scene/backdrop: open meadow, pale blue sky, soft clouds, low rolling hills
+Subject: one small friendly toy race car, road and checkpoint props
+Style/medium: polished 3D casual mobile game concept art, soft plastic and felt materials, clean silhouettes, premium children's learning game UI reference
+Composition/framing: landscape 1536x1024, top-down three-quarter view, road enters from bottom and travels upward, HUD-safe empty zones at upper left and upper right
+Lighting/mood: bright morning light, optimistic, calm first-level difficulty
+Color palette: grass green, sky blue, warm yellow, coral accents, white foam rails
+Constraints: no text, no letters, no numbers, no Chinese characters, no pinyin, no logos, no watermark, no embedded UI, no readable symbols; leave road signs and checkpoint centers blank
+Avoid: dark sci-fi, photorealism, clutter, tiny objects, sharp threatening obstacles, perspective that hides the road

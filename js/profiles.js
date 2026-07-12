@@ -19,6 +19,11 @@
     const META_KEY = 'petbank_profiles_meta';
     const ACTIVE_KEY = 'petbank_active_profile';
     const DATA_PREFIX = 'petbank_profile_data_';
+    const SELF_HOSTED_AUTH_KEYS = new Set([
+        'petbank_self_hosted_access_token',
+        'petbank_self_hosted_refresh_token',
+        'petbank_self_hosted_api_base_url'
+    ]);
     const FALLBACK_LEARNING_MODES = [
         {
             id: 'template-a',
@@ -47,7 +52,7 @@
     ];
 
     // 全局共享键前缀（不属于任何 profile，切换时不搬动）
-    const RESERVED_KEYS = new Set([META_KEY, ACTIVE_KEY]);
+    const RESERVED_KEYS = new Set([META_KEY, ACTIVE_KEY, ...SELF_HOSTED_AUTH_KEYS]);
 
     /**
      * 判断一个 localStorage key 是否是 profile 数据快照键（petbank_profile_data_xxx）
@@ -88,6 +93,16 @@
         return Object.keys(snapshot).some(function (key) {
             return isBusinessKey(key) || (key && key.startsWith('petbank_'));
         });
+    }
+
+    function selfHostedApi() {
+        return window.SelfHostedApi && typeof window.SelfHostedApi.listChildren === 'function'
+            ? window.SelfHostedApi
+            : null;
+    }
+
+    function cloudProfileId(childId) {
+        return `p_cloud_${String(childId || '').replace(/[^a-zA-Z0-9_-]/g, '')}`;
     }
 
     const ROUTE_PREFIXES = [
@@ -224,6 +239,155 @@
                 this._writeMeta(list);
             }
             return p;
+        },
+
+        linkCloudChild(id, cloudChildId, householdId) {
+            const list = this._readMeta();
+            const profile = list.find(item => item.id === id);
+            if (!profile) return null;
+            profile.cloudChildId = String(cloudChildId || '').trim() || undefined;
+            profile.cloudHouseholdId = String(householdId || '').trim() || undefined;
+            this._writeMeta(list);
+            return profile;
+        },
+
+        findByCloudChildId(cloudChildId) {
+            const target = String(cloudChildId || '').trim();
+            return this._readMeta().find(profile => profile.cloudChildId === target) || null;
+        },
+
+        ensureCloudProfile(child) {
+            if (!child || !child.id) return null;
+            const existing = this.findByCloudChildId(child.id)
+                || this._readMeta().find(profile => child.localProfileId && profile.id === child.localProfileId);
+            const profile = existing || this.upsertImportedProfile({
+                id: child.localProfileId || cloudProfileId(child.id),
+                name: child.name,
+                emoji: '🧒'
+            });
+            if (!profile) return null;
+            return this.linkCloudChild(profile.id, child.id, child.householdId);
+        },
+
+        async bootstrapCloudProfiles() {
+            const api = selfHostedApi();
+            if (!api || !api.isSignedIn()) return [];
+            try {
+                const payload = await api.listChildren();
+                const children = Array.isArray(payload?.children) ? payload.children : [];
+                children.forEach(child => this.ensureCloudProfile(child));
+                return children;
+            } catch (error) {
+                return [];
+            }
+        },
+
+        async hydrateActiveFromCloud() {
+            const api = selfHostedApi();
+            if (!api || !api.isSignedIn()) return null;
+            await this.bootstrapCloudProfiles();
+            return this.restoreActiveFromCloud().catch(() => null);
+        },
+
+        _writeLiveSnapshot(id) {
+            const snapshot = this.getProfileSnapshot(id);
+            if (id) localStorage.setItem(DATA_PREFIX + id, JSON.stringify(snapshot));
+            return snapshot;
+        },
+
+        async syncActiveToCloud() {
+            if (this._cloudSyncPromise) return this._cloudSyncPromise;
+            const run = this._syncActiveToCloudOnce();
+            this._cloudSyncPromise = run;
+            try {
+                return await run;
+            } finally {
+                if (this._cloudSyncPromise === run) this._cloudSyncPromise = null;
+            }
+        },
+
+        async _syncActiveToCloudOnce() {
+            const api = selfHostedApi();
+            const profile = this.getActive();
+            if (!api || !profile?.cloudChildId || !api.isSignedIn()) {
+                return { skipped: true, reason: 'not-linked' };
+            }
+            const snapshot = this._writeLiveSnapshot(profile.id);
+            const revision = Number(profile.cloudRevision || 0) + 1;
+            try {
+                const payload = await api.pushSnapshot(profile.cloudChildId, revision, snapshot);
+                const saved = payload?.snapshot || {};
+                const list = this._readMeta();
+                const current = list.find(item => item.id === profile.id);
+                if (current) {
+                    current.cloudRevision = Number(saved.revision || revision);
+                    current.lastCloudSyncAt = Date.now();
+                    this._writeMeta(list);
+                }
+                return saved;
+            } catch (error) {
+                if (error.code === 'SNAPSHOT_REVISION_CONFLICT') {
+                    try {
+                        const latest = await api.latestSnapshot(profile.cloudChildId);
+                        const latestRevision = Number(latest?.snapshot?.revision || 0);
+                        const list = this._readMeta();
+                        const current = list.find(item => item.id === profile.id);
+                        if (current && latestRevision > Number(current.cloudRevision || 0)) {
+                            current.cloudRevision = latestRevision;
+                            this._writeMeta(list);
+                        }
+                    } catch (ignored) {}
+                }
+                throw error;
+            }
+        },
+
+        async restoreActiveFromCloud() {
+            const api = selfHostedApi();
+            const profile = this.getActive();
+            if (!api || !profile?.cloudChildId || !api.isSignedIn()) {
+                return null;
+            }
+            const payload = await api.latestSnapshot(profile.cloudChildId);
+            const snapshot = payload?.snapshot;
+            if (!snapshot || !snapshot.payload || typeof snapshot.payload !== 'object') return null;
+            this.applySnapshotForProfile(profile.id, snapshot.payload, { activate: true });
+            const list = this._readMeta();
+            const current = list.find(item => item.id === profile.id);
+            if (current) {
+                current.cloudRevision = Number(snapshot.revision || 0);
+                current.lastCloudSyncAt = Date.now();
+                this._writeMeta(list);
+            }
+            return snapshot;
+        },
+
+        async switchToAsync(id) {
+            const list = this._readMeta();
+            if (!list.find(p => p.id === id)) return { ok: false, reason: 'not_found' };
+            if (id === this.getActiveId()) return { ok: false, reason: 'same' };
+            try {
+                await this.syncActiveToCloud();
+            } catch (error) {
+                if (typeof window.showToast === 'function') window.showToast(error.message);
+                return { ok: false, reason: 'sync_failed', error };
+            }
+            this._swapTo(id, false);
+            await this.restoreActiveFromCloud().catch(() => null);
+            reloadAppShell();
+            return { ok: true };
+        },
+
+        installCloudLifecycle() {
+            if (this._cloudLifecycleInstalled) return;
+            this._cloudLifecycleInstalled = true;
+            const flush = (force) => {
+                if (force || document.visibilityState === 'hidden' || !document.visibilityState) {
+                    void this.syncActiveToCloud().catch(() => null);
+                }
+            };
+            document.addEventListener('visibilitychange', flush);
+            window.addEventListener('pagehide', () => flush(true));
         },
 
         /**
@@ -437,7 +601,8 @@
         _getBusinessKeys: getBusinessKeys,
         _META_KEY: META_KEY,
         _ACTIVE_KEY: ACTIVE_KEY,
-        _DATA_PREFIX: DATA_PREFIX
+        _DATA_PREFIX: DATA_PREFIX,
+        _SELF_HOSTED_AUTH_KEYS: [...SELF_HOSTED_AUTH_KEYS]
     };
 
     window.ProfileManager = ProfileManager;
@@ -497,14 +662,13 @@
         select(id) {
             this._close();
             if (id === ProfileManager.getActiveId()) return;
-            if (confirm('切换到这个孩子？当前孩子的数据会自动保留。')) ProfileManager.switchTo(id);
+            if (confirm('切换到这个孩子？当前孩子的数据会自动保留。')) void ProfileManager.switchToAsync(id);
         },
         create() {
             this._close();
-            const name = prompt('新孩子的名字：', '');
-            if (!name || !name.trim()) return;
-            const p = ProfileManager.create(name.trim(), '🧒');
-            if (confirm(`已创建「${p.name}」，立即切换过去吗？`)) ProfileManager.switchTo(p.id);
+            if (window.ParentAccountUI && typeof window.ParentAccountUI.openChildDialog === 'function') {
+                window.ParentAccountUI.openChildDialog();
+            }
         },
         rename(id) {
             const p = ProfileManager.get(id);
@@ -660,13 +824,8 @@
             }
         },
         create() {
-            const name = prompt('新孩子的名字：', '');
-            if (!name || !name.trim()) return;
-            const p = ProfileManager.create(name.trim(), '🧒');
-            if (confirm(`已创建「${p.name}」，立即切换过去吗？`)) {
-                ProfileManager.switchTo(p.id); // 内部会 reload
-            } else {
-                this.render();
+            if (window.ParentAccountUI && typeof window.ParentAccountUI.openChildDialog === 'function') {
+                window.ParentAccountUI.openChildDialog();
             }
         },
         rename(id) {

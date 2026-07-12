@@ -1,284 +1,172 @@
-# 宠物积分系统（成长伙伴·萌宠冒险岛）—— 架构总览
+# 宠物积分系统（成长伙伴·萌宠冒险岛）架构总览
 
-> 本文档由全仓库扫描生成，后续所有 AI（含 Codex）基于此文档理解项目。
-> 任何代码修改需同步更新本文档及相关模块文档。
+> 当前基线：2026-07-12 工作树扫描。本文描述当前代码实际可运行的形态；产品愿景、历史方案和未接入能力必须单独标注。长期维护规则见仓库根目录 `AGENTS.md`。
 
----
+## 1. 当前结论
 
-## 一、项目定位
+- 产品是无框架、无构建、无转译的 Vanilla JS SPA，入口是 `index.html`。
+- 主站默认是本地优先模式：业务状态在浏览器 `localStorage`，静态内容由 `fetch()` 读取 JSON/词库资源。
+- `runtime-loader.js` 根据页面按需串行加载 JS/CSS，主站模块通过 `window` 命名空间和少量 DOM/浏览器事件通信。
+- GitHub Pages 通过 `scripts/assemble-pages-artifact.mjs` 组装白名单制品；`prj/` 不是可整体发布的运行目录。
+- `prj/petbank-server/` 是自托管 Node.js + SQLite 服务，已实现 health、账号认证、家庭/邀请码、孩子档案和 revision 快照 API；前端家长设置页与孩子 Profile 的启动恢复、切换/隐藏页上传已接入运行生命周期。
+- 当前工作树的 Supabase、旧账号、家庭、社交和云同步运行时已经移除；相关文档仅可作为迁移历史或目标合同，不能当作现行功能。
 
-儿童益智类 H5 单页应用（SPA），面向 4-12 岁儿童及其家长。核心理念：
+## 2. Repo Map
 
-- **学习不是任务清单，是可进入的世界**
-- **游戏化不是加动画，是重写思考动作**
-- **失败是复盘，不是惩罚**
-- **奖励是脚手架，不是拐杖**
+| 区域 | 职责 | 关键文件 |
+| --- | --- | --- |
+| 应用壳 | 页面容器、导航、深层路由入口、inline handler | `index.html` |
+| 主编排 | 任务、积分、路由、页面准备、主站桥接 | `js/app.js` |
+| 按需加载 | feature bundle、资源基址、加载去重、入口失败反馈 | `js/runtime-loader.js` |
+| 核心状态 | 宠物、档案、库存、宝箱、奖励、成长历史 | `js/pet.js`、`js/profiles.js`、`js/inventory.js`、`js/treasure.js`、`js/core-reward-service.js` |
+| 宠物与冒险 | 小屋、遛弯、旅行记忆、探索、战斗、卡牌 | `js/home.js`、`js/walk.js`、`js/travel-memory.js`、`js/exploration*.js`、`js/card-*.js` |
+| 学习系统 | 学习包、学习单、汉字、英语、数学、复盘 | `js/learn-center.js`、`js/hanzi*.js`、`js/english-vocab-progress.js`、`js/math-pk.js`、`js/family-review.js` |
+| 游乐场 | 主站入口和独立小游戏运行时 | `app/playground/`、`prj/` 中各原型 |
+| 内容数据 | 宠物、场景、故事、学习包、词库、题目和物品 | `data/` |
+| 素材 | 图片、声音、战斗特效、生成资源 | `assets/`、部分 `prj/*/assets/` |
+| 构建与验证 | Pages 制品、词库生成、smoke、contract、回归 | `scripts/`、`prj/*test*.mjs` |
+| 自托管后端 | SQLite 数据库、认证、家庭/孩子和增量快照 API | `prj/petbank-server/`、`docs_project/runbooks/self-hosted/` |
 
----
+## 3. 启动与运行链路
 
-## 二、技术栈
+### 3.1 首屏启动
 
-```
-类型:     Vanilla JS SPA（无框架、无打包、无转译）
-入口:     index.html（主应用）
-后端:     VPS 自托管 Node.js API（当前仅健康检查）
-存储:     localStorage 主力；SQLite 账号与快照 API 分阶段接入
-音频:     ZzFX（程序化音效）+ Web Speech API（TTS 语音）
-图像:     大量 WebP 素材（GPT 生图管线产出）
-代码量:   ~41,520 行（JS ~25K + CSS ~15K + HTML ~1.5K）
-```
+`index.html` 首先加载 `pet.js`、奖励服务、`inventory.js`、`treasure.js`、`profiles.js`、`runtime-loader.js`、图标/战斗特效和 `app.js`，然后加载成长反馈与作品展示模块。`app.js` 初始化 profile、读取本地状态并暴露 `switchPage`、`addGrowthPoints`、`saveAppState` 等兼容入口。
 
-## 三、目录结构
+### 3.2 页面按需加载
 
-```
-宠物积分系统/
-├── index.html              # SPA 主入口，所有页面容器和顶级导航
-│
-├── js/                     # 40 个 JS 文件（核心业务逻辑）
-│   ├── app.js              # 主编排器（任务/积分/页面路由/渲染）── 4747行 ⚠️
-│   ├── runtime-loader.js   # 自定义按需加载（JS+CSS bundle 管理）
-│   ├── pet.js              # 宠物养成核心（261物种 × 5阶段 × HP/ATK/DEF/SPD）
-│   ├── home.js             # 宠物小屋（家具摆放+5维状态条+背景主题）
-│   ├── battle-engine.js    # 通用战斗纯计算引擎（探索+卡牌对战共用）
-│   ├── card-arena.js       # 卡牌对战（2v2 PvE，宝可梦式回合制）
-│   ├── card-arena-ui.js    # 卡牌对战 UI 层
-│   ├── card-collection.js  # 卡牌收集（多系列图册/分馆视图）
-│   ├── math-pk.js          # 数学 PK 竞技台（4难度 × 机器人对手）
-│   ├── learn-center.js     # 学习中心（学习包+每日打卡+英语词汇）── 3863行 ⚠️
-│   ├── exploration.js      # 探索冒险（12场景螺旋地图+章节叙事+战斗）
-│   ├── exploration-detail.js # 探索场景详情页
-│   ├── profiles.js         # 多孩子 Profile 管理（localStorage 热切换）
-│   ├── walk.js             # 宠物遛弯（路线选择+场景切换+气泡互动）
-│   ├── shop.js             # 积分商城（兑换+盲盒+战斗道具）
-│   ├── inventory.js        # 道具背包（堆叠+装备）
-│   ├── treasure.js         # 宝箱系统（日常/探索/里程碑）
-│   ├── voice.js            # 语音系统（Web Speech TTS）
-│   ├── tools.js            # 家长工具（番茄钟+数据导出）
-│   ├── leaderboard.js      # 排行榜
-│   ├── hanzi-game.js       # 汉字答题游戏
-│   ├── hanzi-progress.js   # 汉字学习进度
-│   ├── english-vocab-progress.js # 英语词汇进度
-│   ├── sfx.js              # 音效管理
-│   ├── zzfx.js             # ZzFX 音效引擎
-│   ├── lucide-lite.js      # 图标库精简版
-│   ├── showcase.js         # 作品展示
-│   ├── family-review.js    # 本机成长复盘（卡点聚合+下一步建议）
-│   └── profiles.js         # 多孩子 Profile 管理（localStorage 热切换）
-│
-├── css/                    # 12 个 CSS 文件
-│   ├── style.css           # 全局样式 ── 6992行 ⚠️
-│   ├── learn-center.css    # 学习中心专属样式 ── 4240行 ⚠️
-│   ├── walk.css            # 遛弯页样式
-│   ├── card-collection.css # 卡牌收集样式
-│   ├── arena.css           # 竞技场样式
-│   ├── animations.css      # 全局动画
-│   ├── playground.css      # 游乐场样式
-│   ├── leaderboard.css     # 排行榜样式
-│   ├── hanzi-game.css      # 汉字游戏样式
-│   ├── showcase.css        # 作品展示样式
-│   ├── treasure.css        # 宝箱样式
-│   └── vendor/
-│       └── tailwind-lite.css # Tailwind 精简版
-│
-├── data/                   # JSON 数据文件
-│   ├── pets.json           # 261 种宠物数据库（6个来源合并）
-│   ├── scenes.json         # 探索场景配置
-│   ├── skills.json         # 技能定义
-│   ├── furniture.json      # 家具目录
-│   ├── combat.json         # 战斗配置
-│   ├── items.json          # 物品定义
-│   ├── point-items.json    # 积分兑换物品
-│   ├── hanzi-hsk.json      # HSK 汉字数据集
-│   ├── math-cmath.json     # 数学题库
-│   ├── arena-stages.json   # 竞技场关卡
-│   ├── pokedex-lore-draft.json # 宠物图鉴文案
-│   ├── learn/              # 学习包（课程目录+模块定义）
-│   │   ├── catalog.json
-│   │   └── packs/          # 3个学习包：
-│   │       ├── summer-chinese-bridge-2026/  # 暑期语文衔接
-│   │       ├── english-mc-hybrid-2026/      # 英语 MC 混合
-│   │       └── learning-sites-gateway-2026/ # 学习站点导航
-│   ├── stories/            # 12 场景叙事 JSON（每场景独立文件）
-│   └── source-snapshots/   # 上游数据源快照
-│
-├── assets/                 # 图片/动画素材
-│   ├── arena/              # 竞技场素材（含 math-rivals/ 机器人对手）
-│   ├── background/         # 背景图（8个主题场景）
-│   ├── banchong/           # 班宠宠物图片（7个种族 × 6阶段）
-│   ├── battle-fx/          # 战斗特效（Lottie JSON + SVG/CSS）
-│   ├── cards/              # 卡牌素材
-│   ├── learn/              # 学习相关素材
-│   ├── pokedex-halls/      # 图鉴大厅素材
-│   ├── walk-scenes/        # 遛弯场景图
-│   ├── ui/                 # UI 相关素材（points-exchange 等）
-│   └── voice/              # 语音素材
-│
-├── docs/                   # 271 个 Markdown 文档（方案/需求/进度）
-├── docs_project/           # 本目录 —— 结构化工程文档
-├── prj/                    # ⚠️ 本地原型/参考/临时工程区（远端仅保留少量发布内容）
-├── .claude/                # Claude Code 配置（rules/skills/workflows）
-└── .github/workflows/      # GitHub Actions 部署
+页面切换仍由 `switchPage(pageName)` 编排，随后调用 `preparePage()`/`PetBankRuntime.ensurePage()`。当前 bundle 大致为：
+
+| 页面/入口 | 运行时依赖 |
+| --- | --- |
+| `map`、`today`、`reward`、`inventory`、`works`、`settings` | 首屏核心脚本 |
+| `pet` | 宠物目录加载 |
+| `home` | 宠物照料、成长历史、旅行记忆、小屋 |
+| `walk` | 遛弯样式与模块 |
+| `card` / 卡牌对战 | 卡牌收集、通用战斗、竞技场 UI、音效 |
+| `explore` | 语音、通用战斗、场景/章节/进度/详情 |
+| `playground`、`mathpk`、`hanzi`、`leaderboard`、`tools` | 数学、排行榜、汉字、家长工具 |
+| `learn-*`、`learning-sheet` | 英语 scope、学习中心及学习包 |
+| `review` | 本机成长复盘 |
+
+资源路径必须经 `window.resolvePetBankAssetUrl()` 解析，以支持根路径、GitHub Pages 子路径和深层 URL。加载脚本使用 `async=false` 和 Promise 去重来维持依赖顺序。
+
+### 3.3 Pages 制品链路
+
+`assemble-pages-artifact.mjs` 复制 `index.html`、`css/`、`js/`、`assets/`、`data/`、`app/`，再对学习机、像素探险、打字防线使用独立白名单复制。它还生成静态路由入口并修正像素探险发布资源。修改 `prj/` 或生成素材时，必须检查该脚本的 allowlist 和对应制品测试。
+
+## 4. 业务模块
+
+| 领域 | 当前模块 | 主要状态/输出 |
+| --- | --- | --- |
+| 任务积分 | `app.js` | 六个成长维度；`petbank_points` 持续累积；每日任务状态由共享日状态合同管理 |
+| 奖励闭环 | `core-reward-service.js`、`core-reward-feedback.js`、`task-reward-events.js`、`GameRewardReceipts` | 校验 source/reward、receipt 去重、反馈卡和任务操作记录；旧玩法仍有兼容积分入口 |
+| 宠物养成 | `pet.js`、`pet-care-daily.js`、`pet-growth-history.js`、`pet-evolution-preview.js` | `data/pets.json` 目录、经验、进化、照料、衰减和历史 |
+| 宠物空间 | `home.js`、`walk.js`、`travel-memory.js` | 小屋家具/主题、遛弯日志、旅行记忆和收藏 |
+| 探索战斗 | `exploration*.js`、`battle-engine.js`、`battle-fx.js`、`voice.js` | 场景、章节故事、数学反馈、通用战斗、语音、特效 |
+| 卡牌 | `card-collection.js`、`card-arena.js`、`card-arena-ui.js` | 图鉴、系列套票、2v2 PvE、里程碑和本地卡牌进度 |
+| 学习中心 | `learn-center.js`、`hanzi*.js`、`english-vocab-progress.js` | 学习包、学习单、测验、汉字进度、英语词汇和打印 |
+| 游戏化学习 | `math-pk.js`、`leaderboard.js`、`app/playground/`、`prj/*原型` | 数学 PK、汉字、打字防线、像素探险、学习机等；原型与主站职责分开 |
+| 商店与背包 | `shop.js`、`inventory.js`、`treasure.js` | 兑换、盲盒、库存、装备、日常/探索/里程碑宝箱 |
+| 家长与复盘 | `profiles.js`、`tools.js`、`family-review.js`、`child-journey-feedback.js`、`showcase.js` | 本地多孩子、导入导出、番茄钟、卡点复盘、成长作品 |
+| 家庭账号 | `self-hosted-api.js`、`parent-account.js`、`profiles.js` | 家长注册/登录、refresh、家庭/邀请、孩子映射；失败时保留本机档案 |
+| 账号后端 | `prj/petbank-server/` | SQLite WAL、外键、追加迁移、认证、家庭、孩子、revision 快照；好友/社交未实现 |
+
+## 5. 核心流程
+
+### 5.1 今日任务 -> 积分 -> 宠物反馈
+
+```text
+index.html / today
+  -> app.js toggleTask / addGrowthPoints
+  -> PetBankDailyState 读取 YYYY-MM-DD + active profile
+  -> localStorage: daily_state + points + task event
+  -> updateStats / PetSystem.addExp / 首页和宠物反馈
 ```
 
----
+每日任务和日常宝箱已经共用 `PetBankDailyState`。`petbank_completed`、`petbank_tasks_completed_today`、`petbank_daily_claim_date` 仍作为旧兼容键存在，不能直接删除。
 
-## 四、14 个核心业务模块
+### 5.2 学习/游戏 -> 奖励 receipt -> 复盘
 
-### 模块全景
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     index.html (SPA)                         │
-│  ┌──────┬──────┬──────┬──────┬──────┬──────┬──────┐        │
-│  │ 首页  │ 积分  │ 学习  │ 宠物  │ 探索  │游乐场│家长区│        │
-│  │ map  │today │learn │ pet  │explore│playgr│settings│      │
-│  └──────┴──────┴──────┴──────┴──────┴──────┴──────┘        │
-└─────────────────────────────────────────────────────────────┘
-
-模块清单:
- 1. 任务积分系统  → app.js (DIMENSIONS + toggleTask + 积分持久化)
- 2. 宠物养成     → pet.js (261物种 × 5阶段 × STATS + decay)
- 3. 宠物小屋     → home.js (5槽位家具 + 8主题 + 5维状态条)
- 4. 探索冒险     → exploration.js (12场景螺旋地图 + 章节叙事 + PvE)
- 5. 卡牌收集     → card-collection.js (多系列图册/分馆/套票奖励)
- 6. 卡牌对战     → card-arena.js + card-arena-ui.js (2v2 PvE)
- 7. 数学PK      → math-pk.js (4难度 × 机器人对手 × 计时计分)
- 8. 学习中心     → learn-center.js (学习包 + 每日学习单 + 英语词汇)
- 9. 积分商城     → shop.js (积分兑换 + 盲盒 + 战斗道具)
-10. 宠物遛弯     → walk.js (5条路线 × 场景切换 × 气泡互动)
-11. 宝箱系统     → treasure.js (日常/探索/里程碑 3 类宝箱)
-12. 道具背包     → inventory.js (物品堆叠 + 装备栏)
-13. 语音系统     → voice.js (Web Speech API TTS)
-14. 家长工具     → tools.js (番茄钟 + 数据导入/导出)
+```text
+learn-center / math-pk / iframe game
+  -> 产生带 profileId + source + eventId 的结果
+  -> CoreRewardService 或 GameRewardReceipts 去重
+  -> addGrowthPoints / 宠物经验等既有业务 API
+  -> task/reward history + feedback + family-review 本机聚合
 ```
 
-### 模块依赖关系
+当前已防住部分刷新、重复 iframe 消息和重复结算；仍需继续收口所有直接改余额的旧路径，并定义单局/每日经济策略。
 
-```
-                         ┌─────────────┐
-                         │  app.js     │ ← 主编排器
-                         └──┬──────┬───┘
-                            │      │
-               ┌────────────┼──────┼───────────────┐
-               ▼            ▼      ▼               ▼
-         ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
-         │ pet.js   │ │ profiles │ │ runtime- │ │ SQLite   │
-         │ (宠物核心)│ │ (多孩子) │ │ loader   │ │ (待接入) │
-         └────┬─────┘ └──────────┘ └──────────┘ └──────────┘
-              │
-    ┌────┬────┼────────┬───────────┐
-    ▼    ▼    ▼        ▼           ▼
- ┌────┐┌────┐┌──────┐┌────────┐┌──────────┐
- │home││walk││explor││card-   ││battle-   │
- │小屋││遛弯││探索  ││arena   ││engine    │
- └────┘└────┘└──┬───┘└──┬─────┘└────┬─────┘
-                │        │           │
-                ▼        ▼           ▼
-           ┌────────┐┌──────┐┌──────────┐
-           │battle- ││card- ││math-pk   │
-           │fx      ││collec││hanzi-game│
-           └────────┘└──────┘└──────────┘
+### 5.3 Profile 切换 -> 快照 -> reload
 
-独立模块: shop, inventory, treasure, voice, tools, showcase
-          learn-center, leaderboard, family-review
+```text
+ProfileManager.switchTo
+  -> 枚举所有 petbank_* 业务键
+  -> 保存 petbank_profile_data_{id}
+  -> 清空业务键并恢复目标快照
+  -> location.replace(shellUrl)
+  -> 模块重新从 localStorage 初始化
 ```
 
----
+这是兼容性方案，不是强类型存储层。非 `petbank_` 键、模块内存状态和未登记 key 可能逃逸，后续要用 registry + 白名单替代隐式全量快照。
 
-## 五、核心层规矩
+### 5.4 家长账号 -> 家庭/孩子映射
 
-### 5.1 数据持久化
-
-```
-本地主存储:  localStorage (key 前缀 "petbank_")
-账号后端:    VPS Node.js API -> SQLite（当前仅健康检查，账号 API 待实现）
-Profile:     ProfileManager 热切换（全量快照 + location.reload()）
-```
-
-**关键共享 key 清单** → 详见 [data-contracts/localstorage-keys.md](data-contracts/localstorage-keys.md)
-
-### 5.2 模块间通信
-
-```
-方式:        window 全局挂载（window.ModuleName.method()）
-类型检查:    typeof window.Xxx === 'function' 防御式检查
-依赖加载:    runtime-loader.js 按 BUNDLE 定义强制串行加载
-事件系统:    无（无 EventEmitter/CustomEvent/pub-sub）
+```text
+settings/family
+  -> ParentAccountUI
+  -> SelfHostedApi register/login/refresh
+  -> Node.js API -> SQLite accounts/households/children
+  -> ProfileManager.linkCloudChild(localProfileId, cloudChildId, householdId)
 ```
 
-### 5.3 错误处理（5 种模式，不一致）
+当前链路能完成账号、家庭、邀请和孩子档案管理；`ProfileManager` 已在启动恢复、切换前上传、切换后恢复和页面隐藏/退出时调用 `SelfHostedApi.latestSnapshot/pushSnapshot`。当前仍只有单一 revision 拒绝冲突，没有离线 outbox、后台重试或多端合并策略。
 
-| 模式 | 代码特征 | 使用场景 |
-|------|---------|---------|
-| A 静默吞错 | `try { ... } catch (e) {}` | 最常见，各模块通用 |
-| B console.warn | `console.warn('[module] ...', error)` | runtime-loader 偏好 |
-| C 返回 fallback | `try { return JSON.parse(raw); } catch { return fallback; }` | 数据加载偏好 |
-| D showToast | `if (window.showToast) window.showToast('...')` | UI 层用户可见 |
-| E 不处理 | 直接调用无 try-catch | 大量存在 |
+## 6. 核心约定
 
-### 5.4 JS 模块模式
+### 数据访问
 
-```javascript
-// 模式A: IIFE（大多数云端模块）
-(function () { 'use strict'; /* ... */ })();
+- 浏览器主存储是 `localStorage`，业务 key 统一 `petbank_` 前缀；新增/变更必须更新 [localstorage-keys.md](data-contracts/localstorage-keys.md)。
+- 新代码优先调用所属模块 API，不新增裸 `getItem/setItem`；共享状态必须有 owner、schemaVersion、迁移和 profile scope。
+- 静态 JSON/词库使用 `resolvePetBankAssetUrl` + `response.ok` + schema/fallback；`file://` 不是受支持运行方式。
+- SQLite 只属于自托管后端共享数据目录；前端可报告账号/家庭/孩子 API 和基础快照 push/pull 的明确成功响应，但不能把单一 revision 上传误写成已具备离线队列或多端合并能力。
 
-// 模式B: 命名空间（核心业务模块）
-const ModuleName = (function () { /* ... return publicAPI; */ })();
+### 时间
 
-// 模式C: window 直接挂载（主编排器）
-window.switchPage = switchPage;
-```
+- 业务日键使用本地 `YYYY-MM-DD`；优先调用 `window.PetBankDailyState.localDate()`。
+- `Date.now()` 是毫秒；`toISOString()` 用于审计；`PetSystem` 衰减内部使用 Unix 秒，边界不能混算。
+- 宝箱/旧兼容键仍使用本地化日期字符串，遛弯/竞技场也有历史格式；新逻辑不得新增格式，迁移应兼容旧值。
+- 业务结算不能依赖 UI timer；页面异步回调使用 activation token/取消机制避免污染新页面。
 
-### 5.5 页面路由
+### 错误与通信
 
-```
-路由实现:    switchPage(pageName) 函数（约 120 行 if/else）
-页面注册:    index.html 中 <div class="page" id="page-{name}">
-按需加载:    runtime-loader.js 的 ensurePage() → BUNDLE 映射
-路由参数:    options.settingsSection / options.replace / options.updateHistory
-浏览器同步:  updateBrowserRoute() 更新 URL hash
-```
+- 用户操作失败：`showToast` 或页面内反馈。
+- 可恢复读取失败：带模块前缀 `console.warn` + 合法 fallback。
+- 关键状态变更、奖励、购买、导入失败：不得空 catch，必须返回失败或抛出。
+- fetch 必须检查 `response.ok`；核心初始化依赖缺失不能静默跳过。
+- 现有模块用 IIFE/命名空间 + `window` API 互调；新模块只暴露一个唯一 PascalCase 命名空间，不继续增加散落全局。
 
----
+## 7. 技术债与优化入口
 
-## 六、技术债清单
+| 优先级 | 问题 | 证据/影响 |
+| --- | --- | --- |
+| P0 | `app.js` 约 4,411 行，承担编排、领域逻辑、UI、存储和兼容 | 修改 blast radius 最大 |
+| P0 | `learn-center.js` 约 3,656 行；`math-pk.js` 约 1,815 行；`card-arena-ui.js` 约 1,515 行 | 状态、结算和 UI 混合，难测 |
+| P0 | localStorage 无 registry/schema/DAO，Profile 是动态全量快照 | 数据隔离、迁移和同步边界不可靠 |
+| P0 | 奖励层已部分统一，但旧模块仍可直接调整余额 | 需要彻底阻断重复奖励 |
+| P0 | 自托管账号/家庭/孩子 API 与 Profile 快照生命周期已接入，但尚无离线 outbox、多端合并策略 | 不能把 revision 上传当成复杂冲突合并 |
+| P1 | 日切格式、秒/毫秒、timer 生命周期不完全统一 | 跨模块时间 bug |
+| P1 | `style.css` 约 6,635 行、`learn-center.css` 约 3,633 行；HTML 约 1,458 行 | 样式和结构耦合 |
+| P1 | `prj/` 混合原型、生成物、测试和独立后端 | 清理/发布容易误删或误发 |
+| P2 | 根目录无统一 package/lint/type/schema 门禁，模块文档行号会漂移 | 工程反馈慢 |
 
-### 🔴 严重（影响可维护性）
+详细方案见 [当前扫描与优化方案](../docs/方案/项目路线/07-当前扫描与优化方案-2026-07-12.md)。不建议当前阶段做 React/Vue/TypeScript 全量重写；先在现有静态架构中收口数据、时间、奖励和验证边界。
 
-| # | 问题 | 位置 | 说明 |
-|---|------|------|------|
-| 1 | **app.js 上帝对象** | [js/app.js](../js/app.js) (4747行) | 任务定义+页面路由+UI渲染+事件处理+持久化混在一起 |
-| 2 | **无模块系统** | 全部 JS | 40 文件通过 `window.Xxx` 通信，无命名冲突保护 |
-| 3 | **localStorage 无 DAO** | 16+ 处直接读写 | 同 key 被多模块操作，无版本/迁移/类型校验 |
-| 4 | **Profile 切换脆弱** | [js/profiles.js](../js/profiles.js) | 全量快照+reload，新 key 遗漏无提示 |
+## 8. 修改与验证
 
-### 🟡 中等（影响开发效率）
-
-| # | 问题 | 位置 | 说明 |
-|---|------|------|------|
-| 5 | **超大 CSS** | [css/style.css](../css/style.css) (6992行), [css/learn-center.css](../css/learn-center.css) (4240行) | 无变量/组件化/层级 |
-| 6 | **JS 内嵌 CSS** | [js/app.js#L7-L34](../js/app.js#L7-L34) | 运行时注入 style 标签 |
-| 7 | **注释死代码** | [js/app.js#L1032-L1108](../js/app.js#L1032-L1108) | 77 行注释掉的旧路由逻辑 |
-| 8 | **prj/ 目录混乱** | [prj/](../prj/) | 旧快照+测试+原型混放 |
-| 9 | **.bak 临时文件** | [data/](../data/) | pets.json.bak, hanzi-hsk.json.bak/bak2, 多个 report |
-| 10 | **错误处理不一致** | 全局 | 5 种模式随意切换 |
-
-### 🟢 轻度（影响一致性）
-
-| # | 问题 | 位置 |
-|---|------|------|
-| 11 | 无 package.json/依赖管理 | 根目录 |
-| 12 | 中英文混用 | 全局 |
-| 13 | 无类型/JSDoc | 全局 |
-| 14 | 无 lint/format | 根目录 |
-| 15 | 账号与家庭 API 尚未接入 | `prj/petbank-server/` 目前只有健康检查 |
-
----
-
-## 七、代码修改流程
-
-1. 查阅 [modules/](modules/) 相关模块文档，确认函数位置
-2. 修改前检查 [docs/changes/](../docs/changes/) 或相关方案/进度文档，避免重复已废弃方案
-3. 修改后同步更新对应的模块实现文档（函数→行号）
-4. 涉及 localStorage key 变更 → 更新 [data-contracts/localstorage-keys.md](data-contracts/localstorage-keys.md)
-5. 一个版本周期后全量扫描验证文档准确性
+1. 先读 `AGENTS.md`、本页、目标模块文档和数据契约；代码与旧文档冲突时记录漂移并以代码为准。
+2. 修改前检查 `git status --short`，保留已有未提交/已暂存改动。
+3. 存储、时间、奖励、profile、路由、发布白名单和后端迁移属于高风险改动，先列读写者/入口/迁移兼容性。
+4. 新增 key/路由/bundle/数据字段/测试必须同步对应契约和 runbook。
+5. 按影响范围运行 contract/simulation；全局改动运行 `node scripts/run-full-regression.mjs`；发布改动额外组装制品并检查深层入口。

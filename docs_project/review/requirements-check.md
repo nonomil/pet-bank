@@ -1,7 +1,7 @@
 # 需求文档对照审查报告
 
 > 审查日期: 2026-07-08
-> 依据: [docs/原始需求/项目文档和项目设计重新梳理.md](../../docs/原始需求/项目文档和项目设计重新梳理.md)
+> 依据: [docs/需求/原始需求/项目文档和项目设计重新梳理.md](../../docs/需求/原始需求/项目文档和项目设计重新梳理.md)
 
 ---
 
@@ -81,7 +81,7 @@
 | 模块索引 | ✅ | README.md 模块清单 |
 | localStorage 索引 | ✅ | [localstorage-keys.md](../data-contracts/localstorage-keys.md)（全量 key 矩阵） |
 | pets.json schema | ✅ | [pets-schema.md](../data-contracts/pets-schema.md) |
-| 内容/代码分离审查 | ✅ | [content-code-separation.md](content-code-separation.md) |
+| 内容/代码分离审查 | ✅ | [content-code-separation.md](./content-code-separation.md) |
 | 编码规范 | ✅ | [coding-standards.md](../conventions/coding-standards.md) |
 
 ---
@@ -93,9 +93,9 @@
 `docs/` 目录已有 271 个 md 文件，存在大量讨论稿、废弃方案、重复主题。`docs_project/` 作为**精华索引层**叠加在上面，不替代原有文档。
 
 建议后续：
-- `docs/方案/` 中标记"已实施/已废弃/进行中"
+- `docs/方案/产品决策` 中标记"已实施/已废弃/进行中"
 - `docs/plans/` 中清理过时的 test-reports
-- `docs/原始需求/` 保留作为历史记录
+- `docs/需求/原始需求/` 保留作为历史记录
 
 ### 2.2 CLAUDE.md 缺失
 
@@ -112,7 +112,7 @@
 
 ### 2.3 内容/代码分离不及格
 
-详见 [content-code-separation.md](content-code-separation.md)。核心问题：learn-center.js 中 ~1500 行教育内容硬编码，app.js 中 37 个任务定义硬编码，walk.js 中 5 条路线文案硬编码。
+详见 [content-code-separation.md](./content-code-separation.md)。核心问题：learn-center.js 中 ~1500 行教育内容硬编码，app.js 中 37 个任务定义硬编码，walk.js 中 5 条路线文案硬编码。
 
 ### 2.4 测试覆盖为零
 

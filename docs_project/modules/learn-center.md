@@ -1,6 +1,6 @@
 # 学习中心 (LearnCenter)
 
-> 核心文件: [js/learn-center.js](../../js/learn-center.js) (3863行) —— 当前最大业务模块
+> 核心文件: [js/learn-center.js](../../js/learn-center.js) (3656行) —— 当前最大业务模块，行号按 2026-07-12 基线
 > 数据文件: [data/learn/](../../data/learn/) (catalog + 3个学习包)
 > Smoke: [scripts/learning-center-smoke.mjs](../../scripts/learning-center-smoke.mjs)
 
@@ -67,39 +67,39 @@ catalog.json → pack manifest.json → module json → lesson (content)
 | 函数 | 行号 | 说明 |
 |------|------|------|
 | **初始化** | | |
-| `LearnCenter.init()` | :105 | 初始化：加载 catalog + 清理旧版数据 |
+| `LearnCenter.init()` | :106 | 初始化：加载 catalog + 清理旧版数据 |
 | **数据加载** | | |
-| `LearnCenter.getCatalog()` | :125 | 获取学习目录（fetch catalog.json） |
-| `LearnCenter.getPack(packId)` | :130 | 获取单个资料包 manifest |
-| `LearnCenter.getModule(packId, moduleId)` | :151 | 获取单个模块数据 |
-| `LearnCenter.loadAllModules(packId)` | :161 | 预加载资料包下所有模块 |
+| `LearnCenter.getCatalog()` | :126 | 获取学习目录（fetch catalog.json） |
+| `LearnCenter.getPack(packId)` | :131 | 获取单个资料包 manifest |
+| `LearnCenter.getModule(packId, moduleId)` | :152 | 获取单个模块数据 |
+| `LearnCenter.loadAllModules(packId)` | :162 | 预加载资料包下所有模块 |
 | **页面渲染** | | |
-| `LearnCenter.renderHub(containerId)` | :2776 | 渲染学习中心首页（聚合3个资料包入口） |
-| `LearnCenter.renderDailyCheckin(containerId)` | :1401 | 渲染每日学习单（根据用户选定的模板A/B/C） |
-| `LearnCenter.renderPack(containerId)` | :3262 | 渲染资料包详情页 |
-| `LearnCenter.renderPlan(containerId)` | :3323 | 渲染周计划页 |
-| `LearnCenter.renderLesson(containerId)` | :3364 | 渲染课时页（根据 lesson 类型路由到对应渲染器） |
-| `LearnCenter.renderPrint(containerId)` | :3556 | 渲染 A4 打印页 |
+| `LearnCenter.renderHub(containerId)` | :2778 | 渲染学习中心首页（聚合3个资料包入口） |
+| `LearnCenter.renderDailyCheckin(containerId)` | :1403 | 渲染每日学习单（根据用户选定的模板A/B/C） |
+| `LearnCenter.renderPack(containerId)` | :3264 | 渲染资料包详情页 |
+| `LearnCenter.renderPlan(containerId)` | :3325 | 渲染周计划页 |
+| `LearnCenter.renderLesson(containerId)` | :3366 | 渲染课时页（根据 lesson 类型路由到对应渲染器） |
+| `LearnCenter.renderPrint(containerId)` | :3558 | 渲染 A4 打印页 |
 | **导航** | | |
-| `LearnCenter.openPack(packId)` | :3792 | 切换到资料包页 |
-| `LearnCenter.openLesson(packId, moduleId, lessonId)` | :3803 | 切换到课时页 |
-| `LearnCenter.openPlan(packId)` | :3816 | 切换到周计划页 |
-| `LearnCenter.openPrint(packId)` | :3827 | 切换到打印页 |
+| `LearnCenter.openPack(packId)` | :3794 | 切换到资料包页 |
+| `LearnCenter.openLesson(packId, moduleId, lessonId)` | :3805 | 切换到课时页 |
+| `LearnCenter.openPlan(packId)` | :3818 | 切换到周计划页 |
+| `LearnCenter.openPrint(packId)` | :3829 | 切换到打印页 |
 | **课时完成** | | |
-| `LearnCenter.completeLesson(packId, moduleId, lessonId, rewardPoints)` | :3747 | 标记课时完成 + 积分奖励 + 连续学习奖励 |
-| `LearnCenter.isLessonCompleted(packId, moduleId, lessonId)` | :453 | 检查课时是否已完成 |
+| `LearnCenter.completeLesson(packId, moduleId, lessonId, rewardPoints)` | :3749 | 标记课时完成 + 积分奖励 + 连续学习奖励 |
+| `LearnCenter.isLessonCompleted(packId, moduleId, lessonId)` | :455 | 检查课时是否已完成 |
 | **每日学习单** | | |
-| `LearnCenter.getDailySheetMode()` | :268 | 获取当前选定的学习单模板 |
-| `LearnCenter.setDailySheetMode(modeId)` | :272 | 设置学习单模板 |
-| `LearnCenter.getDailySheetModes()` | :264 | 获取所有可用模板定义 |
+| `LearnCenter.getDailySheetMode()` | :269 | 获取当前选定的学习单模板 |
+| `LearnCenter.setDailySheetMode(modeId)` | :273 | 设置学习单模板 |
+| `LearnCenter.getDailySheetModes()` | :265 | 获取所有可用模板定义 |
 | **工具** | | |
-| `LearnCenter.resolvePackCapabilities(manifest)` | :464 | 解析资料包能力（quiz/en/reader/sheet） |
-| `LearnCenter.resolveLessonSource(pack, module, lesson)` | :475 | 解析课时数据源路由 |
-| `LearnCenter.resolveLessonLaunchUrl(pack, module, lesson)` | :492 | 解析外部课时跳转 URL |
-| `LearnCenter.resolveLessonReward(manifest, moduleId, lesson)` | :502 | 解析课时积分奖励 |
-| `LearnCenter.getModuleProgress(packId, module)` | :417 | 获取模块学习进度 |
-| `LearnCenter.getPackProgress(packId, modulesById)` | :437 | 获取资料包整体进度 |
-| `LearnCenter.getContinueLessonId(packId, module)` | :580 | 获取下一个待学课时 id |
+| `LearnCenter.resolvePackCapabilities(manifest)` | :466 | 解析资料包能力（quiz/en/reader/sheet） |
+| `LearnCenter.resolveLessonSource(pack, module, lesson)` | :477 | 解析课时数据源路由 |
+| `LearnCenter.resolveLessonLaunchUrl(pack, module, lesson)` | :494 | 解析外部课时跳转 URL |
+| `LearnCenter.resolveLessonReward(manifest, moduleId, lesson)` | :504 | 解析课时积分奖励 |
+| `LearnCenter.getModuleProgress(packId, module)` | :419 | 获取模块学习进度 |
+| `LearnCenter.getPackProgress(packId, modulesById)` | :439 | 获取资料包整体进度 |
+| `LearnCenter.getContinueLessonId(packId, module)` | :582 | 获取下一个待学课时 id |
 
 ### 课时类型渲染路由
 
@@ -118,20 +118,20 @@ renderLessonBody (pack, module, lesson, showPinyin) → :2733
 
 | 函数 | 行号 | 说明 |
 |------|------|------|
-| `renderDailySheetTemplateA(options)` | :816 | 模板A渲染（幼小衔接超轻量版） |
-| `renderDailySheetTemplateB(options)` | :931 | 模板B渲染（轻量标准版） |
-| `renderDailySheetTemplateC(options)` | :1071 | 模板C渲染（错题加强版） |
+| `renderDailySheetTemplateA(options)` | :818 | 模板A渲染（幼小衔接超轻量版） |
+| `renderDailySheetTemplateB(options)` | :933 | 模板B渲染（轻量标准版） |
+| `renderDailySheetTemplateC(options)` | :1073 | 模板C渲染（错题加强版） |
 
 ### 英语词汇功能
 
 | 函数 | 行号 | 说明 |
 |------|------|------|
-| `renderVocabWorksheet(module)` | :2475 | 渲染词汇学习页 |
-| `renderVocabLesson(container, containerId, packId, moduleId, moduleMeta, module)` | :2636 | 渲染词汇课时 |
-| `getVocabStageItems(cards, focusIndex)` | :381 | 按阶段获取词汇卡片（每阶段 6 词） |
-| `getVocabCardImage(card)` | :392 | 获取词汇配图 |
-| `playVocabAudio(src)` | :405 | 播放词汇发音 |
-| `getVocabFocusIndex(module, cards)` | :361 | 获取当前学习焦点 |
+| `renderVocabWorksheet(module)` | :2477 | 渲染词汇学习页 |
+| `renderVocabLesson(container, containerId, packId, moduleId, moduleMeta, module)` | :2638 | 渲染词汇课时 |
+| `getVocabStageItems(cards, focusIndex)` | :382 | 按阶段获取词汇卡片（每阶段 6 词） |
+| `getVocabCardImage(card)` | :393 | 获取词汇配图 |
+| `playVocabAudio(src)` | :407 | 播放词汇发音 |
+| `getVocabFocusIndex(module, cards)` | :362 | 获取当前学习焦点 |
 
 ### 持久化
 

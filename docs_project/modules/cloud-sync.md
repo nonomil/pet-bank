@@ -1,14 +1,14 @@
 # SQLite 快照同步
 
-> 当前状态：前端不加载云端 SDK、云端配置或同步模块。孩子端继续使用本机 `localStorage`；VPS 上的 Node.js + SQLite 账号服务完成后，再按本页合同接入快照同步。
+> 当前状态：前端不加载 Supabase SDK；家长设置页已加载自托管 API facade，可完成账号、家庭、邀请码和孩子映射。孩子端继续使用本机 `localStorage`，Profile 已在启动恢复、切换/隐藏页上传时调用快照 API。
 >
-> 唯一实施方案：[家庭账号社交体系 / SQLite 自托管版](../../docs/家庭账号社交体系/SQLite自托管版/README.md)
+> 唯一实施方案：[家庭账号社交体系 / SQLite 自托管版](../../docs/方案/专题/家庭社交/SQLite自托管版/README.md)
 
 ## 当前运行边界
 
 - 浏览器只负责本地多孩子档案和离线玩法。
-- `prj/petbank-server/` 当前提供数据库初始化和 `GET /api/v1/health`。
-- 未实现注册、登录、家庭、孩子和快照 API 前，家长设置页不显示账号登录表单，也不报告“同步成功”。
+- `prj/petbank-server/` 当前提供数据库初始化、认证、家庭/成员/邀请码、孩子和 revision 快照 API。
+- `js/parent-account.js` 已显示账号管理表单并调用账号/家庭/孩子接口；Profile 生命周期负责孩子状态快照上传和恢复，单个 API 操作成功仍不代表所有本地状态都已同步。
 - 不再保留 Supabase 客户端、配置 stub、双写逻辑或前端 service role 配置。
 
 ## 目标同步链路
@@ -20,7 +20,7 @@
         -> children + state_snapshots
 ```
 
-快照同步完成后，业务模块只调用业务动作，不直接依赖数据库实现：
+当前已提供的 API facade（最后两项由 Profile 生命周期调用）：
 
 - `signIn(identifier, password)`
 - `signOut()` / `refreshSession()`
@@ -44,4 +44,4 @@ node --check prj/petbank-server/src/server.mjs
 curl --fail http://127.0.0.1:3000/api/v1/health
 ```
 
-账号接口、真实迁移和 Hermes VPS 发布完成前，本页的“目标同步链路”不能当作已上线能力。
+账号/家庭/孩子接口和 Profile 启动恢复、切换前 push、切换后 pull 已有本地 API/浏览器测试；当前仍没有离线失败重试 outbox，也没有多端自动合并策略。

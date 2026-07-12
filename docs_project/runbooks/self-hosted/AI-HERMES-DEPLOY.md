@@ -30,7 +30,11 @@ node scripts/assemble-pages-artifact.mjs site
 ```bash
 cd "$release_dir/prj/petbank-server/deploy"
 ln -sfn /srv/pet-bank/shared/server.env ../.env
-docker compose up -d --build
+docker compose -p petbank-api stop api || true
+if [[ -f /srv/pet-bank/shared/data/petbank.db ]]; then
+  PETBANK_DATA_DIR=/srv/pet-bank/shared/data PETBANK_BACKUP_DIR=/srv/pet-bank/shared/backups "$release_dir/ops/backup-sqlite.sh"
+fi
+docker compose -p petbank-api up -d --build
 curl --fail http://127.0.0.1:3000/api/v1/health
 ```
 
@@ -40,8 +44,16 @@ curl --fail http://127.0.0.1:3000/api/v1/health
 ln -sfn "$release_dir" /srv/pet-bank/current
 ```
 
-Nginx 静态站点根目录使用 `/srv/pet-bank/current/site`；将 `prj/petbank-server/deploy/nginx-api.conf` 的 `location /api/` 加入该站点配置并执行 `nginx -t && systemctl reload nginx`。
+Nginx 静态站点根目录使用 `/srv/pet-bank/current/site`；将 `prj/petbank-server/deploy/nginx-api.conf` 的 `location /api/` 加入该站点配置并执行：
+
+```bash
+nginx -t && systemctl reload nginx
+curl --fail http://127.0.0.1/app/
+curl --fail http://127.0.0.1/parent/
+```
+
+任一检查失败都不要保留新 `current`；先切回上一 release，再处理新 release。
 
 ## 每次更新
 
-严格按 [UPGRADE-AND-BACKUP.md](UPGRADE-AND-BACKUP.md) 执行。任何步骤失败都不要切换 `current`。
+严格按 [UPGRADE-AND-BACKUP.md](./UPGRADE-AND-BACKUP.md) 执行。任何步骤失败都不要切换 `current`。

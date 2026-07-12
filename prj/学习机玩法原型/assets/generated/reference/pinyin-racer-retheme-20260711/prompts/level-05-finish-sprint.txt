@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: full visual reference for a child-friendly pinyin racing game level
+Primary request: Same bright 3D toy-racing learning playground visual language, Level 5 finish sprint carnival. Show a wide straight final road accelerating toward a large celebratory finish arch, colorful pennants without symbols, soft sparkles, booster pads, rounded confetti shapes and a small blue toy race car approaching the finish. Keep a clear central finish gate and broad empty space for the final HTML spelling task.
+Scene/backdrop: sunny open plaza with low hills, balloons and a soft blue sky
+Subject: finish arch, booster pads, reward shapes, toy race car
+Style/medium: polished 3D casual mobile game concept art, soft plastic and foam, premium children's learning game, joyful but uncluttered
+Composition/framing: landscape 1536x1024, top-down three-quarter view, road from bottom to center finish gate, upper area open for HUD
+Lighting/mood: golden afternoon, earned celebration, final challenge
+Color palette: sky blue, warm yellow, coral, mint green, white, cobalt blue
+Constraints: no text, no letters, no numbers, no Chinese characters, no pinyin, no logos, no watermark, no embedded UI; blank finish surfaces
+Avoid: casino imagery, realistic racing branding, dark backgrounds, dense confetti blocking the road, illegible props

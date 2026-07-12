@@ -1,0 +1,99 @@
+{
+  "id": "candy",
+  "name": "甜甜星云",
+  "emoji": "🍬",
+  "chapter": 2,
+  "chapter_name": "彩色信号带",
+  "min_level": 2,
+  "danger_level": 2,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "甜甜星云的彩灯一明一暗，像是在发出重复的求救信号。星图小站提醒你：先找相同的颜色，不要急着猜答案。",
+      "shortText": "彩灯一明一暗！",
+      "detailText": "观察彩灯的颜色和顺序，找出哪一盏灯应该和它配成一对。",
+      "petMood": "surprised",
+      "id": "candy.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "红色星糖旁边有一颗红色小光点，黄色星糖旁边也有一颗黄色小光点。配对成功的光点会变得更亮。",
+      "shortText": "相同颜色可以配对！",
+      "detailText": "把相同颜色的星糖和光点放在一起，彩灯就会少闪一次。",
+      "petMood": "happy",
+      "emoji": "🍭",
+      "item": "candy",
+      "chance": 0.5,
+      "id": "candy.discover1"
+    },
+    {
+      "type": "math",
+      "text": "甜甜星云送来 2 颗红色光糖，又送来 3 颗黄色光糖。小星舟一共收到几颗光糖？",
+      "shortText": "一共收到几颗光糖？",
+      "detailText": "先数红色，再把黄色的 3 颗接着数。",
+      "petMood": "worried",
+      "difficulty": "easy",
+      "reward": {
+        "exp": 15,
+        "msg": "彩灯恢复了重复节奏！+15 经验"
+      },
+      "mathType": "word",
+      "question": "2 颗红色光糖加 3 颗黄色光糖，一共几颗？",
+      "answer": 5,
+      "options": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "skill": "合并数量",
+      "hint": "把两种颜色的光糖放在同一排。",
+      "explanation": "2 颗加 3 颗，一共是 5 颗。",
+      "id": "candy.math2"
+    },
+    {
+      "type": "choice",
+      "text": "甜甜星云有彩虹桥和棉花糖云两条观察路线。哪一边的颜色线索更容易看清？",
+      "shortText": "走彩虹桥，还是棉花糖云？",
+      "detailText": "彩虹桥能看颜色顺序，棉花糖云能看相同图案。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "🌈 走彩虹桥",
+          "reward": "彩虹边缘掉下一颗彩虹糖！",
+          "item": "candy",
+          "chance": 0.4
+        },
+        {
+          "text": "☁️ 看棉花糖云",
+          "reward": "云朵里藏着一根彩色棒棒糖！",
+          "item": "lollipop",
+          "chance": 0.3
+        }
+      ],
+      "id": "candy.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "彩灯小机器人把红灯和黄灯打乱，请你找出相同颜色的一对。你找到后，它才愿意把下一段星云地图交给小星舟。",
+      "shortText": "彩灯机器人来考考你！",
+      "detailText": "相同颜色可以互相找到，找到一对就是一条证据。",
+      "petMood": "proud",
+      "id": "candy.encounter4"
+    }
+  ],
+  "chapter_skill": "add_sub_apply",
+  "ending_text": "甜甜星云重新亮起了成对的彩灯。你把“找相同、排顺序”的方法画进观测册，星光种子又多了一点亮光。"
+}

@@ -44,7 +44,7 @@
 - 资产：`assets/generated/travel-memory/`
 
 **步骤：**
-1. 生成前只在本机读取 `docs/GPT生图/Agnes生图key.md`，不输出 key。
+1. 生成前只在本机读取 `docs/资源/生图/Agnes生图key.md`，不输出 key。
 2. 每批保存 prompt、原始结果、处理结果和 manifest；图片内不烧录文字。
 3. 用 alpha、尺寸、naturalWidth 和浏览器截图验收后才写入 `data/travel-rewards.json`。
 4. 先扩展一个场景做 A/B 体验验证，再决定是否为 placeholder 场景生成图片。
@@ -54,7 +54,7 @@
 
 **文件：**
 - 修改：`docs/plans/2026-06-30-叙事收口与文案优化-任务清单.md`
-- 待后续修改：`docs/项目现状总览.md`、`docs/路线/差距清单与开发路线图.md`、`docs/规格/需求规格书.md`、`docs/进度/README.md`、`docs/changes/README.md`
+- 待后续修改：`docs/项目现状总览.md`、`docs/工程/路线/差距清单与开发路线图.md`、`docs/需求/规格/需求规格书.md`、`docs/进度/README.md`、`docs/变更/README.md`
 
 **步骤：**
 1. 勾选已实现的 R3/R1/R4/R5 项，保留最终文档同步项未勾选。

@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: full visual reference for a child-friendly pinyin racing game level
+Primary request: Same bright 3D toy-racing learning playground visual language, Level 4 candy-colored tone bridge. Show a raised bridge crossing a sparkling river, with three broad bridge lanes, rounded candy-like lane separators, hanging blank tone-sign ornaments, a gentle ramp, and a small blue toy race car. Make the road geometry and lane choices unmistakable, with a large calm platform for an HTML tone task card.
+Scene/backdrop: clear river valley, rounded cliffs, playful floating balloons and soft clouds
+Subject: elevated bridge, lane separators, blank hanging signs, checkpoint arch, toy race car
+Style/medium: polished 3D casual mobile game concept art, soft candy plastic and painted wood, cheerful educational game reference
+Composition/framing: landscape 1536x1024, top-down three-quarter view, bridge diagonally crossing frame, safe negative space around the road
+Lighting/mood: bright afternoon, celebratory but readable, advanced level
+Color palette: aqua water, lemon yellow, raspberry coral, lavender, mint, white
+Constraints: no text, no letters, no numbers, no Chinese characters, no pinyin, no logos, no watermark, no embedded UI; all signs blank
+Avoid: excessive gradients, dark palette, thin bridge, cluttered decorative text, unsafe-looking gaps

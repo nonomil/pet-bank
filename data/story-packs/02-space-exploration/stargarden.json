@@ -1,0 +1,99 @@
+{
+  "id": "stargarden",
+  "name": "星光回家站",
+  "emoji": "🌟",
+  "chapter": 5,
+  "chapter_name": "星光回家站",
+  "min_level": 5,
+  "danger_level": 5,
+  "chapter_flow": {
+    "mode": "short",
+    "see": [
+      0,
+      1
+    ],
+    "choose": 3,
+    "challenge": {
+      "math": 2,
+      "battle": 4
+    }
+  },
+  "events": [
+    {
+      "type": "narrate",
+      "text": "星光回家站的花园门口有一条空白航线。十二颗星光种子依次亮起，正等你把颜色、数量和方向拼成最后一条回家路。",
+      "shortText": "星光种子要回家了！",
+      "detailText": "这是最后一站，先回想一路收集的线索，再观察眼前的排列。",
+      "petMood": "surprised",
+      "id": "stargarden.narrate0"
+    },
+    {
+      "type": "discover",
+      "text": "花园里第一圈有一颗星花，第二圈有两颗，第三圈有三颗。每一圈都向同一个方向开放花瓣。",
+      "shortText": "星花一圈比一圈多！",
+      "detailText": "沿着花园一圈圈数星花，找出下一圈应该有几颗。",
+      "petMood": "happy",
+      "emoji": "🌟",
+      "item": "star_fragment",
+      "chance": 0.5,
+      "id": "stargarden.discover1"
+    },
+    {
+      "type": "math",
+      "text": "星光花环有 1 颗、2 颗、3 颗星花，下一圈要放几颗，才能继续这个规律？",
+      "shortText": "下一圈放几颗星花？",
+      "detailText": "每一圈比上一圈多 1 颗，继续数下去。",
+      "petMood": "worried",
+      "difficulty": "medium",
+      "reward": {
+        "exp": 40,
+        "msg": "最后一条星光规律完成了！+40 经验"
+      },
+      "mathType": "logic",
+      "question": "1、2、3，下一圈应该有几颗星花？",
+      "answer": 4,
+      "options": [
+        2,
+        3,
+        4,
+        6
+      ],
+      "skill": "预测规律",
+      "hint": "每一圈都多 1 颗。",
+      "explanation": "1、2、3 之后继续多 1 颗，下一圈是 4 颗。",
+      "id": "stargarden.math2"
+    },
+    {
+      "type": "choice",
+      "text": "星光回家站有月光拱门和星座小路。你想沿着哪一条把种子送回花园？",
+      "shortText": "走月光拱门，还是星座小路？",
+      "detailText": "月光拱门会照出花瓣方向，星座小路会照出星点数量。",
+      "petMood": "surprised",
+      "options": [
+        {
+          "text": "🌙 走月光拱门",
+          "reward": "拱门上落下一片凤凰星羽！",
+          "item": "phoenix_feather",
+          "chance": 0.4
+        },
+        {
+          "text": "⭐ 走星座小路",
+          "reward": "星座线中找到一枚星辰碎片！",
+          "item": "star_fragment",
+          "chance": 0.3
+        }
+      ],
+      "id": "stargarden.choice3"
+    },
+    {
+      "type": "encounter",
+      "text": "星光花园守护员把最后四颗种子放在不同花环上，请你按数量和方向把它们送回正确的位置。它相信认真观察的孩子能带伙伴回家。",
+      "shortText": "花园守护员来迎接！",
+      "detailText": "最后的答案不是谁跑得最快，而是谁记得看线索、和伙伴一起完成。",
+      "petMood": "proud",
+      "id": "stargarden.encounter4"
+    }
+  ],
+  "chapter_skill": "pattern_logic",
+  "ending_text": "十二颗星光种子重新点亮了星光回家站。你把一路的线索交给小星舟：真正的星际探索，是看懂新地方的信号，和那里的伙伴一起找到回家的路。"
+}

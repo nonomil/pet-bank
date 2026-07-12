@@ -2,7 +2,7 @@
 
 > 核心文件: [js/home.js](../../js/home.js) (963行)
 > 家具数据: [data/furniture.json](../../data/furniture.json)
-> 方案文档: [docs/方案/宠物小屋-方案.md](../../docs/方案/宠物小屋-方案.md)
+> 方案文档: [docs/方案/产品决策宠物小屋-方案.md](../../docs/方案/产品决策/宠物小屋-方案.md)
 
 ---
 

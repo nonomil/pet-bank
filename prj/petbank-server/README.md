@@ -1,6 +1,6 @@
 # PetBank 自托管后端
 
-这是宠物积分系统的轻量云端后端。它与前端发布目录分离，负责未来的家长账号、家庭、孩子档案和云端状态快照。
+这是宠物积分系统的轻量云端后端。它与前端发布目录分离，负责家长账号、家庭、孩子档案和版本化云端状态快照 API。
 
 当前已经可运行的能力：
 
@@ -9,7 +9,7 @@
 - `GET /api/v1/health` 健康检查
 - Docker Compose 和 Nginx 反向代理模板
 
-当前尚未接入前端的能力：注册、登录、家庭邀请、孩子同步和恢复。账号接口完成安全测试、迁移校验和回滚演练后，才能接入家长端，不能把未完成的接口直接上线。
+当前已接入家长端的能力：注册、登录、refresh、家庭邀请和孩子映射。快照接口及 revision 冲突已实现并有 API 测试，但前端尚未把 push/pull 接入 Profile 启动、切换和恢复流程。好友、串门、PK 和动态流仍未实现，不能把未完成的社交能力直接上线。
 
 ## 本地验证
 
@@ -20,7 +20,7 @@ set PETBANK_JWT_SECRET=local-development-secret-with-more-than-32-characters
 node src/main.mjs
 ```
 
-访问 `http://127.0.0.1:3000/api/v1/health`，应返回 `{ "ok": true }`。
+访问 `http://127.0.0.1:3000/api/v1/health`，应返回 `{ "ok": true }`；接口端到端合同由 `test/api.test.mjs` 覆盖。
 
 ## 服务器原则
 

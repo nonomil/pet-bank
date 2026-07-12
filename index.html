@@ -43,15 +43,20 @@
             if (/^https?:$/.test(window.location.protocol)) {
                 var path = window.location.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '') || '/';
                 var routePrefixes = ['/app', '/settings', '/today', '/learn', '/pet', '/explore', '/playground', '/parent', '/shop'];
+                var matchedIndex = Infinity;
+                var matchedBase = null;
                 for (var i = 0; i < routePrefixes.length; i += 1) {
                     var prefix = routePrefixes[i];
                     var index = path.indexOf(prefix);
                     var nextChar = path.charAt(index + prefix.length);
-                    if (index >= 0 && (!nextChar || nextChar === '/')) {
-                        base = path.slice(0, index) || '/';
-                        if (base !== '/' && !/\/$/.test(base)) base += '/';
-                        break;
+                    if (index >= 0 && index < matchedIndex && (!nextChar || nextChar === '/')) {
+                        matchedIndex = index;
+                        matchedBase = path.slice(0, index) || '/';
                     }
+                }
+                if (matchedBase !== null) {
+                    base = matchedBase;
+                    if (base !== '/' && !/\/$/.test(base)) base += '/';
                 }
             }
             if (baseEl) baseEl.setAttribute('href', base);
@@ -125,9 +130,17 @@
 
     <nav class="parent-shell-nav" aria-label="家长管理导航">
         <div class="parent-shell-nav-inner max-w-7xl mx-auto">
+            <div class="parent-shell-context" aria-label="当前家庭">
+                <span class="parent-shell-context-mark" aria-hidden="true">⌂</span>
+                <span class="parent-shell-context-copy">
+                    <small>当前家庭</small>
+                    <strong id="parentShellHouseholdName">本机家庭</strong>
+                </span>
+            </div>
+            <span class="parent-shell-nav-divider" aria-hidden="true"></span>
             <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="parent" onclick="switchPage('parent')">
                 <i data-lucide="home" class="w-4 h-4" aria-hidden="true"></i>
-                <span>家长首页</span>
+                <span>管理大厅</span>
             </button>
             <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="settings" onclick="switchPage('settings')">
                 <i data-lucide="settings" class="w-4 h-4" aria-hidden="true"></i>
@@ -144,6 +157,10 @@
             <button class="parent-shell-nav-item parent-shell-nav-item-app" type="button" data-parent-shell-nav="app" onclick="switchPage('map')">
                 <i data-lucide="gamepad-2" class="w-4 h-4" aria-hidden="true"></i>
                 <span>进入孩子端</span>
+            </button>
+            <button class="parent-shell-account" type="button" onclick="switchPage('settings', { settingsSection: 'family' })" title="账号与家庭设置">
+                <span class="parent-shell-account-mark" aria-hidden="true">家</span>
+                <span class="parent-shell-account-name">账号与家庭</span>
             </button>
         </div>
     </nav>
@@ -317,9 +334,9 @@
             <div class="page" id="page-parent">
                 <section class="map-hero parent-home-hero">
                     <div class="map-hero-copy">
-                        <p class="map-eyebrow">Parent Console</p>
-                        <h2>家长管理首页</h2>
-                        <p>这里是成人管理入口，孩子日常任务和游戏继续留在 /app；账号、规则、作品和工具从这里进入。</p>
+                        <p class="map-eyebrow">家长区</p>
+                        <h2>家长管理</h2>
+                        <p>先处理孩子和家庭账号，学习规则等不常用功能放在“更多管理”里。</p>
                     </div>
                     <div class="parent-home-status" aria-label="家长区状态">
                         <div>
@@ -332,52 +349,44 @@
                         </div>
                     </div>
                 </section>
-                <section class="parent-home-grid" aria-label="家长管理入口">
-                    <button class="parent-home-entry" type="button" data-parent-entry="settings" onclick="switchPage('settings')">
-                        <span class="parent-home-entry-kicker">设置管理</span>
-                        <strong>账号、家庭与规则</strong>
-                        <span>进入设置首页，再处理孩子档案、家庭云端、学习题目、规则模板和高级操作。</span>
-                    </button>
-                    <button class="parent-home-entry" type="button" data-parent-entry="works" onclick="switchPage('works')">
-                        <span class="parent-home-entry-kicker">成长记录</span>
-                        <strong>成长作品</strong>
-                        <span>收集作品名称和背后的故事，后续可扩展成成长档案与家长复盘。</span>
-                    </button>
-                    <button class="parent-home-entry" type="button" data-parent-entry="tools" onclick="switchPage('tools')">
-                        <span class="parent-home-entry-kicker">低频工具</span>
-                        <strong>工具箱</strong>
-                        <span>随机点名、番茄计时和受控的数据管理入口，不混进孩子主流程。</span>
-                    </button>
+                <section class="parent-home-primary" aria-labelledby="parent-home-primary-title">
+                    <div class="parent-home-quick-head">
+                        <div><span class="parent-home-entry-kicker">最常用</span><h3 id="parent-home-primary-title">你要做什么？</h3></div>
+                        <span>常用操作放在这里</span>
+                    </div>
+                    <div class="parent-home-primary-actions">
+                        <button type="button" class="parent-home-primary-action is-featured" onclick="window.ParentAccountUI?.openChildDialog()">
+                            <i data-lucide="baby" class="w-5 h-5" aria-hidden="true"></i>
+                            <span><strong>添加孩子</strong><small>新建一个孩子档案</small></span>
+                            <b aria-hidden="true">→</b>
+                        </button>
+                        <button type="button" class="parent-home-primary-action" onclick="switchPage('settings', { settingsSection: 'family' })">
+                            <i data-lucide="users" class="w-5 h-5" aria-hidden="true"></i>
+                            <span><strong>添加家长</strong><small>邀请另一位家长加入家庭</small></span>
+                            <b aria-hidden="true">→</b>
+                        </button>
+                        <button type="button" class="parent-home-primary-action" onclick="switchPage('works')">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5" aria-hidden="true"></i>
+                            <span><strong>查看成长</strong><small>看看孩子的作品和记录</small></span>
+                            <b aria-hidden="true">→</b>
+                        </button>
+                    </div>
                 </section>
-                <section class="parent-home-note">
-                    <h3>页面边界</h3>
-                    <p><code>/parent</code> 是家长管理总览；<code>/settings/*</code> 和 <code>/parent/settings/*</code> 是设置子页；<code>/app/*</code> 是孩子主应用。</p>
+                <section class="parent-home-more" aria-label="更多管理">
+                    <details>
+                        <summary><span><strong>更多管理</strong><small>学习设置、规则、工具和高级操作</small></span><i data-lucide="chevron-down" class="w-4 h-4" aria-hidden="true"></i></summary>
+                        <div class="parent-home-more-grid">
+                            <button type="button" onclick="switchPage('settings', { settingsSection: 'learning' })"><i data-lucide="book-open" class="w-4 h-4" aria-hidden="true"></i><span>学习设置</span><b aria-hidden="true">→</b></button>
+                            <button type="button" onclick="switchPage('settings', { settingsSection: 'rules' })"><i data-lucide="list-checks" class="w-4 h-4" aria-hidden="true"></i><span>规则模板</span><b aria-hidden="true">→</b></button>
+                            <button type="button" onclick="switchPage('tools')"><i data-lucide="wrench" class="w-4 h-4" aria-hidden="true"></i><span>工具箱</span><b aria-hidden="true">→</b></button>
+                            <button type="button" onclick="switchPage('settings', { settingsSection: 'advanced' })"><i data-lucide="shield" class="w-4 h-4" aria-hidden="true"></i><span>高级操作</span><b aria-hidden="true">→</b></button>
+                        </div>
+                    </details>
                 </section>
             </div>
 
             <!-- PAGE: 设置 / 账号管理 -->
             <div class="page" id="page-settings">
-                <details class="section-menu">
-                    <summary class="section-menu-trigger">
-                        <div class="section-menu-copy">
-                            <span class="section-menu-label">家长区导航</span>
-                            <span class="section-menu-current">当前：设置首页</span>
-                        </div>
-                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
-                    </summary>
-                    <div class="section-menu-panel">
-                        <button class="section-menu-item" type="button" onclick="switchPage('parent')">家长首页</button>
-                        <button class="section-menu-item" type="button" onclick="switchPage('works')">成长作品</button>
-                        <button class="section-menu-item" type="button" onclick="switchPage('tools')">工具箱</button>
-                        <button class="section-menu-item is-current" type="button" onclick="switchPage('settings')">设置首页</button>
-                    </div>
-                </details>
-                <div class="section-shortcuts" role="navigation" aria-label="家长区快捷导航">
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('parent')">家长首页</button>
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('works')">成长作品</button>
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('tools')">工具箱</button>
-                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('settings')">设置首页</button>
-                </div>
                 <section class="map-hero" style="margin-bottom:16px;">
                     <div class="map-hero-copy">
                         <p class="map-eyebrow" id="settingsHeroEyebrow">设置 / 家长区</p>
@@ -387,11 +396,14 @@
                 </section>
                 <section class="map-stage-panel parent-settings-panel settings-subpage-shell" aria-label="家长设置分区">
                     <nav class="settings-subpage-nav" aria-label="设置子页面">
+                        <span class="settings-subpage-nav-group-label">账号与家庭</span>
                         <a class="settings-subpage-nav-item is-current" href="/settings" data-settings-nav="home" onclick="handleSettingsNavClick(event, 'home')">设置首页</a>
-                        <a class="settings-subpage-nav-item" href="/settings/account" data-settings-nav="account" onclick="handleSettingsNavClick(event, 'account')">账号与孩子</a>
-                        <a class="settings-subpage-nav-item" href="/settings/family" data-settings-nav="family" onclick="handleSettingsNavClick(event, 'family')">家庭云端</a>
+                        <a class="settings-subpage-nav-item" href="/settings/family" data-settings-nav="family" onclick="handleSettingsNavClick(event, 'family')">家庭账号</a>
+                        <a class="settings-subpage-nav-item" href="/settings/account" data-settings-nav="account" onclick="handleSettingsNavClick(event, 'account')">孩子档案</a>
+                        <span class="settings-subpage-nav-group-label">孩子体验</span>
                         <a class="settings-subpage-nav-item" href="/settings/learning" data-settings-nav="learning" onclick="handleSettingsNavClick(event, 'learning')">学习与题目</a>
                         <a class="settings-subpage-nav-item" href="/settings/rules" data-settings-nav="rules" onclick="handleSettingsNavClick(event, 'rules')">规则模板</a>
+                        <span class="settings-subpage-nav-group-label">系统</span>
                         <a class="settings-subpage-nav-item" href="/settings/advanced" data-settings-nav="advanced" onclick="handleSettingsNavClick(event, 'advanced')">高级操作</a>
                     </nav>
                     <div class="parent-settings-shell settings-subpage-panels">
@@ -407,13 +419,13 @@
                             <div class="settings-home-grid">
                                 <a class="settings-home-entry" href="/settings/account" onclick="handleSettingsNavClick(event, 'account')">
                                     <span class="settings-home-entry-kicker">常用</span>
-                                    <strong>账号与孩子</strong>
+                                    <strong>孩子档案</strong>
                                     <span>新增、改名、删除孩子档案。</span>
                                 </a>
                                 <a class="settings-home-entry" href="/settings/family" onclick="handleSettingsNavClick(event, 'family')">
                                     <span class="settings-home-entry-kicker">家长账号</span>
                                     <strong>家庭账号</strong>
-                                    <span>自托管账号服务正在建设，当前先管理本机孩子档案。</span>
+                                    <span>管理家长成员、邀请码、家庭和跨设备同步。</span>
                                 </a>
                                 <a class="settings-home-entry" href="/settings/learning" onclick="handleSettingsNavClick(event, 'learning')">
                                     <span class="settings-home-entry-kicker">低频调整</span>
@@ -432,26 +444,24 @@
                             <div class="parent-settings-section-head">
                                 <div>
                                     <p class="parent-settings-kicker">孩子档案</p>
-                                    <h3 id="parent-settings-accounts-title">账号与孩子</h3>
+                                    <h3 id="parent-settings-accounts-title">孩子档案</h3>
                                 </div>
                                 <span class="parent-settings-tag">常用</span>
                             </div>
-                            <p class="parent-settings-copy">新增、改名或删除孩子账号；切换当前孩子仍然使用右上角头像。</p>
+                            <p class="parent-settings-copy">新增、改名或删除孩子档案；切换当前孩子进入孩子端后使用头像菜单。</p>
                             <div id="settings-account-list"></div>
                         </section>
 
                         <section class="parent-settings-section settings-subpage-panel" data-settings-section="family" aria-labelledby="parent-settings-account-service-title">
                             <div class="parent-settings-section-head">
                                 <div>
-                                    <p class="parent-settings-kicker">自托管服务</p>
+                            <p class="parent-settings-kicker">自托管服务</p>
                                     <h3 id="parent-settings-account-service-title">家庭账号</h3>
                                 </div>
-                                <span class="parent-settings-tag">建设中</span>
+                                <span class="parent-settings-tag">已接入</span>
                             </div>
-                            <p class="parent-settings-copy">账号服务将由 VPS 上的 Node.js + SQLite 提供。当前版本不再加载 Supabase；孩子端仍可使用本机多孩子档案和离线玩法。</p>
-                            <div class="parent-settings-note">
-                                自托管账号 API 完成前，请继续使用本机孩子档案。账号、家庭邀请、跨设备同步和好友互动不会在此版本伪装成已可用。
-                            </div>
+                            <p class="parent-settings-copy">家长账号、家庭、孩子档案和快照同步由 VPS 上的 Node.js + SQLite 提供；孩子端仍保持本机离线玩法。</p>
+                            <div id="parent-account-root"></div>
                         </section>
 
                         <section class="parent-settings-section settings-subpage-panel" data-settings-section="learning" aria-labelledby="parent-settings-learning-title">
@@ -900,27 +910,6 @@
 
             <!-- PAGE: 成长作品 -->
             <div class="page" id="page-works">
-                <details class="section-menu">
-                    <summary class="section-menu-trigger">
-                        <div class="section-menu-copy">
-                            <span class="section-menu-label">家长区导航</span>
-                            <span class="section-menu-current">当前：成长作品</span>
-                        </div>
-                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
-                    </summary>
-                    <div class="section-menu-panel">
-                        <button class="section-menu-item" type="button" onclick="switchPage('parent')">家长首页</button>
-                        <button class="section-menu-item is-current" type="button" onclick="switchPage('works')">成长作品</button>
-                        <button class="section-menu-item" type="button" onclick="switchPage('tools')">工具箱</button>
-                        <button class="section-menu-item" type="button" onclick="switchPage('settings')">设置</button>
-                    </div>
-                </details>
-                <div class="section-shortcuts" role="navigation" aria-label="家长区快捷导航">
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('parent')">家长首页</button>
-                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('works')">成长作品</button>
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('tools')">工具箱</button>
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('settings')">设置</button>
-                </div>
                 <div class="card">
                     <div class="card-header"><h2 class="text-lg font-bold">成长作品收集</h2></div>
                     <div class="card-body space-y-4">
@@ -1339,27 +1328,6 @@
 
             <!-- PAGE: 工具箱 -->
             <div class="page" id="page-tools">
-                <details class="section-menu">
-                    <summary class="section-menu-trigger">
-                        <div class="section-menu-copy">
-                            <span class="section-menu-label">家长区导航</span>
-                            <span class="section-menu-current">当前：工具箱</span>
-                        </div>
-                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
-                    </summary>
-                    <div class="section-menu-panel">
-                        <button class="section-menu-item" type="button" onclick="switchPage('parent')">家长首页</button>
-                        <button class="section-menu-item" type="button" onclick="switchPage('works')">成长作品</button>
-                        <button class="section-menu-item is-current" type="button" onclick="switchPage('tools')">工具箱</button>
-                        <button class="section-menu-item" type="button" onclick="switchPage('settings')">设置</button>
-                    </div>
-                </details>
-                <div class="section-shortcuts" role="navigation" aria-label="家长区快捷导航">
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('parent')">家长首页</button>
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('works')">成长作品</button>
-                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('tools')">工具箱</button>
-                    <button class="section-shortcut-btn" type="button" onclick="switchPage('settings')">设置</button>
-                </div>
                 <div id="tools-ui"></div>
             </div>
 
@@ -1503,6 +1471,8 @@
     <script src="js/inventory.js"></script>
     <script src="js/treasure.js"></script>
     <script src="js/profiles.js"></script>
+    <script src="js/self-hosted-api.js"></script>
+    <script src="js/parent-account.js"></script>
     <script src="js/runtime-loader.js?v=20260711"></script>
     <script src="js/lucide-lite.js"></script>
     <script src="js/battle-fx.js"></script>
