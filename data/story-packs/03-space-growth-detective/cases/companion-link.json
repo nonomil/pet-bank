@@ -1,0 +1,32 @@
+{
+  "id": "companion-link",
+  "title": "伙伴连线",
+  "prerequisiteCaseId": "star-dust-footprints",
+  "message": {
+    "sender": "星际宠物成长中心",
+    "text": "双星桥的连线变暗了。它需要一件和伙伴一起完成的小事。"
+  },
+  "clue": {
+    "source": "pet.intimacy",
+    "presentation": {
+      "bands": [
+        { "max": 20, "id": "new", "label": "连线刚刚亮起" },
+        { "max": 60, "id": "growing", "label": "连线越来越亮" },
+        { "max": 9999, "id": "strong", "label": "连线明亮又结实" }
+      ]
+    },
+    "unavailable": { "label": "还没有收到伙伴信号" }
+  },
+  "question": {
+    "prompt": "怎样能让双星桥的连线变亮？",
+    "answers": [
+      { "id": "stay-together", "label": "一起完成小任务", "isCorrect": true, "reason": "一起做事会让伙伴更熟悉。", "hint": "想想两个人一起能做什么。" },
+      { "id": "race-away", "label": "比谁跑得快", "isCorrect": false, "reason": "", "hint": "连线需要的是一起，不是分开。" }
+    ]
+  },
+  "careAction": { "id": "play", "invoke": "play", "options": {}, "label": "一起点亮连线" },
+  "reply": {
+    "careAction": "你和小伙伴一起点亮了双星桥。两颗星之间多了一条温暖的线。",
+    "fallback": "你找到了合作的办法。双星桥记下了这份伙伴心意。"
+  }
+}

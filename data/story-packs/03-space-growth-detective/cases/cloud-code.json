@@ -1,0 +1,32 @@
+{
+  "id": "cloud-code",
+  "title": "云朵密码",
+  "prerequisiteCaseId": "energy-stardust",
+  "message": {
+    "sender": "星际宠物成长中心",
+    "text": "漂浮信号带飘来三朵心情云。请帮我们找到最想一起玩的一朵。"
+  },
+  "clue": {
+    "source": "pet.happiness",
+    "presentation": {
+      "bands": [
+        { "max": 30, "id": "rainy", "label": "心情在下小雨" },
+        { "max": 70, "id": "cloudy", "label": "心情飘着云" },
+        { "max": 100, "id": "sunny", "label": "心情晴朗" }
+      ]
+    },
+    "unavailable": { "label": "还没有收到心情信号" }
+  },
+  "question": {
+    "prompt": "哪种办法能让伙伴的心情云亮一点？",
+    "answers": [
+      { "id": "play-together", "label": "一起玩一会儿", "isCorrect": true, "reason": "陪伴会让心情云变亮。", "hint": "想想谁愿意一起玩。" },
+      { "id": "leave-alone", "label": "自己走开", "isCorrect": false, "reason": "", "hint": "再找找能一起做的事。" }
+    ]
+  },
+  "careAction": { "id": "play", "invoke": "play", "options": {}, "label": "一起玩一会儿" },
+  "reply": {
+    "careAction": "你陪小伙伴玩了一会儿。心情云变成了轻轻发光的路标。",
+    "fallback": "你找到了陪伴的办法。心情云把这条温柔提示送上天空。"
+  }
+}

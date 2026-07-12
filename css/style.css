@@ -7277,3 +7277,124 @@ body.shell-parent .app-bottom-dock {
         grid-template-columns: 1fr;
     }
 }
+
+.story-case-shell {
+    max-width: 1160px;
+    margin: 0 auto 18px;
+    padding: 0 20px;
+}
+
+.story-case-panel {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid #c9d7e6;
+    border-radius: 8px;
+    background: #f8fbff;
+    color: #1d334a;
+}
+
+.story-case-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.story-case-heading > span {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffd86a;
+    color: #594000;
+    font-size: 20px;
+}
+
+.story-case-heading p,
+.story-case-heading h3,
+.story-case-card p,
+.story-case-reply,
+.story-case-feedback,
+.story-case-finish {
+    margin: 0;
+}
+
+.story-case-heading p,
+.story-case-label {
+    color: #596f87;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.story-case-heading h3 {
+    font-size: 18px;
+}
+
+.story-case-card {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+    padding: 10px 0;
+    border-top: 1px solid #dce6ef;
+}
+
+.story-case-answers,
+.story-case-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.story-case-answer,
+.story-case-action,
+.story-case-secondary {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid #88a4c0;
+    border-radius: 6px;
+    background: #fff;
+    color: #1d334a;
+    font: inherit;
+    cursor: pointer;
+}
+
+.story-case-action {
+    border-color: #236b46;
+    background: #2f8759;
+    color: #fff;
+}
+
+.story-case-secondary {
+    border-color: #bb8b2f;
+    color: #76520d;
+}
+
+.story-case-reply {
+    padding: 10px 12px;
+    border-left: 4px solid #2f8759;
+    background: #edf8f1;
+}
+
+.story-case-feedback {
+    color: #76520d;
+    font-weight: 700;
+}
+
+@media (max-width: 560px) {
+    .story-case-shell {
+        padding: 0 12px;
+    }
+
+    .story-case-card {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .story-case-answer,
+    .story-case-action,
+    .story-case-secondary {
+        width: 100%;
+    }
+}

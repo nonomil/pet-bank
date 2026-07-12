@@ -75,6 +75,7 @@ const PetSystem = (function () {
         intimacy: 0,             // 亲密度（新增，宠物小屋 §5.3）
         cleanliness: 50,         // 清洁度（新增隐藏维度，方案 §4.5，不进五维条）
         last_home_ts: null,      // 上次离开宠物小屋的 unix 秒（新增，decay 结算基准）
+        pet_id: null,            // 宠物实例 ID：故事、回顾等跨模块进度的稳定作用域
         // 战斗深化（设计稿 DESIGN-2026-06-29-02）
         skills: ['power_strike', 'defend', 'ultimate'],  // 已开放技能 id
         defending: false,        // 防御态：下回合受击减伤 50%（一次性）
@@ -84,6 +85,10 @@ const PetSystem = (function () {
     let cooldowns = {};
     // 技能定义表（data/skills.json）
     let skillsData = null;
+
+    function createPetId() {
+        return `pet_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+    }
 
     // 加载保存的状态
     function load() {
@@ -102,6 +107,10 @@ const PetSystem = (function () {
                 if (state.def == null) state.def = sp.base_def || 0;
                 if (state.spd == null) state.spd = sp.base_spd || 0;
             }
+        }
+        if (state.species && !state.pet_id) {
+            state.pet_id = createPetId();
+            save();
         }
     }
 
@@ -134,6 +143,7 @@ const PetSystem = (function () {
         state.intimacy = 0;
         state.cleanliness = 50;
         state.last_home_ts = null;
+        state.pet_id = createPetId();
         save();
         return true;
     }

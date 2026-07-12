@@ -1,0 +1,32 @@
+{
+  "id": "star-dust-footprints",
+  "title": "星粉脚印",
+  "prerequisiteCaseId": "cloud-code",
+  "message": {
+    "sender": "星际宠物成长中心",
+    "text": "轨道维修区留下了两排星粉脚印。整洁的外套才能看清回家的方向。"
+  },
+  "clue": {
+    "source": "pet.cleanliness",
+    "presentation": {
+      "bands": [
+        { "max": 30, "id": "dusty", "label": "外套沾满星粉" },
+        { "max": 70, "id": "speckled", "label": "外套有一点星粉" },
+        { "max": 100, "id": "neat", "label": "外套整整齐齐" }
+      ]
+    },
+    "unavailable": { "label": "还没有收到外套信号" }
+  },
+  "question": {
+    "prompt": "发现星粉脚印后，先做什么更好？",
+    "answers": [
+      { "id": "clean-first", "label": "先整理外套", "isCorrect": true, "reason": "干净些，脚印就更清楚。", "hint": "找找能看清脚印的办法。" },
+      { "id": "scatter-more", "label": "再撒一些星粉", "isCorrect": false, "reason": "", "hint": "星粉太多会盖住脚印。" }
+    ]
+  },
+  "careAction": { "id": "bath", "invoke": "bath", "options": {}, "label": "整理星粉外套" },
+  "reply": {
+    "careAction": "你整理好了小伙伴的星粉外套。细细的脚印连成了一条回家线。",
+    "fallback": "你发现了让脚印更清楚的办法。维修区的灯为你亮起来。"
+  }
+}

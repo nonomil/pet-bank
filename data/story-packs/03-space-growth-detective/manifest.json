@@ -1,0 +1,18 @@
+{
+  "id": "space-growth-detective",
+  "title": "宠物手机：星光成长侦探社",
+  "version": "20260712-v1",
+  "status": "active",
+  "active": true,
+  "audience": "幼小衔接",
+  "ageRange": "5-6",
+  "runtime": "explore-panel",
+  "caseIds": [
+    "energy-stardust",
+    "cloud-code",
+    "star-dust-footprints",
+    "companion-link",
+    "home-star-map"
+  ],
+  "sourceText": "docs/探索地图故事/03-宠物手机星光成长侦探社/03-第一季故事文本.md"
+}

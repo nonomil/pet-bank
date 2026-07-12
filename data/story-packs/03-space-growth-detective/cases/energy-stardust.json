@@ -1,0 +1,32 @@
+{
+  "id": "energy-stardust",
+  "title": "能量星尘",
+  "prerequisiteCaseId": null,
+  "message": {
+    "sender": "星际宠物成长中心",
+    "text": "月环补给站收到一粒饿扁的星尘。它想跟着有力气的小伙伴回家。"
+  },
+  "clue": {
+    "source": "pet.hunger",
+    "presentation": {
+      "bands": [
+        { "max": 30, "id": "needs-energy", "label": "需要点心" },
+        { "max": 70, "id": "steady", "label": "能量平稳" },
+        { "max": 100, "id": "bright", "label": "能量充足" }
+      ]
+    },
+    "unavailable": { "label": "还没有收到能量信号" }
+  },
+  "question": {
+    "prompt": "看到能量灯，你会先怎么做？",
+    "answers": [
+      { "id": "feed-first", "label": "先去补给", "isCorrect": true, "reason": "先补上能量，再出发更稳。", "hint": "再看看能量灯。" },
+      { "id": "launch-first", "label": "马上起飞", "isCorrect": false, "reason": "", "hint": "先有力气，飞行才安全。" }
+    ]
+  },
+  "careAction": { "id": "feed", "invoke": "feed", "options": { "homeContext": true }, "label": "补上能量" },
+  "reply": {
+    "careAction": "你给小伙伴补上了能量。星尘已经有力气继续飞行。",
+    "fallback": "你找到了先补给的好办法。星尘记住了这条安全路线。"
+  }
+}

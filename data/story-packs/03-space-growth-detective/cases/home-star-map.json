@@ -1,0 +1,32 @@
+{
+  "id": "home-star-map",
+  "title": "回家星图",
+  "prerequisiteCaseId": "companion-link",
+  "message": {
+    "sender": "星际宠物成长中心",
+    "text": "四颗成长星点已经回到星图。请帮我们选出最后一颗回家的星。"
+  },
+  "clue": {
+    "source": "pet.level",
+    "presentation": {
+      "bands": [
+        { "max": 2, "id": "starting", "label": "刚刚起航" },
+        { "max": 7, "id": "growing", "label": "正在长大" },
+        { "max": 9999, "id": "brave", "label": "已经学会好多本领" }
+      ]
+    },
+    "unavailable": { "label": "还没有收到成长星图" }
+  },
+  "question": {
+    "prompt": "最后一颗星，应该写上什么？",
+    "answers": [
+      { "id": "remember-care", "label": "我会照顾伙伴", "isCorrect": true, "reason": "你已经一次次看见伙伴需要什么。", "hint": "想想前面帮过伙伴的事。" },
+      { "id": "forget-route", "label": "我不记得了", "isCorrect": false, "reason": "", "hint": "星图上有你留下的四颗星点。" }
+    ]
+  },
+  "careAction": { "id": "rest", "invoke": "rest", "options": {}, "label": "一起看看星图" },
+  "reply": {
+    "careAction": "你和小伙伴一起看完星图。最后一颗星写着：我会照顾伙伴。",
+    "fallback": "你说出了最重要的成长答案。最后一颗星已经找到回家的位置。"
+  }
+}

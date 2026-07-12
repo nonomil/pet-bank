@@ -3941,6 +3941,9 @@ function getExploreMapShellHTML() {
                 <p>点击地图上的场景卡片即可出发。金色星点已开放，灰色尚未解锁，发光路线把场景串成一条旅程。</p>
             </div>
         </section>
+        <section class="story-case-shell">
+            <div id="petStoryCasePanel"></div>
+        </section>
         <section class="map-board-shell">
             <div class="map-board-surface">
                 <div class="map-board-texture"></div>
@@ -3984,6 +3987,9 @@ async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
     await ExplorationSystem.loadScenes();
     // 探索 tab 复用首页路线地图（MAP_LAYOUT 坐标 + SVG 连线 + 点击 goExplore），渲染到 #sceneGrid
     ExplorationSystem.renderSceneGridMap(selectedSceneId, 'sceneGrid');
+    if (window.PetStoryCases && typeof PetStoryCases.render === 'function') {
+        await PetStoryCases.render('petStoryCasePanel');
+    }
     if (window.lucide) lucide.createIcons();
 }
 
