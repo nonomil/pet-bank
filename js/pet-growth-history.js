@@ -10,7 +10,13 @@
         try { const raw = root.localStorage && root.localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch (e) { return fallback; }
     }
     function write(key, value) { try { root.localStorage && root.localStorage.setItem(key, JSON.stringify(value)); } catch (e) {} }
-    function dateKey(date = new Date()) { const d = new Date(date); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+    function dateKey(date = new Date()) {
+        if (arguments.length === 0 && root.PetBankTime && typeof root.PetBankTime.localDate === 'function') {
+            return root.PetBankTime.localDate();
+        }
+        const d = new Date(date);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
     function append(entry) {
         if (!entry || typeof entry !== 'object') return null;
         const list = read(KEY, []);

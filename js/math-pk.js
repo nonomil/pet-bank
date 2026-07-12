@@ -1736,7 +1736,9 @@
                 : 'p_default';
             const localDate = window.PetBankDailyState && typeof window.PetBankDailyState.localDate === 'function'
                 ? window.PetBankDailyState.localDate()
-                : new Date().toLocaleDateString();
+                : (window.PetBankTime && typeof window.PetBankTime.localDate === 'function'
+                    ? window.PetBankTime.localDate()
+                    : '');
             const receiptService = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
                 ? window.GameRewardReceipts
                 : null;

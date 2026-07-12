@@ -18,6 +18,9 @@ const DAILY_STATE_MIGRATED_KEY = 'petbank_daily_state_migrated';
 const DAILY_CHEST_INITIAL_COUNT = 1;
 
 function getLocalDateKey() {
+    if (window.PetBankTime && typeof window.PetBankTime.localDate === 'function') {
+        return window.PetBankTime.localDate();
+    }
     const now = new Date();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');

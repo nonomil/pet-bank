@@ -59,6 +59,9 @@ const WalkSystem = (function() {
         if (window.PetBankDailyState && typeof window.PetBankDailyState.localDate === 'function') {
             return window.PetBankDailyState.localDate();
         }
+        if (window.PetBankTime && typeof window.PetBankTime.localDate === 'function') {
+            return window.PetBankTime.localDate();
+        }
         const now = new Date();
         return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     }

@@ -6,7 +6,7 @@
 
 | 语义 | 约定 | 用途 |
 | --- | --- | --- |
-| 本地业务日 | `YYYY-MM-DD`，由 `window.PetBankDailyState.localDate()` 提供 | 今日任务、每日宝箱、学习单等日状态 |
+| 本地业务日 | `YYYY-MM-DD`，由 `window.PetBankTime.localDate()` 提供 | 今日任务、每日宝箱、学习单等日状态 |
 | 即时时间 | `Date.now()`，毫秒 | 局内计时、排序、timer 截止时间 |
 | 审计时间 | `new Date().toISOString()` | receipt、成长历史、词汇更新时间 |
 | 宠物衰减时间 | Unix 秒 | `PetSystem.last_home_ts` 与 `decay()` 内部计算 |
@@ -16,13 +16,13 @@
 
 ## 2. 每日状态
 
-`js/app.js` 的 `PetBankDailyState` 是当前每日任务和日常宝箱的共享合同：
+`js/time-utils.js` 的 `PetBankTime` 提供跨模块的日期和时间单位转换；`js/app.js` 的 `PetBankDailyState` 是当前每日任务和日常宝箱的共享状态合同：
 
 ```text
 { date, profileId, completedTasks, dailyChestClaimed, dailyChestCount }
 ```
 
-读取时按 `date + profileId` 判断是否为当前状态；跨本地日重建任务集合和日宝箱数量，积分本身不清零。旧键仍被同步用于兼容：
+读取时按 `date + profileId` 判断是否为当前状态；跨本地日重建任务集合和日宝箱数量，积分本身不清零。业务模块不要复制日期算法，直接调用 `PetBankTime.localDate()`。旧键仍被同步用于兼容：
 
 - `petbank_completed`
 - `petbank_tasks_completed_today`
@@ -74,6 +74,7 @@ switchTo(target)
 - `setTimeout` 适合 toast、特效、延迟预加载等 UI 生命周期，不是奖励或日切依据。
 - `setInterval` 必须有明确 owner、停止条件和 reload/离页清理路径；重点关注番茄钟、展示轮播、遛弯动画。
 - `app.js` 使用 `pageActivationToken` 防止异步加载完成后把旧页面渲染到新页面。新增跨页异步任务要复用 token 或 AbortController。
+- `PetBankTime` 只负责纯时间值计算，不持有 timer，也不改变业务状态；页面和玩法模块仍必须由 owner 保存并清理自己的 timer/AbortController。
 - `runtime-loader` 的 feature Promise 和资源 Promise 用于去重；不要在业务模块里绕过 loader 重复插入脚本。
 - 语音播放需要停止旧音频/取消旧请求；探索离页时必须停止语音。
 - Profile reload、导入 reload 和独立小游戏 iframe 都应视为生命周期边界，消息和回调必须带 source/session/seq 校验。

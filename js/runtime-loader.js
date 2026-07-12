@@ -10,6 +10,16 @@
             return {};
         }
     }
+    function getRewardLocalDate(input) {
+        const supplied = String(input && input.localDate || '').trim();
+        if (window.PetBankTime && typeof window.PetBankTime.isDateKey === 'function'
+            && window.PetBankTime.isDateKey(supplied)) return supplied;
+        if (window.PetBankTime && typeof window.PetBankTime.localDate === 'function') {
+            return window.PetBankTime.localDate();
+        }
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
     function claimGameRewardReceipt(input = {}) {
         const profileId = String(input.profileId || 'p_default').trim() || 'p_default';
         const source = String(input.source || '').trim();
@@ -55,7 +65,7 @@
             source,
             eventId,
             points,
-            localDate: String(input.localDate || new Date().toLocaleDateString()),
+            localDate: getRewardLocalDate(input),
             claimedAt: new Date().toISOString(),
             schemaVersion: 1
         };

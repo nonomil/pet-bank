@@ -7,8 +7,11 @@
     const ACTIONS = ['feed', 'play', 'bath', 'rest'];
     const LABELS = { feed: '喂食', play: '玩耍', bath: '洗澡', rest: '休息' };
 
-    function today(date = new Date()) {
-        const d = date instanceof Date ? date : new Date(date);
+    function today(date) {
+        if (date == null && root.PetBankTime && typeof root.PetBankTime.localDate === 'function') {
+            return root.PetBankTime.localDate();
+        }
+        const d = date instanceof Date ? date : new Date(date || Date.now());
         const y = d.getFullYear();
         const m = String(d.getMonth() + 1).padStart(2, '0');
         const day = String(d.getDate()).padStart(2, '0');
