@@ -1913,70 +1913,6 @@ function completeRecommended() {
     renderAll();
 }
 
-// ============ 一级导航映射（首页 Tab 收口，M0.6） ============
-// tab 名称 -> 默认落地页（单一事实源，对应 docs/plans/2026-06-29-home-tab-navigation-*）
-const HOME_TAB_MAP = { '首页': 'map', '积分': 'today', '学习': 'learn', '宠物': 'pet', '探索': 'explore', '游乐场': 'playground', '家长区': 'parent' };
-function getHomeTabMap() { return Object.assign({}, HOME_TAB_MAP); }
-// 叶子页 / hub 页 -> 所属一级 tab 的 data-page（switchPage 时据此高亮父 tab）
-const PAGE_TO_TAB = {
-    map: 'map',                                                 // 首页（dashboard）
-    today: 'today', 'learning-sheet': 'today', review: 'today', reward: 'today',           // 积分（核心任务/学习单/复盘/奖励）
-    shop: 'today', inventory: 'today',                          // 兑换并入积分
-    learn: 'learn', 'learn-pack': 'learn', 'learn-plan': 'learn',   // 学习中心
-    'learn-lesson': 'learn', 'learn-print': 'learn',
-    playground: 'playground',                                   // 游乐场（hub）
-    mathpk: 'playground', hanzi: 'playground',                  // 数学PK/汉字 → 游乐场
-    'typing-defense': 'playground',
-    'learning-arcade': 'playground',
-    'word-memory-map': 'playground',
-    leaderboard: 'playground',                                  // 排行榜 → 游乐场
-    pet: 'pet', home: 'pet', card: 'pet', walk: 'pet',          // 宠物
-    explore: 'explore',                                         // 探索（含成长地图）
-    parent: 'parent',
-    works: 'parent', tools: 'parent', settings: 'parent'         // 低频作品/工具/设置归右上角家长区入口
-};
-
-const CLASSIC_APP_PAGES = new Set([
-    'map',
-    'today',
-    'learning-sheet',
-    'review',
-    'reward',
-    'shop',
-    'inventory',
-    'learn',
-    'learn-pack',
-    'learn-plan',
-    'learn-lesson',
-    'learn-print',
-    'pet',
-    'home',
-    'explore',
-    'playground'
-]);
-
-const APP_SHELL_PAGES = new Set([
-    'walk',
-    'card',
-    'mathpk',
-    'hanzi',
-    'typing-defense',
-    'learning-arcade',
-    'word-memory-map',
-    'leaderboard'
-]);
-
-const PARENT_SHELL_PAGES = new Set(['parent', 'works', 'tools', 'settings']);
-
-const SETTINGS_SECTION_ROUTES = {
-    home: '/settings',
-    account: '/settings/account',
-    family: '/settings/family',
-    learning: '/settings/learning',
-    rules: '/settings/rules',
-    advanced: '/settings/advanced'
-};
-
 const SETTINGS_SECTION_LABELS = {
     home: '设置首页',
     account: '家庭与孩子',
@@ -1986,202 +1922,24 @@ const SETTINGS_SECTION_LABELS = {
     advanced: '高级与危险操作'
 };
 
-const PAGE_ROUTE_MAP = {
-    map: '/app',
-    today: '/app/today',
-    'learning-sheet': '/app/today/learning-sheet',
-    review: '/app/today/review',
-    reward: '/app/today/reward',
-    shop: '/app/today/shop',
-    inventory: '/app/today/inventory',
-    learn: '/app/learn',
-    'learn-pack': '/app/learn/pack',
-    'learn-plan': '/app/learn/plan',
-    'learn-lesson': '/app/learn/lesson',
-    'learn-print': '/app/learn/print',
-    pet: '/app/pet',
-    home: '/app/pet/home',
-    walk: '/app/pet/walk',
-    card: '/app/pet/cards',
-    explore: '/app/explore',
-    playground: '/app/playground',
-    mathpk: '/app/playground/math-pk',
-    hanzi: '/app/playground/hanzi',
-    'typing-defense': '/app/playground/typing-defense',
-    'learning-arcade': '/app/playground/learning-arcade',
-    'word-memory-map': '/app/playground/word-memory-map',
-    leaderboard: '/app/playground/leaderboard',
-    parent: '/parent',
-    works: '/parent/works',
-    tools: '/parent/tools',
-    settings: '/settings'
-};
-
-const ROUTE_TO_PAGE = {
-    '/': { page: 'map' },
-    '/app': { page: 'map' },
-    '/app/today': { page: 'today' },
-    '/app/today/learning-sheet': { page: 'learning-sheet' },
-    '/app/today/review': { page: 'review' },
-    '/app/today/reward': { page: 'reward' },
-    '/app/today/shop': { page: 'shop' },
-    '/app/today/inventory': { page: 'inventory' },
-    '/app/learn': { page: 'learn' },
-    '/app/learn/pack': { page: 'learn-pack' },
-    '/app/learn/plan': { page: 'learn-plan' },
-    '/app/learn/lesson': { page: 'learn-lesson' },
-    '/app/learn/print': { page: 'learn-print' },
-    '/app/pet': { page: 'pet' },
-    '/app/pet/home': { page: 'home' },
-    '/app/pet/walk': { page: 'walk' },
-    '/app/pet/cards': { page: 'card' },
-    '/app/explore': { page: 'explore' },
-    '/app/playground': { page: 'playground' },
-    '/app/playground/math-pk': { page: 'mathpk' },
-    '/app/playground/hanzi': { page: 'hanzi' },
-    '/app/playground/typing-defense': { page: 'typing-defense' },
-    '/app/playground/learning-arcade': { page: 'learning-arcade' },
-    '/app/playground/word-memory-map': { page: 'word-memory-map' },
-    '/app/playground/leaderboard': { page: 'leaderboard' },
-    '/today': { page: 'today' },
-    '/today/learning-sheet': { page: 'learning-sheet' },
-    '/today/review': { page: 'review' },
-    '/today/reward': { page: 'reward' },
-    '/today/shop': { page: 'shop' },
-    '/today/inventory': { page: 'inventory' },
-    '/shop': { page: 'shop' },
-    '/learn': { page: 'learn' },
-    '/learn/pack': { page: 'learn-pack' },
-    '/learn/plan': { page: 'learn-plan' },
-    '/learn/lesson': { page: 'learn-lesson' },
-    '/learn/print': { page: 'learn-print' },
-    '/pet': { page: 'pet' },
-    '/pet/home': { page: 'home' },
-    '/pet/walk': { page: 'walk' },
-    '/pet/cards': { page: 'card' },
-    '/explore': { page: 'explore' },
-    '/playground': { page: 'playground' },
-    '/playground/math-pk': { page: 'mathpk' },
-    '/playground/hanzi': { page: 'hanzi' },
-    '/playground/typing-defense': { page: 'typing-defense' },
-    '/playground/learning-arcade': { page: 'learning-arcade' },
-    '/playground/word-memory-map': { page: 'word-memory-map' },
-    '/playground/leaderboard': { page: 'leaderboard' },
-    '/parent': { page: 'parent' },
-    '/parent/works': { page: 'works' },
-    '/parent/tools': { page: 'tools' },
-    '/parent/settings': { page: 'settings', settingsSection: 'family' },
-    '/parent/settings/account': { page: 'settings', settingsSection: 'account' },
-    '/parent/settings/family': { page: 'settings', settingsSection: 'family' },
-    '/parent/settings/learning': { page: 'settings', settingsSection: 'learning' },
-    '/parent/settings/rules': { page: 'settings', settingsSection: 'rules' },
-    '/parent/settings/advanced': { page: 'settings', settingsSection: 'advanced' },
-    '/settings': { page: 'settings', settingsSection: 'family' },
-    '/settings/account': { page: 'settings', settingsSection: 'account' },
-    '/settings/family': { page: 'settings', settingsSection: 'family' },
-    '/settings/learning': { page: 'settings', settingsSection: 'learning' },
-    '/settings/rules': { page: 'settings', settingsSection: 'rules' },
-    '/settings/advanced': { page: 'settings', settingsSection: 'advanced' }
-};
-
 let activeSettingsSection = 'family';
 
-function canUsePathRouting() {
-    return window.location && /^https?:$/.test(window.location.protocol);
-}
-
-function cleanRoutePath(pathname) {
-    let path = '/';
-    try {
-        path = decodeURIComponent(pathname || '/');
-    } catch (error) {
-        path = pathname || '/';
-    }
-    path = path.replace(/\/index\.html$/i, '/').replace(/\/+$/g, '') || '/';
-    return path;
-}
-
-function normalizeRoutePath(pathname) {
-    const path = cleanRoutePath(pathname);
-    if (ROUTE_TO_PAGE[path]) return path;
-    const segments = path.split('/').filter(Boolean);
-    for (let i = 1; i < segments.length; i += 1) {
-        const candidate = '/' + segments.slice(i).join('/');
-        if (ROUTE_TO_PAGE[candidate]) return candidate;
-    }
-    return path;
-}
-
-function inferRouteBase(pathname) {
-    const path = cleanRoutePath(pathname);
-    if (ROUTE_TO_PAGE[path]) return '';
-    const routePaths = Object.keys(ROUTE_TO_PAGE).filter(routePath => routePath !== '/').sort((a, b) => b.length - a.length);
-    for (const routePath of routePaths) {
-        if (path === routePath || path.endsWith(routePath)) {
-            return path.slice(0, -routePath.length).replace(/\/+$/g, '');
-        }
-    }
-    if (/\/index\.html$/i.test(pathname || '')) {
-        return (pathname || '').replace(/\/index\.html$/i, '').replace(/\/+$/g, '');
-    }
-    if (path !== '/' && !/\.[a-z0-9]+$/i.test(path.split('/').pop() || '')) {
-        return path;
-    }
-    return '';
-}
-
-function withRouteBase(routePath) {
-    const base = inferRouteBase(window.location.pathname || '/');
-    if (!base) return routePath;
-    if (routePath === '/') return base || '/';
-    return `${base}${routePath}`;
-}
-
-function cloneRoute(route) {
-    return Object.assign({}, route || { page: 'map' });
-}
-
-function resolveRouteFromLocation(locationLike) {
-    const loc = locationLike || window.location;
-    const hashPath = loc && loc.hash && loc.hash.startsWith('#/')
-        ? loc.hash.slice(1).replace(/\/+$/g, '') || '/'
-        : '';
-    const routePath = hashPath || normalizeRoutePath(loc ? loc.pathname : '/');
-    return cloneRoute(ROUTE_TO_PAGE[routePath] || { page: 'map' });
-}
-
-function normalizeSettingsSection(section) {
-    if (section === 'account') return 'family';
-    return SETTINGS_SECTION_ROUTES[section] ? section : 'family';
-}
-
-function getPathForPage(page, options = {}) {
-    if (page === 'settings') {
-        return SETTINGS_SECTION_ROUTES[normalizeSettingsSection(options.settingsSection || activeSettingsSection)];
-    }
-    return PAGE_ROUTE_MAP[page] || PAGE_ROUTE_MAP.map;
-}
-
+function getHomeTabMap() { return window.PetBankPageRouter.getHomeTabMap(); }
+function normalizeSettingsSection(section) { return window.PetBankPageRouter.normalizeSettingsSection(section); }
+function getPageToTab(page) { return window.PetBankPageRouter.getPageToTab(page); }
+function withRouteBase(routePath) { return window.PetBankPageRouter.withRouteBase(routePath, window.location.pathname); }
+function resolveRouteFromLocation(locationLike) { return window.PetBankPageRouter.resolveRouteFromLocation(locationLike); }
 function updateBrowserRoute(page, options = {}) {
-    if (!canUsePathRouting() || options.updateHistory === false) return;
-    const path = withRouteBase(getPathForPage(page, options));
+    const router = window.PetBankPageRouter;
+    if (!router.canUsePathRouting() || options.updateHistory === false) return;
+    const path = withRouteBase(router.getPathForPage(page, options.settingsSection || activeSettingsSection));
     const search = window.location.search || '';
     const nextUrl = `${path}${search}`;
     const currentUrl = `${window.location.pathname}${window.location.search}`;
     if (nextUrl === currentUrl) return;
     const state = { page, settingsSection: options.settingsSection || null };
-    if (options.replace) {
-        window.history.replaceState(state, '', nextUrl);
-    } else {
-        window.history.pushState(state, '', nextUrl);
-    }
-}
-
-function getRouteShell(page) {
-    if (CLASSIC_APP_PAGES.has(page)) return 'home';
-    if (PARENT_SHELL_PAGES.has(page)) return 'parent';
-    if (APP_SHELL_PAGES.has(page)) return 'app';
-    return 'home';
+    if (options.replace) window.history.replaceState(state, '', nextUrl);
+    else window.history.pushState(state, '', nextUrl);
 }
 
 function syncRouteShellStatus() {
@@ -2197,27 +1955,11 @@ function syncRouteShellStatus() {
     if (pointsEl) pointsEl.textContent = String(totalPoints || 0);
 }
 
-function getParentShellNavKey(page) {
-    if (page === 'settings') return 'settings';
-    if (page === 'works') return 'works';
-    if (page === 'tools') return 'tools';
-    if (page === 'parent') return 'parent';
-    return 'app';
-}
-
-function getAppShellSurface(page) {
-    const tabPage = PAGE_TO_TAB[page] || page;
-    if (page === 'mathpk' || page === 'hanzi' || page === 'typing-defense' || page === 'word-memory-map' || page === 'leaderboard') return 'game';
-    if (tabPage === 'explore' || tabPage === 'playground') return 'scene';
-    if (tabPage === 'today' || tabPage === 'learn') return 'focus';
-    if (tabPage === 'pet') return 'studio';
-    return 'home';
-}
-
 function applyRouteShell(page) {
-    const shell = getRouteShell(page);
-    const tabPage = PAGE_TO_TAB[page] || page;
-    const parentNavKey = getParentShellNavKey(page);
+    const router = window.PetBankPageRouter;
+    const shell = router.getRouteShell(page);
+    const tabPage = router.getPageToTab(page);
+    const parentNavKey = router.getParentShellNavKey(page);
     document.body.classList.toggle('shell-home', shell === 'home');
     document.body.classList.toggle('shell-app', shell === 'app');
     document.body.classList.toggle('shell-parent', shell === 'parent');
@@ -2225,7 +1967,7 @@ function applyRouteShell(page) {
     if (shell === 'app') {
         document.body.dataset.appPage = tabPage;
         document.body.dataset.appRoutePage = page;
-        document.body.dataset.appSurface = getAppShellSurface(page);
+        document.body.dataset.appSurface = router.getAppShellSurface(page);
     } else {
         delete document.body.dataset.appPage;
         delete document.body.dataset.appRoutePage;
@@ -2447,7 +2189,7 @@ function switchPage(page, options = {}) {
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.nav-hub').forEach(h => h.classList.remove('active'));
     // 叶子页（如 today/review/mathpk/shop…）没有独立 tab，按 PAGE_TO_TAB 高亮其父 tab
-    const tabPage = (PAGE_TO_TAB[page] || page);
+    const tabPage = getPageToTab(page);
     const tab = document.querySelector(`.nav-tab[data-page="${tabPage}"]`);
     if (tab) {
         tab.classList.add('active');

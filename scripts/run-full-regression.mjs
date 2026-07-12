@@ -11,6 +11,7 @@ const TASKS = [
     { label: 'regression runner integrity', cmd: 'node', args: ['scripts/test-regression-runner-integrity.mjs'] },
     { label: 'current P0 architecture audit', cmd: 'node', args: ['scripts/p0-audit.js'] },
     { label: 'task catalog contract', cmd: 'node', args: ['scripts/test-task-catalog.mjs'] },
+    { label: 'page router contract', cmd: 'node', args: ['scripts/test-page-router-contract.mjs'] },
     { label: 'runtime loader retry contract', cmd: 'node', args: ['scripts/test-runtime-loader-retry.mjs'] },
     { label: 'no legacy account runtime', cmd: 'node', args: ['scripts/test-no-legacy-account-runtime.mjs'] },
     { label: 'runtime loader route base contract', cmd: 'node', args: ['prj/runtime_loader_route_base_contract.test.mjs'] },

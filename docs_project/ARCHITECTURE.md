@@ -16,7 +16,8 @@
 | 区域 | 职责 | 关键文件 |
 | --- | --- | --- |
 | 应用壳 | 页面容器、导航、深层路由入口、inline handler | `index.html` |
-| 主编排 | 积分、路由、页面准备、主站桥接 | `js/app.js` |
+| 路由边界 | 路由表、深层路径归一化、Pages 基址推断、壳层分类 | `js/page-router.js` |
+| 主编排 | 积分、页面准备、页面激活、主站桥接 | `js/app.js` |
 | 任务目录 | 六维任务、首页优先任务、任务配图纯函数 | `js/task-catalog.js` |
 | 按需加载 | feature bundle、资源基址、加载去重、入口失败反馈 | `js/runtime-loader.js` |
 | 核心状态 | 宠物、档案、库存、宝箱、奖励、成长历史 | `js/pet.js`、`js/profiles.js`、`js/inventory.js`、`js/treasure.js`、`js/core-reward-service.js` |
@@ -32,7 +33,7 @@
 
 ### 3.1 首屏启动
 
-`index.html` 首先加载 `pet.js`、奖励服务、`inventory.js`、`treasure.js`、`profiles.js`、`runtime-loader.js`、图标/战斗特效和 `task-catalog.js`，再加载 `app.js`，最后加载成长反馈与作品展示模块。`app.js` 初始化 profile、读取本地状态并暴露 `switchPage`、`addGrowthPoints`、`saveAppState` 等兼容入口；任务目录只通过 `PetBankTaskCatalog` 注入，不在主编排器内重复定义。
+`index.html` 首先加载 `pet.js`、奖励服务、`inventory.js`、`treasure.js`、`profiles.js`、`runtime-loader.js`、图标/战斗特效、`task-catalog.js` 和 `page-router.js`，再加载 `app.js`，最后加载成长反馈与作品展示模块。`page-router.js` 只暴露 `PetBankPageRouter`，不直接操作 DOM；`app.js` 初始化 profile、读取本地状态并暴露 `switchPage`、`addGrowthPoints`、`saveAppState` 等兼容入口。任务目录只通过 `PetBankTaskCatalog` 注入，不在主编排器内重复定义。
 
 ### 3.2 页面按需加载
 
@@ -152,7 +153,7 @@ settings/family
 
 | 优先级 | 问题 | 证据/影响 |
 | --- | --- | --- |
-| P0 | `app.js` 约 4,411 行，承担编排、领域逻辑、UI、存储和兼容 | 修改 blast radius 最大 |
+| P0 | `app.js` 约 4,390 行，仍承担编排、领域逻辑、UI、存储和兼容；纯路由计算已拆到 `page-router.js` | 页面生命周期和共享状态改动的 blast radius 仍最大 |
 | P0 | `learn-center.js` 约 3,656 行；`math-pk.js` 约 1,815 行；`card-arena-ui.js` 约 1,515 行 | 状态、结算和 UI 混合，难测 |
 | P0 | localStorage 虽已有 registry 和迁移门禁，但 Profile 仍使用动态全量快照 | 未登记 key、模块内存状态和快照 schema 仍可能造成隔离/恢复边界问题 |
 | P0 | 奖励层已部分统一，但旧模块仍可直接调整余额 | 需要彻底阻断重复奖励 |
