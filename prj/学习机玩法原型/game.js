@@ -2661,7 +2661,9 @@
     const distance = Math.hypot(dx, dy).toFixed(1);
     const angle = Math.atan2(dy, dx) * 180 / Math.PI;
     const weapon = getWordShooterWeapon();
-    const travelMs = weapon.id === 'homing-missile' ? 520 : weapon.id === 'pierce-laser' ? 260 : 340;
+    const loadout = getWordShooterLoadout();
+    const baseTravelMs = weapon.id === 'homing-missile' ? 520 : weapon.id === 'pierce-laser' ? 260 : 340;
+    const travelMs = Math.max(180, Math.round(baseTravelMs / loadout.fireMultiplier));
     const volleys = weapon.id === 'triple-beam'
       ? [
           { angle: -7, scale: 0.92, distance },
@@ -2698,7 +2700,8 @@
         id: `${weapon.id}-${state.wordShooter.elapsedMs}-${index}`,
         type: weapon.id,
         activeEnemyId: state.wordShooter.activeEnemyId,
-        letterIndex
+        letterIndex,
+        power: Number(loadout.fireMultiplier.toFixed(2))
       });
     });
     window.setTimeout(() => {
@@ -3058,7 +3061,7 @@
     if (ws.currentTyped === targetEnemy.wordData.word) {
       ws.resolvingHit = true;
       ws.combo += 1;
-      ws.score += targetEnemy.wordData.word.length;
+      ws.score += Math.max(1, Math.round(targetEnemy.wordData.word.length * getWordShooterLoadout().comboMultiplier));
       state.combo = ws.combo;
       grantWordShooterComboReward();
       const finisherWeaponId = getWordShooterWeapon().id;

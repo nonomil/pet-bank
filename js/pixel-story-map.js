@@ -15,6 +15,15 @@
         });
     }
 
+    function escapeHtml(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     function getCompletedChapters() {
         if (root.PixelStoryEngine && typeof root.PixelStoryEngine.getCompletedChapters === 'function') {
             return root.PixelStoryEngine.getCompletedChapters();
@@ -48,10 +57,7 @@
 
             var completed = getCompletedChapters();
             var nodes = manifest.map.nodes;
-            var chars = manifest.characters || {};
-
-            // 排序
-            nodes.sort(function (a, b) { return (a.order || 99) - (b.order || 99); });
+            nodes = nodes.slice().sort(function (a, b) { return (a.order || 99) - (b.order || 99); });
 
             // 生成路线路径
             var routePoints = nodes.map(function (n) { return { x: n.position.x, y: n.position.y }; });
@@ -66,12 +72,16 @@
 
             var bgUrl = manifest.map.background ? assetUrl(manifest.map.background) : '';
 
-            var html = '<div class="pixel-story-map">';
+            var html = '<section class="pixel-story-map" aria-label="像素星际漫游地图">';
             if (bgUrl) {
                 html += '<img class="pixel-story-map-bg" src="' + bgUrl + '" alt="">';
             }
-            // 星星背景
             html += generateStars();
+
+            html += '<div class="pixel-story-map-chrome">';
+            html += '  <div><span class="pixel-story-map-kicker">STORY MAP / 01</span><strong>星际漫游航线</strong><small>读故事，解谜题，陪宠物一起成长</small></div>';
+            html += '  <div class="pixel-story-map-stat"><strong>' + completed.length + '<em>/' + nodes.length + '</em></strong><span>已点亮章节</span></div>';
+            html += '</div>';
 
             // 路线 SVG
             html += '<svg class="pixel-story-route" viewBox="0 0 100 100" preserveAspectRatio="none">';
@@ -80,25 +90,27 @@
             }
             html += '</svg>';
 
-            // 节点
             nodes.forEach(function (node) {
                 var isCompleted = completed.indexOf(node.chapterId) !== -1;
-                var classNames = 'pixel-story-node';
+                var classNames = 'pixel-story-node pixel-story-node-' + escapeHtml(node.tone || 'default');
                 if (isCompleted) classNames += ' completed';
+                if (!isCompleted && completed.length === 0 && node.order === 1) classNames += ' next';
 
-                html += '<div class="' + classNames + '" style="left:' + node.position.x + '%;top:' + node.position.y + '%" data-chapter="' + node.chapterId + '">';
+                html += '<button type="button" class="' + classNames + '" style="left:' + node.position.x + '%;top:' + node.position.y + '%" data-chapter="' + escapeHtml(node.chapterId) + '" aria-label="进入' + escapeHtml(node.label || node.chapterId) + '">';
                 html += '  <div class="pixel-story-node-glow"></div>';
                 if (node.icon) {
                     html += '  <img class="pixel-story-node-icon" src="' + assetUrl(node.icon) + '" alt="">';
                 } else {
-                    // 没有图标时用默认样式
-                    html += '  <div class="pixel-story-node-icon" style="display:flex;align-items:center;justify-content:center;font-size:28px;">' + (isCompleted ? '⭐' : '🌍') + '</div>';
+                    html += '  <span class="pixel-story-node-icon pixel-story-node-symbol" aria-hidden="true">' + escapeHtml(node.symbol || '✦') + '</span>';
                 }
-                html += '  <span class="pixel-story-node-label">' + (node.label || node.chapterId) + '<small>' + (node.subtitle || '') + '</small></span>';
-                html += '</div>';
+                html += '  <span class="pixel-story-node-index">' + String(node.order || 0).padStart(2, '0') + '</span>';
+                html += '  <span class="pixel-story-node-label"><strong>' + escapeHtml(node.label || node.chapterId) + '</strong><small>' + escapeHtml(node.subtitle || '') + '</small></span>';
+                html += '  <span class="pixel-story-node-state">' + (isCompleted ? '已完成' : node.order === 1 ? '现在出发' : '待探索') + '</span>';
+                html += '</button>';
             });
 
-            html += '</div>';
+            html += '<div class="pixel-story-map-legend"><span><i></i>星光航线</span><small>每一章都藏着一个小小学习任务</small></div>';
+            html += '</section>';
 
             container.innerHTML = html;
 
