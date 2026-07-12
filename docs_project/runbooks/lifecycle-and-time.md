@@ -75,6 +75,7 @@ switchTo(target)
 - `setInterval` 必须有明确 owner、停止条件和 reload/离页清理路径；重点关注番茄钟、展示轮播、遛弯动画。
 - `app.js` 使用 `pageActivationToken` 防止异步加载完成后把旧页面渲染到新页面。新增跨页异步任务要复用 token 或 AbortController。
 - `PetBankTime` 只负责纯时间值计算，不持有 timer，也不改变业务状态；页面和玩法模块仍必须由 owner 保存并清理自己的 timer/AbortController。
+- `HanziGame.stop()`、`MathPKGame.stop()`、`CardArenaUI.stop()` 是离开对应玩法页面的清理入口，由 `switchPage()` 调用；它们负责取消会推进题目/轮次或打开结果层的延时任务。新增玩法必须提供同等粒度的 `stop()`，不能只依赖 DOM 隐藏。
 - `runtime-loader` 的 feature Promise 和资源 Promise 用于去重；不要在业务模块里绕过 loader 重复插入脚本。
 - 语音播放需要停止旧音频/取消旧请求；探索离页时必须停止语音。
 - Profile reload、导入 reload 和独立小游戏 iframe 都应视为生命周期边界，消息和回调必须带 source/session/seq 校验。

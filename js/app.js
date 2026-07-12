@@ -2190,6 +2190,15 @@ function switchPage(page, options = {}) {
     if (prevPage === 'walk' && page !== 'walk' && window.WalkSystem && typeof WalkSystem.cancelActiveWalk === 'function') {
         WalkSystem.cancelActiveWalk();
     }
+    if (prevPage === 'hanzi' && page !== 'hanzi' && window.HanziGame && typeof HanziGame.stop === 'function') {
+        HanziGame.stop();
+    }
+    if (prevPage === 'mathpk' && page !== 'mathpk' && window.MathPKGame && typeof MathPKGame.stop === 'function') {
+        MathPKGame.stop();
+    }
+    if (prevPage === 'card' && page !== 'card' && window.CardArenaUI && typeof CardArenaUI.stop === 'function') {
+        CardArenaUI.stop();
+    }
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(`page-${page}`);
     if (target) target.classList.add('active');

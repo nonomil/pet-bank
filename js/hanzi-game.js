@@ -51,6 +51,26 @@
         matchStartTs: 0,
     };
     let containerIdArg = 'hanzi-container';   // 由 renderUI 设置，chooseLevel 刷新大厅时复用
+    const gameTimers = new Set();
+    let toastTimer = null;
+
+    function scheduleGameTimeout(callback, delay) {
+        const timer = setTimeout(() => {
+            gameTimers.delete(timer);
+            callback();
+        }, delay);
+        gameTimers.add(timer);
+        return timer;
+    }
+
+    function clearGameTimers() {
+        gameTimers.forEach(timer => clearTimeout(timer));
+        gameTimers.clear();
+        if (toastTimer) {
+            clearTimeout(toastTimer);
+            toastTimer = null;
+        }
+    }
 
     function getRoundTotal() {
         return CONFIG.TOTAL_ROUNDS;
@@ -344,15 +364,20 @@
             if (!t) return;
             t.className = 'hz-toast show ' + (kind || '');
             t.innerHTML = text;
-            clearTimeout(t._timer);
-            t._timer = setTimeout(() => { t.classList.remove('show'); }, 1100);
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = scheduleGameTimeout(() => {
+                toastTimer = null;
+                t.classList.remove('show');
+            }, 1100);
         },
 
         _fadeCard(cb) {
             const card = document.getElementById('hz-card');
             if (!card) { cb && cb(); return; }
             card.classList.add('fading');
-            setTimeout(() => cb && cb(), 320);
+            scheduleGameTimeout(() => {
+                if (state.isPlaying) cb && cb();
+            }, 320);
         },
 
         _result() {
@@ -404,6 +429,7 @@
             else alert('该等级暂无题目，请稍后再试');
             return;
         }
+        clearGameTimers();
         state.mode = 'solo';
         state.isPlaying = true;
         state.round = 0;
@@ -460,11 +486,12 @@
             render._toast(`✗ 答错了<small>正确答案：${q.answer}</small>`, 'lose');
         }
         render._scorePill();
-        setTimeout(() => { render._fadeCard(() => _next()); }, 1100);
+        scheduleGameTimeout(() => { render._fadeCard(() => _next()); }, 1100);
     }
 
     async function _end() {
         state.isPlaying = false;
+        clearGameTimers();
         const earned = state.score;
         const profileId = window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function'
             ? (window.ProfileManager.getActiveId() || 'p_default')
@@ -503,9 +530,14 @@
         render._result();
     }
 
-    function _exit() {
+    function stop() {
         state.isPlaying = false;
+        clearGameTimers();
         render._hideOverlay();
+    }
+
+    function _exit() {
+        stop();
         if (typeof window.switchPage === 'function') switchPage('playground');
     }
 
@@ -528,6 +560,7 @@
         start: start,
         _answer: _answer,
         _exit: _exit,
+        stop: stop,
         init: init,
         getLevel: function () { return state.level; }
     };

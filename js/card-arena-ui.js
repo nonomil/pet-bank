@@ -21,6 +21,8 @@ const CardArenaUI = (function () {
     let uiLocked = false;        // 动作锁（防连点）
     let lastMoveText = '';       // 最近一回合的出招提示大字（持续到下一动作）
     let arenaMotionCleanupTimer = null;
+    let arenaMotionImpactTimer = null;
+    let arenaResultTimer = null;
 
     // ===== PvP 本地热座状态 =====
     // pvpMode：'off' | 'pickA' | 'pickB'（选队阶段轮到谁）
@@ -684,6 +686,11 @@ const CardArenaUI = (function () {
     }
 
     function closeBattleModal() {
+        if (arenaResultTimer) {
+            clearTimeout(arenaResultTimer);
+            arenaResultTimer = null;
+        }
+        _clearBattleMotion();
         document.getElementById('arenaBattleModal').classList.remove('show');
         playSfx('uiClose');
     }
@@ -1105,7 +1112,12 @@ const CardArenaUI = (function () {
         _popDamage(newEvents);         // 重渲染后再 append 浮动伤害（zone 已存在）
         _playBattleMotion(newEvents);
         if (ended) {
-            setTimeout(() => _showResult(st.status), 700);
+            if (arenaResultTimer) clearTimeout(arenaResultTimer);
+            arenaResultTimer = setTimeout(() => {
+                arenaResultTimer = null;
+                const current = CardArena.getState();
+                if (current && (current.status === 'win' || current.status === 'lose')) _showResult(current.status);
+            }, 700);
         }
     }
 
@@ -1129,6 +1141,10 @@ const CardArenaUI = (function () {
     }
 
     function _clearBattleMotion() {
+        if (arenaMotionImpactTimer) {
+            clearTimeout(arenaMotionImpactTimer);
+            arenaMotionImpactTimer = null;
+        }
         if (arenaMotionCleanupTimer) {
             clearTimeout(arenaMotionCleanupTimer);
             arenaMotionCleanupTimer = null;
@@ -1176,7 +1192,8 @@ const CardArenaUI = (function () {
             if (styleClass) actorCard.classList.add(styleClass);
         }
         if (stage) stage.classList.add('arena-stage-impact-focus');
-        setTimeout(() => {
+        arenaMotionImpactTimer = setTimeout(() => {
+            arenaMotionImpactTimer = null;
             const impactClass = styleClass === 'arena-motion-style-ultimate'
                 ? 'arena-impact-style-ultimate'
                 : styleClass === 'arena-motion-style-heavy'
@@ -1556,6 +1573,19 @@ const CardArenaUI = (function () {
         openPvpSetup();
     }
 
+    function stop() {
+        if (arenaResultTimer) {
+            clearTimeout(arenaResultTimer);
+            arenaResultTimer = null;
+        }
+        _clearBattleMotion();
+        uiLocked = false;
+        ['arenaStagesModal', 'arenaTeamModal', 'arenaBattleModal', 'arenaResultOverlay'].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('show');
+        });
+    }
+
     // Public API
     return {
         openTeamSelect,
@@ -1573,6 +1603,7 @@ const CardArenaUI = (function () {
         // PvP 本地热座
         openPvpSetup,
         rematchPvp,
+        stop,
         // 闯关
         openStages,
         closeStages,

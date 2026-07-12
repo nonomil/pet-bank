@@ -167,6 +167,33 @@
     // CMATH 应用题池（data/math-cmath.json，来源 XiaoMi/cmath CC BY 4.0）
     let CMATH_POOL = null;
     let _cmathLoading = false;
+    let phaseTimer = null;
+
+    function clearPhaseTimer() {
+        if (phaseTimer) {
+            clearTimeout(phaseTimer);
+            phaseTimer = null;
+        }
+    }
+
+    function schedulePhase(callback, delay) {
+        clearPhaseTimer();
+        phaseTimer = setTimeout(() => {
+            phaseTimer = null;
+            if (state.isPlaying) callback();
+        }, delay);
+    }
+
+    function stopSession() {
+        state.isPlaying = false;
+        state.roundClosing = true;
+        if (state.robotTimer) {
+            clearTimeout(state.robotTimer);
+            state.robotTimer = null;
+        }
+        clearPhaseTimer();
+    }
+
     function _ensureCmathPool() {
         if (CMATH_POOL || _cmathLoading) return;
         _cmathLoading = true;
@@ -333,6 +360,7 @@
 
     function playSfxLater(name, delayMs, guard) {
         setTimeout(() => {
+            if (!state.isPlaying) return;
             if (typeof guard === 'function' && !guard()) return;
             playSfx(name);
         }, Math.max(0, Number(delayMs) || 0));
@@ -1331,6 +1359,7 @@
         },
 
         _startRobotMatchCore() {
+            clearPhaseTimer();
             if (typeof window.snapshotBattleMilestonesForRun === 'function') window.snapshotBattleMilestonesForRun();
             state.isPlaying = true;
             state.roundClosing = false;
@@ -1354,6 +1383,7 @@
         },
 
         _startTrainingCore() {
+            clearPhaseTimer();
             if (typeof window.snapshotBattleMilestonesForRun === 'function') window.snapshotBattleMilestonesForRun();
             state.isPlaying = true;
             state.roundClosing = false;
@@ -1476,22 +1506,21 @@
                 playSfx('duelReady');
                 playSfx('supportReady');
                 playSfx('trainingUnlock');
-                setTimeout(() => {
+                schedulePhase(() => {
                     render.hideToast();
                     render._multiplicationReady();
                 }, 900);
                 return;
             }
             render.toast(`答对了！<small>${state.currentQuestion.repeatedAddition} = ${state.currentQuestion.answer}</small>`, 'win');
-            setTimeout(() => {
+            schedulePhase(() => {
                 render.hideToast();
                 this._nextTrainingQuestion();
             }, 900);
         },
 
         _exit() {
-            state.isPlaying = false;
-            if (state.robotTimer) clearTimeout(state.robotTimer);
+            this.stop();
             playSfx('uiClose');
             if (typeof window.switchPage === 'function') switchPage('playground');
             else render.renderUI('math-pk-container');
@@ -1502,8 +1531,7 @@
         },
 
         _goHome() {
-            state.isPlaying = false;
-            if (state.robotTimer) clearTimeout(state.robotTimer);
+            this.stop();
             playSfx('uiClose');
             if (typeof window.switchPage === 'function') switchPage('map');
             else render.renderUI('math-pk-container');
@@ -1718,15 +1746,19 @@
             const bar = document.getElementById('arena-robot-bar');
             if (bar) bar.style.display = 'none';
 
-            setTimeout(() => {
+            schedulePhase(() => {
                 render.hideToast();
                 this._nextRound();
             }, 1500);
         },
 
+        stop() {
+            stopSession();
+            render.hideToast();
+        },
+
         async _endMatch() {
-            state.isPlaying = false;
-            if (state.robotTimer) clearTimeout(state.robotTimer);
+            stopSession();
             const win = state.humanWins > state.robotWins;
             const earnedPoints = state.score + (win ? CONFIG.WIN_BONUS : 0);
 
@@ -1888,6 +1920,7 @@
         _exit: () => Game._exit(),
         _close: () => Game._close(),
         _goHome: () => Game._goHome(),
+        stop: () => Game.stop(),
         _setDifficulty: (d) => Game._setDifficulty(d),
         renderDifficultySetting: (id) => render.renderDifficultySetting(id),
         _inputDigit: (d) => Game._inputDigit(d),
