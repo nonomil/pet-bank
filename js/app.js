@@ -413,13 +413,15 @@ function toggleTask(dim, taskName, pts) {
     completedTasks = window.PetBankDailyState.load().completedTasks;
     const tid = `${dim}-${taskName}`;
     const wasCompleted = completedTasks.has(tid);
+    const pointDelta = wasCompleted
+        ? -Math.max(0, Math.floor(Number(pts) || 0))
+        : Math.max(0, Math.floor(Number(pts) || 0));
     if (completedTasks.has(tid)) {
         completedTasks.delete(tid);
-        totalPoints -= pts;
     } else {
         completedTasks.add(tid);
-        totalPoints += pts;
     }
+    if (pointDelta) addGrowthPoints(pointDelta);
     if (window.TaskRewardEvents && typeof window.TaskRewardEvents.record === 'function') {
         window.TaskRewardEvents.record({
             profileId: window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function' ? window.ProfileManager.getActiveId() : 'local',
@@ -702,7 +704,8 @@ function getExploreStageSummary() {
 
 const TYPING_DEFENSE_PROGRESS_KEY = 'petbank_typing_defense_progress';
 const WORD_MEMORY_MAP_PROGRESS_KEY = 'petbank_word_memory_map_progress';
-const LEARNING_ARCADE_SETTINGS_KEY = 'learning-arcade-settings-v1';
+const LEARNING_ARCADE_SETTINGS_KEY = 'petbank_learning_arcade_settings_v1';
+const LEARNING_ARCADE_SETTINGS_LEGACY_KEY = 'learning-arcade-settings-v1';
 const LEARNING_ARCADE_PROGRESS_KEY = 'petbank_learning_arcade_progress';
 
 function readWordMemoryMapProgress() {
@@ -890,6 +893,11 @@ function writeTypingDefenseProgress(progress) {
 
 function readLearningArcadeSettings() {
     try {
+        window.PetBankStorageMigrations?.migrateKey(
+            localStorage,
+            LEARNING_ARCADE_SETTINGS_LEGACY_KEY,
+            LEARNING_ARCADE_SETTINGS_KEY
+        );
         const raw = JSON.parse(localStorage.getItem(LEARNING_ARCADE_SETTINGS_KEY) || '{}');
         return {
             wordDifficulty: raw.wordDifficulty || 'basic',
@@ -2023,13 +2031,15 @@ function updateRewardPetCard() {
 }
 
 function completeRecommended() {
+    let addedPoints = 0;
     HOME_PRIORITY_TASKS.forEach(s => {
         const tid = `${s.dim}-${s.task}`;
         if (!completedTasks.has(tid)) {
             completedTasks.add(tid);
-            totalPoints += s.pts;
+            addedPoints += Math.max(0, Math.floor(Number(s.pts) || 0));
         }
     });
+    if (addedPoints) addGrowthPoints(addedPoints);
     localStorage.setItem('petbank_tasks_completed_today', String(completedTasks.size));
     saveAppState();
     renderAll();
@@ -2659,16 +2669,19 @@ function handleTypingDefenseBridgeMessage(event) {
     const payload = data.payload || {};
     if (data.kind === 'reward') {
         const points = Math.max(0, Math.floor(Number(payload.points) || 0));
-        const receipt = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
-            ? window.GameRewardReceipts.claim({
+        const receiptService = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
+            ? window.GameRewardReceipts
+            : null;
+        if (receiptService) {
+            const receipt = receiptService.claim({
                 profileId: getActiveDailyProfileId(),
                 source: 'typing-defense',
                 eventId: `${sessionId}:${seq}:reward`,
                 points,
                 localDate: getLocalDateKey()
-            })
-            : { accepted: points > 0 };
-        if (receipt.accepted) {
+            });
+            if (receipt.accepted) syncTypingDefenseHostPoints();
+        } else {
             addGrowthPoints(points);
             syncTypingDefenseHostPoints();
         }
@@ -2713,16 +2726,19 @@ function handleWordMemoryMapBridgeMessage(event) {
     const payload = data.payload || {};
     if (data.kind !== 'result') return;
     const points = Math.max(0, Math.floor(Number(payload.score) || 0));
-    const receipt = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
-        ? window.GameRewardReceipts.claim({
+    const receiptService = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
+        ? window.GameRewardReceipts
+        : null;
+    if (receiptService) {
+        const receipt = receiptService.claim({
             profileId: getActiveDailyProfileId(),
             source: 'word-memory-map',
             eventId: `${sessionId}:${seq}:result`,
             points,
             localDate: getLocalDateKey()
-        })
-        : { accepted: points > 0 };
-    if (receipt.accepted) {
+        });
+        if (!receipt.accepted && typeof showToast === 'function') showToast('本局奖励已经领取过了');
+    } else {
         addGrowthPoints(points);
     }
     const progress = recordWordMemoryMapResult(payload);

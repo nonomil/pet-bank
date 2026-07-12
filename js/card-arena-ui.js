@@ -1515,10 +1515,11 @@ const CardArenaUI = (function () {
                 return;
             }
         } catch (e) { /* 兜底 */ }
-        // 兜底：localStorage 计数（不影响主流程）
+        // 兜底：仅保留兼容账本，主流程仍应使用统一成长分
         try {
-            const cur = parseInt(localStorage.getItem('arena_points') || '0', 10);
-            localStorage.setItem('arena_points', String(cur + amount));
+            window.PetBankStorageMigrations?.migrateKey(localStorage, 'arena_points', 'petbank_arena_points');
+            const cur = parseInt(localStorage.getItem('petbank_arena_points') || '0', 10);
+            localStorage.setItem('petbank_arena_points', String(cur + amount));
         } catch (e) {}
     }
 

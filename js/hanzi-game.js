@@ -466,8 +466,27 @@
     async function _end() {
         state.isPlaying = false;
         const earned = state.score;
-        // 写成长分（对齐 math-pk：addGrowthPoints(earned) 单参）
-        if (typeof window.addGrowthPoints === 'function') {
+        const profileId = window.ProfileManager && typeof window.ProfileManager.getActiveId === 'function'
+            ? (window.ProfileManager.getActiveId() || 'p_default')
+            : 'p_default';
+        const localDate = window.PetBankDailyState && typeof window.PetBankDailyState.localDate === 'function'
+            ? window.PetBankDailyState.localDate()
+            : new Date().toLocaleDateString();
+        const receiptService = window.GameRewardReceipts && typeof window.GameRewardReceipts.claim === 'function'
+            ? window.GameRewardReceipts
+            : null;
+        if (receiptService) {
+            const receipt = receiptService.claim({
+                profileId,
+                source: 'hanzi',
+                eventId: `${state.matchStartTs || Date.now()}:${state.level}`,
+                points: earned,
+                localDate
+            });
+            if (!receipt.accepted && typeof window.showToast === 'function') {
+                window.showToast('本局奖励已经领取过了');
+            }
+        } else if (typeof window.addGrowthPoints === 'function') {
             window.addGrowthPoints(earned);
         } else if (window.totalPoints !== undefined) {
             window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + earned);

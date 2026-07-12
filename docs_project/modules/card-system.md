@@ -103,7 +103,7 @@ data/arena-stages.json 定义关卡配置:
 ```
 key: petbank_cards → 已收集卡牌 ID 数组 (card-collection.js:658)
 key: petbank_awarded_series → 已领取套票奖励的系列 (card-collection.js:685)
-key: arena_points → 竞技场积分 (card-arena-ui.js:1392)
+key: petbank_arena_points → 竞技场兼容积分账本 (card-arena-ui.js:1521)
 ```
 
 ---

@@ -99,7 +99,7 @@ try {
     return {
       cards: localStorage.getItem('petbank_cards'),
       awardedSeries: localStorage.getItem('petbank_awarded_series'),
-      arenaPoints: localStorage.getItem('arena_points'),
+      arenaPoints: localStorage.getItem('petbank_arena_points'),
       points: localStorage.getItem('petbank_points'),
       pet
     };
@@ -171,7 +171,7 @@ try {
     return {
       cards: localStorage.getItem('petbank_cards'),
       awardedSeries: localStorage.getItem('petbank_awarded_series'),
-      arenaPoints: localStorage.getItem('arena_points'),
+      arenaPoints: localStorage.getItem('petbank_arena_points'),
       points: localStorage.getItem('petbank_points'),
       pet
     };

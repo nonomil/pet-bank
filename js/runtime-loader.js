@@ -17,8 +17,12 @@
         const points = Math.floor(Number(input.points) || 0);
         if (!source || !eventId || points <= 0) return { accepted: false, reason: 'invalid' };
 
-        // Bridge all game point rewards into the core loop. The legacy receipt
-        // below remains for compatibility with existing game progress views.
+        // Bridge all game rewards into the core loop. The legacy receipt below
+        // remains for compatibility with existing game progress views.
+        const key = `${profileId}:${source}:${eventId}`;
+        const receipts = readGameRewardReceipts();
+        if (receipts[key]) return { accepted: false, reason: 'duplicate', receipt: receipts[key] };
+
         if (window.CoreRewardService && typeof window.CoreRewardService.claim === 'function') {
             const coreResult = window.CoreRewardService.claim({
                 eventId: `${source}:${eventId}`,
@@ -26,21 +30,21 @@
                 source: 'game',
                 sourceId: source,
                 rewards: [
+                    { type: 'growth_points', amount: points },
                     { type: 'pet_exp', amount: points }
                 ]
             });
             if (!coreResult.accepted) return { accepted: false, reason: 'duplicate', receipt: coreResult.receipt };
             if (window.CoreRewardFeedback && typeof window.CoreRewardFeedback.show === 'function') {
-                const feedbackResult = {
-                    ...coreResult,
-                    event: { ...coreResult.event, rewards: [{ type: 'growth_points', amount: points }, ...coreResult.event.rewards] }
-                };
-                window.CoreRewardFeedback.show(feedbackResult);
+                window.CoreRewardFeedback.show(coreResult);
             }
+        } else if (typeof window.addGrowthPoints === 'function') {
+            window.addGrowthPoints(points);
+        } else if (window.totalPoints !== undefined) {
+            window.totalPoints = Math.max(0, Number(window.totalPoints || 0) + points);
+            if (typeof window.saveAppState === 'function') window.saveAppState();
+            if (typeof window.updateStats === 'function') window.updateStats();
         }
-        const key = `${profileId}:${source}:${eventId}`;
-        const receipts = readGameRewardReceipts();
-        if (receipts[key]) return { accepted: false, reason: 'duplicate', receipt: receipts[key] };
         receipts[key] = {
             profileId,
             source,
