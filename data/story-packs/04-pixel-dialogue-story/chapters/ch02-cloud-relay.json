@@ -1,0 +1,26 @@
+{
+  "chapterId": "ch02-cloud-relay",
+  "title": "第二章：云朵信号带的词语密码",
+  "order": 2,
+  "scenes": [
+    {
+      "sceneId": "s01-signal",
+      "background": "",
+      "lines": [
+        { "type": "narration", "text": "星尘伙伴收到一段忽明忽暗的云朵信号。小小宇航员把飞船停在软绵绵的云桥旁。", "character": "narrator" },
+        { "type": "dialogue", "text": "信号里说：请找到和‘大’意思相反的词。", "character": "cloud_fairy", "position": "center" },
+        { "type": "choice", "prompt": "‘大’的反义词是哪一个？", "options": [
+          { "id": "small", "label": "小", "isCorrect": true, "feedback": "答对了！大和小是一对反义词。", "reward": 1 },
+          { "id": "many", "label": "多", "isCorrect": false, "feedback": "再想想，多和少是一对反义词。" },
+          { "id": "up", "label": "上", "isCorrect": false, "feedback": "再想想，上和下是一对反义词。" }
+        ], "learningType": "word", "word": "大小" },
+        { "type": "dialogue", "text": "云朵仙子把三颗小星星排成一条线：上面一颗，下面两颗。", "character": "cloud_fairy", "position": "center" },
+        { "type": "choice", "prompt": "哪一颗星星在最上面？", "options": [
+          { "id": "top", "label": "最上面的那一颗", "isCorrect": true, "feedback": "对啦！上和下能帮助我们说清楚位置。", "reward": 1 },
+          { "id": "bottom", "label": "最下面的两颗", "isCorrect": false, "feedback": "再观察一下，最上面只有一颗星星。" }
+        ], "learningType": "word", "word": "上下" },
+        { "type": "narration", "text": "词语密码亮起，云桥为星尘伙伴打开了一条安全航线。", "character": "narrator" }
+      ]
+    }
+  ]
+}

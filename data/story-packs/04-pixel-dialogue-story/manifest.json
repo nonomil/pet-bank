@@ -1,0 +1,119 @@
+{
+  "id": "pixel-dialogue-story",
+  "title": "像素星际漫游：宠物汉字大冒险",
+  "version": "20260712-v1",
+  "status": "active",
+  "active": true,
+  "audience": "幼小衔接",
+  "ageRange": "5-6",
+  "runtime": "pixel-dialogue-story",
+  "chapters": [
+    "ch01-moon-station",
+    "ch02-cloud-relay",
+    "ch03-star-dust-dock",
+    "ch04-twin-star-bridge"
+  ],
+  "map": {
+    "background": "",
+    "nodes": [
+      {
+        "chapterId": "ch01-moon-station",
+        "order": 1,
+        "label": "月环补给站",
+        "subtitle": "汉字星尘",
+        "position": { "x": 15, "y": 45 },
+        "icon": "",
+        "symbol": "月",
+        "tone": "moon"
+      },
+      {
+        "chapterId": "ch02-cloud-relay",
+        "order": 2,
+        "label": "云朵信号带",
+        "subtitle": "词语密码",
+        "position": { "x": 38, "y": 25 },
+        "icon": "",
+        "symbol": "云",
+        "tone": "cloud"
+      },
+      {
+        "chapterId": "ch03-star-dust-dock",
+        "order": 3,
+        "label": "星尘维修区",
+        "subtitle": "数学谜题",
+        "position": { "x": 62, "y": 25 },
+        "icon": "",
+        "symbol": "数",
+        "tone": "math"
+      },
+      {
+        "chapterId": "ch04-twin-star-bridge",
+        "order": 4,
+        "label": "双星桥",
+        "subtitle": "回家星图",
+        "position": { "x": 85, "y": 45 },
+        "icon": "",
+        "symbol": "桥",
+        "tone": "home"
+      }
+    ]
+  },
+  "characters": {
+    "narrator": {
+      "id": "narrator",
+      "name": "旁白",
+      "voicePreset": "kind_grandpa",
+      "labelStyle": "narrator",
+      "sprite": ""
+    },
+    "protagonist": {
+      "id": "protagonist",
+      "name": "小小宇航员",
+      "voicePreset": "child",
+      "labelStyle": "hero",
+      "sprite": ""
+    },
+    "pet": {
+      "id": "pet",
+      "name": "星尘伙伴",
+      "voicePreset": "lively_teacher",
+      "labelStyle": "friend",
+      "sprite": ""
+    },
+    "moon_rabbit": {
+      "id": "moon_rabbit",
+      "name": "月兔站长",
+      "voicePreset": "child",
+      "labelStyle": "npc",
+      "sprite": ""
+    },
+    "cloud_fairy": {
+      "id": "cloud_fairy",
+      "name": "云朵仙子",
+      "voicePreset": "gentle_mom",
+      "labelStyle": "npc",
+      "sprite": ""
+    },
+    "star_engineer": {
+      "id": "star_engineer",
+      "name": "星尘工程师",
+      "voicePreset": "kind_grandpa",
+      "labelStyle": "npc",
+      "sprite": ""
+    }
+  },
+  "collectibles": {
+    "cards": [
+      { "id": "moon-card", "chapterId": "ch01-moon-station", "name": "月光识字卡", "subtitle": "认识了月、星、光、亮", "image": "" },
+      { "id": "cloud-card", "chapterId": "ch02-cloud-relay", "name": "云朵词语卡", "subtitle": "学会了大小的秘密", "image": "" },
+      { "id": "gear-card", "chapterId": "ch03-star-dust-dock", "name": "星尘数学卡", "subtitle": "5以内的加减我都会", "image": "" },
+      { "id": "bridge-card", "chapterId": "ch04-twin-star-bridge", "name": "回家星图卡", "subtitle": "我会照顾小伙伴", "image": "" }
+    ],
+    "badges": [
+      { "id": "moon-badge", "chapterId": "ch01-moon-station", "name": "月光探索者", "image": "" },
+      { "id": "cloud-badge", "chapterId": "ch02-cloud-relay", "name": "云朵解密者", "image": "" },
+      { "id": "gear-badge", "chapterId": "ch03-star-dust-dock", "name": "数学小能手", "image": "" },
+      { "id": "bridge-badge", "chapterId": "ch04-twin-star-bridge", "name": "回家星图守护者", "image": "" }
+    ]
+  }
+}

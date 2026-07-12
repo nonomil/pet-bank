@@ -6,6 +6,7 @@
   const TYPING_VIEW_GLOBAL = 'LearningArcadeTypingUnified';
   const HANZI_URL = '../../data/hanzi-questions.json';
   const SETTINGS_STORAGE_KEY = 'learning-arcade-settings-v1';
+  const WORD_SHOOTER_PROGRESSION_STORAGE_KEY = 'petbank_learning_arcade_word_shooter_progression_v1';
   const HANZI_SHARED_VOICE_MAP_URL = '../拼音块收集台原型/assets/voice/map.json';
   const HANZI_SHARED_VOICE_ASSET_BASE = '../拼音块收集台原型/assets/voice';
   const FALLBACK_MINECRAFT_IMAGE = '../../assets/learn/english-vocab/minecraft-card.webp';
@@ -192,8 +193,35 @@
     'homing-missile': { id: 'homing-missile', label: 'Homing Missile', asset: WORD_SHOOTER_ASSETS.shots['homing-missile'], pickupAsset: WORD_SHOOTER_ASSETS.pickups['homing-missile'], durationMs: 9000 },
     'pierce-laser': { id: 'pierce-laser', label: 'Pierce Laser', asset: WORD_SHOOTER_ASSETS.shots['pierce-laser'], pickupAsset: WORD_SHOOTER_ASSETS.pickups['pierce-laser'], durationMs: 11000 }
   };
+  const WORD_SHOOTER_SHIPS = {
+    scout: {
+      id: 'scout', label: '侦察翼', description: '移动灵活，适合先熟悉战场。', speedMultiplier: 1.16, shield: 3, fireMultiplier: 1, comboMultiplier: 1.04, hue: '0deg', scale: 0.92
+    },
+    guardian: {
+      id: 'guardian', label: '守护舰', description: '护盾更厚，适合练习躲避。', speedMultiplier: 0.86, shield: 4, fireMultiplier: 1.04, comboMultiplier: 1, hue: '122deg', scale: 1.06
+    },
+    nova: {
+      id: 'nova', label: '新星号', description: '火力更强，连击收益更高。', speedMultiplier: 1, shield: 3, fireMultiplier: 1.22, comboMultiplier: 1.1, hue: '232deg', scale: 1
+    }
+  };
+  const WORD_SHOOTER_UPGRADE_COSTS = { speed: 4, shield: 5, fire: 6 };
+  const WORD_SHOOTER_UPGRADE_LABELS = { speed: '机动', shield: '护盾', fire: '火力' };
+  const WORD_SHOOTER_DEFAULT_PROGRESSION = {
+    version: 1,
+    level: 1,
+    experience: 0,
+    starDust: 0,
+    totalRuns: 0,
+    selectedShip: 'scout',
+    equippedWeapon: 'basic',
+    shipUpgrades: {
+      scout: { speed: 0, shield: 0, fire: 0 },
+      guardian: { speed: 0, shield: 0, fire: 0 },
+      nova: { speed: 0, shield: 0, fire: 0 }
+    }
+  };
   const WORD_SHOOTER_DROP_TYPES = ['triple-beam', 'homing-missile', 'pierce-laser'];
-  const WORD_SHOOTER_LANES = [22, 34, 46, 58, 70];
+  const WORD_SHOOTER_LANES = [18, 38, 58, 76, 88];
   const WORD_SHOOTER_TICK_MS = 100;
   const WORD_SHOOTER_PLAYER_X = 12;
   const WORD_SHOOTER_PLAYER_START_Y = 50;
@@ -325,6 +353,8 @@
       timer: null,
       elapsedMs: 0,
       weaponId: 'basic',
+      baseWeaponId: 'basic',
+      shipId: 'scout',
       weaponExpiresAt: 0,
       firePoseUntil: 0,
       muzzleFlashUntil: 0,
@@ -342,6 +372,7 @@
       enemyFireEnabled: true,
       roundGoal: WORD_SHOOTER_ROUND_GOAL,
       roundComplete: false,
+      rewardClaimed: false,
       phase: 'warmup'
     },
     wordCannon: {
@@ -461,6 +492,12 @@
     typingProgress: document.getElementById('typingProgress'),
     typingStreak: document.getElementById('typingStreak'),
     typingShield: document.getElementById('typingShield'),
+    wordShooterHangar: document.getElementById('wordShooterHangar'),
+    wordShooterStarDust: document.getElementById('wordShooterStarDust'),
+    wordShooterLoadoutSummary: document.getElementById('wordShooterLoadoutSummary'),
+    wordShooterShipOptions: document.getElementById('wordShooterShipOptions'),
+    wordShooterWeaponOptions: document.getElementById('wordShooterWeaponOptions'),
+    wordShooterUpgradeOptions: document.getElementById('wordShooterUpgradeOptions'),
     wordFeedback: document.getElementById('wordFeedback'),
     wordPackSwitch: document.getElementById('wordPackSwitch'),
     wordDifficultySwitch: document.getElementById('wordDifficultySwitch'),
@@ -916,6 +953,172 @@
     } catch (err) {
       return {};
     }
+  }
+
+  function cloneWordShooterProgression(value = WORD_SHOOTER_DEFAULT_PROGRESSION) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function normalizeWordShooterProgression(raw) {
+    const source = raw && typeof raw === 'object' ? raw : {};
+    const normalized = cloneWordShooterProgression();
+    normalized.version = 1;
+    normalized.level = Math.max(1, Math.floor(Number(source.level) || 1));
+    normalized.experience = Math.max(0, Math.floor(Number(source.experience) || 0));
+    normalized.starDust = Math.max(0, Math.floor(Number(source.starDust) || 0));
+    normalized.totalRuns = Math.max(0, Math.floor(Number(source.totalRuns) || 0));
+    normalized.selectedShip = WORD_SHOOTER_SHIPS[source.selectedShip] ? source.selectedShip : 'scout';
+    normalized.equippedWeapon = WORD_SHOOTER_WEAPONS[source.equippedWeapon] ? source.equippedWeapon : 'basic';
+    Object.keys(WORD_SHOOTER_SHIPS).forEach(shipId => {
+      const sourceLevels = source.shipUpgrades?.[shipId];
+      Object.keys(WORD_SHOOTER_UPGRADE_COSTS).forEach(upgradeId => {
+        normalized.shipUpgrades[shipId][upgradeId] = clampNumber(Math.floor(Number(sourceLevels?.[upgradeId]) || 0), 0, 5);
+      });
+    });
+    normalized.level = Math.max(normalized.level, 1 + Math.floor(normalized.experience / 100));
+    return normalized;
+  }
+
+  function readWordShooterProgression() {
+    try {
+      const raw = window.localStorage?.getItem(WORD_SHOOTER_PROGRESSION_STORAGE_KEY);
+      return normalizeWordShooterProgression(raw ? JSON.parse(raw) : null);
+    } catch (err) {
+      console.warn('[WordShooter] progression data was invalid; using defaults.', err);
+      return cloneWordShooterProgression();
+    }
+  }
+
+  let wordShooterProgression = readWordShooterProgression();
+
+  function saveWordShooterProgression() {
+    try {
+      window.localStorage?.setItem(
+        WORD_SHOOTER_PROGRESSION_STORAGE_KEY,
+        JSON.stringify(wordShooterProgression)
+      );
+      return true;
+    } catch (err) {
+      console.warn('[WordShooter] progression could not be saved.', err);
+      return false;
+    }
+  }
+
+  function getWordShooterLoadout() {
+    const shipId = wordShooterProgression.selectedShip;
+    const ship = WORD_SHOOTER_SHIPS[shipId] || WORD_SHOOTER_SHIPS.scout;
+    const upgrade = wordShooterProgression.shipUpgrades[ship.id] || WORD_SHOOTER_DEFAULT_PROGRESSION.shipUpgrades.scout;
+    const weaponId = wordShooterProgression.equippedWeapon;
+    const weapon = WORD_SHOOTER_WEAPONS[weaponId] || WORD_SHOOTER_WEAPONS.basic;
+    return {
+      ship: { ...ship },
+      weapon: { ...weapon },
+      shipId: ship.id,
+      weaponId: weapon.id,
+      speedMultiplier: ship.speedMultiplier + upgrade.speed * 0.06,
+      shield: ship.shield + upgrade.shield,
+      fireMultiplier: ship.fireMultiplier + upgrade.fire * 0.08,
+      comboMultiplier: ship.comboMultiplier + upgrade.fire * 0.02,
+      upgrades: { ...upgrade }
+    };
+  }
+
+  function wordShooterProgressionSnapshot() {
+    return {
+      ...cloneWordShooterProgression(wordShooterProgression),
+      loadout: getWordShooterLoadout()
+    };
+  }
+
+  function renderWordShooterHangar() {
+    const loadout = getWordShooterLoadout();
+    const progress = wordShooterProgression;
+    if (els.wordShooterHangar) els.wordShooterHangar.hidden = false;
+    if (els.wordShooterStarDust) els.wordShooterStarDust.textContent = `星尘 ${progress.starDust}`;
+    if (els.wordShooterLoadoutSummary) {
+      els.wordShooterLoadoutSummary.textContent = `${loadout.ship.label} · ${loadout.weapon.label} · Lv.${progress.level}`;
+    }
+    if (els.wordShooterShipOptions) {
+      els.wordShooterShipOptions.innerHTML = Object.values(WORD_SHOOTER_SHIPS).map(ship => {
+        const levels = progress.shipUpgrades[ship.id];
+        const selected = ship.id === progress.selectedShip;
+        return `<button class="hangar-option hangar-ship-option${selected ? ' is-active' : ''}" type="button" data-hangar-ship="${ship.id}" aria-pressed="${selected}">
+          <span class="hangar-ship-silhouette" data-hangar-ship-art="${ship.id}"></span>
+          <span class="hangar-option-copy"><strong>${ship.label}</strong><small>${ship.description}</small><em>机动 ${levels.speed} · 护盾 ${ship.shield + levels.shield}</em></span>
+        </button>`;
+      }).join('');
+    }
+    if (els.wordShooterWeaponOptions) {
+      els.wordShooterWeaponOptions.innerHTML = Object.values(WORD_SHOOTER_WEAPONS).map(weapon => {
+        const selected = weapon.id === progress.equippedWeapon;
+        const detail = weapon.id === 'basic' ? '稳定连射' : weapon.label;
+        return `<button class="hangar-option hangar-weapon-option${selected ? ' is-active' : ''}" type="button" data-hangar-weapon="${weapon.id}" aria-pressed="${selected}">
+          <span class="hangar-weapon-mark" data-weapon="${weapon.id}"></span><span><strong>${weapon.label}</strong><small>${detail}</small></span>
+        </button>`;
+      }).join('');
+    }
+    if (els.wordShooterUpgradeOptions) {
+      const levels = progress.shipUpgrades[progress.selectedShip];
+      els.wordShooterUpgradeOptions.innerHTML = Object.entries(WORD_SHOOTER_UPGRADE_COSTS).map(([upgradeId, cost]) => {
+        const level = levels[upgradeId];
+        const canBuy = progress.starDust >= cost && level < 5;
+        return `<button class="hangar-upgrade-button" type="button" data-hangar-upgrade="${upgradeId}" ${canBuy ? '' : 'disabled'}>
+          <span><strong>${WORD_SHOOTER_UPGRADE_LABELS[upgradeId]}</strong><small>等级 ${level}/5</small></span><b>${level >= 5 ? 'MAX' : `${cost} 星尘`}</b>
+        </button>`;
+      }).join('');
+    }
+  }
+
+  function selectWordShooterShip(shipId) {
+    if (!WORD_SHOOTER_SHIPS[shipId]) return false;
+    wordShooterProgression.selectedShip = shipId;
+    saveWordShooterProgression();
+    const loadout = getWordShooterLoadout();
+    state.wordShooter.shipId = loadout.shipId;
+    state.wordShooter.shield = Math.min(state.wordShooter.shield, loadout.shield);
+    renderWordShooterHangar();
+    if (state.activeGame === 'word-shooter') renderTypingArena();
+    return true;
+  }
+
+  function equipWordShooterWeapon(weaponId) {
+    if (!WORD_SHOOTER_WEAPONS[weaponId]) return false;
+    wordShooterProgression.equippedWeapon = weaponId;
+    saveWordShooterProgression();
+    state.wordShooter.baseWeaponId = weaponId;
+    state.wordShooter.weaponId = weaponId;
+    state.wordShooter.weaponExpiresAt = 0;
+    renderWordShooterHangar();
+    if (state.activeGame === 'word-shooter') renderTypingArena();
+    return true;
+  }
+
+  function upgradeWordShooterShip(upgradeId) {
+    if (!WORD_SHOOTER_UPGRADE_COSTS[upgradeId]) return false;
+    const shipId = wordShooterProgression.selectedShip;
+    const levels = wordShooterProgression.shipUpgrades[shipId];
+    const cost = WORD_SHOOTER_UPGRADE_COSTS[upgradeId];
+    if (levels[upgradeId] >= 5 || wordShooterProgression.starDust < cost) return false;
+    wordShooterProgression.starDust -= cost;
+    levels[upgradeId] += 1;
+    saveWordShooterProgression();
+    renderWordShooterHangar();
+    if (state.activeGame === 'word-shooter') renderTypingArena();
+    return true;
+  }
+
+  function settleWordShooterProgression(completedCount, score) {
+    const ws = state.wordShooter;
+    if (ws.rewardClaimed) return null;
+    ws.rewardClaimed = true;
+    const dust = Math.max(3, Math.floor(completedCount / 2) + Math.floor(Math.max(0, score) / 12));
+    wordShooterProgression.starDust += dust;
+    wordShooterProgression.experience += completedCount * 12;
+    wordShooterProgression.totalRuns += 1;
+    wordShooterProgression.level = Math.max(1, 1 + Math.floor(wordShooterProgression.experience / 100));
+    saveWordShooterProgression();
+    renderWordShooterHangar();
+    return { starDust: dust, level: wordShooterProgression.level };
   }
 
   function saveSettings() {
@@ -1522,6 +1725,9 @@
       const completedStat = payload.stats.find(item => ['击破单词', '击破拼音', '接到拼音'].includes(item.label));
       const completedCount = Number(String(completedStat?.value || '0').split('/')[0]) || 0;
       const reward = roundRewardFor(gameId, completedCount);
+      const shooterProgressionReward = gameId === 'word-shooter'
+        ? settleWordShooterProgression(completedCount, Number(payload.stats.find(item => item.label === '总得分')?.value) || 0)
+        : null;
       const reviewStats = gameId === 'word-cannon'
         ? pinyinRoundReviewStats()
         : [];
@@ -1531,7 +1737,11 @@
         { label: '金币', value: `+${reward.coins}` },
         { label: '星星', value: `+${reward.stars}` },
         ...(reward.diamonds ? [{ label: '钻石', value: `+${reward.diamonds}` }] : []),
-        { label: '武器升级', value: reward.upgrade }
+        { label: '武器升级', value: reward.upgrade },
+        ...(shooterProgressionReward ? [
+          { label: '星尘', value: `+${shooterProgressionReward.starDust}` },
+          { label: '机库等级', value: `Lv.${shooterProgressionReward.level}` }
+        ] : [])
       ];
       return {
         ...payload,
@@ -1777,7 +1987,7 @@
   function getWordShooterWeapon() {
     const ws = state.wordShooter;
     if (ws.weaponId !== 'basic' && ws.weaponExpiresAt <= ws.elapsedMs) {
-      ws.weaponId = 'basic';
+      ws.weaponId = ws.baseWeaponId || getWordShooterLoadout().weaponId;
       ws.weaponExpiresAt = 0;
     }
     return WORD_SHOOTER_WEAPONS[ws.weaponId] || WORD_SHOOTER_WEAPONS.basic;
@@ -1880,6 +2090,7 @@
   function renderWordShooterWeaponStatus() {
     const ws = state.wordShooter;
     const weapon = getWordShooterWeapon();
+    const loadout = getWordShooterLoadout();
     const remainingSeconds = Math.max(0, Math.ceil((ws.weaponExpiresAt - ws.elapsedMs) / 1000));
     const subline = weapon.id === 'basic'
       ? '每个字母发射一次'
@@ -1893,6 +2104,7 @@
           <span>weapon</span>
           <strong>${weapon.label}</strong>
           <small>${subline}</small>
+          <em>${loadout.ship.label} · 护盾 ${ws.shield}/${loadout.shield}</em>
         </div>
       </div>
     `;
@@ -1947,7 +2159,12 @@
         node.dataset.enemyId = enemy.id;
         node.innerHTML = `
           <img class="typing-enemy-art" alt="" aria-hidden="true">
-          <span class="typing-enemy-word"></span>
+          <div class="typing-enemy-word-card" role="group" aria-label="英文目标">
+            <span class="typing-enemy-word-kicker">TARGET</span>
+            <span class="typing-enemy-word"></span>
+            <small class="typing-enemy-translation"></small>
+            <span class="typing-enemy-typed-status" aria-live="polite"></span>
+          </div>
         `;
       }
       node.className = `typing-enemy enemy-fighter${enemy.kind === 'fighter' ? ' is-fighter' : ''}${isLocked ? ' is-locked' : ''}${isWarning ? ' is-warning' : ''}${isDestroying ? ' is-destroying' : ''}`;
@@ -1965,6 +2182,10 @@
       const word = node.querySelector('.typing-enemy-word');
       word.dataset.enemyWord = enemy.wordData.word;
       word.innerHTML = renderEnemyWordMarkup(enemy, isLocked);
+      const translation = node.querySelector('.typing-enemy-translation');
+      if (translation) translation.textContent = enemy.wordData.translation || '输入单词击破目标';
+      const typedStatus = node.querySelector('.typing-enemy-typed-status');
+      if (typedStatus) typedStatus.textContent = isLocked && doneCount ? `${doneCount}/${enemy.wordData.word.length}` : '按首字母锁定';
       els.typingEnemyLayer.appendChild(node);
     });
   }
@@ -1997,6 +2218,7 @@
   function renderWordShooterShip() {
     if (!els.typingGunShip) return;
     const ws = state.wordShooter;
+    const loadout = getWordShooterLoadout();
     const weapon = getWordShooterWeapon();
     const shipSrc = ws.firePoseUntil > ws.elapsedMs
       ? WORD_SHOOTER_ASSETS.shipFire
@@ -2008,6 +2230,9 @@
       els.typingGunShip.src = shipSrc;
     }
     els.typingGun.dataset.weapon = weapon.id;
+    els.typingGun.dataset.ship = loadout.shipId;
+    els.typingGun.style.setProperty('--ship-hue', loadout.ship.hue);
+    els.typingGun.style.setProperty('--ship-scale', String(loadout.ship.scale));
     els.typingGun.dataset.firing = ws.firePoseUntil > ws.elapsedMs ? 'true' : 'false';
   }
 
@@ -2021,6 +2246,7 @@
     els.typingStreak.textContent = ws.combo > 1 ? `combo ${ws.combo}` : `miss ${ws.misses}`;
     els.wordChinese.textContent = focusEnemy?.wordData.translation || '锁定目标后开始击破';
     els.typingArena.dataset.weapon = getWordShooterWeapon().id;
+    els.typingArena.dataset.ship = getWordShooterLoadout().shipId;
     els.typingArena.dataset.locked = ws.activeEnemyId ? 'true' : 'false';
     els.typingArena.dataset.firing = ws.firePoseUntil > ws.elapsedMs ? 'true' : 'false';
     els.typingArena.dataset.arenaShake = ws.arenaShakeUntil > ws.elapsedMs ? 'true' : 'false';
@@ -2036,7 +2262,7 @@
     }
     els.typingArena.style.setProperty('--player-x', `${ws.player.x.toFixed(2)}%`);
     els.typingArena.style.setProperty('--player-y', `${ws.player.y.toFixed(2)}%`);
-    if (els.typingShield) els.typingShield.textContent = `shield ${ws.shield}/3`;
+    if (els.typingShield) els.typingShield.textContent = `shield ${ws.shield}/${getWordShooterLoadout().shield}`;
     els.typingArena.style.setProperty('--arena-shake-x', ws.arenaShakeUntil > ws.elapsedMs ? `${ws.arenaShakeLevel.toFixed(1)}px` : '0px');
     els.typingArena.style.setProperty('--arena-shake-y', ws.arenaShakeUntil > ws.elapsedMs ? `${(ws.arenaShakeLevel * 0.42).toFixed(1)}px` : '0px');
     if (els.wordFeedback) els.wordFeedback.textContent = wordShooterFeedbackText();
@@ -2567,7 +2793,7 @@
     const dy = Number(ws.moveInput.down) - Number(ws.moveInput.up);
     if (!dx && !dy) return;
     const length = Math.hypot(dx, dy) || 1;
-    const distance = WORD_SHOOTER_PLAYER_SPEED * (deltaMs / 1000);
+    const distance = WORD_SHOOTER_PLAYER_SPEED * getWordShooterLoadout().speedMultiplier * (deltaMs / 1000);
     ws.player.x = clampNumber(ws.player.x + (dx / length) * distance, WORD_SHOOTER_PLAYER_BOUNDS.minX, WORD_SHOOTER_PLAYER_BOUNDS.maxX);
     ws.player.y = clampNumber(ws.player.y + (dy / length) * distance, WORD_SHOOTER_PLAYER_BOUNDS.minY, WORD_SHOOTER_PLAYER_BOUNDS.maxY);
   }
@@ -2691,6 +2917,8 @@
       activeEnemyId: state.wordShooter.activeEnemyId,
       currentTyped: state.wordShooter.currentTyped,
       weaponId: getWordShooterWeapon().id,
+      baseWeaponId: state.wordShooter.baseWeaponId,
+      shipId: getWordShooterLoadout().shipId,
       enemies: state.wordShooter.enemies.filter(enemy => !enemy.destroying).map(enemy => ({
         id: enemy.id,
         word: enemy.wordData.word,
@@ -2717,6 +2945,8 @@
       ,enemyBullets: state.wordShooter.enemyBullets.map(bullet => ({ ...bullet }))
       ,moveInput: { ...state.wordShooter.moveInput }
       ,stageTheme: { ...wordShooterStageTheme() }
+      ,loadout: getWordShooterLoadout()
+      ,progression: wordShooterProgressionSnapshot()
     };
   }
 
@@ -2742,6 +2972,7 @@
 
   function startWordShooter() {
     const ws = state.wordShooter;
+    const loadout = getWordShooterLoadout();
     stopWordShooter();
     state.words = wordsForDifficulty();
     ws.roundWords = shuffleWordsForRound(state.words);
@@ -2756,7 +2987,9 @@
     ws.enemyId = 0;
     ws.pickup = null;
     ws.elapsedMs = 0;
-    ws.weaponId = 'basic';
+    ws.baseWeaponId = loadout.weaponId;
+    ws.weaponId = loadout.weaponId;
+    ws.shipId = loadout.shipId;
     ws.weaponExpiresAt = 0;
     ws.firePoseUntil = 0;
     ws.muzzleFlashUntil = 0;
@@ -2767,13 +3000,14 @@
     ws.resolvingHit = false;
     ws.player = { x: WORD_SHOOTER_PLAYER_X, y: WORD_SHOOTER_PLAYER_START_Y };
     ws.moveInput = { up: false, down: false, left: false, right: false };
-    ws.shield = WORD_SHOOTER_PLAYER_SHIELD;
+    ws.shield = loadout.shield;
     ws.invulnerableUntil = 0;
     ws.enemyBullets = [];
     ws.enemyBulletId = 0;
     ws.enemyFireEnabled = true;
     ws.roundGoal = wordDifficultyTuning().shooter.roundGoal;
     ws.roundComplete = false;
+    ws.rewardClaimed = false;
     ws.spawnCursor = startWordCursor(ws.roundWords);
     state.wordIndex = ws.spawnCursor;
     state.input = '';
@@ -4110,6 +4344,21 @@
       });
       return;
     }
+    const hangarShip = event.target.closest('[data-hangar-ship]');
+    if (hangarShip) {
+      selectWordShooterShip(hangarShip.dataset.hangarShip);
+      return;
+    }
+    const hangarWeapon = event.target.closest('[data-hangar-weapon]');
+    if (hangarWeapon) {
+      equipWordShooterWeapon(hangarWeapon.dataset.hangarWeapon);
+      return;
+    }
+    const hangarUpgrade = event.target.closest('[data-hangar-upgrade]');
+    if (hangarUpgrade) {
+      upgradeWordShooterShip(hangarUpgrade.dataset.hangarUpgrade);
+      return;
+    }
     const hanziPackButton = event.target.closest('[data-hanzi-pack]');
     if (hanziPackButton) {
       setHanziPack(hanziPackButton.dataset.hanziPack, {
@@ -4264,6 +4513,7 @@
     state.hanzi = hanziItemsForPack(state.hanziPack);
     renderHomeCards();
     renderWordDifficultySwitch();
+    renderWordShooterHangar();
     updateSoundToggle();
     showHome();
     const requestedGame = initialGameFromQuery();
@@ -4276,6 +4526,11 @@
     speakSequence,
     speakCurrentWord,
     wordShooter: () => wordShooterSnapshot(),
+    readWordShooterProgression: () => wordShooterProgressionSnapshot(),
+    getWordShooterLoadout: () => getWordShooterLoadout(),
+    selectWordShooterShip,
+    equipWordShooterWeapon,
+    upgradeWordShooterShip,
     debugSpawnWordShooterPickup: (type = 'triple-beam') => {
       const focusEnemy = focusWordShooterEnemy() || { x: 58, y: 52 };
       spawnWordShooterPickup(type, focusEnemy.x, focusEnemy.y);

@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packRoot = path.join(root, 'data', 'story-packs', '03-space-growth-detective');
 const manifest = JSON.parse(fs.readFileSync(path.join(packRoot, 'manifest.json'), 'utf8'));
+const assetRoot = path.join(root, 'assets', 'story', 'space-growth-detective');
+const assetManifest = JSON.parse(fs.readFileSync(path.join(assetRoot, 'asset-manifest.json'), 'utf8'));
 
 assert.equal(manifest.id, 'space-growth-detective');
 assert.equal(manifest.runtime, 'explore-story-map');
@@ -13,6 +15,12 @@ assert.equal(manifest.map?.background, 'assets/story/space-growth-detective/map.
 assert.equal(manifest.map?.nodes?.length, 5, 'the second story has five map nodes');
 assert.equal(manifest.collectibles?.cards?.length, 5, 'the second story has five story cards');
 assert.equal(manifest.collectibles?.badges?.length, 5, 'the second story has five badges');
+assert.equal(assetManifest.assets?.length, 15, 'the second story has fifteen reviewed collectible assets');
+assert.ok(fs.existsSync(path.join(assetRoot, 'map.webp')), 'reviewed map background exists');
+for (const asset of assetManifest.assets) {
+  assert.ok(fs.existsSync(path.join(root, asset.file)), `${asset.id}: reviewed asset exists`);
+  assert.ok(asset.size?.[0] > 0 && asset.size?.[1] > 0, `${asset.id}: reviewed asset dimensions`);
+}
 
 const nodesById = new Map(manifest.map.nodes.map((node) => [node.caseId, node]));
 for (const [index, caseId] of manifest.caseIds.entries()) {
@@ -30,6 +38,10 @@ for (const [index, caseId] of manifest.caseIds.entries()) {
   assert.ok(Number(story.rewards?.growthPoints) > 0, `${caseId}: growth point reward`);
   assert.ok(Number(story.rewards?.petExp) > 0, `${caseId}: pet exp reward`);
   assert.ok(story.rewards?.cardId && story.rewards?.badgeId, `${caseId}: collectible reward ids`);
+  assert.ok(fs.existsSync(path.join(root, node.image)), `${caseId}: node image file exists`);
 }
+
+for (const card of manifest.collectibles.cards) assert.ok(fs.existsSync(path.join(root, card.image)), `${card.id}: card image file exists`);
+for (const badge of manifest.collectibles.badges) assert.ok(fs.existsSync(path.join(root, badge.image)), `${badge.id}: badge image file exists`);
 
 console.log(`PASS space growth detective map contract: ${manifest.map.nodes.length} nodes`);

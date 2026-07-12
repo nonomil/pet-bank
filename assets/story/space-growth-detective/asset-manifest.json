@@ -1,0 +1,178 @@
+{
+  "generator": "agnes-image-2.1-flash",
+  "generatedAt": "2026-07-12T15:41:18.049730+00:00",
+  "map": {
+    "file": "assets/story/space-growth-detective/map.webp",
+    "size": [
+      1248,
+      832
+    ]
+  },
+  "assets": [
+    {
+      "kind": "node",
+      "id": "energy-stardust",
+      "file": "assets/story/space-growth-detective/nodes/energy-stardust.webp",
+      "source": "tmp/space-growth-art/sheet/split/part01_229x192.png",
+      "size": [
+        229,
+        192
+      ],
+      "opaquePixels": 25555
+    },
+    {
+      "kind": "node",
+      "id": "cloud-code",
+      "file": "assets/story/space-growth-detective/nodes/cloud-code.webp",
+      "source": "tmp/space-growth-art/sheet/split/part02_221x172.png",
+      "size": [
+        221,
+        172
+      ],
+      "opaquePixels": 19634
+    },
+    {
+      "kind": "node",
+      "id": "star-dust-footprints",
+      "file": "assets/story/space-growth-detective/nodes/star-dust-footprints.webp",
+      "source": "tmp/space-growth-art/sheet/split/part03_223x198.png",
+      "size": [
+        223,
+        198
+      ],
+      "opaquePixels": 29875
+    },
+    {
+      "kind": "node",
+      "id": "companion-link",
+      "file": "assets/story/space-growth-detective/nodes/companion-link.webp",
+      "source": "tmp/space-growth-art/sheet/split/part04_229x144.png",
+      "size": [
+        229,
+        144
+      ],
+      "opaquePixels": 16656
+    },
+    {
+      "kind": "node",
+      "id": "home-star-map",
+      "file": "assets/story/space-growth-detective/nodes/home-star-map.webp",
+      "source": "tmp/space-growth-art/sheet/split/part05_213x189.png",
+      "size": [
+        213,
+        189
+      ],
+      "opaquePixels": 23350
+    },
+    {
+      "kind": "card",
+      "id": "energy-stardust",
+      "file": "assets/story/space-growth-detective/cards/energy-stardust.webp",
+      "source": "tmp/space-growth-art/sheet/split/part06_170x206.png",
+      "size": [
+        170,
+        206
+      ],
+      "opaquePixels": 26877
+    },
+    {
+      "kind": "card",
+      "id": "cloud-code",
+      "file": "assets/story/space-growth-detective/cards/cloud-code.webp",
+      "source": "tmp/space-growth-art/sheet/split/part07_210x201.png",
+      "size": [
+        210,
+        201
+      ],
+      "opaquePixels": 26767
+    },
+    {
+      "kind": "card",
+      "id": "star-dust-footprints",
+      "file": "assets/story/space-growth-detective/cards/star-dust-footprints.webp",
+      "source": "tmp/space-growth-art/sheet/split/part08_174x204.png",
+      "size": [
+        174,
+        204
+      ],
+      "opaquePixels": 26963
+    },
+    {
+      "kind": "card",
+      "id": "companion-link",
+      "file": "assets/story/space-growth-detective/cards/companion-link.webp",
+      "source": "tmp/space-growth-art/sheet/split/part09_171x203.png",
+      "size": [
+        171,
+        203
+      ],
+      "opaquePixels": 26375
+    },
+    {
+      "kind": "card",
+      "id": "home-star-map",
+      "file": "assets/story/space-growth-detective/cards/home-star-map.webp",
+      "source": "tmp/space-growth-art/sheet/split/part10_191x204.png",
+      "size": [
+        191,
+        204
+      ],
+      "opaquePixels": 26990
+    },
+    {
+      "kind": "badge",
+      "id": "energy-scout",
+      "file": "assets/story/space-growth-detective/badges/energy-scout.webp",
+      "source": "tmp/space-growth-art/sheet/split/part11_199x198.png",
+      "size": [
+        199,
+        198
+      ],
+      "opaquePixels": 24985
+    },
+    {
+      "kind": "badge",
+      "id": "cloud-companion",
+      "file": "assets/story/space-growth-detective/badges/cloud-companion.webp",
+      "source": "tmp/space-growth-art/sheet/split/part12_197x200.png",
+      "size": [
+        197,
+        200
+      ],
+      "opaquePixels": 25114
+    },
+    {
+      "kind": "badge",
+      "id": "star-dust-tracker",
+      "file": "assets/story/space-growth-detective/badges/star-dust-tracker.webp",
+      "source": "tmp/space-growth-art/sheet/split/part13_201x201.png",
+      "size": [
+        201,
+        201
+      ],
+      "opaquePixels": 25751
+    },
+    {
+      "kind": "badge",
+      "id": "link-builder",
+      "file": "assets/story/space-growth-detective/badges/link-builder.webp",
+      "source": "tmp/space-growth-art/sheet/split/part14_205x202.png",
+      "size": [
+        205,
+        202
+      ],
+      "opaquePixels": 25773
+    },
+    {
+      "kind": "badge",
+      "id": "home-star-keeper",
+      "file": "assets/story/space-growth-detective/badges/home-star-keeper.webp",
+      "source": "tmp/space-growth-art/sheet/split/part15_202x202.png",
+      "size": [
+        202,
+        202
+      ],
+      "opaquePixels": 25995
+    }
+  ]
+}

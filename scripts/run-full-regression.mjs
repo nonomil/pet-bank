@@ -25,6 +25,7 @@ const TASKS = [
     { label: 'word memory prototype', cmd: 'node', args: ['prj/单词记忆射击场原型/verify.mjs'] },
     { label: 'learning arcade prototype', cmd: 'node', args: ['prj/学习机玩法原型/verify.mjs'] },
     { label: 'learning arcade browser smoke', cmd: 'node', args: ['prj/学习机玩法原型/scripts/test-full-prototype-smoke.mjs'] },
+    { label: 'word shooter progression contract', cmd: 'node', args: ['prj/学习机玩法原型/scripts/test-word-shooter-progression.mjs'] },
     { label: 'learning arcade published artifact', cmd: 'node', args: ['prj/学习机玩法原型/scripts/test-word-shooter-published-artifact.mjs'] },
     { label: 'typing defense prototype', cmd: 'node', args: ['prj/消灭苦力怕打字游戏/web/verify.mjs'] },
     { label: 'typing defense simulation', cmd: 'node', args: ['prj/消灭苦力怕打字游戏/web/simulate.mjs'] },

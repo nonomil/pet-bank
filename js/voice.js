@@ -1,18 +1,20 @@
 /**
- * VoiceSystem — 宠物积分系统专用语音播报（galgame 呈现层）
+ * VoiceSystem — 宠物积分系统专用语音播报（galgame 呈现层 + 像素故事 TTS）
  *
- * 纯本地预生成 mp3 播放（assets/voice），无 TTS/WebSpeech。
- * 零侵入：MutationObserver 自动监听 galgameText 等容器，不改业务代码。
- * 命中 map.json 的文本播 assets/voice/*.mp3；未命中静默（开发者补生成，运行时不降级）。
+ * 双模式：
+ *  - 预生成模式：assets/voice/*.mp3（galgame 对话）
+ *  - TTS 模式：调用 edge-tts / VoxCPM2 服务端合成（像素故事角色配音）
+ * 零侵入：MutationObserver 自动监听 galgameText / pixelStoryText 容器。
  *
  * 挂载点：window.VoiceSystem。DOMContentLoaded 自动 boot，无需手动调用。
  * 存储：localStorage 'petbank_voice_settings'（petbank_ 前缀，随 profile swap 跟随）。
  *
  * 暴露 API：
- *   speak(text, opts)    主动播报（opts.force 忽略 enabled 开关）
- *   stop()               停止当前语音并清空待播队列
- *   getSettings()        读取当前设置（副本）
- *   setSettings(partial) 局部更新并持久化
+ *   speak(text, opts)        主动播报（opts.force 忽略 enabled 开关）
+ *   speakTTS(text, voice)    调用 TTS 服务端合成并播放
+ *   stop()                   停止当前语音并清空待播队列
+ *   getSettings()            读取当前设置（副本）
+ *   setSettings(partial)     局部更新并持久化
  */
 (function () {
     'use strict';
@@ -30,6 +32,10 @@
     var _prefetchMap = null;       // null=未加载/失败；{}=已加载（可能为空）
     var _prefetchReady = false;
     var _pendingSpeak = null;
+
+    // TTS 层（像素故事角色配音）
+    var TTS_SERVER = 'http://127.0.0.1:9885';      // edge-tts / VoxCPM2 服务地址
+    var _ttsAudioCache = {};                        // text+voice -> HTMLAudioElement
 
     var settings = null;
 
@@ -150,13 +156,74 @@
         var key = text;
         var now = Date.now();
         if (key === _lastText && (now - _lastTime) < 2000) return;   // 指纹去重
-        stop(); // 新对话/新场景替换旧语音，避免地图切换后旧旁白继续播。
+        stop();
         _lastText = key; _lastTime = now;
         if (!_prefetchReady) {
             _pendingSpeak = { text: key };
             return;
         }
         _playMappedText(key);
+    }
+
+    /**
+     * speakTTS — 调用 TTS 服务端合成语音并播放
+     * @param {string} text      要朗读的文本
+     * @param {string} [voice]   声线预设（mom/grandpa/teacher/child，默认 mom）
+     * @param {Object} [opts]    可选参数 { force: bool }
+     */
+    function speakTTS(text, voice, opts) {
+        if (!settings.enabled && !(opts && opts.force)) return;
+        if (typeof text !== 'string' || !text.trim()) return;
+        var key = text + '|' + (voice || 'mom');
+        var now = Date.now();
+        if (key === _lastText && (now - _lastTime) < 2000) return;
+        stop();
+        _lastText = key; _lastTime = now;
+        _playTTS(text, voice || 'mom');
+    }
+
+    function _playTTS(text, voice) {
+        var cacheKey = text + '::' + voice;
+        var cached = _ttsAudioCache[cacheKey];
+        if (cached) {
+            _playAudioElement(cached);
+            return;
+        }
+        // 调用 TTS 服务端
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', TTS_SERVER + '/tts', true);
+        xhr.responseType = 'blob';
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var blob = xhr.response;
+                if (blob && blob.type && blob.type.indexOf('audio') === 0) {
+                    var url = URL.createObjectURL(blob);
+                    var audio = new Audio(url);
+                    _ttsAudioCache[cacheKey] = audio;
+                    _playAudioElement(audio);
+                    return;
+                }
+            }
+            // TTS 失败：静默降级（不阻塞游戏流程）
+            console.warn('[VoiceSystem] TTS failed for:', text.slice(0, 30));
+        };
+        xhr.onerror = function () {
+            console.warn('[VoiceSystem] TTS server unreachable at', TTS_SERVER);
+        };
+        xhr.send(JSON.stringify({ text: text, voice: voice, engine: 'auto' }));
+    }
+
+    function _playAudioElement(audio) {
+        var token = _playToken;
+        if (_currentAudio) {
+            try { _currentAudio.pause(); } catch (e) {}
+            try { _currentAudio.src = ''; } catch (e2) {}
+            _currentAudio = null;
+        }
+        _currentAudio = audio;
+        audio.onended = function () { if (token === _playToken) _currentAudio = null; };
+        audio.play().catch(function () { /* browser may block autoplay */ });
     }
 
     function _flushPendingSpeak() {
@@ -233,14 +300,27 @@
         btn.textContent = '🔊';
         btn.title = '朗读当前对话';
         btn.style.cssText = 'position:absolute;top:8px;right:8px;z-index:50;background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:1;';
-        // 关键：阻止冒泡到 #galgameBox 的 onclick=next()；用 _cleanGalgameText 剥离运行时附加段后查询 map
         btn.addEventListener('click', function (e) {
             e.stopPropagation();
             e.preventDefault();
-            var t = document.getElementById('galgameText');
+            var isPixelStory = box.id === 'pixelStoryBox';
+            var textId = isPixelStory ? 'pixelStoryText' : 'galgameText';
+            var t = document.getElementById(textId);
             var raw = t ? t.textContent : '';
-            var cleaned = _cleanGalgameText(raw);
-            speak(cleaned || raw, { force: true });
+            if (!raw) return;
+            if (isPixelStory) {
+                var nameEl = document.getElementById('pixelStoryName');
+                var voice = 'child';
+                if (nameEl) {
+                    var cls = nameEl.className;
+                    if (cls.indexOf('narrator') !== -1) voice = 'grandpa';
+                    else if (cls.indexOf('friend') !== -1) voice = 'teacher';
+                }
+                speakTTS(raw.trim(), voice, { force: true });
+            } else {
+                var cleaned = _cleanGalgameText(raw);
+                speak(cleaned || raw, { force: true });
+            }
         });
         box.appendChild(btn);
     }
@@ -269,8 +349,10 @@
 
     function _initPlayButtonObserver() {
         var injectAll = function () {
-            var boxes = document.querySelectorAll('#galgameBox');
-            for (var i = 0; i < boxes.length; i++) _injectPlayButton(boxes[i]);
+            var galgameBoxes = document.querySelectorAll('#galgameBox');
+            for (var i = 0; i < galgameBoxes.length; i++) _injectPlayButton(galgameBoxes[i]);
+            var pixelBoxes = document.querySelectorAll('#pixelStoryBox');
+            for (var j = 0; j < pixelBoxes.length; j++) _injectPlayButton(pixelBoxes[j]);
         };
         injectAll();
         var obs = new MutationObserver(function (mutations) {
@@ -280,8 +362,8 @@
                     for (var j = 0; j < m.addedNodes.length; j++) {
                         var n = m.addedNodes[j];
                         if (n.nodeType !== 1) continue;
-                        if (n.id === 'galgameBox') _injectPlayButton(n);
-                        else if (n.querySelector && n.querySelector('#galgameBox')) injectAll();
+                        if (n.id === 'galgameBox' || n.id === 'pixelStoryBox') _injectPlayButton(n);
+                        else if (n.querySelector && (n.querySelector('#galgameBox') || n.querySelector('#pixelStoryBox'))) injectAll();
                     }
                 }
             }
@@ -291,11 +373,11 @@
 
     // ===== 自动播报：监听文字容器 =====
     // 选择器规则：sel + extract(node)->string + 可选 throttle
-    // 自动播报规则：只保留探索地图 galgame 对话
     var AUTOPLAY_RULES = [
-        // innerText excludes the collapsed detail copy, keeping audio aligned
-        // with the short-first visual path.
-        { sel: '#galgameText', extract: function (n) { return _cleanGalgameText(n.innerText || n.textContent); }, throttle: 300 }
+        // galgame 探索对话
+        { sel: '#galgameText', extract: function (n) { return _cleanGalgameText(n.innerText || n.textContent); }, throttle: 300 },
+        // 像素故事对话
+        { sel: '#pixelStoryText', extract: function (n) { return (n.innerText || n.textContent || '').trim(); }, throttle: 300 }
     ];
 
     function _matchAndExtract(node) {
@@ -311,14 +393,13 @@
                 try {
                     var t = rule.extract(matched);
                     if (t) {
-                        // 只节流同一文本，允许孩子快速点击时新对话立即播报。
                         var now = Date.now();
                         var last = _throttleMap[rule.sel] || 0;
                         var lastText = _throttleTextMap[rule.sel] || '';
                         if (rule.throttle && t === lastText && (now - last) < rule.throttle) return null;
                         _throttleMap[rule.sel] = now;
                         _throttleTextMap[rule.sel] = t;
-                        return t;
+                        return { text: t, ruleIndex: i };
                     }
                 } catch (e) { /* ignore */ }
             }
@@ -326,8 +407,25 @@
         return null;
     }
     function _handleMutationNode(node) {
-        var text = _matchAndExtract(node);
-        if (text) speak(text);
+        var result = _matchAndExtract(node);
+        if (!result) return;
+        var text = result.text;
+        // 像素故事容器走 TTS，galgame 走预生成 mp3
+        if (result.ruleIndex === 1) {
+            // #pixelStoryText — 提取角色声线（可选），默认 child
+            var nameEl = document.getElementById('pixelStoryName');
+            var voice = 'child';
+            if (nameEl) {
+                var cls = nameEl.className;
+                if (cls.indexOf('narrator') !== -1) voice = 'grandpa';
+                else if (cls.indexOf('friend') !== -1) voice = 'teacher';
+                else if (cls.indexOf('hero') !== -1) voice = 'child';
+                else if (cls.indexOf('mom') !== -1) voice = 'mom';
+            }
+            speakTTS(text, voice, { force: true });
+        } else {
+            speak(text);
+        }
     }
     function _initAutoPlayObserver() {
         var obs = new MutationObserver(function (mutations) {
@@ -411,6 +509,7 @@
     // ===== 暴露 API =====
     window.VoiceSystem = {
         speak: speak,
+        speakTTS: speakTTS,
         stop: stop,
         getSettings: getSettings,
         setSettings: setSettings

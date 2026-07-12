@@ -167,13 +167,23 @@
             .replace(/'/g, '&#39;');
     }
 
+    function iconForCase(caseId) {
+        return {
+            'energy-stardust': 'battery-charging',
+            'cloud-code': 'cloud',
+            'star-dust-footprints': 'scan-line',
+            'companion-link': 'link-2',
+            'home-star-map': 'home'
+        }[String(caseId || '')] || 'sparkles';
+    }
+
     function renderCollectible(item, collection, type, catalog) {
         const id = String(item.id || '');
         const claimed = collection[type].includes(id);
         const label = claimed ? item.name : '待解锁收藏';
         return `
             <article class="space-growth-collectible ${claimed ? 'is-collected' : 'is-locked'}" data-space-growth-collectible="${escapeHtml(id)}">
-                <div class="space-growth-collectible-art"><img src="${assetUrl(item.image)}" alt="${escapeHtml(label)}" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('has-fallback')"><span aria-hidden="true">${type === 'cards' ? '卡' : '章'}</span></div>
+                <div class="space-growth-collectible-art"><img src="${assetUrl(item.image)}" alt="${escapeHtml(label)}" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('has-fallback')"><i data-lucide="${type === 'cards' ? 'book-open' : 'award'}" aria-hidden="true"></i></div>
                 <div class="space-growth-collectible-copy"><strong>${escapeHtml(label)}</strong><span>${claimed ? escapeHtml(item.subtitle || '星光档案已收录') : `${catalog} · 胜利后获得`}</span></div>
             </article>`;
     }
@@ -203,7 +213,7 @@
             const state = done ? 'is-complete' : unlocked ? (selectedCaseId === item.id ? 'is-current' : 'is-open') : 'is-locked';
             const position = node.position || { x: 15 + index * 18, y: 70 - (index % 2) * 25 };
             return `<button type="button" class="space-growth-node ${state}" data-space-growth-node data-case-id="${escapeHtml(item.id)}" style="--node-x:${Number(position.x) || 0}%;--node-y:${Number(position.y) || 0}%;" ${unlocked ? '' : 'disabled'} aria-label="${escapeHtml(unlocked ? `进入${item.title}` : `锁定${item.title}`)}">
-                <span class="space-growth-node-art"><img src="${assetUrl(node.image || item.node?.image || '')}" alt="" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('has-fallback')"><span aria-hidden="true">${String(index + 1).padStart(2, '0')}</span></span>
+                <span class="space-growth-node-art"><img src="${assetUrl(node.image || item.node?.image || '')}" alt="" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('has-fallback')"><i data-lucide="${iconForCase(item.id)}" aria-hidden="true"></i><span class="space-growth-node-index" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span></span>
                 <span class="space-growth-node-copy"><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(node.shortLabel || node.label || '')}</small></span>
                 <span class="space-growth-node-state">${done ? '已完成' : unlocked ? '进入案件' : `前置：${escapeHtml(item.prerequisiteCaseId || '上一案')}`}</span>
             </button>`;
@@ -230,6 +240,7 @@
         });
         container.querySelectorAll('[data-space-test-action="prepare"]').forEach((button) => button.addEventListener('click', prepareTestPet));
         container.querySelectorAll('[data-space-test-action="reset"]').forEach((button) => button.addEventListener('click', resetStory));
+        if (root.lucide && typeof root.lucide.createIcons === 'function') root.lucide.createIcons();
     }
 
     async function render(containerId = 'spaceGrowthDetectiveContainer') {

@@ -2607,6 +2607,8 @@ function runPageActivation(page) {
     if (page === 'playground') renderPlaygroundProgressBoard();
     if (page === 'review') renderReviewBattleBoard();
     if (page === 'mathpk' && window.MathPKGame) MathPKGame.renderUI('math-pk-container');
+    if (page === 'review') renderReviewBattleBoard();
+    if (page === 'mathpk' && window.MathPKGame) MathPKGame.renderUI('math-pk-container');
     if (page === 'hanzi' && window.HanziGame) HanziGame.renderUI('hanzi-container');
     if (page === 'typing-defense') {
         renderTypingDefenseSummaryPanel();
@@ -3582,6 +3584,22 @@ function ensureExploreMapShell() {
 }
 
 async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
+    const pageExplore = document.getElementById('page-explore');
+
+    // 像素故事优先（默认主模式）：无特定场景选择且壳未渲染时使用
+    if (window.PixelStoryEngine && !selectedSceneId && pageExplore) {
+        const hasPixelShell = pageExplore.querySelector('#pixelStoryShell');
+        const hasOldContainer = pageExplore.querySelector('#spaceGrowthDetectiveContainer');
+        const hasActiveGalgame = pageExplore.querySelector('.galgame-stage')
+            && window.ExplorationDetail
+            && typeof ExplorationDetail.isActive === 'function'
+            && ExplorationDetail.isActive();
+        if (!hasPixelShell && !hasOldContainer && !hasActiveGalgame) {
+            await renderPixelStoryExplorePage();
+            return;
+        }
+    }
+
     const storyContainer = ensureExploreMapShell();
     if (!storyContainer) return;
 
@@ -3611,6 +3629,79 @@ async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
     }
     if (window.SpaceGrowthDetective && typeof window.SpaceGrowthDetective.render === 'function') {
         await window.SpaceGrowthDetective.render('spaceGrowthDetectiveContainer');
+    }
+    if (window.lucide) lucide.createIcons();
+}
+
+/** 像素故事探索页（默认主模式） */
+async function renderPixelStoryExplorePage() {
+    const pageExplore = document.getElementById('page-explore');
+    if (!pageExplore) return;
+
+    if (pageExplore.querySelector('.galgame-stage') && window.ExplorationDetail
+        && typeof ExplorationDetail.isActive === 'function' && ExplorationDetail.isActive()) {
+        return;
+    }
+
+    const existing = pageExplore.querySelector('#pixelStoryShell');
+    if (existing && existing.dataset.mode === 'story') return;
+
+    pageExplore.innerHTML =
+        '<div class="pixel-story-shell" id="pixelStoryShell" data-mode="story">' +
+        '  <header class="pixel-story-overview">' +
+        '    <div class="pixel-story-overview-copy">' +
+        '      <p class="pixel-story-eyebrow">探索 / 故事漫游</p>' +
+        '      <h2>宠物手机：星际成长旅程</h2>' +
+        '      <p>和宠物一起读线索、解开小谜题，把每一次照顾都变成回家的星光。</p>' +
+        '    </div>' +
+        '    <div class="pixel-story-overview-status" aria-label="故事状态">' +
+        '      <span class="pixel-story-status-dot" aria-hidden="true"></span>' +
+        '      <div><strong>星际信号稳定</strong><small>故事包 01 · 幼小衔接</small></div>' +
+        '    </div>' +
+        '  </header>' +
+        '  <div class="pixel-story-modebar" role="tablist" aria-label="探索模式">' +
+        '    <button class="pixel-story-mode is-active" data-explore-mode="story" role="tab" aria-selected="true"><span aria-hidden="true">✦</span><strong>故事漫游</strong><small>读一段，学一点</small></button>' +
+        '    <button class="pixel-story-mode" data-explore-mode="adventure" role="tab" aria-selected="false"><span aria-hidden="true">⌁</span><strong>冒险挑战</strong><small>选路线，赢奖励</small></button>' +
+        '  </div>' +
+        '  <div class="pixel-story-map-slot" id="pixelStoryMapContainer"></div>' +
+        '</div>';
+
+    if (window.PixelStoryEngine && typeof window.PixelStoryEngine.render === 'function') {
+        await window.PixelStoryEngine.render('pixelStoryMapContainer');
+    }
+
+    pageExplore.querySelectorAll('[data-explore-mode]').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            if (this.dataset.exploreMode === 'adventure') switchExploreToAdventure();
+        });
+    });
+
+    if (window.lucide) lucide.createIcons();
+}
+
+function switchExploreToAdventure() {
+    var shell = document.getElementById('pixelStoryShell');
+    if (!shell) return;
+    shell.dataset.mode = 'adventure';
+    shell.innerHTML =
+        '<header class="pixel-story-overview pixel-story-overview-adventure">' +
+        '  <div class="pixel-story-overview-copy"><p class="pixel-story-eyebrow">探索 / 冒险挑战</p><h2>星光成长侦探社</h2><p>沿着案件航线照顾宠物、完成战斗，把线索收进成长册。</p></div>' +
+        '  <div class="pixel-story-overview-status"><span class="pixel-story-status-dot" aria-hidden="true"></span><div><strong>挑战模式</strong><small>保留原有冒险路线</small></div></div>' +
+        '</header>' +
+        '<div class="pixel-story-modebar" role="tablist" aria-label="探索模式">' +
+        '  <button class="pixel-story-mode" data-explore-mode="story" role="tab" aria-selected="false"><span aria-hidden="true">✦</span><strong>故事漫游</strong><small>读一段，学一点</small></button>' +
+        '  <button class="pixel-story-mode is-active" data-explore-mode="adventure" role="tab" aria-selected="true"><span aria-hidden="true">⌁</span><strong>冒险挑战</strong><small>选路线，赢奖励</small></button>' +
+        '</div>' +
+        '<div id="adventureContainer"></div>';
+
+    shell.querySelectorAll('[data-explore-mode]').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            if (this.dataset.exploreMode === 'story') void renderPixelStoryExplorePage();
+        });
+    });
+
+    if (window.SpaceGrowthDetective && typeof SpaceGrowthDetective.render === 'function') {
+        SpaceGrowthDetective.render('adventureContainer');
     }
     if (window.lucide) lucide.createIcons();
 }

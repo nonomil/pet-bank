@@ -7838,8 +7838,24 @@ body.shell-parent .app-bottom-dock {
     object-fit: cover;
 }
 
-.space-growth-node-art img + span {
+.space-growth-node-art img + i,
+.space-growth-node-index {
     position: absolute;
+}
+
+.space-growth-node-art i {
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    stroke-width: 2.4;
+}
+
+.space-growth-node-index {
+    right: 5px;
+    bottom: 4px;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 9px;
+    font-weight: 900;
 }
 
 .space-growth-node-copy {
@@ -8024,6 +8040,13 @@ body.shell-parent .app-bottom-dock {
     color: #7180a7;
     font-size: 12px;
     font-weight: 900;
+}
+
+.space-growth-collectible-art i {
+    width: 22px;
+    height: 22px;
+    color: #7285ae;
+    stroke-width: 2.2;
 }
 
 .space-growth-collectible-copy {

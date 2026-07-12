@@ -86,7 +86,7 @@
         walk: ['js/walk.js'],
         cardCollection: ['js/travel-memory.js', 'js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
-        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js'],
+        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-map.js', 'js/pixel-story-engine.js'],
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=6'],
         shop: ['js/shop.js'],

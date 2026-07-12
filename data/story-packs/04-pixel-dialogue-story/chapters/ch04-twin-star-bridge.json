@@ -1,0 +1,27 @@
+{
+  "chapterId": "ch04-twin-star-bridge",
+  "title": "第四章：双星桥的回家星图",
+  "order": 4,
+  "scenes": [
+    {
+      "sceneId": "s01-home",
+      "background": "",
+      "lines": [
+        { "type": "narration", "text": "双星桥就在前方。两颗星星一左一右，牵着一条发光的线，像是在说：一起回家吧。", "character": "narrator" },
+        { "type": "dialogue", "text": "星尘伙伴飞了一路有点累。回家前，我们先做什么？", "character": "pet", "position": "right" },
+        { "type": "choice", "prompt": "怎样照顾累了的小伙伴？", "options": [
+          { "id": "rest", "label": "让它休息，喝点水", "isCorrect": true, "feedback": "对！会照顾伙伴，就是最可靠的领航员。", "reward": 2 },
+          { "id": "rush", "label": "催它快点飞", "isCorrect": false, "feedback": "伙伴累了，要先休息和补充能量。" },
+          { "id": "leave", "label": "把它留在桥边", "isCorrect": false, "feedback": "好朋友要一起回家，不能把它独自留下。" }
+        ], "learningType": "comprehensive", "word": "伙伴" },
+        { "type": "dialogue", "text": "回家星图上有‘桥’和‘光’两个字。你能找到‘桥’字吗？", "character": "protagonist", "position": "left" },
+        { "type": "choice", "prompt": "下面哪个字是‘桥’？", "options": [
+          { "id": "bridge", "label": "桥", "isCorrect": true, "feedback": "找到了！桥能把两边连在一起。", "reward": 2 },
+          { "id": "light", "label": "光", "isCorrect": false, "feedback": "这是‘光’，会发亮的光。" },
+          { "id": "star", "label": "星", "isCorrect": false, "feedback": "这是‘星’，抬头就能看见它。" }
+        ], "learningType": "hanzi", "word": "桥" },
+        { "type": "narration", "text": "所有星光连成一条线。小小宇航员和星尘伙伴安全回到宠物小屋，新的旅程也在地图上亮起。", "character": "narrator" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "chapterId": "ch03-star-dust-dock",
+  "title": "第三章：星尘维修区的数字齿轮",
+  "order": 3,
+  "scenes": [
+    {
+      "sceneId": "s01-repair",
+      "background": "",
+      "lines": [
+        { "type": "narration", "text": "飞船来到星尘维修区。星尘伙伴的导航灯闪了三下，工程师赶快拿来工具箱。", "character": "narrator" },
+        { "type": "dialogue", "text": "工具箱里有2把小扳手，我又放进3把，一共有几把？", "character": "star_engineer", "position": "center" },
+        { "type": "choice", "prompt": "2 + 3 = ？", "options": [
+          { "id": "five", "label": "5", "isCorrect": true, "feedback": "答对了！2把再加3把，正好是5把。", "reward": 2 },
+          { "id": "four", "label": "4", "isCorrect": false, "feedback": "再数一遍：2、3、4、5。" },
+          { "id": "six", "label": "6", "isCorrect": false, "feedback": "多算了一把，2加3是5。" }
+        ], "learningType": "math", "answer": 5 },
+        { "type": "dialogue", "text": "维修灯还剩5格能量，用掉2格以后，还剩几格？", "character": "star_engineer", "position": "center" },
+        { "type": "choice", "prompt": "5 - 2 = ？", "options": [
+          { "id": "three", "label": "3", "isCorrect": true, "feedback": "很棒！5格拿走2格，还剩3格。", "reward": 2 },
+          { "id": "two", "label": "2", "isCorrect": false, "feedback": "2是拿走的能量，别忘了从5格里减掉它。" }
+        ], "learningType": "math", "answer": 3 },
+        { "type": "narration", "text": "数字齿轮咔哒一声转好，飞船又能稳稳地飞向双星桥。", "character": "narrator" }
+      ]
+    }
+  ]
+}

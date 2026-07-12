@@ -85,6 +85,37 @@
             <div class="difficulty-switch vocab-pack-switch" id="wordPackSwitch" aria-label="英文词库"></div>
             <div class="difficulty-switch" id="wordDifficultySwitch" aria-label="单词难度"></div>
             <button class="settings-reset-button" type="button" id="wordSettingsReset" title="恢复 Minecraft 基础训练">恢复默认</button>
+            <section class="word-shooter-hangar" id="wordShooterHangar" aria-label="飞机大战机库">
+              <div class="hangar-heading">
+                <div>
+                  <span class="hangar-kicker">HANGAR</span>
+                  <strong>选择你的战机</strong>
+                </div>
+                <span class="hangar-currency" id="wordShooterStarDust" aria-live="polite">星尘 0</span>
+              </div>
+              <p class="hangar-summary" id="wordShooterLoadoutSummary">侦察翼 · 脉冲激光</p>
+              <div class="hangar-section">
+                <span class="hangar-section-title">机体</span>
+                <div class="hangar-options hangar-ship-options" id="wordShooterShipOptions">
+                  <button class="hangar-option hangar-ship-option is-active" type="button" data-hangar-ship="scout"><span>侦察翼</span></button>
+                  <button class="hangar-option hangar-ship-option" type="button" data-hangar-ship="guardian"><span>守护舰</span></button>
+                  <button class="hangar-option hangar-ship-option" type="button" data-hangar-ship="nova"><span>新星号</span></button>
+                </div>
+              </div>
+              <div class="hangar-section">
+                <span class="hangar-section-title">基础武器</span>
+                <div class="hangar-options hangar-weapon-options" id="wordShooterWeaponOptions">
+                  <button class="hangar-option hangar-weapon-option is-active" type="button" data-hangar-weapon="basic"><span>脉冲激光</span></button>
+                  <button class="hangar-option hangar-weapon-option" type="button" data-hangar-weapon="triple-beam"><span>三重光束</span></button>
+                  <button class="hangar-option hangar-weapon-option" type="button" data-hangar-weapon="homing-missile"><span>追踪导弹</span></button>
+                  <button class="hangar-option hangar-weapon-option" type="button" data-hangar-weapon="pierce-laser"><span>穿透激光</span></button>
+                </div>
+              </div>
+              <div class="hangar-section hangar-upgrades">
+                <span class="hangar-section-title">升级当前机体</span>
+                <div class="hangar-upgrade-options" id="wordShooterUpgradeOptions"></div>
+              </div>
+            </section>
           </div>
         </details>
         <div class="difficulty-badge" id="wordDifficultyBadge" aria-live="polite"></div>

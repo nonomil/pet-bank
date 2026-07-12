@@ -1,0 +1,219 @@
+{
+  "chapterId": "ch01-moon-station",
+  "title": "第一章：月环补给站的汉字星尘",
+  "order": 1,
+  "mapNode": {
+    "label": "月环补给站",
+    "subtitle": "汉字星尘",
+    "position": { "x": 15, "y": 45 }
+  },
+  "scenes": [
+    {
+      "sceneId": "s01-arrival",
+      "label": "抵达补给站",
+      "background": "",
+      "lines": [
+        {
+          "type": "narration",
+          "character": "narrator",
+          "text": "小小宇航员驾驶着星光飞船，带着星尘伙伴来到了月环补给站。这里是太空旅行的第一站，圆圆的补给站像一个月亮挂在星空里。"
+        },
+        {
+          "type": "dialogue",
+          "character": "protagonist",
+          "position": "left",
+          "text": "哇！月亮上好亮呀！那个圆圆的房子就是补给站吗？"
+        },
+        {
+          "type": "dialogue",
+          "character": "pet",
+          "position": "right",
+          "text": "是的！你看，门上画着一个大大的字呢。我们走近看看吧！"
+        },
+        {
+          "type": "dialogue",
+          "character": "moon_rabbit",
+          "position": "center",
+          "text": "欢迎来到月环补给站！我是月兔站长。小宇航员，你能认出门上这个字吗？这个字和月亮有关哦～"
+        },
+        {
+          "type": "choice",
+          "character": "moon_rabbit",
+          "prompt": "门上写的字是什么？",
+          "learningType": "hanzi",
+          "word": "月",
+          "options": [
+            {
+              "id": "correct",
+              "label": "月",
+              "feedback": "对啦！'月'就是月亮的月🌙！你看它弯弯的，就像天上的月亮。一个月有两个字的'月'也是它！",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-sun",
+              "label": "日",
+              "feedback": "不对哦，'日'是太阳☀️，圆圆的没有缺口。门上的字像弯弯的月亮，是'月'字。",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-star",
+              "label": "星",
+              "feedback": "再想想，'星'是很多小点✨，门上的字像弯弯的月亮，是'月'字哦。",
+              "isCorrect": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sceneId": "s02-stardust",
+      "label": "收集星尘",
+      "background": "",
+      "lines": [
+        {
+          "type": "narration",
+          "character": "narrator",
+          "text": "月兔站长带着小小宇航员走进了补给站。站里漂浮着好多闪闪发光的星尘，每一颗星尘上都写着一个汉字。"
+        },
+        {
+          "type": "dialogue",
+          "character": "moon_rabbit",
+          "position": "center",
+          "text": "这些星尘是星际旅行的能量来源！但是它们太调皮了，都散落在各处。你能帮我认出上面的字，把它们收集起来吗？"
+        },
+        {
+          "type": "dialogue",
+          "character": "pet",
+          "position": "right",
+          "text": "快看！这颗星尘上的字闪闪发光，它像不像天上亮晶晶的小星星？"
+        },
+        {
+          "type": "choice",
+          "character": "pet",
+          "prompt": "闪闪发光的字，像天上的小星星，这个字是什么？",
+          "learningType": "hanzi",
+          "word": "星",
+          "options": [
+            {
+              "id": "correct",
+              "label": "星",
+              "feedback": "太棒了！'星'就是星星的星⭐！你看它上面是个'日'（太阳），下面是个'生'，合在一起就是照亮我们的星星！",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-light",
+              "label": "光",
+              "feedback": "接近了！'光'是亮光的意思，但这颗星尘上的字是'星'——天上亮晶晶的星星。",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "type": "narration",
+          "character": "narrator",
+          "text": "又飘来两颗星尘。一颗亮得刺眼，一颗温柔地发着光。"
+        },
+        {
+          "type": "dialogue",
+          "character": "moon_rabbit",
+          "position": "center",
+          "text": "这两颗星尘是好朋友。左边这颗特别亮，右边这颗亮得很温柔。认识它们吗？"
+        },
+        {
+          "type": "choice",
+          "character": "moon_rabbit",
+          "prompt": "左边这颗特别亮的星尘上写的是什么字？",
+          "learningType": "hanzi",
+          "word": "亮",
+          "options": [
+            {
+              "id": "correct",
+              "label": "亮",
+              "feedback": "答对啦！'亮'就是亮亮的、闪闪发光的意思✨！和刚才的'光'一起就是'光亮'。",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-month",
+              "label": "月",
+              "feedback": "'月'是弯弯的月亮🌙，这个特别亮的字是'亮'。记住：亮亮的、发光的都是'亮'字！",
+              "isCorrect": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sceneId": "s03-cookies",
+      "label": "星星饼干",
+      "background": "",
+      "lines": [
+        {
+          "type": "narration",
+          "character": "narrator",
+          "text": "收集完星尘，月兔站长开心极了。她从烤箱里端出了香喷喷的星星饼干。"
+        },
+        {
+          "type": "dialogue",
+          "character": "moon_rabbit",
+          "position": "center",
+          "text": "谢谢你帮我收集星尘！我请你吃星星饼干～我先烤了3块，后来又烤了2块。"
+        },
+        {
+          "type": "dialogue",
+          "character": "protagonist",
+          "position": "left",
+          "text": "好香呀！让我数一数……"
+        },
+        {
+          "type": "choice",
+          "character": "moon_rabbit",
+          "prompt": "月兔站长先烤了3块，又烤了2块，一共有几块饼干？",
+          "learningType": "math",
+          "expression": "3+2",
+          "answer": 5,
+          "options": [
+            {
+              "id": "correct",
+              "label": "5块",
+              "feedback": "答对了！3块加2块等于5块 🍪🍪🍪 + 🍪🍪 = 5块！你真是个数学小天才！",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-4",
+              "label": "4块",
+              "feedback": "再数数看？伸出你的小手，竖起3根手指，再加2根，一共几根手指呀？对啦，是5！",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-6",
+              "label": "6块",
+              "feedback": "太多了！月兔只烤了3块加2块。来，数一数：1、2、3、4、5。一共5块！",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "type": "narration",
+          "character": "narrator",
+          "text": "月兔站长把5块星星饼干装进了小小宇航员的背包。月亮的光照在饼干上，暖暖的。"
+        },
+        {
+          "type": "dialogue",
+          "character": "moon_rabbit",
+          "position": "center",
+          "text": "你真是太棒了！认识了'月''星''亮'三个字，还学会了算数。这是你的月光识字卡，下一站是云朵信号带，祝你好运！"
+        },
+        {
+          "type": "narration",
+          "character": "narrator",
+          "text": "小小宇航员收好了月光识字卡。星尘伙伴在她身边闪闪发光，似乎在说：出发吧，下一站更精彩！"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "cardId": "moon-card",
+    "badgeId": "moon-badge",
+    "growthPoints": 10
+  }
+}
