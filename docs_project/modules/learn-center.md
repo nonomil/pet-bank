@@ -143,6 +143,16 @@ renderLessonBody (pack, module, lesson, showPinyin) → :2733
 | `playVocabAudio(src)` | :407 | 播放词汇发音 |
 | `getVocabFocusIndex(module, cards)` | :362 | 获取当前学习焦点 |
 
+### Minecraft 单词远征
+
+英语资料包中的 Minecraft 词卡有两条入口：原有 `learn-lesson` 词卡页继续作为资料包内的回退路径；新的 `/app/learn/minecraft-vocab` 是按日运行的短会话页面。完整 Anki 档案仍在 `prj/anki-minecraft-vocab/` 独立站，不由学习中心全量加载。
+
+- 默认学习池为 `data/learn/packs/english-mc-hybrid-2026/` 中 96 张已审查词卡，参考站公开接口的 500 条结构化快照位于 `data/learn/external/mayihaoke/word-cards.json`。
+- 每次会话固定为 2 个复习位、5 个新词位、3 个主动回忆位和 1 个场景句位，共 11 步；无历史复习词时只用稳定顺序补足复习位，不伪造词卡掌握状态。
+- `MinecraftVocabSession` 负责 Profile 会话快照、队列和完成判定；`MinecraftVocabPage` 负责页面渲染、音频回退和离页清理。页面由 `runtime-loader.js` 按 `minecraft-vocab` bundle 加载。
+- 完成后只通过 `GameRewardReceipts` 发放 `source=minecraft-vocab`、`eventId=session:<localDate>` 的 10 成长分，重复完成返回 duplicate，不直接写积分键。
+- 离开页面时必须执行 `MinecraftVocabPage.stop()`；媒体播放和页面 timer 不得跨页面继续运行。Profile 切换由现有快照策略隔离 `petbank_minecraft_vocab_session_v1_*`。
+
 ### 持久化
 
 ```
@@ -154,6 +164,7 @@ key: petbank_learning_print_prefs    → 打印偏好 (JSON)
 key: petbank_learning_daily_sheet    → 每日学习单数据 (JSON)
 key: petbank_learning_sheet_mode     → 模板选择 ('template-a'|'template-b'|'template-c')
 key: petbank_learning_vocab_focus    → 词汇焦点索引 (JSON)
+key: petbank_minecraft_vocab_session_v1_{profileId} → Minecraft 单词远征会话快照（JSON，按 Profile 隔离）
 ```
 
 ---

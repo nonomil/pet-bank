@@ -2,9 +2,11 @@
 
 > 此文档给执行部署的 AI 或 Hermes 使用。目标是安全部署，不丢失现有用户数据。
 
-> 当前发布：`v0.7.42`。本版本仍是“孩子端本地优先 + SQLite 账号/家庭/孩子/快照层”；不要改成每次玩法操作都请求 API。
+> 当前发布：`v0.7.43`。本版本仍是“孩子端本地优先 + SQLite 账号/家庭/孩子/快照层”；不要改成每次玩法操作都请求 API。
 
 > 本次像素故事发布的专用验收见 [PIXEL-WORLDS-HERMES.md](./PIXEL-WORLDS-HERMES.md)。
+
+> 本次 Minecraft 单词远征的专用验收见 [MINECRAFT-VOCAB-LEARNING-HERMES.md](./MINECRAFT-VOCAB-LEARNING-HERMES.md)。
 
 ## 不可违反的规则
 
