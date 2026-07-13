@@ -1,6 +1,6 @@
 # 当前实现快照
 
-> 核实基线：2026-07-13。本文只记录能从当前代码和验证入口复核的事实；产品设想和历史差距请看 `docs/`。
+> 核实基线：2026-07-14。本文只记录能从当前代码和验证入口复核的事实；产品设想和历史差距请看 `docs/`。
 
 ## 运行形态
 
@@ -30,6 +30,7 @@
 - 学习资料包位于 `data/learn/`，由 `catalog.json` 和各 pack 的 `manifest.json`、`plan.json`、modules 组成。
 - 运行时 key 的 owner、scope 和迁移要求以 [localstorage-keys.md](data-contracts/localstorage-keys.md) 为准。
 - Pages 只发布 `assemble-pages-artifact.mjs` 明确放行的运行时；不能依据 `prj/` 或 `docs/` 目录大小批量清理。
+- `prj/anki-minecraft-vocab/` 是独立的 Anki Minecraft 词卡静态工作台，使用自己的 `data/` 与 `assets/media/`，不写入主站 `data/vocab/`，也不进入主站 Pages 制品；独立部署和回滚见 [ANKI-MINECRAFT-VOCAB-HERMES.md](runbooks/self-hosted/ANKI-MINECRAFT-VOCAB-HERMES.md)。
 
 ## 当前能力口径
 
@@ -39,6 +40,7 @@
 | 学习中心、数学 PK、汉字、排行榜、独立学习游戏 | 当前实现或已桥接，需按专项验证入口检查 |
 | 本地多孩子档案 | 当前实现，切换会保存快照并 reload |
 | 自托管账号、家庭、孩子管理 | 当前已实现，需通过 VPS canary 验证 |
+| Anki Minecraft 词卡工作台 | 当前实现，11,241 张卡片、231 个末级牌组、6,847 个媒体映射；独立静态部署 |
 | Profile 快照自动 push/pull | 已接入启动恢复、孩子切换前上传、页面隐藏/退出上传；积分和宠物保存后会防抖触发快照上传；网络失败进入独立 outbox，冲突保留本地并提示，尚无多端自动合并 |
 | 好友、串门、PK、动态流 | 尚未实现 |
 

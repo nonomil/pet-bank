@@ -20,6 +20,8 @@ prj/*
 !prj/消灭苦力怕打字游戏/**
 !prj/单词记忆射击场原型/
 !prj/单词记忆射击场原型/**
+!prj/anki-minecraft-vocab/
+!prj/anki-minecraft-vocab/**
 !prj/petbank-server/
 !prj/petbank-server/**
 !prj/runtime_loader_route_base_contract.test.mjs

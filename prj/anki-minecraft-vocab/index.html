@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="从 Anki APKG 提取的 Minecraft 主题词卡目录与媒体浏览器">
+  <link rel="icon" href="data:,">
+  <title>Minecraft Anki 词卡工作台</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="icon-button mobile-menu-button" type="button" data-action="toggle-directory" aria-label="打开目录" aria-expanded="false">☰</button>
+      <div class="brand-mark" aria-hidden="true">PB</div>
+      <div class="brand-copy">
+        <p class="eyebrow">ANKI CARD WORKBENCH</p>
+        <h1>Minecraft 主题词卡</h1>
+      </div>
+      <div class="topbar-stats" aria-label="数据统计">
+        <div><strong data-stat="cards">--</strong><span>卡片</span></div>
+        <div><strong data-stat="decks">--</strong><span>目录</span></div>
+        <div><strong data-stat="media">--</strong><span>媒体</span></div>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="directory-panel" data-directory-panel>
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">COLLECTION INDEX</p>
+            <h2>完整目录</h2>
+          </div>
+          <button class="text-button" type="button" data-action="collapse-all">收起</button>
+        </div>
+        <p class="panel-note">按 Anki 牌组层级整理，点击任意节点查看其全部子目录卡片。</p>
+        <div class="directory-status" data-directory-status>正在读取目录...</div>
+        <nav class="directory-tree" data-directory aria-label="Anki 牌组目录"></nav>
+      </aside>
+
+      <section class="content-panel">
+        <div class="toolbar">
+          <label class="search-field">
+            <span class="sr-only">搜索卡片</span>
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input type="search" data-search placeholder="搜索单词、释义、媒体文件或目录" autocomplete="off">
+          </label>
+          <select class="scope-select" data-scope aria-label="卡片筛选范围">
+            <option value="all">全部字段</option>
+            <option value="readable">只看可读字段</option>
+            <option value="media">只看有媒体</option>
+          </select>
+          <button class="text-button" type="button" data-action="clear-search">清除</button>
+        </div>
+
+        <div class="content-heading">
+          <div>
+            <p class="section-kicker">CURRENT DECK</p>
+            <h2 data-current-deck>正在加载...</h2>
+          </div>
+          <div class="result-summary" data-result-summary>准备中</div>
+        </div>
+
+        <div class="card-workspace">
+          <section class="card-list-panel" aria-labelledby="card-list-title">
+            <div class="subheading">
+              <h3 id="card-list-title">卡片列表</h3>
+              <span class="muted" data-list-range></span>
+            </div>
+            <div class="card-list" data-card-list aria-live="polite">
+              <div class="loading-block">正在读取卡片数据...</div>
+            </div>
+            <button class="load-more" type="button" data-action="load-more" hidden>加载更多卡片</button>
+          </section>
+
+          <article class="card-detail-panel" data-card-detail aria-live="polite">
+            <div class="empty-detail">
+              <span class="empty-number">01</span>
+              <h3>选择一张卡片</h3>
+              <p>目录和搜索结果会显示在这里。媒体会从本地提取目录加载，不依赖外部网站。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-bar">
+      <span data-source-status>数据准备中</span>
+      <a href="https://file.ankichinas.cn/card/6a04e490ea980mB8" target="_blank" rel="noopener noreferrer">目录参考页</a>
+    </footer>
+  </div>
+  <div class="mobile-backdrop" data-action="toggle-directory" hidden></div>
+  <div class="toast" data-toast role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

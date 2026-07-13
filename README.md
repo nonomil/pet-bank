@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.39](https://img.shields.io/badge/Version-v0.7.39-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.41](https://img.shields.io/badge/Version-v0.7.41-brightgreen.svg)](CHANGELOG.md)
 
 📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [自托管后端说明](docs/工程/自托管/README.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,7 +27,7 @@
 
 ---
 
-## 🎉 最近更新（v0.7.39）
+## 🎉 最近更新（v0.7.41）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
@@ -35,6 +35,7 @@
 - 🧪 **回归入口可靠性**：全量回归由 `scripts/run-full-regression.mjs` 维护当前任务清单；每项测试有 120 秒超时，浏览器截图统一写入 `tmp/test-artifacts/`，不会污染发布文档目录
 - 🧭 **家长账号与孩子端分离**：主站孩子端继续使用 `localStorage` 离线运行；家长端通过同域 Node.js + SQLite 管理账号、家庭、孩子，并在 Profile 启动/切换时恢复和上传快照
 - 🚀 **VPS 自托管发布**：Hermes 使用 `ops/deploy-self-hosted.sh`、SQLite 备份/恢复脚本和 `/srv/pet-bank/shared/` 持久化目录；不依赖 Supabase 运行时
+- 📚 **Anki Minecraft 词卡工作台**：新增 `prj/anki-minecraft-vocab/` 独立静态项目，包含完整牌组目录、11,241 张卡片和本地媒体；独立部署手册不与主站 Pages 或 SQLite 账号层混用
 
 - 📚 **像素探险学习闭环**：英文敌人头顶只显示单词；未持球点击先打开主题图片、英文、中文、例句与发音词卡，持中文球后再投掷，形成“预习 → 判断 → 操作 → 回访”节奏
 - 🎮 **游乐场更沉浸**：打字防线点击后优先加载 Pages 运行时，卡牌对战会自动隐藏非游戏界面并提供固定的返回/关闭栏；三张玩法卡同步优化主体居中裁切
