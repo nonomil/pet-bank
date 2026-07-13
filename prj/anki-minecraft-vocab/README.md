@@ -7,7 +7,7 @@
 - 现代数据库：`collection.anki21`
 - 笔记/卡片：11,241 / 11,241
 - 末级牌组：231
-- 媒体映射：6,847
+- 原始媒体映射：6,847；清洗后保留：4,956
 - 官方词条：7,578 张，9 个主题
 - 核心单词：3,663 张，基础认读/听音辨意/主动输出各 1,221 张
 
@@ -22,6 +22,8 @@ python scripts/extract_apkg.py `
   --input "../../docs/参考/案例/🍅【我的世界】主题词汇━薯仔的外语小站.apkg" `
   --out-dir . `
   --copy-media
+
+node scripts/normalize-anki-minecraft-vocab.mjs --apply --prune-media
 ```
 
 提取器会优先使用 `collection.anki21`。`collection.anki2` 是新版 Anki 为旧客户端留下的兼容占位库，只有一条“请更新 Anki”的提示。
@@ -38,7 +40,14 @@ python -m http.server 8766 --bind 127.0.0.1
 
 ## 字段说明
 
-当前包的部分词义、例句和单词字段以 `≯#...#≮` 形式保存。提取器保留原始字段、纯文本和媒体引用，但不会猜测或破解字段。网页会展示可恢复的目录、图片、音频和明文；加密字段会显示状态提示。
+当前包的部分词义、例句和单词字段以 `≯#...#≮` 形式保存。规范化脚本不会猜测或破解这些字段，而是从词图、发音文件名、牌组目录和仓库已有词库恢复单词；缺少现成内容时生成适合 Minecraft 语境的双语短语和短句。每张卡最终使用 `content` 字段：
+
+- `word` / `chinese`：英文词条和中文释义
+- `phrase` / `phraseTranslation`：中英短语
+- `sentence` / `sentenceTranslation`：中英短句
+- `phonetic` / `category` / `source`：可选发音、分类和来源
+
+脚本会隐藏加密字段、过滤 `哈基米薯仔.png`、长哈希截图、`show-*` 装饰图，并为每张卡最多保留一张有效图片和一个音频。网页不显示加密乱码或随机音频文件名。
 
 ## 测试
 

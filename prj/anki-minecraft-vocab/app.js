@@ -95,7 +95,10 @@
   }
 
   function readableText(card) {
-    return fieldEntries(card).filter(([, field]) => !field.encrypted).map(([, field]) => field.text).filter(Boolean).join(' ');
+    const content = card.content || {};
+    return [content.word, content.chinese, content.phrase, content.phraseTranslation, content.sentence, content.sentenceTranslation]
+      .concat(fieldEntries(card).filter(([, field]) => !field.encrypted).map(([, field]) => field.text))
+      .filter(Boolean).join(' ');
   }
 
   function titleFromMedia(card) {
@@ -105,6 +108,7 @@
   }
 
   function displayTitle(card) {
+    if (card.content?.word) return card.content.word;
     const candidates = ['mainword', 'word', 'Front', 'Text', 'targetword', 'number'];
     for (const name of candidates) {
       const field = card.fields?.[name];
@@ -114,10 +118,11 @@
   }
 
   function displayDefinition(card) {
+    if (card.content?.chinese) return card.content.chinese;
     const candidates = ['meaning', 'permeaning', 'Back', 'meaning2', 'explanation', 'targetsentence', 'nativesentence'];
     const text = candidates.map((name) => card.fields?.[name]).find((field) => field && !field.encrypted && field.text);
     if (text) return text.text;
-    return '内容字段在此 Anki 包中以加密形式保存，当前先展示目录、媒体和可恢复字段。';
+    return '暂无可读释义';
   }
 
   function isWithin(card, selectedPath) {
@@ -129,7 +134,7 @@
     if (state.scope === 'readable' && !readableText(card)) return false;
     if (state.scope === 'media' && !(card.media || []).length) return false;
     if (!state.query) return true;
-    const haystack = [card.deckPath.join(' '), card.modelName, card.templateName, card.sortField, displayTitle(card), readableText(card), ...(card.media || []).map((item) => item.name)].join(' ').toLowerCase();
+    const haystack = [card.deckPath.join(' '), card.sortField, displayTitle(card), displayDefinition(card), readableText(card), ...(card.media || []).map((item) => item.name)].join(' ').toLowerCase();
     return haystack.includes(state.query.toLowerCase());
   }
 
@@ -141,7 +146,7 @@
     const images = (card.media || []).filter((item) => item.kind === 'image' && item.available);
     const audio = (card.media || []).filter((item) => item.kind === 'audio' && item.available);
     const imageMarkup = images.length ? `<div class="media-gallery">${images.slice(0, 4).map((item) => `<figure><img src="${assetUrl(item.path)}" alt="${escapeHtml(item.name)}" loading="lazy"><figcaption>${escapeHtml(item.name)}</figcaption></figure>`).join('')}</div>` : '';
-    const audioMarkup = audio.length ? `<div class="audio-list">${audio.slice(0, 5).map((item) => `<div class="audio-row"><span>${escapeHtml(item.name)}</span><audio controls preload="none" src="${assetUrl(item.path)}"></audio></div>`).join('')}</div>` : '';
+    const audioMarkup = audio.length ? `<div class="audio-list">${audio.slice(0, 5).map((item) => `<div class="audio-row"><span>${escapeHtml(displayTitle(card))} 发音</span><audio controls preload="none" src="${assetUrl(item.path)}"></audio></div>`).join('')}</div>` : '';
     if (!imageMarkup && !audioMarkup) return '<div class="media-empty">这张卡片没有可解析的本地媒体引用。</div>';
     return `${imageMarkup}${audioMarkup}`;
   }
@@ -152,8 +157,13 @@
       $('[data-card-detail]').innerHTML = '<div class="empty-detail"><span class="empty-number">01</span><h3>选择一张卡片</h3><p>目录和搜索结果会显示在这里。媒体会从本地提取目录加载，不依赖外部网站。</p></div>';
       return;
     }
-    const encryptedCount = fieldEntries(card).filter(([, field]) => field.encrypted).length;
-    const fieldMarkup = fieldEntries(card).map(([name, field]) => `<div class="field-row"><div class="field-name">${escapeHtml(name)}</div><div class="field-value ${field.encrypted ? 'is-encrypted' : ''}">${field.encrypted ? 'Anki 加密字段，暂不显示原文' : escapeHtml(field.text || '空字段')}</div></div>`).join('');
+    const content = card.content || {};
+    const contentMarkup = `<div class="learning-content">
+      <div class="content-row"><span class="content-label">中文释义</span><strong>${escapeHtml(content.chinese || '暂无释义')}</strong></div>
+      ${content.phonetic ? `<div class="content-row"><span class="content-label">发音</span><span class="content-original">${escapeHtml(content.phonetic)}</span></div>` : ''}
+      <div class="content-row"><span class="content-label">短语</span><span class="content-original">${escapeHtml(content.phrase || '')}</span><span class="content-translation">${escapeHtml(content.phraseTranslation || '')}</span></div>
+      <div class="content-row"><span class="content-label">短句</span><span class="content-original">${escapeHtml(content.sentence || '')}</span><span class="content-translation">${escapeHtml(content.sentenceTranslation || '')}</span></div>
+    </div>`;
     $('[data-card-detail]').innerHTML = `<div class="detail-header">
       <div><p class="section-kicker">CARD ${escapeHtml(String(card.id))}</p><h3>${escapeHtml(displayTitle(card))}</h3><p class="detail-path">${escapeHtml(card.deckPath.join(' / '))}</p></div>
       <button class="answer-button ${state.answerVisible ? 'is-active' : ''}" type="button" data-action="toggle-answer" aria-pressed="${state.answerVisible}">${state.answerVisible ? '隐藏释义' : '显示释义'}</button>
@@ -161,10 +171,10 @@
     <div class="card-face ${state.answerVisible ? 'is-answer' : ''}">
       <div class="face-label">${state.answerVisible ? 'ANSWER' : 'PROMPT'}</div>
       <div class="face-title">${escapeHtml(state.answerVisible ? displayDefinition(card) : displayTitle(card))}</div>
-      ${state.answerVisible ? `<div class="answer-copy">${encryptedCount ? `<span class="encryption-note">${encryptedCount} 个字段仍为加密状态</span>` : ''}${fieldMarkup}</div>` : '<p class="face-hint">先根据图片或音频回想，再查看释义字段。</p>'}
+      ${state.answerVisible ? contentMarkup : '<p class="face-hint">先根据图片或音频回想，再查看释义。</p>'}
     </div>
     <div class="detail-section"><div class="subheading"><h4>本地媒体</h4><span class="muted">${formatNumber(card.media?.length || 0)} 项</span></div>${renderMedia(card)}</div>
-    <div class="detail-meta"><span>${escapeHtml(card.modelName)}</span><span>${escapeHtml(card.templateName)}</span><span>${(card.tags || []).length ? escapeHtml(card.tags.join(' · ')) : '无标签'}</span></div>`;
+    `;
   }
 
   function renderCards() {
@@ -177,8 +187,7 @@
     $('[data-card-list]').innerHTML = results.length ? visible.map((card) => {
       const active = card.id === state.selectedCardId;
       const mediaBadge = card.media?.length ? `<span class="row-badge">${formatNumber(card.media.length)} 媒体</span>` : '';
-      const encryptedBadge = fieldEntries(card).some(([, field]) => field.encrypted) ? '<span class="row-badge is-muted">加密字段</span>' : '';
-      return `<button class="card-row ${active ? 'is-active' : ''}" type="button" data-action="select-card" data-card-id="${card.id}"><span class="row-index">${String(card.id).slice(-3)}</span><span class="row-main"><strong>${escapeHtml(displayTitle(card))}</strong><span>${escapeHtml(displayDefinition(card).slice(0, 96))}</span><small>${escapeHtml(card.deckPath.slice(-2).join(' / '))}</small></span><span class="row-badges">${mediaBadge}${encryptedBadge}</span></button>`;
+      return `<button class="card-row ${active ? 'is-active' : ''}" type="button" data-action="select-card" data-card-id="${card.id}"><span class="row-index">${String(card.id).slice(-3)}</span><span class="row-main"><strong>${escapeHtml(displayTitle(card))}</strong><span>${escapeHtml(displayDefinition(card).slice(0, 96))}</span><small>${escapeHtml(card.deckPath.slice(-2).join(' / '))}</small></span><span class="row-badges">${mediaBadge}</span></button>`;
     }).join('') : `<div class="empty-list"><span class="empty-number">00</span><h3>没有匹配卡片</h3><p>尝试缩短搜索词，或切换到上级目录。</p></div>`;
     const loadMore = $('[data-action="load-more"]');
     loadMore.hidden = visible.length >= results.length;
@@ -271,7 +280,7 @@
       $('[data-stat="cards"]').textContent = formatNumber(manifest.cardCount);
       $('[data-stat="decks"]').textContent = formatNumber(manifest.deckCount);
       $('[data-stat="media"]').textContent = formatNumber(manifest.mediaCount);
-      $('[data-source-status]').textContent = `${manifest.databaseEntry} · ${formatNumber(manifest.encryptedFieldCount)} 个字段保留加密状态`;
+      $('[data-source-status]').textContent = `${manifest.databaseEntry} · 已清洗 ${formatNumber(manifest.cardCount)} 张卡片 · 已移除装饰媒体`;
       renderDirectory();
       renderCards();
     } catch (error) {

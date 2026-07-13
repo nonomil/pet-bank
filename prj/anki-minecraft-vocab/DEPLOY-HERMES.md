@@ -5,11 +5,20 @@
 ## 本地验收
 
 ```powershell
+node --check scripts/normalize-anki-minecraft-vocab.mjs
 python -m unittest discover -s scripts -p "test_*.py" -v
 python -m http.server 8766 --bind 127.0.0.1
 ```
 
-打开 <http://127.0.0.1:8766/>，确认根目录 `11,241`、官方词条 `7,578`、核心单词 `3,663`，再检查搜索、折叠目录、翻卡、媒体和移动端抽屉。
+打开 <http://127.0.0.1:8766/>，确认根目录 `11,241`、官方词条 `7,578`、核心单词 `3,663`、清洗后媒体 `4,956`，再检查搜索能命中中文/短语/短句、折叠目录、翻卡、图片/音频和移动端抽屉。
+
+如果刚从 APKG 重新提取数据，必须先在项目目录执行：
+
+```powershell
+node scripts/normalize-anki-minecraft-vocab.mjs --apply --prune-media
+```
+
+规范化完成后再运行测试；不要直接把刚提取的原始 `cards.json` 部署到 Hermes。
 
 ## 生产规则
 

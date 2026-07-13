@@ -32,15 +32,33 @@ class WebContractTests(unittest.TestCase):
         cards = json.loads((ROOT / "data" / "cards.json").read_text(encoding="utf-8"))
 
         self.assertEqual(manifest["databaseEntry"], "collection.anki21")
+        self.assertEqual(manifest["schemaVersion"], 2)
         self.assertEqual(manifest["noteCount"], 11241)
         self.assertEqual(manifest["cardCount"], 11241)
         self.assertEqual(manifest["deckCount"], 231)
-        self.assertEqual(manifest["mediaCount"], 6847)
+        self.assertEqual(manifest["mediaCount"], 4956)
+        self.assertEqual(manifest["curatedMediaCount"], 4956)
+        self.assertEqual(manifest["sourceMediaCount"], 6847)
+        self.assertEqual(manifest["encryptedFieldCount"], 0)
+        self.assertEqual(manifest["sourceEncryptedFieldCount"], 119880)
         self.assertEqual(len(cards), manifest["cardCount"])
         self.assertEqual(len(decks["flat"]), manifest["deckCount"])
         self.assertEqual(decks["tree"][0]["cardCount"], 11241)
         self.assertEqual(decks["tree"][0]["children"][0]["cardCount"], 7578)
         self.assertEqual(decks["tree"][0]["children"][1]["cardCount"], 3663)
+
+        for card in cards:
+            content = card["content"]
+            for field in ("word", "chinese", "phrase", "phraseTranslation", "sentence", "sentenceTranslation"):
+                self.assertTrue(content[field], f"missing content.{field} for {card['id']}")
+                self.assertNotRegex(content[field], r"[≯≮#]")
+                self.assertNotIn("Minecraft词条", content[field])
+            self.assertEqual(content["schemaVersion"], 1)
+            self.assertFalse(any(field.get("encrypted") for field in card["fields"].values()))
+            for media in card["media"]:
+                if media["kind"] == "image":
+                    self.assertNotIn("哈基米薯仔.png", media["name"])
+                    self.assertNotRegex(media["name"], r"^(?:show(?:-|\.)|[0-9a-f]{24,})")
 
 
 if __name__ == "__main__":

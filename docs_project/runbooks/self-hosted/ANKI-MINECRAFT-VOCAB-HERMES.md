@@ -9,7 +9,7 @@
 - 静态入口：`index.html`
 - 运行数据：`data/manifest.json`、`data/decks.json`、`data/cards.json`
 - 本地媒体：`assets/media/`
-- 当前数据规模：11,241 张卡片、231 个末级牌组、6,847 个媒体映射；提取后的项目约 140.5 MB
+- 当前数据规模：11,241 张卡片、231 个末级牌组；原始 6,847 个媒体映射，清洗后保留 4,956 个；当前项目约 85.8 MB
 - 生产持久目录：无。每个 release 都是可替换的静态文件，`current` 只指向已验证 release
 
 不得执行以下操作：
@@ -18,7 +18,7 @@
 2. 不运行 `scripts/assemble-pages-artifact.mjs` 来发布此项目；主站 Pages 白名单刻意不包含它。
 3. 不把原始 `.apkg`、浏览器 profile、真实配置、数据库或备份加入 Git。
 4. 不删除 `/srv/pet-bank/shared`、已有 release 或用户数据；失败时只切换 `current`。
-5. 不猜测或破解网页标记为 Anki 加密的 `≯#...#≮` 字段。
+5. 不猜测或破解网页标记为 Anki 加密的 `≯#...#≮` 字段；词卡正文使用规范化后的 `content`，不是加密字段的伪解密。
 
 ## Hermes 执行流程
 
@@ -32,6 +32,7 @@ test -f prj/anki-minecraft-vocab/index.html
 test -s prj/anki-minecraft-vocab/data/manifest.json
 test -s prj/anki-minecraft-vocab/data/decks.json
 test -s prj/anki-minecraft-vocab/data/cards.json
+node --check prj/anki-minecraft-vocab/scripts/normalize-anki-minecraft-vocab.mjs
 python3 -m unittest discover \
   -s prj/anki-minecraft-vocab/scripts \
   -p 'test_*.py' -v
@@ -50,6 +51,8 @@ curl --fail http://127.0.0.1:8766/data/cards.json >/dev/null
 kill "$server_pid" 2>/dev/null || true
 trap - EXIT
 ```
+
+测试合同还会检查：11,241 张卡片都有英文、中文、双语短语和双语短句；`≯#...#≮` 不进入网页正文；`哈基米薯仔.png`、`show-*` 和长哈希图片不在清洗后的图片映射中；manifest 的 `mediaCount` 为 4,956。
 
 浏览器验收必须确认：首次进入选中根目录并显示 `11,241 / 11,241`；官方词条为 `7,578`；核心单词为 `3,663`；折叠展开后能选到末级目录；搜索、翻卡、图片/音频和移动端目录抽屉可用；新页面会话无控制台错误。
 
@@ -122,9 +125,10 @@ python prj/anki-minecraft-vocab/scripts/extract_apkg.py `
   --input "docs/参考/案例/🍅【我的世界】主题词汇━薯仔的外语小站.apkg" `
   --out-dir prj/anki-minecraft-vocab `
   --copy-media
+node prj/anki-minecraft-vocab/scripts/normalize-anki-minecraft-vocab.mjs --apply --prune-media
 ```
 
-提取器优先使用 `collection.anki21`；输入文件只读，输出前应确认有足够磁盘空间。重新生成后必须重新跑本项目测试和浏览器验收，不得只替换 `cards.json`。
+提取器优先使用 `collection.anki21`；输入文件只读，输出前应确认有足够磁盘空间。规范化会隐藏加密字段、补齐每张卡的中英短语/短句、每卡最多保留一张有效图片和一个音频，并只删除未引用图片。重新生成后必须重新跑本项目测试和浏览器验收，不得只替换 `cards.json`。
 
 ## 回滚
 

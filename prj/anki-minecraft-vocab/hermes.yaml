@@ -10,6 +10,21 @@ pagesArtifact: excluded-by-design
 releaseRoot: /srv/pet-bank/anki-minecraft-vocab/releases
 currentReleaseLink: /srv/pet-bank/anki-minecraft-vocab/current
 persistentData: none
+normalizedData:
+  schemaVersion: 2
+  cardCount: 11241
+  deckCount: 231
+  sourceMediaCount: 6847
+  curatedMediaCount: 4956
+  requiredCardContent:
+    - word
+    - chinese
+    - phrase
+    - phraseTranslation
+    - sentence
+    - sentenceTranslation
+rebuildCommand: node scripts/normalize-anki-minecraft-vocab.mjs --apply --prune-media
+testCommand: python -m unittest discover -s scripts -p "test_*.py" -v
 healthChecks:
   - /index.html
   - /data/manifest.json
