@@ -9,7 +9,8 @@ import { fileURLToPath } from 'node:url';
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '..', '..', '..');
 const assembleScript = path.join(repoRoot, 'scripts', 'assemble-pages-artifact.mjs');
-const outputDir = path.join(repoRoot, 'tmp', 'word-shooter-published-artifact-test');
+// 并行回归时各实例使用独立目录，避免 Windows 清理共享目录时出现 ENOTEMPTY。
+const outputDir = path.join(repoRoot, 'tmp', `word-shooter-published-artifact-test-${process.pid}`);
 const screenshotPath = path.join(repoRoot, 'tmp', 'word-shooter-published-artifact.png');
 const backgroundFiles = [
   'dawn-training-ground-clean/dawn-training-ground-clean.png',

@@ -1,6 +1,6 @@
 # PetBank 自托管后端与腾讯云部署
 
-> 对应项目版本：`v0.7.41`
+> 对应项目版本：`v0.7.42`
 
 > 目标：在一台腾讯云 2C4G Linux 服务器上部署网站和轻量后端。网站升级不会覆盖账号、家庭和孩子资料。
 
@@ -14,6 +14,8 @@
 4. [API-CONTRACT.md](./API-CONTRACT.md)
 
 Anki Minecraft 词卡是独立静态站，部署前另读 [ANKI-MINECRAFT-VOCAB-HERMES.md](./ANKI-MINECRAFT-VOCAB-HERMES.md)；它不进入主站 Pages 制品，也不使用本手册中的 SQLite API。
+
+像素世界故事的静态验收、生图供应商阻断处理和回滚步骤见 [PIXEL-WORLDS-HERMES.md](./PIXEL-WORLDS-HERMES.md)。
 
 不得删除 `/srv/pet-bank/shared/`。不得把数据库放进 Git 工作区或 release 目录。数据库变更只能通过新的 `db/migrations/NNN_*.sql` 文件追加。
 

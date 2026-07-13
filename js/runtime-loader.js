@@ -87,18 +87,23 @@
         card: ['css/card-collection.css'],
         arena: ['css/arena.css'],
         playground: ['css/playground.css?v=8', 'css/leaderboard.css?v=2', 'css/hanzi-game.css?v=4'],
-        learn: ['css/learn-center.css?v=6']
+        learn: ['css/learn-center.css?v=6'],
+        minecraftVocab: ['css/minecraft-vocab.css?v=1'],
+        picturebooks: ['css/picturebooks.css']
     };
 
     const SCRIPT_BUNDLES = {
         audio: ['js/zzfx.js', 'js/sfx.js'],
+        map: ['js/exploration.js'],
         home: ['js/pet-care-daily.js', 'js/core-reward-feedback.js', 'js/pet-growth-history.js', 'js/task-reward-events.js', 'js/pet-evolution-preview.js', 'js/travel-memory.js', 'js/home.js'],
         walk: ['js/walk.js'],
         cardCollection: ['js/travel-memory.js', 'js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
-        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-map.js', 'js/pixel-story-engine.js'],
+        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-map.js?v=20260714', 'js/pixel-story-engine.js?v=20260714'],
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=6'],
+        minecraftVocab: ['js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=1'],
+        picturebooks: ['js/picturebooks.js'],
         shop: ['js/shop.js'],
         review: ['js/family-review.js']
     };
@@ -268,6 +273,17 @@
         });
     }
 
+    async function ensureMapFeature() {
+        return once('feature-map', async function () {
+            await ensurePetCatalog();
+            await loadSeries(SCRIPT_BUNDLES.map, loadScript);
+            if (window.ExplorationSystem && typeof window.ExplorationSystem.loadScenes === 'function') {
+                await window.ExplorationSystem.loadScenes();
+            }
+            return true;
+        });
+    }
+
     async function ensureWalkFeature() {
         return once('feature-walk', async function () {
             await ensurePetCatalog();
@@ -353,6 +369,23 @@
         });
     }
 
+    async function ensureMinecraftVocabFeature() {
+        return once('feature-minecraft-vocab', async function () {
+            await ensureLearnFeature();
+            await loadSeries(STYLE_BUNDLES.minecraftVocab, loadStyle);
+            await loadSeries(SCRIPT_BUNDLES.minecraftVocab, loadScript);
+            return true;
+        });
+    }
+
+    async function ensurePicturebooksFeature() {
+        return once('feature-picturebooks', async function () {
+            await loadSeries(STYLE_BUNDLES.picturebooks, loadStyle);
+            await loadSeries(SCRIPT_BUNDLES.picturebooks, loadScript);
+            return true;
+        });
+    }
+
     async function ensureShopFeature() {
         return once('feature-shop', async function () {
             await ensureHomeFeature();
@@ -371,6 +404,7 @@
     async function ensurePage(page) {
         switch (page) {
             case 'map':
+                return ensureMapFeature();
             case 'today':
             case 'reward':
             case 'inventory':
@@ -405,6 +439,10 @@
             case 'learn-print':
             case 'learning-sheet':
                 return ensureLearnFeature();
+            case 'minecraft-vocab':
+                return ensureMinecraftVocabFeature();
+            case 'picturebooks':
+                return ensurePicturebooksFeature();
             case 'review':
                 return ensureReviewFeature();
             case 'settings':

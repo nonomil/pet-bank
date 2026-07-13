@@ -28,7 +28,6 @@ async function prepareWithPet() {
     localStorage.setItem('petbank_pet', JSON.stringify(pet));
     window.PetSystem.load();
     await window.switchPage('explore');
-    await window.renderExplorePage('space-growth-detective');
   });
   assert.equal(await page.evaluate(() => Boolean(window.PetStoryCases)), true, 'explore bundle loads story case module');
   await page.locator('[data-explore-mode="adventure"]').click();

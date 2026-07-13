@@ -29,12 +29,21 @@ cd "$release_dir"
 node scripts/assemble-pages-artifact.mjs site
 ```
 
+发布的静态根目录只能是 `$release_dir/site`。切换 `current` 前确认独立游戏运行时已进入制品：
+
+```bash
+test -f "$release_dir/site/app/playground/typing-defense-runtime/web/index.html"
+test -f "$release_dir/site/prj/学习机玩法原型/index.html"
+test -f "$release_dir/site/prj/单词记忆射击场原型/index.html"
+```
+
 1. 备份数据库。
 2. 在新 release 中运行后端测试：`node --test prj/petbank-server/test/*.test.mjs`。
 3. 将共享配置链接到新 release：`ln -sfn /srv/pet-bank/shared/server.env "$release_dir/prj/petbank-server/.env"`。
 4. 在新 release 启动 API 并访问 `/api/v1/health`。
 5. 若健康检查和页面检查成功，执行 `ln -sfn "$release_dir" /srv/pet-bank/current`。
-6. 保留前一个 release，至少确认一次真实登录和同步后再清理。
+6. 切换并重载 Nginx 后，检查 `typing-defense`、`learning-arcade`、`word-memory-map` 三个宿主路径，以及各自运行时 HTML 都返回成功状态。部署脚本的本机静态检查失败会自动恢复上一 release；外部 HTTPS 检查失败时仍须人工决定回滚或继续排查。
+7. 保留前一个 release，至少确认一次真实登录和同步后再清理。
 
 ## 回滚
 

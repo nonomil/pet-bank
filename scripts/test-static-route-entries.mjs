@@ -18,6 +18,7 @@ const expectedRoutes = [
     '/app/learn/plan',
     '/app/learn/lesson',
     '/app/learn/print',
+    '/app/learn/minecraft-vocab',
     '/app/pet',
     '/app/pet/home',
     '/app/pet/walk',
@@ -113,6 +114,14 @@ try {
     }
     if (fs.existsSync(path.join(artifactDir, 'prj', '消灭苦力怕打字游戏'))) {
         fail('typing defense development prototype must not be duplicated in the Pages artifact');
+    }
+    for (const runtimePath of [
+        ['prj', '学习机玩法原型', 'index.html'],
+        ['prj', '单词记忆射击场原型', 'index.html'],
+    ]) {
+        if (!fs.existsSync(path.join(artifactDir, ...runtimePath))) {
+            fail(`embedded game runtime is missing from the Pages artifact: ${runtimePath.join('/')}`);
+        }
     }
 
     const farmPanorama = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'generated', 'world-bg-single', 'farm-gpt-panorama.png');

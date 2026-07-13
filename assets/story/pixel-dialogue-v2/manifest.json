@@ -1,0 +1,31 @@
+{
+  "version": "20260713-v2",
+  "model": "gpt-image-2",
+  "provider": "tokenx24-openai-compatible",
+  "status": "accepted",
+  "notes": "Generated from prompt files in tmp/story-art-v2; visually inspected before runtime integration.",
+  "map": {
+    "file": "map/star-route.png",
+    "size": [1536, 1024],
+    "mode": "RGB"
+  },
+  "backgrounds": [
+    { "id": "moon-station", "file": "backgrounds/moon-station.png", "size": [1536, 1024], "mode": "RGB" },
+    { "id": "cloud-relay", "file": "backgrounds/cloud-relay.png", "size": [1536, 1024], "mode": "RGB" },
+    { "id": "star-dust-dock", "file": "backgrounds/star-dust-dock.png", "size": [1536, 1024], "mode": "RGB" },
+    { "id": "twin-star-bridge", "file": "backgrounds/twin-star-bridge.png", "size": [1536, 1024], "mode": "RGB" }
+  ],
+  "sprites": [
+    { "id": "astronaut", "file": "sprites/astronaut.png", "size": [467, 763], "mode": "RGBA" },
+    { "id": "star-pet", "file": "sprites/star-pet.png", "size": [460, 483], "mode": "RGBA" },
+    { "id": "moon-rabbit", "file": "sprites/moon-rabbit.png", "size": [479, 1031], "mode": "RGBA" },
+    { "id": "cloud-fairy", "file": "sprites/cloud-fairy.png", "size": [735, 1026], "mode": "RGBA" },
+    { "id": "star-engineer", "file": "sprites/star-engineer.png", "size": [817, 1091], "mode": "RGBA" }
+  ],
+  "icons": [
+    { "id": "moon", "file": "icons/moon.png", "size": [483, 399], "mode": "RGBA" },
+    { "id": "cloud", "file": "icons/cloud.png", "size": [458, 428], "mode": "RGBA" },
+    { "id": "gear", "file": "icons/gear.png", "size": [442, 420], "mode": "RGBA" },
+    { "id": "bridge", "file": "icons/bridge.png", "size": [492, 204], "mode": "RGBA" }
+  ]
+}

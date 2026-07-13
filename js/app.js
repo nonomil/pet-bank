@@ -2202,6 +2202,9 @@ function switchPage(page, options = {}) {
     if (prevPage === 'card' && page !== 'card' && window.CardArenaUI && typeof CardArenaUI.stop === 'function') {
         CardArenaUI.stop();
     }
+    if (prevPage === 'minecraft-vocab' && page !== 'minecraft-vocab' && window.MinecraftVocabPage && typeof MinecraftVocabPage.stop === 'function') {
+        MinecraftVocabPage.stop();
+    }
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(`page-${page}`);
     if (target) target.classList.add('active');
@@ -2218,15 +2221,19 @@ function switchPage(page, options = {}) {
     applyRouteShell(page);
     // 首页保留侧栏状态感；其他 tab 继续沿用全宽内容页。
     document.body.classList.toggle('no-sidebar', page !== 'map');
-    document.body.classList.toggle('learn-mode', page === 'learn' || page.startsWith('learn-'));
+    document.body.classList.toggle('learn-mode', page === 'learn' || page === 'minecraft-vocab' || page.startsWith('learn-'));
+    document.body.classList.toggle('picturebooks-route', page === 'picturebooks');
     updateBrowserRoute(page, {
         settingsSection: page === 'settings' ? activeSettingsSection : null,
         replace: options.replace === true,
         updateHistory: options.updateHistory
     });
     if (page === 'settings') applySettingsSection(activeSettingsSection);
-    void preparePage(page);
+    // 暴露页面激活 Promise，调用方可在需要时等待 runtime 和首屏渲染完成。
+    // 未等待返回值的现有 inline handler 仍保持原有行为。
+    const pageReady = preparePage(page);
     window.sfx && sfx.click();
+    return pageReady;
 }
 
 window.switchPage = switchPage;
@@ -2612,8 +2619,49 @@ function ensureWordMemoryMapEmbed() {
     frame.src = src;
 }
 
+async function renderHomeExploreMap() {
+    const pageMap = document.getElementById('page-map');
+    const board = document.getElementById('sceneGridMap');
+    if (!pageMap || !board || !window.ExplorationSystem) return;
+    try {
+        await ExplorationSystem.loadScenes();
+        if (!pageMap.classList.contains('active')) return;
+        ExplorationSystem.renderSceneGridMap(null, 'sceneGridMap');
+    } catch (error) {
+        console.warn('[app] home forest map render failed:', error);
+        board.innerHTML = '<div class="home-explore-map-fallback">森林探险地图暂时没有收到信号，请稍后重试。</div>';
+    }
+}
+
+function updateHomeExploreModeButtons(mode) {
+    document.querySelectorAll('[data-home-explore-mode]').forEach(function (button) {
+        const active = button.dataset.homeExploreMode === mode;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+}
+
+function openHomeExploreMode(mode) {
+    const nextMode = ['forest', 'story', 'block', 'detective'].includes(mode) ? mode : 'forest';
+    updateHomeExploreModeButtons(nextMode);
+    activeExploreSceneId = null;
+
+    if (nextMode === 'forest') {
+        if (getActivePageId() === 'map') void renderHomeExploreMap();
+        else void switchPage('map');
+        return;
+    }
+
+    const ready = switchPage('explore');
+    Promise.resolve(ready).then(function () {
+        if (getActivePageId() !== 'explore') return;
+        if (nextMode === 'detective') switchExploreToAdventure();
+        else void renderPixelStoryExplorePage(nextMode === 'block' ? 'block' : 'sci-fi');
+    });
+}
+
 function runPageActivation(page) {
-    if (page === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
+    if (page === 'map') void renderHomeExploreMap();
     if (page === 'parent') updateParentHomePage();
     if (page === 'works') renderGrowthWorksPage();
     if (page === 'pet') renderPetPage();
@@ -2640,10 +2688,12 @@ function runPageActivation(page) {
     if (page === 'review' && window.FamilyReview && typeof window.FamilyReview.refresh === 'function') void FamilyReview.refresh('family-review-root');
     if (page === 'leaderboard' && window.Leaderboard) switchLeaderboardTab(window._lbCurrentGame || 'mathpk');
     if (page === 'learn' && window.LearnCenter) void LearnCenter.renderHub('learn-container');
+    if (page === 'picturebooks' && window.Picturebooks) void Picturebooks.render('picturebooks-root');
     if (page === 'learn-pack' && window.LearnCenter) void LearnCenter.renderPack('learn-pack-container');
     if (page === 'learn-plan' && window.LearnCenter) void LearnCenter.renderPlan('learn-plan-container');
     if (page === 'learn-lesson' && window.LearnCenter) void LearnCenter.renderLesson('learn-lesson-container');
     if (page === 'learn-print' && window.LearnCenter) void LearnCenter.renderPrint('learn-print-container');
+    if (page === 'minecraft-vocab' && window.MinecraftVocabPage) void MinecraftVocabPage.render('minecraft-vocab-root');
     if (page === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
         void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
     }
@@ -3577,7 +3627,11 @@ function getExploreRescueCardHTML(petState) {
 
 function getExploreMapShellHTML() {
     return `
-        <div id="spaceGrowthDetectiveContainer"></div>
+        <div id="exploreLegacyContainer">
+            <div id="sceneGrid"></div>
+            <div id="petStoryCasePanel"></div>
+            <div id="spaceGrowthDetectiveContainer"></div>
+        </div>
     `;
 }
 
@@ -3601,18 +3655,28 @@ function ensureExploreMapShell() {
 async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
     const pageExplore = document.getElementById('page-explore');
 
-    // 像素故事优先（默认主模式）：无特定场景选择且壳未渲染时使用
-    if (window.PixelStoryEngine && !selectedSceneId && pageExplore) {
-        const hasPixelShell = pageExplore.querySelector('#pixelStoryShell');
-        const hasOldContainer = pageExplore.querySelector('#spaceGrowthDetectiveContainer');
+    // 故事漫游是探索页默认入口。旧冒险路线只在用户明确选中场景时使用。
+    if (!selectedSceneId && pageExplore) {
         const hasActiveGalgame = pageExplore.querySelector('.galgame-stage')
             && window.ExplorationDetail
             && typeof ExplorationDetail.isActive === 'function'
             && ExplorationDetail.isActive();
-        if (!hasPixelShell && !hasOldContainer && !hasActiveGalgame) {
-            await renderPixelStoryExplorePage();
+        const existingShell = pageExplore.querySelector('#pixelStoryShell');
+        if (existingShell) {
+            if (existingShell.dataset.mode === 'adventure'
+                && window.SpaceGrowthDetective
+                && typeof window.SpaceGrowthDetective.render === 'function'
+                && document.getElementById('adventureContainer')) {
+                await window.SpaceGrowthDetective.render('adventureContainer');
+                if (window.lucide) lucide.createIcons();
+            }
             return;
         }
+        if (hasActiveGalgame) return;
+        if (window.PixelStoryEngine && typeof window.PixelStoryEngine.render === 'function') {
+            await renderPixelStoryExplorePage();
+        }
+        return;
     }
 
     const storyContainer = ensureExploreMapShell();
@@ -3649,7 +3713,7 @@ async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
 }
 
 /** 像素故事探索页（默认主模式） */
-async function renderPixelStoryExplorePage() {
+async function renderPixelStoryExplorePage(preferredTrackId = 'sci-fi') {
     const pageExplore = document.getElementById('page-explore');
     if (!pageExplore) return;
 
@@ -3659,30 +3723,35 @@ async function renderPixelStoryExplorePage() {
     }
 
     const existing = pageExplore.querySelector('#pixelStoryShell');
-    if (existing && existing.dataset.mode === 'story') return;
+    if (existing && existing.dataset.mode === 'story') {
+        if (window.PixelStoryEngine && typeof window.PixelStoryEngine.setPreferredTrack === 'function') {
+            window.PixelStoryEngine.setPreferredTrack(preferredTrackId);
+        }
+        return;
+    }
 
     pageExplore.innerHTML =
         '<div class="pixel-story-shell" id="pixelStoryShell" data-mode="story">' +
         '  <header class="pixel-story-overview">' +
         '    <div class="pixel-story-overview-copy">' +
         '      <p class="pixel-story-eyebrow">探索 / 故事漫游</p>' +
-        '      <h2>宠物手机：星际成长旅程</h2>' +
-        '      <p>和宠物一起读线索、解开小谜题，把每一次照顾都变成回家的星光。</p>' +
+        '      <h2>像素世界漫游：三张地图的回家任务</h2>' +
+        '      <p>科幻、森林、方块地下城各有 20 个故事节点，另有 20 个侦探小游戏，认字藏在对白和线索里。</p>' +
         '    </div>' +
         '    <div class="pixel-story-overview-status" aria-label="故事状态">' +
         '      <span class="pixel-story-status-dot" aria-hidden="true"></span>' +
-        '      <div><strong>星际信号稳定</strong><small>故事包 01 · 幼小衔接</small></div>' +
+        '      <div><strong>三界信号稳定</strong><small>60 个主线节点 · 20 个侦探小游戏</small></div>' +
         '    </div>' +
         '  </header>' +
         '  <div class="pixel-story-modebar" role="tablist" aria-label="探索模式">' +
-        '    <button class="pixel-story-mode is-active" data-explore-mode="story" role="tab" aria-selected="true"><span aria-hidden="true">✦</span><strong>故事漫游</strong><small>读一段，学一点</small></button>' +
-        '    <button class="pixel-story-mode" data-explore-mode="adventure" role="tab" aria-selected="false"><span aria-hidden="true">⌁</span><strong>冒险挑战</strong><small>选路线，赢奖励</small></button>' +
+        '    <button class="pixel-story-mode is-active" data-explore-mode="story" role="tab" aria-selected="true"><span aria-hidden="true"><i data-lucide="book-open"></i></span><strong>故事漫游</strong><small>读一段，学一点</small></button>' +
+        '    <button class="pixel-story-mode" data-explore-mode="adventure" role="tab" aria-selected="false"><span aria-hidden="true"><i data-lucide="compass"></i></span><strong>冒险挑战</strong><small>选路线，赢奖励</small></button>' +
         '  </div>' +
         '  <div class="pixel-story-map-slot" id="pixelStoryMapContainer"></div>' +
         '</div>';
 
     if (window.PixelStoryEngine && typeof window.PixelStoryEngine.render === 'function') {
-        await window.PixelStoryEngine.render('pixelStoryMapContainer');
+        await window.PixelStoryEngine.render('pixelStoryMapContainer', preferredTrackId);
     }
 
     pageExplore.querySelectorAll('[data-explore-mode]').forEach(function (tab) {
@@ -3699,13 +3768,9 @@ function switchExploreToAdventure() {
     if (!shell) return;
     shell.dataset.mode = 'adventure';
     shell.innerHTML =
-        '<header class="pixel-story-overview pixel-story-overview-adventure">' +
-        '  <div class="pixel-story-overview-copy"><p class="pixel-story-eyebrow">探索 / 冒险挑战</p><h2>星光成长侦探社</h2><p>沿着案件航线照顾宠物、完成战斗，把线索收进成长册。</p></div>' +
-        '  <div class="pixel-story-overview-status"><span class="pixel-story-status-dot" aria-hidden="true"></span><div><strong>挑战模式</strong><small>保留原有冒险路线</small></div></div>' +
-        '</header>' +
         '<div class="pixel-story-modebar" role="tablist" aria-label="探索模式">' +
-        '  <button class="pixel-story-mode" data-explore-mode="story" role="tab" aria-selected="false"><span aria-hidden="true">✦</span><strong>故事漫游</strong><small>读一段，学一点</small></button>' +
-        '  <button class="pixel-story-mode is-active" data-explore-mode="adventure" role="tab" aria-selected="true"><span aria-hidden="true">⌁</span><strong>冒险挑战</strong><small>选路线，赢奖励</small></button>' +
+        '  <button class="pixel-story-mode" data-explore-mode="story" role="tab" aria-selected="false"><span aria-hidden="true"><i data-lucide="book-open"></i></span><strong>故事漫游</strong><small>读一段，学一点</small></button>' +
+        '  <button class="pixel-story-mode is-active" data-explore-mode="adventure" role="tab" aria-selected="true"><span aria-hidden="true"><i data-lucide="compass"></i></span><strong>冒险挑战</strong><small>选路线，赢奖励</small></button>' +
         '</div>' +
         '<div id="adventureContainer"></div>';
 
@@ -4287,7 +4352,10 @@ function closeBattleModal() {
             ExplorationDetail.exit();
         }
     } else {
-        if (storyBattleResult?.accepted) showToast('案件完成，故事卡和徽章已经收进成长册。');
+        if (storyBattleResult?.accepted) {
+            activeExploreSceneId = 'space-growth-detective';
+            showToast('案件完成，故事卡和徽章已经收进成长册。');
+        }
         renderAll();
     }
 }
@@ -4421,7 +4489,7 @@ function renderAll() {
     renderInventoryPage();
     if (activePage === 'explore' && window.ExplorationSystem) void renderExplorePage();
     if (activePage === 'playground') renderPlaygroundProgressBoard();
-    if (activePage === 'map' && window.ExplorationSystem && document.getElementById('sceneGridMap')) ExplorationSystem.renderSceneGridMap();
+    if (activePage === 'map') void renderHomeExploreMap();
     if (activePage === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (activePage === 'works') renderGrowthWorksPage();
     if (window.lucide) lucide.createIcons();

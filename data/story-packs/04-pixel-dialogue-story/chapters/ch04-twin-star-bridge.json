@@ -5,7 +5,7 @@
   "scenes": [
     {
       "sceneId": "s01-home",
-      "background": "",
+      "background": "assets/story/pixel-dialogue-v2/backgrounds/twin-star-bridge.png",
       "lines": [
         { "type": "narration", "text": "双星桥就在前方。两颗星星一左一右，牵着一条发光的线，像是在说：一起回家吧。", "character": "narrator" },
         { "type": "dialogue", "text": "星尘伙伴飞了一路有点累。回家前，我们先做什么？", "character": "pet", "position": "right" },

@@ -18,11 +18,20 @@ test('self-hosted shell scripts keep data outside releases and require restore c
     assert.match(deploy, /node --test prj\/petbank-server\/test/);
     assert.match(deploy, /backup-sqlite\.sh/);
     assert.match(deploy, /docker compose -p petbank-api stop api/);
-    assert.match(deploy, /curl --fail .*\/app\//);
-    assert.match(deploy, /curl --fail .*\/parent\//);
+    assert.match(deploy, /STATIC_ROUTES=\("\/app\/" "\/parent\/"\)/);
+    assert.match(deploy, /for static_route in "\$\{STATIC_ROUTES\[@\]\}"/);
+    assert.match(deploy, /http:\/\/127\.0\.0\.1\$\{PETBANK_STATIC_PREFIX:-\}\$\{static_route\}/);
     assert.match(deploy, /docker compose -p petbank-api up -d --build/);
     assert.match(deploy, /nginx -t/);
     assert.match(deploy, /systemctl reload nginx/);
+    assert.match(deploy, /STATIC_SITE_DIR="\$\{RELEASE_DIR\}\/site"/);
+    assert.match(deploy, /GAME_RUNTIME_ENTRIES=\(/);
+    assert.match(deploy, /app\/playground\/typing-defense-runtime\/web\/index\.html/);
+    assert.match(deploy, /prj\/学习机玩法原型\/index\.html/);
+    assert.match(deploy, /prj\/单词记忆射击场原型\/index\.html/);
+    assert.match(deploy, /for runtime_entry in "\$\{GAME_RUNTIME_ENTRIES\[@\]\}"/);
+    assert.match(deploy, /PREVIOUS_RELEASE="\$\(readlink -f "\$CURRENT_LINK" 2>\/dev\/null \|\| true\)"/);
+    assert.match(deploy, /deployment failed after activation; restoring previous release/);
     assert.match(backup, /sha256sum/);
     assert.match(backup, /shared\/backups/);
     assert.match(restore, /PETBANK_CONFIRM_RESTORE/);
@@ -30,6 +39,12 @@ test('self-hosted shell scripts keep data outside releases and require restore c
     assert.match(restore, /PETBANK_COMPOSE_FILE/);
     assert.match(restore, /docker compose -f "\$COMPOSE_FILE" -p petbank-api/);
     assert.doesNotMatch(deploy, /rm\s+-rf\s+.*\/srv\/pet-bank/);
+});
+
+test('Hermes declares the assembled site artifact as the self-hosted frontend root', () => {
+    const hermes = fs.readFileSync(path.join(root, 'ops', 'hermes.yaml'), 'utf8');
+
+    assert.match(hermes, /^\s*publicDir:\s*site\s*$/m);
 });
 
 test('backup script can copy a SQLite file and emit a checksum', () => {

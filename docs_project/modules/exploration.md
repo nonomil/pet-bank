@@ -86,6 +86,8 @@
 
 短流程状态由 `js/exploration-progress.js` 写入同一场景进度键的附加字段（`flowMode`、`flowPhase`、`challengeStatus`），刷新从根入口恢复；直接访问静态服务器的 `/app/explore` 仍会 404，真实验收必须从 `/` 进入。
 
+探索页默认还装配 `js/pixel-story-engine.js` 与 `js/pixel-story-map.js` 的像素故事模式。故事数据位于 `data/story-packs/04-pixel-dialogue-story/`，使用 `petbank_pixel_story_progress_v1` 保存章节位置和学习统计；完成奖励经 `CoreRewardService` 去重。图片背景和 VoxCPM2 预生成音频目前仍有 fallback/待生成边界，详见 [像素对话故事方案](../../docs/探索地图故事/像素对话故事/01-方案设计.md)。
+
 ---
 
 ## 实现

@@ -3302,6 +3302,9 @@
             const actionLabel = module?.type === 'vocab'
                 ? '打开单词卡'
                 : (progress.completed ? '继续学习' : '打开第一节');
+            const action = module?.id === 'minecraft-vocab'
+                ? `LearnCenter.openMinecraftVocab()`
+                : `LearnCenter.openLesson('${packId}','${moduleMeta.id}','${continueLessonId || ''}')`;
             return `
                 <article class="learn-card">
                     <div class="learn-card-kicker">${moduleMeta.emoji || '📝'} ${moduleMeta.duration || ''}</div>
@@ -3312,7 +3315,7 @@
                         <span>${progress.percent}%</span>
                     </div>
                     <div class="learn-card-actions">
-                        <button class="learn-btn learn-btn-primary" onclick="LearnCenter.openLesson('${packId}','${moduleMeta.id}','${continueLessonId || ''}')">${actionLabel}</button>
+                        <button class="learn-btn learn-btn-primary" onclick="${action}">${actionLabel}</button>
                     </div>
                 </article>
             `;
@@ -3913,6 +3916,16 @@
         }
     }
 
+    function openMinecraftVocab() {
+        if (typeof window.switchPage === 'function') {
+            window.switchPage('minecraft-vocab');
+            return;
+        }
+        if (window.MinecraftVocabPage && typeof window.MinecraftVocabPage.render === 'function') {
+            void window.MinecraftVocabPage.render('minecraft-vocab-root');
+        }
+    }
+
     window.LearnCenter = {
         init,
         getCatalog,
@@ -3932,6 +3945,7 @@
         openLesson,
         openPlan,
         openPrint,
+        openMinecraftVocab,
         resolvePackCapabilities,
         resolveLessonSource,
         resolveLessonLaunchUrl,

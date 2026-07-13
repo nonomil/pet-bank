@@ -12,43 +12,6 @@
   image-rendering: pixelated;
 }
 
-/* === 模式切换 Tab === */
-.pixel-story-tabs {
-  display: flex;
-  gap: 0;
-  padding: 8px 12px 0;
-  background: linear-gradient(180deg, rgba(26,26,46,0.95) 0%, rgba(10,10,26,0.9) 100%);
-  border-bottom: 2px solid rgba(78,205,196,0.3);
-  position: relative;
-  z-index: 10;
-  flex-shrink: 0;
-}
-.pixel-story-tab {
-  padding: 8px 18px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  border: 2px solid transparent;
-  border-radius: 8px 8px 0 0;
-  background: transparent;
-  color: rgba(255,255,255,0.5);
-  transition: all 0.2s;
-  font-family: inherit;
-  position: relative;
-  bottom: -2px;
-}
-.pixel-story-tab:hover {
-  color: rgba(255,255,255,0.8);
-  background: rgba(78,205,196,0.1);
-}
-.pixel-story-tab.active {
-  color: #4ecdc4;
-  background: rgba(10,10,26,0.95);
-  border-color: #4ecdc4;
-  border-bottom-color: transparent;
-  cursor: default;
-}
-
 /* === 星空地图 === */
 .pixel-story-map {
   position: relative;
@@ -374,6 +337,13 @@
   background: rgba(255,107,107,0.2);
   border-color: #ff6b6b;
 }
+.pixel-story-choice-btn.correct-answer {
+  box-shadow: inset 0 0 0 1px rgba(78,205,196,0.75);
+}
+.pixel-story-choice-btn:disabled {
+  cursor: default;
+  opacity: .88;
+}
 
 /* 选择反馈 */
 .pixel-story-feedback {
@@ -639,9 +609,19 @@
 }
 .pixel-story-mode.is-active > span { background: #e1f0e9; color: var(--pixel-mint); }
 
+/* 冒险挑战由 SpaceGrowthDetective 自己提供完整内容壳，避免故事壳套故事壳。 */
+#page-explore .pixel-story-shell[data-mode="adventure"] {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+#page-explore .pixel-story-shell[data-mode="adventure"] .pixel-story-modebar { margin-bottom: 14px; }
+
 .pixel-story-map-slot,
 .pixel-story-engine-host { min-height: 0; }
-.pixel-story-map-slot > .pixel-story-map { min-height: 0; }
+.pixel-story-map-slot > .pixel-story-map { min-height: 548px; }
 .pixel-story-map {
   min-height: 548px;
   border: 1px solid #22355a;
@@ -649,7 +629,7 @@
   background: #12203b;
   box-shadow: 0 14px 28px rgba(25, 35, 57, .14);
 }
-.pixel-story-map-bg { opacity: .25; }
+.pixel-story-map-bg { opacity: .72; }
 .pixel-story-map-chrome {
   position: absolute;
   z-index: 3;
@@ -691,7 +671,11 @@
 .pixel-story-node {
   width: 186px;
   min-height: 88px;
+  display: grid;
+  position: absolute;
   grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 3px 10px;
   padding: 11px;
   border: 1px solid rgba(255,255,255,.18);
   border-radius: 12px;
@@ -729,6 +713,7 @@
 .pixel-story-node-math .pixel-story-node-icon { background: #9a6b5e; }
 .pixel-story-node-home .pixel-story-node-icon { background: #638267; }
 .pixel-story-node-index {
+  position: absolute;
   top: 8px;
   right: 10px;
   color: #91a9bd;
@@ -739,6 +724,11 @@
 .pixel-story-node-label small { margin-top: 3px; color: #aab8cd; font-size: 11px; }
 .pixel-story-node-state { color: #88d6c8; font-size: 10px; }
 .pixel-story-node.completed .pixel-story-node-state { color: #ffcf77; }
+.pixel-story-mode > span svg { width: 16px; height: 16px; stroke-width: 2.3; }
+.pixel-story-map-fallback { display: grid; place-items: center; }
+.pixel-story-map-fallback-content { display: grid; gap: 8px; color: #f8fbff; text-align: center; }
+.pixel-story-map-fallback-content strong { font-size: 18px; }
+.pixel-story-map-fallback-content span { color: #aab8cd; font-size: 12px; }
 .pixel-story-node-glow { background: radial-gradient(circle, rgba(136,214,200,.15), transparent 70%); }
 .pixel-story-map-legend {
   position: absolute;
@@ -754,6 +744,43 @@
 .pixel-story-map-legend i { display: inline-block; width: 18px; margin-right: 6px; border-top: 2px dashed #88d6c8; vertical-align: middle; }
 .pixel-story-map-legend small { color: #aab8cd; font-size: 10px; }
 
+/* 05-pixel-worlds: world selector and narrative mini-game controls */
+.pixel-story-map-world { background: #102d3d; }
+.pixel-story-map-world.pixel-story-map-tone-forest { background: #173b35; }
+.pixel-story-map-world.pixel-story-map-tone-block { background: #3a3028; }
+.pixel-story-map-world.pixel-story-map-tone-detective { background: #172d4b; }
+.pixel-story-map-world .pixel-story-map-bg { opacity: .78; filter: saturate(1.12) brightness(1.08); }
+.pixel-story-map-world-tabs {
+  position: absolute;
+  z-index: 5;
+  top: 12px;
+  left: 14px;
+  right: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+.pixel-story-world-tab {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px;
+  border: 1px solid rgba(221, 245, 255, .24);
+  border-radius: 8px;
+  background: rgba(9, 26, 38, .78);
+  color: #c8dce8;
+  text-align: left;
+  cursor: pointer;
+}
+.pixel-story-world-tab strong { overflow: hidden; color: #f5fbff; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.pixel-story-world-tab small { overflow: hidden; color: #9bc4cf; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.pixel-story-world-tab:hover,
+.pixel-story-world-tab.is-active { border-color: #7de3dc; background: rgba(29, 109, 117, .88); color: #fff; }
+.pixel-story-world-tab.is-active strong { color: #fff; }
+.pixel-story-route-world { z-index: 2; }
+.pixel-story-activity-btn { border-color: rgba(125, 227, 220, .52); background: rgba(43, 145, 157, .18); }
+.pixel-story-activity-btn:hover { background: rgba(43, 145, 157, .34); }
+
 .pixel-story-stage { min-height: 560px; border-radius: 16px; background: #12203b; }
 .pixel-story-back { top: 16px; left: 16px; border-radius: 9px; background: rgba(10,20,42,.68); }
 .pixel-story-box { border-top-color: rgba(136,214,200,.5); background: rgba(12,24,48,.96); }
@@ -766,7 +793,7 @@
   .pixel-story-overview { display: grid; gap: 14px; }
   .pixel-story-overview-status { width: 100%; }
   .pixel-story-modebar { width: 100%; }
-  .pixel-story-map { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; min-height: 620px; padding: 112px 12px 58px; }
+  .pixel-story-map-slot > .pixel-story-map { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; min-height: 620px; padding: 112px 12px 58px; }
   .pixel-story-map-chrome { top: 16px; left: 16px; right: 16px; }
   .pixel-story-map-chrome small { max-width: 220px; }
   .pixel-story-route { display: none; }
@@ -775,6 +802,9 @@
 }
 
 @media (max-width: 420px) {
+  .pixel-story-world-tab { padding: 7px 6px; }
+  .pixel-story-world-tab strong { font-size: 10px; }
+  .pixel-story-world-tab small { display: none; }
   .pixel-story-mode { grid-template-columns: 24px 1fr; padding: 8px; }
   .pixel-story-mode > span { width: 24px; height: 24px; }
   .pixel-story-mode strong { font-size: 12px; }
@@ -785,4 +815,13 @@
   .pixel-story-node-icon { width: 38px; height: 38px; }
   .pixel-story-node-symbol { font-size: 20px; }
   .pixel-story-node-label strong { font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-star-particle,
+  .pixel-story-node-glow,
+  .pixel-story-next,
+  .pixel-story-text.typing::after { animation: none; }
+  .pixel-story-node,
+  .pixel-story-mode { transition: none; }
 }

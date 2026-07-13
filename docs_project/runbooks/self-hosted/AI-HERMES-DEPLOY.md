@@ -2,7 +2,9 @@
 
 > 此文档给执行部署的 AI 或 Hermes 使用。目标是安全部署，不丢失现有用户数据。
 
-> 当前发布：`v0.7.40`。本版本仍是“孩子端本地优先 + SQLite 账号/家庭/孩子/快照层”；不要改成每次玩法操作都请求 API。
+> 当前发布：`v0.7.42`。本版本仍是“孩子端本地优先 + SQLite 账号/家庭/孩子/快照层”；不要改成每次玩法操作都请求 API。
+
+> 本次像素故事发布的专用验收见 [PIXEL-WORLDS-HERMES.md](./PIXEL-WORLDS-HERMES.md)。
 
 ## 不可违反的规则
 
@@ -46,12 +48,15 @@ curl --fail http://127.0.0.1:3000/api/v1/health
 ln -sfn "$release_dir" /srv/pet-bank/current
 ```
 
-Nginx 静态站点根目录使用 `/srv/pet-bank/current/site`；将 `prj/petbank-server/deploy/nginx-api.conf` 的 `location /api/` 加入该站点配置并执行：
+Nginx 静态站点根目录必须使用 `/srv/pet-bank/current/site`，绝不能指向仓库根目录或 `/srv/pet-bank/current`。仓库根目录会绕过发布白名单，导致打字防线等独立游戏运行时没有被装配。将 `prj/petbank-server/deploy/nginx-api.conf` 的 `location /api/` 加入该站点配置并执行：
 
 ```bash
 nginx -t && systemctl reload nginx
 curl --fail http://127.0.0.1/app/
 curl --fail http://127.0.0.1/parent/
+curl --fail http://127.0.0.1/app/playground/typing-defense-runtime/web/index.html
+curl --fail http://127.0.0.1/prj/学习机玩法原型/index.html
+curl --fail http://127.0.0.1/prj/单词记忆射击场原型/index.html
 ```
 
 任一检查失败都不要保留新 `current`；先切回上一 release，再处理新 release。
@@ -76,6 +81,12 @@ API 健康检查应返回 `ok: true`、`service: petbank-server` 和 `migrationC
 curl --fail https://<domain>/api/v1/health
 curl --fail https://<domain>/
 curl --fail https://<domain>/parent/
+curl --fail https://<domain>/app/playground/typing-defense/
+curl --fail https://<domain>/app/playground/typing-defense-runtime/web/index.html
+curl --fail https://<domain>/app/playground/learning-arcade/
+curl --fail https://<domain>/prj/学习机玩法原型/index.html
+curl --fail https://<domain>/app/playground/word-memory-map/
+curl --fail https://<domain>/prj/单词记忆射击场原型/index.html
 ```
 
 使用专用测试账号和已有测试孩子做非破坏性 canary：登录、读取家庭/孩子、读取最新快照；再从家长端确认账号入口不显示手机号/邮箱注册，孩子只能挂靠在家庭下。不要在生产家庭中创建临时孩子或临时家庭，除非已有明确清理方案。

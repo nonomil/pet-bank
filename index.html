@@ -42,7 +42,7 @@
             var base = './';
             if (/^https?:$/.test(window.location.protocol)) {
                 var path = window.location.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '') || '/';
-                var routePrefixes = ['/app', '/settings', '/today', '/learn', '/pet', '/explore', '/playground', '/parent', '/shop'];
+                    var routePrefixes = ['/app', '/settings', '/today', '/learn', '/picturebooks', '/pet', '/explore', '/playground', '/parent', '/shop'];
                 var matchedIndex = Infinity;
                 var matchedBase = null;
                 for (var i = 0; i < routePrefixes.length; i += 1) {
@@ -65,7 +65,7 @@
     <link rel="preload" href="js/pet.js" as="script" fetchpriority="high">
     <link rel="preload" href="js/runtime-loader.js?v=20260711" as="script" fetchpriority="high">
     <link rel="preload" href="js/battle-fx.js" as="script" fetchpriority="high">
-    <link rel="preload" href="js/app.js" as="script" fetchpriority="high">
+    <link rel="preload" href="js/app.js?v=20260713" as="script" fetchpriority="high">
     <link rel="stylesheet" href="css/vendor/tailwind-lite.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/travel-memory.css">
@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/pixel-story.css">
+    <link rel="stylesheet" href="css/pixel-story.css?v=20260713">
 </head>
 <body class="map-page-bg">
     <a class="skip-link" href="#mainContent">跳到主要内容</a>
@@ -97,6 +97,7 @@
                         </button>
                     </div>
                     <div class="nav-tab" data-page="learn" onclick="switchPage('learn')">📚 学习</div>
+                    <div class="nav-tab" data-page="picturebooks" onclick="switchPage('picturebooks')">📖 绘本</div>
                     <div class="nav-hub" data-page="pet">
                         <button class="nav-tab nav-tab-parent" data-page="pet" type="button" onclick="handlePrimaryNavClick('pet')">
                             <span>🐾 宠物</span>
@@ -294,6 +295,53 @@
                     </div>
                 </section>
 
+                <section class="home-explore-panel" id="homeExplorePanel" aria-labelledby="homeExploreTitle">
+                    <div class="home-explore-panel-head">
+                        <div>
+                            <p class="home-explore-kicker">首页 / 探索地图</p>
+                            <h2 id="homeExploreTitle">今天想走哪一条路线？</h2>
+                            <p>森林探险保留在首页；故事地图也从这里直接进入。</p>
+                        </div>
+                        <span class="home-explore-panel-status"><i data-lucide="map" aria-hidden="true"></i><span>三条路线可选</span></span>
+                    </div>
+                    <div class="home-explore-modebar" role="tablist" aria-label="探索地图入口">
+                        <button class="home-explore-mode is-active" type="button" role="tab" aria-selected="true" data-home-explore-mode="forest" onclick="openHomeExploreMode('forest')">
+                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="map"></i></span>
+                            <span><strong>森林探险</strong><small>原有场景路线</small></span>
+                        </button>
+                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="story" onclick="openHomeExploreMode('story')">
+                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="book-open"></i></span>
+                            <span><strong>故事漫游</strong><small>读故事，学一点</small></span>
+                        </button>
+                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="block" onclick="openHomeExploreMode('block')">
+                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="box"></i></span>
+                            <span><strong>方块地下城</strong><small>像素冒险与侦探小游戏</small></span>
+                        </button>
+                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="detective" onclick="openHomeExploreMode('detective')">
+                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="compass"></i></span>
+                            <span><strong>星光侦探社</strong><small>案件路线与收藏</small></span>
+                        </button>
+                    </div>
+                    <div class="home-explore-view" id="homeExploreView" aria-live="polite">
+                        <section class="home-forest-map-view" aria-label="森林探险地图">
+                            <div class="home-forest-map-head">
+                                <div>
+                                    <p>原有探索路线</p>
+                                    <h3>森林探险地图</h3>
+                                    <span>从森林入口出发，按宠物等级逐步解锁海边、洞窟和星空终点。</span>
+                                </div>
+                                <button type="button" class="home-forest-map-action" onclick="openHomeExploreMode('forest')"><i data-lucide="refresh-cw" aria-hidden="true"></i><span>刷新路线</span></button>
+                            </div>
+                            <div class="map-board-shell home-forest-map-shell">
+                                <div class="map-board-surface">
+                                    <div class="map-board-texture" aria-hidden="true"></div>
+                                    <div class="map-board" id="sceneGridMap" aria-label="森林探险场景路线"></div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
                 <div class="home-stage-stack">
                     <section class="showcase" id="showcase" aria-label="首页栏目轮播">
                         <div class="showcase-track" id="showcaseTrack"></div>
@@ -457,6 +505,13 @@
                         </section>
                     </div>
                 </section>
+            </div>
+
+            <!-- PAGE: 绘本馆 -->
+            <div class="page" id="page-picturebooks">
+                <div class="picturebooks-page" id="picturebooks-root">
+                    <div class="picturebooks-loading" aria-live="polite">正在打开绘本馆...</div>
+                </div>
             </div>
 
             <!-- PAGE: 今日打卡 -->
@@ -648,6 +703,11 @@
             <!-- PAGE: 打印页 -->
             <div class="page" id="page-learn-print">
                 <div id="learn-print-container"></div>
+            </div>
+
+            <!-- PAGE: Minecraft 单词远征 -->
+            <div class="page" id="page-minecraft-vocab">
+                <div id="minecraft-vocab-root"></div>
             </div>
 
             <!-- PAGE: 奖励兑换 -->
@@ -1093,9 +1153,7 @@
             </div>
 
             <!-- PAGE: 探索冒险（路线地图） -->
-            <div class="page" id="page-explore">
-                <div id="spaceGrowthDetectiveContainer"></div>
-            </div>
+            <div class="page" id="page-explore"></div>
 
             <!-- PAGE: 数学PK -->
             <div class="page" id="page-mathpk">
@@ -1291,6 +1349,10 @@
             <i data-lucide="book-open" aria-hidden="true"></i>
             <span>学习</span>
         </button>
+        <button class="app-dock-item" type="button" data-app-dock="picturebooks" onclick="switchPage('picturebooks')">
+            <i data-lucide="library" aria-hidden="true"></i>
+            <span>绘本</span>
+        </button>
         <button class="app-dock-item" type="button" data-app-dock="pet" onclick="switchPage('pet')">
             <i data-lucide="paw-print" aria-hidden="true"></i>
             <span>宠物</span>
@@ -1416,11 +1478,11 @@
     <script src="js/storage-key-migrations.js"></script>
     <script src="js/time-utils.js"></script>
     <script src="js/runtime-loader.js?v=20260711"></script>
-    <script src="js/lucide-lite.js"></script>
+    <script src="js/lucide-lite.js?v=20260713"></script>
     <script src="js/battle-fx.js"></script>
     <script src="js/task-catalog.js"></script>
     <script src="js/page-router.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/app.js?v=20260713"></script>
     <script src="js/child-journey-feedback.js"></script>
     <script src="js/showcase.js"></script>
 </body>

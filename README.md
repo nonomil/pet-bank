@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.41](https://img.shields.io/badge/Version-v0.7.41-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.42](https://img.shields.io/badge/Version-v0.7.42-brightgreen.svg)](CHANGELOG.md)
 
 📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [自托管后端说明](docs/工程/自托管/README.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,11 +27,12 @@
 
 ---
 
-## 🎉 最近更新（v0.7.41）
+## 🎉 最近更新（v0.7.42）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
 - 🏠 **本机成长复盘**：复盘页按需加载 `family-review.js`，只读取本机玩法卡点记录；无记录时显示明确空态，不连接 Supabase、家庭同步或好友数据
+- 🗺️ **三世界像素故事**：故事漫游新增科幻、森林、方块地下城各 20 个主线节点，并加入 20 个侦探小游戏节点；原有森林探险和星光侦探社入口保留
 - 🧪 **回归入口可靠性**：全量回归由 `scripts/run-full-regression.mjs` 维护当前任务清单；每项测试有 120 秒超时，浏览器截图统一写入 `tmp/test-artifacts/`，不会污染发布文档目录
 - 🧭 **家长账号与孩子端分离**：主站孩子端继续使用 `localStorage` 离线运行；家长端通过同域 Node.js + SQLite 管理账号、家庭、孩子，并在 Profile 启动/切换时恢复和上传快照
 - 🚀 **VPS 自托管发布**：Hermes 使用 `ops/deploy-self-hosted.sh`、SQLite 备份/恢复脚本和 `/srv/pet-bank/shared/` 持久化目录；不依赖 Supabase 运行时

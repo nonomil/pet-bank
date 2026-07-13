@@ -11,7 +11,7 @@
     {
       "sceneId": "s01-arrival",
       "label": "抵达补给站",
-      "background": "",
+      "background": "assets/story/pixel-dialogue-v2/backgrounds/moon-station.png",
       "lines": [
         {
           "type": "narration",
@@ -68,7 +68,7 @@
     {
       "sceneId": "s02-stardust",
       "label": "收集星尘",
-      "background": "",
+      "background": "assets/story/pixel-dialogue-v2/backgrounds/moon-station.png",
       "lines": [
         {
           "type": "narration",
@@ -145,7 +145,7 @@
     {
       "sceneId": "s03-cookies",
       "label": "星星饼干",
-      "background": "",
+      "background": "assets/story/pixel-dialogue-v2/backgrounds/moon-station.png",
       "lines": [
         {
           "type": "narration",

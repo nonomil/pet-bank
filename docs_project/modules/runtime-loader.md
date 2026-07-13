@@ -17,13 +17,14 @@ Bundle 映射:
   SCRIPT_BUNDLES: { page → [js文件列表] }
 
 页面→Bundle 路由 (ensurePage):
-  map/today/reward/inventory/works → 无额外加载（核心已预加载）
+  map → ensureMapFeature()             → exploration.js + 场景数据（首页森林路线）
+  today/reward/inventory/works → 无额外加载（核心已预加载）
   playground → ensurePlaygroundFeature()  → math-pk + leaderboard + hanzi + tools
   pet → ensurePetCatalog()               → pet.js
   home → ensureHomeFeature()             → home.js + 本地成长数据
   walk → ensureWalkFeature()             → walk.js
   card → ensureCardFeature()             → card-collection.js
-  explore → ensureExploreFeature()       → voice + battle-engine + exploration
+  explore → ensureExploreFeature()       → voice + battle-engine + exploration + pixel-story-map + pixel-story-engine
   shop → ensureShopFeature()             → shop.js
   mathpk/hanzi/leaderboard/tools → ensurePlaygroundFeature()
   learn/* → ensureLearnFeature()         → learn-center.js
@@ -47,6 +48,7 @@ Bundle 映射:
 | `ensurePetCatalog()` | :131-138 | 确保宠物数据库已加载 |
 | `ensurePetSkills()` | :140-151 | 确保技能定义已加载 |
 | `ensureAudioFeature()` | :153-158 | 加载音效系统 |
+| `ensureMapFeature()` | :249-260 | 加载首页森林路线与场景数据 |
 | `ensureHomeFeature()` | :160-175 | 加载宠物小屋（含 catalog 初始化） |
 | `ensureWalkFeature()` | :178-185 | 加载遛弯功能 |
 | `ensureCardFeature()` | :187-200 | 加载卡牌收集（含 CardCollection.init） |

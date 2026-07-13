@@ -1139,5 +1139,8 @@
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     }
-  ]
+  ],
+  "wordCardsPath": "word-cards.json",
+  "wordCardsCount": 500,
+  "wordCardsFetchedAt": "2026-07-13T17:10:16.851Z"
 }

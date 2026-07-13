@@ -6,7 +6,7 @@ project:
   primaryBranch: main
 
 frontend:
-  publicDir: .
+  publicDir: site
   entryHtml: index.html
   adminEntryHtml: null
   adminStatus: deferred-until-self-hosted-auth
@@ -27,6 +27,7 @@ selfHostedApi:
   releaseRoot: /srv/pet-bank/releases
   currentReleaseLink: /srv/pet-bank/current
   deployGuide: docs_project/runbooks/self-hosted/AI-HERMES-DEPLOY.md
+  pixelWorldsGuide: docs_project/runbooks/self-hosted/PIXEL-WORLDS-HERMES.md
   automationStatus: implemented-scripted-canary
   deployScript: ops/deploy-self-hosted.sh
   backupScript: ops/backup-sqlite.sh
@@ -43,6 +44,10 @@ selfHostedApi:
 
 verification:
   commands:
+    - node scripts/test-pixel-worlds-contract.mjs
+    - node scripts/test-explore-mode-contract.mjs
+    - node scripts/test-exploration-entry-browser.mjs
+    - node scripts/test-pixel-story-all-chapters-browser.mjs
     - node --test prj/petbank-server/test/*.test.mjs
     - node --test scripts/test-self-hosted-ops.mjs
     - node --check prj/petbank-server/src/server.mjs

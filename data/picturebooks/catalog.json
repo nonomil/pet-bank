@@ -1,0 +1,1174 @@
+{
+  "schemaVersion": 1,
+  "source": "Prj/childrens-library/courseware/stories",
+  "stories": [
+    {
+      "id": "brave-pea-shooter",
+      "title": "勇敢的豌豆射手",
+      "titleZh": "勇敢的豌豆射手",
+      "titleEn": "The Brave Pea Shooter",
+      "category": "Steve 的故事屋",
+      "shelf": "冒险故事",
+      "cover": "assets/picturebooks/images/brave-pea-shooter/page-1.png",
+      "pages": [
+        {
+          "page": 1,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-1.png",
+          "en": "",
+          "zh": "在一个明亮、阳光灿烂的花园里，住着一只绿色的小豌豆射手，名叫皮皮。他有一双圆圆的大眼睛，一个开心的笑容，头顶上还有一片小叶子。皮皮爱他的花园家园胜过世界上的一切。"
+        },
+        {
+          "page": 2,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-2.png",
+          "en": "In a bright, sunny garden lived a tiny green Pea Shooter named Pip. He had big round eyes, a cheerful smile, and a little leaf on his head. Pip loved his garden home more than anything in the world.",
+          "zh": "在一个明亮、阳光灿烂的花园里，住着一只绿色的小豌豆射手，名叫皮皮。他有一双圆圆的大眼睛，一个开心的笑容，头顶上还有一片小叶子。皮皮爱他的花园家园胜过世界上的一切。"
+        },
+        {
+          "page": 3,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-3.png",
+          "en": "One sunny morning, Pip decided to take a walk along the cobblestone path. The flowers waved at him as he passed. Butterflies danced around his head.",
+          "zh": "一个阳光明媚的早晨，皮皮决定沿着鹅卵石小路散步。花朵们在他经过时向他挥手，蝴蝶在他头顶翩翩起舞。"
+        },
+        {
+          "page": 4,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-4.png",
+          "en": "Pip walked through the most beautiful part of the garden. Tall sunflowers stood like guards. Colorful mushrooms dotted the ground. Bees hummed happy songs.",
+          "zh": "皮皮走过花园中最美丽的地方。高高的向日葵像卫兵一样站着，五颜六色的蘑菇点缀着地面，蜜蜂哼着快乐的歌。"
+        },
+        {
+          "page": 5,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-5.png",
+          "en": "Suddenly, Pip heard a strange sound. THUMP. THUMP. THUMP. The ground began to shake. Dark clouds rolled in from nowhere.",
+          "zh": "突然，皮皮听到了一个奇怪的声音。咚。咚。咚。地面开始震动，乌云不知从哪里涌了上来。"
+        },
+        {
+          "page": 6,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-6.png",
+          "en": "From behind the bushes stumbled a scary zombie! It had an orange traffic cone on its head and moved very slowly. But it kept coming closer and closer!",
+          "zh": "从灌木丛后面踉跄地走出一个可怕的僵尸！它头上戴着一个橙色的路障，走得很慢，但一直越来越近！"
+        },
+        {
+          "page": 7,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-7.png",
+          "en": "\"I must be brave!\" Pip shouted. He puffed up his cheeks and fired green peas at the zombie. PEW! PEW! PEW!",
+          "zh": "“我必须勇敢！”皮皮大喊。他鼓起腮帮子，向僵尸发射绿色豌豆。噗！噗！噗！"
+        },
+        {
+          "page": 8,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-8.png",
+          "en": "But something terrible happened. The peas bounced right off the traffic cone! BING! BONG! PING! The zombie didn't even slow down.",
+          "zh": "但可怕的事情发生了。豌豆直接从路障上弹开了！叮！当！乒！僵尸甚至没有放慢脚步。"
+        },
+        {
+          "page": 9,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-9.png",
+          "en": "Pip turned and ran as fast as his little legs could carry him. He zoomed past Cherry Bombs and Potato Mines, looking for help.",
+          "zh": "皮皮转身拼命地跑。他飞速经过樱桃炸弹和土豆地雷，到处寻找帮助。"
+        },
+        {
+          "page": 10,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-10.png",
+          "en": "Then Pip found his best friend — Sunny the Sunflower! Sunny had bright golden petals and a warm, kind smile. She always made everyone feel better.",
+          "zh": "然后皮皮找到了他最好的朋友——向日葵小阳！小阳有明亮金色的花瓣和温暖善良的笑容，她总是让每个人感觉好起来。"
+        },
+        {
+          "page": 11,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-11.png",
+          "en": "Sunny listened carefully and nodded. \"Don't worry, Pip. I know exactly what to do. We need to call someone very special — someone very HOT!\"",
+          "zh": "小阳仔细听着，点了点头。“别担心，皮皮。我完全知道该怎么办。我们需要叫一个非常特别的人——一个非常火热的人！”"
+        },
+        {
+          "page": 12,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-12.png",
+          "en": "Sunny closed her eyes and lifted her face to the sky. Her golden petals began to glow brighter and brighter. Magical golden sparkles swirled around her.",
+          "zh": "小阳闭上眼睛，把脸朝向天空。她金色的花瓣开始越来越亮地发光，神奇的金色火花围绕着她旋转。"
+        },
+        {
+          "page": 13,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-13.png",
+          "en": "One by one, beautiful golden orbs of sunlight floated from Sunny's petals. They sparkled like tiny suns, filling the air with warmth.",
+          "zh": "一颗又一颗美丽的金色阳光球从小阳的花瓣中飘出。它们像小太阳一样闪耀，让空气中充满了温暖。"
+        },
+        {
+          "page": 14,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-14.png",
+          "en": "But the zombie was getting closer! It was now at the edge of the garden. Sunny glowed even brighter, producing more and more sunlight.",
+          "zh": "但僵尸越来越近了！它现在已经到了花园的边缘。小阳发出更亮的光，产生越来越多的阳光。"
+        },
+        {
+          "page": 15,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-15.png",
+          "en": "Finally, a big pile of golden sunlight orbs gathered on the ground. Pip and Sunny cheered! They had enough energy now.",
+          "zh": "终于，一大堆金色阳光球聚集在地面上。皮皮和小阳欢呼起来！他们现在有足够的能量了。"
+        },
+        {
+          "page": 16,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-16.png",
+          "en": "Sunny gathered all the golden light together. She whispered magical words that made the ground rumble. The earth began to shake and crack.",
+          "zh": "小阳把所有金色的光聚在一起，她低声念着魔法咒语，让地面发出隆隆声。大地开始震动和裂开。"
+        },
+        {
+          "page": 17,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-17.png",
+          "en": "CRACK! BOOM! A GIANT red Jalapeno burst from the soil! He was enormous, fierce, and ON FIRE! Flames shot from his body like a volcano.",
+          "zh": "裂开！轰！一个巨大的红色火爆辣椒从土壤中冲了出来！他巨大、凶猛，而且全身着火！火焰像火山一样从他的身体喷射出来。"
+        },
+        {
+          "page": 18,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-18.png",
+          "en": "Jalapeno saw the zombie and his eyes blazed with anger. Red and orange flames erupted everywhere! The entire garden lit up in fiery colors.",
+          "zh": "火爆辣椒看到了僵尸，他的眼睛因愤怒而燃烧。红色和橙色的火焰到处喷发！整个花园被火热的颜色照亮了。"
+        },
+        {
+          "page": 19,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-19.png",
+          "en": "Jalapeno took a deep breath and WHOOSH — a massive wave of fire hit the Conehead Zombie! The traffic cone melted like butter. The zombie screamed and disappeared in a puff of smoke.",
+          "zh": "火爆辣椒深吸一口气，呼——巨大的火焰波击中了路障僵尸！路障像黄油一样融化了。僵尸尖叫一声，在一缕烟雾中消失了。"
+        },
+        {
+          "page": 20,
+          "image": "assets/picturebooks/images/brave-pea-shooter/page-20.png",
+          "en": "Pip and Sunny cheered happily! Where the zombie had been, there was only a small puff of smoke. The garden was safe once more.",
+          "zh": "皮皮和小阳开心地欢呼！僵尸原来在的地方，只剩下一个小小的烟雾。花园再次安全了。"
+        }
+      ]
+    },
+    {
+      "id": "ocean-adventure",
+      "title": "城市到海洋大冒险 🐙",
+      "titleZh": "城市到海洋大冒险 🐙",
+      "titleEn": "From the City to the Ocean",
+      "category": "Steve 的故事屋",
+      "shelf": "海洋故事",
+      "cover": "assets/picturebooks/images/ocean-adventure/page-1.png",
+      "pages": [
+        {
+          "page": 1,
+          "image": "assets/picturebooks/images/ocean-adventure/page-1.png",
+          "en": "",
+          "zh": "我在一个大城市里，有人带我走啊走，走着走着就到了海洋！"
+        },
+        {
+          "page": 2,
+          "image": "assets/picturebooks/images/ocean-adventure/page-2.png",
+          "en": "I was in a big city. Someone took me walking, and we walked and walked... until we reached the ocean!",
+          "zh": "我在一个大城市里，有人带我走啊走，走着走着就到了海洋！"
+        },
+        {
+          "page": 3,
+          "image": "assets/picturebooks/images/ocean-adventure/page-3.png",
+          "en": "In the ocean I found seashells, jellyfish, clownfish, and a crab! I played with so many bubbles — I didn't want to stop!",
+          "zh": "到了海洋，我碰见了贝壳、水母、小丑鱼，还有螃蟹！我在那里玩泡泡，玩了好久都不肯走！"
+        },
+        {
+          "page": 4,
+          "image": "assets/picturebooks/images/ocean-adventure/page-4.png",
+          "en": "Then we saw it — a GIANT red octopus! Normal ones are 30 meters, but this one was 50 meters! Something was very wrong...",
+          "zh": "然后我们发现了一只红色大章鱼！普通的只有 30 米，这只竟然有 50 米！肯定不对劲……"
+        },
+        {
+          "page": 5,
+          "image": "assets/picturebooks/images/ocean-adventure/page-5.png",
+          "en": "I grabbed my repair gun and shot at the red octopus! Pew pew pew! I made so many holes — and then fixed them all up again!",
+          "zh": "我拿了一把修理枪，对着红章鱼 biu biu biu！打了好多洞，又修了好多洞！"
+        },
+        {
+          "page": 6,
+          "image": "assets/picturebooks/images/ocean-adventure/page-6.png",
+          "en": "I went inside a sunken ship. There was a puzzle to solve! I met a tiny yellow octopus with black eyes — so cute! I touched it gently.",
+          "zh": "我跑到一个沉船里，找了个拼图拼拼拼。还碰见了一只小小的黄色章鱼，黑色眼睛，好可爱！我轻轻地碰了它。"
+        },
+        {
+          "page": 7,
+          "image": "assets/picturebooks/images/ocean-adventure/page-7.png",
+          "en": "Someone rang a bell — and the red octopus came BACK! But then I opened a treasure chest: gold everywhere! Plus a shield and a sword!",
+          "zh": "有人碰了一下铃铛，红色大章鱼又出现了！但我打开了宝箱，里面全是黄金！还有盾牌和剑！"
+        },
+        {
+          "page": 8,
+          "image": "assets/picturebooks/images/ocean-adventure/page-8.png",
+          "en": "The red octopus chased us, and we fell into a beautiful coral reef! I found a flying water platform and rode across the sparkling ocean.",
+          "zh": "红章鱼追着我们，我们掉进了一个珊瑚礁里！我坐着水上飞行平台，在海洋上漂啊漂。"
+        },
+        {
+          "page": 9,
+          "image": "assets/picturebooks/images/ocean-adventure/page-9.png",
+          "en": "On top of a giant whale, there was a WHOLE CITY! Buildings, streets, everything! I couldn't believe my eyes.",
+          "zh": "一条大鲸鱼的背上，竟然有一个城市！有房子有街道，什么都有！我简直不敢相信。"
+        },
+        {
+          "page": 10,
+          "image": "assets/picturebooks/images/ocean-adventure/page-10.png",
+          "en": "We fell inside the whale — but it wasn't real! It was MECHANICAL inside! Gears, pipes, and an elevator going up!",
+          "zh": "我们掉进了鲸鱼里面——但它不是真的鲸鱼！里面全是机械的！有齿轮、管道，还有电梯！"
+        },
+        {
+          "page": 11,
+          "image": "assets/picturebooks/images/ocean-adventure/page-11.png",
+          "en": "I found an ancient statue holding a trident. I pressed a button and — BOOM! Lightning struck everywhere! The statue came alive!",
+          "zh": "我找到了一个雕像，拿着三叉戟。我按了一个按钮，轰！雷电全来了！雕像动起来了！"
+        },
+        {
+          "page": 12,
+          "image": "assets/picturebooks/images/ocean-adventure/page-12.png",
+          "en": "A mechanical fish came to rescue me! We flew through the ocean, past underwater cities and walls. Wheeee!",
+          "zh": "一只机械鱼来救我了！我坐着它飞呀飞，飞过海底城市和大墙。呜呼！"
+        },
+        {
+          "page": 13,
+          "image": "assets/picturebooks/images/ocean-adventure/page-13.png",
+          "en": "The whale mom was fighting the red octopus! Robot Cat and I cheered: \"Go go go!\" — and they WON! The adventure was over... for now!",
+          "zh": "鲸鱼妈妈在跟红章鱼打架！我和机器猫一起喊：\"加油加油加油！\"——机器猫胜利了！冒险结束了……暂时！"
+        }
+      ]
+    },
+    {
+      "id": "robot-battle",
+      "title": "家务机器人大战",
+      "titleZh": "家务机器人大战",
+      "titleEn": "The Housework Robot Battle",
+      "category": "Steve 的故事屋",
+      "shelf": "冒险故事",
+      "cover": "assets/picturebooks/images/robot-battle/page-1.png",
+      "pages": [
+        {
+          "page": 1,
+          "image": "assets/picturebooks/images/robot-battle/page-1.png",
+          "en": "",
+          "zh": "豆豆和豆包的家务机器人大战 | Doudou and Doubao's Great Chore Robot Battle"
+        },
+        {
+          "page": 2,
+          "image": "assets/picturebooks/images/robot-battle/page-2.png",
+          "en": "Doudou and Doubao's Great Chore Robot Battle",
+          "zh": "豆豆和豆包的家务机器人大战 | Doudou and Doubao's Great Chore Robot Battle"
+        },
+        {
+          "page": 3,
+          "image": "assets/picturebooks/images/robot-battle/page-3.png",
+          "en": "This is the story of a little boy named Doudou and his round robot friend Doubao.",
+          "zh": "这是关于小男孩豆豆和他的圆滚滚机器人朋友豆包的故事。"
+        },
+        {
+          "page": 4,
+          "image": "assets/picturebooks/images/robot-battle/page-4.png",
+          "en": "\"Today we're playing the Great Chore Battle!\" Doudou announced excitedly.",
+          "zh": "\"今天我们来玩家务大战！\"豆豆兴奋地宣布。"
+        },
+        {
+          "page": 5,
+          "image": "assets/picturebooks/images/robot-battle/page-5.png",
+          "en": "\"Behold my Stinky Shield!\" Doudou raised a shield glowing with green light.",
+          "zh": "\"看我的臭臭护盾！\"豆豆举起一面发着绿色光芒的盾牌。"
+        },
+        {
+          "page": 6,
+          "image": "assets/picturebooks/images/robot-battle/page-6.png",
+          "en": "\"I choose the Bubble Gun! Bang bang bang!\" Countless colorful bubbles flew toward Doudou.",
+          "zh": "\"我选泡泡枪！砰砰砰！\"无数彩色泡泡飞向豆豆。"
+        },
+        {
+          "page": 7,
+          "image": "assets/picturebooks/images/robot-battle/page-7.png",
+          "en": "\"My Stinky Bombs already turned you into a stinker!\" Doudou laughed triumphantly.",
+          "zh": "\"我的臭臭炮弹早就把你打成臭臭了！\"豆豆得意地大笑。"
+        },
+        {
+          "page": 8,
+          "image": "assets/picturebooks/images/robot-battle/page-8.png",
+          "en": "\"Soap Attack! Scrub scrub scrub! All clean!\" Doudou washed Doubao squeaky clean.",
+          "zh": "\"肥皂武装！擦呀擦！洗完啦！\"豆豆用巨大的肥皂把豆包洗得干干净净。"
+        },
+        {
+          "page": 9,
+          "image": "assets/picturebooks/images/robot-battle/page-9.png",
+          "en": "\"My Robot Vacuum Tank is here!\" Mechanical arms stretched out, sweeping everywhere.",
+          "zh": "\"我的扫地机器人战车来啦！\"机械臂伸出，四处清扫。"
+        },
+        {
+          "page": 10,
+          "image": "assets/picturebooks/images/robot-battle/page-10.png",
+          "en": "\"Robot Vacuum enters Angry Mode!\" The battle grew more and more intense.",
+          "zh": "\"扫地机器人进入愤怒模式！\"对战越来越激烈。"
+        },
+        {
+          "page": 11,
+          "image": "assets/picturebooks/images/robot-battle/page-11.png",
+          "en": "\"Look at my Flying Shield! Tracking bullets, right through Doubao's tank!\"",
+          "zh": "\"看我的飞翔盾牌！追踪子弹，穿过豆包的坦克！\""
+        },
+        {
+          "page": 12,
+          "image": "assets/picturebooks/images/robot-battle/page-12.png",
+          "en": "\"Okay okay, you win this time!\" Doubao laughed. \"Let's still be best friends!\"",
+          "zh": "\"好吧好吧，这次算你厉害！\"豆包笑着说。\"那我们还是做好朋友吧！\""
+        },
+        {
+          "page": 13,
+          "image": "assets/picturebooks/images/robot-battle/page-13.png",
+          "en": "A loud crash came from the kitchen! \"Oh no! Mom said we need to bake a cake today!\"",
+          "zh": "厨房传来一声巨响！\"完了完了，妈妈说今天要做蛋糕！\""
+        },
+        {
+          "page": 14,
+          "image": "assets/picturebooks/images/robot-battle/page-14.png",
+          "en": "\"Doubao, switch to Kitchen Agent Mode!\" Doudou put on a chef's hat and apron.",
+          "zh": "\"豆包，变成厨房特工模式！\"豆豆戴上厨师帽，系上围裙。"
+        },
+        {
+          "page": 15,
+          "image": "assets/picturebooks/images/robot-battle/page-15.png",
+          "en": "Doudou accidentally flung the entire bag of flour into the air, like a winter wonderland!",
+          "zh": "豆豆不小心把整袋面粉甩到了空中，像冬天的童话世界！"
+        },
+        {
+          "page": 16,
+          "image": "assets/picturebooks/images/robot-battle/page-16.png",
+          "en": "The mixer spun too fast, sending batter flying everywhere like a fountain!",
+          "zh": "搅拌器转得太快了，面糊像喷泉一样飞溅得到处都是！"
+        },
+        {
+          "page": 17,
+          "image": "assets/picturebooks/images/robot-battle/page-17.png",
+          "en": "Doubao secretly added laundry detergent to the batter — giant colorful bubbles started flooding the kitchen!",
+          "zh": "豆包偷偷往面糊里加了洗衣液——巨大的彩色泡泡开始淹没厨房！"
+        },
+        {
+          "page": 18,
+          "image": "assets/picturebooks/images/robot-battle/page-18.png",
+          "en": "The giant bubbles lifted Doudou and Doubao all the way to the ceiling!",
+          "zh": "巨大的泡泡把豆豆和豆包一直飘到了天花板上！"
+        },
+        {
+          "page": 19,
+          "image": "assets/picturebooks/images/robot-battle/page-19.png",
+          "en": "\"Activate Anti-Bubble System!\" Doubao popped the bubbles one by one for a safe landing.",
+          "zh": "\"启动反泡泡系统！\"豆包一个个戳破了泡泡，安全着陆。"
+        },
+        {
+          "page": 20,
+          "image": "assets/picturebooks/images/robot-battle/page-20.png",
+          "en": "\"MY KITCHEN!!!\" Mom stood at the door, flames shooting from her eyes!",
+          "zh": "\"我的厨房！！！\"妈妈站在门口，眼睛里冒着火！"
+        },
+        {
+          "page": 21,
+          "image": "assets/picturebooks/images/robot-battle/page-21.png",
+          "en": "Doubao transformed into a Super Cleaning Robot and polished the kitchen sparkling clean!",
+          "zh": "豆包变成了超级清洁机器人，把厨房打扫得闪闪发亮！"
+        }
+      ]
+    },
+    {
+      "id": "brave-tank",
+      "title": "勇敢的小坦克",
+      "titleZh": "勇敢的小坦克",
+      "titleEn": "The Brave Little Tank",
+      "category": "Steve 的故事屋",
+      "shelf": "冒险故事",
+      "cover": "assets/picturebooks/images/brave-tank/page-1.png",
+      "pages": [
+        {
+          "page": 1,
+          "image": "assets/picturebooks/images/brave-tank/page-1.png",
+          "en": "",
+          "zh": "在一片美丽的山谷里，住着一辆勇敢的小坦克，名叫小钢。"
+        },
+        {
+          "page": 2,
+          "image": "assets/picturebooks/images/brave-tank/page-2.png",
+          "en": "In a beautiful valley, there lived a brave little tank named Little Steel.",
+          "zh": "在一片美丽的山谷里，住着一辆勇敢的小坦克，名叫小钢。"
+        },
+        {
+          "page": 3,
+          "image": "assets/picturebooks/images/brave-tank/page-3.png",
+          "en": "Welcome to Tank Town, where all kinds of tanks live happily together!",
+          "zh": "欢迎来到坦克小镇，各种各样的坦克快乐地生活在这里！"
+        },
+        {
+          "page": 4,
+          "image": "assets/picturebooks/images/brave-tank/page-4.png",
+          "en": "Little Steel was the smallest tank in town, with a tiny cannon and a big heart.",
+          "zh": "小钢是镇上最小的坦克，炮管短短的，却有一颗大大的心。"
+        },
+        {
+          "page": 5,
+          "image": "assets/picturebooks/images/brave-tank/page-5.png",
+          "en": "“I want to be a hero!” Little Steel practiced his brave face in the mirror every day.",
+          "zh": "“我要成为英雄！”小钢每天都对着镜子练习勇敢的表情。"
+        },
+        {
+          "page": 6,
+          "image": "assets/picturebooks/images/brave-tank/page-6.png",
+          "en": "Every year, Tank Town held the Brave Contest — a big adventure race!",
+          "zh": "坦克小镇每年都会举办勇士大赛——一场大型冒险比赛！"
+        },
+        {
+          "page": 7,
+          "image": "assets/picturebooks/images/brave-tank/page-7.png",
+          "en": "“I’m joining!” said Little Steel. The big tanks all laughed. “You? Little you?”",
+          "zh": "“我要参加！”小钢说。大坦克们都笑了。“你？小小的你？”"
+        },
+        {
+          "page": 8,
+          "image": "assets/picturebooks/images/brave-tank/page-8.png",
+          "en": "Grandpa Armor patted Little Steel gently. “A true hero is not the biggest, but the bravest.”",
+          "zh": "铁甲爷爷轻轻拍了拍小钢。“真正的英雄不是最大的，而是最勇敢的。”"
+        },
+        {
+          "page": 9,
+          "image": "assets/picturebooks/images/brave-tank/page-9.png",
+          "en": "Little Steel teamed up with his best friends — steady Big Iron and fast Lightning!",
+          "zh": "小钢找到了最好的朋友——稳重的大铁和快速的闪电，组成了一支队伍！"
+        },
+        {
+          "page": 10,
+          "image": "assets/picturebooks/images/brave-tank/page-10.png",
+          "en": "The race was on! Teams had to cross the desert, the forest, and climb the mountain!",
+          "zh": "比赛开始了！队伍要穿越沙漠、森林，还要爬上山顶！"
+        },
+        {
+          "page": 11,
+          "image": "assets/picturebooks/images/brave-tank/page-11.png",
+          "en": "The desert was so hot! Big Iron got stuck in the sand. “Don’t worry, I’ll help!”",
+          "zh": "沙漠好热！大铁陷进沙子里了。“别急，我来帮你！”"
+        },
+        {
+          "page": 12,
+          "image": "assets/picturebooks/images/brave-tank/page-12.png",
+          "en": "The forest was full of big trees. “Follow me!” Lightning zipped through the narrow paths.",
+          "zh": "森林里到处是大树。“跟我来！”闪电灵活地穿过小路。"
+        },
+        {
+          "page": 13,
+          "image": "assets/picturebooks/images/brave-tank/page-13.png",
+          "en": "A wide river blocked the way! There was no bridge. “How do we cross?” everyone worried.",
+          "zh": "一条大河挡住了去路！没有桥。“怎么过去呢？”大家都愁了。"
+        },
+        {
+          "page": 14,
+          "image": "assets/picturebooks/images/brave-tank/page-14.png",
+          "en": "“I have an idea!” Little Steel pointed at a fallen tree. “We can make a bridge!”",
+          "zh": "“我有办法！”小钢指着倒下的大树。“我们可以搭一座桥！”"
+        },
+        {
+          "page": 15,
+          "image": "assets/picturebooks/images/brave-tank/page-15.png",
+          "en": "The log bridge held! Big Iron went first, then Lightning zoomed across. Little Steel crossed carefully and safely.",
+          "zh": "树桥很稳！大铁先过，闪电忮地跑过，小钢小心翼翼地安全过了河。"
+        },
+        {
+          "page": 16,
+          "image": "assets/picturebooks/images/brave-tank/page-16.png",
+          "en": "Near the top, Red Thunder’s team blocked the path with big rocks! “You can’t win now!”",
+          "zh": "快到山顶了！红雷的队伍用大石头挡住了路！“你们赢不了啦！”"
+        },
+        {
+          "page": 17,
+          "image": "assets/picturebooks/images/brave-tank/page-17.png",
+          "en": "“There’s a gap under the rocks! I’m the smallest — I can squeeze through!” said Little Steel.",
+          "zh": "“石头下面有缝隙！我最小，我可以钻过去！”小钢说。"
+        },
+        {
+          "page": 18,
+          "image": "assets/picturebooks/images/brave-tank/page-18.png",
+          "en": "Little Steel reached the top first and grabbed the golden flag! “We won!”",
+          "zh": "小钢第一个到达山顶，拿到了金色旗帜！“我们赢了！”"
+        },
+        {
+          "page": 19,
+          "image": "assets/picturebooks/images/brave-tank/page-19.png",
+          "en": "On the way down, Red Thunder was trapped in a landslide! “Help me!” he cried.",
+          "zh": "下山路上，红雷被困在滑坡里！“救命！”他喊道。"
+        },
+        {
+          "page": 20,
+          "image": "assets/picturebooks/images/brave-tank/page-20.png",
+          "en": "Big Iron pulled with a rope, Lightning moved rocks, and Little Steel pushed from below. Together, they saved Red Thunder!",
+          "zh": "大铁用绳子拉，闪电搬石头，小钢从下面顶。大家一起救出了红雷！"
+        }
+      ]
+    },
+    {
+      "id": "hungry-snake",
+      "title": "好饿的小蛇",
+      "titleZh": "好饿的小蛇",
+      "titleEn": "The Very Hungry Little Snake",
+      "category": "Steve 的故事屋",
+      "shelf": "中文启蒙",
+      "cover": "assets/picturebooks/images/hungry-snake/page-1.png",
+      "pages": [
+        {
+          "page": 1,
+          "image": "assets/picturebooks/images/hungry-snake/page-1.png",
+          "en": "",
+          "zh": "一个阳光明媚的早晨，小蛇一扭一扭地在小路上散步。"
+        },
+        {
+          "page": 2,
+          "image": "assets/picturebooks/images/hungry-snake/page-2.png",
+          "en": "One sunny morning, a little snake wiggled along the path.",
+          "zh": "一个阳光明媚的早晨，小蛇一扭一扭地在小路上散步。"
+        },
+        {
+          "page": 3,
+          "image": "assets/picturebooks/images/hungry-snake/page-3.png",
+          "en": "He saw a round, red apple. \"Guess what he did?\" Crunch, crunch! So yummy!",
+          "zh": "他看到一个圆圆的红苹果。\"你猜他会怎么做？\" 他啊呜，啊呜，真好吃！"
+        },
+        {
+          "page": 4,
+          "image": "assets/picturebooks/images/hungry-snake/page-4.png",
+          "en": "The next day, the hungry little snake went for a walk again. He saw a curvy yellow banana. \"Guess what he did?\" Crunch, crunch! So yummy!",
+          "zh": "第二天，好饿的小蛇又一扭一扭地去散步了。他看到一根弯弯的黄香蕉。\"你猜他会怎么做？\" 他啊呜，啊呜，真好吃！"
+        },
+        {
+          "page": 5,
+          "image": "assets/picturebooks/images/hungry-snake/page-5.png",
+          "en": "On the third day, the hungry little snake went for a walk again. He saw a triangular rice ball. \"Guess what he did?\" Crunch, crunch! So yummy!",
+          "zh": "第三天，好饿的小蛇又一扭一扭地去散步了。他看到一个三角形的小饭团。\"你猜他会怎么做？\" 他啊呜，啊呜，真好吃！"
+        },
+        {
+          "page": 6,
+          "image": "assets/picturebooks/images/hungry-snake/page-6.png",
+          "en": "On the fourth day, the hungry little snake went for a walk again. He saw a big bunch of purple grapes. \"Guess what he did?\" Crunch, crunch! So yummy!",
+          "zh": "第四天，好饿的小蛇又一扭一扭地去散步了。他看到一大串紫色的葡萄。\"你猜他会怎么做？\" 他啊呜，啊呜，真好吃！"
+        },
+        {
+          "page": 7,
+          "image": "assets/picturebooks/images/hungry-snake/page-7.png",
+          "en": "On the fifth day, the hungry little snake went for a walk again. He saw a pointy pineapple. \"Guess what he did?\" Crunch, crunch! So yummy!",
+          "zh": "第五天，好饿的小蛇又一扭一扭地去散步了。他看到一个尖尖的菠萝。\"你猜他会怎么做？\" 他啊呜，啊呜，真好吃！"
+        },
+        {
+          "page": 8,
+          "image": "assets/picturebooks/images/hungry-snake/page-8.png",
+          "en": "His tail is right here! He is a very happy, very full little snake.",
+          "zh": "第六天，好饿的小蛇又一扭一扭地去散步了。他看到树上有许多红苹果。\"你猜他会怎么做？\" 小蛇一扭一扭地爬上树，然后张开大嘴！\"喔！啊呜，啊呜，真好吃！\""
+        }
+      ]
+    },
+    {
+      "id": "space-d1",
+      "title": "Planet Battle Game",
+      "titleZh": "星球大战游戏",
+      "titleEn": "Planet Battle Game",
+      "category": "Steve 的故事屋",
+      "shelf": "太空故事",
+      "cover": "assets/picturebooks/images/space-d1/page-1.png",
+      "pages": [
+        {
+          "page": 1,
+          "image": "assets/picturebooks/images/space-d1/page-1.png",
+          "en": "",
+          "zh": "豆包和小孩准备在外太空玩一场超级星球大战游戏！"
+        },
+        {
+          "page": 2,
+          "image": "assets/picturebooks/images/space-d1/page-2.png",
+          "en": "Doubao and the kid are ready to play an epic planet battle game in outer space!",
+          "zh": "豆包和小孩准备在外太空玩一场超级星球大战游戏！"
+        },
+        {
+          "page": 3,
+          "image": "assets/picturebooks/images/space-d1/page-3.png",
+          "en": "Doubao says: 'Let's play planet battle! Do you want to be a Jedi or a spaceship pilot?'",
+          "zh": "豆包说：'我们来玩星球大战吧！你想当绝地武士还是飞船飞行员？'"
+        },
+        {
+          "page": 4,
+          "image": "assets/picturebooks/images/space-d1/page-4.png",
+          "en": "Doubao creates a Crystal Energy Planet with a transparent shell that shoots super laser beams!",
+          "zh": "豆包设计了一颗水晶能量星球，透明的外壳能发射超强激光炮！"
+        },
+        {
+          "page": 5,
+          "image": "assets/picturebooks/images/space-d1/page-5.png",
+          "en": "The kid designs a tiny but mighty Little Star that can throw crystal bombs everywhere!",
+          "zh": "小孩设计了一颗小但强大的小小星星，能到处扔水晶炸弹！"
+        },
+        {
+          "page": 6,
+          "image": "assets/picturebooks/images/space-d1/page-6.png",
+          "en": "The Crystal Energy Planet fires a huge laser beam at the Little Star! ZAP!",
+          "zh": "水晶能量星球向小小星星发射了一道巨大的激光束！滋——！"
+        },
+        {
+          "page": 7,
+          "image": "assets/picturebooks/images/space-d1/page-7.png",
+          "en": "The Little Star throws sparkling crystal bombs that hit the Crystal Planet! BOOM BOOM!",
+          "zh": "小小星星扔出闪亮的水晶炸弹，炸中了水晶星球！轰轰！"
+        },
+        {
+          "page": 8,
+          "image": "assets/picturebooks/images/space-d1/page-8.png",
+          "en": "The bombs are so powerful that Doubao gets blown all the way to the Milky Way!",
+          "zh": "炸弹威力太大了，豆包被炸飞到了银河系那边！"
+        },
+        {
+          "page": 9,
+          "image": "assets/picturebooks/images/space-d1/page-9.png",
+          "en": "Luckily Doubao has an elastic body! He bounces right back like a rubber ball!",
+          "zh": "还好豆包有弹性身体！像橡皮球一样弹了回来！"
+        },
+        {
+          "page": 10,
+          "image": "assets/picturebooks/images/space-d1/page-10.png",
+          "en": "Doubao's Crystal Planet transforms into a giant Stellar Whale with a super big mouth!",
+          "zh": "豆包的水晶星球变身成了一只星际巨鲸，嘴巴超级大！"
+        },
+        {
+          "page": 11,
+          "image": "assets/picturebooks/images/space-d1/page-11.png",
+          "en": "The Stellar Whale opens its mouth wide to swallow the Little Star whole!",
+          "zh": "星际巨鲸张开大嘴，要把小小星星整个吞下去！"
+        },
+        {
+          "page": 12,
+          "image": "assets/picturebooks/images/space-d1/page-12.png",
+          "en": "The kid squeezes Galaxy Bubble Bath all over the Stellar Whale! Bubbles everywhere!",
+          "zh": "小孩把银河系沐浴露挤到星际巨鲸身上！到处都是泡泡！"
+        },
+        {
+          "page": 13,
+          "image": "assets/picturebooks/images/space-d1/page-13.png",
+          "en": "The kid pulls out a tiny mini lighter and says 'Quick, run!' CLICK!",
+          "zh": "小孩掏出一个迷你的打火机，说快跑！咔嚓！"
+        },
+        {
+          "page": 14,
+          "image": "assets/picturebooks/images/space-d1/page-14.png",
+          "en": "BOOM! The bubbles and lighter create a HUGE explosion! Doubao and the whale go flying!",
+          "zh": "轰！泡泡和打火机引发了大爆炸！豆包和巨鲸一起飞了出去！"
+        },
+        {
+          "page": 15,
+          "image": "assets/picturebooks/images/space-d1/page-15.png",
+          "en": "Poor Doubao is all burnt and covered in black smoke! His crystal planet is cracked!",
+          "zh": "可怜的豆包被炸得全身冒黑烟！水晶星球也裂开了！"
+        },
+        {
+          "page": 16,
+          "image": "assets/picturebooks/images/space-d1/page-16.png",
+          "en": "Doubao sends out Nano Repair Robots that buzz around fixing everything super fast!",
+          "zh": "豆包放出纳米修复机器人，嗡嗡嗡地飞快修好了一切！"
+        },
+        {
+          "page": 17,
+          "image": "assets/picturebooks/images/space-d1/page-17.png",
+          "en": "The kid grabs a shiny protective shield, ready to block any counterattack!",
+          "zh": "小孩抓起一面闪亮的保护盾，准备挡住任何反击！"
+        },
+        {
+          "page": 18,
+          "image": "assets/picturebooks/images/space-d1/page-18.png",
+          "en": "The kid accidentally throws the shield at Doubao's planet instead of blocking! 'Oops!'",
+          "zh": "小孩不小心把盾牌扔到了豆包的星球上，忘了挡住！'哎呀！'"
+        },
+        {
+          "page": 19,
+          "image": "assets/picturebooks/images/space-d1/page-19.png",
+          "en": "The kid launches the ultimate Scrap Attack! The planet starts falling apart into useless junk!",
+          "zh": "小孩发出了终极报废攻击！星球开始散架变成废铁！"
+        },
+        {
+          "page": 20,
+          "image": "assets/picturebooks/images/space-d1/page-20.png",
+          "en": "The once powerful planet is now just a pile of scrap metal floating in space!",
+          "zh": "曾经强大的星球现在只是一堆飘在太空中的废铁！"
+        },
+        {
+          "page": 21,
+          "image": "assets/picturebooks/images/space-d1/page-21.png",
+          "en": "Doubao raises a white flag and says: 'OK OK, you win! Your bombs are too strong!'",
+          "zh": "豆包举起白旗说：'好好好，你赢了！你的炸弹太厉害了！'"
+        },
+        {
+          "page": 22,
+          "image": "assets/picturebooks/images/space-d1/page-22.png",
+          "en": "Doubao and the kid hug in space! 'That was so fun! Let's play again tomorrow!'",
+          "zh": "豆包和小孩在太空中抱在一起！'太好玩了！明天再玩！'"
+        },
+        {
+          "page": 23,
+          "image": "assets/picturebooks/images/space-d1/page-23.png",
+          "en": "They fly off together on the Little Star, ready for the next amazing space adventure!",
+          "zh": "他们一起坐着小小星星飞走了，准备迎接下一个精彩的太空冒险！"
+        }
+      ]
+    },
+    {
+      "id": "star-wars",
+      "title": "星球大战",
+      "titleZh": "星球大战",
+      "titleEn": "Star Wars Adventure",
+      "category": "Steve 的故事屋",
+      "shelf": "太空故事",
+      "cover": "assets/picturebooks/images/star-wars/page-1.png",
+      "pages": [
+        {
+          "page": 1,
+          "image": "assets/picturebooks/images/star-wars/page-1.png",
+          "en": "",
+          "zh": "在一个遥远的星系里，勇敢的小宇航员小星驾驶着他闪亮的蓝色飞船穿越星空。今天，他即将迎来人生中最伟大的冒险！"
+        },
+        {
+          "page": 2,
+          "image": "assets/picturebooks/images/star-wars/page-2.png",
+          "en": "In a faraway galaxy, a brave little astronaut named Little Star flew his shiny blue spaceship through the stars. Today, he was about to have the greatest adventure of his life!",
+          "zh": "在一个遥远的星系里，勇敢的小宇航员小星驾驶着他闪亮的蓝色飞船穿越星空。今天，他即将迎来人生中最伟大的冒险！"
+        },
+        {
+          "page": 3,
+          "image": "assets/picturebooks/images/star-wars/page-3.png",
+          "en": "Little Star flew past twinkling little stars. They sparkled like tiny diamonds scattered across the dark sky. He looked at the beautiful planets around him, wondering which way to go.",
+          "zh": "小星飞过一闪一闪的小星星。它们像撒落在黑暗天空中的小钻石一样闪烁。他看着周围美丽的星球，想该往哪边走。"
+        },
+        {
+          "page": 4,
+          "image": "assets/picturebooks/images/star-wars/page-4.png",
+          "en": "Suddenly, a round little robot floated over! His name was Doudou, with glowing eyes and a bouncy body. He smiled and asked Little Star if he wanted to play Star Wars together.",
+          "zh": "突然，一个圆滚滚的小机器人飘了过来！他叫豆豆，有着发光的眼睛和弹弹的身体。他微笑着问小星想不想一起玩星球大战。"
+        },
+        {
+          "page": 5,
+          "image": "assets/picturebooks/images/star-wars/page-5.png",
+          "en": "Sure! Let's play! said Little Star. Doudou started designing his own planet, and it would be the best planet ever! Little Star got his special weapons ready too. The big battle was about to begin!",
+          "zh": "好呀！我们来玩！小星说。豆豆开始设计他自己的星球，这将是最棒的星球！小星也准备好了他的特殊武器。大战即将开始！"
+        },
+        {
+          "page": 6,
+          "image": "assets/picturebooks/images/star-wars/page-6.png",
+          "en": "Doudou created a magnificent crystal energy planet! Its shell was made of transparent crystal that could absorb star energy. He proudly said it was his Crystal Planet, and it could fire super laser beams!",
+          "zh": "豆豆创造了一颗壮观的水晶能量星球！它的外壳是透明的水晶，能吸收恒星的能量。他骄傲地说这是他的水晶星球，能发射超强激光炮！"
+        },
+        {
+          "page": 7,
+          "image": "assets/picturebooks/images/star-wars/page-7.png",
+          "en": "Whoosh! The Crystal Planet fired a bright laser beam! It was so powerful that it lit up the whole galaxy. Doudou laughed happily and told Little Star to try dodging it!",
+          "zh": "嗖！水晶星球发射出一道明亮的激光！激光太强了，照亮了整个星系。豆豆开心地大笑，叫小星躲开试试！"
+        },
+        {
+          "page": 8,
+          "image": "assets/picturebooks/images/star-wars/page-8.png",
+          "en": "But Little Star was very clever! He threw a tiny crystal bomb at the Crystal Planet. BOOM! The bomb hit the surface and cracked the crystal shell right open!",
+          "zh": "但是小星非常聪明！他朝水晶星球扔出一颗小小的水晶炸弹。轰！炸弹击中了星球表面，在水晶外壳上炸出了一道大裂纹！"
+        },
+        {
+          "page": 9,
+          "image": "assets/picturebooks/images/star-wars/page-9.png",
+          "en": "The crack spread across the Crystal Planet like a spider web. Doudou was shocked! He cried that his beautiful planet was breaking apart. The crystal shell began to shatter piece by piece.",
+          "zh": "裂纹像蜘蛛网一样在水晶星球上蔓延。豆豆大吃一惊！他大喊他美丽的星球要碎了。水晶外壳一点一点地开始碎裂。"
+        },
+        {
+          "page": 10,
+          "image": "assets/picturebooks/images/star-wars/page-10.png",
+          "en": "But Doudou had a plan! He sent out hundreds of tiny repair drones. Bzzz! They flew to the cracks and started fixing the planet. Doudou proudly said his drones would fix everything!",
+          "zh": "但是豆豆有办法！他派出成百上千个小小的修复无人机。嗡嗡嗡！它们飞到裂缝处开始修复星球。豆豆骄傲地说他的无人机会修好一切！"
+        },
+        {
+          "page": 11,
+          "image": "assets/picturebooks/images/star-wars/page-11.png",
+          "en": "Now Doudou had a super surprise! The Crystal Planet transformed into a giant Space Whale! It was huge and shiny, with crystal fins and an enormous mouth. Doudou laughed and said his planet could transform!",
+          "zh": "现在豆豆有一个超级惊喜！水晶星球变形成为一只巨大的星际巨鲸！它又大又闪亮，有着水晶鱼鳍和巨大的嘴巴。豆豆大笑着说他的星球可以变形！"
+        },
+        {
+          "page": 12,
+          "image": "assets/picturebooks/images/star-wars/page-12.png",
+          "en": "The Space Whale opened its super big mouth, trying to suck in Little Star's stars! Whoosh! The stars started flying toward the whale's mouth. Doudou cheered for the stars to enter his energy furnace!",
+          "zh": "星际巨鲸张开超级大的嘴巴，要把小星的小星星吸进来！呼！星星们开始飞向巨鲸的嘴巴。豆豆喊着让星星进入他的能量熔炉！"
+        },
+        {
+          "page": 13,
+          "image": "assets/picturebooks/images/star-wars/page-13.png",
+          "en": "Little Star had the best idea ever! He grabbed a bottle of Galaxy Bubble Bath, stuffed it with explosives, and lit it with a mini lighter. He threw the bubbly bomb right at the Space Whale!",
+          "zh": "小星有了最棒的主意！他抓起一瓶银河系沐浴露，塞进炸药，用一个迷你打火机点燃。他把满是泡泡的炸弹扔向星际巨鲸！"
+        },
+        {
+          "page": 14,
+          "image": "assets/picturebooks/images/star-wars/page-14.png",
+          "en": "BOOM! The Galaxy Bubble Bath bomb exploded! The Space Whale was covered in bubbles! Pop, pop, pop! Black smoke rose from its crystal body. Doudou cried that he was full of foam!",
+          "zh": "轰！银河系沐浴露炸弹爆炸了！星际巨鲸现在满身都是泡泡！噗噗噗！黑烟从它的水晶身体上升起。豆豆大叫他全身都是泡沫！"
+        },
+        {
+          "page": 15,
+          "image": "assets/picturebooks/images/star-wars/page-15.png",
+          "en": "Don't worry! Doudou had a secret weapon too — super tiny nano repair robots! They were so small you couldn't even see them. They zoomed around the Space Whale fixing it fast. Doudou said his nano robots would save it!",
+          "zh": "别担心！豆豆也有秘密武器，超小的纳米修复机器人！它们小到根本看不见。它们在星际巨鲸周围飞速修复。豆豆说他的纳米机器人会救他！"
+        },
+        {
+          "page": 16,
+          "image": "assets/picturebooks/images/star-wars/page-16.png",
+          "en": "But Little Star didn't stop! He built the ultimate bomb — the biggest and strongest bomb in the whole universe! It glowed bright red and made all the nearby stars shake. He shouted it was his final strike!",
+          "zh": "但是小星没有停下！他制作了终极炸弹，整个宇宙中最大最强的炸弹！它发出明亮的红光，连周围的星星都在震动。他喊着这是他的最后一击！"
+        },
+        {
+          "page": 17,
+          "image": "assets/picturebooks/images/star-wars/page-17.png",
+          "en": "KA-BOOM! The ultimate bomb hit the Space Whale. Poof! Nothing was left! Not even a tiny piece. Doudou's planet had completely vanished. Doudou whispered that it was incredible.",
+          "zh": "轰隆！终极炸弹击中了星际巨鲸，噗！什么都不剩了！连一小块碎片都没有。豆豆的星球完全消失了。豆豆小声说太厉害了。"
+        },
+        {
+          "page": 18,
+          "image": "assets/picturebooks/images/star-wars/page-18.png",
+          "en": "But Doudou was a tough little robot! He collected all the scrap metal floating in space and built a brand new planet! It wasn't as shiny as before, but it was built with love and determination.",
+          "zh": "但是豆豆是个坚强的小机器人！他收集太空中漂浮的所有废铁，建造了一个全新的星球！虽然没有以前那么闪亮，但它是用爱和决心建造的。"
+        },
+        {
+          "page": 19,
+          "image": "assets/picturebooks/images/star-wars/page-19.png",
+          "en": "Little Star picked up a shield to give to Doudou. But oh no! He threw it too hard, and the shield flew straight at Doudou! Then he quickly followed with another attack!",
+          "zh": "小星拿起一个保护盾想送给豆豆。但是哎呀！他扔得太用力，盾牌直接飞向了豆豆！然后他赶紧又来了一个报废攻击！"
+        },
+        {
+          "page": 20,
+          "image": "assets/picturebooks/images/star-wars/page-20.png",
+          "en": "CRACK! The shield shattered into pieces, and the new planet turned into a pile of scrap metal. Doudou raised his little robot arm and surrendered! He said Little Star's bombs were too powerful — he gave up!",
+          "zh": "咔嚓！盾牌碎成碎片，新星球变成了一堆废铁。豆豆举起他的小机器人手臂投降了！他说小星的炸弹太厉害了，他认输！"
+        },
+        {
+          "page": 21,
+          "image": "assets/picturebooks/images/star-wars/page-21.png",
+          "en": "Even though they had an epic battle, Little Star and Doudou were still the best of friends! They high-fived, laughed together, and shouted that this was the most fun Star Wars game ever!",
+          "zh": "虽然他们打了一场史诗级的大战，但小星和豆豆还是最好的朋友！他们互相击掌，一起大笑，喊着这是最好玩的星球大战游戏！"
+        },
+        {
+          "page": 22,
+          "image": "assets/picturebooks/images/star-wars/page-22.png",
+          "en": "Little Star looked at the stars and had a new idea. He told Doudou they should go to Mars next time! Doudou's eyes lit up with excitement as he shouted — Mars, here we come!",
+          "zh": "小星看着星星，有了新主意。他跟豆豆说下次去火星吧！豆豆的眼睛兴奋地发亮，喊着火星我们来了！"
+        }
+      ]
+    },
+    {
+      "id": "block-battle",
+      "title": "方块大战",
+      "titleZh": "方块大战",
+      "titleEn": "The Block Battle",
+      "category": "Steve 的故事屋",
+      "shelf": "冒险故事",
+      "cover": "assets/picturebooks/images/block-battle/page-1.png",
+      "pages": [
+        {
+          "page": 1,
+          "image": "assets/picturebooks/images/block-battle/page-1.png",
+          "en": "",
+          "zh": "这是一个关于方块对战的故事。两个小伙伴用各种方块武器展开了一场精彩的比赛！"
+        },
+        {
+          "page": 2,
+          "image": "assets/picturebooks/images/block-battle/page-2.png",
+          "en": "This is a story about Block Battle. Two friends had an exciting match using all kinds of block weapons!",
+          "zh": "这是一个关于方块对战的故事。两个小伙伴用各种方块武器展开了一场精彩的比赛！"
+        },
+        {
+          "page": 3,
+          "image": "assets/picturebooks/images/block-battle/page-3.png",
+          "en": "Let us play Block Battle!",
+          "zh": ""
+        },
+        {
+          "page": 4,
+          "image": "assets/picturebooks/images/block-battle/page-4.png",
+          "en": "I will pick a cube with the stealth skill!",
+          "zh": ""
+        },
+        {
+          "page": 5,
+          "image": "assets/picturebooks/images/block-battle/page-5.png",
+          "en": "I will build a three-layer obsidian shield!",
+          "zh": ""
+        },
+        {
+          "page": 6,
+          "image": "assets/picturebooks/images/block-battle/page-6.png",
+          "en": "Obsidian is super hard. Normal attacks cannot break it!",
+          "zh": ""
+        },
+        {
+          "page": 7,
+          "image": "assets/picturebooks/images/block-battle/page-7.png",
+          "en": "Watch this! I ride a sword with evil attack!",
+          "zh": ""
+        },
+        {
+          "page": 8,
+          "image": "assets/picturebooks/images/block-battle/page-8.png",
+          "en": "The obsidian shield got crushed flat!",
+          "zh": ""
+        },
+        {
+          "page": 9,
+          "image": "assets/picturebooks/images/block-battle/page-9.png",
+          "en": "I will build a laser-shooting turret!",
+          "zh": ""
+        },
+        {
+          "page": 10,
+          "image": "assets/picturebooks/images/block-battle/page-10.png",
+          "en": "Look at my super giant hammer!",
+          "zh": ""
+        },
+        {
+          "page": 11,
+          "image": "assets/picturebooks/images/block-battle/page-11.png",
+          "en": "The turret got smashed into pieces!",
+          "zh": ""
+        },
+        {
+          "page": 12,
+          "image": "assets/picturebooks/images/block-battle/page-12.png",
+          "en": "I will build a flying mechanical fortress!",
+          "zh": ""
+        },
+        {
+          "page": 13,
+          "image": "assets/picturebooks/images/block-battle/page-13.png",
+          "en": "This hammer weighs 1,500 blocks!",
+          "zh": ""
+        },
+        {
+          "page": 14,
+          "image": "assets/picturebooks/images/block-battle/page-14.png",
+          "en": "The fortress got smashed and cannot move!",
+          "zh": ""
+        },
+        {
+          "page": 15,
+          "image": "assets/picturebooks/images/block-battle/page-15.png",
+          "en": "Look at my mechanical hand!",
+          "zh": ""
+        },
+        {
+          "page": 16,
+          "image": "assets/picturebooks/images/block-battle/page-16.png",
+          "en": "The mechanical hand weighs 700!",
+          "zh": ""
+        },
+        {
+          "page": 17,
+          "image": "assets/picturebooks/images/block-battle/page-17.png",
+          "en": "I will use the hammer to launch you into the sky!",
+          "zh": ""
+        },
+        {
+          "page": 18,
+          "image": "assets/picturebooks/images/block-battle/page-18.png",
+          "en": "BANG! The hammer strikes the ground!",
+          "zh": ""
+        },
+        {
+          "page": 19,
+          "image": "assets/picturebooks/images/block-battle/page-19.png",
+          "en": "Flying into the sky like a cannonball!",
+          "zh": ""
+        },
+        {
+          "page": 20,
+          "image": "assets/picturebooks/images/block-battle/page-20.png",
+          "en": "Let the mechanical hand place blocks for me!",
+          "zh": ""
+        },
+        {
+          "page": 21,
+          "image": "assets/picturebooks/images/block-battle/page-21.png",
+          "en": "I will just lie here and sleep peacefully!",
+          "zh": ""
+        },
+        {
+          "page": 22,
+          "image": "assets/picturebooks/images/block-battle/page-22.png",
+          "en": "The adventure never ends! Let us play again!",
+          "zh": "冒险永不止步！我们再来一场吧！"
+        },
+        {
+          "page": 23,
+          "image": "assets/picturebooks/images/block-battle/page-23.png",
+          "en": "battle - start a new battle in the colorful arena!",
+          "zh": "两个小方块勇士在彩色的竞技场面对面，准备玩一个超酷的游戏——方块大战！他们每个人都要建造自己强大的武器。"
+        },
+        {
+          "page": 24,
+          "image": "assets/picturebooks/images/block-battle/page-24.png",
+          "en": "stealth - disappear into thin air with stealth skill!",
+          "zh": "勇士选了一个带隐身技能的方块！它身上发出神秘的蓝色光芒，慢慢消失在空气中。"
+        },
+        {
+          "page": 25,
+          "image": "assets/picturebooks/images/block-battle/page-25.png",
+          "en": "obsidian - build a strong shield with obsidian layers!",
+          "zh": "一个巨大的三层黑曜石盾牌从地面升起，散发着火山能量。一般攻击根本打不破！"
+        },
+        {
+          "page": 26,
+          "image": "assets/picturebooks/images/block-battle/page-26.png",
+          "en": "sword - ride a sword with evil attack power!",
+          "zh": "勇士跳上一把巨大的暗紫色之剑。带着邪恶的攻击力，猛砸向盾牌！"
+        },
+        {
+          "page": 27,
+          "image": "assets/picturebooks/images/block-battle/page-27.png",
+          "en": "crush - the shield was crushed flat into shards!",
+          "zh": "黑曜石盾牌被彻底砸扁了！碎片像烟花一样四处飞溅。"
+        },
+        {
+          "page": 28,
+          "image": "assets/picturebooks/images/block-battle/page-28.png",
+          "en": "laser - charge and dodge the laser beams!",
+          "zh": "一个高科技炮塔升起，充能着明亮的红色激光束。你怎么躲？"
+        },
+        {
+          "page": 29,
+          "image": "assets/picturebooks/images/block-battle/page-29.png",
+          "en": "hammer - one swing of the giant legendary hammer!",
+          "zh": "勇士挥舞着一把巨大的金色锤子。这就是传说中的锤子王——最强的武器！"
+        },
+        {
+          "page": 30,
+          "image": "assets/picturebooks/images/block-battle/page-30.png",
+          "en": "swing - one mighty swing smashed everything tiny!",
+          "zh": "激光炮塔被大锤一挥就砸成了碎片！"
+        },
+        {
+          "page": 31,
+          "image": "assets/picturebooks/images/block-battle/page-31.png",
+          "en": "fortress - a mechanical flying fortress, unbeatable!",
+          "zh": "一个带着翅膀的巨大堡垒升上天空。看起来不可战胜！"
+        },
+        {
+          "page": 32,
+          "image": "assets/picturebooks/images/block-battle/page-32.png",
+          "en": "weigh - the immense mechanical hand has great weight!",
+          "zh": "这锤子有1500个方块那么重！堡垒在巨大的重量下颤抖，几乎飞不动了！"
+        },
+        {
+          "page": 33,
+          "image": "assets/picturebooks/images/block-battle/page-33.png",
+          "en": "extend - reach out with incredible extendable arms!",
+          "zh": "一只巨大的金属手臂从地面伸出，以惊人的力量向堡垒抓去。"
+        },
+        {
+          "page": 34,
+          "image": "assets/picturebooks/images/block-battle/page-34.png",
+          "en": "clever - a clever plan using sound wave to launch!",
+          "zh": "勇士想到了一个聪明的计划！如果锤子砸到地面，声波把敌人弹飞到天上呢？"
+        },
+        {
+          "page": 35,
+          "image": "assets/picturebooks/images/block-battle/page-35.png",
+          "en": "strike - the hammer strike sends a huge shockwave!",
+          "zh": "锤子以惊人的力量猛击地面！巨大的冲击波向四面八方扩散。"
+        },
+        {
+          "page": 36,
+          "image": "assets/picturebooks/images/block-battle/page-36.png",
+          "en": "cannonball - fly high over the arena like a cannonball!",
+          "zh": "像一颗炮弹一样，敌人飞上了高高的天空！对战结束了！"
+        },
+        {
+          "page": 37,
+          "image": "assets/picturebooks/images/block-battle/page-37.png",
+          "en": "lazy - fall asleep comfortably after the big battle!",
+          "zh": "为什么要放方块？让机械手帮我放！勇士舒服地躺下来，睡着了。"
+        },
+        {
+          "page": 38,
+          "image": "assets/picturebooks/images/block-battle/page-38.png",
+          "en": "The second round begins! A brave warrior returns to the arena.",
+          "zh": "冒险永不止步！我们再来一场吧！"
+        },
+        {
+          "page": 39,
+          "image": "assets/picturebooks/images/block-battle/page-39.png",
+          "en": "stealth - disappear with stealth skill, very confused!",
+          "zh": "一个阳光明媚的下午，两个最好的朋友——一个披着红披风的小勇士和一个聪明的建造师——在彩色的竞技场面对面站着。今天就是他们期待已久的日子：方块大战！每个人都要设计自己的武器，比比谁最强。"
+        },
+        {
+          "page": 40,
+          "image": "assets/picturebooks/images/block-battle/page-40.png",
+          "en": "obsidian - build a shield with super hard obsidian material!",
+          "zh": "建造师笑着说：'我选一个带隐身技能的方块！'突然，他全身开始发出神秘的蓝色光芒。慢慢地，他消失在了空气中！'现在你看不到我了！'他的声音从四面八方传来。"
+        },
+        {
+          "page": 41,
+          "image": "assets/picturebooks/images/block-battle/page-41.png",
+          "en": "evil - ride a sword with evil attack and purple lightning!",
+          "zh": "建造师重新出现了，立刻开始工作。'我要造一个三层黑曜石盾牌！'他骄傲地宣布。一块一块地，一个巨大的黑色盾牌从地面升起。黑曜石是方块世界最坚硬的材料之一。'一般攻击根本打不破这个！'他笑着说。"
+        },
+        {
+          "page": 42,
+          "image": "assets/picturebooks/images/block-battle/page-42.png",
+          "en": "impossible - the obsidian shield cannot be broken!",
+          "zh": "勇士一点也不担心。'看我的！'他大喊，跳上了一把漂浮在空中的巨大暗紫色之剑。剑上覆盖着邪恶能量，闪着暗紫色的闪电。'有这个邪恶攻击力，你的盾牌什么都不算！'勇士全速飞向盾牌。"
+        },
+        {
+          "page": 43,
+          "image": "assets/picturebooks/images/block-battle/page-43.png",
+          "en": "laser - a high-tech turret that shoots laser beams!",
+          "zh": "哐当！邪恶之剑以惊人的力量撞上黑曜石盾牌。让所有人吃惊的是，传说中坚不可摧的盾牌被彻底砸扁了——像一张煎饼！黑曜石碎片像烟花一样四处飞溅。'不可能！'建造师惊呼，盯着被拍扁的盾牌残骸。"
+        },
+        {
+          "page": 44,
+          "image": "assets/picturebooks/images/block-battle/page-44.png",
+          "en": "enormous - the enormous hammer is the secret weapon!",
+          "zh": "建造师不肯认输。'好，比就比！'他迅速组装了一个高科技激光炮塔。炮塔嗡嗡地启动了，充能着明亮的红色激光束，照亮了整个竞技场。'看你躲不躲得过这个！'他咧嘴笑着，直接瞄准了勇士。"
+        },
+        {
+          "page": 45,
+          "image": "assets/picturebooks/images/block-battle/page-45.png",
+          "en": "fortress - a mechanical flying fortress, unbeatable!",
+          "zh": "勇士大笑，掏出了他的秘密武器——一把巨大的金色锤子，叫做锤子王。这是任何人见过的最大的锤子，闪耀着金光。'你觉得一个小激光就能挡住我？'他说着，把锤子高高举过头顶。"
+        },
+        {
+          "page": 46,
+          "image": "assets/picturebooks/images/block-battle/page-46.png",
+          "en": "swing - one mighty swing of the scrap hammer!",
+          "zh": "只一挥，轰！金色锤子砸在激光炮塔上，把它砸成了碎片！齿轮、电线和金属零件四处飞溅。建造师震惊地盯着炮塔变成的那堆废铁。'这锤子也太太太强了！'他小声说。"
+        },
+        {
+          "page": 47,
+          "image": "assets/picturebooks/images/block-battle/page-47.png",
+          "en": "fortress - the mechanical fortress looks unbeatable!",
+          "zh": "建造师还有一招。'我要造一个飞行的机械堡垒！'一个带着巨大翅膀的结构从地面升起，飞上了天空。它装着厚厚的金属板，看起来真的不可战胜。'你打不到会飞的东西！'建造师在空中大喊。"
+        },
+        {
+          "page": 48,
+          "image": "assets/picturebooks/images/block-battle/page-48.png",
+          "en": "weigh - the hammer weighs 1,500 blocks, immense!",
+          "zh": "但勇士有一个更疯狂的主意。他拿出了最重的武器——一把重达1500个方块的锤子！当他举起它时，整个竞技场都在颤抖。飞行堡垒在巨大的重量下剧烈摇晃，几乎飞不动了。'这是我的超级武器！'勇士咧嘴笑道。"
+        },
+        {
+          "page": 49,
+          "image": "assets/picturebooks/images/block-battle/page-49.png",
+          "en": "extend - extend and grab with incredible stretching arms!",
+          "zh": "建造师快没招了，但他突然想起了一件事。'等等！我还有我的机械手！'一只巨大的金属手臂从地面伸出，伸向高空中的堡垒。它重700个方块，什么都能抓住。'这只手够强壮，能把你的堡垒抓碎！'他喊道。"
+        },
+        {
+          "page": 50,
+          "image": "assets/picturebooks/images/block-battle/page-50.png",
+          "en": "clever - a brilliant clever plan with a shockwave!",
+          "zh": "勇士看着伸向自己的机械手，使劲思考。然后他的眼睛亮了。'我有一个聪明的计划！'他对自己说。'如果我用锤子砸地面，声波产生的冲击力就会把你弹飞到天上——我就赢了！'这是一个绝妙的主意。"
+        },
+        {
+          "page": 51,
+          "image": "assets/picturebooks/images/block-battle/page-51.png",
+          "en": "strike - the hammer strike has incredible impact!",
+          "zh": "勇士把巨大的锤子高高举起，猛砸向地面。哐当！撞击力太大了，整个竞技场像地震一样摇晃。巨大的冲击波向四面八方扩散，把灰尘和方块都吹上了天。声音回荡在整个大地上。"
+        },
+        {
+          "page": 52,
+          "image": "assets/picturebooks/images/block-battle/page-52.png",
+          "en": "cannonball - tumble through the sky like a cannonball, amazed!",
+          "zh": "就像勇士计划的那样，建造师像一颗炮弹一样被弹飞上了天！他越飞越高，在云层中旋转翻滚。'我在飞！'他尖叫着，又害怕又惊讶。对战结束了——勇士用聪明的计谋赢了！"
+        },
+        {
+          "page": 53,
+          "image": "assets/picturebooks/images/block-battle/page-53.png",
+          "en": "lazy - sleep comfortably and snore after the battle!",
+          "zh": "大胜之后，勇士觉得很累。'我为什么还要继续放方块？'他打了个哈欠。'让机械手帮我干活吧！'他舒服地躺在一个柔软的方块上，闭上眼睛，很快就睡着了。机械手还在一块一块地放方块，勇士在一旁安静地打着呼噜。"
+        }
+      ]
+    }
+  ]
+}

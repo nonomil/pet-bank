@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "storyId": "pixel-dialogue-story",
+  "generatedAt": "2026-07-13T08:44:06.723640+00:00",
+  "engineRequested": "direct-edge",
+  "status": "complete",
+  "health": {
+    "ok": true,
+    "edge": true,
+    "voxcpm2": false,
+    "source": "local edge-tts"
+  },
+  "totalLines": 37,
+  "generatedLines": 37,
+  "failures": [],
+  "entries": {
+    "ch01-moon-station/s01-arrival/0": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s01-arrival-00.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 82512,
+      "text": "小小宇航员驾驶着星光飞船，带着星尘伙伴来到了月环补给站。这里是太空旅行的第一站，圆圆的补给站像一个月亮挂在星空里。"
+    },
+    "ch01-moon-station/s01-arrival/1": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s01-arrival-01.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 41040,
+      "text": "哇！月亮上好亮呀！那个圆圆的房子就是补给站吗？"
+    },
+    "ch01-moon-station/s01-arrival/2": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s01-arrival-02.mp3",
+      "voice": "teacher",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 36288,
+      "text": "是的！你看，门上画着一个大大的字呢。我们走近看看吧！"
+    },
+    "ch01-moon-station/s01-arrival/3": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s01-arrival-03.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 68544,
+      "text": "欢迎来到月环补给站！我是月兔站长。小宇航员，你能认出门上这个字吗？这个字和月亮有关哦～"
+    },
+    "ch01-moon-station/s01-arrival/4": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s01-arrival-04.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 16560,
+      "text": "门上写的字是什么？"
+    },
+    "ch01-moon-station/s02-stardust/0": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s02-stardust-00.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 70128,
+      "text": "月兔站长带着小小宇航员走进了补给站。站里漂浮着好多闪闪发光的星尘，每一颗星尘上都写着一个汉字。"
+    },
+    "ch01-moon-station/s02-stardust/1": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s02-stardust-01.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 75744,
+      "text": "这些星尘是星际旅行的能量来源！但是它们太调皮了，都散落在各处。你能帮我认出上面的字，把它们收集起来吗？"
+    },
+    "ch01-moon-station/s02-stardust/2": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s02-stardust-02.mp3",
+      "voice": "teacher",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 41616,
+      "text": "快看！这颗星尘上的字闪闪发光，它像不像天上亮晶晶的小星星？"
+    },
+    "ch01-moon-station/s02-stardust/3": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s02-stardust-03.mp3",
+      "voice": "teacher",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 30096,
+      "text": "闪闪发光的字，像天上的小星星，这个字是什么？"
+    },
+    "ch01-moon-station/s02-stardust/4": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s02-stardust-04.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 40608,
+      "text": "又飘来两颗星尘。一颗亮得刺眼，一颗温柔地发着光。"
+    },
+    "ch01-moon-station/s02-stardust/5": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s02-stardust-05.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 54576,
+      "text": "这两颗星尘是好朋友。左边这颗特别亮，右边这颗亮得很温柔。认识它们吗？"
+    },
+    "ch01-moon-station/s02-stardust/6": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s02-stardust-06.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 28800,
+      "text": "左边这颗特别亮的星尘上写的是什么字？"
+    },
+    "ch01-moon-station/s03-cookies/0": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s03-cookies-00.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 51696,
+      "text": "收集完星尘，月兔站长开心极了。她从烤箱里端出了香喷喷的星星饼干。"
+    },
+    "ch01-moon-station/s03-cookies/1": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s03-cookies-01.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 52560,
+      "text": "谢谢你帮我收集星尘！我请你吃星星饼干～我先烤了3块，后来又烤了2块。"
+    },
+    "ch01-moon-station/s03-cookies/2": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s03-cookies-02.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 22320,
+      "text": "好香呀！让我数一数……"
+    },
+    "ch01-moon-station/s03-cookies/3": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s03-cookies-03.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 39168,
+      "text": "月兔站长先烤了3块，又烤了2块，一共有几块饼干？"
+    },
+    "ch01-moon-station/s03-cookies/4": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s03-cookies-04.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 60480,
+      "text": "月兔站长把5块星星饼干装进了小小宇航员的背包。月亮的光照在饼干上，暖暖的。"
+    },
+    "ch01-moon-station/s03-cookies/5": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s03-cookies-05.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 75600,
+      "text": "你真是太棒了！认识了'月''星''亮'三个字，还学会了算数。这是你的月光识字卡，下一站是云朵信号带，祝你好运！"
+    },
+    "ch01-moon-station/s03-cookies/6": {
+      "file": "assets/story/pixel-dialogue/audio/ch01-moon-station/s03-cookies-06.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 66528,
+      "text": "小小宇航员收好了月光识字卡。星尘伙伴在她身边闪闪发光，似乎在说：出发吧，下一站更精彩！"
+    },
+    "ch02-cloud-relay/s01-signal/0": {
+      "file": "assets/story/pixel-dialogue/audio/ch02-cloud-relay/s01-signal-00.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 59328,
+      "text": "星尘伙伴收到一段忽明忽暗的云朵信号。小小宇航员把飞船停在软绵绵的云桥旁。"
+    },
+    "ch02-cloud-relay/s01-signal/1": {
+      "file": "assets/story/pixel-dialogue/audio/ch02-cloud-relay/s01-signal-01.mp3",
+      "voice": "mom",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 28656,
+      "text": "信号里说：请找到和‘大’意思相反的词。"
+    },
+    "ch02-cloud-relay/s01-signal/2": {
+      "file": "assets/story/pixel-dialogue/audio/ch02-cloud-relay/s01-signal-02.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 19008,
+      "text": "‘大’的反义词是哪一个？"
+    },
+    "ch02-cloud-relay/s01-signal/3": {
+      "file": "assets/story/pixel-dialogue/audio/ch02-cloud-relay/s01-signal-03.mp3",
+      "voice": "mom",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 45504,
+      "text": "云朵仙子把三颗小星星排成一条线：上面一颗，下面两颗。"
+    },
+    "ch02-cloud-relay/s01-signal/4": {
+      "file": "assets/story/pixel-dialogue/audio/ch02-cloud-relay/s01-signal-04.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 17712,
+      "text": "哪一颗星星在最上面？"
+    },
+    "ch02-cloud-relay/s01-signal/5": {
+      "file": "assets/story/pixel-dialogue/audio/ch02-cloud-relay/s01-signal-05.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 38592,
+      "text": "词语密码亮起，云桥为星尘伙伴打开了一条安全航线。"
+    },
+    "ch03-star-dust-dock/s01-repair/0": {
+      "file": "assets/story/pixel-dialogue/audio/ch03-star-dust-dock/s01-repair-00.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 55728,
+      "text": "飞船来到星尘维修区。星尘伙伴的导航灯闪了三下，工程师赶快拿来工具箱。"
+    },
+    "ch03-star-dust-dock/s01-repair/1": {
+      "file": "assets/story/pixel-dialogue/audio/ch03-star-dust-dock/s01-repair-01.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 37152,
+      "text": "工具箱里有2把小扳手，我又放进3把，一共有几把？"
+    },
+    "ch03-star-dust-dock/s01-repair/2": {
+      "file": "assets/story/pixel-dialogue/audio/ch03-star-dust-dock/s01-repair-02.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 14112,
+      "text": "2 + 3 = ？"
+    },
+    "ch03-star-dust-dock/s01-repair/3": {
+      "file": "assets/story/pixel-dialogue/audio/ch03-star-dust-dock/s01-repair-03.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 35136,
+      "text": "维修灯还剩5格能量，用掉2格以后，还剩几格？"
+    },
+    "ch03-star-dust-dock/s01-repair/4": {
+      "file": "assets/story/pixel-dialogue/audio/ch03-star-dust-dock/s01-repair-04.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 13824,
+      "text": "5 - 2 = ？"
+    },
+    "ch03-star-dust-dock/s01-repair/5": {
+      "file": "assets/story/pixel-dialogue/audio/ch03-star-dust-dock/s01-repair-05.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 39888,
+      "text": "数字齿轮咔哒一声转好，飞船又能稳稳地飞向双星桥。"
+    },
+    "ch04-twin-star-bridge/s01-home/0": {
+      "file": "assets/story/pixel-dialogue/audio/ch04-twin-star-bridge/s01-home-00.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 56592,
+      "text": "双星桥就在前方。两颗星星一左一右，牵着一条发光的线，像是在说：一起回家吧。"
+    },
+    "ch04-twin-star-bridge/s01-home/1": {
+      "file": "assets/story/pixel-dialogue/audio/ch04-twin-star-bridge/s01-home-01.mp3",
+      "voice": "teacher",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 34560,
+      "text": "星尘伙伴飞了一路有点累。回家前，我们先做什么？"
+    },
+    "ch04-twin-star-bridge/s01-home/2": {
+      "file": "assets/story/pixel-dialogue/audio/ch04-twin-star-bridge/s01-home-02.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 19008,
+      "text": "怎样照顾累了的小伙伴？"
+    },
+    "ch04-twin-star-bridge/s01-home/3": {
+      "file": "assets/story/pixel-dialogue/audio/ch04-twin-star-bridge/s01-home-03.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 37584,
+      "text": "回家星图上有‘桥’和‘光’两个字。你能找到‘桥’字吗？"
+    },
+    "ch04-twin-star-bridge/s01-home/4": {
+      "file": "assets/story/pixel-dialogue/audio/ch04-twin-star-bridge/s01-home-04.mp3",
+      "voice": "child",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 15984,
+      "text": "下面哪个字是‘桥’？"
+    },
+    "ch04-twin-star-bridge/s01-home/5": {
+      "file": "assets/story/pixel-dialogue/audio/ch04-twin-star-bridge/s01-home-05.mp3",
+      "voice": "grandpa",
+      "engineRequested": "direct-edge",
+      "engineActual": "edge-tts",
+      "bytes": 62064,
+      "text": "所有星光连成一条线。小小宇航员和星尘伙伴安全回到宠物小屋，新的旅程也在地图上亮起。"
+    }
+  }
+}

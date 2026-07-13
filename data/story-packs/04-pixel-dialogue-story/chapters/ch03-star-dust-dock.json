@@ -5,7 +5,7 @@
   "scenes": [
     {
       "sceneId": "s01-repair",
-      "background": "",
+      "background": "assets/story/pixel-dialogue-v2/backgrounds/star-dust-dock.png",
       "lines": [
         { "type": "narration", "text": "飞船来到星尘维修区。星尘伙伴的导航灯闪了三下，工程师赶快拿来工具箱。", "character": "narrator" },
         { "type": "dialogue", "text": "工具箱里有2把小扳手，我又放进3把，一共有几把？", "character": "star_engineer", "position": "center" },

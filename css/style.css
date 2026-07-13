@@ -8159,3 +8159,193 @@ body.shell-parent .app-bottom-dock {
         transition: none;
     }
 }
+
+/* 首页探索入口：森林路线保留在首屏，故事地图从同一组入口进入。 */
+.home-explore-panel {
+    margin: 24px 0;
+}
+
+.home-explore-panel-head,
+.home-forest-map-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.home-explore-kicker,
+.home-forest-map-head p {
+    margin: 0 0 7px;
+    color: #6b8b80;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .14em;
+}
+
+.home-explore-panel h2,
+.home-forest-map-head h3 {
+    margin: 0;
+    color: #25364a;
+    line-height: 1.2;
+}
+
+.home-explore-panel h2 { font-size: clamp(22px, 3vw, 30px); }
+.home-forest-map-head h3 { font-size: 20px; }
+
+.home-explore-panel-head > div > p:last-child,
+.home-forest-map-head span {
+    display: block;
+    margin: 8px 0 0;
+    color: #718093;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.home-explore-panel-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    padding: 9px 12px;
+    border: 1px solid #e3ded2;
+    border-radius: 11px;
+    background: rgba(255,255,255,.72);
+    color: #5aa995;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.home-explore-panel-status svg,
+.home-explore-mode-icon svg,
+.home-forest-map-action svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2.2;
+}
+
+.home-explore-modebar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    width: min(720px, 100%);
+    margin-top: 16px;
+    padding: 5px;
+    border: 1px solid #e3ded2;
+    border-radius: 14px;
+    background: #ebe7dc;
+}
+
+.home-explore-mode {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    align-items: center;
+    gap: 9px;
+    min-height: 54px;
+    padding: 8px 11px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: transparent;
+    color: #718093;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+}
+
+.home-explore-mode-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.72);
+    color: #db806b;
+}
+
+.home-explore-mode strong,
+.home-explore-mode small { display: block; }
+.home-explore-mode strong { color: inherit; font-size: 13px; }
+.home-explore-mode small { margin-top: 3px; color: inherit; font-size: 11px; }
+.home-explore-mode:hover,
+.home-explore-mode:focus-visible,
+.home-explore-mode.is-active {
+    border-color: rgba(90,169,149,.34);
+    outline: none;
+    background: #fffdf8;
+    color: #25364a;
+    box-shadow: 0 4px 12px rgba(64,77,75,.08);
+}
+.home-explore-mode.is-active .home-explore-mode-icon { background: #e1f0e9; color: #5aa995; }
+
+.home-explore-view { margin-top: 14px; }
+.home-forest-map-head { align-items: center; padding: 0 2px 14px; }
+.home-forest-map-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 7px 11px;
+    border: 1px solid #d8e0d8;
+    border-radius: 9px;
+    background: #fffdf8;
+    color: #486d63;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+}
+.home-forest-map-action:hover,
+.home-forest-map-action:focus-visible { border-color: #8bbba9; outline: none; background: #f2faf5; }
+.home-forest-map-shell { margin-top: 0; }
+.home-explore-map-fallback { display: grid; place-items: center; min-height: 360px; color: #62729a; font-size: 14px; }
+
+/* 星光成长侦探社与故事漫游共用同一套浅色任务终端 token。 */
+.space-growth-map-shell {
+    --pixel-ink: #25364a;
+    --pixel-muted: #718093;
+    --pixel-paper: #f7f4ec;
+    --pixel-line: #e3ded2;
+    --pixel-mint: #5aa995;
+    --pixel-coral: #db806b;
+    max-width: 1240px;
+    padding: 22px;
+    border: 1px solid var(--pixel-line);
+    border-radius: 24px;
+    background: var(--pixel-paper);
+    box-shadow: 0 18px 48px rgba(48, 57, 65, 0.1);
+}
+
+.space-growth-map-kicker,
+.space-growth-collection-head p {
+    color: #8c9a8d;
+    letter-spacing: .14em;
+}
+
+.space-growth-map-header h2,
+.space-growth-collection-head h3 { color: var(--pixel-ink); }
+.space-growth-map-header > div:first-child > p:last-child { color: var(--pixel-muted); }
+.space-growth-progress { border-color: var(--pixel-line); background: rgba(255,255,255,.68); }
+.space-growth-progress strong { color: var(--pixel-ink); }
+.space-growth-test-tools { border-color: #d4ded6; background: #eef5ef; }
+.space-growth-collection { border-color: var(--pixel-line); background: rgba(255,255,255,.56); }
+.space-growth-node.is-locked { opacity: .72; }
+
+@media (max-width: 720px) {
+    .home-explore-panel-head,
+    .home-forest-map-head { align-items: stretch; flex-direction: column; }
+    .home-explore-panel-status { align-self: flex-start; }
+    .home-explore-modebar { width: 100%; }
+}
+
+@media (max-width: 820px) {
+    .space-growth-map-shell { padding: 16px; border-radius: 22px; }
+}
+
+@media (max-width: 560px) {
+    .space-growth-map-shell { padding: 12px; border-radius: 16px; }
+}
+
+@media (max-width: 460px) {
+    .home-explore-modebar { grid-template-columns: 1fr; }
+    .home-explore-mode { min-height: 46px; }
+    .home-forest-map-action { align-self: flex-start; }
+}

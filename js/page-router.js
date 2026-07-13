@@ -11,6 +11,7 @@
         '学习': 'learn',
         '宠物': 'pet',
         '探索': 'explore',
+        '绘本': 'picturebooks',
         '游乐场': 'playground',
         '家长区': 'parent'
     };
@@ -28,6 +29,7 @@
         'learn-plan': 'learn',
         'learn-lesson': 'learn',
         'learn-print': 'learn',
+        'minecraft-vocab': 'learn',
         playground: 'playground',
         mathpk: 'playground',
         hanzi: 'playground',
@@ -40,6 +42,7 @@
         card: 'pet',
         walk: 'pet',
         explore: 'explore',
+        picturebooks: 'picturebooks',
         parent: 'parent',
         works: 'parent',
         tools: 'parent',
@@ -49,7 +52,8 @@
     const CLASSIC_APP_PAGES = new Set([
         'map', 'today', 'learning-sheet', 'review', 'reward', 'shop', 'inventory',
         'learn', 'learn-pack', 'learn-plan', 'learn-lesson', 'learn-print',
-        'pet', 'home', 'explore', 'playground'
+        'minecraft-vocab',
+        'pet', 'home', 'explore', 'picturebooks', 'playground'
     ]);
 
     const APP_SHELL_PAGES = new Set([
@@ -81,6 +85,8 @@
         'learn-plan': '/app/learn/plan',
         'learn-lesson': '/app/learn/lesson',
         'learn-print': '/app/learn/print',
+        'minecraft-vocab': '/app/learn/minecraft-vocab',
+        picturebooks: '/app/picturebooks',
         pet: '/app/pet',
         home: '/app/pet/home',
         walk: '/app/pet/walk',
@@ -113,6 +119,8 @@
         '/app/learn/plan': { page: 'learn-plan' },
         '/app/learn/lesson': { page: 'learn-lesson' },
         '/app/learn/print': { page: 'learn-print' },
+        '/app/learn/minecraft-vocab': { page: 'minecraft-vocab' },
+        '/app/picturebooks': { page: 'picturebooks' },
         '/app/pet': { page: 'pet' },
         '/app/pet/home': { page: 'home' },
         '/app/pet/walk': { page: 'walk' },
@@ -137,6 +145,8 @@
         '/learn/plan': { page: 'learn-plan' },
         '/learn/lesson': { page: 'learn-lesson' },
         '/learn/print': { page: 'learn-print' },
+        '/learn/minecraft-vocab': { page: 'minecraft-vocab' },
+        '/picturebooks': { page: 'picturebooks' },
         '/pet': { page: 'pet' },
         '/pet/home': { page: 'home' },
         '/pet/walk': { page: 'walk' },

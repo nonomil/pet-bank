@@ -7,6 +7,13 @@ RELEASE_ID="${PETBANK_RELEASE_ID:-$(date -u +%Y%m%dT%H%M%SZ)}"
 RELEASE_DIR="${ROOT}/releases/${RELEASE_ID}"
 CURRENT_LINK="${ROOT}/current"
 SHARED_DIR="${ROOT}/shared"
+STATIC_SITE_DIR="${RELEASE_DIR}/site"
+GAME_RUNTIME_ENTRIES=(
+  "app/playground/typing-defense-runtime/web/index.html"
+  "prj/学习机玩法原型/index.html"
+  "prj/单词记忆射击场原型/index.html"
+)
+PREVIOUS_RELEASE="$(readlink -f "$CURRENT_LINK" 2>/dev/null || true)"
 
 if [[ -e "$RELEASE_DIR" ]]; then
   echo "release already exists: $RELEASE_DIR" >&2
@@ -22,6 +29,17 @@ node scripts/assemble-pages-artifact.mjs site
 node --test prj/petbank-server/test/*.test.mjs
 node --check prj/petbank-server/src/server.mjs
 node --check prj/petbank-server/src/security.mjs
+
+if [[ ! -f "${STATIC_SITE_DIR}/index.html" ]]; then
+  echo "missing static site artifact: ${STATIC_SITE_DIR}/index.html" >&2
+  exit 1
+fi
+for runtime_entry in "${GAME_RUNTIME_ENTRIES[@]}"; do
+  if [[ ! -f "${STATIC_SITE_DIR}/${runtime_entry}" ]]; then
+    echo "missing game runtime in static site artifact: ${STATIC_SITE_DIR}/${runtime_entry}" >&2
+    exit 1
+  fi
+done
 
 if [[ ! -f "${SHARED_DIR}/server.env" ]]; then
   echo "missing ${SHARED_DIR}/server.env; create it before deployment" >&2
@@ -43,6 +61,28 @@ if command -v nginx >/dev/null 2>&1; then
   nginx -t
   systemctl reload nginx
 fi
-curl --fail --silent --show-error "http://127.0.0.1${PETBANK_STATIC_PREFIX:-}/app/" >/dev/null
-curl --fail --silent --show-error "http://127.0.0.1${PETBANK_STATIC_PREFIX:-}/parent/" >/dev/null
+STATIC_ROUTES=("/app/" "/parent/")
+for runtime_entry in "${GAME_RUNTIME_ENTRIES[@]}"; do
+  STATIC_ROUTES+=("/${runtime_entry}")
+done
+
+static_routes_ready=1
+for static_route in "${STATIC_ROUTES[@]}"; do
+  if ! curl --fail --silent --show-error "http://127.0.0.1${PETBANK_STATIC_PREFIX:-}${static_route}" >/dev/null; then
+    static_routes_ready=0
+    break
+  fi
+done
+
+if [[ "$static_routes_ready" -ne 1 ]]; then
+  echo "deployment failed after activation; restoring previous release" >&2
+  if [[ -n "$PREVIOUS_RELEASE" && -d "$PREVIOUS_RELEASE" ]]; then
+    ln -sfn "$PREVIOUS_RELEASE" "$CURRENT_LINK"
+    if command -v nginx >/dev/null 2>&1; then
+      nginx -t
+      systemctl reload nginx
+    fi
+  fi
+  exit 1
+fi
 echo "current release: $RELEASE_DIR"

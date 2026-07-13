@@ -234,6 +234,17 @@
   const WORD_SHOOTER_INVULNERABLE_MS = 900;
   const WORD_SHOOTER_COLLISION_X = 17;
   const WORD_SHOOTER_ROUND_GOAL = 6;
+  const WORD_SHOOTER_HAZARD_RADIUS = 7;
+  const WORD_SHOOTER_BOSS_MAX_HEALTH = 4;
+  const WORD_SHOOTER_BOSS_START_GAP = 4;
+  const WORD_SHOOTER_MINE_INTERVAL = 2600;
+  const WORD_SHOOTER_METEOR_INTERVAL = 1900;
+  const WORD_SHOOTER_BOSS_ATTACK_INTERVAL = 1800;
+  const WORD_SHOOTER_MECHANICS = {
+    basic: { id: 'energy', label: '能量球训练', hazardTypes: [] },
+    intermediate: { id: 'minefield', label: '糖果雷区', hazardTypes: ['mine'] },
+    full: { id: 'meteor-boss', label: '陨石带 · 指挥官', hazardTypes: ['meteor', 'charge'] }
+  };
   const WORD_CANNON_STAGE_GOAL = 8;
   const WORD_CANNON_ROUND_GOAL = 32;
   const WORD_CANNON_TICK_MS = 140;
@@ -369,6 +380,20 @@
       invulnerableUntil: 0,
       enemyBullets: [],
       enemyBulletId: 0,
+      hazards: [],
+      hazardId: 0,
+      nextMineAt: 0,
+      nextMeteorAt: 0,
+      hazardEvents: [],
+      boss: {
+        active: false,
+        defeated: false,
+        health: 0,
+        maxHealth: WORD_SHOOTER_BOSS_MAX_HEALTH,
+        phase: 'dormant',
+        nextAttackAt: 0,
+        attackCount: 0
+      },
       enemyFireEnabled: true,
       roundGoal: WORD_SHOOTER_ROUND_GOAL,
       roundComplete: false,
@@ -481,6 +506,10 @@
     typingTargetRail: document.getElementById('typingTargetRail'),
     typingEnemyLayer: document.getElementById('typingEnemyLayer'),
     typingEnemyBulletLayer: document.getElementById('typingEnemyBulletLayer'),
+    typingHazardLayer: document.getElementById('typingHazardLayer'),
+    typingBoss: document.getElementById('typingBoss'),
+    typingBossHealthFill: document.getElementById('typingBossHealthFill'),
+    typingBossPhase: document.getElementById('typingBossPhase'),
     typingDropLayer: document.getElementById('typingDropLayer'),
     typingProjectileLayer: document.getElementById('typingProjectileLayer'),
     typingShardLayer: document.getElementById('typingShardLayer'),
@@ -933,6 +962,10 @@
 
   function wordShooterStageTheme(level = state.wordDifficulty) {
     return WORD_SHOOTER_STAGE_THEMES[level] || WORD_SHOOTER_STAGE_THEMES.basic;
+  }
+
+  function wordShooterMechanic(level = state.wordDifficulty) {
+    return WORD_SHOOTER_MECHANICS[level] || WORD_SHOOTER_MECHANICS.basic;
   }
 
   function wordShooterPhaseForCompletedWords(completedWords = state.wordShooter.completedWords.length) {
@@ -2205,10 +2238,38 @@
     `;
   }
 
+  function renderWordShooterHazards() {
+    if (!els.typingHazardLayer) return;
+    els.typingHazardLayer.innerHTML = state.wordShooter.hazards.map(hazard => {
+      const label = hazard.type === 'mine' ? '地雷' : hazard.type === 'meteor' ? '落弹预警' : '冲撞';
+      return `<article class="typing-hazard typing-hazard-${hazard.type}${hazard.warningUntil > state.wordShooter.elapsedMs ? ' is-warning' : ''}"
+        data-hazard-id="${hazard.id}" data-hazard-type="${hazard.type}"
+        style="left:${hazard.x.toFixed(2)}%;top:${hazard.y.toFixed(2)}%">
+        <span class="typing-hazard-core"></span><strong>${label}</strong>
+        <small>${hazard.type === 'mine' ? '输入时可清除' : hazard.type === 'meteor' ? '向上/下躲避' : '快速换位'}</small>
+      </article>`;
+    }).join('');
+  }
+
+  function renderWordShooterBoss() {
+    const boss = state.wordShooter.boss;
+    if (!els.typingBoss) return;
+    const active = boss.active && !boss.defeated;
+    els.typingBoss.hidden = !active;
+    if (!active) return;
+    els.typingBoss.dataset.bossPhase = boss.phase;
+    if (els.typingBossHealthFill) {
+      els.typingBossHealthFill.style.width = `${(boss.health / Math.max(1, boss.maxHealth)) * 100}%`;
+    }
+    const healthBar = els.typingBoss.querySelector('.typing-boss-health');
+    if (healthBar) healthBar.setAttribute('aria-valuenow', String(boss.health));
+    if (els.typingBossPhase) els.typingBossPhase.textContent = boss.phase === 'enraged' ? '狂暴阶段 · 落弹与冲撞' : '护盾阶段 · 能量球齐射';
+  }
+
   function renderWordShooterEnemyBullets() {
     if (!els.typingEnemyBulletLayer) return;
     els.typingEnemyBulletLayer.innerHTML = state.wordShooter.enemyBullets.map(bullet => `
-      <span class="typing-enemy-bullet" data-bullet-id="${bullet.id}"
+      <span class="typing-enemy-bullet typing-enemy-bullet-${bullet.kind || 'enemy-bolt'}" data-bullet-id="${bullet.id}"
         style="left:${bullet.x.toFixed(2)}%;top:${bullet.y.toFixed(2)}%;--bullet-angle:${(Math.atan2(bullet.vy, bullet.vx) * 180 / Math.PI).toFixed(2)}deg">
         <img class="typing-enemy-bullet-core" src="${WORD_SHOOTER_AGNES_ASSETS.enemyBolt}" alt="" aria-hidden="true">
       </span>
@@ -2247,6 +2308,7 @@
     els.wordChinese.textContent = focusEnemy?.wordData.translation || '锁定目标后开始击破';
     els.typingArena.dataset.weapon = getWordShooterWeapon().id;
     els.typingArena.dataset.ship = getWordShooterLoadout().shipId;
+    els.typingArena.dataset.mechanic = wordShooterMechanic().id;
     els.typingArena.dataset.locked = ws.activeEnemyId ? 'true' : 'false';
     els.typingArena.dataset.firing = ws.firePoseUntil > ws.elapsedMs ? 'true' : 'false';
     els.typingArena.dataset.arenaShake = ws.arenaShakeUntil > ws.elapsedMs ? 'true' : 'false';
@@ -2270,6 +2332,8 @@
     renderWordShooterWeaponStatus();
     renderWordShooterEnemies();
     renderWordShooterEnemyBullets();
+    renderWordShooterHazards();
+    renderWordShooterBoss();
     renderWordShooterDrops();
     renderWordShooterPreviewCard(focusEnemy);
     renderWordShooterShip();
@@ -2280,6 +2344,7 @@
   function clearTypingFx() {
     els.typingEnemyLayer?.replaceChildren();
     els.typingEnemyBulletLayer?.replaceChildren();
+    els.typingHazardLayer?.replaceChildren();
     els.typingDropLayer?.replaceChildren();
     els.typingProjectileLayer.replaceChildren();
     els.typingShardLayer.replaceChildren();
@@ -2662,6 +2727,7 @@
     const angle = Math.atan2(dy, dx) * 180 / Math.PI;
     const weapon = getWordShooterWeapon();
     const loadout = getWordShooterLoadout();
+    clearWordShooterHazardsAlongShot(start, end);
     const baseTravelMs = weapon.id === 'homing-missile' ? 520 : weapon.id === 'pierce-laser' ? 260 : 340;
     const travelMs = Math.max(180, Math.round(baseTravelMs / loadout.fireMultiplier));
     const volleys = weapon.id === 'triple-beam'
@@ -2801,7 +2867,167 @@
     ws.player.y = clampNumber(ws.player.y + (dy / length) * distance, WORD_SHOOTER_PLAYER_BOUNDS.minY, WORD_SHOOTER_PLAYER_BOUNDS.maxY);
   }
 
-  function spawnWordShooterEnemyBullet(enemy) {
+  function recordWordShooterHazardEvent(type, payload = {}) {
+    const events = state.wordShooter.hazardEvents;
+    events.push({ type, at: state.wordShooter.elapsedMs, ...payload });
+    state.wordShooter.hazardEvents = events.slice(-20);
+  }
+
+  function spawnWordShooterHazard(type, options = {}) {
+    const mechanic = wordShooterMechanic();
+    if (!mechanic.hazardTypes.includes(type) && !options.force) return null;
+    const ws = state.wordShooter;
+    const hazardId = ws.hazardId + 1;
+    const fallbackY = WORD_SHOOTER_LANES[(hazardId + ws.completedWords.length) % 3] || 38;
+    const hazard = {
+      id: `hazard-${hazardId}`,
+      type,
+      x: Number(options.x ?? (type === 'meteor' ? 28 + (hazardId % 5) * 13 : type === 'charge' ? 92 : 72 + (hazardId % 3) * 8)),
+      y: Number(options.y ?? (type === 'meteor' ? -8 : type === 'charge' ? ws.player.y : fallbackY)),
+      vx: Number(options.vx ?? (type === 'meteor' ? -2.5 : type === 'charge' ? -34 : -11)),
+      vy: Number(options.vy ?? (type === 'meteor' ? 24 : 0)),
+      radius: Number(options.radius ?? WORD_SHOOTER_HAZARD_RADIUS),
+      warningUntil: ws.elapsedMs + (type === 'meteor' ? 500 : 0)
+    };
+    ws.hazardId = hazardId;
+    ws.hazards.push(hazard);
+    recordWordShooterHazardEvent('spawn', { hazardType: type, hazardId: hazard.id });
+    return hazard;
+  }
+
+  function removeWordShooterHazard(hazardId, reason = 'cleared') {
+    const hazard = state.wordShooter.hazards.find(item => item.id === hazardId);
+    if (!hazard) return false;
+    state.wordShooter.hazards = state.wordShooter.hazards.filter(item => item.id !== hazardId);
+    recordWordShooterHazardEvent(reason, { hazardType: hazard.type, hazardId });
+    return true;
+  }
+
+  function distanceToSegment(point, start, end) {
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const lengthSquared = dx * dx + dy * dy || 1;
+    const t = clampNumber(((point.x - start.x) * dx + (point.y - start.y) * dy) / lengthSquared, 0, 1);
+    return Math.hypot(point.x - (start.x + t * dx), point.y - (start.y + t * dy));
+  }
+
+  function clearWordShooterHazardsAlongShot(start, end) {
+    const clearable = state.wordShooter.hazards.find(hazard => {
+      if (!['mine', 'meteor'].includes(hazard.type)) return false;
+      const point = wordShooterArenaPointFromPercent(hazard.x, hazard.y);
+      return distanceToSegment(point, start, end) <= 24;
+    });
+    return clearable ? removeWordShooterHazard(clearable.id, 'shot-clear') : false;
+  }
+
+  function activateWordShooterBoss() {
+    const ws = state.wordShooter;
+    if (state.wordDifficulty !== 'full' || ws.boss.active || ws.boss.defeated) return false;
+    ws.boss.active = true;
+    ws.boss.defeated = false;
+    ws.boss.maxHealth = WORD_SHOOTER_BOSS_MAX_HEALTH;
+    ws.boss.health = WORD_SHOOTER_BOSS_MAX_HEALTH;
+    ws.boss.phase = 'shielded';
+    ws.boss.nextAttackAt = ws.elapsedMs + 1000;
+    ws.boss.attackCount = 0;
+    recordWordShooterHazardEvent('boss-start', { health: ws.boss.health });
+    return true;
+  }
+
+  function damageWordShooterBoss(amount = 1) {
+    const boss = state.wordShooter.boss;
+    if (!boss.active || boss.defeated) return false;
+    boss.health = Math.max(0, boss.health - Math.max(1, Number(amount) || 1));
+    if (boss.health <= Math.ceil(boss.maxHealth / 2)) boss.phase = 'enraged';
+    if (boss.health <= 0) {
+      boss.health = 0;
+      boss.phase = 'defeated';
+      boss.defeated = true;
+      recordWordShooterHazardEvent('boss-defeated');
+    }
+    return true;
+  }
+
+  function spawnWordShooterBossVolley() {
+    const ws = state.wordShooter;
+    const rows = [ws.player.y - 15, ws.player.y, ws.player.y + 15]
+      .map(y => clampNumber(y, 12, 88));
+    rows.forEach((y, index) => {
+      spawnWordShooterEnemyBullet({ id: `boss-${ws.boss.attackCount}`, x: 88, y }, 'boss-bolt');
+      if (index === 1) recordWordShooterHazardEvent('boss-volley', { row: y });
+    });
+  }
+
+  function triggerWordShooterBossAttack() {
+    const ws = state.wordShooter;
+    const boss = ws.boss;
+    if (!boss.active || boss.defeated) return false;
+    boss.attackCount += 1;
+    if (boss.phase === 'shielded') {
+      spawnWordShooterBossVolley();
+    } else {
+      spawnWordShooterHazard('meteor', { force: true, x: 52 + (boss.attackCount % 3) * 13, y: -8, vy: 27 });
+      spawnWordShooterHazard('charge', { force: true, x: 92, y: ws.player.y, vx: -38 });
+    }
+    boss.nextAttackAt = ws.elapsedMs + WORD_SHOOTER_BOSS_ATTACK_INTERVAL;
+    return true;
+  }
+
+  function updateWordShooterBoss() {
+    const ws = state.wordShooter;
+    const bossStartAt = Math.max(1, ws.roundGoal - WORD_SHOOTER_BOSS_START_GAP);
+    if (state.wordDifficulty === 'full' && ws.completedWords.length >= bossStartAt) {
+      activateWordShooterBoss();
+    }
+    if (ws.boss.active && !ws.boss.defeated && ws.elapsedMs >= ws.boss.nextAttackAt) {
+      triggerWordShooterBossAttack();
+    }
+  }
+
+  function updateWordShooterHazards(deltaMs) {
+    const ws = state.wordShooter;
+    const mechanic = wordShooterMechanic();
+    if (state.wordDifficulty === 'intermediate' && ws.elapsedMs >= ws.nextMineAt && ws.hazards.filter(item => item.type === 'mine').length < 2) {
+      spawnWordShooterHazard('mine');
+      ws.nextMineAt = ws.elapsedMs + WORD_SHOOTER_MINE_INTERVAL;
+    }
+    if (state.wordDifficulty === 'full' && ws.boss.active && ws.elapsedMs >= ws.nextMeteorAt && ws.hazards.filter(item => item.type === 'meteor').length < 2) {
+      spawnWordShooterHazard('meteor');
+      ws.nextMeteorAt = ws.elapsedMs + WORD_SHOOTER_METEOR_INTERVAL;
+    }
+    ws.hazards.forEach(hazard => {
+      hazard.x += hazard.vx * (deltaMs / 1000);
+      hazard.y += hazard.vy * (deltaMs / 1000);
+    });
+    const collision = ws.hazards.find(hazard => {
+      const vertical = Math.abs(hazard.y - ws.player.y);
+      const horizontal = Math.abs(hazard.x - ws.player.x);
+      return (hazard.type === 'meteor' && vertical <= hazard.radius && horizontal <= hazard.radius)
+        || (hazard.type !== 'meteor' && Math.hypot(horizontal, vertical) <= hazard.radius);
+    });
+    if (collision) {
+      removeWordShooterHazard(collision.id, 'player-hit');
+      resolveWordShooterPlayerHit(collision.type);
+      if (ws.roundComplete) return;
+    }
+    ws.hazards = ws.hazards.filter(hazard => {
+      if (hazard.type === 'meteor') return hazard.y < 108 && hazard.x > -12 && hazard.x < 112;
+      return hazard.x > -12 && hazard.x < 112 && hazard.y > -12 && hazard.y < 112;
+    });
+    if (!mechanic.hazardTypes.length) ws.hazards = [];
+  }
+
+  function debugHitWordShooterHazard() {
+    const hazard = state.wordShooter.hazards[0];
+    if (!hazard) return wordShooterSnapshot();
+    state.wordShooter.player.x = hazard.x;
+    state.wordShooter.player.y = hazard.y;
+    updateWordShooterHazards(0);
+    renderTypingArena();
+    return wordShooterSnapshot();
+  }
+
+  function spawnWordShooterEnemyBullet(enemy, kind = 'enemy-bolt') {
     const ws = state.wordShooter;
     const dx = ws.player.x - enemy.x;
     const dy = ws.player.y - enemy.y;
@@ -2814,17 +3040,19 @@
       y: enemy.y,
       vx: (dx / distance) * speed,
       vy: (dy / distance) * speed,
-      sourceEnemyId: enemy.id
+      sourceEnemyId: enemy.id,
+      kind
     });
   }
 
-  function resolveWordShooterPlayerHit() {
+  function resolveWordShooterPlayerHit(reason = 'energy') {
     const ws = state.wordShooter;
     if (ws.invulnerableUntil > ws.elapsedMs || ws.roundComplete) return false;
     ws.shield = Math.max(0, ws.shield - 1);
     ws.invulnerableUntil = ws.elapsedMs + WORD_SHOOTER_INVULNERABLE_MS;
     ws.misses += 1;
     ws.combo = 0;
+    recordWordShooterHazardEvent('player-hit', { hazardType: reason });
     sfx.impact('homing-missile');
     if (ws.shield <= 0) {
       ws.roundComplete = true;
@@ -2835,7 +3063,7 @@
         stats: [
           { label: '击破单词', value: `${ws.completedWords.length}/${ws.roundGoal}` },
           { label: '总得分', value: String(ws.score) },
-          { label: '护盾', value: '0/3' }
+          { label: '护盾', value: `0/${getWordShooterLoadout().shield}` }
         ]
       });
     }
@@ -2902,6 +3130,9 @@
     }
     updateWordShooterEnemyBullets(deltaMs);
     if (ws.roundComplete) return;
+    updateWordShooterBoss();
+    updateWordShooterHazards(deltaMs);
+    if (ws.roundComplete) return;
     if (ws.pickup) {
       ws.pickup.x += ws.pickup.vx * (deltaMs / 1000);
       ws.pickup.y += ws.pickup.vy * (deltaMs / 1000);
@@ -2946,8 +3177,12 @@
       ,shield: state.wordShooter.shield
       ,invulnerableUntil: state.wordShooter.invulnerableUntil
       ,enemyBullets: state.wordShooter.enemyBullets.map(bullet => ({ ...bullet }))
+      ,hazards: state.wordShooter.hazards.map(hazard => ({ ...hazard }))
+      ,hazardEvents: state.wordShooter.hazardEvents.slice()
+      ,boss: { ...state.wordShooter.boss }
       ,moveInput: { ...state.wordShooter.moveInput }
       ,stageTheme: { ...wordShooterStageTheme() }
+      ,mechanic: { ...wordShooterMechanic() }
       ,loadout: getWordShooterLoadout()
       ,progression: wordShooterProgressionSnapshot()
     };
@@ -3007,6 +3242,20 @@
     ws.invulnerableUntil = 0;
     ws.enemyBullets = [];
     ws.enemyBulletId = 0;
+    ws.hazards = [];
+    ws.hazardId = 0;
+    ws.nextMineAt = WORD_SHOOTER_MINE_INTERVAL;
+    ws.nextMeteorAt = WORD_SHOOTER_METEOR_INTERVAL;
+    ws.hazardEvents = [];
+    ws.boss = {
+      active: false,
+      defeated: false,
+      health: 0,
+      maxHealth: WORD_SHOOTER_BOSS_MAX_HEALTH,
+      phase: 'dormant',
+      nextAttackAt: 0,
+      attackCount: 0
+    };
     ws.enemyFireEnabled = true;
     ws.roundGoal = wordDifficultyTuning().shooter.roundGoal;
     ws.roundComplete = false;
@@ -3074,6 +3323,9 @@
         }
         pulseWordShooterHud('combo');
         ws.completedWords.push(targetEnemy.wordData.word);
+        if (ws.boss.active && !ws.boss.defeated) {
+          damageWordShooterBoss(Math.max(1, Math.ceil(targetEnemy.wordData.word.length / 5)));
+        }
         maybeDropWordShooterPickup(targetEnemy);
         scheduleWordShooterEnemyDestroy(targetEnemy.id);
         ws.activeEnemyId = null;
@@ -4534,6 +4786,33 @@
     selectWordShooterShip,
     equipWordShooterWeapon,
     upgradeWordShooterShip,
+    debugSpawnWordShooterHazard: type => {
+      const hazard = spawnWordShooterHazard(type, { force: true });
+      renderTypingArena();
+      return wordShooterSnapshot();
+    },
+    debugClearWordShooterHazard: type => {
+      const hazard = state.wordShooter.hazards.find(item => !type || item.type === type);
+      const cleared = hazard ? removeWordShooterHazard(hazard.id, 'debug-clear') : false;
+      renderTypingArena();
+      return cleared;
+    },
+    debugActivateWordShooterBoss: () => {
+      activateWordShooterBoss();
+      renderTypingArena();
+      return wordShooterSnapshot();
+    },
+    debugDamageWordShooterBoss: amount => {
+      damageWordShooterBoss(amount);
+      renderTypingArena();
+      return wordShooterSnapshot();
+    },
+    debugTriggerWordShooterBossAttack: () => {
+      triggerWordShooterBossAttack();
+      renderTypingArena();
+      return wordShooterSnapshot();
+    },
+    debugHitWordShooterHazard,
     debugSpawnWordShooterPickup: (type = 'triple-beam') => {
       const focusEnemy = focusWordShooterEnemy() || { x: 58, y: 52 };
       spawnWordShooterPickup(type, focusEnemy.x, focusEnemy.y);

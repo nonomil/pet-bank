@@ -5,7 +5,7 @@
   "scenes": [
     {
       "sceneId": "s01-signal",
-      "background": "",
+      "background": "assets/story/pixel-dialogue-v2/backgrounds/cloud-relay.png",
       "lines": [
         { "type": "narration", "text": "星尘伙伴收到一段忽明忽暗的云朵信号。小小宇航员把飞船停在软绵绵的云桥旁。", "character": "narrator" },
         { "type": "dialogue", "text": "信号里说：请找到和‘大’意思相反的词。", "character": "cloud_fairy", "position": "center" },

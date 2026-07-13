@@ -1,12 +1,13 @@
 {
   "id": "pixel-dialogue-story",
   "title": "像素星际漫游：宠物汉字大冒险",
-  "version": "20260712-v1",
+  "version": "20260713-v2",
   "status": "active",
   "active": true,
   "audience": "幼小衔接",
   "ageRange": "5-6",
   "runtime": "pixel-dialogue-story",
+  "audioManifest": "data/story-packs/04-pixel-dialogue-story/audio-manifest.json",
   "chapters": [
     "ch01-moon-station",
     "ch02-cloud-relay",
@@ -14,7 +15,7 @@
     "ch04-twin-star-bridge"
   ],
   "map": {
-    "background": "",
+    "background": "assets/story/pixel-dialogue-v2/map/star-route.png",
     "nodes": [
       {
         "chapterId": "ch01-moon-station",
@@ -22,7 +23,7 @@
         "label": "月环补给站",
         "subtitle": "汉字星尘",
         "position": { "x": 15, "y": 45 },
-        "icon": "",
+        "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
         "symbol": "月",
         "tone": "moon"
       },
@@ -32,7 +33,7 @@
         "label": "云朵信号带",
         "subtitle": "词语密码",
         "position": { "x": 38, "y": 25 },
-        "icon": "",
+        "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
         "symbol": "云",
         "tone": "cloud"
       },
@@ -42,7 +43,7 @@
         "label": "星尘维修区",
         "subtitle": "数学谜题",
         "position": { "x": 62, "y": 25 },
-        "icon": "",
+        "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
         "symbol": "数",
         "tone": "math"
       },
@@ -52,7 +53,7 @@
         "label": "双星桥",
         "subtitle": "回家星图",
         "position": { "x": 85, "y": 45 },
-        "icon": "",
+        "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
         "symbol": "桥",
         "tone": "home"
       }
@@ -64,42 +65,42 @@
       "name": "旁白",
       "voicePreset": "kind_grandpa",
       "labelStyle": "narrator",
-      "sprite": ""
+      "sprite": null
     },
     "protagonist": {
       "id": "protagonist",
       "name": "小小宇航员",
       "voicePreset": "child",
       "labelStyle": "hero",
-      "sprite": ""
+      "sprite": "assets/story/pixel-dialogue-v2/sprites/astronaut.png"
     },
     "pet": {
       "id": "pet",
       "name": "星尘伙伴",
       "voicePreset": "lively_teacher",
       "labelStyle": "friend",
-      "sprite": ""
+      "sprite": "assets/story/pixel-dialogue-v2/sprites/star-pet.png"
     },
     "moon_rabbit": {
       "id": "moon_rabbit",
       "name": "月兔站长",
       "voicePreset": "child",
       "labelStyle": "npc",
-      "sprite": ""
+      "sprite": "assets/story/pixel-dialogue-v2/sprites/moon-rabbit.png"
     },
     "cloud_fairy": {
       "id": "cloud_fairy",
       "name": "云朵仙子",
       "voicePreset": "gentle_mom",
       "labelStyle": "npc",
-      "sprite": ""
+      "sprite": "assets/story/pixel-dialogue-v2/sprites/cloud-fairy.png"
     },
     "star_engineer": {
       "id": "star_engineer",
       "name": "星尘工程师",
       "voicePreset": "kind_grandpa",
       "labelStyle": "npc",
-      "sprite": ""
+      "sprite": "assets/story/pixel-dialogue-v2/sprites/star-engineer.png"
     }
   },
   "collectibles": {

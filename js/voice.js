@@ -12,6 +12,7 @@
  * 暴露 API：
  *   speak(text, opts)        主动播报（opts.force 忽略 enabled 开关）
  *   speakTTS(text, voice)    调用 TTS 服务端合成并播放
+ *   playStoryAudio(url, text, voice)  本地故事音频优先，失败时走 TTS
  *   stop()                   停止当前语音并清空待播队列
  *   getSettings()            读取当前设置（副本）
  *   setSettings(partial)     局部更新并持久化
@@ -182,6 +183,33 @@
         _playTTS(text, voice || 'mom');
     }
 
+    function playStoryAudio(url, text, voice, opts) {
+        if (!settings.enabled && !(opts && opts.force)) return;
+        if (!url) {
+            speakTTS(text, voice, opts);
+            return;
+        }
+        stop();
+        _lastText = (text || '') + '|' + (voice || 'child');
+        _lastTime = Date.now();
+        var token = _playToken;
+        var audio = new Audio(url);
+        _currentAudio = audio;
+        audio.onended = function () { if (token === _playToken) _currentAudio = null; };
+        audio.onerror = function () {
+            if (token !== _playToken) return;
+            console.warn('[VoiceSystem] local story audio failed; using TTS fallback');
+            _currentAudio = null;
+            _playTTS(text || '', voice || 'child');
+        };
+        audio.play().catch(function () {
+            if (token !== _playToken) return;
+            console.warn('[VoiceSystem] local story audio autoplay blocked; using TTS fallback');
+            _currentAudio = null;
+            _playTTS(text || '', voice || 'child');
+        });
+    }
+
     function _playTTS(text, voice) {
         var cacheKey = text + '::' + voice;
         var cached = _ttsAudioCache[cacheKey];
@@ -316,7 +344,8 @@
                     if (cls.indexOf('narrator') !== -1) voice = 'grandpa';
                     else if (cls.indexOf('friend') !== -1) voice = 'teacher';
                 }
-                speakTTS(raw.trim(), voice, { force: true });
+                var audioUrl = box.dataset.storyAudio || '';
+                playStoryAudio(audioUrl, raw.trim(), voice, { force: true });
             } else {
                 var cleaned = _cleanGalgameText(raw);
                 speak(cleaned || raw, { force: true });
@@ -376,8 +405,6 @@
     var AUTOPLAY_RULES = [
         // galgame 探索对话
         { sel: '#galgameText', extract: function (n) { return _cleanGalgameText(n.innerText || n.textContent); }, throttle: 300 },
-        // 像素故事对话
-        { sel: '#pixelStoryText', extract: function (n) { return (n.innerText || n.textContent || '').trim(); }, throttle: 300 }
     ];
 
     function _matchAndExtract(node) {
@@ -410,22 +437,7 @@
         var result = _matchAndExtract(node);
         if (!result) return;
         var text = result.text;
-        // 像素故事容器走 TTS，galgame 走预生成 mp3
-        if (result.ruleIndex === 1) {
-            // #pixelStoryText — 提取角色声线（可选），默认 child
-            var nameEl = document.getElementById('pixelStoryName');
-            var voice = 'child';
-            if (nameEl) {
-                var cls = nameEl.className;
-                if (cls.indexOf('narrator') !== -1) voice = 'grandpa';
-                else if (cls.indexOf('friend') !== -1) voice = 'teacher';
-                else if (cls.indexOf('hero') !== -1) voice = 'child';
-                else if (cls.indexOf('mom') !== -1) voice = 'mom';
-            }
-            speakTTS(text, voice, { force: true });
-        } else {
-            speak(text);
-        }
+        speak(text);
     }
     function _initAutoPlayObserver() {
         var obs = new MutationObserver(function (mutations) {
@@ -510,6 +522,7 @@
     window.VoiceSystem = {
         speak: speak,
         speakTTS: speakTTS,
+        playStoryAudio: playStoryAudio,
         stop: stop,
         getSettings: getSettings,
         setSettings: setSettings

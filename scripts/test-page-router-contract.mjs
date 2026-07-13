@@ -10,11 +10,14 @@ vm.runInNewContext(source, { window });
 const router = window.PetBankPageRouter;
 assert.ok(router, 'page router should expose one named namespace');
 assert.equal(router.getPageToTab('mathpk'), 'playground');
+assert.equal(router.getPageToTab('minecraft-vocab'), 'learn');
 assert.equal(router.getRouteShell('walk'), 'app');
+assert.equal(router.getRouteShell('minecraft-vocab'), 'home');
 assert.equal(router.getRouteShell('settings'), 'parent');
 assert.equal(router.getAppShellSurface('mathpk'), 'game');
 assert.equal(router.normalizeSettingsSection('account'), 'family');
 assert.equal(router.getPathForPage('settings', 'advanced'), '/settings/advanced');
+assert.equal(router.getPathForPage('minecraft-vocab'), '/app/learn/minecraft-vocab');
 
 const deepLocation = {
     pathname: '/pet-bank/app/playground/math-pk/index.html',
@@ -22,6 +25,7 @@ const deepLocation = {
     protocol: 'https:'
 };
 assert.equal(router.resolveRouteFromLocation(deepLocation).page, 'mathpk');
+assert.equal(router.resolveRouteFromLocation({ pathname: '/pet-bank/app/learn/minecraft-vocab/index.html' }).page, 'minecraft-vocab');
 assert.equal(router.inferRouteBase(deepLocation.pathname), '/pet-bank');
 assert.equal(router.withRouteBase('/prj/demo/index.html', deepLocation.pathname), '/pet-bank/prj/demo/index.html');
 assert.equal(router.resolveRouteFromLocation({ pathname: '/ignored', hash: '#/settings/learning' }).settingsSection, 'learning');

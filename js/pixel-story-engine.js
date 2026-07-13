@@ -2,14 +2,17 @@
 (function (root) {
     'use strict';
 
-    var STORAGE_KEY = 'petbank_pixel_story_progress_v1';
-    var STORY_ID = 'pixel-dialogue-story';
-    var CHAPTERS_BASE = 'data/story-packs/04-pixel-dialogue-story';
+    var STORAGE_KEY = 'petbank_pixel_worlds_progress_v1';
+    var STORY_ID = 'pixel-worlds-story';
+    var CHAPTERS_BASE = 'data/story-packs/05-pixel-worlds-story';
+    var LEVELS_BASE = CHAPTERS_BASE + '/levels';
+    var AUDIO_MANIFEST_PATH = CHAPTERS_BASE + '/audio-manifest.json';
     var DIALOGUE_CONTAINER_SEL = '#pixelStoryBox';
     var TEXT_CONTAINER_SEL = '#pixelStoryText';
 
     /* ===== 状态 ===== */
     var manifest = null;
+    var audioManifest = null;
     var chaptersCache = {};      // chapterId -> parsed JSON
     var currentChapter = null;   // current chapter data
     var currentSceneIdx = 0;     // scene index within chapter
@@ -28,6 +31,7 @@
     var textEl = null;
     var choicesEl = null;
     var nextHint = null;
+    var preferredTrackId = 'sci-fi';
 
     /* ===== 工具 ===== */
     function assetUrl(path) {
@@ -84,16 +88,59 @@
         if (manifest) return Promise.resolve(manifest);
         return fetchJson(CHAPTERS_BASE + '/manifest.json').then(function (m) {
             manifest = m;
-            return m;
+            return fetchJson(AUDIO_MANIFEST_PATH).catch(function (err) {
+                console.warn('[PixelStory] audio manifest unavailable; using TTS fallback:', err.message);
+                return { version: 1, entries: {} };
+            });
+        }).then(function (a) {
+            audioManifest = a;
+            return manifest;
         });
     }
 
     function loadChapter(chapterId) {
         if (chaptersCache[chapterId]) return Promise.resolve(chaptersCache[chapterId]);
-        return fetchJson(CHAPTERS_BASE + '/chapters/' + chapterId + '.json').then(function (data) {
+        return fetchJson(LEVELS_BASE + '/' + chapterId + '.json').catch(function (error) {
+            var inline = findInlineLevel(chapterId);
+            if (!inline) throw error;
+            return buildInlineLevel(inline);
+        }).then(function (data) {
             chaptersCache[chapterId] = data;
             return data;
         });
+    }
+
+    function findInlineLevel(levelId) {
+        if (!manifest) return null;
+        var tracks = (manifest.worlds || []).concat(manifest.bonusTracks || []);
+        for (var i = 0; i < tracks.length; i++) {
+            var found = (tracks[i].nodes || []).find(function (node) { return node.levelId === levelId; });
+            if (found) {
+                if (!found.worldId) found = Object.assign({ worldId: tracks[i].id }, found);
+                return found;
+            }
+        }
+        return null;
+    }
+
+    function buildInlineLevel(node) {
+        return {
+            levelId: node.levelId,
+            chapterId: node.levelId,
+            worldId: node.worldId || 'detective',
+            title: node.label || '像素探险节点',
+            rewards: { growthPoints: 3 },
+            scenes: [{
+                sceneId: node.levelId + '-scene',
+                background: node.background,
+                lines: [
+                    { type: 'narration', text: node.storyText || '新的线索正在发光。', character: 'narrator' },
+                    { type: 'dialogue', text: node.subtitle ? '我们先看看“' + node.subtitle + '”的线索。' : '我们一起看看这里有什么。', character: 'hero', position: 'left' },
+                    { type: 'activity', activityType: node.activityType || 'scan', prompt: node.prompt || '完成这一次小互动。', character: node.character || 'pet', position: 'right', actions: node.actions || [] },
+                    { type: 'dialogue', text: '线索记下来了，下一段路也亮了。', character: 'pet', position: 'right' }
+                ]
+            }]
+        };
     }
 
     /* ===== 对话引擎核心 ===== */
@@ -170,13 +217,17 @@
 
         // 对话文本（打字效果）
         if (textEl) {
-            textEl.textContent = line.text || '';
+            textEl.textContent = line.type === 'choice' || line.type === 'activity' ? (line.prompt || '') : (line.text || '');
             textEl.className = 'pixel-story-text';
         }
 
         // Choice 选择
         if (line.type === 'choice' && line.options) {
             renderChoices(line);
+            if (boxEl) boxEl.classList.add('no-click');
+            if (nextHint) nextHint.style.display = 'none';
+        } else if (line.type === 'activity' && line.actions) {
+            renderActivity(line);
             if (boxEl) boxEl.classList.add('no-click');
             if (nextHint) nextHint.style.display = 'none';
         } else {
@@ -226,8 +277,22 @@
             var btn = document.createElement('button');
             btn.className = 'pixel-story-choice-btn';
             btn.textContent = opt.label;
-            btn.addEventListener('click', function () { handleChoice(line, opt, idx); });
+            btn.addEventListener('click', function () { handleChoice(line, opt, idx, btn); });
             choicesEl.appendChild(btn);
+        });
+    }
+
+    function renderActivity(line) {
+        if (!choicesEl) return;
+        isAwaitingChoice = true;
+        choicesEl.innerHTML = '';
+        choicesEl.style.display = 'flex';
+        (line.actions || []).forEach(function (action) {
+            var button = document.createElement('button');
+            button.className = 'pixel-story-choice-btn pixel-story-activity-btn';
+            button.textContent = action.label;
+            button.addEventListener('click', function () { handleActivity(line, action, button); });
+            choicesEl.appendChild(button);
         });
     }
 
@@ -238,7 +303,7 @@
         isAwaitingChoice = false;
     }
 
-    function handleChoice(line, chosen, idx) {
+    function handleChoice(line, chosen, idx, selectedButton) {
         if (!isAwaitingChoice || !choicesEl) return;
         isAwaitingChoice = false;
         isFeedbackPhase = true;
@@ -248,14 +313,15 @@
 
         // 标记正确/错误
         if (chosen.isCorrect) {
-            chosen.el.className = 'pixel-story-choice-btn correct';
+            selectedButton.className = 'pixel-story-choice-btn correct';
         } else {
-            chosen.el.className = 'pixel-story-choice-btn wrong';
+            selectedButton.className = 'pixel-story-choice-btn wrong';
             // 如果只有一个正确答案，高亮正确答案
             var correctOpt = line.options.filter(function (o) { return o.isCorrect; })[0];
             if (correctOpt) {
                 var btns = qsa('.pixel-story-choice-btn', choicesEl);
-                // mark correct
+                var correctIndex = line.options.indexOf(correctOpt);
+                if (btns[correctIndex]) btns[correctIndex].classList.add('correct-answer');
             }
         }
 
@@ -277,6 +343,28 @@
 
         // 记录学习结果
         recordLearning(line, chosen);
+    }
+
+    function handleActivity(line, action, selectedButton) {
+        if (!isAwaitingChoice || !choicesEl) return;
+        isAwaitingChoice = false;
+        isFeedbackPhase = true;
+        qsa('.pixel-story-activity-btn', choicesEl).forEach(function (button) { button.disabled = true; });
+        selectedButton.className = 'pixel-story-choice-btn pixel-story-activity-btn correct';
+
+        var feedback = document.createElement('div');
+        feedback.className = 'pixel-story-feedback correct';
+        feedback.textContent = action.feedback || '线索记下来了！';
+        choicesEl.appendChild(feedback);
+
+        var continueBtn = document.createElement('button');
+        continueBtn.className = 'pixel-story-continue-btn';
+        continueBtn.textContent = '继续 ▶';
+        continueBtn.addEventListener('click', function () {
+            isFeedbackPhase = false;
+            advanceLine();
+        });
+        choicesEl.appendChild(continueBtn);
     }
 
     function recordLearning(line, chosen) {
@@ -301,15 +389,16 @@
         var overlay = document.getElementById('pixelNarrationOverlay');
         if (overlay) {
             hideNarration();
-            return;
         }
 
         if (hasNextLine()) {
             currentLineIdx++;
+            saveCurrentProgress();
             renderLine(getCurrentLine());
         } else if (hasNextScene()) {
             currentSceneIdx++;
             currentLineIdx = 0;
+            saveCurrentProgress();
             renderLine(getCurrentLine());
         } else {
             showChapterComplete();
@@ -322,10 +411,12 @@
         isCompleteScreen = true;
 
         // 保存完成状态
-        var p = {};
-        if (!p.chapters) p.chapters = {};
+        var p = readProgress();
+        if (!p.chapters || typeof p.chapters !== 'object') p.chapters = {};
         p.chapters[currentChapter.chapterId] = { completed: true, completedAt: Date.now() };
         writeProgress({ chapters: p.chapters });
+
+        claimChapterReward(currentChapter);
 
         var div = document.createElement('div');
         div.className = 'pixel-story-complete';
@@ -346,19 +437,61 @@
         });
     }
 
+    function getProfileId() {
+        try {
+            if (root.ProfileManager && typeof root.ProfileManager.getActiveId === 'function') {
+                return String(root.ProfileManager.getActiveId() || 'local');
+            }
+        } catch (e) {
+            console.warn('[PixelStory] profile lookup failed:', e);
+        }
+        return 'local';
+    }
+
+    function claimChapterReward(chapter) {
+        var points = Number(chapter && chapter.rewards && chapter.rewards.growthPoints) || 0;
+        if (points <= 0 || !root.CoreRewardService || typeof root.CoreRewardService.claim !== 'function') return;
+        var result = root.CoreRewardService.claim({
+            eventId: STORY_ID + ':' + chapter.chapterId + ':complete',
+            profileId: getProfileId(),
+            source: 'game',
+            sourceId: chapter.chapterId,
+            rewards: [{ type: 'growth_points', amount: points }]
+        });
+        if (!result.accepted && !result.duplicate) {
+            console.warn('[PixelStory] chapter reward was not claimed:', result.reason || 'unknown');
+        }
+    }
+
     /* ===== 语音 ===== */
     function triggerVoice(line) {
-        if (root.VoiceSystem && typeof root.VoiceSystem.speak === 'function') {
+        if (root.VoiceSystem) {
             var charData = getCharacterData(line.character);
-            var text = line.text || '';
+            var text = line.text || line.prompt || '';
             if (text) {
-                if (charData && charData.voicePreset) {
-                    root.VoiceSystem.speak(text, { voice: charData.voicePreset, force: true });
+                var audioUrl = getLineAudioUrl(line);
+                var voicePreset = charData && charData.voicePreset ? charData.voicePreset : 'child';
+                if (boxEl) {
+                    boxEl.dataset.storyAudio = audioUrl || '';
+                    boxEl.dataset.storyVoice = voicePreset;
+                }
+                if (audioUrl && typeof root.VoiceSystem.playStoryAudio === 'function') {
+                    root.VoiceSystem.playStoryAudio(audioUrl, text, voicePreset, { force: true });
+                } else if (typeof root.VoiceSystem.speakTTS === 'function') {
+                    root.VoiceSystem.speakTTS(text, voicePreset, { force: true });
                 } else {
-                    root.VoiceSystem.speak(text, { force: true });
+                    console.warn('[PixelStory] no voice playback API available');
                 }
             }
         }
+    }
+
+    function getLineAudioUrl(line) {
+        if (!audioManifest || !audioManifest.entries || !currentChapter) return '';
+        var scene = getCurrentScene();
+        var key = currentChapter.chapterId + '/' + (scene ? scene.sceneId : 'scene') + '/' + currentLineIdx;
+        var entry = audioManifest.entries[key];
+        return entry && entry.file ? assetUrl(entry.file) : '';
     }
 
     function getCharacterData(charId) {
@@ -376,7 +509,7 @@
         if (!shellElement) return;
         // dispatch to PixelStoryMap if available
         if (root.PixelStoryMap && typeof root.PixelStoryMap.render === 'function') {
-            root.PixelStoryMap.render('pixelStoryMapContainer');
+            root.PixelStoryMap.render('pixelStoryMapContainer', preferredTrackId);
         } else {
             // fallback: simple list
             renderSimpleChapterList();
@@ -386,53 +519,9 @@
     function renderSimpleChapterList() {
         if (!shellElement || !manifest) return;
         shellElement.innerHTML =
-            '<div class="pixel-story-tabs" id="pixelStoryTabs">' +
-            '<button class="pixel-story-tab active" data-mode="story">📖 故事漫游</button>' +
-            '<button class="pixel-story-tab" data-mode="adventure">⚔️ 冒险挑战</button>' +
-            '</div>' +
-            '<div class="pixel-story-map" id="pixelStoryMapContainer"></div>';
-
-        setupTabListeners();
-        if (root.PixelStoryMap && typeof root.PixelStoryMap.render === 'function') {
-            root.PixelStoryMap.render('pixelStoryMapContainer');
-        }
-    }
-
-    function setupTabListeners() {
-        var tabs = qsa('.pixel-story-tab');
-        if (!tabs.length) return;
-        tabs.forEach(function (tab) {
-            tab.addEventListener('click', function () {
-                if (tab.classList.contains('active')) return;
-                qsa('.pixel-story-tab').forEach(function (t) { t.classList.remove('active'); });
-                tab.classList.add('active');
-                if (tab.dataset.mode === 'adventure') {
-                    switchToAdventureMode();
-                } else {
-                    showMap();
-                }
-            });
-        });
-    }
-
-    function switchToAdventureMode() {
-        // 切换到现有探索系统
-        if (root.SpaceGrowthDetective && typeof root.SpaceGrowthDetective.render === 'function') {
-            writeProgress({ activeMode: 'adventure' });
-            if (shellElement) {
-                shellElement.innerHTML =
-                    '<div class="pixel-story-tabs" id="pixelStoryTabs">' +
-                    '<button class="pixel-story-tab" data-mode="story">📖 故事漫游</button>' +
-                    '<button class="pixel-story-tab active" data-mode="adventure">⚔️ 冒险挑战</button>' +
-                    '</div>' +
-                    '<div id="adventureContainer"></div>';
-                setupTabListeners();
-                root.SpaceGrowthDetective.render('adventureContainer');
-            }
-        } else {
-            showToast('冒险挑战模式加载中...');
-            showMap();
-        }
+            '<div class="pixel-story-map pixel-story-map-fallback" id="pixelStoryMapContainer">' +
+            '<div class="pixel-story-map-fallback-content"><strong>星际地图正在准备</strong><span>请稍后再试，故事航线马上回来。</span></div>' +
+            '</div>';
     }
 
     /* ===== 入口：进入章节 ===== */
@@ -459,6 +548,19 @@
             if (typeof showToast === 'function') showToast('故事加载失败: ' + err.message);
             else console.error('[PixelStory] load error:', err);
         });
+    }
+
+    function saveCurrentProgress() {
+        if (!currentChapter) return;
+        var progress = readProgress();
+        var chapters = progress.chapters && typeof progress.chapters === 'object' ? progress.chapters : {};
+        chapters[currentChapter.chapterId] = {
+            ...(chapters[currentChapter.chapterId] || {}),
+            sceneIdx: currentSceneIdx,
+            lineIdx: currentLineIdx,
+            savedAt: Date.now()
+        };
+        writeProgress({ chapters: chapters });
     }
 
     function renderStage() {
@@ -504,9 +606,10 @@
             // 保存进度
             writeProgress({
                 chapters: (function () {
-                    var c = {};
+                    var current = readProgress();
+                    var c = current.chapters && typeof current.chapters === 'object' ? current.chapters : {};
                     var key = currentChapter ? currentChapter.chapterId : 'unknown';
-                    c[key] = { sceneIdx: currentSceneIdx, lineIdx: currentLineIdx, savedAt: Date.now() };
+                    c[key] = Object.assign({}, c[key], { sceneIdx: currentSceneIdx, lineIdx: currentLineIdx, savedAt: Date.now() });
                     return c;
                 })()
             });
@@ -522,13 +625,14 @@
     }
 
     /* ===== 主入口 ===== */
-    function render(containerId) {
+    function render(containerId, initialTrackId) {
         var container = document.getElementById(containerId);
         if (!container) {
             console.error('[PixelStory] container not found:', containerId);
             return Promise.reject(new Error('container not found'));
         }
         shellElement = container;
+        preferredTrackId = initialTrackId || preferredTrackId || 'sci-fi';
         shellElement.classList.add('pixel-story-engine-host');
 
         return loadManifest().then(function () {
@@ -537,6 +641,11 @@
             container.innerHTML = '<div style="padding:40px;color:#ff6b6b;text-align:center">故事加载失败，请检查网络后重试</div>';
             console.error('[PixelStory] init error:', err);
         });
+    }
+
+    function setPreferredTrack(trackId) {
+        preferredTrackId = trackId || 'sci-fi';
+        if (shellElement && manifest) showMap();
     }
 
     /* ===== 工具 ===== */
@@ -552,6 +661,7 @@
         showMap: showMap,
         loadManifest: loadManifest,
         loadChapter: loadChapter,
+        setPreferredTrack: setPreferredTrack,
         getCompletedChapters: getCompletedChapters,
         getChapterProgress: getChapterProgress,
         readProgress: readProgress

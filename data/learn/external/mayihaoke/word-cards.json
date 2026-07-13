@@ -1,0 +1,4009 @@
+{
+  "provider": "mayihaoke",
+  "sourceUrl": "https://www.mayihaoke.com/api/ant/course/words/card?course_id=minewords",
+  "fetchedAt": "2026-07-13T17:10:16.844Z",
+  "count": 500,
+  "usage": "结构化本地审查素材；不包含参考站原图、音频或完整 HTML。",
+  "cards": [
+    {
+      "index": "001",
+      "word": "Minecraft",
+      "phonetic": "/ˈmaɪnkræft/",
+      "chinese": "我的世界",
+      "example": "Minecraft is my favorite game.",
+      "exampleTranslation": "《我的世界》是我最喜欢的游戏。"
+    },
+    {
+      "index": "002",
+      "word": "Survival Mode",
+      "phonetic": "/sərˈvaɪvəl moʊd/",
+      "chinese": "生存模式",
+      "example": "In Survival Mode, you need to find food every day.",
+      "exampleTranslation": "在生存模式中，你需要每天寻找食物。"
+    },
+    {
+      "index": "003",
+      "word": "Creative Mode",
+      "phonetic": "/kriˈeɪtɪv moʊd/",
+      "chinese": "创造模式",
+      "example": "I can build anything I want in Creative Mode.",
+      "exampleTranslation": "在创造模式中，我可以建造任何我想要的东西。"
+    },
+    {
+      "index": "004",
+      "word": "Adventure Mode",
+      "phonetic": "/ədˈventʃər moʊd/",
+      "chinese": "冒险模式",
+      "example": "Adventure Mode is great for playing story maps.",
+      "exampleTranslation": "冒险模式非常适合玩故事地图。"
+    },
+    {
+      "index": "005",
+      "word": "Spectator Mode",
+      "phonetic": "/ˈspektəˌtɔːr moʊd/",
+      "chinese": "旁观模式",
+      "example": "In Spectator Mode, you can fly through walls.",
+      "exampleTranslation": "在旁观模式中，你可以飞越墙壁。"
+    },
+    {
+      "index": "006",
+      "word": "Hardcore Mode",
+      "phonetic": "/ˈhɑːrdkɔːr moʊd/",
+      "chinese": "极限模式",
+      "example": "Hardcore Mode is very scary because you only have one life.",
+      "exampleTranslation": "极限模式非常可怕，因为你只有一条命。"
+    },
+    {
+      "index": "007",
+      "word": "Inventory",
+      "phonetic": "/ɪnˈventɔːri/",
+      "chinese": "物品栏",
+      "example": "Press E to open your inventory.",
+      "exampleTranslation": "按 E 键打开你的物品栏。"
+    },
+    {
+      "index": "008",
+      "word": "Crafting",
+      "phonetic": "/ˈkræftɪŋ/",
+      "chinese": "合成",
+      "example": "Crafting a pickaxe is the first thing you should do.",
+      "exampleTranslation": "制作一把镐子是你应该做的第一件事。"
+    },
+    {
+      "index": "009",
+      "word": "Smelting",
+      "phonetic": "/ˈsmeltɪŋ/",
+      "chinese": "熔炼",
+      "example": "You need a furnace for smelting iron ore.",
+      "exampleTranslation": "你需要一个熔炉来熔炼铁矿石。"
+    },
+    {
+      "index": "010",
+      "word": "Enchanting",
+      "phonetic": "/ɪnˈtʃæntɪŋ/",
+      "chinese": "附魔",
+      "example": "Enchanting your sword makes it much stronger.",
+      "exampleTranslation": "附魔你的剑会让它更强大。"
+    },
+    {
+      "index": "011",
+      "word": "Brewing",
+      "phonetic": "/ˈbruːɪŋ/",
+      "chinese": "酿造",
+      "example": "Brewing potions takes time and special ingredients.",
+      "exampleTranslation": "酿造药水需要时间和特殊材料。"
+    },
+    {
+      "index": "012",
+      "word": "Respawn",
+      "phonetic": "/ˈriːˌspɔːn/",
+      "chinese": "重生",
+      "example": "Don't worry — you will respawn at your bed.",
+      "exampleTranslation": "别担心 — 你会在床上重生。"
+    },
+    {
+      "index": "013",
+      "word": "Spawn",
+      "phonetic": "/spɔːn/",
+      "chinese": "生成/出生点",
+      "example": "Monsters spawn in the dark at night.",
+      "exampleTranslation": "怪物会在夜晚的黑暗中生成。"
+    },
+    {
+      "index": "014",
+      "word": "Mob",
+      "phonetic": "/mɑːb/",
+      "chinese": "生物",
+      "example": "A mob is any living creature in Minecraft.",
+      "exampleTranslation": "生物是《我的世界》中任何活着的生物。"
+    },
+    {
+      "index": "015",
+      "word": "Hostile",
+      "phonetic": "/ˈhɑːstaɪl/",
+      "chinese": "敌对的",
+      "example": "Hostile mobs will attack you on sight.",
+      "exampleTranslation": "敌对生物一看到你就会攻击你。"
+    },
+    {
+      "index": "016",
+      "word": "Passive",
+      "phonetic": "/ˈpæsɪv/",
+      "chinese": "被动的",
+      "example": "Passive mobs like cows never hurt you.",
+      "exampleTranslation": "被动生物比如牛永远不会伤害你。"
+    },
+    {
+      "index": "017",
+      "word": "Neutral",
+      "phonetic": "/ˈnjuːtrəl/",
+      "chinese": "中立的",
+      "example": "Wolves are neutral — they only attack when you hit them first.",
+      "exampleTranslation": "狼是中立的——只有你先攻击它们时它们才会反击。"
+    },
+    {
+      "index": "018",
+      "word": "Experience (XP)",
+      "phonetic": "/ɪkˈspɪriəns/",
+      "chinese": "经验值",
+      "example": "You get experience by defeating mobs and mining.",
+      "exampleTranslation": "击败生物和采矿可以获得经验值。"
+    },
+    {
+      "index": "019",
+      "word": "Health",
+      "phonetic": "/hɛlθ/",
+      "chinese": "生命值",
+      "example": "Eat food to keep your health full.",
+      "exampleTranslation": "吃食物来保持你的生命值满。"
+    },
+    {
+      "index": "020",
+      "word": "Hunger",
+      "phonetic": "/ˈhʌŋɡər/",
+      "chinese": "饥饿值",
+      "example": "Your hunger bar goes down when you run and fight.",
+      "exampleTranslation": "当你奔跑和战斗时，饥饿值会下降。"
+    },
+    {
+      "index": "021",
+      "word": "Damage",
+      "phonetic": "/ˈdæmɪdʒ/",
+      "chinese": "伤害",
+      "example": "A diamond sword does more damage than a wooden one.",
+      "exampleTranslation": "钻石剑造成的伤害比木剑更多。"
+    },
+    {
+      "index": "022",
+      "word": "Seed",
+      "phonetic": "/siːd/",
+      "chinese": "世界种子",
+      "example": "This seed creates a world with a big jungle near the start.",
+      "exampleTranslation": "这个种子在开始时就生成一个巨大的丛林世界。"
+    },
+    {
+      "index": "023",
+      "word": "Chunk",
+      "phonetic": "/tʃʌŋk/",
+      "chinese": "区块",
+      "example": "Each chunk is a 16x16 section of the world.",
+      "exampleTranslation": "每个区块是世界中16x16的区域。"
+    },
+    {
+      "index": "024",
+      "word": "Drops",
+      "phonetic": "/drɑːps/",
+      "chinese": "掉落物",
+      "example": "When you kill a zombie, it drops rotten flesh.",
+      "exampleTranslation": "当你杀死僵尸时，它会掉落腐肉。"
+    },
+    {
+      "index": "025",
+      "word": "Loot",
+      "phonetic": "/luːt/",
+      "chinese": "战利品",
+      "example": "There is great loot inside the dungeon chest.",
+      "exampleTranslation": "地下城宝箱里有很棒的战利品。"
+    },
+    {
+      "index": "026",
+      "word": "Trade",
+      "phonetic": "/treɪd/",
+      "chinese": "交易",
+      "example": "You can trade emeralds with villagers for useful items.",
+      "exampleTranslation": "你可以用绿宝石和村民交易获得有用的物品。"
+    },
+    {
+      "index": "027",
+      "word": "Tame",
+      "phonetic": "/teɪm/",
+      "chinese": "驯服",
+      "example": "Give a wolf bones to tame it as your pet.",
+      "exampleTranslation": "给一只狼骨头来驯服它成为你的宠物。"
+    },
+    {
+      "index": "028",
+      "word": "Breed",
+      "phonetic": "/briːd/",
+      "chinese": "繁殖",
+      "example": "Feed two cows wheat to breed them.",
+      "exampleTranslation": "喂两头奶牛小麦来繁殖它们。"
+    },
+    {
+      "index": "029",
+      "word": "Potion",
+      "phonetic": "/ˈpoʊʃən/",
+      "chinese": "药水",
+      "example": "Drink a strength potion before you fight the boss.",
+      "exampleTranslation": "在与Boss战斗前喝一个力量药水。"
+    },
+    {
+      "index": "030",
+      "word": "Status Effect",
+      "phonetic": "/ˈsteɪtəs ɪˈfɛkt/",
+      "chinese": "状态效果",
+      "example": "Poison is a bad status effect that hurts you slowly.",
+      "exampleTranslation": "中毒是一种会慢慢伤害你的不良状态效果。"
+    },
+    {
+      "index": "031",
+      "word": "Recipe",
+      "phonetic": "/ˈrɛsɪpi/",
+      "chinese": "配方",
+      "example": "Do you know the recipe for a bow?",
+      "exampleTranslation": "你知道弓的配方吗？"
+    },
+    {
+      "index": "032",
+      "word": "Villager",
+      "phonetic": "/ˈvɪlɪdʒər/",
+      "chinese": "村民",
+      "example": "The villager sold me a great enchanted book.",
+      "exampleTranslation": "村民卖给了我一本很棒的附魔书。"
+    },
+    {
+      "index": "033",
+      "word": "Achievement",
+      "phonetic": "/əˈtʃiːvmənt/",
+      "chinese": "成就",
+      "example": "I got my first achievement when I crafted a workbench.",
+      "exampleTranslation": "我合成工作台时获得了我的第一个成就。"
+    },
+    {
+      "index": "034",
+      "word": "Block",
+      "phonetic": "/blɑːk/",
+      "chinese": "方块",
+      "example": "Everything in Minecraft is made of blocks.",
+      "exampleTranslation": "Minecraft中的一切都是由方块组成的。"
+    },
+    {
+      "index": "035",
+      "word": "Dirt",
+      "phonetic": "/dɜːrt/",
+      "chinese": "泥土",
+      "example": "Dirt is the easiest block to dig up.",
+      "exampleTranslation": "泥土是最容易挖掘的方块。"
+    },
+    {
+      "index": "036",
+      "word": "Grass Block",
+      "phonetic": "/ɡræs blɑːk/",
+      "chinese": "草方块",
+      "example": "The grass block on the surface looks green and nice.",
+      "exampleTranslation": "地表的草方块看起来绿色又漂亮。"
+    },
+    {
+      "index": "037",
+      "word": "Stone",
+      "phonetic": "/stoʊn/",
+      "chinese": "石头",
+      "example": "Stone is harder than dirt and very common underground.",
+      "exampleTranslation": "石头比泥土更坚硬，在地下非常常见。"
+    },
+    {
+      "index": "038",
+      "word": "Cobblestone",
+      "phonetic": "/ˈkɑːbəlˌstoʊn/",
+      "chinese": "圆石",
+      "example": "When you mine stone, it turns into cobblestone.",
+      "exampleTranslation": "当你挖掘石头时，它会变成圆石。"
+    },
+    {
+      "index": "039",
+      "word": "Sand",
+      "phonetic": "/sænd/",
+      "chinese": "沙子",
+      "example": "Sand falls down when there is no block below it.",
+      "exampleTranslation": "当下面没有方块时，沙子会掉落下来。"
+    },
+    {
+      "index": "040",
+      "word": "Gravel",
+      "phonetic": "/ˈɡrævəl/",
+      "chinese": "沙砾",
+      "example": "Gravel also falls like sand, so be careful.",
+      "exampleTranslation": "沙砾也会像沙子一样掉落，所以要小心。"
+    },
+    {
+      "index": "041",
+      "word": "Log",
+      "phonetic": "/lɔːɡ/",
+      "chinese": "原木",
+      "example": "Chop a log from a tree to get your first wood.",
+      "exampleTranslation": "砍一根树上的原木来获得你的第一块木材。"
+    },
+    {
+      "index": "042",
+      "word": "Plank",
+      "phonetic": "/plæŋk/",
+      "chinese": "木板",
+      "example": "Four planks can make a crafting table.",
+      "exampleTranslation": "四块木板可以做一个工作台。"
+    },
+    {
+      "index": "043",
+      "word": "Leaves",
+      "phonetic": "/liːvz/",
+      "chinese": "树叶",
+      "example": "Leaves sometimes drop saplings when you break them.",
+      "exampleTranslation": "当你破坏树叶时，它们有时会掉落树苗。"
+    },
+    {
+      "index": "044",
+      "word": "Sapling",
+      "phonetic": "/ˈsæplɪŋ/",
+      "chinese": "树苗",
+      "example": "Plant a sapling and it will grow into a big tree.",
+      "exampleTranslation": "种下一棵树苗，它会长成一棵大树。"
+    },
+    {
+      "index": "045",
+      "word": "Bedrock",
+      "phonetic": "/ˈbɛdˌrɑːk/",
+      "chinese": "基岩",
+      "example": "You cannot break bedrock — it is the bottom of the world.",
+      "exampleTranslation": "你不能破坏基岩——它是世界的底部。"
+    },
+    {
+      "index": "046",
+      "word": "Obsidian",
+      "phonetic": "/əbˈsɪdiən/",
+      "chinese": "黑曜石",
+      "example": "Obsidian is one of the hardest blocks in the game.",
+      "exampleTranslation": "黑曜石是游戏中最坚硬的方块之一。"
+    },
+    {
+      "index": "047",
+      "word": "Glass",
+      "phonetic": "/ɡlæs/",
+      "chinese": "玻璃",
+      "example": "Build a window with glass so you can see outside.",
+      "exampleTranslation": "用玻璃建一个窗户，这样你就能看到外面。"
+    },
+    {
+      "index": "048",
+      "word": "Slab",
+      "phonetic": "/slæb/",
+      "chinese": "台阶",
+      "example": "A slab is only half a block tall.",
+      "exampleTranslation": "台阶只有半个方块高。"
+    },
+    {
+      "index": "049",
+      "word": "Stair",
+      "phonetic": "/stɛr/",
+      "chinese": "楼梯",
+      "example": "Put stairs on your house so you can walk up easily.",
+      "exampleTranslation": "把楼梯放在你的房子上，这样你就可以轻松走上去。"
+    },
+    {
+      "index": "050",
+      "word": "Fence",
+      "phonetic": "/fɛns/",
+      "chinese": "栅栏",
+      "example": "A fence keeps your animals inside the farm.",
+      "exampleTranslation": "栅栏可以把你的动物留在农场里。"
+    },
+    {
+      "index": "051",
+      "word": "Door",
+      "phonetic": "/dɔːr/",
+      "chinese": "门",
+      "example": "Close the door at night to keep monsters out.",
+      "exampleTranslation": "晚上关上门，把怪物挡在外面。"
+    },
+    {
+      "index": "052",
+      "word": "Trapdoor",
+      "phonetic": "/ˈtræpˌdɔːr/",
+      "chinese": "活板门",
+      "example": "There is a trapdoor hidden in the floor of the dungeon.",
+      "exampleTranslation": "地牢的地板里藏着一扇活板门。"
+    },
+    {
+      "index": "053",
+      "word": "Chest",
+      "phonetic": "/tʃɛst/",
+      "chinese": "箱子",
+      "example": "Put your extra items in a chest to save space.",
+      "exampleTranslation": "把多余的物品放进箱子里以节省空间。"
+    },
+    {
+      "index": "054",
+      "word": "Ender Chest",
+      "phonetic": "/ˈɛndər tʃɛst/",
+      "chinese": "末影箱",
+      "example": "An Ender Chest shares its items across all your worlds.",
+      "exampleTranslation": "末影箱会在你所有的世界中共享其中的物品。"
+    },
+    {
+      "index": "055",
+      "word": "Furnace",
+      "phonetic": "/ˈfɜːrnɪs/",
+      "chinese": "熔炉",
+      "example": "Place coal in the furnace to smelt iron ore.",
+      "exampleTranslation": "把煤放进熔炉来熔炼铁矿石。"
+    },
+    {
+      "index": "056",
+      "word": "Crafting Table",
+      "phonetic": "/ˈkræftɪŋ ˈteɪbəl/",
+      "chinese": "工作台",
+      "example": "You need a crafting table to make most tools and weapons.",
+      "exampleTranslation": "你需要工作台来制作大多数工具和武器。"
+    },
+    {
+      "index": "057",
+      "word": "Bookshelf",
+      "phonetic": "/ˈbʊkˌʃɛlf/",
+      "chinese": "书架",
+      "example": "Put bookshelves around your enchanting table for better enchants.",
+      "exampleTranslation": "把书架放在附魔台周围，可以获得更好的附魔。"
+    },
+    {
+      "index": "058",
+      "word": "Bed",
+      "phonetic": "/bɛd/",
+      "chinese": "床",
+      "example": "Sleep in a bed to set your spawn point and skip the night.",
+      "exampleTranslation": "睡在床上可以设置你的出生点并跳过夜晚。"
+    },
+    {
+      "index": "059",
+      "word": "TNT",
+      "phonetic": "/ˌtiːˌɛnˈtiː/",
+      "chinese": "TNT炸药",
+      "example": "Watch out — TNT will explode and destroy everything nearby!",
+      "exampleTranslation": "小心——TNT 会爆炸并摧毁附近的一切！"
+    },
+    {
+      "index": "060",
+      "word": "Piston",
+      "phonetic": "/ˈpɪstən/",
+      "chinese": "活塞",
+      "example": "A piston pushes blocks when you power it with redstone.",
+      "exampleTranslation": "当你用红石给活塞供能时，它会推动方块。"
+    },
+    {
+      "index": "061",
+      "word": "Dispenser",
+      "phonetic": "/dɪˈspɛnsər/",
+      "chinese": "发射器",
+      "example": "The dispenser shoots arrows at monsters automatically.",
+      "exampleTranslation": "发射器会自动向怪物射出箭矢。"
+    },
+    {
+      "index": "062",
+      "word": "Dropper",
+      "phonetic": "/ˈdrɑːpər/",
+      "chinese": "投掷器",
+      "example": "A dropper moves items from one place to another.",
+      "exampleTranslation": "投掷器将物品从一个地方移动到另一个地方。"
+    },
+    {
+      "index": "063",
+      "word": "Hopper",
+      "phonetic": "/ˈhɑːpər/",
+      "chinese": "漏斗",
+      "example": "A hopper collects items that fall into it.",
+      "exampleTranslation": "漏斗收集掉入其中的物品。"
+    },
+    {
+      "index": "064",
+      "word": "Torch",
+      "phonetic": "/tɔːrtʃ/",
+      "chinese": "火把",
+      "example": "Place a torch on the wall so the cave is bright.",
+      "exampleTranslation": "把火把放在墙上，这样洞穴就亮了。"
+    },
+    {
+      "index": "065",
+      "word": "Ladder",
+      "phonetic": "/ˈlædər/",
+      "chinese": "梯子",
+      "example": "Climb the ladder to reach the top of the tower.",
+      "exampleTranslation": "爬上梯子到达塔顶。"
+    },
+    {
+      "index": "066",
+      "word": "Rail",
+      "phonetic": "/reɪl/",
+      "chinese": "铁轨",
+      "example": "Lay rail on the ground to build a minecart track.",
+      "exampleTranslation": "在地上铺设铁轨以建造矿车轨道。"
+    },
+    {
+      "index": "067",
+      "word": "Beacon",
+      "phonetic": "/ˈbiːkən/",
+      "chinese": "信标",
+      "example": "A beacon sends a beam of light into the sky.",
+      "exampleTranslation": "信标发出一道光束直射天空。"
+    },
+    {
+      "index": "068",
+      "word": "Anvil",
+      "phonetic": "/ˈænvɪl/",
+      "chinese": "铁砧",
+      "example": "Use an anvil to repair your broken sword.",
+      "exampleTranslation": "使用铁砧修理你的破损剑。"
+    },
+    {
+      "index": "069",
+      "word": "Cauldron",
+      "phonetic": "/ˈkɔːldrən/",
+      "chinese": "炼药锅",
+      "example": "Fill the cauldron with water to dye your leather armor.",
+      "exampleTranslation": "用水装满炼药锅来染色你的皮革盔甲。"
+    },
+    {
+      "index": "070",
+      "word": "Enchanting Table",
+      "phonetic": "/ɪnˈtʃæntɪŋ ˈteɪbəl/",
+      "chinese": "附魔台",
+      "example": "Sit next to the enchanting table and spend your XP.",
+      "exampleTranslation": "坐在附魔台旁边使用你的经验值。"
+    },
+    {
+      "index": "071",
+      "word": "Brewing Stand",
+      "phonetic": "/ˈbruːɪŋ stænd/",
+      "chinese": "酿造台",
+      "example": "You need a blaze rod to build a brewing stand.",
+      "exampleTranslation": "你需要烈焰棒来制作酿造台。"
+    },
+    {
+      "index": "072",
+      "word": "Glowstone",
+      "phonetic": "/ˈɡloʊˌstoʊn/",
+      "chinese": "萤石",
+      "example": "Glowstone is a bright block that you can find in the Nether.",
+      "exampleTranslation": "萤石是一种你可以在下界找到的发光方块。"
+    },
+    {
+      "index": "073",
+      "word": "Sea Lantern",
+      "phonetic": "/siː ˈlæntərn/",
+      "chinese": "海晶灯",
+      "example": "Sea lanterns glow underwater and look beautiful.",
+      "exampleTranslation": "海晶灯在水下发光，看起来很美丽。"
+    },
+    {
+      "index": "074",
+      "word": "Netherrack",
+      "phonetic": "/ˈnɛðərˌræk/",
+      "chinese": "下界岩",
+      "example": "Netherrack covers almost the whole floor of the Nether.",
+      "exampleTranslation": "下界岩几乎覆盖了整个下界的地面。"
+    },
+    {
+      "index": "075",
+      "word": "Soul Sand",
+      "phonetic": "/soʊl sænd/",
+      "chinese": "灵魂沙",
+      "example": "Walking on soul sand makes you move very slowly.",
+      "exampleTranslation": "行走在灵魂沙上会让你移动得非常缓慢。"
+    },
+    {
+      "index": "076",
+      "word": "End Stone",
+      "phonetic": "/ɛnd stoʊn/",
+      "chinese": "末地石",
+      "example": "End stone is the main block in The End dimension.",
+      "exampleTranslation": "末地石是末地维度的主要方块。"
+    },
+    {
+      "index": "077",
+      "word": "Terracotta",
+      "phonetic": "/ˌtɛrəˈkɑːtə/",
+      "chinese": "陶瓦",
+      "example": "Terracotta comes in many colors and is great for decoration.",
+      "exampleTranslation": "陶瓦有多种颜色，非常适合装饰。"
+    },
+    {
+      "index": "078",
+      "word": "Concrete",
+      "phonetic": "/ˈkɑːnkriːt/",
+      "chinese": "混凝土",
+      "example": "Concrete is stronger than wool and does not burn.",
+      "exampleTranslation": "混凝土比羊毛坚固且不会燃烧。"
+    },
+    {
+      "index": "079",
+      "word": "Wool",
+      "phonetic": "/wʊl/",
+      "chinese": "羊毛",
+      "example": "Shear a sheep to get wool for your bed.",
+      "exampleTranslation": "剪羊毛可以获得制做床用的羊毛。"
+    },
+    {
+      "index": "080",
+      "word": "Ice",
+      "phonetic": "/aɪs/",
+      "chinese": "冰",
+      "example": "You can slide very fast on ice blocks.",
+      "exampleTranslation": "你可以在冰块上滑得非常快。"
+    },
+    {
+      "index": "081",
+      "word": "Cactus",
+      "phonetic": "/ˈkæktəs/",
+      "chinese": "仙人掌",
+      "example": "Don't touch the cactus — it hurts you!",
+      "exampleTranslation": "不要碰仙人掌——它会伤害你！"
+    },
+    {
+      "index": "082",
+      "word": "Bamboo",
+      "phonetic": "/bæmˈbuː/",
+      "chinese": "竹子",
+      "example": "Bamboo grows very tall in the jungle biome.",
+      "exampleTranslation": "竹子在丛林生物群系中生长得非常高。"
+    },
+    {
+      "index": "083",
+      "word": "Lily Pad",
+      "phonetic": "/ˈlɪli pæd/",
+      "chinese": "睡莲",
+      "example": "You can walk across water by stepping on lily pads.",
+      "exampleTranslation": "你可以踩在睡莲上走过水面。"
+    },
+    {
+      "index": "084",
+      "word": "Hay Bale",
+      "phonetic": "/heɪ beɪl/",
+      "chinese": "干草块",
+      "example": "A hay bale reduces fall damage when you land on it.",
+      "exampleTranslation": "当你落在干草块上时，它会减少摔落伤害。"
+    },
+    {
+      "index": "085",
+      "word": "Sponge",
+      "phonetic": "/spʌndʒ/",
+      "chinese": "海绵",
+      "example": "Use a sponge to soak up water inside the ocean monument.",
+      "exampleTranslation": "在海洋神殿内使用海绵来吸收水。"
+    },
+    {
+      "index": "086",
+      "word": "Ore",
+      "phonetic": "/ɔːr/",
+      "chinese": "矿石",
+      "example": "Mining ore deep underground gives you useful materials.",
+      "exampleTranslation": "在地下深处挖矿石会给你有用的材料。"
+    },
+    {
+      "index": "087",
+      "word": "Coal",
+      "phonetic": "/koʊl/",
+      "chinese": "煤炭",
+      "example": "Coal is the most common ore and a great fuel for your furnace.",
+      "exampleTranslation": "煤炭是最常见的矿石，也是你熔炉的好燃料。"
+    },
+    {
+      "index": "088",
+      "word": "Iron",
+      "phonetic": "/ˈaɪərn/",
+      "chinese": "铁",
+      "example": "Smelt iron ore to get iron ingots for tools.",
+      "exampleTranslation": "熔炼铁矿石以获得制造工具的铁锭。"
+    },
+    {
+      "index": "089",
+      "word": "Copper",
+      "phonetic": "/ˈkɑːpər/",
+      "chinese": "铜",
+      "example": "Copper turns green over time, just like real copper.",
+      "exampleTranslation": "铜随着时间会变绿，就像真实的铜一样。"
+    },
+    {
+      "index": "090",
+      "word": "Gold",
+      "phonetic": "/ɡoʊld/",
+      "chinese": "金",
+      "example": "Gold tools are fast, but they break quickly.",
+      "exampleTranslation": "金制工具速度快，但很容易损坏。"
+    },
+    {
+      "index": "091",
+      "word": "Diamond",
+      "phonetic": "/ˈdaɪəmənd/",
+      "chinese": "钻石",
+      "example": "Finding a diamond is the most exciting moment in the game!",
+      "exampleTranslation": "找到钻石是游戏中最令人兴奋的时刻！"
+    },
+    {
+      "index": "092",
+      "word": "Emerald",
+      "phonetic": "/ˈɛmərəld/",
+      "chinese": "绿宝石",
+      "example": "Trade items with villagers and you will get emeralds.",
+      "exampleTranslation": "与村民交易物品，你会得到绿宝石。"
+    },
+    {
+      "index": "093",
+      "word": "Lapis Lazuli",
+      "phonetic": "/ˈleɪpɪs ˈlæzjʊli/",
+      "chinese": "青金石",
+      "example": "You need lapis lazuli to use the enchanting table.",
+      "exampleTranslation": "你需要青金石才能使用附魔台。"
+    },
+    {
+      "index": "094",
+      "word": "Redstone",
+      "phonetic": "/ˈrɛdˌstoʊn/",
+      "chinese": "红石",
+      "example": "Redstone dust can carry power to machines and doors.",
+      "exampleTranslation": "红石粉可以传送能量到机器和门。"
+    },
+    {
+      "index": "095",
+      "word": "Netherite",
+      "phonetic": "/ˈnɛðəraɪt/",
+      "chinese": "下界合金",
+      "example": "Netherite armor is stronger than diamond armor.",
+      "exampleTranslation": "下界合金护甲比钻石护甲更强。"
+    },
+    {
+      "index": "096",
+      "word": "Quartz",
+      "phonetic": "/kwɔːrts/",
+      "chinese": "石英",
+      "example": "Quartz blocks look very clean and white for building.",
+      "exampleTranslation": "石英块看起来非常干净洁白，适合建筑。"
+    },
+    {
+      "index": "097",
+      "word": "Amethyst",
+      "phonetic": "/ˈæməθɪst/",
+      "chinese": "紫水晶",
+      "example": "Amethyst crystals grow inside a special purple geode.",
+      "exampleTranslation": "紫水晶晶体生长在一种特殊的紫色晶洞内。"
+    },
+    {
+      "index": "098",
+      "word": "Ingot",
+      "phonetic": "/ˈɪŋɡət/",
+      "chinese": "锭",
+      "example": "You need six iron ingots to make a set of iron armor.",
+      "exampleTranslation": "你需要六个铁锭来制作一套铁甲。"
+    },
+    {
+      "index": "099",
+      "word": "Nugget",
+      "phonetic": "/ˈnʌɡɪt/",
+      "chinese": "粒",
+      "example": "Nine gold nuggets can be crafted into one gold ingot.",
+      "exampleTranslation": "九个金粒可以合成为一个金锭。"
+    },
+    {
+      "index": "100",
+      "word": "Dust",
+      "phonetic": "/dʌst/",
+      "chinese": "粉末",
+      "example": "Place redstone dust on the ground to make a circuit.",
+      "exampleTranslation": "在地上放置红石粉来制作电路。"
+    },
+    {
+      "index": "101",
+      "word": "Flint",
+      "phonetic": "/flɪnt/",
+      "chinese": "燧石",
+      "example": "You can sometimes get flint when you dig gravel.",
+      "exampleTranslation": "当你挖掘碎石时，有时会得到燧石。"
+    },
+    {
+      "index": "102",
+      "word": "Charcoal",
+      "phonetic": "/ˈtʃɑːrˌkoʊl/",
+      "chinese": "木炭",
+      "example": "Charcoal works like coal but is made from wood.",
+      "exampleTranslation": "木炭的作用类似于煤，但它是由木头制成的。"
+    },
+    {
+      "index": "103",
+      "word": "String",
+      "phonetic": "/strɪŋ/",
+      "chinese": "线",
+      "example": "You need string to craft a bow and a fishing rod.",
+      "exampleTranslation": "你需要用线来合成弓和钓鱼竿。"
+    },
+    {
+      "index": "104",
+      "word": "Feather",
+      "phonetic": "/ˈfɛðər/",
+      "chinese": "羽毛",
+      "example": "Chickens drop feathers, which are used to make arrows.",
+      "exampleTranslation": "鸡会掉落羽毛，羽毛用来制作箭矢。"
+    },
+    {
+      "index": "105",
+      "word": "Leather",
+      "phonetic": "/ˈlɛðər/",
+      "chinese": "皮革",
+      "example": "Leather armor is weak, but it is the easiest to make.",
+      "exampleTranslation": "皮革盔甲很弱，但它是最容易制作的。"
+    },
+    {
+      "index": "106",
+      "word": "Bone",
+      "phonetic": "/boʊn/",
+      "chinese": "骨头",
+      "example": "Grind a bone into bone meal to grow crops faster.",
+      "exampleTranslation": "将骨头研磨成骨粉可以让作物生长更快。"
+    },
+    {
+      "index": "107",
+      "word": "Gunpowder",
+      "phonetic": "/ˈɡʌnˌpaʊdər/",
+      "chinese": "火药",
+      "example": "Creepers drop gunpowder when you kill them.",
+      "exampleTranslation": "当你击杀爬行者时，他们会掉落火药。"
+    },
+    {
+      "index": "108",
+      "word": "Slimeball",
+      "phonetic": "/ˈslaɪmˌbɔːl/",
+      "chinese": "黏液球",
+      "example": "Craft slimeballs into sticky pistons.",
+      "exampleTranslation": "把黏液球制作成粘性活塞。"
+    },
+    {
+      "index": "109",
+      "word": "Blaze Rod",
+      "phonetic": "/bleɪz rɑːd/",
+      "chinese": "烈焰棒",
+      "example": "A blaze rod is needed to build a brewing stand.",
+      "exampleTranslation": "建造酿造台需要烈焰棒。"
+    },
+    {
+      "index": "110",
+      "word": "Blaze Powder",
+      "phonetic": "/bleɪz ˈpaʊdər/",
+      "chinese": "烈焰粉",
+      "example": "Grind a blaze rod into blaze powder to fuel brewing.",
+      "exampleTranslation": "将烈焰棒研磨成烈焰粉来为酿造提供燃料。"
+    },
+    {
+      "index": "111",
+      "word": "Nether Star",
+      "phonetic": "/ˈnɛðər stɑːr/",
+      "chinese": "下界之星",
+      "example": "The Wither drops a nether star when you defeat it.",
+      "exampleTranslation": "当你击败凋灵时，它会掉落下界之星。"
+    },
+    {
+      "index": "112",
+      "word": "Dragon Egg",
+      "phonetic": "/ˈdræɡən ɛɡ/",
+      "chinese": "龙蛋",
+      "example": "The dragon egg appears after you beat the Ender Dragon.",
+      "exampleTranslation": "击败末影龙后，龙蛋会出现。"
+    },
+    {
+      "index": "113",
+      "word": "Totem of Undying",
+      "phonetic": "/ˈtoʊtəm əv ʌnˈdaɪɪŋ/",
+      "chinese": "不死图腾",
+      "example": "Hold the totem of undying in your hand to save your life.",
+      "exampleTranslation": "手持不死图腾可以挽救你的生命。"
+    },
+    {
+      "index": "114",
+      "word": "Ender Pearl",
+      "phonetic": "/ˈɛndər pɜːrl/",
+      "chinese": "末影珍珠",
+      "example": "Throw an ender pearl to teleport to that spot.",
+      "exampleTranslation": "扔出末影珍珠可以传送到那个地点。"
+    },
+    {
+      "index": "115",
+      "word": "Eye of Ender",
+      "phonetic": "/aɪ əv ˈɛndər/",
+      "chinese": "末影之眼",
+      "example": "Throw an eye of ender to find the stronghold.",
+      "exampleTranslation": "扔出末影之眼可以找到要塞。"
+    },
+    {
+      "index": "116",
+      "word": "Shulker Shell",
+      "phonetic": "/ˈʃʌlkər ʃɛl/",
+      "chinese": "潜影壳",
+      "example": "Two shulker shells and a chest make a shulker box.",
+      "exampleTranslation": "两个潜影壳和一个箱子可以制作潜影盒。"
+    },
+    {
+      "index": "117",
+      "word": "Prismarine Shard",
+      "phonetic": "/ˈprɪzmərɪn ʃɑːrd/",
+      "chinese": "海晶碎片",
+      "example": "Guardians drop prismarine shards in the ocean monument.",
+      "exampleTranslation": "守卫者在海洋纪念碑中掉落海晶碎片。"
+    },
+    {
+      "index": "118",
+      "word": "Nautilus Shell",
+      "phonetic": "/ˈnɔːtɪləs ʃɛl/",
+      "chinese": "鹦鹉螺壳",
+      "example": "You can get a nautilus shell from fishing or drowned mobs.",
+      "exampleTranslation": "你可以通过钓鱼或击杀溺尸获得鹦鹉螺壳。"
+    },
+    {
+      "index": "119",
+      "word": "Heart of the Sea",
+      "phonetic": "/hɑːrt əv ðə siː/",
+      "chinese": "海洋之心",
+      "example": "Find the heart of the sea inside a buried treasure chest.",
+      "exampleTranslation": "在埋藏的宝藏箱子里找到海洋之心。"
+    },
+    {
+      "index": "120",
+      "word": "Scute",
+      "phonetic": "/skjuːt/",
+      "chinese": "鳞甲",
+      "example": "Baby turtles drop a scute when they grow up.",
+      "exampleTranslation": "小海龟长大后会掉落鳞甲。"
+    },
+    {
+      "index": "121",
+      "word": "Phantom Membrane",
+      "phonetic": "/ˈfæntəm ˈmɛmbreɪn/",
+      "chinese": "幻翼薄膜",
+      "example": "Phantom membranes are used to repair elytra wings.",
+      "exampleTranslation": "幻翼薄膜用来修复鞘翅。"
+    },
+    {
+      "index": "122",
+      "word": "Rabbit's Foot",
+      "phonetic": "/ˈræbɪts fʊt/",
+      "chinese": "兔子脚",
+      "example": "A rabbit's foot is a rare drop used in potions.",
+      "exampleTranslation": "兔子脚是一种稀有掉落物，用于制作药水。"
+    },
+    {
+      "index": "123",
+      "word": "Spider Eye",
+      "phonetic": "/ˈspaɪdər aɪ/",
+      "chinese": "蜘蛛眼",
+      "example": "A spider eye is a poison ingredient for brewing.",
+      "exampleTranslation": "蜘蛛眼是酿造毒药的材料。"
+    },
+    {
+      "index": "124",
+      "word": "Pickaxe",
+      "phonetic": "/ˈpɪkˌæks/",
+      "chinese": "镐",
+      "example": "Use a pickaxe to mine stone and ores.",
+      "exampleTranslation": "用镐来挖掘石头和矿石。"
+    },
+    {
+      "index": "125",
+      "word": "Axe",
+      "phonetic": "/æks/",
+      "chinese": "斧",
+      "example": "An axe chops wood faster than your bare hands.",
+      "exampleTranslation": "用斧头砍木头比徒手更快。"
+    },
+    {
+      "index": "126",
+      "word": "Shovel",
+      "phonetic": "/ˈʃʌvəl/",
+      "chinese": "锹",
+      "example": "A shovel is perfect for digging dirt, sand, and gravel.",
+      "exampleTranslation": "锹非常适合挖掘泥土、沙子和砾石。"
+    },
+    {
+      "index": "127",
+      "word": "Hoe",
+      "phonetic": "/hoʊ/",
+      "chinese": "锄",
+      "example": "Use a hoe to turn dirt into farmland for crops.",
+      "exampleTranslation": "用锄头把泥土变成耕地来种作物。"
+    },
+    {
+      "index": "128",
+      "word": "Sword",
+      "phonetic": "/sɔːrd/",
+      "chinese": "剑",
+      "example": "A diamond sword is the best weapon for fighting mobs.",
+      "exampleTranslation": "钻石剑是对抗怪物的最佳武器。"
+    },
+    {
+      "index": "129",
+      "word": "Bow",
+      "phonetic": "/boʊ/",
+      "chinese": "弓",
+      "example": "Shoot monsters from far away with your bow.",
+      "exampleTranslation": "用弓从远处射击怪物。"
+    },
+    {
+      "index": "130",
+      "word": "Arrow",
+      "phonetic": "/ˈæroʊ/",
+      "chinese": "箭",
+      "example": "Each arrow does damage when it hits a mob.",
+      "exampleTranslation": "每支箭射中怪物都会造成伤害。"
+    },
+    {
+      "index": "131",
+      "word": "Crossbow",
+      "phonetic": "/ˈkrɔːsˌboʊ/",
+      "chinese": "弩",
+      "example": "You can load a crossbow before you need it.",
+      "exampleTranslation": "你可以提前装填弩。"
+    },
+    {
+      "index": "132",
+      "word": "Trident",
+      "phonetic": "/ˈtraɪdənt/",
+      "chinese": "三叉戟",
+      "example": "Throw your trident at the enemy like a spear.",
+      "exampleTranslation": "像投掷长矛一样投掷你的三叉戟。"
+    },
+    {
+      "index": "133",
+      "word": "Fishing Rod",
+      "phonetic": "/ˈfɪʃɪŋ rɑːd/",
+      "chinese": "钓鱼竿",
+      "example": "Sit by the river and use your fishing rod to catch fish.",
+      "exampleTranslation": "坐在河边，用你的钓鱼竿钓鱼。"
+    },
+    {
+      "index": "134",
+      "word": "Flint and Steel",
+      "phonetic": "/flɪnt ænd stiːl/",
+      "chinese": "打火石",
+      "example": "Use flint and steel to light the Nether portal on fire.",
+      "exampleTranslation": "用打火石点燃地狱传送门。"
+    },
+    {
+      "index": "135",
+      "word": "Shears",
+      "phonetic": "/ʃɪrz/",
+      "chinese": "剪刀",
+      "example": "Use shears to cut wool from a sheep without hurting it.",
+      "exampleTranslation": "用剪刀剪羊毛而不会伤害羊。"
+    },
+    {
+      "index": "136",
+      "word": "Shield",
+      "phonetic": "/ʃiːld/",
+      "chinese": "盾牌",
+      "example": "Block attacks with your shield to protect yourself.",
+      "exampleTranslation": "用盾牌格挡攻击保护自己。"
+    },
+    {
+      "index": "137",
+      "word": "Bucket",
+      "phonetic": "/ˈbʌkɪt/",
+      "chinese": "桶",
+      "example": "Fill a bucket with water to put out a fire.",
+      "exampleTranslation": "用水桶装水扑灭火焰。"
+    },
+    {
+      "index": "138",
+      "word": "Compass",
+      "phonetic": "/ˈkʌmpəs/",
+      "chinese": "指南针",
+      "example": "A compass always points back to your spawn point.",
+      "exampleTranslation": "指南针总是指向你的出生点。"
+    },
+    {
+      "index": "139",
+      "word": "Clock",
+      "phonetic": "/klɑːk/",
+      "chinese": "时钟",
+      "example": "Check your clock to see if it is day or night.",
+      "exampleTranslation": "看你的时钟判断是白天还是黑夜。"
+    },
+    {
+      "index": "140",
+      "word": "Map",
+      "phonetic": "/mæp/",
+      "chinese": "地图",
+      "example": "Hold a map to see where you are in the world.",
+      "exampleTranslation": "拿着地图可以看到你在世界的位置。"
+    },
+    {
+      "index": "141",
+      "word": "Name Tag",
+      "phonetic": "/neɪm tæɡ/",
+      "chinese": "命名牌",
+      "example": "Use a name tag to give your pet a special name.",
+      "exampleTranslation": "使用命名牌给你的宠物起一个特别的名字。"
+    },
+    {
+      "index": "142",
+      "word": "Lead",
+      "phonetic": "/liːd/",
+      "chinese": "拴绳",
+      "example": "Tie a lead to your horse so it follows you.",
+      "exampleTranslation": "用拴绳绑住你的马，让它跟着你。"
+    },
+    {
+      "index": "143",
+      "word": "Saddle",
+      "phonetic": "/ˈsædəl/",
+      "chinese": "马鞍",
+      "example": "You need a saddle to ride a horse or a pig.",
+      "exampleTranslation": "你需要一个马鞍才能骑马或骑猪。"
+    },
+    {
+      "index": "144",
+      "word": "Book",
+      "phonetic": "/bʊk/",
+      "chinese": "书",
+      "example": "Write your adventure story in a book.",
+      "exampleTranslation": "在书里写下你的冒险故事。"
+    },
+    {
+      "index": "145",
+      "word": "Enchanted Book",
+      "phonetic": "/ɪnˈtʃæntɪd bʊk/",
+      "chinese": "附魔书",
+      "example": "Combine an enchanted book with your sword on the anvil.",
+      "exampleTranslation": "在铁砧上将附魔书和你的剑合成。"
+    },
+    {
+      "index": "146",
+      "word": "Minecart",
+      "phonetic": "/ˈmaɪnˌkɑːrt/",
+      "chinese": "矿车",
+      "example": "Hop in the minecart and ride the rails through the cave.",
+      "exampleTranslation": "跳上矿车，沿着轨道穿过洞穴行驶。"
+    },
+    {
+      "index": "147",
+      "word": "Boat",
+      "phonetic": "/boʊt/",
+      "chinese": "船",
+      "example": "A boat is much faster than swimming across the ocean.",
+      "exampleTranslation": "用船比游泳穿越海洋快得多。"
+    },
+    {
+      "index": "148",
+      "word": "Spyglass",
+      "phonetic": "/ˈspaɪˌɡlæs/",
+      "chinese": "望远镜",
+      "example": "Look through your spyglass to see faraway mountains.",
+      "exampleTranslation": "通过望远镜观看远处的山脉。"
+    },
+    {
+      "index": "149",
+      "word": "Goat Horn",
+      "phonetic": "/ɡoʊt hɔːrn/",
+      "chinese": "山羊角",
+      "example": "Blow the goat horn to make a loud sound for your friends.",
+      "exampleTranslation": "吹响山羊角，为你的朋友发出响亮的声音。"
+    },
+    {
+      "index": "150",
+      "word": "Firework Rocket",
+      "phonetic": "/ˈfaɪərˌwɜːrk ˈrɑːkɪt/",
+      "chinese": "烟花火箭",
+      "example": "Fire a firework rocket to fly faster with your elytra.",
+      "exampleTranslation": "发射烟花火箭，以便用鞘翅飞得更快。"
+    },
+    {
+      "index": "151",
+      "word": "Elytra",
+      "phonetic": "/ɪˈlɪtrə/",
+      "chinese": "鞘翅",
+      "example": "Wear elytra on your back and soar through the sky.",
+      "exampleTranslation": "背上鞘翅，在天空中翱翔。"
+    },
+    {
+      "index": "152",
+      "word": "Lantern",
+      "phonetic": "/ˈlæntərn/",
+      "chinese": "灯笼",
+      "example": "Hang a lantern above the door to light up your path.",
+      "exampleTranslation": "把灯笼挂在门上方，为你的道路照亮。"
+    },
+    {
+      "index": "153",
+      "word": "Spawn Egg",
+      "phonetic": "/spɔːn ɛɡ/",
+      "chinese": "刷怪蛋",
+      "example": "Use a spawn egg to create any mob you want.",
+      "exampleTranslation": "使用刷怪蛋生成你想要的任何生物。"
+    },
+    {
+      "index": "154",
+      "word": "Helmet",
+      "phonetic": "/ˈhɛlmɪt/",
+      "chinese": "头盔",
+      "example": "Always wear a helmet to protect your head.",
+      "exampleTranslation": "随时戴头盔保护你的头部安全。"
+    },
+    {
+      "index": "155",
+      "word": "Chestplate",
+      "phonetic": "/ˈtʃɛstˌpleɪt/",
+      "chinese": "胸甲",
+      "example": "The chestplate gives the most armor points of all pieces.",
+      "exampleTranslation": "胸甲提供所有装备中最高的护甲值。"
+    },
+    {
+      "index": "156",
+      "word": "Leggings",
+      "phonetic": "/ˈlɛɡɪŋz/",
+      "chinese": "护腿",
+      "example": "Diamond leggings are the best leg protection you can get.",
+      "exampleTranslation": "钻石护腿是你能获得的最好的腿部防护。"
+    },
+    {
+      "index": "157",
+      "word": "Boots",
+      "phonetic": "/buːts/",
+      "chinese": "靴子",
+      "example": "Put Feather Falling on your boots so falls hurt less.",
+      "exampleTranslation": "给你的靴子附加轻羽下降，让坠落伤害减轻。"
+    },
+    {
+      "index": "158",
+      "word": "Bread",
+      "phonetic": "/brɛd/",
+      "chinese": "面包",
+      "example": "Bread is easy to make — just put wheat on the crafting table.",
+      "exampleTranslation": "面包很容易制作——只需把小麦放到工作台上。"
+    },
+    {
+      "index": "159",
+      "word": "Apple",
+      "phonetic": "/ˈæpəl/",
+      "chinese": "苹果",
+      "example": "An apple falls from oak tree leaves sometimes.",
+      "exampleTranslation": "苹果有时会从橡树叶上掉下来。"
+    },
+    {
+      "index": "160",
+      "word": "Golden Apple",
+      "phonetic": "/ˈɡoʊldən ˈæpəl/",
+      "chinese": "金苹果",
+      "example": "Eating a golden apple gives you a helpful status effect.",
+      "exampleTranslation": "吃金苹果可以给你带来有益的状态效果。"
+    },
+    {
+      "index": "161",
+      "word": "Enchanted Golden Apple",
+      "phonetic": "/ɪnˈtʃæntɪd ˈɡoʊldən ˈæpəl/",
+      "chinese": "附魔金苹果",
+      "example": "An enchanted golden apple is one of the rarest foods in the game.",
+      "exampleTranslation": "附魔金苹果是游戏中最稀有的食物之一。"
+    },
+    {
+      "index": "162",
+      "word": "Cooked Beef",
+      "phonetic": "/kʊkt biːf/",
+      "chinese": "熟牛肉",
+      "example": "Cooked beef fills up your hunger bar more than raw beef.",
+      "exampleTranslation": "熟牛肉比生牛肉更能填满你的饥饿度。"
+    },
+    {
+      "index": "163",
+      "word": "Cooked Porkchop",
+      "phonetic": "/kʊkt ˈpɔːrkˌtʃɑːp/",
+      "chinese": "熟猪排",
+      "example": "Grill your porkchop in the furnace for a tasty meal.",
+      "exampleTranslation": "把猪排放进熔炉烤，做一顿美味的饭菜。"
+    },
+    {
+      "index": "164",
+      "word": "Cooked Chicken",
+      "phonetic": "/kʊkt ˈtʃɪkɪn/",
+      "chinese": "熟鸡肉",
+      "example": "Don't eat raw chicken — cook it first to stay healthy.",
+      "exampleTranslation": "不要吃生鸡肉——先煮熟才能保持健康。"
+    },
+    {
+      "index": "165",
+      "word": "Cooked Salmon",
+      "phonetic": "/kʊkt ˈsæmən/",
+      "chinese": "熟鲑鱼",
+      "example": "I caught a salmon while fishing and cooked it for dinner.",
+      "exampleTranslation": "我钓到了一条鲑鱼，并把它煮熟做晚餐。"
+    },
+    {
+      "index": "166",
+      "word": "Carrot",
+      "phonetic": "/ˈkærət/",
+      "chinese": "胡萝卜",
+      "example": "Carrots grow on farms and are a healthy snack.",
+      "exampleTranslation": "胡萝卜生长在农场，是一种健康的零食。"
+    },
+    {
+      "index": "167",
+      "word": "Potato",
+      "phonetic": "/pəˈteɪtoʊ/",
+      "chinese": "马铃薯",
+      "example": "Bake a potato in the furnace to make a baked potato.",
+      "exampleTranslation": "把马铃薯放进熔炉烤成烤马铃薯。"
+    },
+    {
+      "index": "168",
+      "word": "Melon",
+      "phonetic": "/ˈmɛlən/",
+      "chinese": "西瓜",
+      "example": "Melon plants grow in the jungle and on farms.",
+      "exampleTranslation": "西瓜植株生长在丛林和农场里。"
+    },
+    {
+      "index": "169",
+      "word": "Pumpkin Pie",
+      "phonetic": "/ˈpʌmpkɪn paɪ/",
+      "chinese": "南瓜派",
+      "example": "Pumpkin pie is one of my favorite foods in Minecraft.",
+      "exampleTranslation": "南瓜派是我在《我的世界》中最喜欢的食物之一。"
+    },
+    {
+      "index": "170",
+      "word": "Cookie",
+      "phonetic": "/ˈkʊki/",
+      "chinese": "曲奇",
+      "example": "Share a cookie with your friends after a long adventure.",
+      "exampleTranslation": "长时间冒险后，和朋友分享一块曲奇。"
+    },
+    {
+      "index": "171",
+      "word": "Cake",
+      "phonetic": "/keɪk/",
+      "chinese": "蛋糕",
+      "example": "Place a cake on the floor and right-click to eat it.",
+      "exampleTranslation": "将蛋糕放在地板上，右键即可食用。"
+    },
+    {
+      "index": "172",
+      "word": "Mushroom Stew",
+      "phonetic": "/ˈmʌʃruːm stuː/",
+      "chinese": "蘑菇汤",
+      "example": "Mushroom stew is a great food that fills up your hunger fast.",
+      "exampleTranslation": "蘑菇汤是一种能快速填满饥饿度的不错食物。"
+    },
+    {
+      "index": "173",
+      "word": "Beetroot",
+      "phonetic": "/ˈbiːtˌruːt/",
+      "chinese": "甜菜根",
+      "example": "Beetroot grows in villages and has a bright red color.",
+      "exampleTranslation": "甜菜根生长在村庄里，拥有鲜艳的红色。"
+    },
+    {
+      "index": "174",
+      "word": "Honey Bottle",
+      "phonetic": "/ˈhʌni ˈbɑːtəl/",
+      "chinese": "蜂蜜瓶",
+      "example": "Drink a honey bottle to remove the poison effect.",
+      "exampleTranslation": "喝一瓶蜂蜜可以解除中毒效果。"
+    },
+    {
+      "index": "175",
+      "word": "Suspicious Stew",
+      "phonetic": "/səˈspɪʃəs stuː/",
+      "chinese": "迷之炖菜",
+      "example": "Suspicious stew gives a random status effect when you eat it.",
+      "exampleTranslation": "食用迷之炖菜会获得随机的状态效果。"
+    },
+    {
+      "index": "176",
+      "word": "Dried Kelp",
+      "phonetic": "/draɪd kɛlp/",
+      "chinese": "干海带",
+      "example": "Dried kelp is a quick snack that you can eat very fast.",
+      "exampleTranslation": "干海带是一种可以快速食用的零食。"
+    },
+    {
+      "index": "177",
+      "word": "Sweet Berries",
+      "phonetic": "/swiːt ˈbɛriz/",
+      "chinese": "甜浆果",
+      "example": "Sweet berries grow on bushes in the taiga biome.",
+      "exampleTranslation": "甜浆果生长在针叶林生物群系的灌木丛中。"
+    },
+    {
+      "index": "178",
+      "word": "Glow Berries",
+      "phonetic": "/ɡloʊ ˈbɛriz/",
+      "chinese": "发光浆果",
+      "example": "Glow berries hang from cave vines and light up the dark.",
+      "exampleTranslation": "发光浆果挂在洞穴藤蔓上，为黑暗处带来光亮。"
+    },
+    {
+      "index": "179",
+      "word": "Cow",
+      "phonetic": "/kaʊ/",
+      "chinese": "牛",
+      "example": "A cow drops beef and leather when you kill it.",
+      "exampleTranslation": "杀死一头牛会掉落牛肉和皮革。"
+    },
+    {
+      "index": "180",
+      "word": "Pig",
+      "phonetic": "/pɪɡ/",
+      "chinese": "猪",
+      "example": "You can ride a pig if you put a saddle on it.",
+      "exampleTranslation": "如果你给猪装上马鞍，就可以骑它。"
+    },
+    {
+      "index": "181",
+      "word": "Sheep",
+      "phonetic": "/ʃiːp/",
+      "chinese": "羊",
+      "example": "Shear the sheep to get wool for your bed.",
+      "exampleTranslation": "剪羊毛可获得用于制作床的羊毛。"
+    },
+    {
+      "index": "182",
+      "word": "Chicken",
+      "phonetic": "/ˈtʃɪkɪn/",
+      "chinese": "鸡",
+      "example": "Chickens lay eggs every few minutes.",
+      "exampleTranslation": "鸡每隔几分钟就会下蛋。"
+    },
+    {
+      "index": "183",
+      "word": "Horse",
+      "phonetic": "/hɔːrs/",
+      "chinese": "马",
+      "example": "Horses run much faster than players.",
+      "exampleTranslation": "马跑得比玩家快得多。"
+    },
+    {
+      "index": "184",
+      "word": "Donkey",
+      "phonetic": "/ˈdɑːŋki/",
+      "chinese": "驴",
+      "example": "A donkey can carry a chest full of your items.",
+      "exampleTranslation": "驴可以携带装满物品的箱子。"
+    },
+    {
+      "index": "185",
+      "word": "Mule",
+      "phonetic": "/mjuːl/",
+      "chinese": "骡子",
+      "example": "A mule is born when you breed a horse with a donkey.",
+      "exampleTranslation": "骡子是通过马和驴繁殖而来的。"
+    },
+    {
+      "index": "186",
+      "word": "Rabbit",
+      "phonetic": "/ˈræbɪt/",
+      "chinese": "兔子",
+      "example": "Rabbits hop around quickly — they are hard to catch!",
+      "exampleTranslation": "兔子跳来跳去，非常迅速——它们很难抓住！"
+    },
+    {
+      "index": "187",
+      "word": "Bat",
+      "phonetic": "/bæt/",
+      "chinese": "蝙蝠",
+      "example": "Bats hang upside down in dark caves.",
+      "exampleTranslation": "蝙蝠倒挂在黑暗的洞穴中。"
+    },
+    {
+      "index": "188",
+      "word": "Squid",
+      "phonetic": "/skwɪd/",
+      "chinese": "鱿鱼",
+      "example": "Squid swim in rivers and oceans and drop ink sacs.",
+      "exampleTranslation": "鱿鱼在河流和海洋中游泳，会掉落墨囊。"
+    },
+    {
+      "index": "189",
+      "word": "Glow Squid",
+      "phonetic": "/ɡloʊ skwɪd/",
+      "chinese": "发光鱿鱼",
+      "example": "Wow — the glow squid shines with a beautiful blue light!",
+      "exampleTranslation": "哇——发光鱿鱼发出美丽的蓝色光芒！"
+    },
+    {
+      "index": "190",
+      "word": "Axolotl",
+      "phonetic": "/ˈæksəˌlɑːtəl/",
+      "chinese": "美西螈",
+      "example": "An axolotl lives in water and helps you fight guardians.",
+      "exampleTranslation": "美西螈生活在水中，帮助你对抗守卫者。"
+    },
+    {
+      "index": "191",
+      "word": "Turtle",
+      "phonetic": "/ˈtɜːrtəl/",
+      "chinese": "海龟",
+      "example": "Sea turtles lay their eggs on the beach.",
+      "exampleTranslation": "海龟在海滩上产卵。"
+    },
+    {
+      "index": "192",
+      "word": "Bee",
+      "phonetic": "/biː/",
+      "chinese": "蜜蜂",
+      "example": "Bees make honey and help flowers grow.",
+      "exampleTranslation": "蜜蜂制作蜂蜜并帮助花朵生长。"
+    },
+    {
+      "index": "193",
+      "word": "Fox",
+      "phonetic": "/fɑːks/",
+      "chinese": "狐狸",
+      "example": "A fox sleeps during the day and hunts at night.",
+      "exampleTranslation": "狐狸白天睡觉，晚上狩猎。"
+    },
+    {
+      "index": "194",
+      "word": "Panda",
+      "phonetic": "/ˈpændə/",
+      "chinese": "熊猫",
+      "example": "Pandas love eating bamboo in the jungle.",
+      "exampleTranslation": "熊猫喜欢在丛林里吃竹子。"
+    },
+    {
+      "index": "195",
+      "word": "Parrot",
+      "phonetic": "/ˈpærət/",
+      "chinese": "鹦鹉",
+      "example": "Feed a parrot a cookie — wait, that will hurt it!",
+      "exampleTranslation": "喂鹦鹉吃饼干——等等，那会伤害它！"
+    },
+    {
+      "index": "196",
+      "word": "Frog",
+      "phonetic": "/frɑːɡ/",
+      "chinese": "青蛙",
+      "example": "Frogs live in swamps and eat slimes.",
+      "exampleTranslation": "青蛙生活在沼泽地里，吃史莱姆。"
+    },
+    {
+      "index": "197",
+      "word": "Tadpole",
+      "phonetic": "/ˈtædˌpoʊl/",
+      "chinese": "蝌蚪",
+      "example": "A tadpole grows into a frog over time.",
+      "exampleTranslation": "蝌蚪随着时间长大变成青蛙。"
+    },
+    {
+      "index": "198",
+      "word": "Sniffer",
+      "phonetic": "/ˈsnɪfər/",
+      "chinese": "嗅探兽",
+      "example": "The sniffer uses its big nose to find ancient seeds.",
+      "exampleTranslation": "嗅探兽用它的大鼻子寻找远古种子。"
+    },
+    {
+      "index": "199",
+      "word": "Allay",
+      "phonetic": "/əˈleɪ/",
+      "chinese": "悦灵",
+      "example": "An allay collects items and dances to music.",
+      "exampleTranslation": "悦灵会收集物品并随着音乐跳舞。"
+    },
+    {
+      "index": "200",
+      "word": "Camel",
+      "phonetic": "/ˈkæməl/",
+      "chinese": "骆驼",
+      "example": "Two players can ride a camel at the same time.",
+      "exampleTranslation": "两名玩家可以同时骑乘一只骆驼。"
+    },
+    {
+      "index": "201",
+      "word": "Armadillo",
+      "phonetic": "/ˌɑːrməˈdɪloʊ/",
+      "chinese": "犰狳",
+      "example": "An armadillo rolls into a ball when it is scared.",
+      "exampleTranslation": "当犰狳害怕时，它会卷成一个球。"
+    },
+    {
+      "index": "202",
+      "word": "Cat",
+      "phonetic": "/kæt/",
+      "chinese": "猫",
+      "example": "A tamed cat scares creepers away from your house.",
+      "exampleTranslation": "一只被驯服的猫会把苦力怕赶出你的房子。"
+    },
+    {
+      "index": "203",
+      "word": "Ocelot",
+      "phonetic": "/ˈɑːsɪˌlɑːt/",
+      "chinese": "豹猫",
+      "example": "Ocelots are wild cats that live in the jungle.",
+      "exampleTranslation": "豹猫是生活在丛林里的野猫。"
+    },
+    {
+      "index": "204",
+      "word": "Mooshroom",
+      "phonetic": "/ˈmuːʃruːm/",
+      "chinese": "哞菇牛",
+      "example": "A mooshroom is a special cow covered in red mushrooms.",
+      "exampleTranslation": "哞菇牛是一种全身长满红色蘑菇的特殊奶牛。"
+    },
+    {
+      "index": "205",
+      "word": "Wolf",
+      "phonetic": "/wʊlf/",
+      "chinese": "狼",
+      "example": "Tame a wolf with bones and it will fight for you.",
+      "exampleTranslation": "用骨头驯服狼，它会为你而战。"
+    },
+    {
+      "index": "206",
+      "word": "Enderman",
+      "phonetic": "/ˈɛndərˌmæn/",
+      "chinese": "末影人",
+      "example": "Never look an enderman in the eyes or it will attack you.",
+      "exampleTranslation": "永远不要直视末影人的眼睛，否则它会攻击你。"
+    },
+    {
+      "index": "207",
+      "word": "Dolphin",
+      "phonetic": "/ˈdɑːlfɪn/",
+      "chinese": "海豚",
+      "example": "Dolphins swim fast and guide you to treasure.",
+      "exampleTranslation": "海豚游得很快并引导你找到宝藏。"
+    },
+    {
+      "index": "208",
+      "word": "Iron Golem",
+      "phonetic": "/ˈaɪərn ˈɡoʊləm/",
+      "chinese": "铁傀儡",
+      "example": "The iron golem protects villagers from monsters.",
+      "exampleTranslation": "铁傀儡保护村民免受怪物袭击。"
+    },
+    {
+      "index": "209",
+      "word": "Zombie",
+      "phonetic": "/ˈzɑːmbi/",
+      "chinese": "僵尸",
+      "example": "Zombies come out at night and burn in the sunlight.",
+      "exampleTranslation": "僵尸在夜晚出现，在阳光下会燃烧。"
+    },
+    {
+      "index": "210",
+      "word": "Skeleton",
+      "phonetic": "/ˈskɛlɪtən/",
+      "chinese": "骷髅",
+      "example": "A skeleton shoots arrows at you from far away.",
+      "exampleTranslation": "骷髅从远处向你射箭。"
+    },
+    {
+      "index": "211",
+      "word": "Creeper",
+      "phonetic": "/ˈkriːpər/",
+      "chinese": "苦力怕",
+      "example": "Run away from the creeper before it explodes!",
+      "exampleTranslation": "在苦力怕爆炸之前赶紧跑开！"
+    },
+    {
+      "index": "212",
+      "word": "Spider",
+      "phonetic": "/ˈspaɪdər/",
+      "chinese": "蜘蛛",
+      "example": "Spiders can climb up walls and jump at you.",
+      "exampleTranslation": "蜘蛛能爬墙并向你跳跃。"
+    },
+    {
+      "index": "213",
+      "word": "Cave Spider",
+      "phonetic": "/keɪv ˈspaɪdər/",
+      "chinese": "洞穴蜘蛛",
+      "example": "Cave spiders are smaller than normal spiders but they poison you.",
+      "exampleTranslation": "洞穴蜘蛛比普通蜘蛛小，但会使你中毒。"
+    },
+    {
+      "index": "214",
+      "word": "Witch",
+      "phonetic": "/wɪtʃ/",
+      "chinese": "女巫",
+      "example": "The witch throws bad potions at you.",
+      "exampleTranslation": "女巫朝你扔坏药水。"
+    },
+    {
+      "index": "215",
+      "word": "Slime",
+      "phonetic": "/slaɪm/",
+      "chinese": "史莱姆",
+      "example": "Big slimes split into smaller slimes when you hit them.",
+      "exampleTranslation": "大的史莱姆被击中后会分裂成更小的史莱姆。"
+    },
+    {
+      "index": "216",
+      "word": "Phantom",
+      "phonetic": "/ˈfæntəm/",
+      "chinese": "幻翼",
+      "example": "Phantoms attack players who have not slept for many days.",
+      "exampleTranslation": "幻翼攻击那些多日未睡的玩家。"
+    },
+    {
+      "index": "217",
+      "word": "Drowned",
+      "phonetic": "/draʊnd/",
+      "chinese": "溺尸",
+      "example": "Drowned zombies live underwater and can throw tridents.",
+      "exampleTranslation": "溺尸生活在水下，能投掷三叉戟。"
+    },
+    {
+      "index": "218",
+      "word": "Husk",
+      "phonetic": "/hʌsk/",
+      "chinese": "尸壳",
+      "example": "Husks spawn in the desert and do not burn in the sun.",
+      "exampleTranslation": "尸壳在沙漠生成，不会在阳光下燃烧。"
+    },
+    {
+      "index": "219",
+      "word": "Stray",
+      "phonetic": "/streɪ/",
+      "chinese": "流浪者",
+      "example": "A stray is a skeleton that lives in cold biomes.",
+      "exampleTranslation": "流浪者是生活在寒冷生物群系的骷髅。"
+    },
+    {
+      "index": "220",
+      "word": "Wither Skeleton",
+      "phonetic": "/ˈwɪðər ˈskɛlɪtən/",
+      "chinese": "凋灵骷髅",
+      "example": "Wither skeletons live in nether fortresses and are very dangerous.",
+      "exampleTranslation": "凋灵骷髅生活在下界要塞，非常危险。"
+    },
+    {
+      "index": "221",
+      "word": "Blaze",
+      "phonetic": "/bleɪz/",
+      "chinese": "烈焰人",
+      "example": "Blazes fly and shoot fireballs at you.",
+      "exampleTranslation": "烈焰人会飞行并向你发射火球。"
+    },
+    {
+      "index": "222",
+      "word": "Ghast",
+      "phonetic": "/ɡæst/",
+      "chinese": "恶魂",
+      "example": "A ghast floats in the Nether and fires giant fireballs.",
+      "exampleTranslation": "恶魂漂浮在下界，并发射巨大的火球。"
+    },
+    {
+      "index": "223",
+      "word": "Magma Cube",
+      "phonetic": "/ˈmæɡmə kjuːb/",
+      "chinese": "岩浆怪",
+      "example": "Magma cubes bounce around and live in the Nether.",
+      "exampleTranslation": "岩浆怪在下界跳跃生活。"
+    },
+    {
+      "index": "224",
+      "word": "Hoglin",
+      "phonetic": "/ˈhɑːɡlɪn/",
+      "chinese": "疣猪兽",
+      "example": "Hoglins are dangerous pig-like creatures in the Nether.",
+      "exampleTranslation": "疣猪兽是下界中危险的猪形生物。"
+    },
+    {
+      "index": "225",
+      "word": "Piglin",
+      "phonetic": "/ˈpɪɡlɪn/",
+      "chinese": "猪灵",
+      "example": "Give piglins gold and they will trade items with you.",
+      "exampleTranslation": "给猪灵金子，它们会与你交易物品。"
+    },
+    {
+      "index": "226",
+      "word": "Shulker",
+      "phonetic": "/ˈʃʌlkər/",
+      "chinese": "潜影贝",
+      "example": "A shulker hides in its shell and shoots bullets at you.",
+      "exampleTranslation": "潜影贝藏在它的壳里，并向你发射子弹。"
+    },
+    {
+      "index": "227",
+      "word": "Guardian",
+      "phonetic": "/ˈɡɑːrdiən/",
+      "chinese": "守卫者",
+      "example": "Guardians protect the ocean monument with laser beams.",
+      "exampleTranslation": "守卫者用激光束保护海洋神殿。"
+    },
+    {
+      "index": "228",
+      "word": "Elder Guardian",
+      "phonetic": "/ˈɛldər ˈɡɑːrdiən/",
+      "chinese": "远古守卫者",
+      "example": "The elder guardian is the boss of the ocean monument.",
+      "exampleTranslation": "远古守卫者是海洋神殿的首领。"
+    },
+    {
+      "index": "229",
+      "word": "Silverfish",
+      "phonetic": "/ˈsɪlvərˌfɪʃ/",
+      "chinese": "蠹鱼",
+      "example": "Silverfish hide inside stone blocks near the stronghold.",
+      "exampleTranslation": "蠹鱼藏在要塞附近的石块内。"
+    },
+    {
+      "index": "230",
+      "word": "Ravager",
+      "phonetic": "/ˈrævɪdʒər/",
+      "chinese": "劫掠兽",
+      "example": "A ravager is a huge beast that destroys crops in raids.",
+      "exampleTranslation": "劫掠兽是巨大野兽，在袭击中摧毁庄稼。"
+    },
+    {
+      "index": "231",
+      "word": "Pillager",
+      "phonetic": "/ˈpɪlɪdʒər/",
+      "chinese": "掠夺者",
+      "example": "Pillagers carry crossbows and attack villages.",
+      "exampleTranslation": "掠夺者手持弩，攻击村庄。"
+    },
+    {
+      "index": "232",
+      "word": "Vindicator",
+      "phonetic": "/ˈvɪndɪˌkeɪtər/",
+      "chinese": "卫道士",
+      "example": "A vindicator runs at you and swings its axe hard.",
+      "exampleTranslation": "卫道士向你冲过来，猛烈挥动斧头。"
+    },
+    {
+      "index": "233",
+      "word": "Evoker",
+      "phonetic": "/ˈiːvoʊkər/",
+      "chinese": "唤魔者",
+      "example": "The evoker summons vex spirits to fight for it.",
+      "exampleTranslation": "唤魔者召唤恼鬼灵魂为它战斗。"
+    },
+    {
+      "index": "234",
+      "word": "Vex",
+      "phonetic": "/vɛks/",
+      "chinese": "恼鬼",
+      "example": "Vex ghosts can fly through walls and attack you.",
+      "exampleTranslation": "恼鬼幽灵可以穿墙飞行并攻击你。"
+    },
+    {
+      "index": "235",
+      "word": "Warden",
+      "phonetic": "/ˈwɔːrdən/",
+      "chinese": "监守者",
+      "example": "The warden is nearly blind but has a very strong sense of sound.",
+      "exampleTranslation": "监守者几乎失明，但具有非常强的听觉。"
+    },
+    {
+      "index": "236",
+      "word": "Breeze",
+      "phonetic": "/briːz/",
+      "chinese": "风弹怪",
+      "example": "The breeze jumps around and shoots wind charges at you.",
+      "exampleTranslation": "风弹怪跳来跳去，向你发射风能冲击。"
+    },
+    {
+      "index": "237",
+      "word": "Plains",
+      "phonetic": "/pleɪnz/",
+      "chinese": "平原",
+      "example": "The plains biome is flat and great for building your first house.",
+      "exampleTranslation": "平原生物群系地势平坦，非常适合建造你的第一个房子。"
+    },
+    {
+      "index": "238",
+      "word": "Forest",
+      "phonetic": "/ˈfɔːrɪst/",
+      "chinese": "森林",
+      "example": "There are lots of trees in the forest biome.",
+      "exampleTranslation": "森林生物群系中有许多树木。"
+    },
+    {
+      "index": "239",
+      "word": "Desert",
+      "phonetic": "/ˈdɛzərt/",
+      "chinese": "沙漠",
+      "example": "It is very hot and dry in the desert biome.",
+      "exampleTranslation": "沙漠生物群系非常炎热且干燥。"
+    },
+    {
+      "index": "240",
+      "word": "Jungle",
+      "phonetic": "/ˈdʒʌŋɡəl/",
+      "chinese": "丛林",
+      "example": "The jungle is full of tall trees, vines, and parrots.",
+      "exampleTranslation": "丛林中有高大的树木、藤蔓和鹦鹉。"
+    },
+    {
+      "index": "241",
+      "word": "Swamp",
+      "phonetic": "/swɑːmp/",
+      "chinese": "沼泽",
+      "example": "Witches and frogs live in the dark swamp biome.",
+      "exampleTranslation": "女巫和青蛙生活在黑暗的沼泽生物群系中。"
+    },
+    {
+      "index": "242",
+      "word": "Taiga",
+      "phonetic": "/ˈtaɪɡə/",
+      "chinese": "针叶林",
+      "example": "The taiga is cold and covered with spruce trees.",
+      "exampleTranslation": "针叶林寒冷且覆盖着云杉树。"
+    },
+    {
+      "index": "243",
+      "word": "Tundra",
+      "phonetic": "/ˈtʌndrə/",
+      "chinese": "冻原",
+      "example": "The tundra is a frozen land where polar bears live.",
+      "exampleTranslation": "冻原是一片极地熊生活的冰冻土地。"
+    },
+    {
+      "index": "244",
+      "word": "Ocean",
+      "phonetic": "/ˈoʊʃən/",
+      "chinese": "海洋",
+      "example": "The ocean is huge and full of fish, dolphins, and shipwrecks.",
+      "exampleTranslation": "海洋辽阔，充满了鱼类、海豚和沉船。"
+    },
+    {
+      "index": "245",
+      "word": "Mountain",
+      "phonetic": "/ˈmaʊntən/",
+      "chinese": "山地",
+      "example": "Goats jump on mountain peaks very high in the sky.",
+      "exampleTranslation": "山羊在高耸入云的山峰上跳跃。"
+    },
+    {
+      "index": "246",
+      "word": "Savanna",
+      "phonetic": "/səˈvænə/",
+      "chinese": "热带草原",
+      "example": "The savanna has tall acacia trees and a sunny sky.",
+      "exampleTranslation": "热带草原上有高大的金合欢树和晴朗的天空。"
+    },
+    {
+      "index": "247",
+      "word": "Badlands",
+      "phonetic": "/ˈbædˌlændz/",
+      "chinese": "恶地",
+      "example": "The badlands has orange and red terracotta everywhere.",
+      "exampleTranslation": "恶地到处都是橙色和红色的陶瓦。"
+    },
+    {
+      "index": "248",
+      "word": "Mushroom Fields",
+      "phonetic": "/ˈmʌʃruːm fiːldz/",
+      "chinese": "蘑菇岛",
+      "example": "What a strange biome — everything is made of mushrooms!",
+      "exampleTranslation": "多么奇怪的生物群系——所有东西都是由蘑菇构成的！"
+    },
+    {
+      "index": "249",
+      "word": "Beach",
+      "phonetic": "/biːtʃ/",
+      "chinese": "沙滩",
+      "example": "Turtles lay their eggs on the sandy beach.",
+      "exampleTranslation": "海龟在沙滩上产卵。"
+    },
+    {
+      "index": "250",
+      "word": "River",
+      "phonetic": "/ˈrɪvər/",
+      "chinese": "河流",
+      "example": "Follow the river to find a village nearby.",
+      "exampleTranslation": "沿着河流可以找到附近的村庄。"
+    },
+    {
+      "index": "251",
+      "word": "Cave",
+      "phonetic": "/keɪv/",
+      "chinese": "洞穴",
+      "example": "Bring torches when you explore a dark cave.",
+      "exampleTranslation": "探险黑暗的洞穴时带上火把。"
+    },
+    {
+      "index": "252",
+      "word": "Deep Dark",
+      "phonetic": "/diːp dɑːrk/",
+      "chinese": "深暗之地",
+      "example": "The Deep Dark is very quiet, but the Warden is listening.",
+      "exampleTranslation": "深暗之地非常安静，但守卫者正在倾听。"
+    },
+    {
+      "index": "253",
+      "word": "Mangrove Swamp",
+      "phonetic": "/ˈmæŋˌɡroʊv swɑːmp/",
+      "chinese": "红树林沼泽",
+      "example": "Mangrove trees grow in the water of the mangrove swamp.",
+      "exampleTranslation": "红树林生长在红树林沼泽的水中。"
+    },
+    {
+      "index": "254",
+      "word": "Cherry Grove",
+      "phonetic": "/ˈtʃɛri ɡroʊv/",
+      "chinese": "樱花树林",
+      "example": "The cherry grove is the most beautiful biome with pink blossoms.",
+      "exampleTranslation": "樱花树林是拥有粉色花朵的最美丽生物群系。"
+    },
+    {
+      "index": "255",
+      "word": "Sharpness",
+      "phonetic": "/ˈʃɑːrpnɪs/",
+      "chinese": "锋利",
+      "example": "Sharpness makes your sword deal extra damage.",
+      "exampleTranslation": "锋利使你的剑造成额外伤害。"
+    },
+    {
+      "index": "256",
+      "word": "Smite",
+      "phonetic": "/smaɪt/",
+      "chinese": "亡灵杀手",
+      "example": "Smite is great for killing zombies and skeletons.",
+      "exampleTranslation": "亡灵杀手非常适合杀死僵尸和骷髅。"
+    },
+    {
+      "index": "257",
+      "word": "Bane of Arthropods",
+      "phonetic": "/beɪn əv ˈɑːrθrəˌpɑːdz/",
+      "chinese": "节肢杀手",
+      "example": "Bane of Arthropods works well against spiders.",
+      "exampleTranslation": "节肢杀手对蜘蛛效果很好。"
+    },
+    {
+      "index": "258",
+      "word": "Knockback",
+      "phonetic": "/ˈnɑːkˌbæk/",
+      "chinese": "击退",
+      "example": "Knockback sends enemies flying backward when you hit them.",
+      "exampleTranslation": "击退使敌人在被击中时向后飞出。"
+    },
+    {
+      "index": "259",
+      "word": "Fire Aspect",
+      "phonetic": "/ˈfaɪər ˈæspɛkt/",
+      "chinese": "火焰附加",
+      "example": "Fire Aspect sets mobs on fire when you hit them with your sword.",
+      "exampleTranslation": "火焰附加使你用剑击中的生物着火。"
+    },
+    {
+      "index": "260",
+      "word": "Looting",
+      "phonetic": "/ˈluːtɪŋ/",
+      "chinese": "抢夺",
+      "example": "The Looting enchantment helps mobs drop more items.",
+      "exampleTranslation": "抢夺附魔帮助生物掉落更多物品。"
+    },
+    {
+      "index": "261",
+      "word": "Efficiency",
+      "phonetic": "/ɪˈfɪʃənsi/",
+      "chinese": "效率",
+      "example": "An Efficiency pickaxe mines blocks much faster.",
+      "exampleTranslation": "带有效率的镐子采矿速度更快。"
+    },
+    {
+      "index": "262",
+      "word": "Silk Touch",
+      "phonetic": "/sɪlk tʌtʃ/",
+      "chinese": "精准采集",
+      "example": "With Silk Touch, you can pick up a grass block without breaking it.",
+      "exampleTranslation": "使用精准采集，你可以完整地拾取草方块而不将其破坏。"
+    },
+    {
+      "index": "263",
+      "word": "Fortune",
+      "phonetic": "/ˈfɔːrtʃən/",
+      "chinese": "时运",
+      "example": "Fortune gives you more diamonds when you mine diamond ore.",
+      "exampleTranslation": "时运附魔让你在挖掘钻石矿时获得更多钻石。"
+    },
+    {
+      "index": "264",
+      "word": "Protection",
+      "phonetic": "/prəˈtɛkʃən/",
+      "chinese": "保护",
+      "example": "Put Protection on your armor to take less damage.",
+      "exampleTranslation": "给你的盔甲附加保护可以减少受到的伤害。"
+    },
+    {
+      "index": "265",
+      "word": "Thorns",
+      "phonetic": "/θɔːrnz/",
+      "chinese": "荆棘",
+      "example": "Thorns hurts enemies when they attack you.",
+      "exampleTranslation": "荆棘附魔在敌人攻击你时会反弹伤害。"
+    },
+    {
+      "index": "266",
+      "word": "Mending",
+      "phonetic": "/ˈmɛndɪŋ/",
+      "chinese": "经验修补",
+      "example": "Mending repairs your tools when you collect XP.",
+      "exampleTranslation": "经验修补让你在收集经验时自动修复工具。"
+    },
+    {
+      "index": "267",
+      "word": "Infinity",
+      "phonetic": "/ɪnˈfɪnɪti/",
+      "chinese": "无限",
+      "example": "With Infinity, you only need one arrow to shoot forever.",
+      "exampleTranslation": "有了无限附魔，你只需要一支箭就能无限射击。"
+    },
+    {
+      "index": "268",
+      "word": "Power",
+      "phonetic": "/ˈpaʊər/",
+      "chinese": "力量",
+      "example": "Power makes your bow shoot harder and farther.",
+      "exampleTranslation": "力量附魔让你的弓箭射得更远更有力。"
+    },
+    {
+      "index": "269",
+      "word": "Punch",
+      "phonetic": "/pʌntʃ/",
+      "chinese": "冲击",
+      "example": "The Punch enchantment knocks enemies back with each arrow.",
+      "exampleTranslation": "冲击附魔让每支箭射中敌人时都会将其击退。"
+    },
+    {
+      "index": "270",
+      "word": "Flame",
+      "phonetic": "/fleɪm/",
+      "chinese": "火矢",
+      "example": "Flame sets mobs on fire when your arrow hits them.",
+      "exampleTranslation": "火矢附魔让你的箭射中生物时点燃它们。"
+    },
+    {
+      "index": "271",
+      "word": "Feather Falling",
+      "phonetic": "/ˈfɛðər ˈfɔːlɪŋ/",
+      "chinese": "摔落保护",
+      "example": "Feather Falling on boots reduces fall damage a lot.",
+      "exampleTranslation": "摔落保护附魔的靴子大幅减少掉落伤害。"
+    },
+    {
+      "index": "272",
+      "word": "Depth Strider",
+      "phonetic": "/dɛpθ ˈstraɪdər/",
+      "chinese": "深海探索者",
+      "example": "Depth Strider helps you swim faster underwater.",
+      "exampleTranslation": "深海探索者附魔让你在水下游泳更快。"
+    },
+    {
+      "index": "273",
+      "word": "Frost Walker",
+      "phonetic": "/frɔːst ˈwɔːkər/",
+      "chinese": "冰霜行者",
+      "example": "Frost Walker turns water into ice as you walk on it.",
+      "exampleTranslation": "冰霜行者附魔让你走过水面时变成冰。"
+    },
+    {
+      "index": "274",
+      "word": "Aqua Affinity",
+      "phonetic": "/ˈækwə əˈfɪnɪti/",
+      "chinese": "水下速掘",
+      "example": "Aqua Affinity lets you mine blocks at full speed underwater.",
+      "exampleTranslation": "水下速掘附魔让你在水下矿速不受影响。"
+    },
+    {
+      "index": "275",
+      "word": "Respiration",
+      "phonetic": "/ˌrɛspɪˈreɪʃən/",
+      "chinese": "水下呼吸",
+      "example": "Respiration lets you hold your breath longer underwater.",
+      "exampleTranslation": "水下呼吸附魔让你在水下憋气时间更长。"
+    },
+    {
+      "index": "276",
+      "word": "Channeling",
+      "phonetic": "/ˈtʃænəlɪŋ/",
+      "chinese": "引雷",
+      "example": "Channeling calls down lightning when you throw your trident in a storm.",
+      "exampleTranslation": "引雷附魔使你在暴风雨中投掷三叉戟时召唤闪电。"
+    },
+    {
+      "index": "277",
+      "word": "Riptide",
+      "phonetic": "/ˈrɪptaɪd/",
+      "chinese": "激流",
+      "example": "Riptide launches you through the air when it is raining.",
+      "exampleTranslation": "激流附魔让你在下雨时被推进空中飞行。"
+    },
+    {
+      "index": "278",
+      "word": "Loyalty",
+      "phonetic": "/ˈlɔɪəlti/",
+      "chinese": "忠诚",
+      "example": "A trident with Loyalty always comes back to your hand.",
+      "exampleTranslation": "忠诚附魔让附魔的三叉戟总会飞回你手中。"
+    },
+    {
+      "index": "279",
+      "word": "Impaling",
+      "phonetic": "/ɪmˈpeɪlɪŋ/",
+      "chinese": "穿刺",
+      "example": "Impaling does extra damage to sea creatures.",
+      "exampleTranslation": "穿刺附魔对海洋生物造成额外伤害。"
+    },
+    {
+      "index": "280",
+      "word": "Unbreaking",
+      "phonetic": "/ʌnˈbreɪkɪŋ/",
+      "chinese": "耐久",
+      "example": "Unbreaking makes your tools last much longer before breaking.",
+      "exampleTranslation": "耐久附魔让你的工具在损坏前使用时间更久。"
+    },
+    {
+      "index": "281",
+      "word": "Multishot",
+      "phonetic": "/ˈmʌltiˌʃɑːt/",
+      "chinese": "多重射击",
+      "example": "Multishot fires three arrows at once from your crossbow.",
+      "exampleTranslation": "多重射击可以让你的弩同时发射三支箭。"
+    },
+    {
+      "index": "282",
+      "word": "Piercing",
+      "phonetic": "/ˈpɪrsɪŋ/",
+      "chinese": "穿透",
+      "example": "Piercing arrows go through enemies and hit the one behind too.",
+      "exampleTranslation": "穿透箭能穿过敌人，击中后面的目标。"
+    },
+    {
+      "index": "283",
+      "word": "Quick Charge",
+      "phonetic": "/kwɪk tʃɑːrdʒ/",
+      "chinese": "快速装填",
+      "example": "Quick Charge makes your crossbow reload much faster.",
+      "exampleTranslation": "快速装填让你的弩装填速度大大加快。"
+    },
+    {
+      "index": "284",
+      "word": "Soul Speed",
+      "phonetic": "/soʊl spiːd/",
+      "chinese": "灵魂疾行",
+      "example": "Soul Speed lets you run fast on soul sand in the Nether.",
+      "exampleTranslation": "灵魂疾行让你在下界的灵魂沙上快速奔跑。"
+    },
+    {
+      "index": "285",
+      "word": "Curse of Vanishing",
+      "phonetic": "/kɜːrs əv ˈvænɪʃɪŋ/",
+      "chinese": "消失诅咒",
+      "example": "A Curse of Vanishing item disappears when you die.",
+      "exampleTranslation": "带有消失诅咒的物品在你死亡时会消失。"
+    },
+    {
+      "index": "286",
+      "word": "Curse of Binding",
+      "phonetic": "/kɜːrs əv ˈbaɪndɪŋ/",
+      "chinese": "绑定诅咒",
+      "example": "The Curse of Binding means you cannot take off that armor.",
+      "exampleTranslation": "绑定诅咒意味着你无法取下那件盔甲。"
+    },
+    {
+      "index": "287",
+      "word": "Overworld",
+      "phonetic": "/ˈoʊvərˌwɜːrld/",
+      "chinese": "主世界",
+      "example": "The Overworld is the main world where you start your game.",
+      "exampleTranslation": "主世界是你开始游戏的主要世界。"
+    },
+    {
+      "index": "288",
+      "word": "The Nether",
+      "phonetic": "/ðə ˈnɛðər/",
+      "chinese": "下界",
+      "example": "The Nether is a hot, dark place full of dangerous mobs.",
+      "exampleTranslation": "下界是一个炎热、黑暗且充满危险怪物的地方。"
+    },
+    {
+      "index": "289",
+      "word": "The End",
+      "phonetic": "/ðə ɛnd/",
+      "chinese": "末地",
+      "example": "Travel to The End to face the Ender Dragon.",
+      "exampleTranslation": "前往末地去面对末影龙。"
+    },
+    {
+      "index": "290",
+      "word": "Nether Portal",
+      "phonetic": "/ˈnɛðər ˈpɔːrtəl/",
+      "chinese": "下界传送门",
+      "example": "Step into the Nether Portal to go to the Nether dimension.",
+      "exampleTranslation": "走进下界传送门就能进入下界维度。"
+    },
+    {
+      "index": "291",
+      "word": "End Portal",
+      "phonetic": "/ɛnd ˈpɔːrtəl/",
+      "chinese": "末地传送门",
+      "example": "You need twelve eyes of ender to activate the End Portal.",
+      "exampleTranslation": "你需要十二个末影之眼来激活末地传送门。"
+    },
+    {
+      "index": "292",
+      "word": "Stronghold",
+      "phonetic": "/ˈstrɔːŋˌhoʊld/",
+      "chinese": "要塞",
+      "example": "The stronghold is a huge underground fortress with many rooms.",
+      "exampleTranslation": "要塞是一个巨大的地下堡垒，有许多房间。"
+    },
+    {
+      "index": "293",
+      "word": "Village",
+      "phonetic": "/ˈvɪlɪdʒ/",
+      "chinese": "村庄",
+      "example": "There are many friendly villagers living in the village.",
+      "exampleTranslation": "村庄里住着许多友好的村民。"
+    },
+    {
+      "index": "294",
+      "word": "Dungeon",
+      "phonetic": "/ˈdʌŋɡən/",
+      "chinese": "地牢",
+      "example": "A dungeon has a monster spawner and two chests inside.",
+      "exampleTranslation": "地牢里面有一个怪物刷怪笼和两个箱子。"
+    },
+    {
+      "index": "295",
+      "word": "Mineshaft",
+      "phonetic": "/ˈmaɪnˌʃæft/",
+      "chinese": "废弃矿井",
+      "example": "Old mineshafts are easy to get lost in — be careful!",
+      "exampleTranslation": "废弃矿井很容易迷路——请小心！"
+    },
+    {
+      "index": "296",
+      "word": "Temple",
+      "phonetic": "/ˈtɛmpəl/",
+      "chinese": "神殿",
+      "example": "A jungle temple has traps and treasure inside.",
+      "exampleTranslation": "丛林神殿内部有陷阱和宝藏。"
+    },
+    {
+      "index": "297",
+      "word": "Pyramid",
+      "phonetic": "/ˈpɪrəmɪd/",
+      "chinese": "金字塔",
+      "example": "A desert pyramid hides four treasure chests under the floor.",
+      "exampleTranslation": "沙漠金字塔的地板下面藏有四个宝箱。"
+    },
+    {
+      "index": "298",
+      "word": "Nether Fortress",
+      "phonetic": "/ˈnɛðər ˈfɔːrtrɪs/",
+      "chinese": "下界堡垒",
+      "example": "Blaze rods only drop from blazes inside a Nether Fortress.",
+      "exampleTranslation": "烈焰棒只从下界堡垒内的烈焰人那里掉落。"
+    },
+    {
+      "index": "299",
+      "word": "Bastion Remnant",
+      "phonetic": "/ˈbæstʃən ˈrɛmnənt/",
+      "chinese": "堡垒遗迹",
+      "example": "Piglins live in bastion remnants and guard lots of gold.",
+      "exampleTranslation": "猪灵居住在堡垒遗迹中，守护着大量黄金。"
+    },
+    {
+      "index": "300",
+      "word": "End City",
+      "phonetic": "/ɛnd ˈsɪti/",
+      "chinese": "末地城",
+      "example": "End cities have shulkers and elytra wings waiting inside.",
+      "exampleTranslation": "末地城里有潜影贝和等待发现的鞘翅。"
+    },
+    {
+      "index": "301",
+      "word": "Ocean Monument",
+      "phonetic": "/ˈoʊʃən ˈmɑːnjumənt/",
+      "chinese": "海底神殿",
+      "example": "The ocean monument is a huge underwater temple with guardians.",
+      "exampleTranslation": "海底神殿是一个巨大的水下神殿，有守卫守护。"
+    },
+    {
+      "index": "302",
+      "word": "Woodland Mansion",
+      "phonetic": "/ˈwʊdlənd ˈmænʃən/",
+      "chinese": "林地府邸",
+      "example": "A woodland mansion is a very big house full of illagers.",
+      "exampleTranslation": "林地府邸是一座非常大的房子，里面满是掠夺者。"
+    },
+    {
+      "index": "303",
+      "word": "Ancient City",
+      "phonetic": "/ˈeɪnʃənt ˈsɪti/",
+      "chinese": "远古城市",
+      "example": "The ancient city in the Deep Dark is home to the Warden.",
+      "exampleTranslation": "远古城市位于幽暗深渊，是守卫者的家。"
+    },
+    {
+      "index": "304",
+      "word": "Trial Chamber",
+      "phonetic": "/ˈtraɪəl ˈtʃeɪmbər/",
+      "chinese": "考验密室",
+      "example": "Inside the trial chamber, you fight waves of tough mobs.",
+      "exampleTranslation": "在考验密室里，你会面对一波又一波的强敌。"
+    },
+    {
+      "index": "305",
+      "word": "Ender Dragon",
+      "phonetic": "/ˈɛndər ˈdræɡən/",
+      "chinese": "末影龙",
+      "example": "The Ender Dragon is the final boss of Minecraft.",
+      "exampleTranslation": "末影龙是《我的世界》的最终 boss。"
+    },
+    {
+      "index": "306",
+      "word": "Wither",
+      "phonetic": "/ˈwɪðər/",
+      "chinese": "凋灵",
+      "example": "Build a Wither yourself if you want a great challenge.",
+      "exampleTranslation": "如果你想要一个巨大的挑战，就自己召唤一个凋灵。"
+    },
+    {
+      "index": "307",
+      "word": "Difficulty",
+      "phonetic": "/ˈdɪfɪkəlti/",
+      "chinese": "难度",
+      "example": "You can change the difficulty from Peaceful to Hard.",
+      "exampleTranslation": "你可以将难度从和平调整到困难。"
+    },
+    {
+      "index": "308",
+      "word": "Peaceful",
+      "phonetic": "/ˈpiːsfəl/",
+      "chinese": "和平模式",
+      "example": "In Peaceful mode, no hostile mobs will spawn.",
+      "exampleTranslation": "在和平模式下，不会有敌对生物生成。"
+    },
+    {
+      "index": "309",
+      "word": "Coordinates",
+      "phonetic": "/koʊˈɔːrdɪnɪts/",
+      "chinese": "坐标",
+      "example": "Press F3 to see your coordinates on the screen.",
+      "exampleTranslation": "按 F3 键可以在屏幕上看到你的坐标。"
+    },
+    {
+      "index": "310",
+      "word": "Multiplayer",
+      "phonetic": "/ˈmʌltiˌpleɪər/",
+      "chinese": "多人游戏",
+      "example": "Playing multiplayer with friends is so much fun!",
+      "exampleTranslation": "和朋友一起玩多人游戏真的太有趣了！"
+    },
+    {
+      "index": "311",
+      "word": "Realm",
+      "phonetic": "/rɛlm/",
+      "chinese": "领域服务器",
+      "example": "My friend invited me to join his Realm.",
+      "exampleTranslation": "我的朋友邀请我加入他的领域服务器。"
+    },
+    {
+      "index": "312",
+      "word": "Advancement",
+      "phonetic": "/ədˈvænsmənt/",
+      "chinese": "进度",
+      "example": "I unlocked a new advancement by visiting the Nether.",
+      "exampleTranslation": "我通过进入下界解锁了一个新的进度。"
+    },
+    {
+      "index": "313",
+      "word": "Raid",
+      "phonetic": "/reɪd/",
+      "chinese": "袭击",
+      "example": "A raid started when I walked into the village with a bad omen.",
+      "exampleTranslation": "当我带着凶兆走进村庄时，袭击开始了。"
+    },
+    {
+      "index": "314",
+      "word": "Tick",
+      "phonetic": "/tɪk/",
+      "chinese": "游戏刻",
+      "example": "The game updates 20 ticks every second.",
+      "exampleTranslation": "游戏每秒更新 20 个游戏刻。"
+    },
+    {
+      "index": "315",
+      "word": "Spawn Point",
+      "phonetic": "/spɔːn pɔɪnt/",
+      "chinese": "出生点",
+      "example": "Your spawn point is set when you sleep in a bed.",
+      "exampleTranslation": "当你在床上睡觉时，出生点就会被设置。"
+    },
+    {
+      "index": "316",
+      "word": "Command",
+      "phonetic": "/kəˈmænd/",
+      "chinese": "命令",
+      "example": "Type a command in the chat box to change the weather.",
+      "exampleTranslation": "在聊天框中输入命令来改变天气。"
+    },
+    {
+      "index": "317",
+      "word": "Redstone Circuit",
+      "phonetic": "/ˈrɛdˌstoʊn ˈsɜːrkɪt/",
+      "chinese": "红石电路",
+      "example": "Building a redstone circuit can open a secret door.",
+      "exampleTranslation": "建造红石电路可以打开一扇秘密的门。"
+    },
+    {
+      "index": "318",
+      "word": "Mob Farm",
+      "phonetic": "/mɑːb fɑːrm/",
+      "chinese": "刷怪塔",
+      "example": "A mob farm helps you collect lots of drops quickly.",
+      "exampleTranslation": "刷怪塔帮助你快速收集大量掉落物。"
+    },
+    {
+      "index": "319",
+      "word": "Speedrun",
+      "phonetic": "/ˈspiːdˌrʌn/",
+      "chinese": "速通",
+      "example": "Can you beat the game in a speedrun under 20 minutes?",
+      "exampleTranslation": "你能在 20 分钟内速通游戏吗？"
+    },
+    {
+      "index": "320",
+      "word": "Resource Pack",
+      "phonetic": "/ˈriːsɔːrs pæk/",
+      "chinese": "资源包",
+      "example": "This resource pack makes all the blocks look more realistic.",
+      "exampleTranslation": "这个资源包让所有方块看起来更加真实。"
+    },
+    {
+      "index": "321",
+      "word": "Wandering Trader",
+      "phonetic": "/ˈwɑːndərɪŋ ˈtreɪdər/",
+      "chinese": "流浪商人",
+      "example": "The wandering trader appeared near my base with two llamas.",
+      "exampleTranslation": "流浪商人带着两头羊驼出现在我的基地附近。"
+    },
+    {
+      "index": "322",
+      "word": "Illager",
+      "phonetic": "/ˈɪleɪdʒər/",
+      "chinese": "灾厄村民",
+      "example": "Illagers are bad guys who attack villages.",
+      "exampleTranslation": "灾厄村民是攻击村庄的坏人。"
+    },
+    {
+      "index": "323",
+      "word": "Dimension",
+      "phonetic": "/dɪˈmɛnʃən/",
+      "chinese": "维度",
+      "example": "There are three dimensions: the Overworld, Nether, and End.",
+      "exampleTranslation": "游戏中有三个维度：主世界、下界和末地。"
+    },
+    {
+      "index": "324",
+      "word": "Operator",
+      "phonetic": "/ˈɑːpəˌreɪtər/",
+      "chinese": "管理员",
+      "example": "The server operator can ban players who break the rules.",
+      "exampleTranslation": "服务器管理员可以封禁违反规则的玩家。"
+    },
+    {
+      "index": "325",
+      "word": "Scoreboard",
+      "phonetic": "/ˈskɔːrˌbɔːrd/",
+      "chinese": "记分板",
+      "example": "Check the scoreboard to see who has the most kills.",
+      "exampleTranslation": "查看记分板，看看谁击杀最多。"
+    },
+    {
+      "index": "326",
+      "word": "LAN World",
+      "phonetic": "/læn wɜːrld/",
+      "chinese": "局域网世界",
+      "example": "Open your world to LAN so your friend can join.",
+      "exampleTranslation": "将你的世界开放给局域网，这样你的朋友就能加入。"
+    },
+    {
+      "index": "327",
+      "word": "Datapack",
+      "phonetic": "/ˈdeɪtəˌpæk/",
+      "chinese": "数据包",
+      "example": "Install a datapack to add new recipes to the game.",
+      "exampleTranslation": "安装数据包可以为游戏添加新的配方。"
+    },
+    {
+      "index": "328",
+      "word": "Boss Bar",
+      "phonetic": "/bɒs bɑːr/",
+      "chinese": "Boss血条",
+      "example": "The boss bar appeared at the top when I found the Elder Guardian.",
+      "exampleTranslation": "当我找到远古守卫者时，Boss血条出现在屏幕顶部。"
+    },
+    {
+      "index": "329",
+      "word": "Structure",
+      "phonetic": "/ˈstrʌktʃər/",
+      "chinese": "结构",
+      "example": "A village is a natural structure that generates in the world.",
+      "exampleTranslation": "村庄是世界中自然生成的一种结构。"
+    },
+    {
+      "index": "330",
+      "word": "Loot Table",
+      "phonetic": "/luːt ˈteɪbəl/",
+      "chinese": "战利品表",
+      "example": "Each dungeon has a loot table that decides what is in the chest.",
+      "exampleTranslation": "每个地牢都有一张战利品表，决定箱子里有什么。"
+    },
+    {
+      "index": "331",
+      "word": "Respawn Anchor",
+      "phonetic": "/ˈriːˌspɔːn ˈæŋkər/",
+      "chinese": "重生锚",
+      "example": "Use a respawn anchor in the Nether so you can respawn there.",
+      "exampleTranslation": "在下界使用重生锚，这样你就可以在那里重生。"
+    },
+    {
+      "index": "332",
+      "word": "Deepslate",
+      "phonetic": "/ˈdiːpˌsleɪt/",
+      "chinese": "深板岩",
+      "example": "Deepslate is a dark hard block found deep underground.",
+      "exampleTranslation": "深板岩是在地下深处发现的一种深色坚硬方块。"
+    },
+    {
+      "index": "333",
+      "word": "Calcite",
+      "phonetic": "/ˈkælˌsaɪt/",
+      "chinese": "方解石",
+      "example": "Calcite is a white rock found inside amethyst geodes.",
+      "exampleTranslation": "方解石是一种在紫水晶晶洞内发现的白色岩石。"
+    },
+    {
+      "index": "334",
+      "word": "Tuff",
+      "phonetic": "/tʌf/",
+      "chinese": "凝灰岩",
+      "example": "Tuff is a gray speckled rock that forms in blobs underground.",
+      "exampleTranslation": "凝灰岩是一种在地下成团分布的灰色斑点岩石。"
+    },
+    {
+      "index": "335",
+      "word": "Pointed Dripstone",
+      "phonetic": "/ˈpɔɪntɪd ˈdrɪpˌstoʊn/",
+      "chinese": "尖型滴水石锥",
+      "example": "Sharp pointed dripstone hangs from the ceiling of caves.",
+      "exampleTranslation": "锋利的尖型滴水石锥悬挂在洞穴的天花板上。"
+    },
+    {
+      "index": "336",
+      "word": "Moss Block",
+      "phonetic": "/mɔːs blɑːk/",
+      "chinese": "苔藓块",
+      "example": "Moss blocks spread and make the cave feel alive.",
+      "exampleTranslation": "苔藓块会蔓延扩散，让洞穴感觉充满生机。"
+    },
+    {
+      "index": "337",
+      "word": "Rooted Dirt",
+      "phonetic": "/ruːtɪd dɜːrt/",
+      "chinese": "缠根泥土",
+      "example": "Rooted dirt has hanging roots below that reach into the cave.",
+      "exampleTranslation": "缠根泥土下方有悬挂的根系延伸进洞穴。"
+    },
+    {
+      "index": "338",
+      "word": "Mud",
+      "phonetic": "/mʌd/",
+      "chinese": "泥巴",
+      "example": "You can make mud by using a water bottle on dirt.",
+      "exampleTranslation": "你可以用水瓶浇在泥土上来制作泥巴。"
+    },
+    {
+      "index": "339",
+      "word": "Packed Mud",
+      "phonetic": "/pækt mʌd/",
+      "chinese": "压实泥土",
+      "example": "Pack the mud tightly to make packed mud for building.",
+      "exampleTranslation": "将泥巴紧密压缩，制作用于建筑的压实泥土。"
+    },
+    {
+      "index": "340",
+      "word": "Mud Bricks",
+      "phonetic": "/mʌd brɪks/",
+      "chinese": "泥砖",
+      "example": "Mud bricks make great walls for a jungle-style house.",
+      "exampleTranslation": "泥砖非常适合用来建造丛林风格房屋的墙壁。"
+    },
+    {
+      "index": "341",
+      "word": "Sculk",
+      "phonetic": "/skʌlk/",
+      "chinese": "幽匿块",
+      "example": "Sculk blocks spread in the Deep Dark when mobs die nearby.",
+      "exampleTranslation": "当生物在附近死亡时，幽匿块会在深暗之地蔓延。"
+    },
+    {
+      "index": "342",
+      "word": "Sculk Sensor",
+      "phonetic": "/skʌlk ˈsɛnsər/",
+      "chinese": "幽匿感测体",
+      "example": "A sculk sensor detects sounds and sends a redstone signal.",
+      "exampleTranslation": "幽匿感测体能探测声音并发出红石信号。"
+    },
+    {
+      "index": "343",
+      "word": "Sculk Catalyst",
+      "phonetic": "/skʌlk ˈkætəlɪst/",
+      "chinese": "幽匿催发体",
+      "example": "When mobs die near a sculk catalyst, sculk grows around it.",
+      "exampleTranslation": "当生物在幽匿催发体附近死亡时，幽匿块会在其周围生长。"
+    },
+    {
+      "index": "344",
+      "word": "Sculk Shrieker",
+      "phonetic": "/skʌlk ˈʃriːkər/",
+      "chinese": "幽匿尖啸体",
+      "example": "Don't activate the sculk shrieker or the Warden will come!",
+      "exampleTranslation": "不要激活幽匿尖啸体，否则监守者就会来了！"
+    },
+    {
+      "index": "345",
+      "word": "Candle",
+      "phonetic": "/ˈkændəl/",
+      "chinese": "蜡烛",
+      "example": "Place candles on your cake to celebrate your birthday!",
+      "exampleTranslation": "在蛋糕上放蜡烛来庆祝你的生日！"
+    },
+    {
+      "index": "346",
+      "word": "Flower Pot",
+      "phonetic": "/ˈflaʊər pɑːt/",
+      "chinese": "花盆",
+      "example": "Put a cactus in a flower pot to decorate your home.",
+      "exampleTranslation": "把仙人掌放进花盆来装饰你的家。"
+    },
+    {
+      "index": "347",
+      "word": "Composter",
+      "phonetic": "/kəmˈpoʊstər/",
+      "chinese": "堆肥桶",
+      "example": "Put food and plants in the composter to make bone meal.",
+      "exampleTranslation": "把食物和植物放进堆肥桶来制作骨粉。"
+    },
+    {
+      "index": "348",
+      "word": "Stonecutter",
+      "phonetic": "/ˈstoʊnˌkʌtər/",
+      "chinese": "切石机",
+      "example": "Use the stonecutter to cut stone into stairs and slabs easily.",
+      "exampleTranslation": "使用切石机可以轻松将石头切割成楼梯和台阶。"
+    },
+    {
+      "index": "349",
+      "word": "Smithing Table",
+      "phonetic": "/ˈsmɪðɪŋ ˈteɪbəl/",
+      "chinese": "锻造台",
+      "example": "Use the smithing table to upgrade your diamond armor to netherite.",
+      "exampleTranslation": "使用锻造台将你的钻石护甲升级为下界合金护甲。"
+    },
+    {
+      "index": "350",
+      "word": "Grindstone",
+      "phonetic": "/ˈɡraɪndˌstoʊn/",
+      "chinese": "砂轮",
+      "example": "The grindstone removes enchantments from your items.",
+      "exampleTranslation": "砂轮可以去除你物品上的附魔。"
+    },
+    {
+      "index": "351",
+      "word": "Lectern",
+      "phonetic": "/ˈlɛktərn/",
+      "chinese": "讲台",
+      "example": "Place a book on the lectern so everyone can read it.",
+      "exampleTranslation": "把一本书放在讲台上，这样每个人都能阅读。"
+    },
+    {
+      "index": "352",
+      "word": "Bell",
+      "phonetic": "/bɛl/",
+      "chinese": "钟",
+      "example": "Ring the bell in the village to warn everyone of a raid.",
+      "exampleTranslation": "敲响村庄里的钟，警告所有人有袭击来临。"
+    },
+    {
+      "index": "353",
+      "word": "Loom",
+      "phonetic": "/luːm/",
+      "chinese": "织布机",
+      "example": "Use a loom to add patterns and designs to your banner.",
+      "exampleTranslation": "使用织布机在你的旗帜上添加图案和设计。"
+    },
+    {
+      "index": "354",
+      "word": "Cartography Table",
+      "phonetic": "/kɑːrˈtɑːɡrəfi ˈteɪbəl/",
+      "chinese": "制图台",
+      "example": "Use the cartography table to zoom out or copy your map.",
+      "exampleTranslation": "使用制图台放大缩小或复制你的地图。"
+    },
+    {
+      "index": "355",
+      "word": "Barrel",
+      "phonetic": "/ˈbærəl/",
+      "chinese": "木桶",
+      "example": "A barrel holds items just like a chest but takes less space.",
+      "exampleTranslation": "木桶和箱子一样存储物品，但占用的空间更少。"
+    },
+    {
+      "index": "356",
+      "word": "Smoker",
+      "phonetic": "/ˈsmoʊkər/",
+      "chinese": "烟熏炉",
+      "example": "A smoker cooks food twice as fast as a regular furnace.",
+      "exampleTranslation": "烟熏炉烹饪食物的速度是普通熔炉的两倍。"
+    },
+    {
+      "index": "357",
+      "word": "Blast Furnace",
+      "phonetic": "/blæst ˈfɜːrnɪs/",
+      "chinese": "高炉",
+      "example": "A blast furnace smelts ores twice as fast as a normal furnace.",
+      "exampleTranslation": "高炉熔炼矿石的速度是普通熔炉的两倍。"
+    },
+    {
+      "index": "358",
+      "word": "Campfire",
+      "phonetic": "/ˈkæmpˌfaɪər/",
+      "chinese": "营火",
+      "example": "Sit around the campfire with friends on a cold night.",
+      "exampleTranslation": "在寒冷的夜晚和朋友们围坐在营火旁。"
+    },
+    {
+      "index": "359",
+      "word": "Soul Campfire",
+      "phonetic": "/soʊl ˈkæmpˌfaɪər/",
+      "chinese": "灵魂营火",
+      "example": "A soul campfire burns blue and keeps piglins away.",
+      "exampleTranslation": "灵魂营火发出蓝色火焰，可以驱赶猪灵。"
+    },
+    {
+      "index": "360",
+      "word": "Jukebox",
+      "phonetic": "/ˈdʒuːkˌbɑːks/",
+      "chinese": "唱片机",
+      "example": "Put a music disc into the jukebox to play music.",
+      "exampleTranslation": "把音乐唱片放入唱片机来播放音乐。"
+    },
+    {
+      "index": "361",
+      "word": "Note Block",
+      "phonetic": "/noʊt blɑːk/",
+      "chinese": "音符盒",
+      "example": "Hit the note block to make a musical sound.",
+      "exampleTranslation": "敲击音符盒来发出音乐声音。"
+    },
+    {
+      "index": "362",
+      "word": "Observer",
+      "phonetic": "/əbˈzɜːrvər/",
+      "chinese": "侦测器",
+      "example": "An observer detects block changes and sends a redstone pulse.",
+      "exampleTranslation": "侦测器能检测方块变化并发出红石脉冲。"
+    },
+    {
+      "index": "363",
+      "word": "Comparator",
+      "phonetic": "/kəmˈpærətər/",
+      "chinese": "比较器",
+      "example": "A comparator can measure how full a chest is.",
+      "exampleTranslation": "比较器可以测量箱子的填充程度。"
+    },
+    {
+      "index": "364",
+      "word": "Repeater",
+      "phonetic": "/rɪˈpiːtər/",
+      "chinese": "中继器",
+      "example": "A repeater makes redstone signals travel further.",
+      "exampleTranslation": "中继器让红石信号能传输得更远。"
+    },
+    {
+      "index": "365",
+      "word": "Lever",
+      "phonetic": "/ˈlɛvər/",
+      "chinese": "拉杆",
+      "example": "Flip the lever to turn the lights on or off.",
+      "exampleTranslation": "扳动拉杆来打开或关闭灯光。"
+    },
+    {
+      "index": "366",
+      "word": "Pressure Plate",
+      "phonetic": "/ˈprɛʃər pleɪt/",
+      "chinese": "压力板",
+      "example": "Step on the pressure plate to open the hidden door.",
+      "exampleTranslation": "踩上压力板打开隐藏的门。"
+    },
+    {
+      "index": "367",
+      "word": "Target Block",
+      "phonetic": "/ˈtɑːrɡɪt blɑːk/",
+      "chinese": "靶标",
+      "example": "Shoot the center of the target block for a stronger signal.",
+      "exampleTranslation": "射击靶标的中心可以获得更强的信号。"
+    },
+    {
+      "index": "368",
+      "word": "Lightning Rod",
+      "phonetic": "/ˈlaɪtnɪŋ rɑːd/",
+      "chinese": "避雷针",
+      "example": "Put a lightning rod on your roof to protect it from lightning.",
+      "exampleTranslation": "在屋顶上放一根避雷针来保护房子免受雷击。"
+    },
+    {
+      "index": "369",
+      "word": "Copper Block",
+      "phonetic": "/ˈkɑːpər blɑːk/",
+      "chinese": "铜块",
+      "example": "Copper blocks slowly turn green over many days.",
+      "exampleTranslation": "铜块会随着时间慢慢变成绿色。"
+    },
+    {
+      "index": "370",
+      "word": "Froglight",
+      "phonetic": "/ˈfrɑːɡˌlaɪt/",
+      "chinese": "蛙明灯",
+      "example": "Froglights glow brightly and come in three different colors.",
+      "exampleTranslation": "蛙明灯发出明亮的光，有三种不同颜色。"
+    },
+    {
+      "index": "371",
+      "word": "Suspicious Sand",
+      "phonetic": "/səˈspɪʃəs sænd/",
+      "chinese": "可疑的沙子",
+      "example": "Brush suspicious sand carefully to find hidden artifacts inside.",
+      "exampleTranslation": "小心地刷可疑的沙子，找出里面隐藏的文物。"
+    },
+    {
+      "index": "372",
+      "word": "Suspicious Gravel",
+      "phonetic": "/səˈspɪʃəs ˈɡrævəl/",
+      "chinese": "可疑的沙砾",
+      "example": "Suspicious gravel hides old items inside — use your brush!",
+      "exampleTranslation": "可疑的沙砾里面藏着古老的物品——用刷子刷！"
+    },
+    {
+      "index": "373",
+      "word": "Powder Snow",
+      "phonetic": "/ˈpaʊdər snoʊ/",
+      "chinese": "细雪",
+      "example": "You will sink into powder snow if you walk on it.",
+      "exampleTranslation": "如果你走在细雪上，就会陷进去。"
+    },
+    {
+      "index": "374",
+      "word": "Snow Block",
+      "phonetic": "/snoʊ blɑːk/",
+      "chinese": "雪块",
+      "example": "Stack snow blocks to build a snowman with a pumpkin head.",
+      "exampleTranslation": "叠放雪块，用南瓜头建造一个雪傀儡。"
+    },
+    {
+      "index": "375",
+      "word": "Granite",
+      "phonetic": "/ˈɡrænɪt/",
+      "chinese": "花岗岩",
+      "example": "Granite is a pink speckled rock used for decoration.",
+      "exampleTranslation": "花岗岩是一种粉色斑点岩石，可用于装饰。"
+    },
+    {
+      "index": "376",
+      "word": "Andesite",
+      "phonetic": "/ˈændɪˌsaɪt/",
+      "chinese": "安山岩",
+      "example": "Andesite is a gray rock that blends well with stone.",
+      "exampleTranslation": "安山岩是一种灰色岩石，与普通石头搭配得很好。"
+    },
+    {
+      "index": "377",
+      "word": "Diorite",
+      "phonetic": "/ˈdaɪərˌaɪt/",
+      "chinese": "闪长岩",
+      "example": "Diorite is white and speckled — great for paths and walls.",
+      "exampleTranslation": "闪长岩是白色斑点状的——非常适合用于小径和墙壁。"
+    },
+    {
+      "index": "378",
+      "word": "Honey Block",
+      "phonetic": "/ˈhʌni blɑːk/",
+      "chinese": "蜂蜜块",
+      "example": "You slide slowly off honey blocks — they are so sticky!",
+      "exampleTranslation": "你会从蜂蜜块上缓缓滑落——它们太黏了！"
+    },
+    {
+      "index": "379",
+      "word": "Raw Iron",
+      "phonetic": "/rɔː ˈaɪərn/",
+      "chinese": "粗铁",
+      "example": "Mine iron ore to get raw iron, then smelt it.",
+      "exampleTranslation": "挖掘铁矿石可以获得粗铁，然后将其熔炼。"
+    },
+    {
+      "index": "380",
+      "word": "Raw Gold",
+      "phonetic": "/rɔː ɡoʊld/",
+      "chinese": "粗金",
+      "example": "Raw gold drops when you mine gold ore.",
+      "exampleTranslation": "挖掘金矿石时会掉落粗金。"
+    },
+    {
+      "index": "381",
+      "word": "Raw Copper",
+      "phonetic": "/rɔː ˈkɑːpər/",
+      "chinese": "粗铜",
+      "example": "You can find lots of raw copper underground.",
+      "exampleTranslation": "你可以在地下找到大量粗铜。"
+    },
+    {
+      "index": "382",
+      "word": "Ancient Debris",
+      "phonetic": "/ˈeɪnʃənt ˈdɛbris/",
+      "chinese": "远古残骸",
+      "example": "Ancient debris is rare and found deep in the Nether.",
+      "exampleTranslation": "远古残骸非常稀有，藏在下界深处。"
+    },
+    {
+      "index": "383",
+      "word": "Netherite Scrap",
+      "phonetic": "/ˈnɛðəraɪt skræp/",
+      "chinese": "下界合金碎片",
+      "example": "Smelt ancient debris in the furnace to get netherite scrap.",
+      "exampleTranslation": "在熔炉中熔炼远古残骸可以获得下界合金碎片。"
+    },
+    {
+      "index": "384",
+      "word": "Magma Cream",
+      "phonetic": "/ˈmæɡmə kriːm/",
+      "chinese": "岩浆膏",
+      "example": "Magma cream drops from magma cubes and is used in potions.",
+      "exampleTranslation": "岩浆膏由岩浆怪掉落，可用于酿造药水。"
+    },
+    {
+      "index": "385",
+      "word": "Fermented Spider Eye",
+      "phonetic": "/fərˈmɛntɪd ˈspaɪdər aɪ/",
+      "chinese": "发酵蜘蛛眼",
+      "example": "A fermented spider eye corrupts potions to make bad effects.",
+      "exampleTranslation": "发酵蜘蛛眼能使药水变质，产生负面效果。"
+    },
+    {
+      "index": "386",
+      "word": "Sugar Cane",
+      "phonetic": "/ˈʃʊɡər keɪn/",
+      "chinese": "甘蔗",
+      "example": "Sugar cane grows tall by rivers and is used to make paper.",
+      "exampleTranslation": "甘蔗生长在河边，可用于制造纸张。"
+    },
+    {
+      "index": "387",
+      "word": "Sugar",
+      "phonetic": "/ˈʃʊɡər/",
+      "chinese": "糖",
+      "example": "Craft sugar from sugar cane to make cake and potions.",
+      "exampleTranslation": "用甘蔗合成糖，用来制作蛋糕和药水。"
+    },
+    {
+      "index": "388",
+      "word": "Cocoa Beans",
+      "phonetic": "/ˈkoʊkoʊ biːnz/",
+      "chinese": "可可豆",
+      "example": "Cocoa beans grow on jungle trees and make cookies brown.",
+      "exampleTranslation": "可可豆生长在丛林树上，用来制作棕色曲奇。"
+    },
+    {
+      "index": "389",
+      "word": "Wheat",
+      "phonetic": "/wiːt/",
+      "chinese": "小麦",
+      "example": "Grow wheat on farmland and harvest it to make bread.",
+      "exampleTranslation": "在农田上种植小麦并收割，用来制作面包。"
+    },
+    {
+      "index": "390",
+      "word": "Ink Sac",
+      "phonetic": "/ɪŋk sæk/",
+      "chinese": "墨囊",
+      "example": "Squids drop ink sacs that you can use to make black dye.",
+      "exampleTranslation": "鱿鱼掉落墨囊，可用于制作黑色染料。"
+    },
+    {
+      "index": "391",
+      "word": "Glow Ink Sac",
+      "phonetic": "/ɡloʊ ɪŋk sæk/",
+      "chinese": "荧光墨囊",
+      "example": "Use glow ink sac to make glowing text on signs.",
+      "exampleTranslation": "使用荧光墨囊可以让告示牌上的文字发光。"
+    },
+    {
+      "index": "392",
+      "word": "Dye",
+      "phonetic": "/daɪ/",
+      "chinese": "染料",
+      "example": "Use dye to color your wool, glass, and armor.",
+      "exampleTranslation": "使用染料来给你的羊毛、玻璃和护甲染色。"
+    },
+    {
+      "index": "393",
+      "word": "Stick",
+      "phonetic": "/stɪk/",
+      "chinese": "木棍",
+      "example": "Two sticks and three planks make a wooden pickaxe.",
+      "exampleTranslation": "两根木棍和三块木板可以合成一把木镐。"
+    },
+    {
+      "index": "394",
+      "word": "Bowl",
+      "phonetic": "/boʊl/",
+      "chinese": "碗",
+      "example": "You need a bowl to make mushroom stew or rabbit stew.",
+      "exampleTranslation": "你需要一个碗来制作蘑菇汤或兔肉汤。"
+    },
+    {
+      "index": "395",
+      "word": "Amethyst Shard",
+      "phonetic": "/ˈæməθɪst ʃɑːrd/",
+      "chinese": "紫水晶碎片",
+      "example": "Mine amethyst crystals to collect amethyst shards.",
+      "exampleTranslation": "挖掘紫水晶来收集紫水晶碎片。"
+    },
+    {
+      "index": "396",
+      "word": "Echo Shard",
+      "phonetic": "/ˈɛkoʊ ʃɑːrd/",
+      "chinese": "回响碎片",
+      "example": "Find echo shards in the ancient city to craft a recovery compass.",
+      "exampleTranslation": "在远古城市找到回响碎片来合成恢复指南针。"
+    },
+    {
+      "index": "397",
+      "word": "Pottery Sherd",
+      "phonetic": "/ˈpɑːtəri ʃɜːrd/",
+      "chinese": "陶片",
+      "example": "Brush suspicious sand to find pottery sherds and decorate pots.",
+      "exampleTranslation": "刷可疑的沙子找到陶片，用于装饰陶罐。"
+    },
+    {
+      "index": "398",
+      "word": "Chorus Fruit",
+      "phonetic": "/ˈkɔːrəs fruːt/",
+      "chinese": "紫颂果",
+      "example": "Eating chorus fruit teleports you to a random nearby location.",
+      "exampleTranslation": "吃紫颂果会将你传送到附近随机位置。"
+    },
+    {
+      "index": "399",
+      "word": "Nether Wart",
+      "phonetic": "/ˈnɛðər wɔːrt/",
+      "chinese": "下界疣",
+      "example": "Nether wart is the base ingredient for almost every potion.",
+      "exampleTranslation": "下界疣是几乎所有药水的基础材料。"
+    },
+    {
+      "index": "400",
+      "word": "Ghast Tear",
+      "phonetic": "/ɡæst tɪr/",
+      "chinese": "恶魂之泪",
+      "example": "A ghast tear is used to brew a regeneration potion.",
+      "exampleTranslation": "恶魂之泪用于酿造再生药水。"
+    },
+    {
+      "index": "401",
+      "word": "Wither Rose",
+      "phonetic": "/ˈwɪðər roʊz/",
+      "chinese": "凋零玫瑰",
+      "example": "Wither roses are beautiful but deal damage if you touch them.",
+      "exampleTranslation": "凋零玫瑰很美，但触碰它会受到伤害。"
+    },
+    {
+      "index": "402",
+      "word": "Music Disc",
+      "phonetic": "/ˈmjuːzɪk dɪsk/",
+      "chinese": "唱片",
+      "example": "Creepers drop music discs when killed by a skeleton's arrow.",
+      "exampleTranslation": "当骷髅用箭射死苦力怕时，它会掉落唱片。"
+    },
+    {
+      "index": "403",
+      "word": "Firework Star",
+      "phonetic": "/ˈfaɪərˌwɜːrk stɑːr/",
+      "chinese": "烟火之星",
+      "example": "Craft a firework star to decide the color of your firework.",
+      "exampleTranslation": "合成烟火之星来决定你烟花的颜色。"
+    },
+    {
+      "index": "404",
+      "word": "Banner",
+      "phonetic": "/ˈbænər/",
+      "chinese": "旗帜",
+      "example": "Design a banner with your own pattern using a loom.",
+      "exampleTranslation": "使用织布机设计带有你专属图案的旗帜。"
+    },
+    {
+      "index": "405",
+      "word": "Armor Trim",
+      "phonetic": "/ˈɑːrmər trɪm/",
+      "chinese": "盔甲纹饰",
+      "example": "Add an armor trim to your armor to make it look cool.",
+      "exampleTranslation": "为你的护甲添加盔甲纹饰，让它看起来更酷。"
+    },
+    {
+      "index": "406",
+      "word": "Smithing Template",
+      "phonetic": "/ˈsmɪðɪŋ ˈtɛmplɪt/",
+      "chinese": "锻造模板",
+      "example": "You need a smithing template to apply armor trims.",
+      "exampleTranslation": "你需要一个锻造模板来应用盔甲纹饰。"
+    },
+    {
+      "index": "407",
+      "word": "Brush",
+      "phonetic": "/brʌʃ/",
+      "chinese": "刷子",
+      "example": "Use a brush on suspicious sand to find buried treasure.",
+      "exampleTranslation": "用刷子刷可疑的沙子来发现埋藏的宝藏。"
+    },
+    {
+      "index": "408",
+      "word": "Wind Charge",
+      "phonetic": "/wɪnd tʃɑːrdʒ/",
+      "chinese": "风弹",
+      "example": "The breeze mob shoots wind charges that push blocks and players.",
+      "exampleTranslation": "风弹怪发射风弹，可以推动方块和玩家。"
+    },
+    {
+      "index": "409",
+      "word": "Rotten Flesh",
+      "phonetic": "/ˈrɑːtən flɛʃ/",
+      "chinese": "腐肉",
+      "example": "Rotten flesh fills your hunger but gives you food poisoning.",
+      "exampleTranslation": "腐肉能填充饥饿值，但会让你食物中毒。"
+    },
+    {
+      "index": "410",
+      "word": "Honeycomb",
+      "phonetic": "/ˈhʌniˌkoʊm/",
+      "chinese": "蜂巢",
+      "example": "Use shears on a beehive to collect honeycombs.",
+      "exampleTranslation": "用剪刀剪蜂巢来收集蜂巢蜡。"
+    },
+    {
+      "index": "411",
+      "word": "Mace",
+      "phonetic": "/meɪs/",
+      "chinese": "狼牙棒",
+      "example": "Slam down with a mace after falling for huge damage.",
+      "exampleTranslation": "从高处跳下后用狼牙棒猛击，造成巨大伤害。"
+    },
+    {
+      "index": "412",
+      "word": "Trial Key",
+      "phonetic": "/ˈtraɪəl kiː/",
+      "chinese": "试炼钥匙",
+      "example": "Defeat all mobs in the trial chamber to get a trial key.",
+      "exampleTranslation": "击败试炼密室中所有的生物来获得试炼钥匙。"
+    },
+    {
+      "index": "413",
+      "word": "Ominous Trial Key",
+      "phonetic": "/ˈɑːmɪnəs ˈtraɪəl kiː/",
+      "chinese": "凶兆试炼钥匙",
+      "example": "The ominous trial key opens special vaults with rare loot.",
+      "exampleTranslation": "凶兆试炼钥匙可以打开特殊的金库，获取稀有战利品。"
+    },
+    {
+      "index": "414",
+      "word": "Bundle",
+      "phonetic": "/ˈbʌndəl/",
+      "chinese": "收纳袋",
+      "example": "Put many different small items into one bundle to save space.",
+      "exampleTranslation": "把许多不同的小物品放进一个收纳袋来节省空间。"
+    },
+    {
+      "index": "415",
+      "word": "Spectral Arrow",
+      "phonetic": "/ˈspɛktrəl ˈæroʊ/",
+      "chinese": "幻影箭",
+      "example": "A spectral arrow makes enemies glow so you can see them through walls.",
+      "exampleTranslation": "幻影箭让敌人发光，让你能透过墙看到它们。"
+    },
+    {
+      "index": "416",
+      "word": "Tipped Arrow",
+      "phonetic": "/tɪpt ˈæroʊ/",
+      "chinese": "药箭",
+      "example": "A tipped arrow gives a potion effect when it hits.",
+      "exampleTranslation": "药箭命中时会施加药水效果。"
+    },
+    {
+      "index": "417",
+      "word": "Carrot on a Stick",
+      "phonetic": "/ˈkærət ɑːn ə stɪk/",
+      "chinese": "胡萝卜钓竿",
+      "example": "Hold a carrot on a stick to guide a pig while riding it.",
+      "exampleTranslation": "骑猪时手持胡萝卜钓竿来引导猪的方向。"
+    },
+    {
+      "index": "418",
+      "word": "End Crystal",
+      "phonetic": "/ɛnd ˈkrɪstəl/",
+      "chinese": "末地水晶",
+      "example": "Destroy the end crystals to stop the Ender Dragon from healing.",
+      "exampleTranslation": "摧毁末地水晶，阻止末影龙恢复生命值。"
+    },
+    {
+      "index": "419",
+      "word": "Snowball",
+      "phonetic": "/ˈsnoʊˌbɔːl/",
+      "chinese": "雪球",
+      "example": "Throw a snowball at a blaze to deal damage to it.",
+      "exampleTranslation": "向烈焰人投掷雪球可以对它造成伤害。"
+    },
+    {
+      "index": "420",
+      "word": "Painting",
+      "phonetic": "/ˈpeɪntɪŋ/",
+      "chinese": "画",
+      "example": "Hang a painting on the wall to decorate your house.",
+      "exampleTranslation": "在墙上挂一幅画来装饰你的房子。"
+    },
+    {
+      "index": "421",
+      "word": "Item Frame",
+      "phonetic": "/ˈaɪtəm freɪm/",
+      "chinese": "物品展示框",
+      "example": "Put your sword in an item frame to show it on the wall.",
+      "exampleTranslation": "把你的剑放在物品展示框里展示在墙上。"
+    },
+    {
+      "index": "422",
+      "word": "Armor Stand",
+      "phonetic": "/ˈɑːrmər stænd/",
+      "chinese": "盔甲架",
+      "example": "Put your best armor on an armor stand to display it.",
+      "exampleTranslation": "把你最好的护甲放在盔甲架上展示。"
+    },
+    {
+      "index": "423",
+      "word": "Bottle o' Enchanting",
+      "phonetic": "/ˈbɑːtəl oʊv ɪnˈtʃæntɪŋ/",
+      "chinese": "附魔之瓶",
+      "example": "Throw the bottle o' enchanting to spray XP orbs everywhere.",
+      "exampleTranslation": "投掷附魔之瓶，让经验值光球四散飞溅。"
+    },
+    {
+      "index": "424",
+      "word": "Written Book",
+      "phonetic": "/ˈrɪtən bʊk/",
+      "chinese": "成书",
+      "example": "Write your story in a book and sign it to make a written book.",
+      "exampleTranslation": "在书中写下你的故事并签名，制作一本成书。"
+    },
+    {
+      "index": "425",
+      "word": "Knowledge Book",
+      "phonetic": "/ˈnɑːlɪdʒ bʊk/",
+      "chinese": "知识之书",
+      "example": "A knowledge book teaches you crafting recipes when you use it.",
+      "exampleTranslation": "知识之书在使用时会教给你合成配方。"
+    },
+    {
+      "index": "426",
+      "word": "Cooked Cod",
+      "phonetic": "/kʊkt kɑːd/",
+      "chinese": "熟鳕鱼",
+      "example": "Cook raw cod in the smoker for a tasty cooked cod.",
+      "exampleTranslation": "在烟熏炉中烹饪生鳕鱼，就能得到美味的熟鳕鱼。"
+    },
+    {
+      "index": "427",
+      "word": "Cooked Rabbit",
+      "phonetic": "/kʊkt ˈræbɪt/",
+      "chinese": "熟兔肉",
+      "example": "Cooked rabbit is a healthy food that gives you good hunger.",
+      "exampleTranslation": "熟兔肉是一种健康食物，能很好地填充饥饿值。"
+    },
+    {
+      "index": "428",
+      "word": "Cooked Mutton",
+      "phonetic": "/kʊkt ˈmʌtən/",
+      "chinese": "熟羊肉",
+      "example": "Sheep drop mutton — cook it for a filling meal.",
+      "exampleTranslation": "羊会掉落羊肉——将其煮熟就能得到饱腹的美食。"
+    },
+    {
+      "index": "429",
+      "word": "Pufferfish",
+      "phonetic": "/ˈpʌfərˌfɪʃ/",
+      "chinese": "河豚",
+      "example": "Don't eat a pufferfish — it will make you very sick!",
+      "exampleTranslation": "不要吃河豚——它会让你非常难受！"
+    },
+    {
+      "index": "430",
+      "word": "Tropical Fish",
+      "phonetic": "/ˈtrɑːpɪkəl fɪʃ/",
+      "chinese": "热带鱼",
+      "example": "Tropical fish come in many beautiful colors in the ocean.",
+      "exampleTranslation": "热带鱼在海洋中有许多美丽的颜色。"
+    },
+    {
+      "index": "431",
+      "word": "Rabbit Stew",
+      "phonetic": "/ˈræbɪt stuː/",
+      "chinese": "兔肉汤",
+      "example": "Rabbit stew is one of the most filling foods in the game.",
+      "exampleTranslation": "兔肉汤是游戏中最能填饱肚子的食物之一。"
+    },
+    {
+      "index": "432",
+      "word": "Beetroot Soup",
+      "phonetic": "/ˈbiːtˌruːt suːp/",
+      "chinese": "甜菜汤",
+      "example": "Craft six beetroots and a bowl to make beetroot soup.",
+      "exampleTranslation": "用六个甜菜根和一个碗合成甜菜汤。"
+    },
+    {
+      "index": "433",
+      "word": "Baked Potato",
+      "phonetic": "/beɪkt pəˈteɪtoʊ/",
+      "chinese": "烤马铃薯",
+      "example": "A baked potato is easy to make — just put a potato in the furnace!",
+      "exampleTranslation": "烤马铃薯很容易制作——只需把马铃薯放进熔炉！"
+    },
+    {
+      "index": "434",
+      "word": "Pumpkin",
+      "phonetic": "/ˈpʌmpkɪn/",
+      "chinese": "南瓜",
+      "example": "Wear a pumpkin on your head so endermen don't attack you.",
+      "exampleTranslation": "把南瓜戴在头上，这样末影人就不会攻击你了。"
+    },
+    {
+      "index": "435",
+      "word": "Egg",
+      "phonetic": "/ɛɡ/",
+      "chinese": "鸡蛋",
+      "example": "Chickens lay eggs that you can throw or use for baking.",
+      "exampleTranslation": "鸡下的蛋可以投掷或用于烹饪。"
+    },
+    {
+      "index": "436",
+      "word": "Milk",
+      "phonetic": "/mɪlk/",
+      "chinese": "牛奶",
+      "example": "Drink milk from a bucket to remove all bad status effects.",
+      "exampleTranslation": "喝桶里的牛奶可以消除所有负面状态效果。"
+    },
+    {
+      "index": "437",
+      "word": "Melon Slice",
+      "phonetic": "/ˈmɛlən slaɪs/",
+      "chinese": "西瓜片",
+      "example": "Break a melon to get several melon slices to eat.",
+      "exampleTranslation": "打碎西瓜可以获得几片西瓜片来吃。"
+    },
+    {
+      "index": "438",
+      "word": "Poisonous Potato",
+      "phonetic": "/ˈpɔɪzənəs pəˈteɪtoʊ/",
+      "chinese": "有毒马铃薯",
+      "example": "Sometimes you harvest a poisonous potato from your farm.",
+      "exampleTranslation": "有时你会从农田里收获有毒马铃薯。"
+    },
+    {
+      "index": "439",
+      "word": "Goat",
+      "phonetic": "/ɡoʊt/",
+      "chinese": "山羊",
+      "example": "Goats live on mountains and can knock you off a cliff!",
+      "exampleTranslation": "山羊生活在山上，还会把你顶下悬崖！"
+    },
+    {
+      "index": "440",
+      "word": "Llama",
+      "phonetic": "/ˈlɑːmə/",
+      "chinese": "羊驼",
+      "example": "Llamas spit at enemies to protect themselves.",
+      "exampleTranslation": "羊驼会向敌人吐口水来保护自己。"
+    },
+    {
+      "index": "441",
+      "word": "Trader Llama",
+      "phonetic": "/ˈtreɪdər ˈlɑːmə/",
+      "chinese": "商人羊驼",
+      "example": "Trader llamas travel with the wandering trader.",
+      "exampleTranslation": "商人羊驼与流浪商人一起旅行。"
+    },
+    {
+      "index": "442",
+      "word": "Polar Bear",
+      "phonetic": "/ˈpoʊlər bɛr/",
+      "chinese": "北极熊",
+      "example": "A polar bear is calm alone but angry when near its cub.",
+      "exampleTranslation": "北极熊单独时很平静，但在幼崽附近时会变得愤怒。"
+    },
+    {
+      "index": "443",
+      "word": "Snow Golem",
+      "phonetic": "/snoʊ ˈɡoʊləm/",
+      "chinese": "雪傀儡",
+      "example": "Build a snow golem to throw snowballs at enemies.",
+      "exampleTranslation": "建造一个雪傀儡来向敌人投掷雪球。"
+    },
+    {
+      "index": "444",
+      "word": "Zombified Piglin",
+      "phonetic": "/ˈzɑːmbɪˌfaɪd ˈpɪɡlɪn/",
+      "chinese": "僵尸猪灵",
+      "example": "Don't attack zombified piglins — they will all attack you together!",
+      "exampleTranslation": "不要攻击僵尸猪灵——它们会一起反击你！"
+    },
+    {
+      "index": "445",
+      "word": "Piglin Brute",
+      "phonetic": "/ˈpɪɡlɪn bruːt/",
+      "chinese": "猪灵蛮兵",
+      "example": "The piglin brute always attacks you — gold won't help!",
+      "exampleTranslation": "猪灵蛮兵会一直攻击你——给金子也没用！"
+    },
+    {
+      "index": "446",
+      "word": "Zoglin",
+      "phonetic": "/ˈzɑːɡlɪn/",
+      "chinese": "僵尸疣猪兽",
+      "example": "A hoglin that enters the Overworld becomes a zoglin.",
+      "exampleTranslation": "疣猪兽进入主世界后会变成僵尸疣猪兽。"
+    },
+    {
+      "index": "447",
+      "word": "Strider",
+      "phonetic": "/ˈstraɪdər/",
+      "chinese": "炽足兽",
+      "example": "Ride a strider across lava lakes in the Nether.",
+      "exampleTranslation": "骑着炽足兽穿越下界的岩浆湖。"
+    },
+    {
+      "index": "448",
+      "word": "Endermite",
+      "phonetic": "/ˈɛndərˌmaɪt/",
+      "chinese": "末影螨",
+      "example": "An endermite sometimes appears when you throw an ender pearl.",
+      "exampleTranslation": "当你投掷末影珍珠时，有时会出现末影螨。"
+    },
+    {
+      "index": "449",
+      "word": "Bogged",
+      "phonetic": "/bɑːɡd/",
+      "chinese": "泥沼骷髅",
+      "example": "The bogged is a skeleton that shoots poisonous arrows.",
+      "exampleTranslation": "泥沼骷髅是一种发射毒箭的骷髅。"
+    },
+    {
+      "index": "450",
+      "word": "Creaking",
+      "phonetic": "/ˈkriːkɪŋ/",
+      "chinese": "嘎吱怪",
+      "example": "The creaking only moves when you are not looking at it.",
+      "exampleTranslation": "嘎吱怪只在你不看它的时候才会移动。"
+    },
+    {
+      "index": "451",
+      "word": "Zombie Villager",
+      "phonetic": "/ˈzɑːmbi ˈvɪlɪdʒər/",
+      "chinese": "僵尸村民",
+      "example": "Cure a zombie villager with a potion and a golden apple.",
+      "exampleTranslation": "用药水和金苹果治愈一名僵尸村民。"
+    },
+    {
+      "index": "452",
+      "word": "Cod",
+      "phonetic": "/kɑːd/",
+      "chinese": "鳕鱼",
+      "example": "Cod swim in cold ocean biomes and drop fish when killed.",
+      "exampleTranslation": "鳕鱼在寒冷的海洋生物群系中游泳，被击杀时掉落鱼。"
+    },
+    {
+      "index": "453",
+      "word": "Salmon",
+      "phonetic": "/ˈsæmən/",
+      "chinese": "鲑鱼",
+      "example": "Salmon jump upstream in rivers — you can catch them!",
+      "exampleTranslation": "鲑鱼在河流中逆流而上跳跃——你可以抓住它们！"
+    },
+    {
+      "index": "454",
+      "word": "Wandering Trader (mob)",
+      "phonetic": "/ˈwɑːndərɪŋ ˈtreɪdər/",
+      "chinese": "流浪商人（生物）",
+      "example": "The wandering trader visits you to sell rare plants and items.",
+      "exampleTranslation": "流浪商人会来拜访你，出售稀有植物和物品。"
+    },
+    {
+      "index": "455",
+      "word": "Illusioner",
+      "phonetic": "/ɪˈluːʒənər/",
+      "chinese": "幻术师",
+      "example": "The illusioner makes copies of itself to confuse you.",
+      "exampleTranslation": "幻术师会制造自己的复制品来迷惑你。"
+    },
+    {
+      "index": "456",
+      "word": "Snowy Plains",
+      "phonetic": "/ˈsnoʊi pleɪnz/",
+      "chinese": "积雪的平原",
+      "example": "The snowy plains biome is covered in white snow all year.",
+      "exampleTranslation": "积雪的平原生物群系全年都覆盖着白雪。"
+    },
+    {
+      "index": "457",
+      "word": "Ice Spikes",
+      "phonetic": "/aɪs spaɪks/",
+      "chinese": "冰刺",
+      "example": "Huge spikes of packed ice stick up in the ice spikes biome.",
+      "exampleTranslation": "在冰刺生物群系中，巨大的致密冰柱向上突出。"
+    },
+    {
+      "index": "458",
+      "word": "Flower Forest",
+      "phonetic": "/ˈflaʊər ˈfɔːrɪst/",
+      "chinese": "繁花森林",
+      "example": "The flower forest is the most colorful biome in the game.",
+      "exampleTranslation": "繁花森林是游戏中最多彩的生物群系。"
+    },
+    {
+      "index": "459",
+      "word": "Birch Forest",
+      "phonetic": "/bɜːrtʃ ˈfɔːrɪst/",
+      "chinese": "白桦林",
+      "example": "Birch forests have tall white trees with black spots.",
+      "exampleTranslation": "白桦林里有高大的带黑色斑点的白色树木。"
+    },
+    {
+      "index": "460",
+      "word": "Dark Forest",
+      "phonetic": "/dɑːrk ˈfɔːrɪst/",
+      "chinese": "黑森林",
+      "example": "The dark forest is so thick that it is dark even during the day.",
+      "exampleTranslation": "黑森林非常茂密，即使在白天也很昏暗。"
+    },
+    {
+      "index": "461",
+      "word": "Bamboo Jungle",
+      "phonetic": "/bæmˈbuː ˈdʒʌŋɡəl/",
+      "chinese": "竹林丛林",
+      "example": "Huge bamboo stalks fill the bamboo jungle biome.",
+      "exampleTranslation": "巨大的竹子茎秆充满了竹林丛林生物群系。"
+    },
+    {
+      "index": "462",
+      "word": "Lush Caves",
+      "phonetic": "/lʌʃ keɪvz/",
+      "chinese": "繁茂洞穴",
+      "example": "Lush caves are underground biomes full of plants and axolotls.",
+      "exampleTranslation": "繁茂洞穴是地下生物群系，充满了植物和美西螈。"
+    },
+    {
+      "index": "463",
+      "word": "Dripstone Caves",
+      "phonetic": "/ˈdrɪpˌstoʊn keɪvz/",
+      "chinese": "滴水石锥洞穴",
+      "example": "Dripstone caves have sharp stalactites hanging from the ceiling.",
+      "exampleTranslation": "滴水石锥洞穴的天花板上悬挂着尖锐的石钟乳。"
+    },
+    {
+      "index": "464",
+      "word": "Meadow",
+      "phonetic": "/ˈmɛdoʊ/",
+      "chinese": "草甸",
+      "example": "The meadow biome has flowers and bees and big mountains nearby.",
+      "exampleTranslation": "草甸生物群系有鲜花、蜜蜂，附近还有大山。"
+    },
+    {
+      "index": "465",
+      "word": "Grove",
+      "phonetic": "/ɡroʊv/",
+      "chinese": "树林",
+      "example": "The grove is a cold snowy biome with spruce trees.",
+      "exampleTranslation": "树林是一种寒冷的积雪生物群系，生长着云杉树。"
+    },
+    {
+      "index": "466",
+      "word": "Frozen Peaks",
+      "phonetic": "/ˈfroʊzən piːks/",
+      "chinese": "冻结的山峰",
+      "example": "Frozen peaks are icy mountain tops covered in packed ice.",
+      "exampleTranslation": "冻结的山峰是覆盖着致密冰的冰冷山顶。"
+    },
+    {
+      "index": "467",
+      "word": "Warm Ocean",
+      "phonetic": "/wɔːrm ˈoʊʃən/",
+      "chinese": "温暖的海洋",
+      "example": "Warm oceans have colorful coral reefs and tropical fish.",
+      "exampleTranslation": "温暖的海洋里有色彩缤纷的珊瑚礁和热带鱼。"
+    },
+    {
+      "index": "468",
+      "word": "Deep Ocean",
+      "phonetic": "/diːp ˈoʊʃən/",
+      "chinese": "深海",
+      "example": "The deep ocean is very dark and full of surprises below.",
+      "exampleTranslation": "深海非常黑暗，深处充满了惊喜。"
+    },
+    {
+      "index": "469",
+      "word": "Sunflower Plains",
+      "phonetic": "/ˈsʌnˌflaʊər pleɪnz/",
+      "chinese": "向日葵平原",
+      "example": "Sunflower plains always face east — use them as a compass!",
+      "exampleTranslation": "向日葵平原上的向日葵总朝向东方——可以把它当指南针！"
+    },
+    {
+      "index": "470",
+      "word": "Windswept Hills",
+      "phonetic": "/ˈwɪndˌswɛpt hɪlz/",
+      "chinese": "风蚀丘陵",
+      "example": "Windswept hills have floating stones that look very strange.",
+      "exampleTranslation": "风蚀丘陵有悬浮的石头，看起来非常奇特。"
+    },
+    {
+      "index": "471",
+      "word": "Eroded Badlands",
+      "phonetic": "/ɪˈroʊdɪd ˈbædˌlændz/",
+      "chinese": "侵蚀恶地",
+      "example": "Eroded badlands have tall thin terracotta towers.",
+      "exampleTranslation": "侵蚀恶地有高大细长的陶瓦塔柱。"
+    },
+    {
+      "index": "472",
+      "word": "Pale Garden",
+      "phonetic": "/peɪl ˈɡɑːrdən/",
+      "chinese": "苍白花园",
+      "example": "The pale garden is eerie and filled with white trees.",
+      "exampleTranslation": "苍白花园阴森森的，布满了白色的树木。"
+    },
+    {
+      "index": "473",
+      "word": "Stony Peaks",
+      "phonetic": "/ˈstoʊni piːks/",
+      "chinese": "裸岩山峰",
+      "example": "Stony peaks are tall mountains made of calcite and stone.",
+      "exampleTranslation": "裸岩山峰是由方解石和石头组成的高耸山峰。"
+    },
+    {
+      "index": "474",
+      "word": "Frozen Ocean",
+      "phonetic": "/ˈfroʊzən ˈoʊʃən/",
+      "chinese": "冻结的海洋",
+      "example": "Frozen oceans have ice blocks floating on the surface.",
+      "exampleTranslation": "冻结的海洋表面漂浮着冰块。"
+    },
+    {
+      "index": "475",
+      "word": "Sweeping Edge",
+      "phonetic": "/ˈswiːpɪŋ ɛdʒ/",
+      "chinese": "横扫之刃",
+      "example": "Sweeping Edge lets your sword hit many mobs at once.",
+      "exampleTranslation": "横扫之刃让你的剑能同时击中多个生物。"
+    },
+    {
+      "index": "476",
+      "word": "Fire Protection",
+      "phonetic": "/ˈfaɪər prəˈtɛkʃən/",
+      "chinese": "火焰保护",
+      "example": "Fire Protection on your armor makes fire hurt you less.",
+      "exampleTranslation": "护甲上的火焰保护可以减少火焰对你造成的伤害。"
+    },
+    {
+      "index": "477",
+      "word": "Blast Protection",
+      "phonetic": "/blæst prəˈtɛkʃən/",
+      "chinese": "爆炸保护",
+      "example": "Blast Protection helps you survive creeper explosions.",
+      "exampleTranslation": "爆炸保护帮助你在苦力怕的爆炸中存活。"
+    },
+    {
+      "index": "478",
+      "word": "Projectile Protection",
+      "phonetic": "/prəˈdʒɛktaɪl prəˈtɛkʃən/",
+      "chinese": "弹射物保护",
+      "example": "Projectile Protection reduces damage from arrows and fireballs.",
+      "exampleTranslation": "弹射物保护减少箭矢和火球对你造成的伤害。"
+    },
+    {
+      "index": "479",
+      "word": "Lure",
+      "phonetic": "/lʊr/",
+      "chinese": "诱钓",
+      "example": "The Lure enchantment helps you catch fish faster.",
+      "exampleTranslation": "诱钓附魔帮助你更快地钓到鱼。"
+    },
+    {
+      "index": "480",
+      "word": "Luck of the Sea",
+      "phonetic": "/lʌk əv ðə siː/",
+      "chinese": "海之眷顾",
+      "example": "Luck of the Sea gives you better items when you fish.",
+      "exampleTranslation": "海之眷顾让你钓鱼时能钓到更好的物品。"
+    },
+    {
+      "index": "481",
+      "word": "Swift Sneak",
+      "phonetic": "/swɪft sniːk/",
+      "chinese": "迅捷潜行",
+      "example": "Swift Sneak lets you move quickly while sneaking.",
+      "exampleTranslation": "迅捷潜行让你在潜行时也能快速移动。"
+    },
+    {
+      "index": "482",
+      "word": "Density",
+      "phonetic": "/ˈdɛnsɪti/",
+      "chinese": "密集",
+      "example": "Density makes your mace deal more damage when you fall.",
+      "exampleTranslation": "密集让你的狼牙棒在坠落攻击时造成更多伤害。"
+    },
+    {
+      "index": "483",
+      "word": "Breach",
+      "phonetic": "/briːtʃ/",
+      "chinese": "破甲",
+      "example": "Breach on your mace helps break through enemy armor.",
+      "exampleTranslation": "狼牙棒上的破甲附魔有助于击穿敌人的护甲。"
+    },
+    {
+      "index": "484",
+      "word": "Wind Burst",
+      "phonetic": "/wɪnd bɜːrst/",
+      "chinese": "风爆",
+      "example": "Wind Burst launches you into the air after hitting an enemy.",
+      "exampleTranslation": "风爆在你击中敌人后会将你弹射到空中。"
+    },
+    {
+      "index": "485",
+      "word": "Ruined Portal",
+      "phonetic": "/ˈruːɪnd ˈpɔːrtəl/",
+      "chinese": "废墟传送门",
+      "example": "A ruined portal is a broken Nether portal you can fix.",
+      "exampleTranslation": "废墟传送门是一个损坏的下界传送门，你可以修复它。"
+    },
+    {
+      "index": "486",
+      "word": "Pillager Outpost",
+      "phonetic": "/ˈpɪlɪdʒər ˈaʊtˌpoʊst/",
+      "chinese": "掠夺者前哨站",
+      "example": "Pillager outposts are towers where pillagers live.",
+      "exampleTranslation": "掠夺者前哨站是掠夺者居住的瞭望塔。"
+    },
+    {
+      "index": "487",
+      "word": "Igloo",
+      "phonetic": "/ˈɪɡluː/",
+      "chinese": "冰屋",
+      "example": "An igloo is a snowy house with a secret basement inside.",
+      "exampleTranslation": "冰屋是一座雪地小屋，里面有一个秘密地下室。"
+    },
+    {
+      "index": "488",
+      "word": "Shipwreck",
+      "phonetic": "/ˈʃɪpˌrɛk/",
+      "chinese": "沉船",
+      "example": "Explore a shipwreck underwater to find treasure maps.",
+      "exampleTranslation": "探索水下的沉船来找到藏宝图。"
+    },
+    {
+      "index": "489",
+      "word": "Buried Treasure",
+      "phonetic": "/ˈbɛrid ˈtrɛʒər/",
+      "chinese": "埋藏的宝藏",
+      "example": "Follow the treasure map to find buried treasure on the beach.",
+      "exampleTranslation": "跟随藏宝图在沙滩上找到埋藏的宝藏。"
+    },
+    {
+      "index": "490",
+      "word": "Amethyst Geode",
+      "phonetic": "/ˈæməθɪst ˈdʒiːoʊd/",
+      "chinese": "紫水晶晶洞",
+      "example": "Amethyst geodes are hollow balls filled with purple crystals.",
+      "exampleTranslation": "紫水晶晶洞是充满紫色水晶的空心球体。"
+    },
+    {
+      "index": "491",
+      "word": "Nether Wastes",
+      "phonetic": "/ˈnɛðər weɪsts/",
+      "chinese": "下界荒地",
+      "example": "The Nether Wastes is the most common biome in the Nether.",
+      "exampleTranslation": "下界荒地是下界中最常见的生物群系。"
+    },
+    {
+      "index": "492",
+      "word": "Soul Sand Valley",
+      "phonetic": "/soʊl sænd ˈvæli/",
+      "chinese": "灵魂沙谷",
+      "example": "The soul sand valley is full of bones and ghostly blue fire.",
+      "exampleTranslation": "灵魂沙谷里到处是骨头和幽灵般的蓝色火焰。"
+    },
+    {
+      "index": "493",
+      "word": "Crimson Forest",
+      "phonetic": "/ˈkrɪmzən ˈfɔːrɪst/",
+      "chinese": "绯红森林",
+      "example": "The crimson forest is a red mushroom forest in the Nether.",
+      "exampleTranslation": "绯红森林是下界中一片红色蘑菇森林。"
+    },
+    {
+      "index": "494",
+      "word": "Warped Forest",
+      "phonetic": "/wɔːrpt ˈfɔːrɪst/",
+      "chinese": "诡异森林",
+      "example": "The warped forest is blue and surprisingly safe in the Nether.",
+      "exampleTranslation": "诡异森林是蓝色的，在下界中出奇地安全。"
+    },
+    {
+      "index": "495",
+      "word": "Basalt Deltas",
+      "phonetic": "/bəˈsɔːlt ˈdɛltəz/",
+      "chinese": "玄武岩三角洲",
+      "example": "Basalt deltas are full of black columns and white ash.",
+      "exampleTranslation": "玄武岩三角洲充满了黑色柱子和白色灰烬。"
+    },
+    {
+      "index": "496",
+      "word": "Fossil",
+      "phonetic": "/ˈfɑːsəl/",
+      "chinese": "化石",
+      "example": "Fossils are bone structures buried underground in deserts.",
+      "exampleTranslation": "化石是埋藏在沙漠地下的骨头结构。"
+    },
+    {
+      "index": "497",
+      "word": "Swamp Hut",
+      "phonetic": "/swɑːmp hʌt/",
+      "chinese": "沼泽小屋",
+      "example": "A witch lives in the swamp hut and brews powerful potions.",
+      "exampleTranslation": "女巫住在沼泽小屋里，酿造强力药水。"
+    },
+    {
+      "index": "498",
+      "word": "Desert Well",
+      "phonetic": "/ˈdɛzərt wɛl/",
+      "chinese": "沙漠水井",
+      "example": "A small desert well is a rare find in the middle of nowhere.",
+      "exampleTranslation": "一口小小的沙漠水井是荒野中的罕见发现。"
+    },
+    {
+      "index": "499",
+      "word": "Trial Spawner",
+      "phonetic": "/ˈtraɪəl ˈspɔːnər/",
+      "chinese": "试炼刷怪笼",
+      "example": "A trial spawner sends waves of mobs to fight you.",
+      "exampleTranslation": "试炼刷怪笼会生成一波又一波的生物来与你战斗。"
+    },
+    {
+      "index": "500",
+      "word": "Vault",
+      "phonetic": "/vɔːlt/",
+      "chinese": "金库",
+      "example": "Open a vault with a trial key to get your reward.",
+      "exampleTranslation": "用试炼钥匙打开金库来获取你的奖励。"
+    }
+  ]
+}
