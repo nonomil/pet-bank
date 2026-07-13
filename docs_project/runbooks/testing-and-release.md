@@ -1,6 +1,6 @@
 # 运行与验证入口
 
-> 当前基线：2026-07-12。测试文件是否存在、回归顺序和 Pages 门禁以代码脚本和 workflow 为准；本文件只描述怎么选入口。
+> 当前基线：2026-07-13。测试文件是否存在、回归顺序和 Pages 门禁以代码脚本和 workflow 为准；本文件只描述怎么选入口。
 
 ## 1. 本地启动
 
@@ -20,6 +20,8 @@ python -m http.server 8765 --bind 127.0.0.1
 
 ```powershell
 # 不需要本地服务的静态/契约检查
+node scripts/test-pixel-story-contract.mjs
+node scripts/test-high-priority-sync.mjs
 node --check js/app.js
 node scripts/test-pages-fast-gate-contract.mjs
 node scripts/test-regression-runner-integrity.mjs
@@ -64,6 +66,7 @@ runner 是当前回归清单的唯一来源。新增测试后要么接入 runner
 | 独立小游戏 | 对应原型目录的 `verify.mjs`/simulation，以及 runner 中的同名任务 |
 | Pages 资源/发布 | fast gate + `node scripts/assemble-pages-artifact.mjs _site_verify` |
 | 自托管后端 | `node --test prj/petbank-server/test/*.test.mjs` |
+| 积分/宠物高优先级自动同步 | `node scripts/test-high-priority-sync.mjs`、`node scripts/test-parent-account-browser.mjs` |
 | 跨模块/全局改动 | 启动静态服务后 `node scripts/run-full-regression.mjs` |
 
 ## 5. GitHub Pages 门禁

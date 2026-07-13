@@ -1,6 +1,6 @@
 # PetBank 自托管后端与腾讯云部署
 
-> 对应项目版本：`v0.7.34`
+> 对应项目版本：`v0.7.40`
 
 > 目标：在一台腾讯云 2C4G Linux 服务器上部署网站和轻量后端。网站升级不会覆盖账号、家庭和孩子资料。
 
@@ -87,7 +87,7 @@ curl --fail http://127.0.0.1:3000/api/v1/health
 预期包含：
 
 ```json
-{"ok":true,"service":"petbank-server","migrationCount":2}
+{"ok":true,"service":"petbank-server","migrationCount":3}
 ```
 
 这证明容器、持久化数据卷和增量迁移可用。注册/登录、家庭、孩子和快照接口的端到端测试见 `prj/petbank-server/test/api.test.mjs`，完整接口规则见 [API 契约](./API-CONTRACT.md)。

@@ -71,6 +71,29 @@
         `;
     }
 
+    function renderCloudSyncStatus() {
+        const manager = window.ProfileManager;
+        const profile = manager && typeof manager.getActive === 'function' ? manager.getActive() : null;
+        if (!profile?.cloudChildId) {
+            return '<p class="parent-cloud-sync-status">孩子添加后，积分和宠物进度会在本机保存；连接家庭后自动备份到 SQLite。</p>';
+        }
+
+        const entries = manager && typeof manager.getCloudSyncOutbox === 'function'
+            ? manager.getCloudSyncOutbox().filter(entry => entry.profileId === profile.id && entry.childId === profile.cloudChildId)
+            : [];
+        if (entries.some(entry => entry.status === 'conflict')) {
+            return '<p class="parent-cloud-sync-status is-warning">本机和云端都有新进度，请在上方处理冲突。</p>';
+        }
+        if (entries.some(entry => entry.status === 'pending')) {
+            return '<p class="parent-cloud-sync-status is-pending">本机进度待同步，网络恢复后会自动重试。</p>';
+        }
+        if (profile.lastCloudSyncAt) {
+            const time = new Date(profile.lastCloudSyncAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            return `<p class="parent-cloud-sync-status is-success">积分和宠物进度已同步 · ${escapeHtml(time)}</p>`;
+        }
+        return '<p class="parent-cloud-sync-status">已连接 SQLite；积分和宠物进度会在修改后自动同步。</p>';
+    }
+
     function downloadCloudConflict(profileId) {
         const manager = window.ProfileManager;
         const exported = manager && typeof manager.getCloudConflictExport === 'function'
@@ -160,6 +183,7 @@
                 </div>
                 <p class="parent-account-copy">用户名：${escapeHtml(state.account.username)}</p>
                 ${renderCloudConflictPanel()}
+                ${renderCloudSyncStatus()}
                 ${household ? `<div class="parent-household-summary"><strong>${escapeHtml(household.name)}</strong><span>当前家庭</span></div>` : `
                     <div class="parent-account-empty">先创建家庭，或输入邀请码加入已有家庭。</div>
                     <div class="parent-account-inline-actions">

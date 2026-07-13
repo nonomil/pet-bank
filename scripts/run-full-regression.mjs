@@ -43,6 +43,7 @@ const TASKS = [
     { label: 'cloud sync outbox storage', cmd: 'node', args: ['scripts/test-cloud-sync-outbox.mjs'] },
     { label: 'cloud sync profile contract', cmd: 'node', args: ['scripts/test-cloud-sync-profile-contract.mjs'] },
     { label: 'cloud sync profile integration', cmd: 'node', args: ['scripts/test-cloud-sync-profile-integration.mjs'] },
+    { label: 'high priority state sync', cmd: 'node', args: ['scripts/test-high-priority-sync.mjs'] },
     { label: 'cloud conflict UI contract', cmd: 'node', args: ['scripts/test-cloud-conflict-ui-contract.mjs'] },
     { label: 'page lifecycle contract', cmd: 'node', args: ['scripts/test-page-lifecycle-contract.mjs'] },
     { label: 'english vocab profile scope', cmd: 'node', args: ['scripts/test-english-vocab-profile-scope.mjs'] },

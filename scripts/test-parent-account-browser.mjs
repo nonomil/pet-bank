@@ -150,6 +150,7 @@ try {
         hasMoreActions: Boolean(document.querySelector('[data-parent-more-actions]')),
         hasDeleteChild: Boolean(document.querySelector('[data-parent-delete-child]')),
         hasDeleteAccount: Boolean(document.querySelector('[data-parent-delete-account]')),
+        hasSyncStatus: Boolean(document.querySelector('.parent-cloud-sync-status')),
         childEndpoint: Boolean(window.SelfHostedApi && typeof window.SelfHostedApi.deleteChild === 'function'),
     }));
     assert.equal(parentManagement.hasVisibleMemberList, false);
@@ -157,6 +158,7 @@ try {
     assert.equal(parentManagement.hasMoreActions, true);
     assert.equal(parentManagement.hasDeleteChild, true);
     assert.equal(parentManagement.hasDeleteAccount, true);
+    assert.equal(parentManagement.hasSyncStatus, true);
     assert.equal(parentManagement.childEndpoint, true);
     const accountText = await page.locator('#parent-account-root').textContent();
     assert.doesNotMatch(accountText, /手机号或邮箱/);
@@ -173,6 +175,21 @@ try {
     // Let that lifecycle request settle before asserting the next revision.
     await page.waitForTimeout(500);
     await page.waitForFunction(() => window.ProfileManager && typeof window.ProfileManager.syncActiveToCloud === 'function');
+    const highPriorityReasons = await page.evaluate(() => {
+        const reasons = [];
+        const manager = window.ProfileManager;
+        const original = manager.requestHighPrioritySync;
+        manager.requestHighPrioritySync = (reason) => {
+            reasons.push(reason);
+            return { scheduled: false, reason: 'browser-test' };
+        };
+        window.saveAppState();
+        window.PetSystem.save();
+        manager.requestHighPrioritySync = original;
+        return reasons;
+    });
+    assert.ok(highPriorityReasons.includes('points'));
+    assert.ok(highPriorityReasons.includes('pet'));
     await page.evaluate(async () => {
         await window.ProfileManager.restoreActiveFromCloud();
     });

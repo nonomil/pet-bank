@@ -20,6 +20,7 @@
     const ACTIVE_KEY = 'petbank_active_profile';
     const DATA_PREFIX = 'petbank_profile_data_';
     const CLOUD_OUTBOX_KEY = 'petbank_self_hosted_snapshot_outbox_v1';
+    const HIGH_PRIORITY_SYNC_DEBOUNCE_MS = 900;
     const SELF_HOSTED_AUTH_KEYS = new Set([
         'petbank_self_hosted_access_token',
         'petbank_self_hosted_refresh_token',
@@ -405,7 +406,35 @@
             return results;
         },
 
+        requestHighPrioritySync(reason) {
+            const api = selfHostedApi();
+            const profile = this.getActive();
+            if (!api || !profile?.cloudChildId || !api.isSignedIn()) {
+                return { scheduled: false, reason: 'not-linked' };
+            }
+
+            if (this._cloudSyncTimer) clearTimeout(this._cloudSyncTimer);
+            const syncReason = String(reason || 'state-change');
+            this._cloudSyncTimer = setTimeout(() => {
+                this._cloudSyncTimer = null;
+                return this.syncActiveToCloud().catch((error) => {
+                    console.warn(`[ProfileManager] ${syncReason} cloud sync deferred`, error);
+                    return { queued: true, reason: error.code || 'sync-error' };
+                });
+            }, HIGH_PRIORITY_SYNC_DEBOUNCE_MS);
+
+            return {
+                scheduled: true,
+                reason: syncReason,
+                delayMs: HIGH_PRIORITY_SYNC_DEBOUNCE_MS
+            };
+        },
+
         async syncActiveToCloud() {
+            if (this._cloudSyncTimer) {
+                clearTimeout(this._cloudSyncTimer);
+                this._cloudSyncTimer = null;
+            }
             if (this._cloudSyncPromise) return this._cloudSyncPromise;
             const run = this._syncActiveToCloudOnce();
             this._cloudSyncPromise = run;

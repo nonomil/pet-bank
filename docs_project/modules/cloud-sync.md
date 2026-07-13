@@ -9,6 +9,7 @@
 - 浏览器只负责本地多孩子档案和离线玩法。
 - `prj/petbank-server/` 当前提供数据库初始化、认证、家庭/成员/邀请码、孩子和 revision 快照 API。
 - `js/parent-account.js` 已显示账号管理表单并调用账号/家庭/孩子接口；Profile 生命周期负责孩子状态快照上传和恢复，单个 API 操作成功仍不代表所有本地状态都已同步。
+- `app.js:saveAppState()` 和 `PetSystem.save()` 在本地写入成功后会通过 `ProfileManager.requestHighPrioritySync()` 防抖触发高优先级快照上传，当前覆盖积分和宠物状态；不会把玩法点击改成阻塞式 API 请求。
 - 不再保留 Supabase 客户端、配置 stub、双写逻辑或前端 service role 配置。
 
 ## 目标同步链路
@@ -22,16 +23,17 @@
 
 当前已提供的 API facade（最后两项由 Profile 生命周期调用）：
 
-- `signIn(username, password)`
-- `signOut()` / `refreshSession()`
+- `register(username, password, displayName)` / `login(username, password)`
+- `logout()` / `refresh()`
 - `listChildren()` / `createChild()`
 - `pushSnapshot(childId, revision, payload)`
-- `restoreLatestSnapshot(childId)`
+- `latestSnapshot(childId)`
 
 ## 离线失败与冲突边界
 
 - outbox 使用 `petbank_self_hosted_snapshot_outbox_v1`，按 `profileId:childId` 合并同一孩子的最新本地快照，最多保留 20 条记录。
 - 网络失败会保留 `pending` 记录并按退避时间重试；`online`、`visibilitychange` 和 `pagehide` 会触发 flush。
+- 积分或宠物保存后的自动上传使用短防抖窗口合并连续变化；本地写入始终先完成，离线时仍可继续使用孩子端。
 - 服务端返回 revision 冲突时，记录会保留为 `conflict`，不会自动覆盖远端，也不会自动合并本地与远端 JSON。
 - 当前已能检测并阻止冲突继续上传；家长端的本地/云端选择、导出和恢复操作仍是后续工作，不能把 `conflict` 状态报告为“已同步”。
 

@@ -5593,6 +5593,10 @@ body.shell-parent .app-bottom-dock {
 .parent-cloud-conflict-copy strong { overflow: hidden; color: var(--text-primary); text-overflow: ellipsis; white-space: nowrap; }
 .parent-cloud-conflict-copy small { color: var(--text-tertiary); font-size: 11px; }
 .parent-cloud-conflict-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+.parent-cloud-sync-status { margin: 0; padding: 9px 11px; border: 1px solid rgba(211, 222, 215, .9); border-radius: 10px; background: #f7faf7; color: var(--text-secondary); font-size: 12px; line-height: 1.5; }
+.parent-cloud-sync-status.is-success { border-color: rgba(142, 193, 145, .75); background: #f1f9f1; color: #447447; }
+.parent-cloud-sync-status.is-pending { border-color: rgba(230, 198, 133, .85); background: #fffaf0; color: #8a642e; }
+.parent-cloud-sync-status.is-warning { border-color: rgba(220, 170, 112, .85); background: #fff4e6; color: #8c5522; }
 .parent-account-danger-link { color: #a34d48; }
 .parent-account-status { min-height: 20px; margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 1.5; }
 .parent-account-status[data-tone="error"] { color: #b24a45; }

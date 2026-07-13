@@ -2,6 +2,8 @@
 
 > 此文档给执行部署的 AI 或 Hermes 使用。目标是安全部署，不丢失现有用户数据。
 
+> 当前发布：`v0.7.40`。本版本仍是“孩子端本地优先 + SQLite 账号/家庭/孩子/快照层”；不要改成每次玩法操作都请求 API。
+
 ## 不可违反的规则
 
 1. 不删除 `/srv/pet-bank/shared`。
@@ -57,3 +59,25 @@ curl --fail http://127.0.0.1/parent/
 ## 每次更新
 
 严格按 [UPGRADE-AND-BACKUP.md](./UPGRADE-AND-BACKUP.md) 执行。任何步骤失败都不要切换 `current`。
+
+## v0.7.40 发布验收
+
+在切换 `current` 前，必须在新 release 中执行：
+
+```bash
+node --test prj/petbank-server/test/*.test.mjs
+node scripts/test-self-hosted-ops.mjs
+node scripts/assemble-pages-artifact.mjs site
+```
+
+API 健康检查应返回 `ok: true`、`service: petbank-server` 和 `migrationCount: 3`。切换后还要从外部域名检查：
+
+```bash
+curl --fail https://<domain>/api/v1/health
+curl --fail https://<domain>/
+curl --fail https://<domain>/parent/
+```
+
+使用专用测试账号和已有测试孩子做非破坏性 canary：登录、读取家庭/孩子、读取最新快照；再从家长端确认账号入口不显示手机号/邮箱注册，孩子只能挂靠在家庭下。不要在生产家庭中创建临时孩子或临时家庭，除非已有明确清理方案。
+
+账号登录和页面检查通过后，使用测试孩子在本地修改一次积分或宠物状态，确认家长端出现“已同步”或网络异常时出现“待同步”，然后检查 API 返回的快照 revision 递增。若出现 revision 冲突，必须保留旧 release 和冲突记录，不得强制覆盖远端。

@@ -154,6 +154,9 @@ function saveAppState() {
     window.totalPoints = totalPoints;
     localStorage.setItem('petbank_points', totalPoints.toString());
     window.PetBankDailyState.save(completedTasks);
+    if (window.ProfileManager && typeof window.ProfileManager.requestHighPrioritySync === 'function') {
+        window.ProfileManager.requestHighPrioritySync('points');
+    }
 }
 function loadAppState() {
     totalPoints = parseInt(localStorage.getItem('petbank_points') || '0');

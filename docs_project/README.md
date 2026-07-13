@@ -9,6 +9,7 @@
 | [../AGENTS.md](../AGENTS.md) | 当前架构事实、核心规矩、技术债和修改流程 |
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | Repo Map、启动链路、核心流程、模块和风险 |
 | [CURRENT-STATE.md](./CURRENT-STATE.md) | 当前实现快照、能力状态和代码入口 |
+| [../docs/工程/架构/数据架构与账号流程.md](../docs/工程/架构/数据架构与账号流程.md) | 面向产品与部署协作的账号、SQLite、快照和 Hermes 当前口径 |
 | [conventions/](conventions/) | 命名、模块、错误处理和编码约定 |
 | [data-contracts/](data-contracts/) | localStorage key、宠物/内容数据契约 |
 | [modules/](modules/) | 各业务模块原理、入口和公开 API |
@@ -35,7 +36,7 @@
 | 本地 profile/复盘 | [social-household.md](modules/social-household.md) | `js/profiles.js`、`js/family-review.js` |
 | 自托管后端边界 | [cloud-sync.md](modules/cloud-sync.md) | `prj/petbank-server/` |
 
-`social-household.md` 和 `cloud-sync.md` 区分当前已接入的账号/家庭/孩子管理与基础快照生命周期、尚未实现的离线 outbox/复杂合并，以及仍属目标的好友/社交能力；不要把其中任一层级混写成“完整云同步已上线”。
+`social-household.md` 和 `cloud-sync.md` 区分当前已接入的账号/家庭/孩子管理、基础快照生命周期和 outbox，与尚未实现的自动多端合并及好友/社交能力；不要把其中任一层级混写成“完整云同步已上线”。
 
 ## 数据与运行
 

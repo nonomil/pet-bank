@@ -117,6 +117,9 @@ const PetSystem = (function () {
     // 保存状态
     function save() {
         localStorage.setItem('petbank_pet', JSON.stringify(state));
+        if (window.ProfileManager && typeof window.ProfileManager.requestHighPrioritySync === 'function') {
+            window.ProfileManager.requestHighPrioritySync('pet');
+        }
     }
 
     // 选择宠物
