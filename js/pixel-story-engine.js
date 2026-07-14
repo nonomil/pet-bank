@@ -20,12 +20,15 @@
     var isAwaitingChoice = false;
     var isFeedbackPhase = false;
     var isCompleteScreen = false;
-    var shellElement = null;     // #pixelStoryShell
+    var shellElement = null;     // engine host, normally #pixelStoryMapContainer
+    var storyShellElement = null; // outer #pixelStoryShell when embedded in explore
     var sceneBgElement = null;   // img element for bg
     var spriteL = null;          // left sprite
     var spriteR = null;          // right sprite
     var spriteC = null;          // center sprite
     var propEl = null;           // scene prop / clue
+    var sceneEl = null;          // image/character area
+    var dialogueEl = null;       // dialogue area below the scene
     var backBtn = null;
     var boxEl = null;
     var nameEl = null;
@@ -48,6 +51,12 @@
 
     function qs(sel, ctx) { return (ctx || document).querySelector(sel); }
     function qsa(sel, ctx) { return (ctx || document).querySelectorAll(sel); }
+
+    function setView(view) {
+        var nextView = view === 'stage' ? 'stage' : 'map';
+        if (storyShellElement) storyShellElement.dataset.view = nextView;
+        document.body.classList.toggle('pixel-story-stage-active', nextView === 'stage' && !!storyShellElement);
+    }
 
     /* ===== 进度持久化 ===== */
     function readProgress() {
@@ -125,6 +134,10 @@
     }
 
     function buildInlineLevel(node) {
+        var label = node.label || '这个地方';
+        var subtitle = node.subtitle || '新的线索';
+        var prompt = node.prompt || '完成这一次小互动。';
+        var firstAction = node.actions && node.actions[0] && node.actions[0].label ? node.actions[0].label : '仔细观察线索';
         return {
             levelId: node.levelId,
             chapterId: node.levelId,
@@ -136,8 +149,14 @@
                 background: node.background,
                 lines: [
                     { type: 'narration', text: node.storyText || '新的线索正在发光。', character: 'narrator' },
-                    { type: 'dialogue', text: node.subtitle ? '我们先看看“' + node.subtitle + '”的线索。' : '我们一起看看这里有什么。', character: 'hero', position: 'left' },
-                    { type: 'activity', activityType: node.activityType || 'scan', prompt: node.prompt || '完成这一次小互动。', character: node.character || 'pet', position: 'right', actions: node.actions || [] },
+                    { type: 'dialogue', text: '这里就是' + label + '。我们先把“' + subtitle + '”记在地图上。', character: 'hero', position: 'left' },
+                    { type: 'dialogue', text: '我听到了一点提示声，线索还没有走远。', character: 'pet', position: 'right' },
+                    { type: 'dialogue', text: '先观察方向，再做一个安全的小动作。', character: 'narrator', position: 'left' },
+                    { type: 'activity', activityType: node.activityType || 'scan', prompt: prompt, character: node.character || 'pet', position: 'right', actions: node.actions || [] },
+                    { type: 'narration', text: '小小探险家完成了第一步，' + firstAction + '让线索变得清楚起来。', character: 'narrator' },
+                    { type: 'dialogue', text: '看！刚才藏起来的线索露出来了。', character: 'hero', position: 'left' },
+                    { type: 'dialogue', text: '我们把它和地图上的' + subtitle + '连起来，就知道下一步往哪里走。', character: 'pet', position: 'right' },
+                    { type: 'dialogue', text: '记住这个发现，它会帮助我们找到回家的路。', character: 'narrator', position: 'left' },
                     { type: 'dialogue', text: '线索记下来了，下一段路也亮了。', character: 'pet', position: 'right' }
                 ]
             }]
@@ -187,7 +206,7 @@
 
         // 旁白模式
         if (line.type === 'narration') {
-            renderNarration(line);
+            renderDialogueText(line, 'narrator');
             return;
         }
 
@@ -249,23 +268,27 @@
     }
 
     function renderNarration(line) {
-        hideNarration(); // remove existing
-        if (boxEl) boxEl.style.display = 'none';
+        renderDialogueText(line, 'narrator');
+    }
 
-        var overlay = document.createElement('div');
-        overlay.className = 'pixel-story-narration-overlay';
-        overlay.id = 'pixelNarrationOverlay';
-
-        var textDiv = document.createElement('div');
-        textDiv.className = 'pixel-story-narration-text';
-        textDiv.textContent = line.text || '';
-        overlay.appendChild(textDiv);
-
-        overlay.addEventListener('click', function () {
-            advanceLine();
-        });
-
-        if (shellElement) shellElement.appendChild(overlay);
+    function renderDialogueText(line, characterId) {
+        hideNarration();
+        if (boxEl) boxEl.style.display = 'block';
+        isAwaitingChoice = false;
+        isFeedbackPhase = false;
+        var charData = getCharacterData(characterId || line.character);
+        if (nameEl && charData) {
+            nameEl.textContent = charData.name || characterId;
+            nameEl.className = 'pixel-story-name pixel-story-name-' + (charData.labelStyle || 'narrator');
+            nameEl.style.display = 'inline-block';
+        }
+        if (textEl) {
+            textEl.textContent = line.text || '';
+            textEl.className = 'pixel-story-text';
+        }
+        clearChoices();
+        if (boxEl) boxEl.classList.remove('no-click');
+        if (nextHint) nextHint.style.display = 'block';
         triggerVoice(line);
     }
 
@@ -515,9 +538,12 @@
     /* ===== 地图渲染 ===== */
     function showMap() {
         if (!shellElement) return;
+        setView('map');
         // dispatch to PixelStoryMap if available
         if (root.PixelStoryMap && typeof root.PixelStoryMap.render === 'function') {
-            root.PixelStoryMap.render('pixelStoryMapContainer', preferredTrackId);
+            var mapContainer = document.getElementById('pixelStoryMapContainer');
+            var activeTrack = mapContainer && mapContainer.dataset.preferredTrack ? mapContainer.dataset.preferredTrack : preferredTrackId;
+            root.PixelStoryMap.render('pixelStoryMapContainer', activeTrack);
         } else {
             // fallback: simple list
             renderSimpleChapterList();
@@ -576,15 +602,19 @@
         var chapter = currentChapter;
         if (!chapter) return;
 
+        setView('stage');
+
         shellElement.innerHTML =
             '<div class="pixel-story-stage">' +
-            '  <img class="pixel-story-bg" id="pixelStoryBg" src="" alt="" style="display:none">' +
-            '  <img class="pixel-story-sprite pixel-story-sprite-left pixel-story-sprite-hide" id="pixelStorySpriteL" alt="">' +
-            '  <img class="pixel-story-sprite pixel-story-sprite-right pixel-story-sprite-hide" id="pixelStorySpriteR" alt="">' +
-            '  <img class="pixel-story-sprite pixel-story-sprite-center pixel-story-sprite-hide" id="pixelStorySpriteC" alt="">' +
-            '  <img class="pixel-story-prop pixel-story-prop-hide" id="pixelStoryProp" alt="">' +
-            '  <button class="pixel-story-back" id="pixelStoryBack">← 返回</button>' +
-            '  <div class="pixel-story-box" id="pixelStoryBox">' +
+            '  <div class="pixel-story-scene" id="pixelStoryScene">' +
+            '    <img class="pixel-story-bg" id="pixelStoryBg" src="" alt="" style="display:none">' +
+            '    <img class="pixel-story-sprite pixel-story-sprite-left pixel-story-sprite-hide" id="pixelStorySpriteL" alt="">' +
+            '    <img class="pixel-story-sprite pixel-story-sprite-right pixel-story-sprite-hide" id="pixelStorySpriteR" alt="">' +
+            '    <img class="pixel-story-sprite pixel-story-sprite-center pixel-story-sprite-hide" id="pixelStorySpriteC" alt="">' +
+            '    <img class="pixel-story-prop pixel-story-prop-hide" id="pixelStoryProp" alt="">' +
+            '    <button class="pixel-story-back" id="pixelStoryBack">← 返回</button>' +
+            '  </div>' +
+            '  <div class="pixel-story-dialogue pixel-story-box" id="pixelStoryBox">' +
             '    <div class="pixel-story-name" id="pixelStoryName" style="display:none"></div>' +
             '    <div class="pixel-story-text" id="pixelStoryText"></div>' +
             '    <div class="pixel-story-choices" id="pixelStoryChoices" style="display:none"></div>' +
@@ -598,6 +628,8 @@
         spriteR = document.getElementById('pixelStorySpriteR');
         spriteC = document.getElementById('pixelStorySpriteC');
         propEl = document.getElementById('pixelStoryProp');
+        sceneEl = document.getElementById('pixelStoryScene');
+        dialogueEl = document.getElementById('pixelStoryBox');
         backBtn = document.getElementById('pixelStoryBack');
         boxEl = document.getElementById('pixelStoryBox');
         nameEl = document.getElementById('pixelStoryName');
@@ -642,6 +674,7 @@
             return Promise.reject(new Error('container not found'));
         }
         shellElement = container;
+        storyShellElement = container.closest('#pixelStoryShell');
         preferredTrackId = initialTrackId || preferredTrackId || 'sci-fi';
         shellElement.classList.add('pixel-story-engine-host');
 
@@ -653,9 +686,9 @@
         });
     }
 
-    function setPreferredTrack(trackId) {
+    function setPreferredTrack(trackId, renderNow) {
         preferredTrackId = trackId || 'sci-fi';
-        if (shellElement && manifest) showMap();
+        if (renderNow !== false && shellElement && manifest) showMap();
     }
 
     /* ===== 工具 ===== */

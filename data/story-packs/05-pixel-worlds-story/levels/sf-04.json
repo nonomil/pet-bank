@@ -18,9 +18,21 @@
         },
         {
           "type": "dialogue",
-          "text": "别担心，我们一起把它修好。",
+          "text": "这里就是星尘维修区。我们先把“修好飞船”记在地图上。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "text": "我听到光核在轻轻嗡鸣，信号就在附近。",
           "character": "pet",
           "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "text": "先看清蓝色航线，再做一个安全的小动作。",
+          "character": "star_engineer",
+          "position": "left"
         },
         {
           "type": "activity",
@@ -38,6 +50,35 @@
               "feedback": "螺丝固定好了，飞船更稳了。"
             }
           ]
+        },
+        {
+          "type": "narration",
+          "text": "小小探险家完成了第一步，放入蓝色零件让周围的线索变得清楚起来。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "看！刚才藏起来的线索露出来了。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "text": "扫描光点后，隐藏的星尘轨迹露出来了。",
+          "character": "pet",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "text": "把这条轨迹和星图接起来，下一站就会亮起。",
+          "character": "star_engineer",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "text": "记住这束光，它会带我们穿过下一段星际航线。",
+          "character": "star_engineer",
+          "position": "left"
         },
         {
           "type": "dialogue",
@@ -59,5 +100,6 @@
       }
     }
   ],
-  "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-04.webp"
+  "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-04.webp",
+  "storyVersion": 2
 }

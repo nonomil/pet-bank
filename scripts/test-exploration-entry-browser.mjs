@@ -23,23 +23,24 @@ try {
     assert.equal(await page.locator('[data-home-explore-mode]').count(), 4, 'home exposes forest, story, block, and detective modes');
     await page.screenshot({ path: 'tmp/exploration-home-forest.png', fullPage: true });
 
-    await page.locator('[data-home-explore-mode="story"]').click();
-    await page.waitForSelector('#pixelStoryMapContainer .pixel-story-node', { state: 'attached', timeout: 20000 });
-    assert.equal(await page.locator('#pixelStoryMapContainer .pixel-story-node').count(), 20, 'home story entry opens the twenty-node sci-fi map');
+    await page.locator('[data-home-explore-mode="sci-fi"]').click();
+    await page.waitForSelector('#homePixelWorldMapSlot .pixel-story-node', { state: 'attached', timeout: 20000 });
+    assert.equal(await page.locator('#homePixelWorldMapSlot .pixel-story-node').count(), 1, 'home story entry opens the first unlocked sci-fi node');
     await page.screenshot({ path: 'tmp/exploration-story-roaming.png', fullPage: true });
 
     await page.locator('[data-home-explore-mode="block"]').evaluate((button) => button.click());
-    await page.waitForSelector('#pixelStoryMapContainer .pixel-story-node', { state: 'attached', timeout: 20000 });
-    assert.equal(await page.locator('#pixelStoryMapContainer .pixel-story-node').count(), 20, 'home block entry opens the twenty-node block map');
+    await page.waitForSelector('#homePixelWorldMapSlot .pixel-story-node', { state: 'attached', timeout: 20000 });
+    assert.equal(await page.locator('#homePixelWorldMapSlot .pixel-story-node').count(), 1, 'home block entry opens the first unlocked block node');
     await page.screenshot({ path: 'tmp/exploration-block-world.png', fullPage: true });
 
     await page.locator('[data-home-explore-mode="detective"]').evaluate((button) => button.click());
-    await page.waitForSelector('[data-space-growth-map]', { state: 'attached', timeout: 20000 });
-    assert.equal(await page.locator('[data-space-growth-node]').count(), 5, 'home detective entry opens all five cases');
+    await page.waitForSelector('#homePixelWorldMapSlot .pixel-story-node', { state: 'attached', timeout: 20000 });
+    assert.equal(await page.locator('#homePixelWorldMapSlot .pixel-story-node').count(), 1, 'home detective entry opens the first unlocked bonus node');
     await page.screenshot({ path: 'tmp/exploration-star-detective.png', fullPage: true });
 
-    await page.locator('[data-home-explore-mode="forest"]').count();
+    await page.locator('[data-home-explore-mode="forest"]').click();
     await page.evaluate(() => window.switchPage('map'));
+    await page.waitForSelector('.home-forest-map-view:not([hidden]) #sceneGridMap .map-scene-node', { state: 'visible', timeout: 20000 });
     await page.waitForSelector('#sceneGridMap .map-scene-node', { state: 'attached', timeout: 20000 });
     assert.equal(await page.locator('#sceneGridMap .map-scene-node').count(), 12, 'returning home restores the forest board');
 
@@ -53,7 +54,7 @@ try {
     const layout = await page.evaluate(() => ({ bodyWidth: document.body.scrollWidth, viewportWidth: innerWidth }));
     assert.ok(layout.bodyWidth <= layout.viewportWidth, `home exploration has no mobile horizontal overflow: ${JSON.stringify(layout)}`);
     assert.deepEqual(errors, [], 'exploration entry flow has no page errors');
-    console.log(JSON.stringify({ forestNodes: 12, storyNodes: 20, blockNodes: 20, detectiveNodes: 5, layout, errors }));
+    console.log(JSON.stringify({ forestNodes: 12, storyNodesVisible: 1, blockNodesVisible: 1, detectiveNodes: 1, layout, errors }));
 } finally {
     await browser.close();
 }

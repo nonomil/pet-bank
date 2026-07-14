@@ -41,5 +41,10 @@ assert.equal(worldsWebps.length, 192, `expected 80 scenes + 80 props + 32 charac
 assert.equal(mp3s.length, 37, `expected 37 story MP3s in Pages artifact, got ${mp3s.length}`);
 assert.ok(fs.existsSync(path.join(outDir, 'data', 'story-packs', '04-pixel-dialogue-story', 'audio-manifest.json')));
 assert.ok(fs.existsSync(path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'manifest.json')));
+assert.ok(fs.existsSync(path.join(outDir, 'js', 'pixel-story-map.js')));
+assert.ok(fs.existsSync(path.join(outDir, 'js', 'pixel-story-engine.js')));
+assert.ok(fs.existsSync(path.join(outDir, 'css', 'pixel-story.css')));
+const levelDir = path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'levels');
+assert.equal(fs.readdirSync(levelDir).filter((file) => file.endsWith('.json')).length, 80, 'all 80 paged story levels are published');
 fs.rmSync(outDir, { recursive: true, force: true });
 console.log(`PASS pixel story published artifact: ${v2Pngs.length} v2 PNG, ${mp3s.length} MP3`);

@@ -63,9 +63,9 @@
         })();
     </script>
     <link rel="preload" href="js/pet.js" as="script" fetchpriority="high">
-    <link rel="preload" href="js/runtime-loader.js?v=20260711" as="script" fetchpriority="high">
+    <link rel="preload" href="js/runtime-loader.js?v=20260715-stage-fullscreen1" as="script" fetchpriority="high">
     <link rel="preload" href="js/battle-fx.js" as="script" fetchpriority="high">
-    <link rel="preload" href="js/app.js?v=20260713" as="script" fetchpriority="high">
+    <link rel="preload" href="js/app.js?v=20260714-home-maps2" as="script" fetchpriority="high">
     <link rel="stylesheet" href="css/vendor/tailwind-lite.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/travel-memory.css">
@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/pixel-story.css?v=20260713">
+    <link rel="stylesheet" href="css/pixel-story.css?v=20260715-stage-fullscreen1">
 </head>
 <body class="map-page-bg">
     <a class="skip-link" href="#mainContent">跳到主要内容</a>
@@ -302,24 +302,24 @@
                             <h2 id="homeExploreTitle">今天想走哪一条路线？</h2>
                             <p>森林探险保留在首页；故事地图也从这里直接进入。</p>
                         </div>
-                        <span class="home-explore-panel-status"><i data-lucide="map" aria-hidden="true"></i><span>三条路线可选</span></span>
+                        <span class="home-explore-panel-status"><i data-lucide="map" aria-hidden="true"></i><span>三张主地图 + 侦探路线</span></span>
                     </div>
                     <div class="home-explore-modebar" role="tablist" aria-label="探索地图入口">
                         <button class="home-explore-mode is-active" type="button" role="tab" aria-selected="true" data-home-explore-mode="forest" onclick="openHomeExploreMode('forest')">
                             <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="map"></i></span>
                             <span><strong>森林探险</strong><small>原有场景路线</small></span>
                         </button>
-                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="story" onclick="openHomeExploreMode('story')">
+                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="sci-fi" onclick="openHomeExploreMode('sci-fi')">
                             <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="book-open"></i></span>
-                            <span><strong>故事漫游</strong><small>读故事，学一点</small></span>
+                            <span><strong>星港科技区</strong><small>科幻故事 20 站</small></span>
                         </button>
                         <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="block" onclick="openHomeExploreMode('block')">
                             <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="box"></i></span>
-                            <span><strong>方块地下城</strong><small>像素冒险与侦探小游戏</small></span>
+                            <span><strong>方块地下城</strong><small>方块故事 20 站</small></span>
                         </button>
                         <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="detective" onclick="openHomeExploreMode('detective')">
-                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="compass"></i></span>
-                            <span><strong>星光侦探社</strong><small>案件路线与收藏</small></span>
+                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="search"></i></span>
+                            <span><strong>星光侦探</strong><small>额外小游戏 20 站</small></span>
                         </button>
                     </div>
                     <div class="home-explore-view" id="homeExploreView" aria-live="polite">
@@ -337,6 +337,19 @@
                                     <div class="map-board-texture" aria-hidden="true"></div>
                                     <div class="map-board" id="sceneGridMap" aria-label="森林探险场景路线"></div>
                                 </div>
+                            </div>
+                        </section>
+                        <section class="home-pixel-world-map-view" id="homePixelWorldMapView" aria-label="像素世界地图" hidden>
+                            <div class="home-pixel-world-map-head">
+                                <div>
+                                    <p>故事漫游 / 主线地图</p>
+                                    <h3>三张地图，继续同一段回家任务</h3>
+                                    <span>每张地图 20 个节点；点亮一站，就会留下一个故事记忆。</span>
+                                </div>
+                                <button type="button" class="home-forest-map-action" onclick="openHomeExploreMode('detective')"><i data-lucide="search" aria-hidden="true"></i><span>进入侦探小游戏</span></button>
+                            </div>
+                            <div class="home-pixel-world-map-shell">
+                                <div id="homePixelWorldMapSlot" aria-live="polite"></div>
                             </div>
                         </section>
                     </div>
@@ -1477,12 +1490,12 @@
     <script src="js/parent-account.js"></script>
     <script src="js/storage-key-migrations.js"></script>
     <script src="js/time-utils.js"></script>
-    <script src="js/runtime-loader.js?v=20260711"></script>
+    <script src="js/runtime-loader.js?v=20260715-stage-fullscreen1"></script>
     <script src="js/lucide-lite.js?v=20260713"></script>
     <script src="js/battle-fx.js"></script>
     <script src="js/task-catalog.js"></script>
     <script src="js/page-router.js"></script>
-    <script src="js/app.js?v=20260713"></script>
+    <script src="js/app.js?v=20260714-home-maps2"></script>
     <script src="js/child-journey-feedback.js"></script>
     <script src="js/showcase.js"></script>
 </body>

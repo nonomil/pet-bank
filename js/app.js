@@ -11,6 +11,7 @@ const { DIMENSIONS, HOME_PRIORITY_TASKS, POINT_TASK_ART, getPointTaskArt } = tas
 let totalPoints = 0;
 let completedTasks = new Set();
 let activeExploreSceneId = null;
+let activeHomeExploreMode = 'forest';
 let pageActivationToken = 0;
 const GROWTH_WORKS_KEY = 'petbank_growth_works';
 const DAILY_STATE_KEY = 'petbank_daily_state';
@@ -2619,10 +2620,51 @@ function ensureWordMemoryMapEmbed() {
     frame.src = src;
 }
 
+function setHomeExploreView(mode) {
+    const forestView = document.querySelector('.home-forest-map-view');
+    const pixelView = document.getElementById('homePixelWorldMapView');
+    const isForest = mode === 'forest';
+    if (forestView) forestView.hidden = !isForest;
+    if (pixelView) pixelView.hidden = isForest;
+}
+
+async function ensurePixelWorldRuntime() {
+    if (window.PixelStoryMap && window.PixelStoryEngine) return true;
+    if (!window.PetBankRuntime || typeof window.PetBankRuntime.ensurePage !== 'function') return false;
+    try {
+        await window.PetBankRuntime.ensurePage('explore');
+        return Boolean(window.PixelStoryMap && window.PixelStoryEngine);
+    } catch (error) {
+        console.warn('[app] pixel world runtime ensure failed:', error);
+        return false;
+    }
+}
+
+async function renderHomePixelWorldMap(trackId) {
+    const slot = document.getElementById('homePixelWorldMapSlot');
+    if (!slot) return;
+    slot.innerHTML = '<div class="home-pixel-world-map-status">正在接收像素世界地图信号…</div>';
+    const ready = await ensurePixelWorldRuntime();
+    if (!ready || activeHomeExploreMode === 'forest' || getActivePageId() !== 'map') {
+        if (!ready && activeHomeExploreMode !== 'forest') {
+            slot.innerHTML = '<div class="home-pixel-world-map-status is-error">地图信号暂时离线，请稍后再试。</div>';
+        }
+        return;
+    }
+    window.PixelStoryMap.render('homePixelWorldMapSlot', trackId);
+}
+
 async function renderHomeExploreMap() {
     const pageMap = document.getElementById('page-map');
     const board = document.getElementById('sceneGridMap');
-    if (!pageMap || !board || !window.ExplorationSystem) return;
+    if (!pageMap) return;
+    updateHomeExploreModeButtons(activeHomeExploreMode);
+    setHomeExploreView(activeHomeExploreMode);
+    if (activeHomeExploreMode !== 'forest') {
+        void renderHomePixelWorldMap(activeHomeExploreMode);
+        return;
+    }
+    if (!board || !window.ExplorationSystem) return;
     try {
         await ExplorationSystem.loadScenes();
         if (!pageMap.classList.contains('active')) return;
@@ -2642,9 +2684,10 @@ function updateHomeExploreModeButtons(mode) {
 }
 
 function openHomeExploreMode(mode) {
-    const nextMode = ['forest', 'story', 'block', 'detective'].includes(mode) ? mode : 'forest';
+    const nextMode = ['forest', 'sci-fi', 'block', 'detective'].includes(mode) ? mode : 'forest';
     updateHomeExploreModeButtons(nextMode);
     activeExploreSceneId = null;
+    activeHomeExploreMode = nextMode;
 
     if (nextMode === 'forest') {
         if (getActivePageId() === 'map') void renderHomeExploreMap();
@@ -2652,13 +2695,17 @@ function openHomeExploreMode(mode) {
         return;
     }
 
-    const ready = switchPage('explore');
-    Promise.resolve(ready).then(function () {
-        if (getActivePageId() !== 'explore') return;
-        if (nextMode === 'detective') switchExploreToAdventure();
-        else void renderPixelStoryExplorePage(nextMode === 'block' ? 'block' : 'sci-fi');
-    });
+    if (nextMode === 'sci-fi' || nextMode === 'block') {
+        if (getActivePageId() === 'map') void renderHomeExploreMap();
+        else void switchPage('map');
+        return;
+    }
+
+    if (getActivePageId() === 'map') void renderHomeExploreMap();
+    else void switchPage('map');
 }
+
+window.openHomeExploreMode = openHomeExploreMode;
 
 function runPageActivation(page) {
     if (page === 'map') void renderHomeExploreMap();
@@ -3731,7 +3778,7 @@ async function renderPixelStoryExplorePage(preferredTrackId = 'sci-fi') {
     }
 
     pageExplore.innerHTML =
-        '<div class="pixel-story-shell" id="pixelStoryShell" data-mode="story">' +
+        '<div class="pixel-story-shell" id="pixelStoryShell" data-mode="story" data-view="map">' +
         '  <header class="pixel-story-overview">' +
         '    <div class="pixel-story-overview-copy">' +
         '      <p class="pixel-story-eyebrow">探索 / 故事漫游</p>' +
@@ -3800,6 +3847,7 @@ window.focusExploreScene = focusExploreScene;
 window.startExplorationUI = startExplorationUI;
 window.renderExplorePage = renderExplorePage;
 window.ensureExploreMapShell = ensureExploreMapShell;
+window.switchExploreToAdventure = switchExploreToAdventure;
 function darken(hex, percent) {
     const num = parseInt(hex.replace('#', ''), 16);
     const r = Math.max(0, (num >> 16) - percent);

@@ -29,8 +29,20 @@
         },
         {
           "type": "dialogue",
-          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "text": "这里就是方块农场。我们先把“收好作物”记在地图上。",
           "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "text": "我听到方块碰撞的声音，新的建造点就在前面。",
+          "character": "pet",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "text": "先找稳固的方块，再一步一步搭出安全的路线。",
+          "character": "block_builder",
           "position": "left"
         },
         {
@@ -51,6 +63,35 @@
           ]
         },
         {
+          "type": "narration",
+          "text": "小小探险家完成了第一步，收下金色麦穗让周围的线索变得清楚起来。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "看！刚才藏起来的线索露出来了。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "text": "方块放稳后，藏在墙后的通道露出来了。",
+          "character": "pet",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "text": "把这段通道接到村子的道路上，伙伴们就能一起通过。",
+          "character": "block_builder",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "text": "记住这块特别的方块，它会成为下一座建筑的起点。",
+          "character": "block_builder",
+          "position": "left"
+        },
+        {
           "type": "dialogue",
           "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
           "character": "pet",
@@ -58,5 +99,6 @@
         }
       ]
     }
-  ]
+  ],
+  "storyVersion": 2
 }

@@ -44,7 +44,7 @@ try {
         const state = await page.locator('#pixelStoryBg').evaluate((image) => ({ src: image.src, width: image.naturalWidth, height: image.naturalHeight }));
         assert.match(state.src, new RegExp(backgroundName.replace('.', '\\.') ), `${chapterId}: expected background is active`);
         assert.ok(state.width > 0 && state.height > 0, `${chapterId}: background has pixels`);
-        await page.locator('#pixelNarrationOverlay').click();
+        await page.locator('.pixel-story-dialogue').click();
         await page.waitForFunction(() => {
             const image = document.getElementById('pixelStoryProp');
             return Boolean(image && image.complete && image.naturalWidth > 0);

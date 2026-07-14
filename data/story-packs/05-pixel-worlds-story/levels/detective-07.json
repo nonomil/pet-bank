@@ -29,8 +29,20 @@
         },
         {
           "type": "dialogue",
-          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "text": "这里就是森林的蓝羽毛。我们先把“辨认物品”记在地图上。",
           "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "text": "我发现了一点不一样的声音，线索可能就在转角后面。",
+          "character": "pet",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "text": "小侦探先观察，再选择一条最可靠的线索。",
+          "character": "detective_helper",
           "position": "left"
         },
         {
@@ -51,6 +63,35 @@
           ]
         },
         {
+          "type": "narration",
+          "text": "小小探险家完成了第一步，拾起蓝羽毛让周围的线索变得清楚起来。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "看！刚才藏起来的线索露出来了。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "text": "线索被照亮了，细小的痕迹终于连成了一条路。",
+          "character": "pet",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "text": "把证物和故事顺序排好，答案就离我们更近了。",
+          "character": "detective_helper",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "text": "记住这个细节，下一次推理时它会成为关键提示。",
+          "character": "detective_helper",
+          "position": "left"
+        },
+        {
           "type": "dialogue",
           "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
           "character": "pet",
@@ -58,5 +99,6 @@
         }
       ]
     }
-  ]
+  ],
+  "storyVersion": 2
 }

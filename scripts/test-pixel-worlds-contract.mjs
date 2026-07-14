@@ -38,6 +38,8 @@ for (const world of manifest.worlds) {
     assert.ok(Array.isArray(level.scenes) && level.scenes.length > 0 || node.prompt, `${node.levelId}: scenes or inline story`);
     const scenes = level.scenes || [{ background: node.background, lines: [{ type: 'activity', activityType: node.activityType, prompt: node.prompt, actions: node.actions }] }];
     assert.ok(scenes.some((scene) => scene.lines.some((line) => line.type === 'activity') || node.prompt), `${node.levelId}: story activity`);
+    const lineCount = scenes.reduce((count, scene) => count + (Array.isArray(scene.lines) ? scene.lines.length : 0), 0);
+    assert.ok(lineCount >= 9, `${node.levelId}: story should have at least 9 readable beats, got ${lineCount}`);
     for (const scene of scenes) {
       assert.ok(scene.background || node.background, `${node.levelId}/${scene.sceneId || 'inline'}: background`);
       for (const line of scene.lines) {

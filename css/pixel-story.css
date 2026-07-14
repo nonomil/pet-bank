@@ -150,6 +150,20 @@
   background: #0a0a1a;
   min-height: 0;
 }
+.pixel-story-scene {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 360px;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #0a0a1a;
+}
+.pixel-story-dialogue {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  z-index: 3;
+}
 .pixel-story-bg {
   position: absolute;
   inset: 0;
@@ -163,7 +177,7 @@
 /* 立绘 */
 .pixel-story-sprite {
   position: absolute;
-  bottom: 120px;
+  bottom: 8%;
   height: 55%;
   max-height: 320px;
   image-rendering: pixelated;
@@ -192,7 +206,7 @@
     position: absolute;
     z-index: 2;
     right: 8%;
-    bottom: 128px;
+    bottom: 9%;
     width: clamp(72px, 13vw, 168px);
     height: auto;
     max-height: 22%;
@@ -476,7 +490,7 @@
   }
   .pixel-story-sprite-left { left: 4%; }
     .pixel-story-sprite-right { right: 4%; }
-    .pixel-story-prop { right: 4%; bottom: 116px; width: 82px; }
+    .pixel-story-prop { right: 4%; bottom: 9%; width: 82px; }
   .pixel-story-narration-text {
     font-size: 15px;
     padding: 24px 20px;
@@ -636,6 +650,74 @@
 }
 #page-explore .pixel-story-shell[data-mode="adventure"] .pixel-story-modebar { margin-bottom: 14px; }
 
+/* 进入章节后，故事舞台接管整个孩子端视口；返回地图时恢复上方入口与模式切换。 */
+body.pixel-story-stage-active {
+  height: 100dvh;
+  overflow: hidden !important;
+  background: #071a2a;
+}
+body.pixel-story-stage-active .top-nav,
+body.pixel-story-stage-active .app-shell-bar,
+body.pixel-story-stage-active .app-bottom-dock,
+body.pixel-story-stage-active .parent-shell-nav,
+body.pixel-story-stage-active .sidebar,
+body.pixel-story-stage-active .playground-arena-shell-bar {
+  display: none !important;
+}
+body.pixel-story-stage-active .page-shell,
+body.pixel-story-stage-active .main-content,
+body.pixel-story-stage-active #page-explore,
+body.pixel-story-stage-active #page-explore .pixel-story-shell {
+  width: 100%;
+  max-width: none;
+  min-height: 100dvh;
+  height: 100dvh;
+  padding: 0 !important;
+  margin: 0;
+}
+body.pixel-story-stage-active .page-shell,
+body.pixel-story-stage-active .main-content {
+  display: block;
+  overflow: hidden;
+}
+body.pixel-story-stage-active #page-explore .pixel-story-shell {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+}
+body.pixel-story-stage-active #page-explore .pixel-story-map-slot,
+body.pixel-story-stage-active #page-explore #pixelStoryMapContainer {
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  margin: 0;
+}
+body.pixel-story-stage-active #page-explore #pixelStoryMapContainer {
+  display: flex;
+  flex-direction: column;
+}
+body.pixel-story-stage-active #page-explore .pixel-story-overview,
+body.pixel-story-stage-active #page-explore .pixel-story-modebar {
+  display: none;
+}
+body.pixel-story-stage-active #page-explore .pixel-story-stage {
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+body.pixel-story-stage-active #page-explore .pixel-story-scene {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  aspect-ratio: auto;
+}
+body.pixel-story-stage-active #page-explore .pixel-story-dialogue {
+  max-height: min(34dvh, 280px);
+  overflow-y: auto;
+}
+
 .pixel-story-map-slot,
 .pixel-story-engine-host { min-height: 0; }
 .pixel-story-map-slot > .pixel-story-map { min-height: 548px; }
@@ -761,12 +843,103 @@
 .pixel-story-map-legend i { display: inline-block; width: 18px; margin-right: 6px; border-top: 2px dashed #88d6c8; vertical-align: middle; }
 .pixel-story-map-legend small { color: #aab8cd; font-size: 10px; }
 
+.pixel-story-detective-bonus {
+  position: absolute;
+  z-index: 4;
+  bottom: 16px;
+  left: 24px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  max-width: min(420px, calc(100% - 48px));
+  padding: 8px 11px 8px 8px;
+  border: 1px solid rgba(255, 211, 142, .38);
+  border-radius: 12px;
+  background: rgba(25, 35, 57, .88);
+  color: #fff8e9;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color .2s ease, background-color .2s ease, transform .2s ease;
+}
+.pixel-story-detective-bonus:hover,
+.pixel-story-detective-bonus:focus-visible {
+  border-color: #ffd38e;
+  outline: none;
+  background: rgba(43, 50, 76, .96);
+  transform: translateY(-1px);
+}
+.pixel-story-detective-bonus-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 9px;
+  background: #ffd38e;
+  color: #5c3c24;
+  font-size: 21px;
+  font-weight: 900;
+}
+.pixel-story-detective-bonus-icon svg { width: 17px; height: 17px; stroke-width: 2.4; }
+.pixel-story-detective-bonus strong,
+.pixel-story-detective-bonus small { display: block; }
+.pixel-story-detective-bonus strong { font-size: 12px; }
+.pixel-story-detective-bonus small { margin-top: 2px; color: #f1d6ad; font-size: 10px; }
+.pixel-story-detective-bonus > span:last-child { color: #ffd38e; font-size: 11px; font-weight: 900; white-space: nowrap; }
+
 /* 05-pixel-worlds: world selector and narrative mini-game controls */
 .pixel-story-map-world { background: #102d3d; }
 .pixel-story-map-world.pixel-story-map-tone-forest { background: #173b35; }
 .pixel-story-map-world.pixel-story-map-tone-block { background: #3a3028; }
 .pixel-story-map-world.pixel-story-map-tone-detective { background: #172d4b; }
 .pixel-story-map-world .pixel-story-map-bg { opacity: .78; filter: saturate(1.12) brightness(1.08); }
+.pixel-story-map-pager {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: 17px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+  padding: 5px;
+  border: 1px solid rgba(221,245,255,.18);
+  border-radius: 10px;
+  background: rgba(9,26,38,.78);
+  color: #d9f5f1;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.pixel-story-map-page-btn {
+  padding: 5px 9px;
+  border: 1px solid rgba(125,227,220,.35);
+  border-radius: 7px;
+  background: rgba(43,145,157,.22);
+  color: #f5fbff;
+  cursor: pointer;
+  font: inherit;
+}
+.pixel-story-map-page-btn:hover:not(:disabled),
+.pixel-story-map-page-btn:focus-visible { border-color: #7de3dc; background: rgba(43,145,157,.48); outline: none; }
+.pixel-story-map-page-btn:disabled { opacity: .35; cursor: default; }
+.pixel-story-map-locked-message {
+  position: absolute;
+  z-index: 3;
+  top: 51%;
+  left: 50%;
+  display: grid;
+  gap: 7px;
+  width: min(360px, 72%);
+  padding: 18px 20px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(221,245,255,.2);
+  border-radius: 12px;
+  background: rgba(9,26,38,.78);
+  color: #f5fbff;
+  text-align: center;
+}
+.pixel-story-map-locked-message span { color: #aab8cd; font-size: 11px; }
 .pixel-story-map-world-tabs {
   position: absolute;
   z-index: 5;
@@ -798,7 +971,7 @@
 .pixel-story-activity-btn { border-color: rgba(125, 227, 220, .52); background: rgba(43, 145, 157, .18); }
 .pixel-story-activity-btn:hover { background: rgba(43, 145, 157, .34); }
 
-.pixel-story-stage { min-height: 560px; border-radius: 16px; background: #12203b; }
+.pixel-story-stage { min-height: 0; border-radius: 16px; background: #12203b; }
 .pixel-story-back { top: 16px; left: 16px; border-radius: 9px; background: rgba(10,20,42,.68); }
 .pixel-story-box { border-top-color: rgba(136,214,200,.5); background: rgba(12,24,48,.96); }
 .pixel-story-choice-btn { border-radius: 9px; background: rgba(136,214,200,.1); }
@@ -811,11 +984,13 @@
   .pixel-story-overview-status { width: 100%; }
   .pixel-story-modebar { width: 100%; }
   .pixel-story-map-slot > .pixel-story-map { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; min-height: 620px; padding: 112px 12px 58px; }
+  .pixel-story-scene { min-height: 240px; }
   .pixel-story-map-chrome { top: 16px; left: 16px; right: 16px; }
   .pixel-story-map-chrome small { max-width: 220px; }
   .pixel-story-route { display: none; }
   .pixel-story-node { position: relative; top: auto !important; left: auto !important; width: auto; min-width: 0; transform: none; }
   .pixel-story-map-legend { right: 16px; bottom: 14px; }
+  .pixel-story-detective-bonus { right: 16px; bottom: 58px; left: 16px; max-width: none; }
 }
 
 @media (max-width: 420px) {

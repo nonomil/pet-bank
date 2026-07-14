@@ -41,8 +41,13 @@ test -f site/assets/story/pixel-worlds-v1/maps/detective.png
 
 ```bash
 PETBANK_BASE_URL="http://127.0.0.1:8765/" node scripts/test-exploration-entry-browser.mjs
+PETBANK_BASE_URL="http://127.0.0.1:8765/" node scripts/test-pixel-story-pagination-browser.mjs
 PETBANK_BASE_URL="http://127.0.0.1:8765/" node scripts/test-pixel-story-all-chapters-browser.mjs
 ```
+
+地图交互约定：每条路线分为 4 页，每页最多 5 个节点；未完成前置节点时，后续节点不渲染卡片或气泡。完成当前节点后，刷新地图才显示下一节点。故事舞台按“场景图片 → 图片下方对话栏 → 互动按钮”排列，对话栏不覆盖场景图。
+
+故事内容约定：每个 `05-pixel-worlds-story/levels/*.json` 至少包含 9 段可读内容和 1 个 `activity`，当前正式内容为每章 10 段；学习策略仍是 `recognition-only`，不把这些对白改成数学题或答题统计。
 
 ## 3. 静态站点与 API canary
 
