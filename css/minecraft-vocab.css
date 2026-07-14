@@ -12,6 +12,7 @@ body.learn-mode .minecraft-vocab-page {
     --mv-ink: #1e2d31;
     --mv-muted: #64777a;
     --mv-line: #d6e1d8;
+    --mv-card-frame: none;
     font-family: Inter, "Noto Sans SC", system-ui, sans-serif;
 }
 
@@ -95,17 +96,22 @@ body.learn-mode .minecraft-vocab-page {
 }
 
 .mv-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(270px, 390px);
+    display: flex;
+    position: relative;
     min-height: 330px;
     overflow: hidden;
     border: 1px solid #cadbd2;
     border-radius: 18px;
-    background: #eaf3e8;
+    background-image: linear-gradient(90deg, rgba(245, 250, 241, .96) 0%, rgba(245, 250, 241, .82) 44%, rgba(245, 250, 241, .18) 100%), var(--mv-hero-bg);
+    background-position: center;
+    background-size: cover;
 }
 
 .mv-hero-copy {
+    position: relative;
+    z-index: 1;
     display: flex;
+    width: min(680px, 100%);
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
@@ -127,14 +133,6 @@ body.learn-mode .minecraft-vocab-page {
     color: var(--mv-muted);
     font-size: 16px;
     line-height: 1.7;
-}
-
-.mv-hero > img {
-    width: 100%;
-    height: 100%;
-    min-height: 330px;
-    object-fit: cover;
-    object-position: center;
 }
 
 .mv-primary-button,
@@ -209,10 +207,26 @@ body.learn-mode .minecraft-vocab-page {
 }
 
 .mv-stage {
+    position: relative;
     min-width: 0;
+    overflow: hidden;
     padding: 12px;
     border-top: 3px solid #c7d6cd;
     background: #fff;
+}
+
+.mv-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, .96), rgba(255, 255, 255, .78)), var(--mv-stage-thumb);
+    background-position: center;
+    background-size: cover;
+    opacity: .9;
+}
+
+.mv-stage > * {
+    position: relative;
 }
 
 .mv-stage.is-done {
@@ -313,10 +327,15 @@ body.learn-mode .minecraft-vocab-page {
     background: #fff;
 }
 
-.mv-session-shell { overflow: hidden; }
+.mv-session-shell {
+    overflow: hidden;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, .93), rgba(255, 255, 255, .98) 260px), var(--mv-session-bg);
+    background-position: center top;
+    background-size: cover;
+}
 .mv-session-meta { display: flex; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--mv-line); color: var(--mv-muted); font-size: 13px; font-weight: 900; }
 .mv-card-grid { display: grid; grid-template-columns: minmax(260px, .9fr) minmax(0, 1.1fr); gap: 32px; padding: 28px; }
-.mv-card-art { display: flex; min-height: 320px; align-items: center; justify-content: center; overflow: hidden; background: #dcefe1; }
+.mv-card-art { display: flex; min-height: 320px; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #d8e5d6; background-color: #dcefe1; background-image: var(--mv-card-frame); background-position: center; background-size: cover; }
 .mv-card-art img { width: 100%; height: 100%; min-height: 320px; object-fit: cover; }
 .mv-card-copy { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; justify-content: center; }
 .mv-word-line { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; }
@@ -367,6 +386,11 @@ body.learn-mode .minecraft-vocab-page {
 .mv-feedback { margin: 0; padding: 12px 20px; border-top: 1px solid var(--mv-line); color: var(--mv-green-dark); background: #f1f8f0; font-weight: 800; }
 .mv-mobile-actions { display: flex; justify-content: flex-end; gap: 10px; padding: 16px 20px 20px; }
 .mv-complete-panel, .mv-pending-panel { display: flex; min-height: 430px; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; text-align: center; }
+.mv-complete-panel {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, .82), rgba(255, 255, 255, .96)), var(--mv-complete-bg);
+    background-position: center;
+    background-size: cover;
+}
 .mv-complete-icon { display: inline-flex; width: 74px; height: 74px; align-items: center; justify-content: center; border-radius: 50%; background: #fff1c8; color: #a66d1c; }
 .mv-complete-panel h2, .mv-pending-panel h2 { margin-top: 18px; }
 .mv-complete-panel .mv-primary-button, .mv-pending-panel .mv-primary-button { margin-top: 24px; }
@@ -378,10 +402,9 @@ body.learn-mode .minecraft-vocab-page {
     .minecraft-vocab-header { padding-top: 16px; }
     .minecraft-vocab-header h1 { font-size: 27px; }
     .mv-points-badge { padding: 0 10px; }
-    .mv-hero { grid-template-columns: 1fr; }
+    .mv-hero { min-height: 430px; background-image: linear-gradient(180deg, rgba(245, 250, 241, .95) 0%, rgba(245, 250, 241, .88) 58%, rgba(245, 250, 241, .28) 100%), var(--mv-hero-bg); }
     .mv-hero-copy { padding: 28px 22px; }
     .mv-hero h2 { font-size: 34px; }
-    .mv-hero > img { min-height: 220px; max-height: 260px; }
     .mv-overview-band { grid-template-columns: 1fr; gap: 16px; }
     .mv-task-dots { grid-column: 1; }
     .mv-stage-track { gap: 5px; }

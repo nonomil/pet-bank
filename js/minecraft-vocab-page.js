@@ -3,8 +3,23 @@
 
     const PACK_ID = 'english-mc-hybrid-2026';
     const MODULE_ID = 'minecraft-vocab';
-    const HERO_IMAGE = 'assets/learn/english-vocab/minecraft-card.webp';
+    const VISUAL_ROOT = 'assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/';
+    const HERO_IMAGE = `${VISUAL_ROOT}study-camp-hero.png`;
     const FALLBACK_IMAGE = 'assets/learn/english-vocab/minecraft-card.webp';
+    const STAGE_IMAGES = {
+        review: `${VISUAL_ROOT}warmup-grove.png`,
+        new: `${VISUAL_ROOT}new-word-mine.png`,
+        recall: `${VISUAL_ROOT}recall-bridge.png`,
+        scene: `${VISUAL_ROOT}scene-village.png`
+    };
+    const STAGE_THUMBS = {
+        warmup: `${VISUAL_ROOT}warmup-grove.png`,
+        new: `${VISUAL_ROOT}new-word-mine.png`,
+        recall: `${VISUAL_ROOT}recall-bridge.png`,
+        scene: `${VISUAL_ROOT}scene-village.png`
+    };
+    const REWARD_IMAGE = `${VISUAL_ROOT}reward-word-stars.png`;
+    const CARD_FRAME_IMAGE = `${VISUAL_ROOT}card-frame-sheet.png`;
 
     let mounted = false;
     let root = null;
@@ -31,6 +46,10 @@
             return global.PetBankRuntime.resolveAssetUrl(path);
         }
         return path;
+    }
+
+    function cssImage(path) {
+        return `url("${String(asset(path)).replace(/"/g, '%22')}")`;
     }
 
     function cards() {
@@ -95,7 +114,7 @@
 
     function renderShell(content) {
         if (!root || !mounted) return;
-        root.innerHTML = `<div class="minecraft-vocab-page" data-minecraft-vocab-page>${content}</div>`;
+        root.innerHTML = `<div class="minecraft-vocab-page" data-minecraft-vocab-page style="--mv-card-frame: ${escapeHtml(cssImage(CARD_FRAME_IMAGE))}">${content}</div>`;
         bindEvents();
         if (global.lucide && typeof global.lucide.createIcons === 'function') global.lucide.createIcons();
         const image = root.querySelector('[data-mv-card-image]');
@@ -126,7 +145,7 @@
         return `
             <div class="mv-stage-track" aria-label="今日学习节奏">
                 ${stageSummary().map((stage, index) => `
-                    <div class="mv-stage${completedCount() >= [2, 7, 10, 11][index] ? ' is-done' : ''}" data-mv-stage="${stage.key}">
+                    <div class="mv-stage${completedCount() >= [2, 7, 10, 11][index] ? ' is-done' : ''}" data-mv-stage="${stage.key}" style="--mv-stage-thumb: ${escapeHtml(cssImage(STAGE_THUMBS[stage.key]))}">
                         <span class="mv-stage-index">${index + 1}</span>
                         <strong>${stage.label}</strong>
                         <small>${stage.detail}</small>
@@ -150,14 +169,13 @@
         return `
             ${renderHeader('Minecraft 单词远征', '学习中心 / 今日远征')}
             <main class="mv-main">
-                <section class="mv-hero" data-mv-hero>
+                <section class="mv-hero" data-mv-hero style="--mv-hero-bg: ${escapeHtml(cssImage(HERO_IMAGE))}">
                     <div class="mv-hero-copy">
                         <span class="mv-kicker">今日远征 · 约 10 分钟</span>
                         <h2>带伙伴穿过方块世界，收集 11 颗词语星</h2>
                         <p>先热身，再认识新词，最后把词放回场景里。</p>
                         <button class="mv-primary-button" type="button" data-mv-start><i data-lucide="play" aria-hidden="true"></i><span>${started ? '继续今日远征' : '开始今日远征'}</span></button>
                     </div>
-                    <img src="${escapeHtml(asset(HERO_IMAGE))}" alt="Minecraft 英语学习远征封面" loading="eager" decoding="async">
                 </section>
                 <section class="mv-overview-band" aria-label="学习概览">
                     <div class="mv-overview-copy">
@@ -216,7 +234,7 @@
         return `
             ${renderHeader('今日远征', `Minecraft 单词 / ${stageLabel(task.mode)}`)}
             <main class="mv-main">
-                <section class="mv-session-shell" data-mv-session data-mv-mode="${escapeHtml(task.mode)}">
+                <section class="mv-session-shell" data-mv-session data-mv-mode="${escapeHtml(task.mode)}" style="--mv-session-bg: ${escapeHtml(cssImage(STAGE_IMAGES[task.mode] || STAGE_IMAGES.new))}">
                     <div class="mv-session-meta"><span>第 ${taskIndex} / 11</span><span>${escapeHtml(stageLabel(task.mode))}</span></div>
                     <div class="mv-card-grid">
                         <div class="mv-card-art"><img src="${escapeHtml(cardImage(card))}" alt="${escapeHtml(card.word || 'Minecraft 词卡')}" data-mv-card-image loading="eager" decoding="async"></div>
@@ -252,7 +270,7 @@
     function renderComplete() {
         return `
             ${renderHeader('远征完成', '今日远征 / 已结算')}
-            <main class="mv-main"><section class="mv-complete-panel" data-mv-complete>
+            <main class="mv-main"><section class="mv-complete-panel" data-mv-complete style="--mv-complete-bg: ${escapeHtml(cssImage(REWARD_IMAGE))}">
                 <div class="mv-complete-icon"><i data-lucide="trophy" aria-hidden="true"></i></div>
                 <span class="mv-kicker">11 / 11</span>
                 <h2>今天的词语星已收集</h2>

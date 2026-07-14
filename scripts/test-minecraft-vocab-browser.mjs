@@ -28,11 +28,14 @@ try {
 
   const home = await page.evaluate(() => {
     const root = document.querySelector('#minecraft-vocab-root');
+    const hero = root?.querySelector('[data-mv-hero]');
+    const pageRoot = root?.querySelector('[data-minecraft-vocab-page]');
     return {
       text: root?.innerText || '',
       stageCount: root?.querySelectorAll('[data-mv-stage]').length || 0,
       taskCount: root?.querySelectorAll('[data-mv-task-dot]').length || 0,
-      image: root?.querySelector('[data-mv-hero] img')?.getAttribute('src') || '',
+      heroBg: hero ? getComputedStyle(hero).backgroundImage : '',
+      cardFrame: pageRoot ? getComputedStyle(pageRoot).getPropertyValue('--mv-card-frame') : '',
       start: !!root?.querySelector('[data-mv-start]')
     };
   });
@@ -40,7 +43,8 @@ try {
   assert.match(home.text, /今日远征/);
   assert.equal(home.stageCount, 4);
   assert.equal(home.taskCount, 11);
-  assert.match(home.image, /english-vocab\/minecraft-card\.webp/);
+  assert.match(home.heroBg, /study-camp-hero\.png/);
+  assert.match(home.cardFrame, /card-frame-sheet\.png/);
   assert.equal(home.start, true);
 
   await page.click('[data-mv-start]');
@@ -54,7 +58,8 @@ try {
       phrase: root?.querySelector('[data-mv-phrase]')?.textContent || '',
       sentence: root?.querySelector('[data-mv-sentence]')?.textContent || '',
       actionCount: root?.querySelectorAll('[data-mv-answer], [data-mv-self-assess]').length || 0,
-      taskMode: root?.querySelector('[data-mv-session]')?.dataset.mvMode || ''
+      taskMode: root?.querySelector('[data-mv-session]')?.dataset.mvMode || '',
+      sessionBg: getComputedStyle(root?.querySelector('[data-mv-session]')).backgroundImage
     };
   });
   assert.match(session.text, /第 1\/11|1 \/ 11/);
@@ -64,6 +69,7 @@ try {
   assert.match(session.sentence, /场景句/);
   assert.equal(session.actionCount >= 2, true);
   assert.equal(session.taskMode, 'review');
+  assert.match(session.sessionBg, /warmup-grove\.png/);
 
   await page.click('[data-mv-self-assess="known"]');
   await page.waitForTimeout(120);
@@ -95,6 +101,8 @@ try {
     await page.waitForTimeout(80);
   }
   await page.waitForSelector('#minecraft-vocab-root [data-mv-complete]', { timeout: 10000 });
+  const completeVisual = await page.evaluate(() => getComputedStyle(document.querySelector('#minecraft-vocab-root [data-mv-complete]')).backgroundImage);
+  assert.match(completeVisual, /reward-word-stars\.png/);
   const pointsAfterComplete = await page.evaluate(() => window.PetBankPoints?.get?.() ?? Number(localStorage.getItem('petbank_points') || 0));
   assert.equal(pointsAfterComplete, 10);
 

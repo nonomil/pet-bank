@@ -2,6 +2,15 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.46] - 2026-07-14
+### Minecraft 单词学习视觉素材包
+
+- 新增 `minecraft-vocab-visual-pack` 本地视觉包：7 张主站远征/阶段/奖励图和 2 张 Anki 工作台低干扰背景，全部由 Token24 `gpt-image-2` 生成并经 PNG 解码、尺寸和 Pages 白名单门禁验证。
+- 主站 Minecraft 单词远征首页、4 个学习阶段、词卡框、练习选项区域和完成奖励页接入本地图片；文字、按钮、短语和短句继续由 HTML/CSS 渲染，不依赖图片内嵌文字。
+- 独立 Anki 词卡工作台增加同一视觉包的桌面背景和详情背景，保留目录、搜索、翻卡、媒体和移动抽屉结构。
+- 新增 `scripts/generate-minecraft-vocab-visuals.ps1` 作为 Hermes/AI 可复跑生图编排；密钥仍只由本机 `TOKEN24.md` 读取，prompt、raw 和正式图片分离。
+- 验证通过：Minecraft 内容门禁、视觉资源门禁、主站浏览器学习流程、Anki 工作台合同测试和主站视觉截图检查。
+
 ## [v0.7.45] - 2026-07-14
 ### Minecraft 词卡内容补全与远征卡片体验
 

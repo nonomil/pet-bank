@@ -20,6 +20,15 @@ node scripts/normalize-anki-minecraft-vocab.mjs --apply --prune-media
 
 规范化完成后再运行测试；不要直接把刚提取的原始 `cards.json` 部署到 Hermes。
 
+本工作台 CSS 会引用仓库根目录的视觉包：
+
+```text
+assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/workbench-bg.png
+assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/detail-bg.png
+```
+
+独立 release 必须一并携带这两张图片，或保持与主站 release 的相对目录结构一致。不要把 `prompts/`、`tmp/minecraft-vocab-visual-raw/` 或 Token24 key 文件复制到生产目录。
+
 ## 生产规则
 
 - 使用独立目录 `/srv/pet-bank/anki-minecraft-vocab/releases/<release-id>` 和链接 `/srv/pet-bank/anki-minecraft-vocab/current`。

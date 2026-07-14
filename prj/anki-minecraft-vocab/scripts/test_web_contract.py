@@ -17,8 +17,23 @@ class WebContractTests(unittest.TestCase):
         for marker in ("data/manifest.json", "data/decks.json", "data/cards.json", "renderDirectory", "toggleAnswer"):
             self.assertIn(marker, app)
         self.assertIn("state.selectedPath = state.tree[0]?.path || []", app)
+        for marker in (
+            "../../assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/workbench-bg.png",
+            "../../assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/detail-bg.png",
+        ):
+            self.assertIn(marker, styles)
         self.assertIn("prefers-reduced-motion", styles)
         self.assertIn("@media", styles)
+
+    def test_visual_assets_are_local_project_files(self):
+        repo_root = ROOT.parents[1]
+        for relative in (
+            "assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/workbench-bg.png",
+            "assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/detail-bg.png",
+        ):
+            path = repo_root / relative
+            self.assertTrue(path.exists(), relative)
+            self.assertGreater(path.stat().st_size, 100_000, relative)
 
     def test_output_data_exists_and_is_json(self):
         for relative in ("data/manifest.json", "data/decks.json", "data/cards.json"):

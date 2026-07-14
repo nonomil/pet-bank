@@ -13,6 +13,15 @@
 
 参考目录页：<https://file.ankichinas.cn/card/6a04e490ea980mB8>
 
+## 视觉素材
+
+工作台复用主站本地视觉包：
+
+- `../../assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/workbench-bg.png`
+- `../../assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/detail-bg.png`
+
+这些图只作为低干扰背景使用，卡片文字、中文释义、短语、短句、按钮和目录仍由 HTML/CSS 渲染。重新生图请在仓库根目录运行 `scripts/generate-minecraft-vocab-visuals.ps1`，不要把 prompt、raw 原图或 Token24 key 放进独立站 release。
+
 ## 重新提取
 
 不要把原始 APKG 复制进本项目。使用仓库中的参考文件重新生成 JSON 和媒体：
