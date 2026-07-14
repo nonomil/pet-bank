@@ -1,6 +1,6 @@
 # Minecraft 单词远征 Hermes 执行手册
 
-本手册给 AI/Hermes 部署主站 `v0.7.46` 使用。它覆盖主站学习页、Minecraft 视觉素材包与 Pages 制品；完整 Anki 浏览器是另一个独立静态站，必须遵循 [ANKI-MINECRAFT-VOCAB-HERMES.md](./ANKI-MINECRAFT-VOCAB-HERMES.md)。
+本手册给 AI/Hermes 部署主站 `v0.7.48` 使用。它覆盖主站学习页、Minecraft 视觉素材包、GPT UI 组件包与 Pages 制品；完整 Anki 浏览器是另一个独立静态站，必须遵循 [ANKI-MINECRAFT-VOCAB-HERMES.md](./ANKI-MINECRAFT-VOCAB-HERMES.md)。
 
 ## 目标和边界
 
@@ -10,6 +10,7 @@
 - 内容补全脚本：`node scripts/enrich_minecraft_vocab.cjs --apply`；内容门禁：`node scripts/test-minecraft-vocab-content.mjs`。更新词表后必须先跑脚本再跑门禁。
 - 完整 Anki 项目：`prj/anki-minecraft-vocab/`，11,241 张卡片，独立 release/current，Pages 制品必须排除。
 - 本地视觉包：`assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/`，运行时只使用根目录 `manifest.json` 和 9 张正式 PNG；`prompts/` 和 `tmp/` 原始图不得发布。
+- GPT UI 组件包：`assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/`，运行时使用 `manifest.json` 和 11 个无文字 RGBA PNG，包含四阶段徽章、奖励宝箱/星、学习伙伴和词卡角饰。
 - 无数据库迁移；孩子学习状态仍写本地 Profile 快照，奖励走现有 `GameRewardReceipts` 和 `PetBankPoints`。
 
 ## AI 执行前检查
@@ -22,6 +23,7 @@ test -f data/learn/external/mayihaoke/word-cards.json
 test -f js/minecraft-vocab-page.js
 test -f js/minecraft-vocab-session.js
 test -f assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/manifest.json
+test -f assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/manifest.json
 ```
 
 不要执行 `git clean -fdx`、全目录覆盖、删除 `/srv/pet-bank/shared/`，也不要把真实 `server.env`、数据库或浏览器 Profile 带入 release。
@@ -33,6 +35,7 @@ test -f assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/manifes
 ```bash
 node scripts/test-mayihaoke-minecraft-words.mjs
 node scripts/test-minecraft-vocab-content.mjs
+node scripts/test-minecraft-vocab-ui-assets.mjs
 node scripts/test-minecraft-vocab-visual-assets.mjs
 node scripts/test-minecraft-vocab-session.mjs
 node scripts/test-page-router-contract.mjs
@@ -60,6 +63,23 @@ powershell -ExecutionPolicy Bypass -File .\scripts\generate-minecraft-vocab-visu
 
 该脚本默认让 Python 生成器读取 `docs/生图/生图接口资源key/TOKEN24.md`，不要把 token 复制到命令行、日志或文档。Windows PowerShell 5.1 下不要把中文 key 路径写进脚本默认参数；保留当前“空参数交给 Python 默认值”的写法。
 
+### GPT UI 组件重新生成
+
+GPT UI 组件使用项目内 `gpt-image-bee-workflow`，只在本机生成临时参考图、绿幕素材表和拆分结果；生产目录只保留经过检查的语义化 PNG 与 manifest：
+
+```powershell
+$env:BEE_KEY_FILE = Join-Path (Join-Path (Join-Path (Join-Path $PWD 'docs') '生图') '生图接口资源key') 'GPT生图模型key.md'
+python -X utf8 .\.codex\skills\gpt-image-bee-workflow\scripts\bee_image_workflow.py asset-sheet `
+  --prompt-file .\tmp\minecraft-vocab-ui-prompt.txt `
+  --out .\tmp\minecraft-vocab-ui-generation `
+  --prefix minecraft-vocab-ui `
+  --size 1024x1024 `
+  --remove-green --split
+node scripts/test-minecraft-vocab-ui-assets.mjs
+```
+
+生成提示词、API 响应、绿幕原图、拆分中间文件和截图必须留在 `tmp/` 或本地工作流输出目录；不要复制进 `assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/`。正式发布前只复制已经语义命名、确认 RGBA、更新 manifest 并通过门禁的 PNG。
+
 ## Pages 制品检查
 
 ```bash
@@ -70,6 +90,9 @@ test -f _site_verify/js/minecraft-vocab-page.js
 test -f _site_verify/js/minecraft-vocab-session.js
 test -f _site_verify/assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/manifest.json
 test -f _site_verify/assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/study-camp-hero.png
+test -f _site_verify/assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/manifest.json
+test -f _site_verify/assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/learning-companion.png
+test ! -d _site_verify/assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/prompts
 test ! -d _site_verify/assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/prompts
 test ! -d _site_verify/prj/anki-minecraft-vocab
 ```

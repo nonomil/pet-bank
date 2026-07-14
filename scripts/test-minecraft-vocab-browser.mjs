@@ -31,6 +31,10 @@ try {
   assert.match(learnEntry.label, /开始|进入|单词/);
   await page.click('[data-minecraft-vocab-launch]');
   await page.waitForFunction(() => document.querySelector('#page-minecraft-vocab.active [data-minecraft-vocab-page]'), { timeout: 15000 });
+  await page.waitForFunction(() => {
+    const image = document.querySelector('#minecraft-vocab-root .mv-hero-companion');
+    return !!image && image.complete && image.naturalWidth > 0;
+  }, { timeout: 15000 });
   await page.evaluate(() => {
     Object.keys(localStorage).filter(key => key.includes('minecraft_vocab_session')).forEach(key => localStorage.removeItem(key));
     Object.keys(localStorage).filter(key => key.includes('learning_vocab_progress')).forEach(key => localStorage.removeItem(key));
@@ -52,7 +56,10 @@ try {
       taskCount: root?.querySelectorAll('[data-mv-task-dot]').length || 0,
       heroBg: hero ? getComputedStyle(hero).backgroundImage : '',
       cardFrame: pageRoot ? getComputedStyle(pageRoot).getPropertyValue('--mv-card-frame') : '',
-      start: !!root?.querySelector('[data-mv-start]')
+      start: !!root?.querySelector('[data-mv-start]'),
+      companion: root?.querySelector('.mv-hero-companion')?.naturalWidth || 0,
+      stageBadges: [...(root?.querySelectorAll('[data-mv-stage]') || [])]
+        .filter(node => getComputedStyle(node, '::after').backgroundImage.includes('stage-')).length
     };
   });
   assert.match(home.text, /Minecraft 单词远征/);
@@ -62,6 +69,9 @@ try {
   assert.match(home.heroBg, /study-camp-hero\.png/);
   assert.match(home.cardFrame, /card-frame-sheet\.png/);
   assert.equal(home.start, true);
+  assert.equal(home.companion > 0, true);
+  assert.equal(home.stageBadges, 4);
+  await page.screenshot({ path: 'tmp/minecraft-vocab-home-gpt-ui-1280.png', fullPage: true });
 
   await page.click('[data-mv-start]');
   await page.waitForSelector('#minecraft-vocab-root [data-mv-session]', { timeout: 10000 });
@@ -74,6 +84,7 @@ try {
       phrase: root?.querySelector('[data-mv-phrase]')?.textContent || '',
       sentence: root?.querySelector('[data-mv-sentence]')?.textContent || '',
       actionCount: root?.querySelectorAll('[data-mv-answer], [data-mv-self-assess]').length || 0,
+      cornerCount: root?.querySelectorAll('.mv-card-corner').length || 0,
       taskMode: root?.querySelector('[data-mv-session]')?.dataset.mvMode || '',
       sessionBg: getComputedStyle(root?.querySelector('[data-mv-session]')).backgroundImage
     };
@@ -84,8 +95,10 @@ try {
   assert.match(session.phrase, /短语/);
   assert.match(session.sentence, /场景句/);
   assert.equal(session.actionCount >= 2, true);
+  assert.equal(session.cornerCount, 4);
   assert.equal(session.taskMode, 'review');
   assert.match(session.sessionBg, /warmup-grove\.png/);
+  await page.screenshot({ path: 'tmp/minecraft-vocab-session-gpt-ui-1280.png', fullPage: true });
 
   await page.click('[data-mv-self-assess="known"]');
   await page.waitForTimeout(120);
@@ -117,8 +130,23 @@ try {
     await page.waitForTimeout(80);
   }
   await page.waitForSelector('#minecraft-vocab-root [data-mv-complete]', { timeout: 10000 });
-  const completeVisual = await page.evaluate(() => getComputedStyle(document.querySelector('#minecraft-vocab-root [data-mv-complete]')).backgroundImage);
-  assert.match(completeVisual, /reward-word-stars\.png/);
+  await page.waitForFunction(() => {
+    const root = document.querySelector('#minecraft-vocab-root');
+    const chest = root?.querySelector('.mv-reward-chest');
+    const star = root?.querySelector('.mv-reward-star');
+    return !!chest && !!star && chest.complete && star.complete && chest.naturalWidth > 0 && star.naturalWidth > 0;
+  }, { timeout: 15000 });
+  const completeVisual = await page.evaluate(() => ({
+    background: getComputedStyle(document.querySelector('#minecraft-vocab-root [data-mv-complete]')).backgroundImage,
+    chest: document.querySelector('#minecraft-vocab-root .mv-reward-chest')?.naturalWidth || 0,
+    star: document.querySelector('#minecraft-vocab-root .mv-reward-star')?.naturalWidth || 0
+  }));
+  assert.match(completeVisual.background, /reward-word-stars\.png/);
+  assert.equal(completeVisual.chest > 0, true);
+  assert.equal(completeVisual.star > 0, true);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({ path: 'tmp/minecraft-vocab-complete-gpt-ui-390.png', fullPage: true });
+  await page.setViewportSize({ width: 1280, height: 900 });
   const pointsAfterComplete = await page.evaluate(() => window.PetBankPoints?.get?.() ?? Number(localStorage.getItem('petbank_points') || 0));
   assert.equal(pointsAfterComplete, 10);
 

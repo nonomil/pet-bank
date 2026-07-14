@@ -152,6 +152,7 @@ renderLessonBody (pack, module, lesson, showPinyin) → :2733
 - `MinecraftVocabSession` 负责 Profile 会话快照、队列和完成判定；`MinecraftVocabPage` 负责页面渲染、音频回退和离页清理。页面由 `runtime-loader.js` 按 `minecraft-vocab` bundle 加载。
 - 完成后只通过 `GameRewardReceipts` 发放 `source=minecraft-vocab`、`eventId=session:<localDate>` 的 10 成长分，重复完成返回 duplicate，不直接写积分键。
 - 离开页面时必须执行 `MinecraftVocabPage.stop()`；媒体播放和页面 timer 不得跨页面继续运行。Profile 切换由现有快照策略隔离 `petbank_minecraft_vocab_session_v1_*`。
+- 视觉资源分为运行场景包 `minecraft-vocab-visual-pack` 和 GPT UI 组件包 `minecraft-vocab-ui-pack`；后者只包含无文字透明 PNG，页面文字、按钮和可访问名称继续由 HTML/CSS 提供。
 
 ### 持久化
 

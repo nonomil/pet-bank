@@ -20,6 +20,22 @@
     };
     const REWARD_IMAGE = `${VISUAL_ROOT}reward-word-stars.png`;
     const CARD_FRAME_IMAGE = `${VISUAL_ROOT}card-frame-sheet.png`;
+    const UI_ASSET_ROOT = 'assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/';
+    const STAGE_BADGE_IMAGES = {
+        warmup: `${UI_ASSET_ROOT}stage-warmup.png`,
+        new: `${UI_ASSET_ROOT}stage-new-word.png`,
+        recall: `${UI_ASSET_ROOT}stage-recall.png`,
+        scene: `${UI_ASSET_ROOT}stage-scene.png`
+    };
+    const REWARD_CHEST_IMAGE = `${UI_ASSET_ROOT}reward-chest.png`;
+    const REWARD_STAR_IMAGE = `${UI_ASSET_ROOT}reward-star.png`;
+    const COMPANION_IMAGE = `${UI_ASSET_ROOT}learning-companion.png`;
+    const CARD_CORNER_IMAGES = {
+        tl: `${UI_ASSET_ROOT}card-corner-tl.png`,
+        tr: `${UI_ASSET_ROOT}card-corner-tr.png`,
+        bl: `${UI_ASSET_ROOT}card-corner-bl.png`,
+        br: `${UI_ASSET_ROOT}card-corner-br.png`
+    };
 
     let mounted = false;
     let root = null;
@@ -114,7 +130,7 @@
 
     function renderShell(content) {
         if (!root || !mounted) return;
-        root.innerHTML = `<div class="minecraft-vocab-page" data-minecraft-vocab-page style="--mv-card-frame: ${escapeHtml(cssImage(CARD_FRAME_IMAGE))}">${content}</div>`;
+        root.innerHTML = `<div class="minecraft-vocab-page" data-minecraft-vocab-page style="--mv-card-frame: ${escapeHtml(cssImage(CARD_FRAME_IMAGE))}; --mv-card-corner-tl: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.tl))}; --mv-card-corner-tr: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.tr))}; --mv-card-corner-bl: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.bl))}; --mv-card-corner-br: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.br))}">${content}</div>`;
         bindEvents();
         if (global.lucide && typeof global.lucide.createIcons === 'function') global.lucide.createIcons();
         const image = root.querySelector('[data-mv-card-image]');
@@ -145,7 +161,7 @@
         return `
             <div class="mv-stage-track" aria-label="今日学习节奏">
                 ${stageSummary().map((stage, index) => `
-                    <div class="mv-stage${completedCount() >= [2, 7, 10, 11][index] ? ' is-done' : ''}" data-mv-stage="${stage.key}" style="--mv-stage-thumb: ${escapeHtml(cssImage(STAGE_THUMBS[stage.key]))}">
+                    <div class="mv-stage${completedCount() >= [2, 7, 10, 11][index] ? ' is-done' : ''}" data-mv-stage="${stage.key}" style="--mv-stage-thumb: ${escapeHtml(cssImage(STAGE_THUMBS[stage.key]))}; --mv-stage-badge: ${escapeHtml(cssImage(STAGE_BADGE_IMAGES[stage.key]))}">
                         <span class="mv-stage-index">${index + 1}</span>
                         <strong>${stage.label}</strong>
                         <small>${stage.detail}</small>
@@ -176,6 +192,7 @@
                         <p>先热身，再认识新词，最后把词放回场景里。</p>
                         <button class="mv-primary-button" type="button" data-mv-start><i data-lucide="play" aria-hidden="true"></i><span>${started ? '继续今日远征' : '开始今日远征'}</span></button>
                     </div>
+                    <img class="mv-hero-companion" src="${escapeHtml(asset(COMPANION_IMAGE))}" alt="学习伙伴" loading="eager" decoding="async">
                 </section>
                 <section class="mv-overview-band" aria-label="学习概览">
                     <div class="mv-overview-copy">
@@ -237,7 +254,7 @@
                 <section class="mv-session-shell" data-mv-session data-mv-mode="${escapeHtml(task.mode)}" style="--mv-session-bg: ${escapeHtml(cssImage(STAGE_IMAGES[task.mode] || STAGE_IMAGES.new))}">
                     <div class="mv-session-meta"><span>第 ${taskIndex} / 11</span><span>${escapeHtml(stageLabel(task.mode))}</span></div>
                     <div class="mv-card-grid">
-                        <div class="mv-card-art"><img src="${escapeHtml(cardImage(card))}" alt="${escapeHtml(card.word || 'Minecraft 词卡')}" data-mv-card-image loading="eager" decoding="async"></div>
+                        <div class="mv-card-art"><span class="mv-card-corner mv-card-corner-tl" aria-hidden="true"></span><span class="mv-card-corner mv-card-corner-tr" aria-hidden="true"></span><span class="mv-card-corner mv-card-corner-bl" aria-hidden="true"></span><span class="mv-card-corner mv-card-corner-br" aria-hidden="true"></span><img src="${escapeHtml(cardImage(card))}" alt="${escapeHtml(card.word || 'Minecraft 词卡')}" data-mv-card-image loading="eager" decoding="async"></div>
                         <div class="mv-card-copy">
                             <div class="mv-word-line"><strong>${escapeHtml(isQuestion ? '？' : card.word || '')}</strong><button class="mv-icon-button" type="button" data-mv-listen aria-label="播放单词发音" title="播放单词发音"><i data-lucide="volume-2" aria-hidden="true"></i></button></div>
                             ${card.phonetic ? `<span class="mv-phonetic">${escapeHtml(card.phonetic)}</span>` : ''}
@@ -271,6 +288,7 @@
         return `
             ${renderHeader('远征完成', '今日远征 / 已结算')}
             <main class="mv-main"><section class="mv-complete-panel" data-mv-complete style="--mv-complete-bg: ${escapeHtml(cssImage(REWARD_IMAGE))}">
+                <div class="mv-reward-stack" aria-hidden="true"><img class="mv-reward-chest" src="${escapeHtml(asset(REWARD_CHEST_IMAGE))}" alt=""><img class="mv-reward-star" src="${escapeHtml(asset(REWARD_STAR_IMAGE))}" alt=""></div>
                 <div class="mv-complete-icon"><i data-lucide="trophy" aria-hidden="true"></i></div>
                 <span class="mv-kicker">11 / 11</span>
                 <h2>今天的词语星已收集</h2>

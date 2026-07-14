@@ -55,6 +55,7 @@ const TASKS = [
     { label: 'english vocab profile scope', cmd: 'node', args: ['scripts/test-english-vocab-profile-scope.mjs'] },
     { label: 'mayihaoke Minecraft vocabulary snapshot', cmd: 'node', args: ['scripts/test-mayihaoke-minecraft-words.mjs'] },
     { label: 'Minecraft vocab content completeness', cmd: 'node', args: ['scripts/test-minecraft-vocab-content.mjs'] },
+    { label: 'Minecraft vocab UI assets', cmd: 'node', args: ['scripts/test-minecraft-vocab-ui-assets.mjs'] },
     { label: 'Minecraft vocab session contract', cmd: 'node', args: ['scripts/test-minecraft-vocab-session.mjs'] },
     { label: 'Minecraft vocab browser journey', cmd: 'node', args: ['scripts/test-minecraft-vocab-browser.mjs'] },
     { label: 'game reward receipts', cmd: 'node', args: ['scripts/test-game-reward-receipts.mjs'] },
