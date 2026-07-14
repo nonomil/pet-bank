@@ -49,6 +49,9 @@ const ALLOWED_RASTER_EXACT = new Set([
 ]);
 
 const RASTER_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.bmp']);
+const MINECRAFT_VOCAB_VISUAL_DIR = 'assets/learn/english-vocab/generated/minecraft-vocab-visual-pack';
+const MINECRAFT_VOCAB_VISUAL_PREFIX = `${MINECRAFT_VOCAB_VISUAL_DIR}/`;
+const MINECRAFT_VOCAB_VISUAL_MANIFEST = `${MINECRAFT_VOCAB_VISUAL_DIR}/manifest.json`;
 const TRAVEL_MEMORY_RUNTIME_PREFIXES = [
     'assets/generated/travel-memory/badges/',
     'assets/generated/travel-memory/cards/',
@@ -67,9 +70,19 @@ function isAllowedRuntimeRaster(rel) {
     return false;
 }
 
+function isAllowedMinecraftVocabVisualFile(rel) {
+    if (rel === MINECRAFT_VOCAB_VISUAL_DIR || rel === MINECRAFT_VOCAB_VISUAL_MANIFEST) return true;
+    if (!rel.startsWith(MINECRAFT_VOCAB_VISUAL_PREFIX)) return false;
+    const child = rel.slice(MINECRAFT_VOCAB_VISUAL_PREFIX.length);
+    return !child.includes('/') && ['.png', '.webp'].includes(path.extname(child).toLowerCase());
+}
+
 function shouldExclude(src) {
     const rel = relativeToRoot(src);
     if (!rel || rel.startsWith('..')) return false;
+    if (rel === MINECRAFT_VOCAB_VISUAL_DIR || rel.startsWith(MINECRAFT_VOCAB_VISUAL_PREFIX)) {
+        return !isAllowedMinecraftVocabVisualFile(rel);
+    }
     if (rel.endsWith('.bak')) return true;
     if (EXCLUDED_PREFIXES.some((prefix) => rel === prefix || rel.startsWith(`${prefix}/`))) {
         return true;
