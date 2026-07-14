@@ -33,7 +33,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/block.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "look at the block",
+      "phraseTranslation": "看看方块",
+      "sentence": "I can see the block.",
+      "sentenceTranslation": "我能看见方块。"
     },
     {
       "id": "mc-word-world",
@@ -62,7 +66,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/world.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "near the world",
+      "phraseTranslation": "在世界附近",
+      "sentence": "The world is safe in the new world.",
+      "sentenceTranslation": "新世界里的世界很安全。"
     },
     {
       "id": "mc-word-hello",
@@ -90,7 +98,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/hello.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "say hello",
+      "phraseTranslation": "打招呼",
+      "sentence": "Say hello to your friend.",
+      "sentenceTranslation": "向你的朋友打招呼。"
     },
     {
       "id": "mc-word-look",
@@ -118,7 +130,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/look.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "look at the block",
+      "phraseTranslation": "看方块",
+      "sentence": "I look in the village today.",
+      "sentenceTranslation": "我今天在村庄里看。"
     },
     {
       "id": "mc-word-stone",
@@ -147,7 +163,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/stone.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "look at the stone",
+      "phraseTranslation": "看看石头",
+      "sentence": "I can see the stone.",
+      "sentenceTranslation": "我能看见石头。"
     },
     {
       "id": "mc-word-light",
@@ -175,7 +195,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/light.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "bright light",
+      "phraseTranslation": "明亮的光",
+      "sentence": "The light is beautiful today.",
+      "sentenceTranslation": "今天的光很美。"
     },
     {
       "id": "mc-word-run",
@@ -203,7 +227,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/run.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "run to the village",
+      "phraseTranslation": "跑向村庄",
+      "sentence": "I run in the village today.",
+      "sentenceTranslation": "我今天在村庄里跑。"
     },
     {
       "id": "mc-word-door",
@@ -232,7 +260,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/door.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "look at the door",
+      "phraseTranslation": "看看门",
+      "sentence": "I can see the door.",
+      "sentenceTranslation": "我能看见门。"
     },
     {
       "id": "mc-word-friend",
@@ -260,7 +292,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/friend.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "my friend",
+      "phraseTranslation": "我的朋友",
+      "sentence": "My friend is here.",
+      "sentenceTranslation": "我的朋友在这里。"
     },
     {
       "id": "mc-word-cat",
@@ -288,7 +324,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/cat.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "a friendly cat",
+      "phraseTranslation": "一只友好的猫",
+      "sentence": "A cat is near the village.",
+      "sentenceTranslation": "一只猫在村庄附近。"
     },
     {
       "id": "mc-word-bag",
@@ -316,7 +356,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/bag.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "look at the bag",
+      "phraseTranslation": "看看书包",
+      "sentence": "I can see the bag.",
+      "sentenceTranslation": "我能看见书包。"
     },
     {
       "id": "mc-word-sun",
@@ -344,7 +388,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/sun.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "the morning sun",
+      "phraseTranslation": "清晨的太阳",
+      "sentence": "The sun is beautiful today.",
+      "sentenceTranslation": "今天的太阳很美。"
     },
     {
       "id": "mc-word-tree",
@@ -372,7 +420,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/tree.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "a tall tree",
+      "phraseTranslation": "一棵高大的树",
+      "sentence": "The tree is beautiful today.",
+      "sentenceTranslation": "今天的树很美。"
     },
     {
       "id": "mc-word-red",
@@ -400,7 +452,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/red.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "red wool",
+      "phraseTranslation": "红色羊毛",
+      "sentence": "The wool is red.",
+      "sentenceTranslation": "羊毛是红色色的。"
     },
     {
       "id": "mc-word-play",
@@ -428,7 +484,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/play.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "play in the world",
+      "phraseTranslation": "在世界里玩",
+      "sentence": "I play in the village today.",
+      "sentenceTranslation": "我今天在村庄里玩。"
     },
     {
       "id": "mc-word-sword",
@@ -457,7 +517,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/sword.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "use a sword",
+      "phraseTranslation": "使用剑",
+      "sentence": "I use the sword to collect resources.",
+      "sentenceTranslation": "我用剑收集资源。"
     },
     {
       "id": "mc-word-pickaxe",
@@ -486,7 +550,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/pickaxe.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "use a pickaxe",
+      "phraseTranslation": "使用镐",
+      "sentence": "I use the pickaxe to collect resources.",
+      "sentenceTranslation": "我用镐收集资源。"
     },
     {
       "id": "mc-word-diamond",
@@ -515,7 +583,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/diamond.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "look at the diamond",
+      "phraseTranslation": "看看钻石",
+      "sentence": "I can see the diamond.",
+      "sentenceTranslation": "我能看见钻石。"
     },
     {
       "id": "mc-word-creeper",
@@ -544,7 +616,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/creeper.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "a friendly creeper",
+      "phraseTranslation": "一只友好的苦力怕",
+      "sentence": "A creeper is near the village.",
+      "sentenceTranslation": "一只苦力怕在村庄附近。"
     },
     {
       "id": "mc-word-craft",
@@ -573,7 +649,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/craft.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "craft a tool",
+      "phraseTranslation": "合成工具",
+      "sentence": "I craft in the village today.",
+      "sentenceTranslation": "我今天在村庄里合成。"
     },
     {
       "id": "mc-word-water",
@@ -601,7 +681,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/water.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "clean water",
+      "phraseTranslation": "干净的水",
+      "sentence": "The water is beautiful today.",
+      "sentenceTranslation": "今天的水很美。"
     },
     {
       "id": "mc-word-fire",
@@ -629,7 +713,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/fire.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "a campfire",
+      "phraseTranslation": "一堆篝火",
+      "sentence": "The fire is beautiful today.",
+      "sentenceTranslation": "今天的火很美。"
     },
     {
       "id": "mc-word-house",
@@ -657,7 +745,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/house.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "near the house",
+      "phraseTranslation": "在房子附近",
+      "sentence": "The house is safe in the new world.",
+      "sentenceTranslation": "新世界里的房子很安全。"
     },
     {
       "id": "mc-word-apple",
@@ -685,7 +777,11 @@
       ],
       "imageSource": "mayihaoke-reference-crop",
       "audio": "assets/learn/english-vocab/audio/apple.mp3",
-      "audioVoice": "en-US-AnaNeural"
+      "audioVoice": "en-US-AnaNeural",
+      "phrase": "eat apple",
+      "phraseTranslation": "吃苹果",
+      "sentence": "I eat the apple after mining.",
+      "sentenceTranslation": "挖矿后我吃苹果。"
     },
     {
       "id": "mc-core-001-cow",
@@ -716,7 +812,9 @@
         "pig",
         "sheep",
         "chicken"
-      ]
+      ],
+      "sentence": "I see a cow.",
+      "sentenceTranslation": "我看见牛。"
     },
     {
       "id": "mc-core-002-egg",
@@ -732,8 +830,8 @@
       ],
       "example": "I see an egg.",
       "exampleZh": "我看见鸡蛋。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use egg",
+      "phraseTranslation": "使用鸡蛋",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Egg.png",
       "imagePage": "https://minecraft.wiki/w/File:Egg.png",
       "imageFile": "Egg.png",
@@ -747,7 +845,9 @@
         "boat",
         "book",
         "bowl"
-      ]
+      ],
+      "sentence": "I see an egg.",
+      "sentenceTranslation": "我看见鸡蛋。"
     },
     {
       "id": "mc-core-003-oak",
@@ -778,7 +878,9 @@
         "dirt",
         "sand",
         "wood"
-      ]
+      ],
+      "sentence": "I see an oak.",
+      "sentenceTranslation": "我看见橡木。"
     },
     {
       "id": "mc-core-004-pig",
@@ -809,7 +911,9 @@
         "cow",
         "sheep",
         "chicken"
-      ]
+      ],
+      "sentence": "I see a pig.",
+      "sentenceTranslation": "我看见猪。"
     },
     {
       "id": "mc-core-005-blue",
@@ -840,7 +944,9 @@
         "black",
         "green",
         "white"
-      ]
+      ],
+      "sentence": "I see a blue.",
+      "sentenceTranslation": "我看见蓝色。"
     },
     {
       "id": "mc-core-006-boat",
@@ -856,8 +962,8 @@
       ],
       "example": "I see a boat.",
       "exampleZh": "我看见船。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use boat",
+      "phraseTranslation": "使用船",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Oak_Boat.png",
       "imagePage": "https://minecraft.wiki/w/File:Oak_Boat.png",
       "imageFile": "Oak_Boat.png",
@@ -871,7 +977,9 @@
         "egg",
         "book",
         "bowl"
-      ]
+      ],
+      "sentence": "I see a boat.",
+      "sentenceTranslation": "我看见船。"
     },
     {
       "id": "mc-core-007-book",
@@ -902,7 +1010,9 @@
         "egg",
         "boat",
         "bowl"
-      ]
+      ],
+      "sentence": "I see a book.",
+      "sentenceTranslation": "我看见书。"
     },
     {
       "id": "mc-core-008-bowl",
@@ -918,8 +1028,8 @@
       ],
       "example": "I see a bowl.",
       "exampleZh": "我看见碗。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use bowl",
+      "phraseTranslation": "使用碗",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Bowl.png",
       "imagePage": "https://minecraft.wiki/w/File:Bowl.png",
       "imageFile": "Bowl.png",
@@ -933,7 +1043,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a bowl.",
+      "sentenceTranslation": "我看见碗。"
     },
     {
       "id": "mc-core-009-dirt",
@@ -964,7 +1076,9 @@
         "oak",
         "sand",
         "wood"
-      ]
+      ],
+      "sentence": "I see a dirt.",
+      "sentenceTranslation": "我看见泥土。"
     },
     {
       "id": "mc-core-010-milk",
@@ -980,8 +1094,8 @@
       ],
       "example": "I see a milk.",
       "exampleZh": "我看见牛奶。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use milk",
+      "phraseTranslation": "使用牛奶",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Milk_Bucket.png",
       "imagePage": "https://minecraft.wiki/w/File:Milk_Bucket.png",
       "imageFile": "Milk_Bucket.png",
@@ -995,7 +1109,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a milk.",
+      "sentenceTranslation": "我看见牛奶。"
     },
     {
       "id": "mc-core-011-sand",
@@ -1026,7 +1142,9 @@
         "oak",
         "dirt",
         "wood"
-      ]
+      ],
+      "sentence": "I see a sand.",
+      "sentenceTranslation": "我看见沙子。"
     },
     {
       "id": "mc-core-012-wood",
@@ -1057,7 +1175,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a wood.",
+      "sentenceTranslation": "我看见橡木。"
     },
     {
       "id": "mc-core-013-wool",
@@ -1073,8 +1193,8 @@
       ],
       "example": "I see a wool.",
       "exampleZh": "我看见羊毛。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use wool",
+      "phraseTranslation": "使用羊毛",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/White_Wool.png",
       "imagePage": "https://minecraft.wiki/w/File:White_Wool.png",
       "imageFile": "White_Wool.png",
@@ -1088,7 +1208,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a wool.",
+      "sentenceTranslation": "我看见羊毛。"
     },
     {
       "id": "mc-core-014-birch",
@@ -1104,8 +1226,8 @@
       ],
       "example": "I see a birch.",
       "exampleZh": "我看见白桦。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use birch",
+      "phraseTranslation": "使用白桦",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Birch_Log.png",
       "imagePage": "https://minecraft.wiki/w/File:Birch_Log.png",
       "imageFile": "Birch_Log.png",
@@ -1119,7 +1241,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a birch.",
+      "sentenceTranslation": "我看见白桦。"
     },
     {
       "id": "mc-core-015-black",
@@ -1150,7 +1274,9 @@
         "blue",
         "green",
         "white"
-      ]
+      ],
+      "sentence": "I see a black.",
+      "sentenceTranslation": "我看见黑色。"
     },
     {
       "id": "mc-core-016-bread",
@@ -1181,7 +1307,9 @@
         "cow",
         "egg",
         "oak"
-      ]
+      ],
+      "sentence": "I see a bread.",
+      "sentenceTranslation": "我看见面包。"
     },
     {
       "id": "mc-core-017-clock",
@@ -1197,8 +1325,8 @@
       ],
       "example": "I see a clock.",
       "exampleZh": "我看见时钟。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use clock",
+      "phraseTranslation": "使用时钟",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Clock.png",
       "imagePage": "https://minecraft.wiki/w/File:Clock.png",
       "imageFile": "Clock.png",
@@ -1212,7 +1340,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a clock.",
+      "sentenceTranslation": "我看见时钟。"
     },
     {
       "id": "mc-core-018-daisy",
@@ -1228,8 +1358,8 @@
       ],
       "example": "I see a daisy.",
       "exampleZh": "我看见雏菊。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "grow daisy",
+      "phraseTranslation": "种植雏菊",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Oxeye_Daisy.png",
       "imagePage": "https://minecraft.wiki/w/File:Oxeye_Daisy.png",
       "imageFile": "Oxeye_Daisy.png",
@@ -1243,7 +1373,9 @@
         "poppy",
         "tulip",
         "orchid"
-      ]
+      ],
+      "sentence": "I see a daisy.",
+      "sentenceTranslation": "我看见雏菊。"
     },
     {
       "id": "mc-core-019-flint",
@@ -1259,8 +1391,8 @@
       ],
       "example": "I see a flint.",
       "exampleZh": "我看见燧石。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use flint",
+      "phraseTranslation": "使用燧石",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Flint.png",
       "imagePage": "https://minecraft.wiki/w/File:Flint.png",
       "imageFile": "Flint.png",
@@ -1274,7 +1406,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a flint.",
+      "sentenceTranslation": "我看见燧石。"
     },
     {
       "id": "mc-core-020-grass",
@@ -1305,7 +1439,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a grass.",
+      "sentenceTranslation": "我看见草方块。"
     },
     {
       "id": "mc-core-021-green",
@@ -1336,7 +1472,9 @@
         "blue",
         "black",
         "white"
-      ]
+      ],
+      "sentence": "I see a green.",
+      "sentenceTranslation": "我看见绿色。"
     },
     {
       "id": "mc-core-022-paper",
@@ -1367,7 +1505,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a paper.",
+      "sentenceTranslation": "我看见纸。"
     },
     {
       "id": "mc-core-023-poppy",
@@ -1383,8 +1523,8 @@
       ],
       "example": "I see a poppy.",
       "exampleZh": "我看见虞美人。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "grow poppy",
+      "phraseTranslation": "种植虞美人",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Poppy.png",
       "imagePage": "https://minecraft.wiki/w/File:Poppy.png",
       "imageFile": "Poppy.png",
@@ -1398,7 +1538,9 @@
         "daisy",
         "tulip",
         "orchid"
-      ]
+      ],
+      "sentence": "I see a poppy.",
+      "sentenceTranslation": "我看见虞美人。"
     },
     {
       "id": "mc-core-024-seeds",
@@ -1414,8 +1556,8 @@
       ],
       "example": "I see a seeds.",
       "exampleZh": "我看见种子。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use seeds",
+      "phraseTranslation": "使用种子",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Wheat_Seeds.png",
       "imagePage": "https://minecraft.wiki/w/File:Wheat_Seeds.png",
       "imageFile": "Wheat_Seeds.png",
@@ -1429,7 +1571,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a seeds.",
+      "sentenceTranslation": "我看见种子。"
     },
     {
       "id": "mc-core-025-sheep",
@@ -1460,7 +1604,9 @@
         "cow",
         "pig",
         "chicken"
-      ]
+      ],
+      "sentence": "I see a sheep.",
+      "sentenceTranslation": "我看见绵羊。"
     },
     {
       "id": "mc-core-026-stick",
@@ -1476,8 +1622,8 @@
       ],
       "example": "I see a stick.",
       "exampleZh": "我看见木棍。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use stick",
+      "phraseTranslation": "使用木棍",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Stick.png",
       "imagePage": "https://minecraft.wiki/w/File:Stick.png",
       "imageFile": "Stick.png",
@@ -1491,7 +1637,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a stick.",
+      "sentenceTranslation": "我看见木棍。"
     },
     {
       "id": "mc-core-027-sugar",
@@ -1522,7 +1670,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a sugar.",
+      "sentenceTranslation": "我看见糖。"
     },
     {
       "id": "mc-core-028-tulip",
@@ -1538,8 +1688,8 @@
       ],
       "example": "I see a tulip.",
       "exampleZh": "我看见郁金香。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "grow tulip",
+      "phraseTranslation": "种植郁金香",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Red_Tulip.png",
       "imagePage": "https://minecraft.wiki/w/File:Red_Tulip.png",
       "imageFile": "Red_Tulip.png",
@@ -1553,7 +1703,9 @@
         "daisy",
         "poppy",
         "orchid"
-      ]
+      ],
+      "sentence": "I see a tulip.",
+      "sentenceTranslation": "我看见郁金香。"
     },
     {
       "id": "mc-core-029-wheat",
@@ -1569,8 +1721,8 @@
       ],
       "example": "I see a wheat.",
       "exampleZh": "我看见小麦。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use wheat",
+      "phraseTranslation": "使用小麦",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Wheat.png",
       "imagePage": "https://minecraft.wiki/w/File:Wheat.png",
       "imageFile": "Wheat.png",
@@ -1584,7 +1736,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a wheat.",
+      "sentenceTranslation": "我看见小麦。"
     },
     {
       "id": "mc-core-030-white",
@@ -1615,7 +1769,9 @@
         "blue",
         "black",
         "green"
-      ]
+      ],
+      "sentence": "I see a white.",
+      "sentenceTranslation": "我看见白色。"
     },
     {
       "id": "mc-core-031-acacia",
@@ -1631,8 +1787,8 @@
       ],
       "example": "I see an acacia.",
       "exampleZh": "我看见金合欢。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use acacia",
+      "phraseTranslation": "使用金合欢",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Acacia_Log.png",
       "imagePage": "https://minecraft.wiki/w/File:Acacia_Log.png",
       "imageFile": "Acacia_Log.png",
@@ -1646,7 +1802,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see an acacia.",
+      "sentenceTranslation": "我看见金合欢。"
     },
     {
       "id": "mc-core-032-cactus",
@@ -1677,7 +1835,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a cactus.",
+      "sentenceTranslation": "我看见仙人掌。"
     },
     {
       "id": "mc-core-033-flower",
@@ -1693,8 +1853,8 @@
       ],
       "example": "I see a flower.",
       "exampleZh": "我看见花。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use flower",
+      "phraseTranslation": "使用花",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Dandelion.png",
       "imagePage": "https://minecraft.wiki/w/File:Dandelion.png",
       "imageFile": "Dandelion.png",
@@ -1708,7 +1868,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a flower.",
+      "sentenceTranslation": "我看见花。"
     },
     {
       "id": "mc-core-034-gravel",
@@ -1724,8 +1886,8 @@
       ],
       "example": "I see a gravel.",
       "exampleZh": "我看见沙砾。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use gravel",
+      "phraseTranslation": "使用沙砾",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Gravel.png",
       "imagePage": "https://minecraft.wiki/w/File:Gravel.png",
       "imageFile": "Gravel.png",
@@ -1739,7 +1901,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a gravel.",
+      "sentenceTranslation": "我看见沙砾。"
     },
     {
       "id": "mc-core-035-jungle",
@@ -1755,8 +1919,8 @@
       ],
       "example": "I see a jungle.",
       "exampleZh": "我看见丛林。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use jungle",
+      "phraseTranslation": "使用丛林",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Jungle_Log.png",
       "imagePage": "https://minecraft.wiki/w/File:Jungle_Log.png",
       "imageFile": "Jungle_Log.png",
@@ -1770,7 +1934,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a jungle.",
+      "sentenceTranslation": "我看见丛林。"
     },
     {
       "id": "mc-core-036-leaves",
@@ -1801,7 +1967,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a leaves.",
+      "sentenceTranslation": "我看见树叶。"
     },
     {
       "id": "mc-core-037-orchid",
@@ -1817,8 +1985,8 @@
       ],
       "example": "I see an orchid.",
       "exampleZh": "我看见兰花。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "grow orchid",
+      "phraseTranslation": "种植兰花",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Blue_Orchid.png",
       "imagePage": "https://minecraft.wiki/w/File:Blue_Orchid.png",
       "imageFile": "Blue_Orchid.png",
@@ -1832,7 +2000,9 @@
         "daisy",
         "poppy",
         "tulip"
-      ]
+      ],
+      "sentence": "I see an orchid.",
+      "sentenceTranslation": "我看见兰花。"
     },
     {
       "id": "mc-core-038-planks",
@@ -1863,7 +2033,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a planks.",
+      "sentenceTranslation": "我看见木板。"
     },
     {
       "id": "mc-core-039-sponge",
@@ -1879,8 +2051,8 @@
       ],
       "example": "I see a sponge.",
       "exampleZh": "我看见海绵。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use sponge",
+      "phraseTranslation": "使用海绵",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Sponge.png",
       "imagePage": "https://minecraft.wiki/w/File:Sponge.png",
       "imageFile": "Sponge.png",
@@ -1894,7 +2066,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a sponge.",
+      "sentenceTranslation": "我看见海绵。"
     },
     {
       "id": "mc-core-040-spruce",
@@ -1910,8 +2084,8 @@
       ],
       "example": "I see a spruce.",
       "exampleZh": "我看见云杉。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use spruce",
+      "phraseTranslation": "使用云杉",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Spruce_Log.png",
       "imagePage": "https://minecraft.wiki/w/File:Spruce_Log.png",
       "imageFile": "Spruce_Log.png",
@@ -1925,7 +2099,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a spruce.",
+      "sentenceTranslation": "我看见云杉。"
     },
     {
       "id": "mc-core-041-string",
@@ -1941,8 +2117,8 @@
       ],
       "example": "I see a string.",
       "exampleZh": "我看见线。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use string",
+      "phraseTranslation": "使用线",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/String.png",
       "imagePage": "https://minecraft.wiki/w/File:String.png",
       "imageFile": "String.png",
@@ -1956,7 +2132,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a string.",
+      "sentenceTranslation": "我看见线。"
     },
     {
       "id": "mc-core-042-yellow",
@@ -1987,7 +2165,9 @@
         "blue",
         "black",
         "green"
-      ]
+      ],
+      "sentence": "I see a yellow.",
+      "sentenceTranslation": "我看见黄色。"
     },
     {
       "id": "mc-core-043-bedrock",
@@ -2003,8 +2183,8 @@
       ],
       "example": "I see a bedrock.",
       "exampleZh": "我看见基岩。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use bedrock",
+      "phraseTranslation": "使用基岩",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Bedrock.png",
       "imagePage": "https://minecraft.wiki/w/File:Bedrock.png",
       "imageFile": "Bedrock.png",
@@ -2018,7 +2198,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a bedrock.",
+      "sentenceTranslation": "我看见基岩。"
     },
     {
       "id": "mc-core-044-chicken",
@@ -2049,7 +2231,9 @@
         "cow",
         "pig",
         "sheep"
-      ]
+      ],
+      "sentence": "I see a chicken.",
+      "sentenceTranslation": "我看见鸡。"
     },
     {
       "id": "mc-core-045-compass",
@@ -2065,8 +2249,8 @@
       ],
       "example": "I see a compass.",
       "exampleZh": "我看见指南针。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use compass",
+      "phraseTranslation": "使用指南针",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Compass.png",
       "imagePage": "https://minecraft.wiki/w/File:Compass.png",
       "imageFile": "Compass.png",
@@ -2080,7 +2264,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a compass.",
+      "sentenceTranslation": "我看见指南针。"
     },
     {
       "id": "mc-core-046-diorite",
@@ -2096,8 +2282,8 @@
       ],
       "example": "I see a diorite.",
       "exampleZh": "我看见闪长岩。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use diorite",
+      "phraseTranslation": "使用闪长岩",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Diorite.png",
       "imagePage": "https://minecraft.wiki/w/File:Diorite.png",
       "imageFile": "Diorite.png",
@@ -2111,7 +2297,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a diorite.",
+      "sentenceTranslation": "我看见闪长岩。"
     },
     {
       "id": "mc-core-047-feather",
@@ -2127,8 +2315,8 @@
       ],
       "example": "I see a feather.",
       "exampleZh": "我看见羽毛。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use feather",
+      "phraseTranslation": "使用羽毛",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Feather.png",
       "imagePage": "https://minecraft.wiki/w/File:Feather.png",
       "imageFile": "Feather.png",
@@ -2142,7 +2330,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a feather.",
+      "sentenceTranslation": "我看见羽毛。"
     },
     {
       "id": "mc-core-048-granite",
@@ -2158,8 +2348,8 @@
       ],
       "example": "I see a granite.",
       "exampleZh": "我看见花岗岩。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use granite",
+      "phraseTranslation": "使用花岗岩",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Granite.png",
       "imagePage": "https://minecraft.wiki/w/File:Granite.png",
       "imageFile": "Granite.png",
@@ -2173,7 +2363,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a granite.",
+      "sentenceTranslation": "我看见花岗岩。"
     },
     {
       "id": "mc-core-049-leather",
@@ -2189,8 +2381,8 @@
       ],
       "example": "I see a leather.",
       "exampleZh": "我看见皮革。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use leather",
+      "phraseTranslation": "使用皮革",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Leather.png",
       "imagePage": "https://minecraft.wiki/w/File:Leather.png",
       "imageFile": "Leather.png",
@@ -2204,7 +2396,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a leather.",
+      "sentenceTranslation": "我看见皮革。"
     },
     {
       "id": "mc-core-050-sapling",
@@ -2220,8 +2414,8 @@
       ],
       "example": "I see a sapling.",
       "exampleZh": "我看见树苗。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use sapling",
+      "phraseTranslation": "使用树苗",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Oak_Sapling.png",
       "imagePage": "https://minecraft.wiki/w/File:Oak_Sapling.png",
       "imageFile": "Oak_Sapling.png",
@@ -2235,7 +2429,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a sapling.",
+      "sentenceTranslation": "我看见树苗。"
     },
     {
       "id": "mc-core-051-andesite",
@@ -2251,8 +2447,8 @@
       ],
       "example": "I see an andesite.",
       "exampleZh": "我看见安山岩。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use andesite",
+      "phraseTranslation": "使用安山岩",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Andesite.png",
       "imagePage": "https://minecraft.wiki/w/File:Andesite.png",
       "imageFile": "Andesite.png",
@@ -2266,7 +2462,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see an andesite.",
+      "sentenceTranslation": "我看见安山岩。"
     },
     {
       "id": "mc-core-052-charcoal",
@@ -2282,8 +2480,8 @@
       ],
       "example": "I see a charcoal.",
       "exampleZh": "我看见木炭。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use charcoal",
+      "phraseTranslation": "使用木炭",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Charcoal.png",
       "imagePage": "https://minecraft.wiki/w/File:Charcoal.png",
       "imageFile": "Charcoal.png",
@@ -2297,7 +2495,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a charcoal.",
+      "sentenceTranslation": "我看见木炭。"
     },
     {
       "id": "mc-core-053-mushroom",
@@ -2313,8 +2513,8 @@
       ],
       "example": "I see a mushroom.",
       "exampleZh": "我看见蘑菇。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use mushroom",
+      "phraseTranslation": "使用蘑菇",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Brown_Mushroom.png",
       "imagePage": "https://minecraft.wiki/w/File:Brown_Mushroom.png",
       "imageFile": "Brown_Mushroom.png",
@@ -2328,7 +2528,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a mushroom.",
+      "sentenceTranslation": "我看见蘑菇。"
     },
     {
       "id": "mc-core-054-snowball",
@@ -2344,8 +2546,8 @@
       ],
       "example": "I see a snowball.",
       "exampleZh": "我看见雪球。",
-      "phrase": "",
-      "phraseTranslation": "",
+      "phrase": "use snowball",
+      "phraseTranslation": "使用雪球",
       "image": "https://minecraft.wiki/w/Special:Redirect/file/Snowball.png",
       "imagePage": "https://minecraft.wiki/w/File:Snowball.png",
       "imageFile": "Snowball.png",
@@ -2359,7 +2561,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see a snowball.",
+      "sentenceTranslation": "我看见雪球。"
     },
     {
       "id": "mc-core-055-air",
@@ -2390,7 +2594,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see an air.",
+      "sentenceTranslation": "我看见空气。"
     },
     {
       "id": "mc-core-056-ice",
@@ -2421,7 +2627,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see an ice.",
+      "sentenceTranslation": "我看见冰。"
     },
     {
       "id": "mc-core-057-mud",
@@ -2452,7 +2660,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a mud.",
+      "sentenceTranslation": "我看见泥巴。"
     },
     {
       "id": "mc-core-058-tnt",
@@ -2483,7 +2693,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a tnt.",
+      "sentenceTranslation": "我看见TNT。"
     },
     {
       "id": "mc-core-059-bell",
@@ -2514,7 +2726,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a bell.",
+      "sentenceTranslation": "我看见钟。"
     },
     {
       "id": "mc-core-060-cake",
@@ -2545,7 +2759,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a cake.",
+      "sentenceTranslation": "我看见蛋糕。"
     },
     {
       "id": "mc-core-061-clay",
@@ -2576,7 +2792,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a clay.",
+      "sentenceTranslation": "我看见黏土块。"
     },
     {
       "id": "mc-core-062-lava",
@@ -2607,7 +2825,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a lava.",
+      "sentenceTranslation": "我看见熔岩。"
     },
     {
       "id": "mc-core-063-loom",
@@ -2638,7 +2858,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a loom.",
+      "sentenceTranslation": "我看见织布机。"
     },
     {
       "id": "mc-core-064-rail",
@@ -2669,7 +2891,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a rail.",
+      "sentenceTranslation": "我看见铁轨。"
     },
     {
       "id": "mc-core-065-tuff",
@@ -2700,7 +2924,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a tuff.",
+      "sentenceTranslation": "我看见凝灰岩。"
     },
     {
       "id": "mc-core-066-anvil",
@@ -2731,7 +2957,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see an anvil.",
+      "sentenceTranslation": "我看见铁砧。"
     },
     {
       "id": "mc-core-067-chain",
@@ -2762,7 +2990,9 @@
         "oak",
         "dirt",
         "sand"
-      ]
+      ],
+      "sentence": "I see a chain.",
+      "sentenceTranslation": "我看见锁链。"
     },
     {
       "id": "mc-core-068-axe",
@@ -2793,7 +3023,9 @@
         "egg",
         "boat",
         "book"
-      ]
+      ],
+      "sentence": "I see an axe.",
+      "sentenceTranslation": "我看见斧。"
     },
     {
       "id": "mc-core-069-ore",
@@ -2824,7 +3056,9 @@
         "cave",
         "disk",
         "hill"
-      ]
+      ],
+      "sentence": "I see an ore.",
+      "sentenceTranslation": "我看见矿石。"
     },
     {
       "id": "mc-core-070-cave",
@@ -2855,7 +3089,9 @@
         "ore",
         "disk",
         "hill"
-      ]
+      ],
+      "sentence": "I see a cave.",
+      "sentenceTranslation": "我看见洞穴。"
     },
     {
       "id": "mc-core-071-disk",
@@ -2886,7 +3122,9 @@
         "ore",
         "cave",
         "hill"
-      ]
+      ],
+      "sentence": "I see a disk.",
+      "sentenceTranslation": "我看见圆盘。"
     },
     {
       "id": "mc-core-072-hill",
@@ -2917,7 +3155,9 @@
         "ore",
         "cave",
         "disk"
-      ]
+      ],
+      "sentence": "I see a hill.",
+      "sentenceTranslation": "我看见丘陵。"
     }
   ],
   "sourceProviders": [

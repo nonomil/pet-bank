@@ -323,8 +323,38 @@ body.learn-mode .minecraft-vocab-page {
 .mv-word-line strong { color: var(--mv-ink); font-size: clamp(42px, 7vw, 74px); line-height: 1; overflow-wrap: anywhere; }
 .mv-phonetic { margin-top: 12px; color: #7a8e90; font-size: 16px; }
 .mv-translation { margin-top: 10px; color: var(--mv-green); font-size: 28px; font-weight: 900; }
-.mv-example { margin: 24px 0 0; color: var(--mv-ink); font-size: 18px; line-height: 1.7; }
-.mv-example-zh { margin-top: 5px; color: var(--mv-muted); font-size: 14px; }
+.mv-phrase,
+.mv-sentence {
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px 15px;
+    border-left: 3px solid var(--mv-blue);
+    background: #f5fafb;
+}
+
+.mv-phrase > span,
+.mv-sentence > span {
+    display: block;
+    color: var(--mv-blue);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .04em;
+}
+
+.mv-phrase strong,
+.mv-sentence p,
+.mv-phrase small,
+.mv-sentence small {
+    display: block;
+    overflow-wrap: anywhere;
+}
+
+.mv-phrase strong { margin-top: 5px; color: var(--mv-ink); font-size: 18px; line-height: 1.4; }
+.mv-phrase small,
+.mv-sentence small { margin-top: 4px; color: var(--mv-muted); font-size: 13px; line-height: 1.5; }
+.mv-sentence { border-color: var(--mv-orange); background: #fffaf2; }
+.mv-sentence > span { color: #9b6b39; }
+.mv-sentence p { margin: 5px 0 0; color: var(--mv-ink); font-size: 16px; line-height: 1.55; }
 .mv-recall-prompt { width: 100%; margin-top: 22px; padding: 16px; border-left: 4px solid var(--mv-orange); background: #fff8ed; }
 .mv-recall-prompt span { display: block; color: #9b6b39; font-size: 12px; font-weight: 900; }
 .mv-recall-prompt strong { display: block; margin-top: 6px; color: var(--mv-ink); font-size: 18px; line-height: 1.5; overflow-wrap: anywhere; }

@@ -40,7 +40,7 @@ try {
   assert.match(home.text, /今日远征/);
   assert.equal(home.stageCount, 4);
   assert.equal(home.taskCount, 11);
-  assert.match(home.image, /portal-minecraft-english-cover-20260705\.png/);
+  assert.match(home.image, /english-vocab\/minecraft-card\.webp/);
   assert.equal(home.start, true);
 
   await page.click('[data-mv-start]');
@@ -51,6 +51,8 @@ try {
       text: root?.innerText || '',
       audio: !!root?.querySelector('[data-mv-listen]'),
       reveal: !!root?.querySelector('[data-mv-reveal]'),
+      phrase: root?.querySelector('[data-mv-phrase]')?.textContent || '',
+      sentence: root?.querySelector('[data-mv-sentence]')?.textContent || '',
       actionCount: root?.querySelectorAll('[data-mv-answer], [data-mv-self-assess]').length || 0,
       taskMode: root?.querySelector('[data-mv-session]')?.dataset.mvMode || ''
     };
@@ -58,6 +60,8 @@ try {
   assert.match(session.text, /第 1\/11|1 \/ 11/);
   assert.equal(session.audio, true);
   assert.equal(session.reveal, true);
+  assert.match(session.phrase, /短语/);
+  assert.match(session.sentence, /场景句/);
   assert.equal(session.actionCount >= 2, true);
   assert.equal(session.taskMode, 'review');
 
@@ -70,10 +74,15 @@ try {
   const mobile = await page.evaluate(() => {
     const bar = document.querySelector('[data-mv-mobile-actions]');
     const rect = bar?.getBoundingClientRect();
-    return { width: Math.round(rect?.width || 0), fixed: bar ? getComputedStyle(bar).position : '' };
+    return {
+      width: Math.round(rect?.width || 0),
+      fixed: bar ? getComputedStyle(bar).position : '',
+      horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
+    };
   });
   assert.equal(mobile.fixed, 'sticky');
   assert.equal(mobile.width > 300, true);
+  assert.equal(mobile.horizontalOverflow, false);
   await page.setViewportSize({ width: 1280, height: 900 });
 
   for (let index = 0; index < 10; index += 1) {

@@ -3,7 +3,7 @@
 
     const PACK_ID = 'english-mc-hybrid-2026';
     const MODULE_ID = 'minecraft-vocab';
-    const HERO_IMAGE = 'assets/learn/portal-minecraft-english-cover-20260705.png';
+    const HERO_IMAGE = 'assets/learn/english-vocab/minecraft-card.webp';
     const FALLBACK_IMAGE = 'assets/learn/english-vocab/minecraft-card.webp';
 
     let mounted = false;
@@ -175,7 +175,7 @@
                 </section>
                 <section class="mv-source-line">
                     <i data-lucide="archive" aria-hidden="true"></i>
-                    <span>素材：Anki 本地词卡 11,241 张 · 主站学习池 96 张 · 参考词表 500 条</span>
+                    <span data-mv-source-summary>素材：Anki 本地词卡 11,241 张 · 主站学习池 ${currentStats.total} 张 · 参考词表 500 条</span>
                     <button class="mv-text-button" type="button" data-mv-open-pack>查看学习包</button>
                 </section>
             </main>
@@ -226,7 +226,18 @@
                             <span class="mv-translation">${escapeHtml(translation || '')}</span>
                             ${!isQuestion ? '<button class="mv-text-button" type="button" data-mv-reveal><i data-lucide="eye" aria-hidden="true"></i><span>显示释义</span></button>' : ''}
                             ${renderChoices(card, task.mode)}
-                            ${!isQuestion ? `<p class="mv-example">${escapeHtml(card.example || '')}</p><small class="mv-example-zh">${escapeHtml(card.exampleZh || '')}</small>` : ''}
+                            ${!isQuestion ? `
+                                <div class="mv-phrase" data-mv-phrase>
+                                    <span>短语</span>
+                                    <strong>${escapeHtml(card.phrase || '')}</strong>
+                                    <small>${escapeHtml(card.phraseTranslation || '')}</small>
+                                </div>
+                                <div class="mv-sentence" data-mv-sentence>
+                                    <span>场景句</span>
+                                    <p>${escapeHtml(card.sentence || card.example || '')}</p>
+                                    <small>${escapeHtml(card.sentenceTranslation || card.exampleZh || card.exampleTranslation || '')}</small>
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                     ${feedback ? `<p class="mv-feedback" data-mv-feedback aria-live="polite">${escapeHtml(feedback)}</p>` : ''}
