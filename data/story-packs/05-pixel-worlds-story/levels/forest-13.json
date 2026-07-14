@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-13",
+  "chapterId": "forest-13",
+  "worldId": "forest",
+  "title": "蘑菇邮路",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-13-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-13.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-13.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到蘑菇邮路。取下蘑菇伞下的绿色信封。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "collect",
+          "prompt": "取下蘑菇伞下的绿色信封。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "拿起绿色信封",
+              "feedback": "信封上的‘友’字亮了起来。"
+            },
+            {
+              "label": "摇响邮差铃",
+              "feedback": "邮差小鹿从树后跑了出来。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

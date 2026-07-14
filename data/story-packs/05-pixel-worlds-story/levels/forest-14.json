@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-14",
+  "chapterId": "forest-14",
+  "worldId": "forest",
+  "title": "月光草坡",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-14-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-14.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-14.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到月光草坡。在月光下找到开花的月亮草。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "在月光下找到开花的月亮草。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "看银色花瓣",
+              "feedback": "月亮花打开，露出一颗小光核。"
+            },
+            {
+              "label": "轻声说晚安",
+              "feedback": "花瓣随着声音慢慢亮起来。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

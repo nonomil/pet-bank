@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-04",
+  "chapterId": "detective-04",
+  "worldId": "detective",
+  "title": "维修区密码",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-04-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-04.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-04.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到维修区密码。收集维修区里三个相同的星形符号。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "collect",
+          "prompt": "收集维修区里三个相同的星形符号。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "取下星形贴片",
+              "feedback": "门锁响了一声。"
+            },
+            {
+              "label": "打开工具盒",
+              "feedback": "工具盒里藏着第二枚符号。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

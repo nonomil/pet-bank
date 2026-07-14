@@ -1,0 +1,62 @@
+{
+  "levelId": "block-16",
+  "chapterId": "block-16",
+  "worldId": "block",
+  "title": "红石钟楼",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "block-16-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-16.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "block_builder"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-16.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到红石钟楼。修好红石钟楼，让大家知道回家时间。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "repair",
+          "prompt": "修好红石钟楼，让大家知道回家时间。",
+          "character": "block_builder",
+          "position": "right",
+          "actions": [
+            {
+              "label": "接上红石线",
+              "feedback": "钟摆重新摆动起来。"
+            },
+            {
+              "label": "放入能量球",
+              "feedback": "钟声穿过整个地下城。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

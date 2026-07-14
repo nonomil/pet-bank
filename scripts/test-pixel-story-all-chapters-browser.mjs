@@ -4,10 +4,10 @@ import { browserLaunchOpts } from './playwright-browser.mjs';
 
 const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765/';
 const chapters = [
-    ['sci-fi', 'sf-01', 'moon-station.png'],
-    ['forest', 'forest-01', 'forest.webp'],
-    ['block', 'block-01', 'cave.webp'],
-    ['detective', 'detective-01', 'moon-station.png']
+    ['sci-fi', 'sf-01', 'sf-01.webp'],
+    ['forest', 'forest-01', 'forest-01.webp'],
+    ['block', 'block-01', 'block-01.webp'],
+    ['detective', 'detective-01', 'detective-01.webp']
 ];
 const browser = await chromium.launch(browserLaunchOpts());
 const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
@@ -44,6 +44,13 @@ try {
         const state = await page.locator('#pixelStoryBg').evaluate((image) => ({ src: image.src, width: image.naturalWidth, height: image.naturalHeight }));
         assert.match(state.src, new RegExp(backgroundName.replace('.', '\\.') ), `${chapterId}: expected background is active`);
         assert.ok(state.width > 0 && state.height > 0, `${chapterId}: background has pixels`);
+        await page.locator('#pixelNarrationOverlay').click();
+        await page.waitForFunction(() => {
+            const image = document.getElementById('pixelStoryProp');
+            return Boolean(image && image.complete && image.naturalWidth > 0);
+        }, { timeout: 20000 });
+        const propState = await page.locator('#pixelStoryProp').evaluate((image) => ({ src: image.src, width: image.naturalWidth, height: image.naturalHeight }));
+        assert.ok(propState.width > 0 && propState.height > 0, `${chapterId}: node prop has pixels`);
         await page.screenshot({ path: `tmp/pixel-story-${index + 1}-${chapterId}.png`, fullPage: true });
         await page.locator('#pixelStoryBack').click();
         await page.waitForSelector('#pixelStoryMapContainer .pixel-story-node', { state: 'attached', timeout: 20000 });

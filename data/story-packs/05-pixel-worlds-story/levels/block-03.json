@@ -1,1 +1,62 @@
-{"levelId":"block-03","chapterId":"block-03","worldId":"block","title":"地下水渠：引水回家","rewards":{"growthPoints":5},"scenes":[{"sceneId":"waterway","background":"assets/scenes/waterfall.webp","lines":[{"type":"narration","text":"地下水渠被一块石门挡住了。村里的小花田正在等水。","character":"narrator"},{"type":"dialogue","text":"把水引到花田，地下城就会重新有颜色。","character":"hero","position":"left"},{"type":"activity","activityType":"route","prompt":"转动水渠方块，让水流向花田。","character":"block_builder","position":"right","actions":[{"label":"转动蓝色水块","feedback":"水流沿着水渠快乐地跑起来。"},{"label":"打开石门机关","feedback":"石门升起，清水流到了花田。"}]},{"type":"dialogue","text":"‘水’会走很远，也会把生命带到很远的地方。","character":"block_builder","position":"right"}]}]}
+{
+  "levelId": "block-03",
+  "chapterId": "block-03",
+  "worldId": "block",
+  "title": "地下水渠：引水回家",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "waterway",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-03.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "地下水渠被一块石门挡住了。村里的小花田正在等水。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "把水引到花田，地下城就会重新有颜色。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "route",
+          "prompt": "转动水渠方块，让水流向花田。",
+          "character": "block_builder",
+          "position": "right",
+          "actions": [
+            {
+              "label": "转动蓝色水块",
+              "feedback": "水流沿着水渠快乐地跑起来。"
+            },
+            {
+              "label": "打开石门机关",
+              "feedback": "石门升起，清水流到了花田。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "‘水’会走很远，也会把生命带到很远的地方。",
+          "character": "block_builder",
+          "position": "right"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "block_builder"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-03.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/block/block-03.webp"
+}

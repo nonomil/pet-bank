@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-08",
+  "chapterId": "detective-08",
+  "worldId": "detective",
+  "title": "树屋暗号",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-08-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-08.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-08.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到树屋暗号。找出树屋门上重复出现的叶子符号。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "找出树屋门上重复出现的叶子符号。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "点亮重复叶子",
+              "feedback": "树屋门打开了一点。"
+            },
+            {
+              "label": "数一数叶子",
+              "feedback": "叶子排成了一个箭头。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

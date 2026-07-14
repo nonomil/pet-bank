@@ -1,0 +1,62 @@
+{
+  "levelId": "sf-20",
+  "chapterId": "sf-20",
+  "worldId": "sci-fi",
+  "title": "星港新航线",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "sf-20-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-20.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "star_engineer"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-20.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到星港新航线。确认去森林世界的安全航线。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "route",
+          "prompt": "确认去森林世界的安全航线。",
+          "character": "star_engineer",
+          "position": "right",
+          "actions": [
+            {
+              "label": "确认绿色航线",
+              "feedback": "航线稳定，森林的风吹进了舱门。"
+            },
+            {
+              "label": "和伙伴击掌",
+              "feedback": "大家一起出发，新的故事开始了。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

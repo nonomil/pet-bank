@@ -1,0 +1,62 @@
+{
+  "levelId": "sf-10",
+  "chapterId": "sf-10",
+  "worldId": "sci-fi",
+  "title": "月面车站",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "sf-10-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-10.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "star_engineer"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-10.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到月面车站。选择驶向下一站的月面车。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "route",
+          "prompt": "选择驶向下一站的月面车。",
+          "character": "star_engineer",
+          "position": "right",
+          "actions": [
+            {
+              "label": "登上蓝色月车",
+              "feedback": "月车滑过银色月尘，稳稳抵达下一站。"
+            },
+            {
+              "label": "挥动星光旗",
+              "feedback": "车长看见旗子，打开了隐藏轨道。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

@@ -1,1 +1,62 @@
-{"levelId":"block-06","chapterId":"block-06","worldId":"block","title":"地下城星门：唤醒回家门","rewards":{"growthPoints":8},"scenes":[{"sceneId":"gate","background":"assets/scenes/cave.webp","lines":[{"type":"narration","text":"星门晶石放进地下城中央，三张地图的光一起聚拢。科幻、森林和方块世界终于连成了一条路。","character":"narrator"},{"type":"dialogue","text":"我们不是只找到一扇门，还认识了很多朋友。","character":"hero","position":"left"},{"type":"activity","activityType":"care","prompt":"给星门放上最后一颗温暖的伙伴之心。","character":"pet","position":"right","actions":[{"label":"放上伙伴之心","feedback":"星门亮起柔和的光，欢迎大家回家。"},{"label":"和朋友击掌","feedback":"击掌的声音变成星光，飞向三张地图。"}]},{"type":"dialogue","text":"今天的故事结束了，下一次打开地图，还会有新的路。","character":"narrator","position":"center"}]}]}
+{
+  "levelId": "block-06",
+  "chapterId": "block-06",
+  "worldId": "block",
+  "title": "地下城星门：唤醒回家门",
+  "rewards": {
+    "growthPoints": 8
+  },
+  "scenes": [
+    {
+      "sceneId": "gate",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-06.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "星门晶石放进地下城中央，三张地图的光一起聚拢。科幻、森林和方块世界终于连成了一条路。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们不是只找到一扇门，还认识了很多朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "care",
+          "prompt": "给星门放上最后一颗温暖的伙伴之心。",
+          "character": "pet",
+          "position": "right",
+          "actions": [
+            {
+              "label": "放上伙伴之心",
+              "feedback": "星门亮起柔和的光，欢迎大家回家。"
+            },
+            {
+              "label": "和朋友击掌",
+              "feedback": "击掌的声音变成星光，飞向三张地图。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "今天的故事结束了，下一次打开地图，还会有新的路。",
+          "character": "narrator",
+          "position": "center"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-06.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/block/block-06.webp"
+}

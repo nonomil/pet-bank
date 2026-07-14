@@ -1,1 +1,62 @@
-{"levelId":"sf-08","chapterId":"sf-08","worldId":"sci-fi","title":"回家发射台：点亮星图","rewards":{"growthPoints":8},"scenes":[{"sceneId":"launch","background":"assets/story/pixel-dialogue-v2/backgrounds/twin-star-bridge.png","lines":[{"type":"narration","text":"八枚光核在发射台上排成一张星图。地图的另一端，传来森林和方块世界的回声。","character":"narrator"},{"type":"dialogue","text":"回家的路出现了，可它通向三个世界。我们一起去看看吧！","character":"hero","position":"left"},{"type":"activity","activityType":"scan","prompt":"点亮星图中央的回家信标。","character":"pet","position":"right","actions":[{"label":"点亮回家信标","feedback":"星图展开，森林和地下城都亮了起来。"},{"label":"拍拍小飞船","feedback":"小飞船发出欢呼声，准备穿越星门。"}]},{"type":"dialogue","text":"第一段旅程结束了，新的世界正在等我们。","character":"narrator","position":"center"}]}]}
+{
+  "levelId": "sf-08",
+  "chapterId": "sf-08",
+  "worldId": "sci-fi",
+  "title": "回家发射台：点亮星图",
+  "rewards": {
+    "growthPoints": 8
+  },
+  "scenes": [
+    {
+      "sceneId": "launch",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-08.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "八枚光核在发射台上排成一张星图。地图的另一端，传来森林和方块世界的回声。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "回家的路出现了，可它通向三个世界。我们一起去看看吧！",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "点亮星图中央的回家信标。",
+          "character": "pet",
+          "position": "right",
+          "actions": [
+            {
+              "label": "点亮回家信标",
+              "feedback": "星图展开，森林和地下城都亮了起来。"
+            },
+            {
+              "label": "拍拍小飞船",
+              "feedback": "小飞船发出欢呼声，准备穿越星门。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "第一段旅程结束了，新的世界正在等我们。",
+          "character": "narrator",
+          "position": "center"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-08.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-08.webp"
+}

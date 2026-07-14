@@ -1,1 +1,63 @@
-{"levelId":"sf-04","chapterId":"sf-04","worldId":"sci-fi","title":"星尘维修区：修好飞船","rewards":{"growthPoints":5},"scenes":[{"sceneId":"dock","background":"assets/story/pixel-dialogue-v2/backgrounds/star-dust-dock.png","lines":[{"type":"narration","text":"维修区里，星尘像金色小雨一样落下。飞船的推进器少了一块发光零件。","character":"narrator"},{"type":"dialogue","text":"别担心，我们一起把它修好。","character":"pet","position":"right"},{"type":"activity","activityType":"repair","prompt":"把会发光的零件放回推进器。","character":"star_engineer","position":"center","actions":[{"label":"放入蓝色零件","feedback":"推进器重新转起来了！"},{"label":"拧紧银色螺丝","feedback":"螺丝固定好了，飞船更稳了。"}]},{"type":"dialogue","text":"修好一件小事，也能让大飞船继续前进。","character":"hero","position":"left"}]}]}
+{
+  "levelId": "sf-04",
+  "chapterId": "sf-04",
+  "worldId": "sci-fi",
+  "title": "星尘维修区：修好飞船",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "dock",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-04.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "维修区里，星尘像金色小雨一样落下。飞船的推进器少了一块发光零件。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "别担心，我们一起把它修好。",
+          "character": "pet",
+          "position": "right"
+        },
+        {
+          "type": "activity",
+          "activityType": "repair",
+          "prompt": "把会发光的零件放回推进器。",
+          "character": "star_engineer",
+          "position": "center",
+          "actions": [
+            {
+              "label": "放入蓝色零件",
+              "feedback": "推进器重新转起来了！"
+            },
+            {
+              "label": "拧紧银色螺丝",
+              "feedback": "螺丝固定好了，飞船更稳了。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "修好一件小事，也能让大飞船继续前进。",
+          "character": "hero",
+          "position": "left"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "pet",
+          "star_engineer",
+          "hero"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-04.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-04.webp"
+}

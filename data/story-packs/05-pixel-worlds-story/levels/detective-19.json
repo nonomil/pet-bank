@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-19",
+  "chapterId": "detective-19",
+  "worldId": "detective",
+  "title": "三界线索墙",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-19-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-19.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-19.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到三界线索墙。把光核、叶子和方块线索贴到故事墙。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "build",
+          "prompt": "把光核、叶子和方块线索贴到故事墙。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "贴上蓝色光核",
+              "feedback": "星港线索亮起来了。"
+            },
+            {
+              "label": "贴上绿色叶子",
+              "feedback": "森林线索指向星门。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

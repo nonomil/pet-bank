@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-05",
+  "chapterId": "detective-05",
+  "worldId": "detective",
+  "title": "谁在温室里",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-05-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-05.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-05.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到谁在温室里。找出发出沙沙声的星芽。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "找出发出沙沙声的星芽。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "观察摇动的叶子",
+              "feedback": "小星芽在叶子后面挥手。"
+            },
+            {
+              "label": "打开柔光灯",
+              "feedback": "光照出一串小小脚印。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

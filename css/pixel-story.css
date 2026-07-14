@@ -184,9 +184,25 @@
   transform: translateX(-50%);
   transform-origin: bottom center;
 }
-.pixel-story-sprite-hide {
-  opacity: 0;
-}
+  .pixel-story-sprite-hide {
+    opacity: 0;
+  }
+
+  .pixel-story-prop {
+    position: absolute;
+    z-index: 2;
+    right: 8%;
+    bottom: 128px;
+    width: clamp(72px, 13vw, 168px);
+    height: auto;
+    max-height: 22%;
+    object-fit: contain;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 8px 10px rgba(8, 18, 38, .32));
+    transition: opacity .18s ease, transform .18s ease;
+  }
+
+  .pixel-story-prop-hide { opacity: 0; transform: translateY(8px) scale(.92); }
 
 /* 旁白遮罩 */
 .pixel-story-narration-overlay {
@@ -459,7 +475,8 @@
     max-height: 200px;
   }
   .pixel-story-sprite-left { left: 4%; }
-  .pixel-story-sprite-right { right: 4%; }
+    .pixel-story-sprite-right { right: 4%; }
+    .pixel-story-prop { right: 4%; bottom: 116px; width: 82px; }
   .pixel-story-narration-text {
     font-size: 15px;
     padding: 24px 20px;

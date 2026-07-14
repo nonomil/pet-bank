@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-15",
+  "chapterId": "forest-15",
+  "worldId": "forest",
+  "title": "萤火剧场",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-15-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-15.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-15.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到萤火剧场。为萤火剧场搭好树叶舞台。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "build",
+          "prompt": "为萤火剧场搭好树叶舞台。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "铺上大树叶",
+              "feedback": "舞台变得平平整整。"
+            },
+            {
+              "label": "挂上萤火灯",
+              "feedback": "观众席亮起来，演出开始了。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

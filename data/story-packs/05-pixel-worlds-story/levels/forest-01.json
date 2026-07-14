@@ -1,1 +1,62 @@
-{"levelId":"forest-01","chapterId":"forest-01","worldId":"forest","title":"森林入口：发现脚印","rewards":{"growthPoints":5},"scenes":[{"sceneId":"gate","background":"assets/scenes/forest.webp","lines":[{"type":"narration","text":"星门把小小探险家送到森林入口。阳光穿过树叶，地上留下了一串圆圆的脚印。","character":"narrator"},{"type":"dialogue","text":"这里有树、有叶，还有一条小路。脚印会通向哪里？","character":"hero","position":"left"},{"type":"activity","activityType":"scan","prompt":"找出通往森林深处的脚印。","character":"forest_guide","position":"right","actions":[{"label":"观察圆脚印","feedback":"脚印通向一棵大树。"},{"label":"看看树叶路牌","feedback":"叶子轻轻摇动，指向溪边。"}]},{"type":"dialogue","text":"认识‘森’字，就像看见很多树站在一起。","character":"forest_guide","position":"right"}]}]}
+{
+  "levelId": "forest-01",
+  "chapterId": "forest-01",
+  "worldId": "forest",
+  "title": "森林入口：发现脚印",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "gate",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-01.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "星门把小小探险家送到森林入口。阳光穿过树叶，地上留下了一串圆圆的脚印。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "这里有树、有叶，还有一条小路。脚印会通向哪里？",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "找出通往森林深处的脚印。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "观察圆脚印",
+              "feedback": "脚印通向一棵大树。"
+            },
+            {
+              "label": "看看树叶路牌",
+              "feedback": "叶子轻轻摇动，指向溪边。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "认识‘森’字，就像看见很多树站在一起。",
+          "character": "forest_guide",
+          "position": "right"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-01.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-01.webp"
+}

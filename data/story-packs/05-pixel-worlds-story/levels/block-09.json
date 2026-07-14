@@ -1,0 +1,62 @@
+{
+  "levelId": "block-09",
+  "chapterId": "block-09",
+  "worldId": "block",
+  "title": "石砖广场",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "block-09-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-09.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "block_builder"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-09.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到石砖广场。找出石砖上藏着的星星图案。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "找出石砖上藏着的星星图案。",
+          "character": "block_builder",
+          "position": "right",
+          "actions": [
+            {
+              "label": "观察星星石砖",
+              "feedback": "石砖打开一条秘密通道。"
+            },
+            {
+              "label": "敲一敲圆石",
+              "feedback": "回声告诉你方向在右边。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "levelId": "sf-17",
+  "chapterId": "sf-17",
+  "worldId": "sci-fi",
+  "title": "记忆舱",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "sf-17-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-17.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "star_engineer"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-17.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到记忆舱。保存今天认识的朋友图像。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "collect",
+          "prompt": "保存今天认识的朋友图像。",
+          "character": "star_engineer",
+          "position": "right",
+          "actions": [
+            {
+              "label": "保存森林向导",
+              "feedback": "向导的笑容变成一颗绿光。"
+            },
+            {
+              "label": "保存方块工匠",
+              "feedback": "工匠挥挥手，变成一颗橙光。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-10",
+  "chapterId": "forest-10",
+  "worldId": "forest",
+  "title": "树洞诊所",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-10-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-10.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-10.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到树洞诊所。照顾落下来的小鸟。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "care",
+          "prompt": "照顾落下来的小鸟。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "用软叶擦干",
+              "feedback": "小鸟舒服地抖了抖翅膀。"
+            },
+            {
+              "label": "递一颗浆果",
+              "feedback": "小鸟吃饱了，精神变好了。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

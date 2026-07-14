@@ -1,0 +1,62 @@
+{
+  "levelId": "block-17",
+  "chapterId": "block-17",
+  "worldId": "block",
+  "title": "旧矿车库",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "block-17-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-17.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "block_builder"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-17.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到旧矿车库。找出通往星门的旧矿车票。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "collect",
+          "prompt": "找出通往星门的旧矿车票。",
+          "character": "block_builder",
+          "position": "right",
+          "actions": [
+            {
+              "label": "取下星星车票",
+              "feedback": "车票上的星纹亮了起来。"
+            },
+            {
+              "label": "打开木箱",
+              "feedback": "木箱里藏着一张褪色地图。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

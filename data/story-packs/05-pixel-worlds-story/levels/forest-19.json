@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-19",
+  "chapterId": "forest-19",
+  "worldId": "forest",
+  "title": "森林望远台",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-19-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-19.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-19.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到森林望远台。从树叶缝隙里找到方块世界的光。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "从树叶缝隙里找到方块世界的光。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "转向山谷方向",
+              "feedback": "远处亮起一盏方块灯。"
+            },
+            {
+              "label": "擦亮望远镜",
+              "feedback": "方块村的路牌清清楚楚。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

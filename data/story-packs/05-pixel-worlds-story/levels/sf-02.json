@@ -1,1 +1,62 @@
-{"levelId":"sf-02","chapterId":"sf-02","worldId":"sci-fi","title":"月环补给站：找到光核","rewards":{"growthPoints":5},"scenes":[{"sceneId":"station","background":"assets/story/pixel-dialogue-v2/backgrounds/moon-station.png","lines":[{"type":"narration","text":"月环补给站像一只停在月光里的小船。站长把一枚光核藏进了补给箱。","character":"narrator"},{"type":"dialogue","text":"箱子上有月、星、光三个字，我先找找看。","character":"hero","position":"left"},{"type":"activity","activityType":"collect","prompt":"打开带有蓝色光环的补给箱，取出光核。","character":"pet","position":"right","actions":[{"label":"打开蓝色箱子","feedback":"光核跳了出来，像一颗小小的太阳。"},{"label":"拍拍黄色箱子","feedback":"黄色箱子发出咔哒声，提醒你再找一找。"}]},{"type":"dialogue","text":"我认识了‘光’。光核也愿意和我们一起旅行。","character":"hero","position":"left"}]}]}
+{
+  "levelId": "sf-02",
+  "chapterId": "sf-02",
+  "worldId": "sci-fi",
+  "title": "月环补给站：找到光核",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "station",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-02.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "月环补给站像一只停在月光里的小船。站长把一枚光核藏进了补给箱。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "箱子上有月、星、光三个字，我先找找看。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "collect",
+          "prompt": "打开带有蓝色光环的补给箱，取出光核。",
+          "character": "pet",
+          "position": "right",
+          "actions": [
+            {
+              "label": "打开蓝色箱子",
+              "feedback": "光核跳了出来，像一颗小小的太阳。"
+            },
+            {
+              "label": "拍拍黄色箱子",
+              "feedback": "黄色箱子发出咔哒声，提醒你再找一找。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "我认识了‘光’。光核也愿意和我们一起旅行。",
+          "character": "hero",
+          "position": "left"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-02.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-02.webp"
+}

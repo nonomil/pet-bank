@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-20",
+  "chapterId": "forest-20",
+  "worldId": "forest",
+  "title": "三界树门",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-20-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-20.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-20.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到三界树门。把森林收集的绿色光交给三界树门。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "care",
+          "prompt": "把森林收集的绿色光交给三界树门。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "放入绿色光核",
+              "feedback": "树门长出一条通往方块世界的藤桥。"
+            },
+            {
+              "label": "和森林朋友道别",
+              "feedback": "朋友们挥手，祝你在地下城找到星门。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

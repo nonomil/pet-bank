@@ -1,0 +1,62 @@
+{
+  "levelId": "sf-11",
+  "chapterId": "sf-11",
+  "worldId": "sci-fi",
+  "title": "流星厨房",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "sf-11-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-11.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "star_engineer"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-11.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到流星厨房。收集厨房里的三颗能量果。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "collect",
+          "prompt": "收集厨房里的三颗能量果。",
+          "character": "star_engineer",
+          "position": "right",
+          "actions": [
+            {
+              "label": "接住发光果",
+              "feedback": "能量果装满了飞船的小篮子。"
+            },
+            {
+              "label": "打开保鲜舱",
+              "feedback": "保鲜舱弹开，里面还有一颗果子。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

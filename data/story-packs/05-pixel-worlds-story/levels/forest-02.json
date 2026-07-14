@@ -1,1 +1,62 @@
-{"levelId":"forest-02","chapterId":"forest-02","worldId":"forest","title":"萤火溪：收集露珠","rewards":{"growthPoints":5},"scenes":[{"sceneId":"creek","background":"assets/scenes/waterfall.webp","lines":[{"type":"narration","text":"溪水在石头间唱歌，萤火虫把一颗颗露珠照成小灯。","character":"narrator"},{"type":"dialogue","text":"小兔子的花盆干了，我们带一点露珠给它吧。","character":"hero","position":"left"},{"type":"activity","activityType":"collect","prompt":"收集溪边会发光的露珠。","character":"forest_guide","position":"right","actions":[{"label":"接住叶尖露珠","feedback":"露珠滚进小瓶子，清凉又明亮。"},{"label":"向萤火虫问路","feedback":"萤火虫带你找到了最大的露珠。"}]},{"type":"dialogue","text":"‘水’会流动，也会帮助朋友长大。","character":"forest_guide","position":"right"}]}]}
+{
+  "levelId": "forest-02",
+  "chapterId": "forest-02",
+  "worldId": "forest",
+  "title": "萤火溪：收集露珠",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "creek",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-02.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "溪水在石头间唱歌，萤火虫把一颗颗露珠照成小灯。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "小兔子的花盆干了，我们带一点露珠给它吧。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "collect",
+          "prompt": "收集溪边会发光的露珠。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "接住叶尖露珠",
+              "feedback": "露珠滚进小瓶子，清凉又明亮。"
+            },
+            {
+              "label": "向萤火虫问路",
+              "feedback": "萤火虫带你找到了最大的露珠。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "‘水’会流动，也会帮助朋友长大。",
+          "character": "forest_guide",
+          "position": "right"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-02.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-02.webp"
+}

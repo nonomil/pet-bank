@@ -1,0 +1,62 @@
+{
+  "levelId": "block-11",
+  "chapterId": "block-11",
+  "worldId": "block",
+  "title": "轨道车站",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "block-11-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-11.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "block_builder"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-11.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到轨道车站。让轨道车驶向红石工坊。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "route",
+          "prompt": "让轨道车驶向红石工坊。",
+          "character": "block_builder",
+          "position": "right",
+          "actions": [
+            {
+              "label": "选择红色轨道",
+              "feedback": "矿车叮叮当当地驶向工坊。"
+            },
+            {
+              "label": "摇响出发铃",
+              "feedback": "站牌翻到下一站，路线出现了。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

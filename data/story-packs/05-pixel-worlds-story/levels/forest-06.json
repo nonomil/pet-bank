@@ -1,1 +1,62 @@
-{"levelId":"forest-06","chapterId":"forest-06","worldId":"forest","title":"古树图书馆：打开故事门","rewards":{"growthPoints":8},"scenes":[{"sceneId":"library","background":"assets/scenes/stargarden.webp","lines":[{"type":"narration","text":"古树图书馆的门上有一个大大的‘书’字。森林朋友们把找到的故事都藏在里面。","character":"narrator"},{"type":"dialogue","text":"我们把星港的信号也放进故事里，让三个世界互相认识。","character":"hero","position":"left"},{"type":"activity","activityType":"build","prompt":"把三枚发光书签放进古树门上的凹槽。","character":"forest_guide","position":"right","actions":[{"label":"放入蓝色书签","feedback":"门上出现了星星图案。"},{"label":"放入绿色书签","feedback":"门上长出一片小叶子。"}]},{"type":"dialogue","text":"故事会把远方的朋友连在一起。下一站，是方块地下城。","character":"narrator","position":"center"}]}]}
+{
+  "levelId": "forest-06",
+  "chapterId": "forest-06",
+  "worldId": "forest",
+  "title": "古树图书馆：打开故事门",
+  "rewards": {
+    "growthPoints": 8
+  },
+  "scenes": [
+    {
+      "sceneId": "library",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-06.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "古树图书馆的门上有一个大大的‘书’字。森林朋友们把找到的故事都藏在里面。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们把星港的信号也放进故事里，让三个世界互相认识。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "build",
+          "prompt": "把三枚发光书签放进古树门上的凹槽。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "放入蓝色书签",
+              "feedback": "门上出现了星星图案。"
+            },
+            {
+              "label": "放入绿色书签",
+              "feedback": "门上长出一片小叶子。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "故事会把远方的朋友连在一起。下一站，是方块地下城。",
+          "character": "narrator",
+          "position": "center"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-06.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-06.webp"
+}

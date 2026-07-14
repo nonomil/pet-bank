@@ -19,6 +19,7 @@ git clone https://github.com/nonomil/pet-bank.git "$release_dir"
 cd "$release_dir"
 
 node scripts/test-pixel-worlds-contract.mjs
+node scripts/test-pixel-worlds-assets-contract.mjs
 node scripts/test-explore-mode-contract.mjs
 node scripts/test-pages-fast-gate-contract.mjs
 node scripts/test-static-route-entries.mjs
@@ -31,6 +32,9 @@ test -f site/assets/story/pixel-worlds-v1/maps/sci-fi.png
 test -f site/assets/story/pixel-worlds-v1/maps/forest.png
 test -f site/assets/story/pixel-worlds-v1/maps/block.png
 test -f site/assets/story/pixel-worlds-v1/maps/detective.png
+
+# The asset contract must report 80 unique node scenes / 80 node props.
+# It also assembles a temporary Pages artifact and verifies the WebP paths.
 ```
 
 如果服务器带有可用 Chrome/Playwright，再运行：
@@ -58,18 +62,35 @@ curl --fail http://127.0.0.1/explore/
 
 ## 4. 生图重新生成（可选，不阻塞当前发布）
 
-提示词在 `docs/探索地图故事/像素对话故事/04-三世界与侦探小游戏生图提示词.md`。当前使用 TokenX24 的 OpenAI 兼容 GPT-IMAGE-2 接口；密钥从本机 `TOKEN24.md` 读取，不能写进命令历史、Git 或回复：
+提示词在 `docs/探索地图故事/像素对话故事/04-三世界与侦探小游戏生图提示词.md`。当前使用 Bee API 的 OpenAI 兼容 `gpt-image-2` 接口；密钥从本机 key 文档读取，不能写进命令历史、Git 或回复：
 
 ```powershell
-python -X utf8 scripts/token24-image-generate.py `
-  --prompt-file "tmp/pixel-worlds-prompts/sci-fi-map.txt" `
-  --out "assets/story/pixel-worlds-v1/maps/sci-fi.png" `
-  --size 1536x1024 --quality medium
+python -X utf8 .codex/skills/gpt-image-bee-workflow/scripts/bee_image_workflow.py probe `
+  --out tmp/pixel-worlds-bee-probe.json
 ```
 
-先用 `GET https://tokenx24.com/v1/models` 确认响应 200 且包含 `gpt-image-2`，再生成图片。必须检查响应 JSON、HTTP 状态、PNG 尺寸和浏览器 `naturalWidth`；如果出现 401、模型缺失或重复超时，停止重试，保留现有素材并记录供应商错误。不要把失败 JSON 当作图片发布。
+先确认模型探针返回包含 `gpt-image-2`，再生成图片。必须检查响应 JSON、HTTP 状态、PNG 尺寸和浏览器 `naturalWidth`；如果出现 401、模型缺失或重复超时，停止重试，保留现有素材并记录供应商错误。不要把失败 JSON 当作图片发布。
 
-本次实测四张地图均成功落盘；请求 `1536x1024` 时服务实际返回 `1536x864` 的 16:9 PNG，验收以实际文件尺寸和浏览器加载结果为准。
+本次节点素材使用 Bee API 的 `gpt-image-2` 完成；请求 `1536x1024` 后先校验原始 PNG，再转换为正式 WebP。80 个节点全部有独立场景，验收以实际文件尺寸、可解码性和浏览器 `naturalWidth` 为准。
+
+### 节点素材与分辨率约束
+
+- 四条路线共 80 个节点，每个节点必须使用自己的 `assets/story/pixel-worlds-v1/scenes/<track>/<levelId>.webp`，禁止把旧森林/洞穴背景作为正式节点图。
+- 节点场景直接单张请求 `1536x1024`；服务端实际尺寸以返回文件为准，不能把低分辨率拼图裁成背景后放大。
+- 角色和道具使用联图节省请求，但当前正式小素材只允许 4x4 联图，实际每格约 `384x256`；8x8 联图只可留在 `tmp/`，不得接入发布制品。
+- 生图返回后必须检查原始 PNG 与正式 WebP 的可解码性、尺寸、文件大小和浏览器 `naturalWidth`；失败节点记录在 `tmp/pixel-worlds-bee-scenes.log`，不得用占位图伪装完成。
+- Bee API 生图恢复使用单请求串行脚本 `scripts/generate-pixel-worlds-scenes-bee.mjs`；脚本只处理缺失节点，成功后才写入正式 WebP，失败记录后继续。
+- 场景背景禁止使用 8x8 联图裁切后放大；正式背景必须单张生成，目标请求尺寸 `1536x1024`，实际返回尺寸以文件检查结果为准。
+
+当前素材状态（2026-07-14）：80/80 个节点已有独立场景 WebP；科幻 20/20、森林 20/20、方块 20/20、侦探 20/20。全部文件均已通过 Pillow 解码检查和素材契约，浏览器已验证四路线可切换、首节点可进入、背景与道具实际加载。
+
+```powershell
+$env:PIXEL_SCENE_BEE_DELAY_MS = '5000'
+$env:PIXEL_SCENE_BEE_RETRIES = '1'
+node scripts/generate-pixel-worlds-scenes-bee.mjs
+```
+
+探针必须返回包含 `gpt-image-2` 的模型列表。恢复脚本会跳过已存在的正式 WebP；不要并发运行多个恢复脚本，也不要把响应 JSON、提示词或 API key 发布到 `site`。
 
 ## 5. 回滚
 

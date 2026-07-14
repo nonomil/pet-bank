@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-10",
+  "chapterId": "detective-10",
+  "worldId": "detective",
+  "title": "蘑菇谷的影子",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-10-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-10.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-10.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到蘑菇谷的影子。找到比蘑菇高一点的神秘影子。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "找到比蘑菇高一点的神秘影子。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "照亮大蘑菇",
+              "feedback": "原来是小鹿在蘑菇后面。"
+            },
+            {
+              "label": "观察影子方向",
+              "feedback": "影子指向一块星光石。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

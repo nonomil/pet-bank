@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-18",
+  "chapterId": "detective-18",
+  "worldId": "detective",
+  "title": "门后的朋友",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-18-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-18.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-18.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到门后的朋友。向门后的朋友发出一声温暖的问候。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "care",
+          "prompt": "向门后的朋友发出一声温暖的问候。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "说你好朋友",
+              "feedback": "门后传来开心的回应。"
+            },
+            {
+              "label": "递出伙伴徽章",
+              "feedback": "徽章亮起，门锁愿意打开。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

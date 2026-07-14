@@ -1,0 +1,62 @@
+{
+  "levelId": "sf-18",
+  "chapterId": "sf-18",
+  "worldId": "sci-fi",
+  "title": "维修月台",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "sf-18-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-18.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "star_engineer"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-18.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到维修月台。修补连接森林和方块世界的星桥。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "repair",
+          "prompt": "修补连接森林和方块世界的星桥。",
+          "character": "star_engineer",
+          "position": "right",
+          "actions": [
+            {
+              "label": "装上蓝色桥板",
+              "feedback": "星桥变得完整，远处的森林看清了。"
+            },
+            {
+              "label": "拧紧金色螺栓",
+              "feedback": "桥板固定好，可以安全通行。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

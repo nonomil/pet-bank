@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-12",
+  "chapterId": "forest-12",
+  "worldId": "forest",
+  "title": "雨滴工坊",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-12-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-12.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-12.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到雨滴工坊。让雨滴水车重新转动。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "repair",
+          "prompt": "让雨滴水车重新转动。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "装回木齿轮",
+              "feedback": "水车咕噜咕噜转起来。"
+            },
+            {
+              "label": "清理小树枝",
+              "feedback": "水流恢复，花田喝到了水。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

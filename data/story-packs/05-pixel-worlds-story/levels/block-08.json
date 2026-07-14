@@ -1,0 +1,62 @@
+{
+  "levelId": "block-08",
+  "chapterId": "block-08",
+  "worldId": "block",
+  "title": "方块农场",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "block-08-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-08.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "block_builder"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-08.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到方块农场。收集成熟的方块麦穗。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "collect",
+          "prompt": "收集成熟的方块麦穗。",
+          "character": "block_builder",
+          "position": "right",
+          "actions": [
+            {
+              "label": "收下金色麦穗",
+              "feedback": "麦穗装满了篮子。"
+            },
+            {
+              "label": "给小鸡留一把",
+              "feedback": "小鸡啄着麦粒，农场更热闹了。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

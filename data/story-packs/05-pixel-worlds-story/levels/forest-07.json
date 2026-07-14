@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-07",
+  "chapterId": "forest-07",
+  "worldId": "forest",
+  "title": "松果广场",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-07-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-07.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-07.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到松果广场。找出躲在松果旁的小松鼠。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "找出躲在松果旁的小松鼠。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "观察松果影子",
+              "feedback": "影子动了一下，小松鼠露出了耳朵。"
+            },
+            {
+              "label": "轻轻敲树干",
+              "feedback": "树叶落下，露出一条小路。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

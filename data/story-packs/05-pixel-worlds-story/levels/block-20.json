@@ -1,0 +1,62 @@
+{
+  "levelId": "block-20",
+  "chapterId": "block-20",
+  "worldId": "block",
+  "title": "地下城新地图",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "block-20-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-20.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "block_builder"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-20.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到地下城新地图。选择一条通向新地图的彩色航线。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "route",
+          "prompt": "选择一条通向新地图的彩色航线。",
+          "character": "block_builder",
+          "position": "right",
+          "actions": [
+            {
+              "label": "选择彩色航线",
+              "feedback": "新地图展开，下一季的故事开始闪烁。"
+            },
+            {
+              "label": "和三个世界告别",
+              "feedback": "大家挥手，下一次冒险再见。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

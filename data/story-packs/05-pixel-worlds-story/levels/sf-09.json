@@ -1,0 +1,62 @@
+{
+  "levelId": "sf-09",
+  "chapterId": "sf-09",
+  "worldId": "sci-fi",
+  "title": "量子花园",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "sf-09-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-09.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "star_engineer"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-09.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到量子花园。找到量子花园里会移动的微光。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "找到量子花园里会移动的微光。",
+          "character": "star_engineer",
+          "position": "right",
+          "actions": [
+            {
+              "label": "追踪蓝色微光",
+              "feedback": "微光留下了一条新的航线。"
+            },
+            {
+              "label": "观察旋转花朵",
+              "feedback": "花朵停下来，露出隐藏信标。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

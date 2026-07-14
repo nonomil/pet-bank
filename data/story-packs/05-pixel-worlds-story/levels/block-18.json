@@ -1,0 +1,62 @@
+{
+  "levelId": "block-18",
+  "chapterId": "block-18",
+  "worldId": "block",
+  "title": "回声石室",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "block-18-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-18.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "block_builder"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-18.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到回声石室。从回声里听出伙伴的方向。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "从回声里听出伙伴的方向。",
+          "character": "block_builder",
+          "position": "right",
+          "actions": [
+            {
+              "label": "轻声呼唤朋友",
+              "feedback": "森林伙伴从回声里回应你。"
+            },
+            {
+              "label": "敲响圆石",
+              "feedback": "方块工匠听到了集合信号。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

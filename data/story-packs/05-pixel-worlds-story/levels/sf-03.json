@@ -1,1 +1,62 @@
-{"levelId":"sf-03","chapterId":"sf-03","worldId":"sci-fi","title":"云朵信号带：跟随航线","rewards":{"growthPoints":5},"scenes":[{"sceneId":"cloud","background":"assets/story/pixel-dialogue-v2/backgrounds/cloud-relay.png","lines":[{"type":"narration","text":"云朵信号带里漂着软软的云桥，三条航线在空中交会。","character":"narrator"},{"type":"dialogue","text":"小云灯在左边闪，风铃在右边响，我们要跟着哪一条？","character":"hero","position":"left"},{"type":"activity","activityType":"route","prompt":"让飞船沿着闪烁的云灯前进。","character":"pet","position":"right","actions":[{"label":"跟着蓝云灯","feedback":"飞船穿过云桥，找到了下一颗光点。"},{"label":"追着彩虹云","feedback":"彩虹云送来一阵风，把我们吹回了航线。"}]},{"type":"dialogue","text":"原来‘云’会把信号送到很远的地方。","character":"hero","position":"left"}]}]}
+{
+  "levelId": "sf-03",
+  "chapterId": "sf-03",
+  "worldId": "sci-fi",
+  "title": "云朵信号带：跟随航线",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "cloud",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-03.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "云朵信号带里漂着软软的云桥，三条航线在空中交会。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "小云灯在左边闪，风铃在右边响，我们要跟着哪一条？",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "route",
+          "prompt": "让飞船沿着闪烁的云灯前进。",
+          "character": "pet",
+          "position": "right",
+          "actions": [
+            {
+              "label": "跟着蓝云灯",
+              "feedback": "飞船穿过云桥，找到了下一颗光点。"
+            },
+            {
+              "label": "追着彩虹云",
+              "feedback": "彩虹云送来一阵风，把我们吹回了航线。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "原来‘云’会把信号送到很远的地方。",
+          "character": "hero",
+          "position": "left"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-03.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-03.webp"
+}

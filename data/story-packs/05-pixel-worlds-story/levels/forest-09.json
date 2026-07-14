@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-09",
+  "chapterId": "forest-09",
+  "worldId": "forest",
+  "title": "花瓣车站",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-09-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-09.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-09.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到花瓣车站。让花瓣车沿着香味轨道前进。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "route",
+          "prompt": "让花瓣车沿着香味轨道前进。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "跟着白花香",
+              "feedback": "花车驶向一片安静草地。"
+            },
+            {
+              "label": "拉响花铃",
+              "feedback": "花车亮灯，轨道显示出来了。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

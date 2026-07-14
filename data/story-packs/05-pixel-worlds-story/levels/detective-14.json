@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-14",
+  "chapterId": "detective-14",
+  "worldId": "detective",
+  "title": "地下城旧地图",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-14-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-14.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-14.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到地下城旧地图。从旧地图上找出被星星遮住的路。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "从旧地图上找出被星星遮住的路。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "点亮星星路线",
+              "feedback": "隐藏的地下通道出现了。"
+            },
+            {
+              "label": "翻到地图背面",
+              "feedback": "背面写着‘向光走’。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

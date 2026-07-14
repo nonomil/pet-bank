@@ -25,6 +25,7 @@
     var spriteL = null;          // left sprite
     var spriteR = null;          // right sprite
     var spriteC = null;          // center sprite
+    var propEl = null;           // scene prop / clue
     var backBtn = null;
     var boxEl = null;
     var nameEl = null;
@@ -182,6 +183,7 @@
         if (spriteL) spriteL.classList.add('pixel-story-sprite-hide');
         if (spriteR) spriteR.classList.add('pixel-story-sprite-hide');
         if (spriteC) spriteC.classList.add('pixel-story-sprite-hide');
+        if (propEl) propEl.classList.add('pixel-story-prop-hide');
 
         // 旁白模式
         if (line.type === 'narration') {
@@ -206,6 +208,12 @@
                 el.src = assetUrl(charData.sprite);
                 el.classList.remove('pixel-story-sprite-hide');
             }
+        }
+
+        var sceneProps = scene.sceneAssets && scene.sceneAssets.props;
+        if (propEl && Array.isArray(sceneProps) && sceneProps[0]) {
+            propEl.src = assetUrl(sceneProps[0]);
+            propEl.classList.remove('pixel-story-prop-hide');
         }
 
         // 角色名标签
@@ -574,6 +582,7 @@
             '  <img class="pixel-story-sprite pixel-story-sprite-left pixel-story-sprite-hide" id="pixelStorySpriteL" alt="">' +
             '  <img class="pixel-story-sprite pixel-story-sprite-right pixel-story-sprite-hide" id="pixelStorySpriteR" alt="">' +
             '  <img class="pixel-story-sprite pixel-story-sprite-center pixel-story-sprite-hide" id="pixelStorySpriteC" alt="">' +
+            '  <img class="pixel-story-prop pixel-story-prop-hide" id="pixelStoryProp" alt="">' +
             '  <button class="pixel-story-back" id="pixelStoryBack">← 返回</button>' +
             '  <div class="pixel-story-box" id="pixelStoryBox">' +
             '    <div class="pixel-story-name" id="pixelStoryName" style="display:none"></div>' +
@@ -588,6 +597,7 @@
         spriteL = document.getElementById('pixelStorySpriteL');
         spriteR = document.getElementById('pixelStorySpriteR');
         spriteC = document.getElementById('pixelStorySpriteC');
+        propEl = document.getElementById('pixelStoryProp');
         backBtn = document.getElementById('pixelStoryBack');
         boxEl = document.getElementById('pixelStoryBox');
         nameEl = document.getElementById('pixelStoryName');

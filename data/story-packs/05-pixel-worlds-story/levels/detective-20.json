@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-20",
+  "chapterId": "detective-20",
+  "worldId": "detective",
+  "title": "侦探的回家信",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-20-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-20.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-20.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到侦探的回家信。给三个世界写下一句回家问候。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "care",
+          "prompt": "给三个世界写下一句回家问候。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "写下谢谢朋友",
+              "feedback": "三张地图一起亮起，故事留下了温暖的结尾。"
+            },
+            {
+              "label": "画一颗星星",
+              "feedback": "星星飞进信里，邀请大家下次再见。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

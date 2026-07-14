@@ -1,0 +1,62 @@
+{
+  "levelId": "block-07",
+  "chapterId": "block-07",
+  "worldId": "block",
+  "title": "木门小路",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "block-07-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/block/block-07.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "block_builder"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/block/block-07.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到木门小路。把两块木板搭成地下城入口。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "build",
+          "prompt": "把两块木板搭成地下城入口。",
+          "character": "block_builder",
+          "position": "right",
+          "actions": [
+            {
+              "label": "放上木板",
+              "feedback": "木门小路连好了。"
+            },
+            {
+              "label": "挂上蓝灯",
+              "feedback": "入口亮起，朋友们可以进来了。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

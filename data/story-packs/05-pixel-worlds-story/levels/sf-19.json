@@ -1,0 +1,62 @@
+{
+  "levelId": "sf-19",
+  "chapterId": "sf-19",
+  "worldId": "sci-fi",
+  "title": "导航塔顶",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "sf-19-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-19.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "star_engineer"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-19.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到导航塔顶。从星图上找到下一颗绿色星标。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "从星图上找到下一颗绿色星标。",
+          "character": "star_engineer",
+          "position": "right",
+          "actions": [
+            {
+              "label": "点亮绿色星标",
+              "feedback": "森林地图被放大，入口清楚了。"
+            },
+            {
+              "label": "转动望远镜",
+              "feedback": "望远镜看见了树屋的灯。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

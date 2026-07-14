@@ -48,7 +48,7 @@ const ALLOWED_RASTER_EXACT = new Set([
     'assets/arena/robot-rival.png',
 ]);
 
-const RASTER_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.bmp']);
+const RASTER_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.bmp', '.webp']);
 const MINECRAFT_VOCAB_VISUAL_DIR = 'assets/learn/english-vocab/generated/minecraft-vocab-visual-pack';
 const MINECRAFT_VOCAB_VISUAL_PREFIX = `${MINECRAFT_VOCAB_VISUAL_DIR}/`;
 const MINECRAFT_VOCAB_VISUAL_MANIFEST = `${MINECRAFT_VOCAB_VISUAL_DIR}/manifest.json`;
@@ -63,6 +63,9 @@ function isAllowedRuntimeRaster(rel) {
     if (ALLOWED_RASTER_EXACT.has(rel)) return true;
     if (rel.startsWith('assets/story/pixel-dialogue-v2/') && RASTER_EXTENSIONS.has(path.extname(rel).toLowerCase())) return true;
     if (rel.startsWith('assets/story/pixel-worlds-v1/maps/') && rel.endsWith('.png')) return true;
+    if (rel.startsWith('assets/story/pixel-worlds-v1/scenes/') && rel.endsWith('.webp')) return true;
+    if (rel.startsWith('assets/story/pixel-worlds-v1/characters/characters-') && rel.endsWith('.webp')) return true;
+    if (/^assets\/story\/pixel-worlds-v1\/props\/(sci-fi|forest|block|detective)\/[^/]+\.webp$/.test(rel)) return true;
     if (rel.startsWith('assets/picturebooks/') && RASTER_EXTENSIONS.has(path.extname(rel).toLowerCase())) return true;
     if (rel.startsWith('assets/ui/hanzi-img/') && rel.endsWith('.png')) return true;
     if (rel.startsWith('assets/learn/') && rel.endsWith('.png')) return true;

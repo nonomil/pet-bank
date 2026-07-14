@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-11",
+  "chapterId": "detective-11",
+  "worldId": "detective",
+  "title": "方块村的空箱",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-11-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-11.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-11.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到方块村的空箱。找出方块村补给箱上缺少的方块。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "scan",
+          "prompt": "找出方块村补给箱上缺少的方块。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "找棕色方块",
+              "feedback": "箱盖扣上了，里面的地图安全了。"
+            },
+            {
+              "label": "看看箱子底部",
+              "feedback": "底部压着一块带星纹的方块。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

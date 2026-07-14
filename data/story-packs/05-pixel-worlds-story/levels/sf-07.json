@@ -1,1 +1,62 @@
-{"levelId":"sf-07","chapterId":"sf-07","worldId":"sci-fi","title":"双星桥：连接两颗星","rewards":{"growthPoints":5},"scenes":[{"sceneId":"bridge","background":"assets/story/pixel-dialogue-v2/backgrounds/twin-star-bridge.png","lines":[{"type":"narration","text":"两颗小星星隔着一片黑色的宇宙。最后一段星桥，等着我们把它连起来。","character":"narrator"},{"type":"dialogue","text":"只要把闪光的桥片放回去，朋友们就能见面了。","character":"pet","position":"right"},{"type":"activity","activityType":"route","prompt":"选择一块会发光的桥片，连接两颗小星。","character":"hero","position":"left","actions":[{"label":"接上星光桥片","feedback":"桥片伸展开，两颗星星笑了。"},{"label":"摇响回家铃","feedback":"铃声传过宇宙，桥片也亮了起来。"}]},{"type":"dialogue","text":"‘连’就是把分开的东西接在一起。我们也连在一起。","character":"pet","position":"right"}]}]}
+{
+  "levelId": "sf-07",
+  "chapterId": "sf-07",
+  "worldId": "sci-fi",
+  "title": "双星桥：连接两颗星",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "bridge",
+      "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-07.webp",
+      "lines": [
+        {
+          "type": "narration",
+          "text": "两颗小星星隔着一片黑色的宇宙。最后一段星桥，等着我们把它连起来。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "只要把闪光的桥片放回去，朋友们就能见面了。",
+          "character": "pet",
+          "position": "right"
+        },
+        {
+          "type": "activity",
+          "activityType": "route",
+          "prompt": "选择一块会发光的桥片，连接两颗小星。",
+          "character": "hero",
+          "position": "left",
+          "actions": [
+            {
+              "label": "接上星光桥片",
+              "feedback": "桥片伸展开，两颗星星笑了。"
+            },
+            {
+              "label": "摇响回家铃",
+              "feedback": "铃声传过宇宙，桥片也亮了起来。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "‘连’就是把分开的东西接在一起。我们也连在一起。",
+          "character": "pet",
+          "position": "right"
+        }
+      ],
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "pet",
+          "hero"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/sci-fi/sf-07.webp"
+        ]
+      }
+    }
+  ],
+  "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-07.webp"
+}

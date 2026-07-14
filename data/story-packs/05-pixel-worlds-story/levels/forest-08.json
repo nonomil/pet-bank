@@ -1,0 +1,62 @@
+{
+  "levelId": "forest-08",
+  "chapterId": "forest-08",
+  "worldId": "forest",
+  "title": "雾林小桥",
+  "rewards": {
+    "growthPoints": 5
+  },
+  "scenes": [
+    {
+      "sceneId": "forest-08-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-08.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "forest_guide"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/forest/forest-08.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到雾林小桥。选择不会打扰小鱼的过桥路线。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "route",
+          "prompt": "选择不会打扰小鱼的过桥路线。",
+          "character": "forest_guide",
+          "position": "right",
+          "actions": [
+            {
+              "label": "走木桥中央",
+              "feedback": "小桥轻轻晃动，小鱼没有被吵醒。"
+            },
+            {
+              "label": "踩着圆石过河",
+              "feedback": "圆石排成一条路，大家安全到达对岸。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}

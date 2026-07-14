@@ -1,0 +1,62 @@
+{
+  "levelId": "detective-15",
+  "chapterId": "detective-15",
+  "worldId": "detective",
+  "title": "三界徽章",
+  "rewards": {
+    "growthPoints": 3
+  },
+  "scenes": [
+    {
+      "sceneId": "detective-15-scene-1",
+      "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-15.webp",
+      "sceneAssets": {
+        "characters": [
+          "narrator",
+          "hero",
+          "pet",
+          "detective_helper"
+        ],
+        "props": [
+          "assets/story/pixel-worlds-v1/props/detective/detective-15.webp"
+        ]
+      },
+      "lines": [
+        {
+          "type": "narration",
+          "text": "小小探险家来到三界徽章。把科幻、森林、方块三枚徽章放在一起。，新的线索正在等着被发现。",
+          "character": "narrator"
+        },
+        {
+          "type": "dialogue",
+          "text": "我们先看看周围，再决定怎样帮助这里的朋友。",
+          "character": "hero",
+          "position": "left"
+        },
+        {
+          "type": "activity",
+          "activityType": "collect",
+          "prompt": "把科幻、森林、方块三枚徽章放在一起。",
+          "character": "detective_helper",
+          "position": "right",
+          "actions": [
+            {
+              "label": "放入蓝色徽章",
+              "feedback": "科幻星光加入了徽章。"
+            },
+            {
+              "label": "放入绿色徽章",
+              "feedback": "森林叶片加入了徽章。"
+            }
+          ]
+        },
+        {
+          "type": "dialogue",
+          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "character": "pet",
+          "position": "right"
+        }
+      ]
+    }
+  ]
+}
