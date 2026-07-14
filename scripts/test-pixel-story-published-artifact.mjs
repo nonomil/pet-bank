@@ -15,8 +15,10 @@ assert.equal(result.status, 0, result.stderr || result.stdout);
 
 const assetRoot = path.join(outDir, 'assets', 'story', 'pixel-dialogue');
 const v2AssetRoot = path.join(outDir, 'assets', 'story', 'pixel-dialogue-v2');
+const worldsAssetRoot = path.join(outDir, 'assets', 'story', 'pixel-worlds-v1');
 const pngs = [];
 const v2Pngs = [];
+const worldsPngs = [];
 const mp3s = [];
 function walk(dir, pngList = pngs) {
   assert.ok(fs.existsSync(dir), `artifact asset directory exists: ${dir}`);
@@ -29,8 +31,10 @@ function walk(dir, pngList = pngs) {
 }
 walk(assetRoot);
 walk(v2AssetRoot, v2Pngs);
+walk(worldsAssetRoot, worldsPngs);
 assert.equal(pngs.length, 0, `rejected story PNGs must stay out of the Pages artifact, got ${pngs.length}`);
 assert.equal(v2Pngs.length, 14, `expected 14 accepted v2 story PNGs in Pages artifact, got ${v2Pngs.length}`);
+assert.equal(worldsPngs.length, 4, `expected 4 accepted pixel worlds map PNGs in Pages artifact, got ${worldsPngs.length}`);
 assert.equal(mp3s.length, 37, `expected 37 story MP3s in Pages artifact, got ${mp3s.length}`);
 assert.ok(fs.existsSync(path.join(outDir, 'data', 'story-packs', '04-pixel-dialogue-story', 'audio-manifest.json')));
 assert.ok(fs.existsSync(path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'manifest.json')));

@@ -28,6 +28,13 @@ try {
         const [trackId, chapterId, backgroundName] = chapters[index];
         await page.locator(`#pixelStoryMapContainer [data-world="${trackId}"]`).click();
         await page.waitForSelector(`#pixelStoryMapContainer .pixel-story-node[data-chapter="${chapterId}"]`, { state: 'attached', timeout: 20000 });
+        await page.waitForFunction(() => {
+            const image = document.querySelector('#pixelStoryMapContainer .pixel-story-map-bg');
+            return Boolean(image && image.complete && image.naturalWidth > 0);
+        }, { timeout: 20000 });
+        const mapState = await page.locator('#pixelStoryMapContainer .pixel-story-map-bg').evaluate((image) => ({ src: image.src, width: image.naturalWidth, height: image.naturalHeight }));
+        assert.match(mapState.src, new RegExp(`pixel-worlds-v1/maps/${trackId}\\.png`), `${trackId}: generated map background is active`);
+        assert.ok(mapState.width > 0 && mapState.height > 0, `${trackId}: generated map background has pixels`);
         await page.locator(`#pixelStoryMapContainer .pixel-story-node[data-chapter="${chapterId}"]`).click();
         await page.waitForSelector('.pixel-story-stage', { state: 'attached', timeout: 20000 });
         await page.waitForFunction(() => {

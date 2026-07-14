@@ -27,7 +27,10 @@ node scripts/assemble-pages-artifact.mjs site
 test -f site/data/story-packs/05-pixel-worlds-story/manifest.json
 test -f site/js/pixel-story-engine.js
 test -f site/js/pixel-story-map.js
-test -f site/assets/story/pixel-dialogue-v2/map/star-route.png
+test -f site/assets/story/pixel-worlds-v1/maps/sci-fi.png
+test -f site/assets/story/pixel-worlds-v1/maps/forest.png
+test -f site/assets/story/pixel-worlds-v1/maps/block.png
+test -f site/assets/story/pixel-worlds-v1/maps/detective.png
 ```
 
 如果服务器带有可用 Chrome/Playwright，再运行：
@@ -55,16 +58,18 @@ curl --fail http://127.0.0.1/explore/
 
 ## 4. 生图重新生成（可选，不阻塞当前发布）
 
-提示词在 `docs/探索地图故事/像素对话故事/04-三世界与侦探小游戏生图提示词.md`。本地 Bee 工作流会从密钥文档读取 `BEE_API_KEY`，密钥不能写进命令历史、Git 或回复：
+提示词在 `docs/探索地图故事/像素对话故事/04-三世界与侦探小游戏生图提示词.md`。当前使用 TokenX24 的 OpenAI 兼容 GPT-IMAGE-2 接口；密钥从本机 `TOKEN24.md` 读取，不能写进命令历史、Git 或回复：
 
 ```powershell
-$env:BEE_KEY_FILE = (Resolve-Path "docs/生图/生图接口资源key/GPT生图模型key.md").Path
-python -X utf8 ".codex/skills/gpt-image-bee-workflow/scripts/bee_image_workflow.py" `
-  generate --prompt-file "tmp/pixel-worlds-prompts/sci-fi-map.txt" `
-  --out "assets/story/pixel-worlds-v1/maps/sci-fi" --prefix sci-fi-map --size 1536x1024
+python -X utf8 scripts/token24-image-generate.py `
+  --prompt-file "tmp/pixel-worlds-prompts/sci-fi-map.txt" `
+  --out "assets/story/pixel-worlds-v1/maps/sci-fi.png" `
+  --size 1536x1024 --quality medium
 ```
 
-必须检查响应 JSON、HTTP 状态、PNG 尺寸和浏览器 `naturalWidth`；如果出现 `no enabled channel for model`、`401` 或重复超时，停止重试，保留本地回退素材并记录供应商错误。不要把失败 JSON 当作图片发布。
+先用 `GET https://tokenx24.com/v1/models` 确认响应 200 且包含 `gpt-image-2`，再生成图片。必须检查响应 JSON、HTTP 状态、PNG 尺寸和浏览器 `naturalWidth`；如果出现 401、模型缺失或重复超时，停止重试，保留现有素材并记录供应商错误。不要把失败 JSON 当作图片发布。
+
+本次实测四张地图均成功落盘；请求 `1536x1024` 时服务实际返回 `1536x864` 的 16:9 PNG，验收以实际文件尺寸和浏览器加载结果为准。
 
 ## 5. 回滚
 

@@ -25,7 +25,7 @@
       "title": "星港科技区",
       "subtitle": "跟着光核信号，修好回家的星图",
       "tone": "sci-fi",
-      "background": "assets/story/pixel-dialogue-v2/map/star-route.png",
+      "background": "assets/story/pixel-worlds-v1/maps/sci-fi.png",
       "nodes": [
         { "levelId": "sf-01", "order": 1, "label": "星港登船舱", "subtitle": "看见信号", "position": { "x": 12, "y": 56 }, "icon": "assets/story/pixel-dialogue-v2/icons/moon.png" },
         { "levelId": "sf-02", "order": 2, "label": "月环补给站", "subtitle": "找到光核", "position": { "x": 24, "y": 34 }, "icon": "assets/story/pixel-dialogue-v2/icons/moon.png" },
@@ -54,7 +54,7 @@
       "title": "森林回声区",
       "subtitle": "听见树木、溪流和朋友的声音",
       "tone": "forest",
-      "background": "assets/scenes/forest.webp",
+      "background": "assets/story/pixel-worlds-v1/maps/forest.png",
       "nodes": [
         { "levelId": "forest-01", "order": 1, "label": "森林入口", "subtitle": "发现脚印", "position": { "x": 14, "y": 62 }, "icon": "assets/story/pixel-dialogue-v2/icons/moon.png" },
         { "levelId": "forest-02", "order": 2, "label": "萤火溪", "subtitle": "收集露珠", "position": { "x": 29, "y": 40 }, "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png" },
@@ -83,7 +83,7 @@
       "title": "方块地下城",
       "subtitle": "在方块世界里寻找最后一枚星门晶石",
       "tone": "block",
-      "background": "assets/scenes/cave.webp",
+      "background": "assets/story/pixel-worlds-v1/maps/block.png",
       "nodes": [
         { "levelId": "block-01", "order": 1, "label": "方块村门口", "subtitle": "搭起路牌", "position": { "x": 13, "y": 57 }, "icon": "assets/story/pixel-dialogue-v2/icons/gear.png" },
         { "levelId": "block-02", "order": 2, "label": "矿洞火把路", "subtitle": "寻找亮处", "position": { "x": 28, "y": 34 }, "icon": "assets/story/pixel-dialogue-v2/icons/moon.png" },
@@ -114,7 +114,7 @@
       "title": "像素冒险·侦探小游戏",
       "subtitle": "每个线索都是一小段剧情",
       "tone": "detective",
-      "background": "assets/story/space-growth-detective/map.webp",
+      "background": "assets/story/pixel-worlds-v1/maps/detective.png",
       "nodes": [
         { "levelId": "detective-01", "order": 1, "label": "失踪的蓝光", "subtitle": "找线索", "position": { "x": 10, "y": 57 }, "icon": "assets/story/pixel-dialogue-v2/icons/moon.png", "background": "assets/story/pixel-dialogue-v2/backgrounds/moon-station.png", "activityType": "scan", "prompt": "从三条闪光痕迹里找到蓝光留下的线索。", "storyText": "侦探徽章亮起，第一条线索在月尘里闪了一下。", "actions": [{ "label": "查看月尘脚印", "feedback": "脚印指向补给箱。" }, { "label": "照亮舱门边", "feedback": "舱门边有一枚蓝色碎片。" }] },
         { "levelId": "detective-02", "order": 2, "label": "谁动了星图", "subtitle": "看方向", "position": { "x": 20, "y": 35 }, "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png", "background": "assets/story/pixel-dialogue-v2/backgrounds/twin-star-bridge.png", "activityType": "scan", "prompt": "找到星图上刚刚移动过的星点。", "storyText": "星图上有一个星点和其他点不一样，它正在慢慢移动。", "actions": [{ "label": "追踪绿色星点", "feedback": "星点停在云桥入口。" }, { "label": "放大回家星", "feedback": "回家星旁边出现了新箭头。" }] },

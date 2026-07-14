@@ -59,6 +59,8 @@ const TRAVEL_MEMORY_RUNTIME_PREFIXES = [
 function isAllowedRuntimeRaster(rel) {
     if (ALLOWED_RASTER_EXACT.has(rel)) return true;
     if (rel.startsWith('assets/story/pixel-dialogue-v2/') && RASTER_EXTENSIONS.has(path.extname(rel).toLowerCase())) return true;
+    if (rel.startsWith('assets/story/pixel-worlds-v1/maps/') && rel.endsWith('.png')) return true;
+    if (rel.startsWith('assets/picturebooks/') && RASTER_EXTENSIONS.has(path.extname(rel).toLowerCase())) return true;
     if (rel.startsWith('assets/ui/hanzi-img/') && rel.endsWith('.png')) return true;
     if (rel.startsWith('assets/learn/') && rel.endsWith('.png')) return true;
     if (TRAVEL_MEMORY_RUNTIME_PREFIXES.some((prefix) => rel.startsWith(prefix) && rel.endsWith('.png'))) return true;
@@ -195,6 +197,7 @@ const STATIC_ROUTE_ENTRIES = [
     '/app/learn/lesson',
     '/app/learn/print',
     '/app/learn/minecraft-vocab',
+    '/app/picturebooks',
     '/app/pet',
     '/app/pet/home',
     '/app/pet/walk',
