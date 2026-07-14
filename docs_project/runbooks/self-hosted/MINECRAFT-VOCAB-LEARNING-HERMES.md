@@ -1,12 +1,13 @@
 # Minecraft 单词远征 Hermes 执行手册
 
-本手册给 AI/Hermes 部署主站 `v0.7.43` 使用。它覆盖主站学习页与 Pages 制品；完整 Anki 浏览器是另一个独立静态站，必须遵循 [ANKI-MINECRAFT-VOCAB-HERMES.md](./ANKI-MINECRAFT-VOCAB-HERMES.md)。
+本手册给 AI/Hermes 部署主站 `v0.7.45` 使用。它覆盖主站学习页与 Pages 制品；完整 Anki 浏览器是另一个独立静态站，必须遵循 [ANKI-MINECRAFT-VOCAB-HERMES.md](./ANKI-MINECRAFT-VOCAB-HERMES.md)。
 
 ## 目标和边界
 
 - 主站入口：`/app/learn/minecraft-vocab/`。
 - 主站默认学习池：96 张已审查、带本地配图/发音或可回退播放的词卡。
-- 参考词表：`data/learn/external/mayihaoke/word-cards.json`，当前 500 条结构化快照；生产运行不实时请求外站。
+- 参考词表：`data/learn/external/mayihaoke/word-cards.json`，当前 500 条结构化快照；每条有中英短语和中英短句，生产运行不实时请求外站。
+- 内容补全脚本：`node scripts/enrich_minecraft_vocab.cjs --apply`；内容门禁：`node scripts/test-minecraft-vocab-content.mjs`。更新词表后必须先跑脚本再跑门禁。
 - 完整 Anki 项目：`prj/anki-minecraft-vocab/`，11,241 张卡片，独立 release/current，Pages 制品必须排除。
 - 无数据库迁移；孩子学习状态仍写本地 Profile 快照，奖励走现有 `GameRewardReceipts` 和 `PetBankPoints`。
 
@@ -29,6 +30,7 @@ test -f js/minecraft-vocab-session.js
 
 ```bash
 node scripts/test-mayihaoke-minecraft-words.mjs
+node scripts/test-minecraft-vocab-content.mjs
 node scripts/test-minecraft-vocab-session.mjs
 node scripts/test-page-router-contract.mjs
 node scripts/test-static-route-entries.mjs
@@ -46,6 +48,8 @@ MMWG_E2E_BASE_URL=http://127.0.0.1:8765/app/learn/minecraft-vocab \
 ```
 
 浏览器验收必须确认：首次打开能看到今日 11 步远征；完成 11 步后成长分增加 10；同一天再次完成不重复发分；刷新后会话状态可恢复；Profile 切换后会话不串号；390px 宽度下底部操作区和文字不横向溢出。
+
+首页图片必须使用本地无嵌入文字素材；不要把参考站外链图片或失败的生图响应部署到运行时。Bee `gpt-image-2` 不可用时保留已验证的 `assets/learn/english-vocab/minecraft-card.webp` 回退，不阻塞静态发布。
 
 ## Pages 制品检查
 
