@@ -2910,6 +2910,18 @@
                 cta: '进入英语学习',
                 onclick: `LearnCenter.openPack('${englishRecord.id}')`
             }) : '',
+            englishRecord ? renderPortalCard({
+                id: 'minecraft-vocab',
+                theme: 'english',
+                imageSrc: portalEnglishImage,
+                imageStyle: 'object-position:center 28%;',
+                badges: ['11步短会话', '听音 + 回忆', '完成得成长分'],
+                kicker: 'Minecraft词汇',
+                title: 'Minecraft 单词远征',
+                desc: '每天约 10 分钟，听发音、看词义、主动回忆，再把单词放回场景句。',
+                cta: '开始单词远征',
+                onclick: 'LearnCenter.openMinecraftVocab()'
+            }) : '',
             renderPortalCard({
                 id: 'hanzi',
                 theme: 'hanzi',
@@ -2993,6 +3005,18 @@
                 meta: `英语进度 ${englishProgress.completed}/${englishProgress.total} · ${englishProgress.percent}%`,
                 primaryAction: `<button class="learn-btn learn-btn-primary" onclick="LearnCenter.openLesson('${englishRecord.id}', 'mcbook56-story', '${englishContinueId || ''}')">打开今日英语</button>`,
                 secondaryAction: `<button class="learn-btn learn-btn-secondary" onclick="LearnCenter.openPack('${englishRecord.id}')">查看英语资料包</button>`
+            }) : '',
+            englishRecord ? renderHubEntryCard({
+                theme: 'english',
+                chip: 'Minecraft 单词 · 今日 11 步',
+                artTitle: '听一遍，再回忆',
+                artText: '短语 + 场景句一起记',
+                kicker: '今日单词远征',
+                title: 'Minecraft 单词远征',
+                desc: '固定 11 步短会话，适合每天完成一小组；进度按当前孩子 Profile 保存。',
+                meta: '2 张复习 · 5 张新词 · 3 张回忆 · 1 句场景',
+                primaryAction: `<button class="learn-btn learn-btn-primary" type="button" data-minecraft-vocab-launch onclick="LearnCenter.openMinecraftVocab()">开始今日单词</button>`,
+                secondaryAction: `<button class="learn-btn learn-btn-secondary" type="button" onclick="LearnCenter.openPack('${englishRecord.id}')">查看完整资料包</button>`
             }) : '',
             (showReviewToday && reviewModule) ? renderHubEntryCard({
                 theme: 'review',

@@ -15,6 +15,22 @@ page.on('console', message => {
 try {
   await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
   await page.waitForFunction(() => typeof window.switchPage === 'function', { timeout: 15000 });
+  await page.evaluate(() => window.switchPage('learn'));
+  await page.waitForFunction(() => document.querySelector('#page-learn.active .learn-shell'), { timeout: 15000 });
+  const learnEntry = await page.evaluate(() => {
+    const root = document.querySelector('#page-learn.active');
+    const direct = root?.querySelector('[data-minecraft-vocab-launch]');
+    return {
+      text: root?.innerText || '',
+      direct: !!direct,
+      label: direct?.textContent?.trim() || ''
+    };
+  });
+  assert.match(learnEntry.text, /Minecraft 单词远征/);
+  assert.equal(learnEntry.direct, true);
+  assert.match(learnEntry.label, /开始|进入|单词/);
+  await page.click('[data-minecraft-vocab-launch]');
+  await page.waitForFunction(() => document.querySelector('#page-minecraft-vocab.active [data-minecraft-vocab-page]'), { timeout: 15000 });
   await page.evaluate(() => {
     Object.keys(localStorage).filter(key => key.includes('minecraft_vocab_session')).forEach(key => localStorage.removeItem(key));
     Object.keys(localStorage).filter(key => key.includes('learning_vocab_progress')).forEach(key => localStorage.removeItem(key));
