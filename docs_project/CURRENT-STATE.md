@@ -31,7 +31,7 @@
 - 运行时 key 的 owner、scope 和迁移要求以 [localstorage-keys.md](data-contracts/localstorage-keys.md) 为准。
 - Pages 只发布 `assemble-pages-artifact.mjs` 明确放行的运行时；不能依据 `prj/` 或 `docs/` 目录大小批量清理。
 - `prj/anki-minecraft-vocab/` 是独立的 Anki Minecraft 词卡静态工作台，使用自己的 `data/` 与 `assets/media/`，不写入主站 `data/vocab/`，也不进入主站 Pages 制品；独立部署和回滚见 [ANKI-MINECRAFT-VOCAB-HERMES.md](runbooks/self-hosted/ANKI-MINECRAFT-VOCAB-HERMES.md)。
-- Minecraft 运行学习池为 96 张，参考站本地快照为 500 条；两者均有中英短语和中英短句完整性门禁。完整 Anki 工作台的 11,241 张卡片仍只在独立站提供。
+- Minecraft 运行学习池为 2,168 个去重词，合并现有精选卡、参考站本地快照 500 条和 Anki 可读官方词条；完整 Anki 工作台仍保留 11,241 张卡片和完整目录。两套数据均有中英短语和中英短句完整性门禁。
 
 ## 当前能力口径
 
@@ -42,7 +42,7 @@
 | 本地多孩子档案 | 当前实现，切换会保存快照并 reload |
 | 自托管账号、家庭、孩子管理 | 当前已实现，需通过 VPS canary 验证 |
 | Anki Minecraft 词卡工作台 | 当前实现，11,241 张卡片、231 个末级牌组；原始 6,847 个媒体映射清洗为 4,956 个；独立静态部署 |
-| Minecraft 单词远征内容层 | 当前实现，主站 96 张 + 参考快照 500 条；每条都有短语、短句及中文翻译；内容完整性测试已接入全量回归 |
+| Minecraft 单词远征内容层 | 当前实现，2,168 个去重词 + 11,241 张 Anki 原始卡片目录；每条都有短语、短句及中文翻译；内容完整性测试已接入全量回归 |
 | 三世界像素故事漫游 | 当前实现：科幻、森林、方块地下城各 20 个主线节点，另有 20 个侦探小游戏节点；入口由首页和故事地图提供；认字内容为剧情文本，不是题库 |
 | Profile 快照自动 push/pull | 已接入启动恢复、孩子切换前上传、页面隐藏/退出上传；积分和宠物保存后会防抖触发快照上传；网络失败进入独立 outbox，冲突保留本地并提示，尚无多端自动合并 |
 | 好友、串门、PK、动态流 | 尚未实现 |

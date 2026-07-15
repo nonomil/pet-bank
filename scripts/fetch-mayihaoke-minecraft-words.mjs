@@ -1,5 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { enrichCard } = require('./enrich_minecraft_vocab.cjs');
 
 export const MAYIHAOKE_WORDS_URL = 'https://www.mayihaoke.com/api/ant/course/words/card?course_id=minewords';
 export const DEFAULT_OUTPUT = path.resolve('data/learn/external/mayihaoke/word-cards.json');
@@ -55,7 +59,7 @@ export async function fetchMayihaokeWords(fetchImpl = globalThis.fetch, url = MA
   if (!response || !response.ok) {
     throw new Error(`mayihaoke words request failed: ${response?.status || 'unknown'}`);
   }
-  return normalizeMayihaokeRows(await response.json());
+  return normalizeMayihaokeRows(await response.json()).map(card => enrichCard(card));
 }
 
 export function buildSnapshot(cards, fetchedAt = new Date().toISOString()) {

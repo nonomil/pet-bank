@@ -106,7 +106,7 @@ try {
   assert.equal(session.cardFrameSize, '200% 200%');
   assert.equal(session.taskMode, 'review');
   assert.match(session.sessionBg, /warmup-grove\.png/);
-  assert.match(session.cardImage, /assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-/);
+  assert.match(session.cardImage, /(?:assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-|prj\/anki-minecraft-vocab\/assets\/media\/)/);
   assert.equal(session.cardImageWidth > 0, true);
   await page.screenshot({ path: 'tmp/minecraft-vocab-session-gpt-ui-1280.png', fullPage: true });
 
@@ -135,7 +135,7 @@ try {
       src: document.querySelector('[data-mv-card-image]')?.getAttribute('src') || '',
       width: document.querySelector('[data-mv-card-image]')?.naturalWidth || 0
     }));
-    assert.match(cardMedia.src, /assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-/);
+    assert.match(cardMedia.src, /(?:assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-|prj\/anki-minecraft-vocab\/assets\/media\/)/);
     assert.equal(cardMedia.width > 0, true);
     const selfAssess = page.locator('[data-mv-self-assess="known"]');
     if (await selfAssess.count()) {

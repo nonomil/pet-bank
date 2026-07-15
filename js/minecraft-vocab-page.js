@@ -84,12 +84,12 @@
 
     function cardImage(card) {
         const image = String(card?.image || '');
-        return image.startsWith('assets/') ? asset(image) : '';
+        return /^(?:assets|prj\/anki-minecraft-vocab)\//.test(image) ? asset(image) : '';
     }
 
     function cardAudio(card) {
         const audioPath = String(card?.audio || '');
-        return audioPath.startsWith('assets/') ? asset(audioPath) : '';
+        return /^(?:assets|prj\/anki-minecraft-vocab)\//.test(audioPath) ? asset(audioPath) : '';
     }
 
     function fallbackChoices(card) {
@@ -206,8 +206,8 @@
                 </section>
                 <section class="mv-source-line">
                     <i data-lucide="archive" aria-hidden="true"></i>
-                    <span data-mv-source-summary>素材：Anki 本地词卡 11,241 张 · 主站学习池 ${currentStats.total} 张 · 参考词表 500 条</span>
-                    <button class="mv-text-button" type="button" data-mv-open-pack>查看学习包</button>
+                    <span data-mv-source-summary>素材：Anki 原始 11,241 张 · 可学习 ${currentStats.total.toLocaleString('zh-CN')} 词 · 参考词表 500 条</span>
+                    <span class="mv-source-actions"><button class="mv-text-button" type="button" data-mv-open-pack>查看学习包</button><button class="mv-text-button" type="button" data-mv-open-anki>打开完整 Anki 图鉴</button></span>
                 </section>
             </main>
         `;
@@ -362,6 +362,10 @@
         }));
         root.querySelectorAll('[data-mv-open-pack]').forEach(button => button.addEventListener('click', () => {
             if (global.LearnCenter && typeof global.LearnCenter.openPack === 'function') global.LearnCenter.openPack(PACK_ID);
+        }));
+        root.querySelectorAll('[data-mv-open-anki]').forEach(button => button.addEventListener('click', () => {
+            const url = 'prj/anki-minecraft-vocab/index.html';
+            if (typeof global.open === 'function') global.open(url, '_blank', 'noopener');
         }));
         root.querySelectorAll('[data-mv-reveal]').forEach(button => button.addEventListener('click', () => {
             revealed = true;

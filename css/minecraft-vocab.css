@@ -333,6 +333,20 @@ body.learn-mode .minecraft-vocab-page {
     font-size: 12px;
 }
 
+.mv-source-actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-left: auto;
+}
+
+@media (max-width: 640px) {
+    .mv-source-actions {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
 .mv-text-button {
     display: inline-flex;
     align-items: center;

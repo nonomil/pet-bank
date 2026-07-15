@@ -1,8 +1,8 @@
 {
   "provider": "mayihaoke",
   "baseUrl": "https://mayihaoke.com",
-  "generatedAt": "2026-07-06T06:45:51.632Z",
-  "entryScript": "/assets/index-DNCvm57S.js",
+  "generatedAt": "2026-07-15T06:40:38.706Z",
+  "entryScript": "/assets/index-DN3lNgzG.js",
   "routes": [
     {
       "path": "/",
@@ -23,6 +23,16 @@
       "path": "/edit-block",
       "name": "EditBlock",
       "title": "《我的世界》方块制作"
+    },
+    {
+      "path": "/englishcraft",
+      "name": "EnglishCraftIndex",
+      "title": "Minecraft 单词合成大师"
+    },
+    {
+      "path": "/englishcraft/play",
+      "name": "EnglishCraftView",
+      "title": "Minecraft 单词合成大师 · 游戏"
     },
     {
       "path": "/englishcreep",
@@ -175,6 +185,16 @@
       "title": "成长积分日历"
     },
     {
+      "path": "/sentence-craft",
+      "name": "SentenceCraftIndex",
+      "title": "末影人单词传送 · 句子闯关"
+    },
+    {
+      "path": "/sentence-craft/play",
+      "name": "SentenceCraftView",
+      "title": "末影人单词传送 · 句子闯关 · 游戏"
+    },
+    {
       "path": "/word-map",
       "name": "WordMapView",
       "title": "英语学习词库（完整词库）"
@@ -307,619 +327,659 @@
   ],
   "chunks": [
     {
-      "path": "/assets/ApiExample-BvoWBy06.js",
+      "path": "/assets/ApiExample-DPygKnyA.js",
       "bytes": 3993,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter1-DMT6Pbgw.js",
-      "bytes": 4386,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter1-q0vSJSrK.js",
+      "path": "/assets/Chapter1-CCwlpiHw.js",
       "bytes": 3395,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter10-a1qxLSIa.js",
-      "bytes": 3378,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter10-DAQ4fRci.js",
-      "bytes": 4395,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter11-D8Fn3lv1.js",
-      "bytes": 4415,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter12-D4YsPSI9.js",
-      "bytes": 4409,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter13-t49Nab4O.js",
-      "bytes": 4406,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter14-Cm862mWV.js",
-      "bytes": 4408,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter15-B69-j7SE.js",
-      "bytes": 4422,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter16-CvJW01j0.js",
-      "bytes": 4422,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter17-CrVZyzB5.js",
-      "bytes": 4420,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter18-jjkXb794.js",
-      "bytes": 4414,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter19-CH3baazg.js",
-      "bytes": 4391,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter2-BCyPXkX6.js",
-      "bytes": 3785,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter2-DX1OZ9Va.js",
-      "bytes": 4368,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter20-QKa1m619.js",
-      "bytes": 4409,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter21-BlsD1ZKe.js",
-      "bytes": 4416,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter22-CBTXbTcH.js",
-      "bytes": 4467,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter23-Diewc1yD.js",
-      "bytes": 4427,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter24-DTwUjXbA.js",
-      "bytes": 4443,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter25-C0Mfb623.js",
-      "bytes": 4443,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter3-BzSlGY6G.js",
-      "bytes": 4381,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter3-CYvEXSCF.js",
-      "bytes": 3574,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter4-DcesUfgb.js",
-      "bytes": 3700,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter4-SDqu_Kkm.js",
-      "bytes": 4392,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter5-BcV4Sj6l.js",
+      "path": "/assets/Chapter1-rR0qkOQ6.js",
       "bytes": 4386,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter5-BvAu_QZ8.js",
-      "bytes": 3609,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/Chapter10-CWQyBs7V.js",
+      "bytes": 3378,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter6-BjQhac5G.js",
-      "bytes": 3667,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/Chapter10-DgiC8IzU.js",
+      "bytes": 4395,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter6-BUiNWu57.js",
-      "bytes": 4410,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/Chapter11-BaWEZ5dc.js",
+      "bytes": 4415,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter7-Bc-AWLkC.js",
-      "bytes": 3648,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/Chapter12-yP00hs2h.js",
+      "bytes": 4409,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter7-CierJfP9.js",
-      "bytes": 4400,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/Chapter8-BRDTa1m2.js",
+      "path": "/assets/Chapter13-Sccwqsw1.js",
       "bytes": 4406,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter8-DIi03N9o.js",
+      "path": "/assets/Chapter14-CAIOz7sC.js",
+      "bytes": 4408,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter15-Cts4cmT_.js",
+      "bytes": 4422,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter16-jKaF-1Pv.js",
+      "bytes": 4422,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter17-DSaz4oky.js",
+      "bytes": 4420,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter18-CheOXSYZ.js",
+      "bytes": 4414,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter19-f5OD8EoZ.js",
+      "bytes": 4391,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter2-25zgUmBS.js",
+      "bytes": 4368,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter2-Cw2MLYWG.js",
+      "bytes": 3785,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter20-Dsot56DY.js",
+      "bytes": 4409,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter21-DVK4HVVh.js",
+      "bytes": 4416,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter22-B9oO-SSD.js",
+      "bytes": 4467,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter23-DSKBqQ1-.js",
+      "bytes": 4427,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter24-DgAVSiFu.js",
+      "bytes": 4443,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter25-YrDONclY.js",
+      "bytes": 4443,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter3-DGQ3oZjW.js",
+      "bytes": 3574,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter3-DUu8RfEJ.js",
+      "bytes": 4381,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter4-8s5BT8Ra.js",
+      "bytes": 3700,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter4-DLnK2W8E.js",
+      "bytes": 4392,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter5-BY584cm4.js",
+      "bytes": 3609,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter5-DLTyMmup.js",
+      "bytes": 4386,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter6-BoEPZd55.js",
+      "bytes": 3667,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter6-x4eNmos9.js",
+      "bytes": 4410,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter7-CepSCrGy.js",
+      "bytes": 4400,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter7-CpFxmD9d.js",
+      "bytes": 3648,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Chapter8-B1h1fl4c.js",
       "bytes": 3561,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter9-CVZLP7zn.js",
-      "bytes": 4401,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/Chapter8-BmuXET7z.js",
+      "bytes": 4406,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Chapter9-DRyZpomJ.js",
+      "path": "/assets/Chapter9-Bv81vlWR.js",
       "bytes": 3414,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/GameIndex-3E-Hpn3s.js",
-      "bytes": 4668,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/Chapter9-DbdV-D9o.js",
+      "bytes": 4401,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/GameIndex-BG2LMEEb.js",
+      "path": "/assets/GameIndex-CTs-flOs.js",
+      "bytes": 5034,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/GameIndex-DAZvqn3r.js",
       "bytes": 3325,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Home-gW8HVbjt.js",
-      "bytes": 19875,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/GameIndex-DdOwmJEh.js",
+      "bytes": 5470,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/index-B32Qk35t.js",
-      "bytes": 911,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/GameIndex-Dh45lFed.js",
+      "bytes": 2783,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/index-BABKv20q.js",
-      "bytes": 1050,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/Home-CjWQa9Fw.js",
+      "bytes": 21452,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/index-BBb7Rf6e.js",
-      "bytes": 901,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/index-BE_oMSa9.js",
-      "bytes": 914,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/index-BgrZvexi.js",
-      "bytes": 907,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/index-BwDagwJ_.js",
-      "bytes": 919,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/index-CGm0ISNQ.js",
-      "bytes": 928,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/index-D6ZZ0_AW.js",
-      "bytes": 927,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/index-Dlk8bWk-.js",
+      "path": "/assets/index-0TGlpfio.js",
       "bytes": 7394,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/index-DNCvm57S.js",
-      "bytes": 1174633,
+      "path": "/assets/index-8lh0fS5I.js",
+      "bytes": 1050,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/index-B11jmycU.js",
+      "bytes": 944,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/index-B7xw7goL.js",
+      "bytes": 907,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/index-BcrxfoVS.js",
+      "bytes": 919,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/index-Be5jn_In.js",
+      "bytes": 911,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/index-beFyKP2M.js",
+      "bytes": 928,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/index-BuxWSVtP.js",
+      "bytes": 914,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/index-CY83S9Rv.js",
+      "bytes": 19601,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/index-DN3lNgzG.js",
+      "bytes": 1175606,
       "importedBy": "html"
     },
     {
-      "path": "/assets/index-DQ5ZB8OH.js",
-      "bytes": 982,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/index-DYn9afH0.js",
+      "bytes": 1008,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/index-gqqNW90G.js",
+      "path": "/assets/index-EtOSR-E7.js",
+      "bytes": 901,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/index-nrdKgIi1.js",
       "bytes": 898,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/index-q-SFRlV5.js",
-      "bytes": 19601,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/index-NtQyxBeA.js",
+      "bytes": 982,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/Login-BoSdXBx-.js",
+      "path": "/assets/index-Z1KLjhLY.js",
+      "bytes": 927,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/Login-DaB5c1pW.js",
       "bytes": 1701,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/StoryIndex-Bn5k1Si3.js",
-      "bytes": 1905,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryIndex-BX1B3Sun.js",
-      "bytes": 1860,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryIndex-CORwPK30.js",
-      "bytes": 1928,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryIndex-CviMX_bC.js",
-      "bytes": 1806,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryIndex-CzDhunp2.js",
-      "bytes": 1926,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryIndex-DdBKOaZH.js",
-      "bytes": 1861,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryIndex-DoEcjmy7.js",
-      "bytes": 1861,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryIndex-gwru2aNj.js",
+      "path": "/assets/StoryIndex-BQfEXzKl.js",
       "bytes": 1904,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/StoryIndex-unrHgzLW.js",
+      "path": "/assets/StoryIndex-BtfYa406.js",
+      "bytes": 1928,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryIndex-C2hEZqCC.js",
+      "bytes": 1856,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryIndex-C7OVizwt.js",
+      "bytes": 1816,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryIndex-DkYjcOQ1.js",
       "bytes": 1854,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/StoryReader-8YiugRN5.js",
-      "bytes": 10667,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/StoryIndex-Dw0jFprq.js",
+      "bytes": 1861,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/StoryReader-BbzByENA.js",
-      "bytes": 10675,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/StoryIndex-DXfAKCTy.js",
+      "bytes": 1905,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/StoryReader-BtmM6wFB.js",
-      "bytes": 10653,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/StoryIndex-LZ9VJns1.js",
+      "bytes": 1926,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/StoryReader-BWakn8Ev.js",
-      "bytes": 10995,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "path": "/assets/StoryIndex-ZdqryMDF.js",
+      "bytes": 1855,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     },
     {
-      "path": "/assets/StoryReader-CdRhGhfA.js",
-      "bytes": 2722,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryReader-DDrDgTsf.js",
-      "bytes": 2679,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryReader-DxYO1_JE.js",
-      "bytes": 10667,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryReader-jFljSsRh.js",
-      "bytes": 10649,
-      "importedBy": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "path": "/assets/StoryReader-qpDXunsT.js",
+      "path": "/assets/StoryReader--_xRrMbt.js",
       "bytes": 10651,
-      "importedBy": "/assets/index-DNCvm57S.js"
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryReader-AKUmHIJS.js",
+      "bytes": 2722,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryReader-BliQNxoG.js",
+      "bytes": 2679,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryReader-BUfP41F1.js",
+      "bytes": 10667,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryReader-C-VN47Uk.js",
+      "bytes": 10653,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryReader-C6c7LTm0.js",
+      "bytes": 10667,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryReader-CdapBOuL.js",
+      "bytes": 10649,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryReader-IPI7jFNf.js",
+      "bytes": 10995,
+      "importedBy": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "path": "/assets/StoryReader-Or0RX8uK.js",
+      "bytes": 10675,
+      "importedBy": "/assets/index-DN3lNgzG.js"
     }
   ],
   "assets": [
     {
       "path": "/assets/cambridge-p0-WQrsS.webp",
-      "sourceChunk": "/assets/Home-gW8HVbjt.js"
+      "sourceChunk": "/assets/Home-CjWQa9Fw.js"
     },
     {
       "path": "/assets/edit-block-C684fG1T.png",
-      "sourceChunk": "/assets/Home-gW8HVbjt.js"
+      "sourceChunk": "/assets/Home-CjWQa9Fw.js"
     },
     {
       "path": "/assets/f1-CrvXDzSN.png",
-      "sourceChunk": "/assets/Home-gW8HVbjt.js"
+      "sourceChunk": "/assets/Home-CjWQa9Fw.js"
     },
     {
       "path": "/assets/f2-CFbEbUq8.png",
-      "sourceChunk": "/assets/Home-gW8HVbjt.js"
+      "sourceChunk": "/assets/Home-CjWQa9Fw.js"
     },
     {
       "path": "/assets/f3-DFNmIFGN.png",
-      "sourceChunk": "/assets/Home-gW8HVbjt.js"
+      "sourceChunk": "/assets/Home-CjWQa9Fw.js"
     },
     {
       "path": "/assets/imgwrite-B521DyAt.png",
-      "sourceChunk": "/assets/Home-gW8HVbjt.js"
+      "sourceChunk": "/assets/Home-CjWQa9Fw.js"
     },
     {
       "path": "/assets/mcwords-Byc1LMBs.webp",
-      "sourceChunk": "/assets/Home-gW8HVbjt.js"
+      "sourceChunk": "/assets/Home-CjWQa9Fw.js"
     },
     {
       "path": "/assets/minecraft-adventure-card-BEc_oGIF.png",
-      "sourceChunk": "/assets/StoryIndex-CORwPK30.js"
+      "sourceChunk": "/assets/StoryIndex-BtfYa406.js"
     },
     {
       "path": "/assets/scoresystem-IUUwd4ls.png",
-      "sourceChunk": "/assets/Home-gW8HVbjt.js"
+      "sourceChunk": "/assets/Home-CjWQa9Fw.js"
+    },
+    {
+      "path": "/assets/sencraft-CG78FbLC.jpg",
+      "sourceChunk": "/assets/GameIndex-Dh45lFed.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s1.mp3",
-      "sourceChunk": "/assets/Chapter1-q0vSJSrK.js"
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s10.mp3",
-      "sourceChunk": "/assets/Chapter10-a1qxLSIa.js"
+      "sourceChunk": "/assets/Chapter10-CWQyBs7V.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s2.mp3",
-      "sourceChunk": "/assets/Chapter2-BCyPXkX6.js"
+      "sourceChunk": "/assets/Chapter2-Cw2MLYWG.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s3.mp3",
-      "sourceChunk": "/assets/Chapter3-CYvEXSCF.js"
+      "sourceChunk": "/assets/Chapter3-DGQ3oZjW.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s4.mp3",
-      "sourceChunk": "/assets/Chapter4-DcesUfgb.js"
+      "sourceChunk": "/assets/Chapter4-8s5BT8Ra.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s5.wav",
-      "sourceChunk": "/assets/Chapter5-BvAu_QZ8.js"
+      "sourceChunk": "/assets/Chapter5-BY584cm4.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s6.mp3",
-      "sourceChunk": "/assets/Chapter6-BjQhac5G.js"
+      "sourceChunk": "/assets/Chapter6-BoEPZd55.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s7.mp3",
-      "sourceChunk": "/assets/Chapter7-Bc-AWLkC.js"
+      "sourceChunk": "/assets/Chapter7-CpFxmD9d.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s8.mp3",
-      "sourceChunk": "/assets/Chapter8-DIi03N9o.js"
+      "sourceChunk": "/assets/Chapter8-B1h1fl4c.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/chinesebook/s9.mp3",
-      "sourceChunk": "/assets/Chapter9-DRyZpomJ.js"
+      "sourceChunk": "/assets/Chapter9-Bv81vlWR.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/04theforest/04theforest.mp3",
-      "sourceChunk": "/assets/Chapter4-SDqu_Kkm.js"
+      "sourceChunk": "/assets/Chapter4-DLnK2W8E.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/05momandi/05momandi.mp3",
-      "sourceChunk": "/assets/Chapter5-BcV4Sj6l.js"
+      "sourceChunk": "/assets/Chapter5-DLTyMmup.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/06whatliveshere/06whatliveshere.mp3",
-      "sourceChunk": "/assets/Chapter6-BUiNWu57.js"
+      "sourceChunk": "/assets/Chapter6-x4eNmos9.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/07babyanimals/07babyanimals.mp3",
-      "sourceChunk": "/assets/Chapter7-CierJfP9.js"
+      "sourceChunk": "/assets/Chapter7-CepSCrGy.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/08iloveflowers/08iloveflowers.mp3",
-      "sourceChunk": "/assets/Chapter8-BRDTa1m2.js"
+      "sourceChunk": "/assets/Chapter8-BmuXET7z.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/09hamsterhome/09hamsterhome.mp3",
-      "sourceChunk": "/assets/Chapter9-CVZLP7zn.js"
+      "sourceChunk": "/assets/Chapter9-DbdV-D9o.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/10ohraccoon/10ohraccoon.mp3",
-      "sourceChunk": "/assets/Chapter10-DAQ4fRci.js"
+      "sourceChunk": "/assets/Chapter10-DgiC8IzU.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/11birdgoeshome/11birdgoeshome.mp3",
-      "sourceChunk": "/assets/Chapter11-D8Fn3lv1.js"
+      "sourceChunk": "/assets/Chapter11-BaWEZ5dc.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/12springweather/12springweather.mp3",
-      "sourceChunk": "/assets/Chapter12-D4YsPSI9.js"
+      "sourceChunk": "/assets/Chapter12-yP00hs2h.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/13vegetables/13vegetables.mp3",
-      "sourceChunk": "/assets/Chapter13-t49Nab4O.js"
+      "sourceChunk": "/assets/Chapter13-Sccwqsw1.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/14fruitcolors/14fruitcolors.mp3",
-      "sourceChunk": "/assets/Chapter14-Cm862mWV.js"
+      "sourceChunk": "/assets/Chapter14-CAIOz7sC.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/15hellobutterfly/15hellobutterfly.mp3",
-      "sourceChunk": "/assets/Chapter15-B69-j7SE.js"
+      "sourceChunk": "/assets/Chapter15-Cts4cmT_.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/16shapesinnature/16shapesinnature.mp3",
-      "sourceChunk": "/assets/Chapter16-CvJW01j0.js"
+      "sourceChunk": "/assets/Chapter16-jKaF-1Pv.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/17springandfall/17springandfall.mp3",
-      "sourceChunk": "/assets/Chapter17-CrVZyzB5.js"
+      "sourceChunk": "/assets/Chapter17-DSaz4oky.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/18therainstorm/18therainstorm.mp3",
-      "sourceChunk": "/assets/Chapter18-jjkXb794.js"
+      "sourceChunk": "/assets/Chapter18-CheOXSYZ.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/19rabbits/19rabbits.mp3",
-      "sourceChunk": "/assets/Chapter19-CH3baazg.js"
+      "sourceChunk": "/assets/Chapter19-f5OD8EoZ.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/20snakecolors/20snakecolors.mp3",
-      "sourceChunk": "/assets/Chapter20-QKa1m619.js"
+      "sourceChunk": "/assets/Chapter20-Dsot56DY.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/21iseemycolors/21iseemycolors.mp3",
-      "sourceChunk": "/assets/Chapter21-BlsD1ZKe.js"
+      "sourceChunk": "/assets/Chapter21-DVK4HVVh.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/22birdcolors/22birdcolors.mp3",
-      "sourceChunk": "/assets/Chapter22-CBTXbTcH.js"
+      "sourceChunk": "/assets/Chapter22-B9oO-SSD.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/23bedtimecounting/23bedtimecounting.mp3",
-      "sourceChunk": "/assets/Chapter23-Diewc1yD.js"
+      "sourceChunk": "/assets/Chapter23-DSKBqQ1-.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/24carloscountskittens/24carloscountskittens.mp3",
-      "sourceChunk": "/assets/Chapter24-DTwUjXbA.js"
+      "sourceChunk": "/assets/Chapter24-DgAVSiFu.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/25mariacountspumpkins/25mariacountspumpkins.mp3",
-      "sourceChunk": "/assets/Chapter25-C0Mfb623.js"
+      "sourceChunk": "/assets/Chapter25-YrDONclY.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/MyDog/02.mp3",
-      "sourceChunk": "/assets/Chapter2-DX1OZ9Va.js"
+      "sourceChunk": "/assets/Chapter2-25zgUmBS.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/PondAnimals/01.mp3",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js"
+      "sourceChunk": "/assets/Chapter1-rR0qkOQ6.js"
     },
     {
       "path": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/english/raz/A/TheBigCat/03.mp3",
-      "sourceChunk": "/assets/Chapter3-BzSlGY6G.js"
+      "sourceChunk": "/assets/Chapter3-DUu8RfEJ.js"
     }
   ],
   "routeTitleNotes": [
     {
       "title": "Minecraft 单词学习",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "英语单词苦力怕",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "英语单词苦力怕 · 游戏",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "title": "Minecraft 单词合成大师",
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "title": "Minecraft 单词合成大师 · 游戏",
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "title": "末影人单词传送 · 句子闯关",
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
+    },
+    {
+      "title": "末影人单词传送 · 句子闯关 · 游戏",
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "英语学习词库（完整词库）",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "剑桥英语词汇全集 · YLE / KET / PET",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "Minecraft Book (5-6岁) ",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "阅读故事 - Minecraft Book (5-6岁)",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "Minecraft Book (YLE-Starters)",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "阅读故事 - Minecraft Book (YLE-Starters)",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "Minecraft Book (7-8岁)",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "阅读故事 - Minecraft Book (7-8岁)",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "Minecraft Book (YLE-Movers)",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "阅读故事 - Minecraft Book (YLE-Movers)",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "Minecraft Book (YLE-Flyers)",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "阅读故事 - Minecraft Book (YLE-Flyers)",
-      "sourceChunk": "/assets/index-DNCvm57S.js"
-    },
-    {
-      "title": "《我的世界》英语绘本 (7-8岁)",
-      "sourceChunk": "/assets/StoryIndex-BX1B3Sun.js"
-    },
-    {
-      "title": "《我的世界》英语绘本 (YLE-Flyers)",
-      "sourceChunk": "/assets/StoryIndex-Bn5k1Si3.js"
-    },
-    {
-      "title": "《我的世界》英语绘本 (YLE-Starters)",
-      "sourceChunk": "/assets/StoryIndex-CzDhunp2.js"
-    },
-    {
-      "title": "《我的世界》英语绘本 (5-6岁)",
-      "sourceChunk": "/assets/StoryIndex-DoEcjmy7.js"
+      "sourceChunk": "/assets/index-DN3lNgzG.js"
     },
     {
       "title": "《我的世界》英语绘本 (YLE-Movers)",
-      "sourceChunk": "/assets/StoryIndex-gwru2aNj.js"
+      "sourceChunk": "/assets/StoryIndex-BQfEXzKl.js"
+    },
+    {
+      "title": "《我的世界》英语绘本 (5-6岁)",
+      "sourceChunk": "/assets/StoryIndex-C2hEZqCC.js"
+    },
+    {
+      "title": "《我的世界》英语绘本 (YLE-Flyers)",
+      "sourceChunk": "/assets/StoryIndex-DXfAKCTy.js"
+    },
+    {
+      "title": "《我的世界》英语绘本 (YLE-Starters)",
+      "sourceChunk": "/assets/StoryIndex-LZ9VJns1.js"
+    },
+    {
+      "title": "《我的世界》英语绘本 (7-8岁)",
+      "sourceChunk": "/assets/StoryIndex-ZdqryMDF.js"
     }
   ],
   "candidateWords": [
@@ -928,7 +988,7 @@
       "word": "block",
       "translation": "方块",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -937,7 +997,7 @@
       "word": "world",
       "translation": "世界",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -946,7 +1006,7 @@
       "word": "hello",
       "translation": "你好",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -955,7 +1015,7 @@
       "word": "look",
       "translation": "看",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -964,7 +1024,7 @@
       "word": "stone",
       "translation": "石头",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -973,7 +1033,7 @@
       "word": "light",
       "translation": "光",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -982,7 +1042,7 @@
       "word": "run",
       "translation": "跑",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -991,7 +1051,7 @@
       "word": "door",
       "translation": "门",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1000,7 +1060,7 @@
       "word": "friend",
       "translation": "朋友",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1009,7 +1069,7 @@
       "word": "cat",
       "translation": "猫",
       "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1018,7 +1078,7 @@
       "word": "bag",
       "translation": "书包",
       "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1027,7 +1087,7 @@
       "word": "sun",
       "translation": "太阳",
       "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1036,7 +1096,7 @@
       "word": "tree",
       "translation": "树",
       "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1045,7 +1105,7 @@
       "word": "red",
       "translation": "红色",
       "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1054,7 +1114,7 @@
       "word": "play",
       "translation": "玩",
       "sourceRoute": "/mcbookstarters/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1063,7 +1123,7 @@
       "word": "sword",
       "translation": "剑",
       "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
+      "sourceChunk": "/assets/index-DN3lNgzG.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1072,7 +1132,7 @@
       "word": "pickaxe",
       "translation": "镐",
       "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
+      "sourceChunk": "/assets/index-DN3lNgzG.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1081,7 +1141,7 @@
       "word": "diamond",
       "translation": "钻石",
       "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
+      "sourceChunk": "/assets/index-DN3lNgzG.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1090,7 +1150,7 @@
       "word": "creeper",
       "translation": "苦力怕",
       "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
+      "sourceChunk": "/assets/index-DN3lNgzG.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1099,7 +1159,7 @@
       "word": "craft",
       "translation": "合成",
       "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
+      "sourceChunk": "/assets/index-DN3lNgzG.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1108,7 +1168,7 @@
       "word": "water",
       "translation": "水",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1117,7 +1177,7 @@
       "word": "fire",
       "translation": "火",
       "sourceRoute": "/mcbook56/read/:chapter?",
-      "sourceChunk": "/assets/Chapter1-DMT6Pbgw.js",
+      "sourceChunk": "/assets/Chapter1-CCwlpiHw.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1126,7 +1186,7 @@
       "word": "house",
       "translation": "房子",
       "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
+      "sourceChunk": "/assets/index-DN3lNgzG.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     },
@@ -1135,12 +1195,12 @@
       "word": "apple",
       "translation": "苹果",
       "sourceRoute": "/minewords",
-      "sourceChunk": "/assets/index-DNCvm57S.js",
+      "sourceChunk": "/assets/index-DN3lNgzG.js",
       "confidence": "seed-from-crawled-route",
       "notes": "Temporary local seed based on crawled route scope; replace with curated/generated assets before runtime use."
     }
   ],
   "wordCardsPath": "word-cards.json",
   "wordCardsCount": 500,
-  "wordCardsFetchedAt": "2026-07-13T17:10:16.851Z"
+  "wordCardsFetchedAt": "2026-07-15T06:40:57.101Z"
 }

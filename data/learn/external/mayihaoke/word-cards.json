@@ -1,7 +1,7 @@
 {
   "provider": "mayihaoke",
   "sourceUrl": "https://www.mayihaoke.com/api/ant/course/words/card?course_id=minewords",
-  "fetchedAt": "2026-07-13T17:10:16.844Z",
+  "fetchedAt": "2026-07-15T06:40:57.097Z",
   "count": 500,
   "usage": "结构化本地审查素材；不包含参考站原图、音频或完整 HTML。",
   "cards": [

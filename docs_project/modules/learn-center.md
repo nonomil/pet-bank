@@ -147,7 +147,7 @@ renderLessonBody (pack, module, lesson, showPinyin) → :2733
 
 英语资料包中的 Minecraft 词卡有两条入口：原有 `learn-lesson` 词卡页继续作为资料包内的回退路径；新的 `/app/learn/minecraft-vocab` 是按日运行的短会话页面。完整 Anki 档案仍在 `prj/anki-minecraft-vocab/` 独立站，不由学习中心全量加载。
 
-- 默认学习池为 `data/learn/packs/english-mc-hybrid-2026/` 中 96 张已审查词卡，参考站公开接口的 500 条结构化快照位于 `data/learn/external/mayihaoke/word-cards.json`。
+- 默认学习池为 `data/learn/packs/english-mc-hybrid-2026/` 中 2,168 个去重词，合并现有精选卡、参考站公开接口的 500 条结构化快照和 Anki 可读官方词条；完整 11,241 张 Anki 原始卡片与目录位于 `prj/anki-minecraft-vocab/`。
 - 每次会话固定为 2 个复习位、5 个新词位、3 个主动回忆位和 1 个场景句位，共 11 步；无历史复习词时只用稳定顺序补足复习位，不伪造词卡掌握状态。
 - `MinecraftVocabSession` 负责 Profile 会话快照、队列和完成判定；`MinecraftVocabPage` 负责页面渲染、音频回退和离页清理。页面由 `runtime-loader.js` 按 `minecraft-vocab` bundle 加载。
 - 完成后只通过 `GameRewardReceipts` 发放 `source=minecraft-vocab`、`eventId=session:<localDate>` 的 10 成长分，重复完成返回 duplicate，不直接写积分键。

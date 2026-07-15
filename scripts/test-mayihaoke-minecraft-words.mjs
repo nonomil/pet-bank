@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { normalizeMayihaokeRows } from './fetch-mayihaoke-minecraft-words.mjs';
+import { fetchMayihaokeWords, normalizeMayihaokeRows } from './fetch-mayihaoke-minecraft-words.mjs';
 
 const rows = normalizeMayihaokeRows([
   {
@@ -40,5 +40,16 @@ assert.deepEqual(rows, [
     exampleTranslation: '寻找食物。'
   }
 ]);
+
+const fetched = await fetchMayihaokeWords(async () => ({
+  ok: true,
+  async json() {
+    return [{ word: 'Creeper', chinese: '苦力怕', example: 'A creeper is near the village.' }];
+  }
+}));
+assert.equal(fetched[0].phrase, 'a friendly creeper');
+assert.equal(fetched[0].phraseTranslation, '一只友好的苦力怕');
+assert.equal(fetched[0].sentence, 'A creeper is near the village.');
+assert.equal(fetched[0].sentenceTranslation, '一只苦力怕在村庄附近。');
 
 console.log('mayihaoke Minecraft words: PASS');

@@ -172,7 +172,9 @@ function destinationName(card, index, extension) {
 
 const apply = process.argv.includes('--apply');
 const main = readJson(mainPath);
-const cards = Array.isArray(main.cards) ? main.cards : [];
+// The presentation pack is the legacy 96-card visual set; the learning pool
+// itself is larger and keeps direct Anki media references in the main module.
+const cards = Array.isArray(main.cards) ? main.cards.slice(0, 96) : [];
 const candidates = collectCandidates();
 const used = new Set();
 const mapping = [];

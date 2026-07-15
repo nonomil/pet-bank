@@ -33,21 +33,19 @@ function assertCard(card, label) {
 
 const mainCards = readCards(mainDoc);
 const referenceCards = readCards(referenceDoc);
-assert.equal(mainCards.length, 96, 'main Minecraft learning pool should stay at 96 cards');
+assert.ok(mainCards.length >= 2000, 'main Minecraft learning pool should include the full merged vocabulary');
 assert.equal(referenceCards.length, 500, 'reference snapshot should stay at 500 cards');
-assert.equal(mainDoc.contentCuration, 'curated-v1', 'main vocabulary content should use the curated content pass');
+assert.equal(mainDoc.contentCuration, 'full-anki-reference-v1', 'main vocabulary content should use the full merged content pass');
 assert.equal(mediaManifest.assets.length, 96, 'Minecraft card media manifest should cover all main cards');
 mainCards.forEach((card, index) => assertCard(card, `main[${index}]`));
 referenceCards.forEach((card, index) => assertCard(card, `reference[${index}]`));
 
+assert.ok(mainCards.filter(card => card.image).length >= 1600, 'merged pool should retain Anki/local images');
+assert.ok(mainCards.filter(card => card.audio).length >= 1600, 'merged pool should retain Anki/local audio');
+
 for (const [index, card] of mainCards.entries()) {
-  assert.match(card.image || '', /^assets\/learn\/english-vocab\/minecraft-cards\/card-/,
-    `main[${index}] must use a local extracted image`);
-  assert.equal(card.contentQuality, 'curated-v1', `main[${index}] should use curated content`);
-  assert.ok(fs.existsSync(path.join(repoRoot, card.image)), `missing image for ${card.word}`);
-  assert.ok(['anki-extracted', 'gpt-generated'].includes(card.imageType));
-  assert.ok(card.imageSourceFile, `missing Anki source for ${card.word}`);
-  assert.ok(['anki-matched', 'anki-approximate', 'gpt-generated'].includes(card.imageSourceQuality));
+  if (card.image) assert.ok(fs.existsSync(path.join(repoRoot, card.image)), `missing image for ${card.word}`);
+  if (card.audio) assert.ok(fs.existsSync(path.join(repoRoot, card.audio)), `missing audio for ${card.word}`);
 }
 
 for (const [label, cards] of [['main', mainCards], ['reference', referenceCards]]) {

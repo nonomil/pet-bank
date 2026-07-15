@@ -5,10 +5,11 @@
 ## 目标和边界
 
 - 主站入口：`/app/learn/minecraft-vocab/`。
-- 主站默认学习池：96 张已审查、使用 Anki 提取本地图片的词卡；图片映射 manifest 位于 `assets/learn/english-vocab/minecraft-cards/manifest.json`。
-- 参考词表：`data/learn/external/mayihaoke/word-cards.json`，当前 500 条结构化快照；每条有中英短语和中英短句，生产运行不实时请求外站。
-- 内容补全脚本：`node scripts/enrich_minecraft_vocab.cjs --apply`；内容门禁：`node scripts/test-minecraft-vocab-content.mjs`。更新词表后必须先跑脚本再跑门禁。
-- 主站 96 张词卡的人工内容整理：`node scripts/curate-minecraft-vocab-content.cjs --apply`；它写入 `contentCuration: curated-v1`，不得用通用模板覆盖这组已审校短语和场景句。
+- 主站默认学习池：2,168 个去重词，合并参考站 500 条与 Anki 可读官方词条；独立 Anki 图鉴仍保留 11,241 张卡片。原 96 张精选卡的图片映射 manifest 仍位于 `assets/learn/english-vocab/minecraft-cards/manifest.json`。
+- 参考词表：`data/learn/external/mayihaoke/word-cards.json`，当前与线上 `minewords` API 逐词核对为 500 条；接口只提供文本字段，不提供单词卡图片或音频。生产运行不实时请求外站，能匹配的 Anki 官方图片/音频由构建脚本补挂，其余使用浏览器英语发音回退。
+- 参考站快照更新：`node scripts/fetch-mayihaoke-minecraft-words.mjs`；抓取器会先清洗 HTML/重复项，再自动补齐中英短语和中英短句，避免覆盖后丢字段。更新快照后依次运行 `node scripts/build_minecraft_full_learning_pool.cjs` 和 `node scripts/sync_vocab_registry.cjs`。
+- 内容补全脚本：`node scripts/enrich_minecraft_vocab.cjs --apply`；适用于已有本地快照的修复或重新生成，内容门禁：`node scripts/test-minecraft-vocab-content.mjs`。
+- 全量学习池构建：`node scripts/build_minecraft_full_learning_pool.cjs`；它写入 `contentCuration: full-anki-reference-v1`，并保留已有精选卡的内容优先级。
 - 词卡展示资源整理：先运行 `python -X utf8 scripts/normalize-minecraft-vocab-card-assets.py` 预览，再运行同一命令加 `--apply`；它会把透明素材裁切到统一 512px 正方形画布，并把场景图留白居中。完成后必须跑媒体门禁。
 - Anki 图片映射脚本：先执行 `node scripts/build-minecraft-vocab-local-media.mjs` 做 dry-run，确认逐卡映射后执行 `node scripts/build-minecraft-vocab-local-media.mjs --apply`，再执行展示资源整理脚本的 `--apply`；最后运行 `node scripts/test-minecraft-vocab-media.mjs`。脚本禁止低置信度模糊匹配，显式别名必须保留来源文件名。
 - 当前 95 张为语义匹配的 Anki 图片，`disk` 使用 Bee `gpt-image-2` 生成的像素圆盘图，manifest 标记为 `gpt-generated`；重新生成前必须保留该覆盖映射。
