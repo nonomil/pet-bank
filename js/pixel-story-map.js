@@ -107,13 +107,14 @@
             ? '第 ' + (page + 1) + ' 站 · ' + (pageNodes[0].label || '新的航线')
             : '新的航线正在等待点亮';
         var isHomeEmbed = container.dataset.pixelStoryHost === 'home';
+        var mapPanelId = 'pixel-story-map-panel-' + (container.id || 'default');
 
-        var html = '<section class="pixel-story-map pixel-story-map-world pixel-story-map-tone-' + escapeHtml(track.tone || 'default') + '" data-map-page="' + page + '" aria-label="' + escapeHtml(track.title) + '">';
+        var html = '<section id="' + escapeHtml(mapPanelId) + '" class="pixel-story-map pixel-story-map-world pixel-story-map-tone-' + escapeHtml(track.tone || 'default') + '" data-map-page="' + page + '" role="tabpanel" aria-label="' + escapeHtml(track.title) + '">';
         if (!isHomeEmbed) {
             html += '<div class="pixel-story-map-world-tabs" role="tablist" aria-label="像素世界地图">';
             worldTracks.forEach(function (item) {
                 var active = item.id === track.id;
-                html += '<button type="button" class="pixel-story-world-tab' + (active ? ' is-active' : '') + '" data-world="' + escapeHtml(item.id) + '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '">';
+                html += '<button type="button" id="pixel-story-world-tab-' + escapeHtml(item.id) + '" class="pixel-story-world-tab' + (active ? ' is-active' : '') + '" data-world="' + escapeHtml(item.id) + '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '" aria-controls="' + escapeHtml(mapPanelId) + '">';
                 html += '<strong>' + escapeHtml(item.title) + '</strong><small>' + escapeHtml(item.subtitle || '') + '</small></button>';
             });
             html += '</div>';
@@ -125,7 +126,7 @@
         html += '</div>';
         html += '<div class="pixel-story-map-pager" aria-label="地图分页">';
         html += '<button type="button" class="pixel-story-map-page-btn" data-map-page-prev' + (page === 0 ? ' disabled' : '') + '>‹ 上一页</button>';
-        html += '<span data-map-page-label>第 ' + (page + 1) + '/' + pageCount + ' 页</span>';
+        html += '<span data-map-page-label aria-live="polite" aria-atomic="true">第 ' + (page + 1) + '/' + pageCount + ' 页</span>';
         html += '<button type="button" class="pixel-story-map-page-btn" data-map-page-next' + (page >= pageCount - 1 ? ' disabled' : '') + '>下一页 ›</button>';
         html += '</div>';
 
@@ -160,10 +161,20 @@
         container.innerHTML = html;
         if (root.lucide && typeof root.lucide.createIcons === 'function') root.lucide.createIcons();
 
-        container.querySelectorAll('[data-world]').forEach(function (tab) {
+        var worldTabs = Array.prototype.slice.call(container.querySelectorAll('[data-world]'));
+        worldTabs.forEach(function (tab, tabIndex) {
             tab.addEventListener('click', function () {
                 if (root.PixelStoryEngine && typeof root.PixelStoryEngine.setPreferredTrack === 'function') root.PixelStoryEngine.setPreferredTrack(tab.dataset.world, false);
                 renderTrack(container, manifest, tab.dataset.world, pageByTrack[tab.dataset.world] || 0);
+            });
+            tab.addEventListener('keydown', function (event) {
+                var direction = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 0;
+                var targetIndex = event.key === 'Home' ? 0 : event.key === 'End' ? worldTabs.length - 1 : tabIndex + direction;
+                if (!direction && event.key !== 'Home' && event.key !== 'End') return;
+                event.preventDefault();
+                var target = worldTabs[(targetIndex + worldTabs.length) % worldTabs.length];
+                target.focus();
+                target.click();
             });
         });
         var prev = container.querySelector('[data-map-page-prev]');

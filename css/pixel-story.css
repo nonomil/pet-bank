@@ -866,7 +866,8 @@ body.pixel-story-stage-active #page-explore .pixel-story-dialogue {
 .pixel-story-detective-bonus:hover,
 .pixel-story-detective-bonus:focus-visible {
   border-color: #ffd38e;
-  outline: none;
+  outline: 3px solid rgba(255,211,142,.42);
+  outline-offset: 2px;
   background: rgba(43, 50, 76, .96);
   transform: translateY(-1px);
 }
@@ -923,7 +924,7 @@ body.pixel-story-stage-active #page-explore .pixel-story-dialogue {
   font: inherit;
 }
 .pixel-story-map-page-btn:hover:not(:disabled),
-.pixel-story-map-page-btn:focus-visible { border-color: #7de3dc; background: rgba(43,145,157,.48); outline: none; }
+.pixel-story-map-page-btn:focus-visible { border-color: #7de3dc; background: rgba(43,145,157,.48); outline: 3px solid rgba(125,227,220,.42); outline-offset: 2px; }
 .pixel-story-map-page-btn:disabled { opacity: .35; cursor: default; }
 .pixel-story-map-locked-message {
   position: absolute;
@@ -969,6 +970,7 @@ body.pixel-story-stage-active #page-explore .pixel-story-dialogue {
 .pixel-story-world-tab small { overflow: hidden; color: #9bc4cf; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
 .pixel-story-world-tab:hover,
 .pixel-story-world-tab.is-active { border-color: #7de3dc; background: rgba(29, 109, 117, .88); color: #fff; }
+.pixel-story-world-tab:focus-visible { border-color: #7de3dc; outline: 3px solid rgba(125,227,220,.42); outline-offset: 2px; }
 .pixel-story-world-tab.is-active strong { color: #fff; }
 .pixel-story-route-world { z-index: 2; }
 .pixel-story-activity-btn { border-color: rgba(125, 227, 220, .52); background: rgba(43, 145, 157, .18); }
