@@ -22,15 +22,16 @@ try {
     assert.equal(await page.locator('#terminalPreviewImage').count(), 1, 'terminal has one main preview image');
     assert.equal(await page.locator('[data-terminal-asset]').count(), 15, 'semantic asset shelf exposes the published pack');
     assert.ok(await page.locator('#terminalPreviewImage').evaluate((image) => image.complete && image.naturalWidth > 0), 'initial preview image loads');
+    assert.match(await page.locator('#terminalPreviewImage').getAttribute('src'), /clean-forest\.png$/, 'forest preview uses a clean map background');
 
     await worldButtons.filter({ hasText: '星港科技区' }).click();
     await page.waitForFunction(() => document.body.dataset.activeWorld === 'sci-fi');
-    assert.match(await page.locator('#terminalPreviewImage').getAttribute('src'), /scifi\.png$/);
+    assert.match(await page.locator('#terminalPreviewImage').getAttribute('src'), /clean-scifi\.png$/, 'sci-fi preview uses a clean map background');
     assert.equal(await page.locator('#terminalActiveWorld').textContent(), '星港科技区');
 
     await worldButtons.filter({ hasText: '方块地下城' }).click();
     await page.waitForFunction(() => document.body.dataset.activeWorld === 'block');
-    assert.match(await page.locator('#terminalPreviewImage').getAttribute('src'), /block\.png$/);
+    assert.match(await page.locator('#terminalPreviewImage').getAttribute('src'), /clean-block\.png$/, 'block preview uses a clean map background');
 
     await page.getByRole('button', { name: '继续冒险' }).click();
     assert.match(await page.locator('#terminalLiveStatus').textContent(), /方块地下城/);

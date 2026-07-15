@@ -6,21 +6,21 @@
         forest: {
             title: '森林探险',
             subtitle: '溪流、树屋和荧光路线',
-            preview: ASSET_ROOT + 'reference/forest.png',
+            preview: ASSET_ROOT + 'reference/clean-forest.png',
             marker: ASSET_ROOT + 'published/world-forest-marker.png',
             accent: '#5ee28a'
         },
         'sci-fi': {
             title: '星港科技区',
             subtitle: '空间站、穹顶和星际航线',
-            preview: ASSET_ROOT + 'reference/scifi.png',
+            preview: ASSET_ROOT + 'reference/clean-scifi.png',
             marker: ASSET_ROOT + 'published/world-space-marker.png',
             accent: '#61dff3'
         },
         block: {
             title: '方块地下城',
             subtitle: '村庄、水晶和地下遗迹',
-            preview: ASSET_ROOT + 'reference/block.png',
+            preview: ASSET_ROOT + 'reference/clean-block.png',
             marker: ASSET_ROOT + 'published/world-block-marker.png',
             accent: '#b98cff'
         }
