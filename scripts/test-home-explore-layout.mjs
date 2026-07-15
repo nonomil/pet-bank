@@ -33,6 +33,10 @@ try {
     await modes.nth(1).click();
     await page.waitForSelector('#homePixelWorldMapSlot .pixel-story-map', { state: 'attached', timeout: 20000 });
     assert.equal(await page.locator('#homePixelWorldMapSlot .pixel-story-world-tabs').count(), 0, 'home embed should hide duplicate world tabs');
+    assert.equal(await page.locator('#homePixelWorldMapSlot [data-detective-bonus]').count(), 1, 'detective mini-games remain an auxiliary entry');
+    await page.locator('#homePixelWorldMapSlot [data-detective-bonus]').click();
+    await page.waitForFunction(() => document.querySelector('#homePixelWorldMapSlot .pixel-story-map')?.className.includes('pixel-story-map-tone-detective'));
+    assert.equal(await page.locator('#homePixelWorldMapSlot .pixel-story-world-tabs').count(), 0, 'detective auxiliary view should not add a fourth world tab');
 
     await modes.nth(2).click();
     await page.waitForFunction(() => document.querySelector('#homePixelWorldMapSlot .pixel-story-map')?.className.includes('pixel-story-map-tone-block'));
