@@ -3779,33 +3779,12 @@ async function renderPixelStoryExplorePage(preferredTrackId = 'sci-fi') {
 
     pageExplore.innerHTML =
         '<div class="pixel-story-shell" id="pixelStoryShell" data-mode="story" data-view="map">' +
-        '  <header class="pixel-story-overview">' +
-        '    <div class="pixel-story-overview-copy">' +
-        '      <p class="pixel-story-eyebrow">探索 / 故事漫游</p>' +
-        '      <h2>像素世界漫游：三张地图的回家任务</h2>' +
-        '      <p>科幻、森林、方块地下城各有 20 个故事节点，另有 20 个侦探小游戏，认字藏在对白和线索里。</p>' +
-        '    </div>' +
-        '    <div class="pixel-story-overview-status" aria-label="故事状态">' +
-        '      <span class="pixel-story-status-dot" aria-hidden="true"></span>' +
-        '      <div><strong>三界信号稳定</strong><small>60 个主线节点 · 20 个侦探小游戏</small></div>' +
-        '    </div>' +
-        '  </header>' +
-        '  <div class="pixel-story-modebar" role="tablist" aria-label="探索模式">' +
-        '    <button class="pixel-story-mode is-active" data-explore-mode="story" role="tab" aria-selected="true"><span aria-hidden="true"><i data-lucide="book-open"></i></span><strong>故事漫游</strong><small>读一段，学一点</small></button>' +
-        '    <button class="pixel-story-mode" data-explore-mode="adventure" role="tab" aria-selected="false"><span aria-hidden="true"><i data-lucide="compass"></i></span><strong>冒险挑战</strong><small>选路线，赢奖励</small></button>' +
-        '  </div>' +
         '  <div class="pixel-story-map-slot" id="pixelStoryMapContainer"></div>' +
         '</div>';
 
     if (window.PixelStoryEngine && typeof window.PixelStoryEngine.render === 'function') {
         await window.PixelStoryEngine.render('pixelStoryMapContainer', preferredTrackId);
     }
-
-    pageExplore.querySelectorAll('[data-explore-mode]').forEach(function (tab) {
-        tab.addEventListener('click', function () {
-            if (this.dataset.exploreMode === 'adventure') switchExploreToAdventure();
-        });
-    });
 
     if (window.lucide) lucide.createIcons();
 }

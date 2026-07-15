@@ -109,7 +109,7 @@
         var isHomeEmbed = container.dataset.pixelStoryHost === 'home';
         var mapPanelId = 'pixel-story-map-panel-' + (container.id || 'default');
 
-        var html = '<section id="' + escapeHtml(mapPanelId) + '" class="pixel-story-map pixel-story-map-world pixel-story-map-tone-' + escapeHtml(track.tone || 'default') + '" data-map-page="' + page + '" role="tabpanel" aria-label="' + escapeHtml(track.title) + '">';
+        var html = '';
         if (!isHomeEmbed) {
             html += '<div class="pixel-story-map-world-tabs" role="tablist" aria-label="像素世界地图">';
             worldTracks.forEach(function (item) {
@@ -119,6 +119,7 @@
             });
             html += '</div>';
         }
+        html += '<section id="' + escapeHtml(mapPanelId) + '" class="pixel-story-map pixel-story-map-world pixel-story-map-tone-' + escapeHtml(track.tone || 'default') + '" data-map-page="' + page + '" role="tabpanel" aria-label="' + escapeHtml(track.title) + '">';
         if (background) html += '<img class="pixel-story-map-bg" src="' + background + '" alt="">';
         html += '<div class="pixel-story-map-chrome">';
         html += '<div><span class="pixel-story-map-kicker">PIXEL WORLDS / ' + escapeHtml(track.id.toUpperCase()) + '</span><strong>' + escapeHtml(track.title) + '</strong><small>' + escapeHtml(pageTitle) + '</small></div>';

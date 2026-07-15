@@ -4326,3 +4326,19 @@ body.learn-mode .learn-study-sheet {
         page-break-after: auto;
     }
 }
+.learn-hub-picturebooks .picturebooks-portal {
+  padding: 8px 0 24px;
+}
+
+.learn-hub-picturebooks .picturebooks-portal-heading {
+  max-width: 760px;
+  margin-bottom: 18px;
+}
+
+.learn-hub-picturebooks .picturebooks-portal-heading h2 {
+  font-size: clamp(24px, 3vw, 36px);
+}
+
+.learn-hub-picturebooks .picturebooks-portal-cards {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}

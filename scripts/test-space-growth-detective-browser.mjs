@@ -30,7 +30,7 @@ async function prepareWithPet() {
     await window.switchPage('explore');
   });
   assert.equal(await page.evaluate(() => Boolean(window.PetStoryCases)), true, 'explore bundle loads story case module');
-  await page.locator('[data-explore-mode="adventure"]').click();
+  await page.evaluate(() => window.switchExploreToAdventure());
   await page.waitForSelector('[data-space-growth-map]', { state: 'attached' });
   assert.equal(await page.locator('[data-space-growth-map]').count(), 1, 'second story map is mounted');
   assert.equal(await page.locator('[data-space-growth-node]').count(), 5, 'second story map renders five nodes');

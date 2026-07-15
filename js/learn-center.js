@@ -3184,7 +3184,7 @@
             </article>
         `;
 
-        const activeHubTab = ['today', 'packs', 'sites', 'prints', 'progress'].includes(state.activeHubTab) ? state.activeHubTab : 'today';
+        const activeHubTab = ['today', 'packs', 'sites', 'prints', 'progress', 'picturebooks'].includes(state.activeHubTab) ? state.activeHubTab : 'today';
         const tabPanelMap = {
             today: `
                 <div class="learn-stage-head learn-stage-head-tight">
@@ -3259,6 +3259,18 @@
                         </div>
                     </section>
                 </div>
+            `,
+            picturebooks: `
+                <div class="learn-stage-head learn-stage-head-tight">
+                    <div>
+                        <h3 class="learn-section-title">绘本阅读</h3>
+                        <p class="learn-section-subtitle">读完独立绘本，再回来继续学习和领取成长奖励。</p>
+                    </div>
+                    ${buildBadges(['📖 独立绘本馆', '⭐ 首读奖励', '👨‍👩‍👧 亲子共读'])}
+                </div>
+                <div class="learn-hub-picturebooks" id="learn-picturebooks-root">
+                    <div class="picturebooks-loading" aria-live="polite">正在打开绘本馆...</div>
+                </div>
             `
         };
 
@@ -3284,14 +3296,15 @@
                     <div class="learn-stage-head learn-hub-tabs-head">
                         <h3 class="learn-section-title">学习选项卡</h3>
                         <div class="learn-hub-tabs">
-                            <button class="learn-hub-tab ${activeHubTab === 'today' ? 'is-active' : ''}" data-learn-hub-tab="today">快速入口</button>
-                            <button class="learn-hub-tab ${activeHubTab === 'packs' ? 'is-active' : ''}" data-learn-hub-tab="packs">资料包</button>
-                            <button class="learn-hub-tab ${activeHubTab === 'sites' ? 'is-active' : ''}" data-learn-hub-tab="sites">学习网站</button>
-                            <button class="learn-hub-tab ${activeHubTab === 'prints' ? 'is-active' : ''}" data-learn-hub-tab="prints">打印讲义</button>
-                            <button class="learn-hub-tab ${activeHubTab === 'progress' ? 'is-active' : ''}" data-learn-hub-tab="progress">我的进度</button>
+                            <button type="button" role="tab" aria-selected="${activeHubTab === 'today' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'today' ? 'is-active' : ''}" data-learn-hub-tab="today">快速入口</button>
+                            <button type="button" role="tab" aria-selected="${activeHubTab === 'packs' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'packs' ? 'is-active' : ''}" data-learn-hub-tab="packs">资料包</button>
+                            <button type="button" role="tab" aria-selected="${activeHubTab === 'sites' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'sites' ? 'is-active' : ''}" data-learn-hub-tab="sites">学习网站</button>
+                            <button type="button" role="tab" aria-selected="${activeHubTab === 'prints' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'prints' ? 'is-active' : ''}" data-learn-hub-tab="prints">打印讲义</button>
+                            <button type="button" role="tab" aria-selected="${activeHubTab === 'progress' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'progress' ? 'is-active' : ''}" data-learn-hub-tab="progress">我的进度</button>
+                            <button type="button" role="tab" aria-selected="${activeHubTab === 'picturebooks' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'picturebooks' ? 'is-active' : ''}" data-learn-hub-tab="picturebooks">绘本</button>
                         </div>
                     </div>
-                    <div class="learn-hub-panel">${tabPanelMap[activeHubTab] || tabPanelMap.today}</div>
+                    <div class="learn-hub-panel" id="learn-hub-panel" role="tabpanel">${tabPanelMap[activeHubTab] || tabPanelMap.today}</div>
                 </section>
             </div>
         `;
@@ -3302,6 +3315,22 @@
                 void renderHub(containerId || 'learn-container');
             });
         });
+        if (activeHubTab === 'picturebooks') {
+            try {
+                if (window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function') {
+                    await window.PetBankRuntime.ensurePage('picturebooks');
+                }
+                if (window.Picturebooks && typeof window.Picturebooks.render === 'function') {
+                    await window.Picturebooks.render('learn-picturebooks-root');
+                } else {
+                    throw new Error('Picturebooks bridge is unavailable');
+                }
+            } catch (error) {
+                console.warn('[LearnCenter] picturebook tab load failed:', error);
+                const picturebooksRoot = document.getElementById('learn-picturebooks-root');
+                if (picturebooksRoot) picturebooksRoot.innerHTML = '<div class="picturebooks-error"><strong>绘本馆暂时没有打开</strong><span>请稍后重试，或检查绘本项目网址。</span></div>';
+            }
+        }
         bindDailySheetInteractions(container, () => void renderHub(containerId || 'learn-container'));
     }
 
