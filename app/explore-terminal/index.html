@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>探险终端 · 三世界参考页</title>
+    <title>探险终端 · 三世界探险</title>
     <link rel="stylesheet" href="./explore-terminal.css">
 </head>
 <body data-active-world="forest">
@@ -13,11 +13,11 @@
                 <span class="terminal-brand-mark">萌</span>
                 <span>
                     <strong>探险终端</strong>
-                    <small>三世界首页设计预览</small>
+                    <small>三世界探险入口</small>
                 </span>
             </a>
             <div class="terminal-topbar-actions">
-                <span class="terminal-preview-chip">REFERENCE BUILD</span>
+                <span class="terminal-preview-chip">探索入口</span>
                 <a class="terminal-back-link" href="/app/">返回主站</a>
             </div>
         </header>
@@ -27,11 +27,11 @@
                 <div>
                     <p class="terminal-kicker">ADVENTURE TERMINAL / HOME</p>
                     <h1 id="terminalTitle">选择你的探险世界</h1>
-                    <p>一个统一入口，三种不同旅程。地图是主角，按钮只负责带你继续前进。</p>
+                    <p>选择一个世界，从地图节点出发，和小蓝一起点亮下一站。</p>
                 </div>
                 <div class="terminal-heading-stat">
-                    <span>当前设计方向</span>
-                    <strong>统一探险终端</strong>
+                    <span>当前入口</span>
+                    <strong>统一探险地图</strong>
                 </div>
             </section>
 
@@ -61,7 +61,44 @@
                                 <small id="terminalWorldSubtitle">溪流、树屋和荧光路线</small>
                             </div>
                         </div>
-                        <img id="terminalWorldMarker" class="terminal-world-marker" src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-forest-marker.png" alt="森林探险路线标记">
+                        <div class="terminal-route" aria-label="当前世界路线节点">
+                            <button class="terminal-node" type="button" data-world-node data-node-world="forest" data-node-id="treehouse" data-node-slot="one" aria-label="打开树屋起点">
+                                <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/forest-treehouse-hub.png" alt="">
+                                <span><strong>树屋起点</strong><small>第 01 站</small></span>
+                            </button>
+                            <button class="terminal-node" type="button" data-world-node data-node-world="forest" data-node-id="waterfall" data-node-slot="two" aria-label="打开瀑布回声">
+                                <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/forest-waterfall-beacon.png" alt="">
+                                <span><strong>瀑布回声</strong><small>第 02 站</small></span>
+                            </button>
+                            <button class="terminal-node" type="button" data-world-node data-node-world="forest" data-node-id="shrine" data-node-slot="three" aria-label="打开水晶花园">
+                                <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/forest-crystal-shrine.png" alt="">
+                                <span><strong>水晶花园</strong><small>第 03 站</small></span>
+                            </button>
+                            <button class="terminal-node" type="button" data-world-node data-node-world="sci-fi" data-node-id="orbital" data-node-slot="one" aria-label="打开星港中枢" hidden>
+                                <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/space-orbital-hub.png" alt="">
+                                <span><strong>星港中枢</strong><small>第 01 站</small></span>
+                            </button>
+                            <button class="terminal-node" type="button" data-world-node data-node-world="sci-fi" data-node-id="launch" data-node-slot="two" aria-label="打开发射平台" hidden>
+                                <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/space-launch-pad.png" alt="">
+                                <span><strong>发射平台</strong><small>第 02 站</small></span>
+                            </button>
+                            <button class="terminal-node" type="button" data-world-node data-node-world="sci-fi" data-node-id="dome" data-node-slot="three" aria-label="打开穹顶花园" hidden>
+                                <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/space-dome-station.png" alt="">
+                                <span><strong>穹顶花园</strong><small>第 03 站</small></span>
+                            </button>
+                            <button class="terminal-node" type="button" data-world-node data-node-world="block" data-node-id="village" data-node-slot="one" aria-label="打开方块村口" hidden>
+                                <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/block-village-gate.png" alt="">
+                                <span><strong>方块村口</strong><small>第 01 站</small></span>
+                            </button>
+                            <button class="terminal-node" type="button" data-world-node data-node-world="block" data-node-id="dungeon" data-node-slot="two" aria-label="打开水晶地牢" hidden>
+                                <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/block-crystal-dungeon.png" alt="">
+                                <span><strong>水晶地牢</strong><small>第 02 站</small></span>
+                            </button>
+                            <button class="terminal-node" type="button" data-world-node data-node-world="block" data-node-id="minecart" data-node-slot="three" aria-label="打开矿车隧道" hidden>
+                                <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/block-minecart-station.png" alt="">
+                                <span><strong>矿车隧道</strong><small>第 03 站</small></span>
+                            </button>
+                        </div>
                     </div>
                     <div class="terminal-stage-footer">
                         <div>
@@ -69,7 +106,7 @@
                             <strong>准备好继续点亮下一站了吗？</strong>
                         </div>
                         <button class="terminal-secondary-action" type="button" aria-label="打开侦探小游戏">
-                            <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/detective-badge.png" alt="">
+                            <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-nodes/shared-detective-lens.png" alt="">
                             <span>侦探小游戏</span>
                         </button>
                         <button class="terminal-primary-action" type="button" aria-label="继续冒险">
@@ -101,7 +138,8 @@
 
             <p id="terminalLiveStatus" class="terminal-live-status" aria-live="polite">森林探险已准备好，下一站正在等你。</p>
 
-            <section class="terminal-assets" aria-labelledby="terminalAssetsTitle">
+            <!-- Developer asset shelf is kept in the generated asset pack, not in the child-facing home. -->
+            <section class="terminal-assets" aria-labelledby="terminalAssetsTitle" hidden>
                 <div class="terminal-assets-heading">
                     <div>
                         <p class="terminal-kicker">ASSET EXPLOSION SHEET</p>

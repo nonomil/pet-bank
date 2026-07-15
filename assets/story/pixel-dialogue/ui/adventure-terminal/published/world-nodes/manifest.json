@@ -1,0 +1,26 @@
+{
+  "pack": "adventure-terminal-world-nodes",
+  "format": "rgba-png",
+  "sourcePrompts": [
+    "assets/story/pixel-dialogue/prompts/adventure-terminal-node-sheet-a.prompt.txt",
+    "assets/story/pixel-dialogue/prompts/adventure-terminal-node-sheet-b.prompt.txt"
+  ],
+  "sourceSheets": [
+    "docs/生图/首页探险终端参考/2026-07-15-adventure-terminal/node-sheet-a.png",
+    "docs/生图/首页探险终端参考/2026-07-15-adventure-terminal/node-sheet-b.png"
+  ],
+  "assets": [
+    { "id": "forest-treehouse-hub", "world": "forest", "title": "树屋起点", "file": "forest-treehouse-hub.png", "slot": "one" },
+    { "id": "forest-waterfall-beacon", "world": "forest", "title": "瀑布回声", "file": "forest-waterfall-beacon.png", "slot": "two" },
+    { "id": "forest-crystal-shrine", "world": "forest", "title": "水晶花园", "file": "forest-crystal-shrine.png", "slot": "three" },
+    { "id": "space-orbital-hub", "world": "sci-fi", "title": "星港中枢", "file": "space-orbital-hub.png", "slot": "one" },
+    { "id": "space-launch-pad", "world": "sci-fi", "title": "发射平台", "file": "space-launch-pad.png", "slot": "two" },
+    { "id": "space-dome-station", "world": "sci-fi", "title": "穹顶花园", "file": "space-dome-station.png", "slot": "three" },
+    { "id": "block-village-gate", "world": "block", "title": "方块村口", "file": "block-village-gate.png", "slot": "one" },
+    { "id": "block-crystal-dungeon", "world": "block", "title": "水晶地牢", "file": "block-crystal-dungeon.png", "slot": "two" },
+    { "id": "block-minecart-station", "world": "block", "title": "矿车隧道", "file": "block-minecart-station.png", "slot": "three" },
+    { "id": "shared-purple-portal", "world": "shared", "title": "紫色传送门", "file": "shared-purple-portal.png" },
+    { "id": "shared-treasure-chest", "world": "shared", "title": "宝箱", "file": "shared-treasure-chest.png" },
+    { "id": "shared-detective-lens", "world": "shared", "title": "侦探放大镜", "file": "shared-detective-lens.png" }
+  ]
+}
