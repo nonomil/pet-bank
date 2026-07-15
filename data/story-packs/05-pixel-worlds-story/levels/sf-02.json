@@ -18,71 +18,71 @@
         },
         {
           "type": "dialogue",
-          "text": "这里就是月环补给站。我们先把“找到光核”记在地图上。",
+          "text": "这里是“月环补给站：找到光核”。我们的任务是“打开带有蓝色光环的补给箱，取出光核”，先看清光核碎片，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我听到光核在轻轻嗡鸣，信号就在附近。",
+          "text": "蓝色舱灯和轻轻的电流声告诉我，光核碎片就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先看清蓝色航线，再做一个安全的小动作。",
+          "text": "在月环补给站：找到光核，发现问题不能只靠着急。我们要把光线接回星图，先处理光核碎片，也要照顾身边的朋友。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "collect",
-          "prompt": "打开带有蓝色光环的补给箱，取出光核。",
+          "prompt": "打开带有蓝色光环的补给箱，取出光核，让光核碎片的线索显现出来。",
           "character": "pet",
           "position": "right",
           "actions": [
             {
               "label": "打开蓝色箱子",
-              "feedback": "光核跳了出来，像一颗小小的太阳。"
+              "feedback": "打开蓝色箱子后，光核碎片出现了；云朵信号带的方向更清楚了。"
             },
             {
               "label": "拍拍黄色箱子",
-              "feedback": "黄色箱子发出咔哒声，提醒你再找一找。"
+              "feedback": "拍拍黄色箱子让另一个细节亮起来：核标记指向云朵信号带。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，打开蓝色箱子让周围的线索变得清楚起来。",
+          "text": "光核碎片被找到后，云朵信号带的方向亮了起来。把光线接回星图，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“核”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "扫描光点后，隐藏的星尘轨迹露出来了。",
+          "text": "我听见云朵信号带传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条轨迹和星图接起来，下一站就会亮起。",
+          "text": "光核碎片让大家知道，云朵信号带不是远处的名字，而是一条可以走到的路。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这束光，它会带我们穿过下一段星际航线。",
+          "text": "这件事提醒我们：光核碎片不是终点，它会把故事带到云朵信号带。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我认识了‘光’。光核也愿意和我们一起旅行。",
+          "text": "完成这一站后，云朵信号带的入口已经亮起。我们带着“核”继续走。",
           "character": "hero",
           "position": "left"
         }

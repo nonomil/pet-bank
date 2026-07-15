@@ -20,6 +20,7 @@ cd "$release_dir"
 
 node scripts/test-pixel-worlds-contract.mjs
 node scripts/test-pixel-worlds-assets-contract.mjs
+node scripts/test-pixel-story-content-contract.mjs
 node scripts/test-explore-mode-contract.mjs
 node scripts/test-pages-fast-gate-contract.mjs
 node scripts/test-static-route-entries.mjs
@@ -47,7 +48,7 @@ PETBANK_BASE_URL="http://127.0.0.1:8765/" node scripts/test-pixel-story-all-chap
 
 地图交互约定：每条路线分为 4 页，每页最多 5 个节点；未完成前置节点时，后续节点不渲染卡片或气泡。完成当前节点后，刷新地图才显示下一节点。故事舞台按“场景图片 → 图片下方对话栏 → 互动按钮”排列，对话栏不覆盖场景图。
 
-故事内容约定：每个 `05-pixel-worlds-story/levels/*.json` 至少包含 9 段可读内容和 1 个 `activity`，当前正式内容为每章 10 段；学习策略仍是 `recognition-only`，不把这些对白改成数学题或答题统计。
+故事内容约定：每个 `05-pixel-worlds-story/levels/*.json` 至少包含 11 段可读内容和 1 个 `activity`；科幻、森林、方块三条主线各 20 节点按四幕推进，侦探 20 节点按“失散 → 追踪 → 拼合 → 回家”组成隐藏支线。内容门禁会拒绝 `。，`、旧模板收尾和路线内超过 4 次的固定对白。学习策略仍是 `recognition-only`，每节点只保留自然识字锚点，不把对白改成数学题或答题统计。
 
 ## 3. 静态站点与 API canary
 
@@ -88,6 +89,8 @@ python -X utf8 .codex/skills/gpt-image-bee-workflow/scripts/bee_image_workflow.p
 - 场景背景禁止使用 8x8 联图裁切后放大；正式背景必须单张生成，目标请求尺寸 `1536x1024`，实际返回尺寸以文件检查结果为准。
 
 当前素材状态（2026-07-15）：80/80 个节点已有独立场景 WebP、80/80 个节点道具 WebP、80/80 个路线专属节点图标 WebP；科幻、森林、方块、侦探均为 20/20。图标来自四张 `1536x1024` 路线素材表，经透明化、碎片过滤和语义命名后接入。全部文件均已通过素材契约和发布制品检查，浏览器验证四路线的地图、节点图标、场景背景与道具实际加载。
+
+当前故事状态（2026-07-15）：80/80 个节点已完成剧情文本优化；科幻 → 森林 → 方块 → 回家门的主线转场统一，侦探 20 节点补齐跨世界案件收束。通过 `scripts/test-pixel-story-content-contract.mjs` 后，才可报告内容层完成。
 
 ```powershell
 $env:PIXEL_SCENE_BEE_DELAY_MS = '5000'

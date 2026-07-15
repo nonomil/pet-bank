@@ -24,76 +24,76 @@
       "lines": [
         {
           "type": "narration",
-          "text": "小小探险家来到蘑菇邮路。取下蘑菇伞下的绿色信封。，新的线索正在等着被发现。",
+          "text": "蘑菇邮路正在发生变化。现在是“遇到困难”的一步：我们要找到绿色信封，再把线索送向月光草坡。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "这里就是蘑菇邮路。我们先把“送一封信”记在地图上。",
+          "text": "这里是“蘑菇邮路”。我们的任务是“取下蘑菇伞下的绿色信封”，先看清绿色信封，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我闻到了叶子和雨水的味道，森林朋友就在附近。",
+          "text": "树叶、溪水和萤火虫的声音告诉我，绿色信封就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先听树叶的声音，再用温柔的动作帮助这里的朋友。",
+          "text": "在蘑菇邮路，遇到困难不能只靠着急。我们要用温柔的动作帮助森林朋友，先处理绿色信封，也要照顾身边的朋友。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "collect",
-          "prompt": "取下蘑菇伞下的绿色信封。",
+          "prompt": "取下蘑菇伞下的绿色信封，让绿色信封的线索显现出来。",
           "character": "forest_guide",
           "position": "right",
           "actions": [
             {
               "label": "拿起绿色信封",
-              "feedback": "信封上的‘友’字亮了起来。"
+              "feedback": "拿起绿色信封后，绿色信封出现了；月光草坡的方向更清楚了。"
             },
             {
               "label": "摇响邮差铃",
-              "feedback": "邮差小鹿从树后跑了出来。"
+              "feedback": "摇响邮差铃让另一个细节亮起来：信标记指向月光草坡。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，拿起绿色信封让周围的线索变得清楚起来。",
+          "text": "绿色信封被找到后，月光草坡的方向亮了起来。用温柔的动作帮助森林朋友，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“信”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "轻轻完成这一步，藏在叶影里的小路出现了。",
+          "text": "我听见月光草坡传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条小路和森林地图连起来，萤光就会为我们领路。",
+          "text": "绿色信封让大家知道，月光草坡不是远处的名字，而是一条可以走到的路。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这片叶子的形状，下一次遇见它就知道该往哪里走。",
+          "text": "这件事提醒我们：绿色信封不是终点，它会把故事带到月光草坡。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "text": "完成这一站后，月光草坡的入口已经亮起。我们带着“信”继续走。",
           "character": "pet",
           "position": "right"
         }

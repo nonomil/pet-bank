@@ -18,71 +18,71 @@
         },
         {
           "type": "dialogue",
-          "text": "这里就是矿洞火把路。我们先把“寻找亮处”记在地图上。",
+          "text": "这里是“矿洞火把路：寻找亮处”。我们的任务是“找出矿洞里下一盏亮着的火把”，先看清安全火把，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我听到方块碰撞的声音，新的建造点就在前面。",
+          "text": "方块碰撞和远处的机关声告诉我，安全火把就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先找稳固的方块，再一步一步搭出安全的路线。",
+          "text": "在矿洞火把路：寻找亮处，发现问题不能只靠着急。我们要一步一步搭出安全的路线，先处理安全火把，也要照顾身边的朋友。",
           "character": "block_builder",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "scan",
-          "prompt": "找出矿洞里下一盏亮着的火把。",
+          "prompt": "找出矿洞里下一盏亮着的火把，让安全火把的线索显现出来。",
           "character": "hero",
           "position": "left",
           "actions": [
             {
               "label": "点亮左边火把",
-              "feedback": "火光照见了安全的石阶。"
+              "feedback": "点亮左边火把后，安全火把出现了；地下水渠的方向更清楚了。"
             },
             {
               "label": "观察墙上星点",
-              "feedback": "星点组成箭头，指向前方。"
+              "feedback": "观察墙上星点让另一个细节亮起来：明标记指向地下水渠。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，点亮左边火把让周围的线索变得清楚起来。",
+          "text": "安全火把被找到后，地下水渠的方向亮了起来。一步一步搭出安全的路线，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“明”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "方块放稳后，藏在墙后的通道露出来了。",
+          "text": "我听见地下水渠传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这段通道接到村子的道路上，伙伴们就能一起通过。",
+          "text": "安全火把让大家知道，地下水渠不是远处的名字，而是一条可以走到的路。",
           "character": "block_builder",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这块特别的方块，它会成为下一座建筑的起点。",
+          "text": "这件事提醒我们：安全火把不是终点，它会把故事带到地下水渠。",
           "character": "block_builder",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "‘明’和‘亮’都能让我们看清前面的路。",
+          "text": "完成这一站后，地下水渠的入口已经亮起。我们带着“明”继续走。",
           "character": "cave_keeper",
           "position": "right"
         }

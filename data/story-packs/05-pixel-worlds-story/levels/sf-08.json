@@ -18,71 +18,71 @@
         },
         {
           "type": "dialogue",
-          "text": "这里就是回家发射台。我们先把“点亮星图”记在地图上。",
+          "text": "这里是“回家发射台：点亮星图”。我们的任务是“点亮星图中央的回家信标”，先看清森林回声，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我听到光核在轻轻嗡鸣，信号就在附近。",
+          "text": "蓝色舱灯和轻轻的电流声告诉我，森林回声就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先看清蓝色航线，再做一个安全的小动作。",
+          "text": "在回家发射台：点亮星图，收集线索不能只靠着急。我们要把光线接回星图，先处理森林回声，也要照顾身边的朋友。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "scan",
-          "prompt": "点亮星图中央的回家信标。",
+          "prompt": "点亮星图中央的回家信标，让森林回声的线索显现出来。",
           "character": "pet",
           "position": "right",
           "actions": [
             {
               "label": "点亮回家信标",
-              "feedback": "星图展开，森林和地下城都亮了起来。"
+              "feedback": "点亮回家信标后，森林回声出现了；量子花园的方向更清楚了。"
             },
             {
               "label": "拍拍小飞船",
-              "feedback": "小飞船发出欢呼声，准备穿越星门。"
+              "feedback": "拍拍小飞船让另一个细节亮起来：森标记指向量子花园。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，点亮回家信标让周围的线索变得清楚起来。",
+          "text": "森林回声被找到后，量子花园的方向亮了起来。把光线接回星图，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“森”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "扫描光点后，隐藏的星尘轨迹露出来了。",
+          "text": "我听见量子花园传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条轨迹和星图接起来，下一站就会亮起。",
+          "text": "森林回声让大家知道，量子花园不是远处的名字，而是一条可以走到的路。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这束光，它会带我们穿过下一段星际航线。",
+          "text": "这件事提醒我们：森林回声不是终点，它会把故事带到量子花园。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "第一段旅程结束了，新的世界正在等我们。",
+          "text": "完成这一站后，量子花园的入口已经亮起。我们带着“森”继续走。",
           "character": "narrator",
           "position": "center"
         }

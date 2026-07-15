@@ -24,76 +24,76 @@
       "lines": [
         {
           "type": "narration",
-          "text": "小小探险家来到守林人小屋。把被风吹走的屋顶木片装回去。，新的线索正在等着被发现。",
+          "text": "守林人小屋正在发生变化。现在是“打开新路”的一步：我们要找到屋顶木片，再把线索送向森林望远台。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "这里就是守林人小屋。我们先把“修补屋顶”记在地图上。",
+          "text": "这里是“守林人小屋”。我们的任务是“把被风吹走的屋顶木片装回去”，先看清屋顶木片，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我闻到了叶子和雨水的味道，森林朋友就在附近。",
+          "text": "树叶、溪水和萤火虫的声音告诉我，屋顶木片就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先听树叶的声音，再用温柔的动作帮助这里的朋友。",
+          "text": "在守林人小屋，打开新路不能只靠着急。我们要用温柔的动作帮助森林朋友，先处理屋顶木片，也要照顾身边的朋友。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "repair",
-          "prompt": "把被风吹走的屋顶木片装回去。",
+          "prompt": "把被风吹走的屋顶木片装回去，让屋顶木片的线索显现出来。",
           "character": "forest_guide",
           "position": "right",
           "actions": [
             {
               "label": "装回棕色木片",
-              "feedback": "屋顶不漏雨了。"
+              "feedback": "装回棕色木片后，屋顶木片出现了；森林望远台的方向更清楚了。"
             },
             {
               "label": "绑好藤蔓绳",
-              "feedback": "小屋在风里稳稳地站着。"
+              "feedback": "绑好藤蔓绳让另一个细节亮起来：木标记指向森林望远台。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，装回棕色木片让周围的线索变得清楚起来。",
+          "text": "屋顶木片被找到后，森林望远台的方向亮了起来。用温柔的动作帮助森林朋友，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“木”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "轻轻完成这一步，藏在叶影里的小路出现了。",
+          "text": "我听见森林望远台传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条小路和森林地图连起来，萤光就会为我们领路。",
+          "text": "屋顶木片让大家知道，森林望远台不是远处的名字，而是一条可以走到的路。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这片叶子的形状，下一次遇见它就知道该往哪里走。",
+          "text": "这件事提醒我们：屋顶木片不是终点，它会把故事带到森林望远台。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "text": "完成这一站后，森林望远台的入口已经亮起。我们带着“木”继续走。",
           "character": "pet",
           "position": "right"
         }

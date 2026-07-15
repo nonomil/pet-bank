@@ -24,76 +24,76 @@
       "lines": [
         {
           "type": "narration",
-          "text": "小小探险家来到花瓣车站。让花瓣车沿着香味轨道前进。，新的线索正在等着被发现。",
+          "text": "花瓣车站正在发生变化。现在是“收集线索”的一步：我们要找到花瓣车，再把线索送向树洞诊所。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "这里就是花瓣车站。我们先把“乘上花车”记在地图上。",
+          "text": "这里是“花瓣车站”。我们的任务是“让花瓣车沿着香味轨道前进”，先看清花瓣车，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我闻到了叶子和雨水的味道，森林朋友就在附近。",
+          "text": "树叶、溪水和萤火虫的声音告诉我，花瓣车就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先听树叶的声音，再用温柔的动作帮助这里的朋友。",
+          "text": "在花瓣车站，收集线索不能只靠着急。我们要用温柔的动作帮助森林朋友，先处理花瓣车，也要照顾身边的朋友。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "route",
-          "prompt": "让花瓣车沿着香味轨道前进。",
+          "prompt": "让花瓣车沿着香味轨道前进，让花瓣车的线索显现出来。",
           "character": "forest_guide",
           "position": "right",
           "actions": [
             {
               "label": "跟着白花香",
-              "feedback": "花车驶向一片安静草地。"
+              "feedback": "跟着白花香后，花瓣车出现了；树洞诊所的方向更清楚了。"
             },
             {
               "label": "拉响花铃",
-              "feedback": "花车亮灯，轨道显示出来了。"
+              "feedback": "拉响花铃让另一个细节亮起来：香标记指向树洞诊所。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，跟着白花香让周围的线索变得清楚起来。",
+          "text": "花瓣车被找到后，树洞诊所的方向亮了起来。用温柔的动作帮助森林朋友，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“香”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "轻轻完成这一步，藏在叶影里的小路出现了。",
+          "text": "我听见树洞诊所传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条小路和森林地图连起来，萤光就会为我们领路。",
+          "text": "花瓣车让大家知道，树洞诊所不是远处的名字，而是一条可以走到的路。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这片叶子的形状，下一次遇见它就知道该往哪里走。",
+          "text": "这件事提醒我们：花瓣车不是终点，它会把故事带到树洞诊所。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "text": "完成这一站后，树洞诊所的入口已经亮起。我们带着“香”继续走。",
           "character": "pet",
           "position": "right"
         }

@@ -18,71 +18,71 @@
         },
         {
           "type": "dialogue",
-          "text": "这里就是星港登船舱。我们先把“看见信号”记在地图上。",
+          "text": "这里是“星港登船舱：看见信号”。我们的任务是“启动扫描器，找出会闪烁的蓝色信号”，先看清蓝色信号，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我听到光核在轻轻嗡鸣，信号就在附近。",
+          "text": "蓝色舱灯和轻轻的电流声告诉我，蓝色信号就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先看清蓝色航线，再做一个安全的小动作。",
+          "text": "在星港登船舱：看见信号，发现问题不能只靠着急。我们要把光线接回星图，先处理蓝色信号，也要照顾身边的朋友。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "scan",
-          "prompt": "启动扫描器，找出会闪烁的蓝色信号。",
+          "prompt": "启动扫描器，找出会闪烁的蓝色信号，让蓝色信号的线索显现出来。",
           "character": "pet",
           "position": "right",
           "actions": [
             {
               "label": "扫描蓝色光点",
-              "feedback": "扫描成功！信号记下来了。"
+              "feedback": "扫描蓝色光点后，蓝色信号出现了；月环补给站的方向更清楚了。"
             },
             {
               "label": "打开舱门灯",
-              "feedback": "灯亮了，蓝色光点也跟着眨了眨。"
+              "feedback": "打开舱门灯让另一个细节亮起来：光标记指向月环补给站。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，扫描蓝色光点让周围的线索变得清楚起来。",
+          "text": "蓝色信号被找到后，月环补给站的方向亮了起来。把光线接回星图，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“光”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "扫描光点后，隐藏的星尘轨迹露出来了。",
+          "text": "我听见月环补给站传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条轨迹和星图接起来，下一站就会亮起。",
+          "text": "蓝色信号让大家知道，月环补给站不是远处的名字，而是一条可以走到的路。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这束光，它会带我们穿过下一段星际航线。",
+          "text": "这件事提醒我们：蓝色信号不是终点，它会把故事带到月环补给站。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "信号说：去月环补给站。我们出发！",
+          "text": "完成这一站后，月环补给站的入口已经亮起。我们带着“光”继续走。",
           "character": "pet",
           "position": "right"
         }

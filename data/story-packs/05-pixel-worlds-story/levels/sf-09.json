@@ -24,76 +24,76 @@
       "lines": [
         {
           "type": "narration",
-          "text": "小小探险家来到量子花园。找到量子花园里会移动的微光。，新的线索正在等着被发现。",
+          "text": "量子花园正在发生变化。现在是“收集线索”的一步：我们要找到移动微光，再把线索送向月面车站。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "这里就是量子花园。我们先把“追踪微光”记在地图上。",
+          "text": "这里是“量子花园”。我们的任务是“找到量子花园里会移动的微光”，先看清移动微光，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我听到光核在轻轻嗡鸣，信号就在附近。",
+          "text": "蓝色舱灯和轻轻的电流声告诉我，移动微光就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先看清蓝色航线，再做一个安全的小动作。",
+          "text": "在量子花园，收集线索不能只靠着急。我们要把光线接回星图，先处理移动微光，也要照顾身边的朋友。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "scan",
-          "prompt": "找到量子花园里会移动的微光。",
+          "prompt": "找到量子花园里会移动的微光，让移动微光的线索显现出来。",
           "character": "star_engineer",
           "position": "right",
           "actions": [
             {
               "label": "追踪蓝色微光",
-              "feedback": "微光留下了一条新的航线。"
+              "feedback": "追踪蓝色微光后，移动微光出现了；月面车站的方向更清楚了。"
             },
             {
               "label": "观察旋转花朵",
-              "feedback": "花朵停下来，露出隐藏信标。"
+              "feedback": "观察旋转花朵让另一个细节亮起来：微标记指向月面车站。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，追踪蓝色微光让周围的线索变得清楚起来。",
+          "text": "移动微光被找到后，月面车站的方向亮了起来。把光线接回星图，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“微”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "扫描光点后，隐藏的星尘轨迹露出来了。",
+          "text": "我听见月面车站传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条轨迹和星图接起来，下一站就会亮起。",
+          "text": "移动微光让大家知道，月面车站不是远处的名字，而是一条可以走到的路。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这束光，它会带我们穿过下一段星际航线。",
+          "text": "这件事提醒我们：移动微光不是终点，它会把故事带到月面车站。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "text": "完成这一站后，月面车站的入口已经亮起。我们带着“微”继续走。",
           "character": "pet",
           "position": "right"
         }

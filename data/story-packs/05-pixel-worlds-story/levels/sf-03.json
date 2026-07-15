@@ -18,71 +18,71 @@
         },
         {
           "type": "dialogue",
-          "text": "这里就是云朵信号带。我们先把“跟随航线”记在地图上。",
+          "text": "这里是“云朵信号带：跟随航线”。我们的任务是“让飞船沿着闪烁的云灯前进”，先看清云桥航线，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我听到光核在轻轻嗡鸣，信号就在附近。",
+          "text": "蓝色舱灯和轻轻的电流声告诉我，云桥航线就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先看清蓝色航线，再做一个安全的小动作。",
+          "text": "在云朵信号带：跟随航线，发现问题不能只靠着急。我们要把光线接回星图，先处理云桥航线，也要照顾身边的朋友。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "route",
-          "prompt": "让飞船沿着闪烁的云灯前进。",
+          "prompt": "让飞船沿着闪烁的云灯前进，让云桥航线的线索显现出来。",
           "character": "pet",
           "position": "right",
           "actions": [
             {
               "label": "跟着蓝云灯",
-              "feedback": "飞船穿过云桥，找到了下一颗光点。"
+              "feedback": "跟着蓝云灯后，云桥航线出现了；星尘维修区的方向更清楚了。"
             },
             {
               "label": "追着彩虹云",
-              "feedback": "彩虹云送来一阵风，把我们吹回了航线。"
+              "feedback": "追着彩虹云让另一个细节亮起来：云标记指向星尘维修区。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，跟着蓝云灯让周围的线索变得清楚起来。",
+          "text": "云桥航线被找到后，星尘维修区的方向亮了起来。把光线接回星图，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“云”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "扫描光点后，隐藏的星尘轨迹露出来了。",
+          "text": "我听见星尘维修区传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条轨迹和星图接起来，下一站就会亮起。",
+          "text": "云桥航线让大家知道，星尘维修区不是远处的名字，而是一条可以走到的路。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这束光，它会带我们穿过下一段星际航线。",
+          "text": "这件事提醒我们：云桥航线不是终点，它会把故事带到星尘维修区。",
           "character": "star_engineer",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "原来‘云’会把信号送到很远的地方。",
+          "text": "完成这一站后，星尘维修区的入口已经亮起。我们带着“云”继续走。",
           "character": "hero",
           "position": "left"
         }

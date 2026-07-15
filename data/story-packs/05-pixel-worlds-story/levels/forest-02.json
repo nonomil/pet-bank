@@ -18,71 +18,71 @@
         },
         {
           "type": "dialogue",
-          "text": "这里就是萤火溪。我们先把“收集露珠”记在地图上。",
+          "text": "这里是“萤火溪：收集露珠”。我们的任务是“收集溪边会发光的露珠”，先看清发光露珠，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我闻到了叶子和雨水的味道，森林朋友就在附近。",
+          "text": "树叶、溪水和萤火虫的声音告诉我，发光露珠就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先听树叶的声音，再用温柔的动作帮助这里的朋友。",
+          "text": "在萤火溪：收集露珠，发现问题不能只靠着急。我们要用温柔的动作帮助森林朋友，先处理发光露珠，也要照顾身边的朋友。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "collect",
-          "prompt": "收集溪边会发光的露珠。",
+          "prompt": "收集溪边会发光的露珠，让发光露珠的线索显现出来。",
           "character": "forest_guide",
           "position": "right",
           "actions": [
             {
               "label": "接住叶尖露珠",
-              "feedback": "露珠滚进小瓶子，清凉又明亮。"
+              "feedback": "接住叶尖露珠后，发光露珠出现了；树屋邮局的方向更清楚了。"
             },
             {
               "label": "向萤火虫问路",
-              "feedback": "萤火虫带你找到了最大的露珠。"
+              "feedback": "向萤火虫问路让另一个细节亮起来：水标记指向树屋邮局。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，接住叶尖露珠让周围的线索变得清楚起来。",
+          "text": "发光露珠被找到后，树屋邮局的方向亮了起来。用温柔的动作帮助森林朋友，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“水”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "轻轻完成这一步，藏在叶影里的小路出现了。",
+          "text": "我听见树屋邮局传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条小路和森林地图连起来，萤光就会为我们领路。",
+          "text": "发光露珠让大家知道，树屋邮局不是远处的名字，而是一条可以走到的路。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这片叶子的形状，下一次遇见它就知道该往哪里走。",
+          "text": "这件事提醒我们：发光露珠不是终点，它会把故事带到树屋邮局。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "‘水’会流动，也会帮助朋友长大。",
+          "text": "完成这一站后，树屋邮局的入口已经亮起。我们带着“水”继续走。",
           "character": "forest_guide",
           "position": "right"
         }

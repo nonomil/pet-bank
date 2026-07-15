@@ -24,76 +24,76 @@
       "lines": [
         {
           "type": "narration",
-          "text": "小小探险家来到月光草坡。在月光下找到开花的月亮草。，新的线索正在等着被发现。",
+          "text": "月光草坡正在发生变化。现在是“遇到困难”的一步：我们要找到月亮草，再把线索送向萤火剧场。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "这里就是月光草坡。我们先把“找月亮花”记在地图上。",
+          "text": "这里是“月光草坡”。我们的任务是“在月光下找到开花的月亮草”，先看清月亮草，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我闻到了叶子和雨水的味道，森林朋友就在附近。",
+          "text": "树叶、溪水和萤火虫的声音告诉我，月亮草就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先听树叶的声音，再用温柔的动作帮助这里的朋友。",
+          "text": "在月光草坡，遇到困难不能只靠着急。我们要用温柔的动作帮助森林朋友，先处理月亮草，也要照顾身边的朋友。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "scan",
-          "prompt": "在月光下找到开花的月亮草。",
+          "prompt": "在月光下找到开花的月亮草，让月亮草的线索显现出来。",
           "character": "forest_guide",
           "position": "right",
           "actions": [
             {
               "label": "看银色花瓣",
-              "feedback": "月亮花打开，露出一颗小光核。"
+              "feedback": "看银色花瓣后，月亮草出现了；萤火剧场的方向更清楚了。"
             },
             {
               "label": "轻声说晚安",
-              "feedback": "花瓣随着声音慢慢亮起来。"
+              "feedback": "轻声说晚安让另一个细节亮起来：月标记指向萤火剧场。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，看银色花瓣让周围的线索变得清楚起来。",
+          "text": "月亮草被找到后，萤火剧场的方向亮了起来。用温柔的动作帮助森林朋友，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“月”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "轻轻完成这一步，藏在叶影里的小路出现了。",
+          "text": "我听见萤火剧场传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条小路和森林地图连起来，萤光就会为我们领路。",
+          "text": "月亮草让大家知道，萤火剧场不是远处的名字，而是一条可以走到的路。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这片叶子的形状，下一次遇见它就知道该往哪里走。",
+          "text": "这件事提醒我们：月亮草不是终点，它会把故事带到萤火剧场。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "做完这一小步，回家的星图又亮了一格。我们继续出发吧！",
+          "text": "完成这一站后，萤火剧场的入口已经亮起。我们带着“月”继续走。",
           "character": "pet",
           "position": "right"
         }

@@ -18,71 +18,71 @@
         },
         {
           "type": "dialogue",
-          "text": "这里就是树屋邮局。我们先把“送出信件”记在地图上。",
+          "text": "这里是“树屋邮局：送出信件”。我们的任务是“把发光的信件送到对应的树屋信箱”，先看清朋友信件，再决定下一步。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我闻到了叶子和雨水的味道，森林朋友就在附近。",
+          "text": "树叶、溪水和萤火虫的声音告诉我，朋友信件就在附近。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "先听树叶的声音，再用温柔的动作帮助这里的朋友。",
+          "text": "在树屋邮局：送出信件，发现问题不能只靠着急。我们要用温柔的动作帮助森林朋友，先处理朋友信件，也要照顾身边的朋友。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "route",
-          "prompt": "把发光的信件送到对应的树屋信箱。",
+          "prompt": "把发光的信件送到对应的树屋信箱，让朋友信件的线索显现出来。",
           "character": "forest_guide",
           "position": "right",
           "actions": [
             {
               "label": "送到红叶信箱",
-              "feedback": "小松鼠收到了信，尾巴开心地转圈。"
+              "feedback": "送到红叶信箱后，朋友信件出现了；蘑菇谷的方向更清楚了。"
             },
             {
               "label": "送到蓝花信箱",
-              "feedback": "小青蛙收到了信，溪水响起了欢迎声。"
+              "feedback": "送到蓝花信箱让另一个细节亮起来：信标记指向蘑菇谷。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "小小探险家完成了第一步，送到红叶信箱让周围的线索变得清楚起来。",
+          "text": "朋友信件被找到后，蘑菇谷的方向亮了起来。用温柔的动作帮助森林朋友，新的道路出现了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "看！刚才藏起来的线索露出来了。",
+          "text": "原来“信”也藏在这里。我们把它和地图上的光点连起来。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "轻轻完成这一步，藏在叶影里的小路出现了。",
+          "text": "我听见蘑菇谷传来的声音了，刚才的努力真的让它更近了。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "把这条小路和森林地图连起来，萤光就会为我们领路。",
+          "text": "朋友信件让大家知道，蘑菇谷不是远处的名字，而是一条可以走到的路。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "记住这片叶子的形状，下一次遇见它就知道该往哪里走。",
+          "text": "这件事提醒我们：朋友信件不是终点，它会把故事带到蘑菇谷。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "‘信’是把心里的话送给远方的朋友。",
+          "text": "完成这一站后，蘑菇谷的入口已经亮起。我们带着“信”继续走。",
           "character": "forest_guide",
           "position": "right"
         }
