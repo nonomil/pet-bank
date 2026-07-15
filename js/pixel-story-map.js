@@ -173,7 +173,10 @@
         container.querySelectorAll('[data-detective-bonus]').forEach(function (button) {
             button.addEventListener('click', function () {
                 if (container.id === 'homePixelWorldMapSlot' && typeof root.openHomeExploreMode === 'function') root.openHomeExploreMode('detective');
-                else if (typeof root.switchExploreToAdventure === 'function') root.switchExploreToAdventure();
+                else {
+                    if (root.PixelStoryEngine && typeof root.PixelStoryEngine.setPreferredTrack === 'function') root.PixelStoryEngine.setPreferredTrack('detective', false);
+                    renderTrack(container, manifest, 'detective', pageByTrack.detective || 0);
+                }
             });
         });
         container.querySelectorAll('.pixel-story-node').forEach(function (node) {

@@ -33,7 +33,7 @@ test -f site/assets/story/pixel-worlds-v1/maps/forest.png
 test -f site/assets/story/pixel-worlds-v1/maps/block.png
 test -f site/assets/story/pixel-worlds-v1/maps/detective.png
 
-# The asset contract must report 80 unique node scenes / 80 node props.
+# The asset contract must report 80 unique node scenes / 80 node props / 80 route-specific node icons.
 # It also assembles a temporary Pages artifact and verifies the WebP paths.
 ```
 
@@ -87,7 +87,7 @@ python -X utf8 .codex/skills/gpt-image-bee-workflow/scripts/bee_image_workflow.p
 - Bee API 生图恢复使用单请求串行脚本 `scripts/generate-pixel-worlds-scenes-bee.mjs`；脚本只处理缺失节点，成功后才写入正式 WebP，失败记录后继续。
 - 场景背景禁止使用 8x8 联图裁切后放大；正式背景必须单张生成，目标请求尺寸 `1536x1024`，实际返回尺寸以文件检查结果为准。
 
-当前素材状态（2026-07-14）：80/80 个节点已有独立场景 WebP；科幻 20/20、森林 20/20、方块 20/20、侦探 20/20。全部文件均已通过 Pillow 解码检查和素材契约，浏览器已验证四路线可切换、首节点可进入、背景与道具实际加载。
+当前素材状态（2026-07-15）：80/80 个节点已有独立场景 WebP、80/80 个节点道具 WebP、80/80 个路线专属节点图标 WebP；科幻、森林、方块、侦探均为 20/20。图标来自四张 `1536x1024` 路线素材表，经透明化、碎片过滤和语义命名后接入。全部文件均已通过素材契约和发布制品检查，浏览器验证四路线的地图、节点图标、场景背景与道具实际加载。
 
 ```powershell
 $env:PIXEL_SCENE_BEE_DELAY_MS = '5000'

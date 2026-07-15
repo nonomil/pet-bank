@@ -100,5 +100,6 @@
     }
   ],
   "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-01.webp",
-  "storyVersion": 2
+  "storyVersion": 2,
+  "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/moon-station.webp"
 }

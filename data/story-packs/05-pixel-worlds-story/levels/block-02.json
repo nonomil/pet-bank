@@ -100,5 +100,6 @@
     }
   ],
   "background": "assets/story/pixel-worlds-v1/scenes/block/block-02.webp",
-  "storyVersion": 2
+  "storyVersion": 2,
+  "icon": "assets/story/pixel-worlds-v1/icons/block/wood-plank.webp"
 }

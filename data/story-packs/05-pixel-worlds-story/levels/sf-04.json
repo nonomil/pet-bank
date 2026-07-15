@@ -101,5 +101,6 @@
     }
   ],
   "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-04.webp",
-  "storyVersion": 2
+  "storyVersion": 2,
+  "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/repair-gear.webp"
 }

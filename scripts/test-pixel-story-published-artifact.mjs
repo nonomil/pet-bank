@@ -37,7 +37,7 @@ walk(worldsAssetRoot, worldsPngs);
 assert.equal(pngs.length, 0, `rejected story PNGs must stay out of the Pages artifact, got ${pngs.length}`);
 assert.equal(v2Pngs.length, 14, `expected 14 accepted v2 story PNGs in Pages artifact, got ${v2Pngs.length}`);
 assert.equal(worldsPngs.length, 4, `expected 4 accepted pixel worlds map PNGs in Pages artifact, got ${worldsPngs.length}`);
-assert.equal(worldsWebps.length, 192, `expected 80 scenes + 80 props + 32 character frames, got ${worldsWebps.length}`);
+assert.equal(worldsWebps.length, 272, `expected 80 scenes + 80 props + 32 character frames + 80 route icons, got ${worldsWebps.length}`);
 assert.equal(mp3s.length, 37, `expected 37 story MP3s in Pages artifact, got ${mp3s.length}`);
 assert.ok(fs.existsSync(path.join(outDir, 'data', 'story-packs', '04-pixel-dialogue-story', 'audio-manifest.json')));
 assert.ok(fs.existsSync(path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'manifest.json')));

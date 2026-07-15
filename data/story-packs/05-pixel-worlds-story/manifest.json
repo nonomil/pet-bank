@@ -86,7 +86,7 @@
             "x": 12,
             "y": 56
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/moon-station.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-01.webp",
           "sceneAssets": {
             "characters": [
@@ -108,7 +108,7 @@
             "x": 24,
             "y": 34
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/signal-beacon.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-02.webp",
           "sceneAssets": {
             "characters": [
@@ -130,7 +130,7 @@
             "x": 36,
             "y": 22
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/glowing-star-seed.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-03.webp",
           "sceneAssets": {
             "characters": [
@@ -152,7 +152,7 @@
             "x": 49,
             "y": 36
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/repair-gear.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-04.webp",
           "sceneAssets": {
             "characters": [
@@ -174,7 +174,7 @@
             "x": 61,
             "y": 53
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/glass-dome.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-05.webp",
           "sceneAssets": {
             "characters": [
@@ -196,7 +196,7 @@
             "x": 73,
             "y": 31
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/orbit-elevator.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-06.webp",
           "sceneAssets": {
             "characters": [
@@ -218,7 +218,7 @@
             "x": 84,
             "y": 48
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/twin-star-bridge.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-07.webp",
           "sceneAssets": {
             "characters": [
@@ -240,7 +240,7 @@
             "x": 92,
             "y": 68
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/hologram-compass.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-08.webp",
           "sceneAssets": {
             "characters": [
@@ -262,7 +262,7 @@
             "x": 17,
             "y": 78
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/blue-light-core.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-09.webp",
           "activityType": "scan",
           "prompt": "找到量子花园里会移动的微光。",
@@ -297,7 +297,7 @@
             "x": 30,
             "y": 83
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/solar-garden.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-10.webp",
           "activityType": "route",
           "prompt": "选择驶向下一站的月面车。",
@@ -332,7 +332,7 @@
             "x": 43,
             "y": 76
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/mini-drone.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-11.webp",
           "activityType": "collect",
           "prompt": "收集厨房里的三颗能量果。",
@@ -367,7 +367,7 @@
             "x": 55,
             "y": 83
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/crystal-battery.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-12.webp",
           "activityType": "route",
           "prompt": "把问候声发送到森林世界。",
@@ -402,7 +402,7 @@
             "x": 67,
             "y": 75
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/space-tunnel.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-13.webp",
           "activityType": "care",
           "prompt": "帮助迷路的小机器人找到充电位。",
@@ -437,7 +437,7 @@
             "x": 79,
             "y": 82
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/landing-pad.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-14.webp",
           "activityType": "scan",
           "prompt": "从彩虹里找出通往森林的箭头。",
@@ -472,7 +472,7 @@
             "x": 90,
             "y": 88
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/constellation-lens.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-15.webp",
           "activityType": "collect",
           "prompt": "把地图、光核和伙伴徽章放进旅行箱。",
@@ -507,7 +507,7 @@
             "x": 76,
             "y": 16
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/floating-greenhouse.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-16.webp",
           "activityType": "route",
           "prompt": "让小飞船从星云滑梯安全滑下。",
@@ -542,7 +542,7 @@
             "x": 61,
             "y": 13
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/robot-arm.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-17.webp",
           "activityType": "collect",
           "prompt": "保存今天认识的朋友图像。",
@@ -577,7 +577,7 @@
             "x": 48,
             "y": 10
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/star-map-fragment.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-18.webp",
           "activityType": "repair",
           "prompt": "修补连接森林和方块世界的星桥。",
@@ -612,7 +612,7 @@
             "x": 34,
             "y": 12
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/docking-ring.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-19.webp",
           "activityType": "scan",
           "prompt": "从星图上找到下一颗绿色星标。",
@@ -647,7 +647,7 @@
             "x": 20,
             "y": 15
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/home-beacon.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/sci-fi/sf-20.webp",
           "activityType": "route",
           "prompt": "确认去森林世界的安全航线。",
@@ -691,7 +691,7 @@
             "x": 14,
             "y": 62
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/leafy-gate.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-01.webp",
           "sceneAssets": {
             "characters": [
@@ -713,7 +713,7 @@
             "x": 29,
             "y": 40
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/stream-stone.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-02.webp",
           "sceneAssets": {
             "characters": [
@@ -735,7 +735,7 @@
             "x": 45,
             "y": 26
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/acorn-lantern.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-03.webp",
           "sceneAssets": {
             "characters": [
@@ -757,7 +757,7 @@
             "x": 58,
             "y": 52
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/mushroom-circle.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-04.webp",
           "sceneAssets": {
             "characters": [
@@ -779,7 +779,7 @@
             "x": 74,
             "y": 35
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/bird-nest.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-05.webp",
           "sceneAssets": {
             "characters": [
@@ -801,7 +801,7 @@
             "x": 88,
             "y": 61
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/berry-basket.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-06.webp",
           "sceneAssets": {
             "characters": [
@@ -823,7 +823,7 @@
             "x": 18,
             "y": 80
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/wooden-bridge.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-07.webp",
           "activityType": "scan",
           "prompt": "找出躲在松果旁的小松鼠。",
@@ -858,7 +858,7 @@
             "x": 31,
             "y": 86
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/rain-puddle.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-08.webp",
           "activityType": "route",
           "prompt": "选择不会打扰小鱼的过桥路线。",
@@ -893,7 +893,7 @@
             "x": 44,
             "y": 78
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/tree-hollow.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-09.webp",
           "activityType": "route",
           "prompt": "让花瓣车沿着香味轨道前进。",
@@ -928,7 +928,7 @@
             "x": 56,
             "y": 88
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/firefly-jar.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-10.webp",
           "activityType": "care",
           "prompt": "照顾落下来的小鸟。",
@@ -963,7 +963,7 @@
             "x": 68,
             "y": 79
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/mossy-stepping-stone.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-11.webp",
           "activityType": "scan",
           "prompt": "找出风吹过的那片叶子。",
@@ -998,7 +998,7 @@
             "x": 80,
             "y": 90
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/flower-compass.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-12.webp",
           "activityType": "repair",
           "prompt": "让雨滴水车重新转动。",
@@ -1033,7 +1033,7 @@
             "x": 89,
             "y": 76
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/squirrel-den.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-13.webp",
           "activityType": "collect",
           "prompt": "取下蘑菇伞下的绿色信封。",
@@ -1068,7 +1068,7 @@
             "x": 77,
             "y": 20
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/little-waterfall.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-14.webp",
           "activityType": "scan",
           "prompt": "在月光下找到开花的月亮草。",
@@ -1103,7 +1103,7 @@
             "x": 62,
             "y": 18
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/leaf-boat.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-15.webp",
           "activityType": "build",
           "prompt": "为萤火剧场搭好树叶舞台。",
@@ -1138,7 +1138,7 @@
             "x": 47,
             "y": 18
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/pinecone-workshop.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-16.webp",
           "activityType": "route",
           "prompt": "选择通往古树树冠的缆车。",
@@ -1173,7 +1173,7 @@
             "x": 33,
             "y": 21
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/forest-bell.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-17.webp",
           "activityType": "collect",
           "prompt": "把会发光的种子放进仓库。",
@@ -1208,7 +1208,7 @@
             "x": 20,
             "y": 32
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/rainbow-clearing.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-18.webp",
           "activityType": "repair",
           "prompt": "把被风吹走的屋顶木片装回去。",
@@ -1243,7 +1243,7 @@
             "x": 29,
             "y": 14
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/seed-vault.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-19.webp",
           "activityType": "scan",
           "prompt": "从树叶缝隙里找到方块世界的光。",
@@ -1278,7 +1278,7 @@
             "x": 14,
             "y": 17
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/forest/camp-lantern.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/forest/forest-20.webp",
           "activityType": "care",
           "prompt": "把森林收集的绿色光交给三界树门。",
@@ -1322,7 +1322,7 @@
             "x": 13,
             "y": 57
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/village-gate.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-01.webp",
           "sceneAssets": {
             "characters": [
@@ -1345,7 +1345,7 @@
             "x": 28,
             "y": 34
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/wood-plank.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-02.webp",
           "sceneAssets": {
             "characters": [
@@ -1368,7 +1368,7 @@
             "x": 44,
             "y": 23
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/stone-arch.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-03.webp",
           "sceneAssets": {
             "characters": [
@@ -1391,7 +1391,7 @@
             "x": 59,
             "y": 48
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/glass-window.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-04.webp",
           "sceneAssets": {
             "characters": [
@@ -1414,7 +1414,7 @@
             "x": 75,
             "y": 32
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/water-channel.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-05.webp",
           "sceneAssets": {
             "characters": [
@@ -1437,7 +1437,7 @@
             "x": 89,
             "y": 60
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/amber-lamp.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-06.webp",
           "sceneAssets": {
             "characters": [
@@ -1460,7 +1460,7 @@
             "x": 18,
             "y": 78
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/cyan-crystal.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-07.webp",
           "activityType": "build",
           "prompt": "把两块木板搭成地下城入口。",
@@ -1496,7 +1496,7 @@
             "x": 31,
             "y": 86
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/safe-mine-cart.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-08.webp",
           "activityType": "collect",
           "prompt": "收集成熟的方块麦穗。",
@@ -1532,7 +1532,7 @@
             "x": 45,
             "y": 79
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/bridge-symbol.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-09.webp",
           "activityType": "scan",
           "prompt": "找出石砖上藏着的星星图案。",
@@ -1568,7 +1568,7 @@
             "x": 58,
             "y": 90
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/power-cube.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-10.webp",
           "activityType": "collect",
           "prompt": "找到矿井里最亮的一块水晶。",
@@ -1604,7 +1604,7 @@
             "x": 71,
             "y": 80
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/garden-plot.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-11.webp",
           "activityType": "route",
           "prompt": "让轨道车驶向红石工坊。",
@@ -1640,7 +1640,7 @@
             "x": 84,
             "y": 88
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/crafting-table.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-12.webp",
           "activityType": "route",
           "prompt": "把村民的信送到亮灯的房子。",
@@ -1676,7 +1676,7 @@
             "x": 92,
             "y": 72
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/cave-lantern.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-13.webp",
           "activityType": "scan",
           "prompt": "找出水帘后面的方块门。",
@@ -1712,7 +1712,7 @@
             "x": 77,
             "y": 18
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/block-elevator.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-14.webp",
           "activityType": "build",
           "prompt": "在温暖的熔岩旁搭出安全桥。",
@@ -1748,7 +1748,7 @@
             "x": 62,
             "y": 16
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/treasure-chest.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-15.webp",
           "activityType": "care",
           "prompt": "照看地底蘑菇园里的发光花。",
@@ -1784,7 +1784,7 @@
             "x": 47,
             "y": 17
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/tunnel-portal.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-16.webp",
           "activityType": "repair",
           "prompt": "修好红石钟楼，让大家知道回家时间。",
@@ -1820,7 +1820,7 @@
             "x": 33,
             "y": 20
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/snow-block.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-17.webp",
           "activityType": "collect",
           "prompt": "找出通往星门的旧矿车票。",
@@ -1856,7 +1856,7 @@
             "x": 20,
             "y": 30
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/lava-lamp.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-18.webp",
           "activityType": "scan",
           "prompt": "从回声里听出伙伴的方向。",
@@ -1892,7 +1892,7 @@
             "x": 16,
             "y": 13
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/builder-badge.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-19.webp",
           "activityType": "build",
           "prompt": "把三界收集的光核放进星门凹槽。",
@@ -1928,7 +1928,7 @@
             "x": 8,
             "y": 8
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/block/home-beacon.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/block/block-20.webp",
           "activityType": "route",
           "prompt": "选择一条通向新地图的彩色航线。",
@@ -1975,7 +1975,7 @@
             "x": 10,
             "y": 57
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/magnifying-glass.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-01.webp",
           "activityType": "scan",
           "prompt": "从三条闪光痕迹里找到蓝光留下的线索。",
@@ -2010,7 +2010,7 @@
             "x": 20,
             "y": 35
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/clue-envelope.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-02.webp",
           "activityType": "scan",
           "prompt": "找到星图上刚刚移动过的星点。",
@@ -2045,7 +2045,7 @@
             "x": 30,
             "y": 22
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/blue-footprint.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-03.webp",
           "activityType": "scan",
           "prompt": "在云桥上找到没有被风吹散的脚印。",
@@ -2080,7 +2080,7 @@
             "x": 42,
             "y": 31
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/star-fragment.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-04.webp",
           "activityType": "collect",
           "prompt": "收集维修区里三个相同的星形符号。",
@@ -2115,7 +2115,7 @@
             "x": 54,
             "y": 46
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/evidence-tray.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-05.webp",
           "activityType": "scan",
           "prompt": "找出发出沙沙声的星芽。",
@@ -2150,7 +2150,7 @@
             "x": 66,
             "y": 35
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/safe-lock.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-06.webp",
           "activityType": "build",
           "prompt": "把失踪的桥片放回双星桥。",
@@ -2185,7 +2185,7 @@
             "x": 77,
             "y": 53
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/red-thread-knot.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-07.webp",
           "activityType": "collect",
           "prompt": "找到森林里带着星光的蓝羽毛。",
@@ -2220,7 +2220,7 @@
             "x": 88,
             "y": 40
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/tiny-camera.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-08.webp",
           "activityType": "scan",
           "prompt": "找出树屋门上重复出现的叶子符号。",
@@ -2255,7 +2255,7 @@
             "x": 82,
             "y": 68
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/constellation-card.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-09.webp",
           "activityType": "collect",
           "prompt": "在溪边找到和空瓶配对的露珠。",
@@ -2290,7 +2290,7 @@
             "x": 69,
             "y": 81
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/glowing-fingerprint.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-10.webp",
           "activityType": "scan",
           "prompt": "找到比蘑菇高一点的神秘影子。",
@@ -2325,7 +2325,7 @@
             "x": 57,
             "y": 70
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/clue-lantern.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-11.webp",
           "activityType": "scan",
           "prompt": "找出方块村补给箱上缺少的方块。",
@@ -2360,7 +2360,7 @@
             "x": 45,
             "y": 58
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/keyhole.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-12.webp",
           "activityType": "scan",
           "prompt": "找出会发出三次回声的石壁。",
@@ -2395,7 +2395,7 @@
             "x": 34,
             "y": 72
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/map-pin.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-13.webp",
           "activityType": "repair",
           "prompt": "把两段发光红石线接起来。",
@@ -2430,7 +2430,7 @@
             "x": 24,
             "y": 84
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/three-color-badge.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-14.webp",
           "activityType": "scan",
           "prompt": "从旧地图上找出被星星遮住的路。",
@@ -2465,7 +2465,7 @@
             "x": 14,
             "y": 75
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/robot-witness.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-15.webp",
           "activityType": "collect",
           "prompt": "把科幻、森林、方块三枚徽章放在一起。",
@@ -2500,7 +2500,7 @@
             "x": 26,
             "y": 51
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/cloud.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/leaf-clue.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-16.webp",
           "activityType": "route",
           "prompt": "把回家铃声送到三个世界。",
@@ -2535,7 +2535,7 @@
             "x": 39,
             "y": 40
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/moon.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/block-clue.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-17.webp",
           "activityType": "collect",
           "prompt": "从维修区找到被灰尘盖住的最后光核。",
@@ -2570,7 +2570,7 @@
             "x": 52,
             "y": 25
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/signal-pulse.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-18.webp",
           "activityType": "care",
           "prompt": "向门后的朋友发出一声温暖的问候。",
@@ -2605,7 +2605,7 @@
             "x": 66,
             "y": 18
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/gear.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/evidence-box.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-19.webp",
           "activityType": "build",
           "prompt": "把光核、叶子和方块线索贴到故事墙。",
@@ -2640,7 +2640,7 @@
             "x": 82,
             "y": 31
           },
-          "icon": "assets/story/pixel-dialogue-v2/icons/bridge.png",
+          "icon": "assets/story/pixel-worlds-v1/icons/detective/mystery-beacon.webp",
           "background": "assets/story/pixel-worlds-v1/scenes/detective/detective-20.webp",
           "activityType": "care",
           "prompt": "给三个世界写下一句回家问候。",

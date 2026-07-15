@@ -100,5 +100,6 @@
       ]
     }
   ],
-  "storyVersion": 2
+  "storyVersion": 2,
+  "icon": "assets/story/pixel-worlds-v1/icons/sci-fi/blue-light-core.webp"
 }

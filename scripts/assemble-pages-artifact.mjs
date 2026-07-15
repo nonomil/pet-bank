@@ -66,6 +66,7 @@ function isAllowedRuntimeRaster(rel) {
     if (rel.startsWith('assets/story/pixel-worlds-v1/scenes/') && rel.endsWith('.webp')) return true;
     if (rel.startsWith('assets/story/pixel-worlds-v1/characters/characters-') && rel.endsWith('.webp')) return true;
     if (/^assets\/story\/pixel-worlds-v1\/props\/(sci-fi|forest|block|detective)\/[^/]+\.webp$/.test(rel)) return true;
+    if (/^assets\/story\/pixel-worlds-v1\/icons\/(sci-fi|forest|block|detective)\/[^/]+\.webp$/.test(rel)) return true;
     if (rel.startsWith('assets/picturebooks/') && RASTER_EXTENSIONS.has(path.extname(rel).toLowerCase())) return true;
     if (rel.startsWith('assets/ui/hanzi-img/') && rel.endsWith('.png')) return true;
     if (rel.startsWith('assets/learn/') && rel.endsWith('.png')) return true;

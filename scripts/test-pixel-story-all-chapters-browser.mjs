@@ -26,7 +26,9 @@ try {
 
     for (let index = 0; index < chapters.length; index += 1) {
         const [trackId, chapterId, backgroundName] = chapters[index];
-        await page.locator(`#pixelStoryMapContainer [data-world="${trackId}"]`).click();
+        const trackButton = page.locator(`#pixelStoryMapContainer [data-world="${trackId}"]`);
+        if (trackId === 'detective') await page.locator('#pixelStoryMapContainer [data-detective-bonus]').click();
+        else await trackButton.click();
         await page.waitForSelector(`#pixelStoryMapContainer .pixel-story-node[data-chapter="${chapterId}"]`, { state: 'attached', timeout: 20000 });
         await page.waitForFunction(() => {
             const image = document.querySelector('#pixelStoryMapContainer .pixel-story-map-bg');
@@ -35,6 +37,9 @@ try {
         const mapState = await page.locator('#pixelStoryMapContainer .pixel-story-map-bg').evaluate((image) => ({ src: image.src, width: image.naturalWidth, height: image.naturalHeight }));
         assert.match(mapState.src, new RegExp(`pixel-worlds-v1/maps/${trackId}\\.png`), `${trackId}: generated map background is active`);
         assert.ok(mapState.width > 0 && mapState.height > 0, `${trackId}: generated map background has pixels`);
+        const nodeIconState = await page.locator(`#pixelStoryMapContainer .pixel-story-node[data-chapter="${chapterId}"] .pixel-story-node-icon`).evaluate((image) => ({ src: image.src, width: image.naturalWidth, height: image.naturalHeight }));
+        assert.match(nodeIconState.src, new RegExp(`pixel-worlds-v1/icons/${trackId}/`), `${trackId}: route-specific node icon is active`);
+        assert.ok(nodeIconState.width > 0 && nodeIconState.height > 0, `${chapterId}: route-specific node icon has pixels`);
         await page.locator(`#pixelStoryMapContainer .pixel-story-node[data-chapter="${chapterId}"]`).click();
         await page.waitForSelector('.pixel-story-stage', { state: 'attached', timeout: 20000 });
         await page.waitForFunction(() => {
