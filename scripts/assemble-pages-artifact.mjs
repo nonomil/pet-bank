@@ -68,6 +68,7 @@ function isAllowedRuntimeRaster(rel) {
     if (/^assets\/story\/pixel-worlds-v1\/props\/(sci-fi|forest|block|detective)\/[^/]+\.webp$/.test(rel)) return true;
     if (/^assets\/story\/pixel-worlds-v1\/icons\/(sci-fi|forest|block|detective)\/[^/]+\.webp$/.test(rel)) return true;
     if (rel.startsWith('assets/picturebooks/') && RASTER_EXTENSIONS.has(path.extname(rel).toLowerCase())) return true;
+    if (/^assets\/ui\/pg-card-(mathpk|hanzi|arena|typing-defense|word-shooter|word-cannon|pinyin-snake|word-memory)\.webp$/.test(rel)) return true;
     if (rel.startsWith('assets/ui/hanzi-img/') && rel.endsWith('.png')) return true;
     if (rel.startsWith('assets/learn/') && rel.endsWith('.png')) return true;
     if (/^assets\/learn\/english-vocab\/minecraft-reference\/card-\d{3}\.webp$/.test(rel)) return true;

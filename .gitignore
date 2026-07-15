@@ -96,6 +96,10 @@ tmp_*.png
 tmp_*.log
 tmp-*.png
 tmp-*.log
+anki-minecraft-desktop.png
+anki-minecraft-mobile.png
+picturebook-reader-desktop.png
+picturebook-reader-mobile.png
 chatgpt-sprite-page.png
 farm-gpt-*.png
 playground-word-memory-*.png
