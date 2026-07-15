@@ -5,6 +5,7 @@ const repoRoot = path.resolve(__dirname, '..');
 const mainPath = path.join(repoRoot, 'data', 'learn', 'packs', 'english-mc-hybrid-2026', 'modules', 'minecraft-vocab.json');
 const manifestPath = path.join(repoRoot, 'data', 'learn', 'packs', 'english-mc-hybrid-2026', 'manifest.json');
 const referencePath = path.join(repoRoot, 'data', 'learn', 'external', 'mayihaoke', 'word-cards.json');
+const referenceMediaPath = path.join(repoRoot, 'data', 'learn', 'external', 'mayihaoke', 'media-manifest.json');
 const ankiPath = path.join(repoRoot, 'prj', 'anki-minecraft-vocab', 'data', 'cards.json');
 
 const PROMPT_WORD_RE = /(compressed|shot of|woman|man |freedom|success in|full frame|doing calming|at home|portrait|happy black|adventure travel|achievement|construction site|closeup|close-up|render|stock photo|photo of)/i;
@@ -26,6 +27,9 @@ const CATEGORY_RE = [
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
+
+const referenceMedia = fs.existsSync(referenceMediaPath) ? readJson(referenceMediaPath) : { cards: [] };
+const referenceMediaByIndex = new Map((referenceMedia.cards || []).map(item => [String(item.index), item.path]));
 
 function writeJson(filePath, value) {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
@@ -96,6 +100,7 @@ function fromReference(card) {
   const word = clean(card.word, 120);
   const sentence = clean(card.sentence || card.example, 220);
   const sentenceTranslation = clean(card.sentenceTranslation || card.exampleTranslation, 220);
+  const image = referenceMediaByIndex.get(String(card.index || '').padStart(3, '0')) || '';
   return {
     ...card,
     word,
@@ -108,6 +113,8 @@ function fromReference(card) {
     sentenceTranslation,
     phrase: clean(card.phrase, 120),
     phraseTranslation: clean(card.phraseTranslation, 120),
+    image,
+    imageSource: image ? 'mayihaoke-extracted' : '',
     sourceProvider: 'mayihaoke',
     sourceCardId: card.index || '',
     tags: [...new Set(['minecraft', 'mayihaoke', categoryFor(card), ...(card.tags || [])])]
@@ -133,7 +140,8 @@ function prefer(candidate, current) {
     };
   }
   const score = item => (item.sourceProvider === 'mayihaoke' ? 40 : 0)
-    + (item.image ? 10 : 0) + (item.audio ? 5 : 0)
+    + (item.image && fs.existsSync(path.join(repoRoot, item.image)) ? 10 : 0)
+    + (item.audio ? 5 : 0)
     + (item.phonetic ? 2 : 0);
   return score(candidate) > score(current) ? candidate : current;
 }

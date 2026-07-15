@@ -1,0 +1,4009 @@
+{
+  "provider": "mayihaoke",
+  "route": "/minewords",
+  "sourceTemplate": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/{index}.webp",
+  "convertedAt": "2026-07-15T08:15:40.655390+00:00",
+  "count": 500,
+  "cards": [
+    {
+      "index": "001",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/001.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-001.webp",
+      "bytes": 36586,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "002",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/002.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-002.webp",
+      "bytes": 46618,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "003",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/003.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-003.webp",
+      "bytes": 37692,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "004",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/004.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-004.webp",
+      "bytes": 35144,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "005",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/005.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-005.webp",
+      "bytes": 16580,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "006",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/006.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-006.webp",
+      "bytes": 21338,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "007",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/007.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-007.webp",
+      "bytes": 36478,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "008",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/008.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-008.webp",
+      "bytes": 35830,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "009",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/009.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-009.webp",
+      "bytes": 20622,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "010",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/010.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-010.webp",
+      "bytes": 35700,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "011",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/011.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-011.webp",
+      "bytes": 23158,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "012",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/012.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-012.webp",
+      "bytes": 31264,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "013",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/013.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-013.webp",
+      "bytes": 16262,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "014",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/014.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-014.webp",
+      "bytes": 45602,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "015",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/015.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-015.webp",
+      "bytes": 24610,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "016",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/016.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-016.webp",
+      "bytes": 35236,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "017",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/017.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-017.webp",
+      "bytes": 43528,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "018",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/018.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-018.webp",
+      "bytes": 24980,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "019",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/019.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-019.webp",
+      "bytes": 34396,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "020",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/020.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-020.webp",
+      "bytes": 36738,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "021",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/021.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-021.webp",
+      "bytes": 34456,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "022",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/022.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-022.webp",
+      "bytes": 37598,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "023",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/023.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-023.webp",
+      "bytes": 52460,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "024",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/024.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-024.webp",
+      "bytes": 34876,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "025",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/025.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-025.webp",
+      "bytes": 21600,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "026",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/026.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-026.webp",
+      "bytes": 31744,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "027",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/027.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-027.webp",
+      "bytes": 32064,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "028",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/028.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-028.webp",
+      "bytes": 45176,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "029",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/029.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-029.webp",
+      "bytes": 28260,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "030",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/030.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-030.webp",
+      "bytes": 15246,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "031",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/031.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-031.webp",
+      "bytes": 20940,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "032",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/032.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-032.webp",
+      "bytes": 39762,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "033",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/033.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-033.webp",
+      "bytes": 30964,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "034",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/034.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-034.webp",
+      "bytes": 39400,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "035",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/035.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-035.webp",
+      "bytes": 28624,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "036",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/036.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-036.webp",
+      "bytes": 21564,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "037",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/037.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-037.webp",
+      "bytes": 23740,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "038",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/038.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-038.webp",
+      "bytes": 22802,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "039",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/039.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-039.webp",
+      "bytes": 29210,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "040",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/040.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-040.webp",
+      "bytes": 22412,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "041",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/041.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-041.webp",
+      "bytes": 36244,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "042",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/042.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-042.webp",
+      "bytes": 27920,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "043",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/043.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-043.webp",
+      "bytes": 55024,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "044",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/044.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-044.webp",
+      "bytes": 34064,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "045",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/045.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-045.webp",
+      "bytes": 31212,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "046",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/046.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-046.webp",
+      "bytes": 43564,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "047",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/047.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-047.webp",
+      "bytes": 33698,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "048",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/048.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-048.webp",
+      "bytes": 42764,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "049",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/049.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-049.webp",
+      "bytes": 47722,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "050",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/050.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-050.webp",
+      "bytes": 51856,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "051",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/051.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-051.webp",
+      "bytes": 28812,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "052",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/052.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-052.webp",
+      "bytes": 27568,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "053",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/053.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-053.webp",
+      "bytes": 31584,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "054",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/054.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-054.webp",
+      "bytes": 43350,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "055",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/055.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-055.webp",
+      "bytes": 43058,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "056",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/056.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-056.webp",
+      "bytes": 45144,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "057",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/057.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-057.webp",
+      "bytes": 43310,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "058",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/058.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-058.webp",
+      "bytes": 27182,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "059",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/059.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-059.webp",
+      "bytes": 42598,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "060",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/060.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-060.webp",
+      "bytes": 39440,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "061",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/061.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-061.webp",
+      "bytes": 38462,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "062",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/062.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-062.webp",
+      "bytes": 40418,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "063",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/063.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-063.webp",
+      "bytes": 36816,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "064",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/064.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-064.webp",
+      "bytes": 16806,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "065",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/065.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-065.webp",
+      "bytes": 43256,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "066",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/066.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-066.webp",
+      "bytes": 47716,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "067",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/067.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-067.webp",
+      "bytes": 41182,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "068",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/068.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-068.webp",
+      "bytes": 27434,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "069",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/069.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-069.webp",
+      "bytes": 38830,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "070",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/070.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-070.webp",
+      "bytes": 49896,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "071",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/071.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-071.webp",
+      "bytes": 30356,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "072",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/072.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-072.webp",
+      "bytes": 42932,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "073",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/073.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-073.webp",
+      "bytes": 32220,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "074",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/074.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-074.webp",
+      "bytes": 35028,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "075",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/075.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-075.webp",
+      "bytes": 32552,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "076",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/076.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-076.webp",
+      "bytes": 39514,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "077",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/077.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-077.webp",
+      "bytes": 30022,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "078",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/078.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-078.webp",
+      "bytes": 17236,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "079",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/079.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-079.webp",
+      "bytes": 42308,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "080",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/080.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-080.webp",
+      "bytes": 37814,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "081",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/081.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-081.webp",
+      "bytes": 28506,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "082",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/082.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-082.webp",
+      "bytes": 50970,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "083",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/083.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-083.webp",
+      "bytes": 37136,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "084",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/084.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-084.webp",
+      "bytes": 35580,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "085",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/085.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-085.webp",
+      "bytes": 34480,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "086",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/086.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-086.webp",
+      "bytes": 23208,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "087",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/087.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-087.webp",
+      "bytes": 25876,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "088",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/088.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-088.webp",
+      "bytes": 29330,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "089",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/089.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-089.webp",
+      "bytes": 33474,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "090",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/090.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-090.webp",
+      "bytes": 31584,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "091",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/091.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-091.webp",
+      "bytes": 25808,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "092",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/092.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-092.webp",
+      "bytes": 37070,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "093",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/093.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-093.webp",
+      "bytes": 32556,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "094",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/094.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-094.webp",
+      "bytes": 33996,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "095",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/095.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-095.webp",
+      "bytes": 31616,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "096",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/096.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-096.webp",
+      "bytes": 29464,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "097",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/097.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-097.webp",
+      "bytes": 28470,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "098",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/098.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-098.webp",
+      "bytes": 38222,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "099",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/099.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-099.webp",
+      "bytes": 38614,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "100",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/100.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-100.webp",
+      "bytes": 37378,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "101",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/101.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-101.webp",
+      "bytes": 29516,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "102",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/102.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-102.webp",
+      "bytes": 13470,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "103",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/103.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-103.webp",
+      "bytes": 31662,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "104",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/104.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-104.webp",
+      "bytes": 28312,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "105",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/105.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-105.webp",
+      "bytes": 31644,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "106",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/106.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-106.webp",
+      "bytes": 38426,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "107",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/107.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-107.webp",
+      "bytes": 33846,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "108",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/108.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-108.webp",
+      "bytes": 31838,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "109",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/109.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-109.webp",
+      "bytes": 22838,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "110",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/110.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-110.webp",
+      "bytes": 12650,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "111",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/111.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-111.webp",
+      "bytes": 22996,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "112",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/112.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-112.webp",
+      "bytes": 22746,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "113",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/113.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-113.webp",
+      "bytes": 33944,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "114",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/114.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-114.webp",
+      "bytes": 25584,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "115",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/115.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-115.webp",
+      "bytes": 22784,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "116",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/116.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-116.webp",
+      "bytes": 30372,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "117",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/117.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-117.webp",
+      "bytes": 41910,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "118",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/118.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-118.webp",
+      "bytes": 32378,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "119",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/119.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-119.webp",
+      "bytes": 33496,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "120",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/120.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-120.webp",
+      "bytes": 31362,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "121",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/121.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-121.webp",
+      "bytes": 24016,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "122",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/122.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-122.webp",
+      "bytes": 26820,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "123",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/123.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-123.webp",
+      "bytes": 23306,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "124",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/124.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-124.webp",
+      "bytes": 28604,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "125",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/125.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-125.webp",
+      "bytes": 49530,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "126",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/126.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-126.webp",
+      "bytes": 34682,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "127",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/127.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-127.webp",
+      "bytes": 40272,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "128",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/128.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-128.webp",
+      "bytes": 39740,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "129",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/129.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-129.webp",
+      "bytes": 32040,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "130",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/130.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-130.webp",
+      "bytes": 35104,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "131",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/131.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-131.webp",
+      "bytes": 45376,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "132",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/132.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-132.webp",
+      "bytes": 36494,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "133",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/133.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-133.webp",
+      "bytes": 42766,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "134",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/134.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-134.webp",
+      "bytes": 35130,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "135",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/135.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-135.webp",
+      "bytes": 46222,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "136",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/136.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-136.webp",
+      "bytes": 41256,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "137",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/137.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-137.webp",
+      "bytes": 36138,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "138",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/138.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-138.webp",
+      "bytes": 26794,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "139",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/139.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-139.webp",
+      "bytes": 26596,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "140",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/140.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-140.webp",
+      "bytes": 51852,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "141",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/141.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-141.webp",
+      "bytes": 41064,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "142",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/142.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-142.webp",
+      "bytes": 41190,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "143",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/143.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-143.webp",
+      "bytes": 35554,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "144",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/144.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-144.webp",
+      "bytes": 34916,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "145",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/145.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-145.webp",
+      "bytes": 37266,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "146",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/146.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-146.webp",
+      "bytes": 31152,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "147",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/147.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-147.webp",
+      "bytes": 31700,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "148",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/148.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-148.webp",
+      "bytes": 36076,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "149",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/149.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-149.webp",
+      "bytes": 35576,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "150",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/150.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-150.webp",
+      "bytes": 36636,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "151",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/151.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-151.webp",
+      "bytes": 40600,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "152",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/152.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-152.webp",
+      "bytes": 25950,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "153",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/153.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-153.webp",
+      "bytes": 32124,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "154",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/154.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-154.webp",
+      "bytes": 21614,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "155",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/155.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-155.webp",
+      "bytes": 25932,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "156",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/156.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-156.webp",
+      "bytes": 23882,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "157",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/157.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-157.webp",
+      "bytes": 27536,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "158",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/158.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-158.webp",
+      "bytes": 41734,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "159",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/159.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-159.webp",
+      "bytes": 39170,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "160",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/160.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-160.webp",
+      "bytes": 28992,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "161",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/161.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-161.webp",
+      "bytes": 34072,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "162",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/162.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-162.webp",
+      "bytes": 29496,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "163",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/163.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-163.webp",
+      "bytes": 13484,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "164",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/164.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-164.webp",
+      "bytes": 25484,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "165",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/165.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-165.webp",
+      "bytes": 30694,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "166",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/166.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-166.webp",
+      "bytes": 38410,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "167",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/167.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-167.webp",
+      "bytes": 29358,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "168",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/168.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-168.webp",
+      "bytes": 43482,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "169",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/169.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-169.webp",
+      "bytes": 39444,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "170",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/170.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-170.webp",
+      "bytes": 25730,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "171",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/171.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-171.webp",
+      "bytes": 31688,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "172",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/172.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-172.webp",
+      "bytes": 29396,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "173",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/173.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-173.webp",
+      "bytes": 41000,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "174",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/174.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-174.webp",
+      "bytes": 19834,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "175",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/175.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-175.webp",
+      "bytes": 30042,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "176",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/176.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-176.webp",
+      "bytes": 21080,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "177",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/177.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-177.webp",
+      "bytes": 42902,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "178",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/178.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-178.webp",
+      "bytes": 27198,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "179",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/179.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-179.webp",
+      "bytes": 36708,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "180",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/180.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-180.webp",
+      "bytes": 26978,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "181",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/181.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-181.webp",
+      "bytes": 38942,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "182",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/182.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-182.webp",
+      "bytes": 28382,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "183",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/183.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-183.webp",
+      "bytes": 33208,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "184",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/184.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-184.webp",
+      "bytes": 33404,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "185",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/185.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-185.webp",
+      "bytes": 38296,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "186",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/186.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-186.webp",
+      "bytes": 32962,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "187",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/187.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-187.webp",
+      "bytes": 19870,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "188",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/188.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-188.webp",
+      "bytes": 25082,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "189",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/189.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-189.webp",
+      "bytes": 23394,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "190",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/190.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-190.webp",
+      "bytes": 42418,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "191",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/191.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-191.webp",
+      "bytes": 32804,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "192",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/192.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-192.webp",
+      "bytes": 44340,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "193",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/193.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-193.webp",
+      "bytes": 33366,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "194",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/194.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-194.webp",
+      "bytes": 50744,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "195",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/195.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-195.webp",
+      "bytes": 50260,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "196",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/196.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-196.webp",
+      "bytes": 40358,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "197",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/197.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-197.webp",
+      "bytes": 35510,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "198",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/198.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-198.webp",
+      "bytes": 38320,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "199",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/199.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-199.webp",
+      "bytes": 40556,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "200",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/200.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-200.webp",
+      "bytes": 30550,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "201",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/201.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-201.webp",
+      "bytes": 41396,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "202",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/202.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-202.webp",
+      "bytes": 40274,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "203",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/203.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-203.webp",
+      "bytes": 39104,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "204",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/204.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-204.webp",
+      "bytes": 33630,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "205",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/205.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-205.webp",
+      "bytes": 39082,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "206",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/206.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-206.webp",
+      "bytes": 12508,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "207",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/207.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-207.webp",
+      "bytes": 39644,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "208",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/208.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-208.webp",
+      "bytes": 40226,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "209",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/209.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-209.webp",
+      "bytes": 36720,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "210",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/210.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-210.webp",
+      "bytes": 37614,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "211",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/211.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-211.webp",
+      "bytes": 53764,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "212",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/212.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-212.webp",
+      "bytes": 28188,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "213",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/213.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-213.webp",
+      "bytes": 18110,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "214",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/214.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-214.webp",
+      "bytes": 32956,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "215",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/215.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-215.webp",
+      "bytes": 40960,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "216",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/216.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-216.webp",
+      "bytes": 21806,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "217",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/217.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-217.webp",
+      "bytes": 40908,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "218",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/218.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-218.webp",
+      "bytes": 32048,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "219",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/219.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-219.webp",
+      "bytes": 40644,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "220",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/220.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-220.webp",
+      "bytes": 28198,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "221",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/221.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-221.webp",
+      "bytes": 23980,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "222",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/222.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-222.webp",
+      "bytes": 34448,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "223",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/223.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-223.webp",
+      "bytes": 29392,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "224",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/224.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-224.webp",
+      "bytes": 24716,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "225",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/225.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-225.webp",
+      "bytes": 28762,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "226",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/226.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-226.webp",
+      "bytes": 26816,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "227",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/227.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-227.webp",
+      "bytes": 30404,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "228",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/228.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-228.webp",
+      "bytes": 38198,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "229",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/229.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-229.webp",
+      "bytes": 24490,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "230",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/230.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-230.webp",
+      "bytes": 39648,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "231",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/231.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-231.webp",
+      "bytes": 26548,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "232",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/232.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-232.webp",
+      "bytes": 30162,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "233",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/233.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-233.webp",
+      "bytes": 34996,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "234",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/234.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-234.webp",
+      "bytes": 27966,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "235",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/235.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-235.webp",
+      "bytes": 21732,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "236",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/236.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-236.webp",
+      "bytes": 31156,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "237",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/237.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-237.webp",
+      "bytes": 34128,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "238",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/238.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-238.webp",
+      "bytes": 49748,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "239",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/239.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-239.webp",
+      "bytes": 29290,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "240",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/240.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-240.webp",
+      "bytes": 46176,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "241",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/241.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-241.webp",
+      "bytes": 35708,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "242",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/242.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-242.webp",
+      "bytes": 37584,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "243",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/243.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-243.webp",
+      "bytes": 38232,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "244",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/244.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-244.webp",
+      "bytes": 42228,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "245",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/245.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-245.webp",
+      "bytes": 45726,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "246",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/246.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-246.webp",
+      "bytes": 42296,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "247",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/247.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-247.webp",
+      "bytes": 27288,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "248",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/248.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-248.webp",
+      "bytes": 37216,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "249",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/249.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-249.webp",
+      "bytes": 37774,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "250",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/250.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-250.webp",
+      "bytes": 38050,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "251",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/251.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-251.webp",
+      "bytes": 29958,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "252",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/252.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-252.webp",
+      "bytes": 22764,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "253",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/253.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-253.webp",
+      "bytes": 39496,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "254",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/254.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-254.webp",
+      "bytes": 56062,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "255",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/255.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-255.webp",
+      "bytes": 22148,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "256",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/256.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-256.webp",
+      "bytes": 43560,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "257",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/257.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-257.webp",
+      "bytes": 41034,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "258",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/258.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-258.webp",
+      "bytes": 44056,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "259",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/259.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-259.webp",
+      "bytes": 47062,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "260",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/260.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-260.webp",
+      "bytes": 41972,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "261",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/261.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-261.webp",
+      "bytes": 38722,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "262",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/262.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-262.webp",
+      "bytes": 36356,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "263",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/263.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-263.webp",
+      "bytes": 40792,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "264",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/264.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-264.webp",
+      "bytes": 39360,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "265",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/265.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-265.webp",
+      "bytes": 32466,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "266",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/266.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-266.webp",
+      "bytes": 37926,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "267",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/267.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-267.webp",
+      "bytes": 32634,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "268",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/268.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-268.webp",
+      "bytes": 44028,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "269",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/269.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-269.webp",
+      "bytes": 35380,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "270",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/270.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-270.webp",
+      "bytes": 30858,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "271",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/271.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-271.webp",
+      "bytes": 38104,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "272",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/272.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-272.webp",
+      "bytes": 41330,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "273",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/273.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-273.webp",
+      "bytes": 33410,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "274",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/274.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-274.webp",
+      "bytes": 33262,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "275",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/275.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-275.webp",
+      "bytes": 44046,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "276",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/276.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-276.webp",
+      "bytes": 33294,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "277",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/277.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-277.webp",
+      "bytes": 43364,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "278",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/278.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-278.webp",
+      "bytes": 23060,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "279",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/279.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-279.webp",
+      "bytes": 54070,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "280",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/280.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-280.webp",
+      "bytes": 34676,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "281",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/281.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-281.webp",
+      "bytes": 29202,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "282",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/282.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-282.webp",
+      "bytes": 40834,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "283",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/283.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-283.webp",
+      "bytes": 27388,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "284",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/284.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-284.webp",
+      "bytes": 27796,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "285",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/285.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-285.webp",
+      "bytes": 23136,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "286",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/286.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-286.webp",
+      "bytes": 27518,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "287",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/287.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-287.webp",
+      "bytes": 45114,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "288",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/288.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-288.webp",
+      "bytes": 32720,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "289",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/289.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-289.webp",
+      "bytes": 23824,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "290",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/290.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-290.webp",
+      "bytes": 41488,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "291",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/291.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-291.webp",
+      "bytes": 43888,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "292",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/292.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-292.webp",
+      "bytes": 25706,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "293",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/293.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-293.webp",
+      "bytes": 45050,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "294",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/294.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-294.webp",
+      "bytes": 23324,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "295",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/295.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-295.webp",
+      "bytes": 29878,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "296",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/296.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-296.webp",
+      "bytes": 43550,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "297",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/297.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-297.webp",
+      "bytes": 33684,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "298",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/298.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-298.webp",
+      "bytes": 31730,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "299",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/299.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-299.webp",
+      "bytes": 28520,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "300",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/300.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-300.webp",
+      "bytes": 31608,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "301",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/301.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-301.webp",
+      "bytes": 43540,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "302",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/302.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-302.webp",
+      "bytes": 37864,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "303",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/303.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-303.webp",
+      "bytes": 34056,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "304",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/304.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-304.webp",
+      "bytes": 30002,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "305",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/305.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-305.webp",
+      "bytes": 15058,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "306",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/306.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-306.webp",
+      "bytes": 48262,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "307",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/307.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-307.webp",
+      "bytes": 20350,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "308",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/308.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-308.webp",
+      "bytes": 35628,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "309",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/309.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-309.webp",
+      "bytes": 36880,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "310",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/310.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-310.webp",
+      "bytes": 50092,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "311",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/311.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-311.webp",
+      "bytes": 34188,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "312",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/312.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-312.webp",
+      "bytes": 21454,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "313",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/313.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-313.webp",
+      "bytes": 46078,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "314",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/314.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-314.webp",
+      "bytes": 37746,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "315",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/315.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-315.webp",
+      "bytes": 30572,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "316",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/316.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-316.webp",
+      "bytes": 30876,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "317",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/317.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-317.webp",
+      "bytes": 37204,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "318",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/318.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-318.webp",
+      "bytes": 26568,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "319",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/319.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-319.webp",
+      "bytes": 31882,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "320",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/320.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-320.webp",
+      "bytes": 38680,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "321",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/321.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-321.webp",
+      "bytes": 32410,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "322",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/322.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-322.webp",
+      "bytes": 20036,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "323",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/323.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-323.webp",
+      "bytes": 34776,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "324",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/324.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-324.webp",
+      "bytes": 31050,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "325",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/325.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-325.webp",
+      "bytes": 38248,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "326",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/326.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-326.webp",
+      "bytes": 19254,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "327",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/327.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-327.webp",
+      "bytes": 33828,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "328",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/328.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-328.webp",
+      "bytes": 22706,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "329",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/329.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-329.webp",
+      "bytes": 51358,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "330",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/330.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-330.webp",
+      "bytes": 27116,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "331",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/331.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-331.webp",
+      "bytes": 20854,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "332",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/332.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-332.webp",
+      "bytes": 26018,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "333",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/333.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-333.webp",
+      "bytes": 31806,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "334",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/334.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-334.webp",
+      "bytes": 19996,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "335",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/335.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-335.webp",
+      "bytes": 23186,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "336",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/336.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-336.webp",
+      "bytes": 29452,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "337",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/337.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-337.webp",
+      "bytes": 36372,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "338",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/338.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-338.webp",
+      "bytes": 35100,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "339",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/339.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-339.webp",
+      "bytes": 33540,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "340",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/340.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-340.webp",
+      "bytes": 42346,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "341",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/341.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-341.webp",
+      "bytes": 19962,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "342",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/342.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-342.webp",
+      "bytes": 18600,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "343",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/343.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-343.webp",
+      "bytes": 24902,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "344",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/344.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-344.webp",
+      "bytes": 17534,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "345",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/345.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-345.webp",
+      "bytes": 23612,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "346",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/346.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-346.webp",
+      "bytes": 25914,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "347",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/347.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-347.webp",
+      "bytes": 42290,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "348",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/348.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-348.webp",
+      "bytes": 23758,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "349",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/349.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-349.webp",
+      "bytes": 33296,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "350",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/350.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-350.webp",
+      "bytes": 22704,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "351",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/351.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-351.webp",
+      "bytes": 30558,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "352",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/352.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-352.webp",
+      "bytes": 27580,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "353",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/353.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-353.webp",
+      "bytes": 36660,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "354",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/354.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-354.webp",
+      "bytes": 31290,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "355",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/355.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-355.webp",
+      "bytes": 33022,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "356",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/356.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-356.webp",
+      "bytes": 25836,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "357",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/357.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-357.webp",
+      "bytes": 30684,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "358",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/358.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-358.webp",
+      "bytes": 22196,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "359",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/359.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-359.webp",
+      "bytes": 24366,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "360",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/360.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-360.webp",
+      "bytes": 29128,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "361",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/361.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-361.webp",
+      "bytes": 28230,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "362",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/362.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-362.webp",
+      "bytes": 33626,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "363",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/363.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-363.webp",
+      "bytes": 31660,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "364",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/364.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-364.webp",
+      "bytes": 34152,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "365",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/365.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-365.webp",
+      "bytes": 28528,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "366",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/366.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-366.webp",
+      "bytes": 19724,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "367",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/367.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-367.webp",
+      "bytes": 29070,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "368",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/368.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-368.webp",
+      "bytes": 25230,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "369",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/369.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-369.webp",
+      "bytes": 32764,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "370",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/370.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-370.webp",
+      "bytes": 27166,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "371",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/371.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-371.webp",
+      "bytes": 28174,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "372",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/372.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-372.webp",
+      "bytes": 25560,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "373",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/373.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-373.webp",
+      "bytes": 31286,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "374",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/374.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-374.webp",
+      "bytes": 32836,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "375",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/375.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-375.webp",
+      "bytes": 32898,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "376",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/376.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-376.webp",
+      "bytes": 31044,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "377",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/377.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-377.webp",
+      "bytes": 38260,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "378",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/378.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-378.webp",
+      "bytes": 35698,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "379",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/379.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-379.webp",
+      "bytes": 20572,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "380",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/380.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-380.webp",
+      "bytes": 23600,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "381",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/381.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-381.webp",
+      "bytes": 21886,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "382",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/382.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-382.webp",
+      "bytes": 23736,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "383",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/383.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-383.webp",
+      "bytes": 37998,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "384",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/384.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-384.webp",
+      "bytes": 28406,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "385",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/385.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-385.webp",
+      "bytes": 20034,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "386",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/386.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-386.webp",
+      "bytes": 31388,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "387",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/387.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-387.webp",
+      "bytes": 29304,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "388",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/388.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-388.webp",
+      "bytes": 41912,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "389",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/389.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-389.webp",
+      "bytes": 38398,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "390",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/390.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-390.webp",
+      "bytes": 26458,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "391",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/391.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-391.webp",
+      "bytes": 20222,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "392",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/392.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-392.webp",
+      "bytes": 30742,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "393",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/393.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-393.webp",
+      "bytes": 30696,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "394",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/394.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-394.webp",
+      "bytes": 26862,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "395",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/395.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-395.webp",
+      "bytes": 28850,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "396",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/396.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-396.webp",
+      "bytes": 20348,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "397",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/397.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-397.webp",
+      "bytes": 33594,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "398",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/398.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-398.webp",
+      "bytes": 31184,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "399",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/399.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-399.webp",
+      "bytes": 19558,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "400",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/400.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-400.webp",
+      "bytes": 23824,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "401",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/401.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-401.webp",
+      "bytes": 13190,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "402",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/402.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-402.webp",
+      "bytes": 35062,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "403",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/403.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-403.webp",
+      "bytes": 30700,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "404",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/404.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-404.webp",
+      "bytes": 30764,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "405",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/405.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-405.webp",
+      "bytes": 26278,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "406",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/406.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-406.webp",
+      "bytes": 25388,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "407",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/407.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-407.webp",
+      "bytes": 33598,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "408",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/408.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-408.webp",
+      "bytes": 27624,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "409",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/409.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-409.webp",
+      "bytes": 20952,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "410",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/410.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-410.webp",
+      "bytes": 38606,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "411",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/411.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-411.webp",
+      "bytes": 29876,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "412",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/412.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-412.webp",
+      "bytes": 25212,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "413",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/413.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-413.webp",
+      "bytes": 21838,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "414",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/414.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-414.webp",
+      "bytes": 27600,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "415",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/415.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-415.webp",
+      "bytes": 21838,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "416",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/416.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-416.webp",
+      "bytes": 31852,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "417",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/417.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-417.webp",
+      "bytes": 37426,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "418",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/418.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-418.webp",
+      "bytes": 22434,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "419",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/419.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-419.webp",
+      "bytes": 31824,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "420",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/420.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-420.webp",
+      "bytes": 33858,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "421",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/421.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-421.webp",
+      "bytes": 26630,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "422",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/422.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-422.webp",
+      "bytes": 30870,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "423",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/423.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-423.webp",
+      "bytes": 29194,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "424",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/424.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-424.webp",
+      "bytes": 26140,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "425",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/425.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-425.webp",
+      "bytes": 29776,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "426",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/426.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-426.webp",
+      "bytes": 21658,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "427",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/427.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-427.webp",
+      "bytes": 29180,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "428",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/428.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-428.webp",
+      "bytes": 28784,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "429",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/429.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-429.webp",
+      "bytes": 29896,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "430",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/430.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-430.webp",
+      "bytes": 36658,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "431",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/431.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-431.webp",
+      "bytes": 25044,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "432",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/432.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-432.webp",
+      "bytes": 30642,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "433",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/433.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-433.webp",
+      "bytes": 32262,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "434",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/434.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-434.webp",
+      "bytes": 41386,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "435",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/435.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-435.webp",
+      "bytes": 31840,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "436",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/436.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-436.webp",
+      "bytes": 22096,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "437",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/437.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-437.webp",
+      "bytes": 38490,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "438",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/438.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-438.webp",
+      "bytes": 32750,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "439",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/439.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-439.webp",
+      "bytes": 28754,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "440",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/440.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-440.webp",
+      "bytes": 35748,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "441",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/441.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-441.webp",
+      "bytes": 34846,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "442",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/442.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-442.webp",
+      "bytes": 24614,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "443",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/443.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-443.webp",
+      "bytes": 37998,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "444",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/444.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-444.webp",
+      "bytes": 32306,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "445",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/445.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-445.webp",
+      "bytes": 24336,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "446",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/446.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-446.webp",
+      "bytes": 31954,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "447",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/447.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-447.webp",
+      "bytes": 29682,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "448",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/448.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-448.webp",
+      "bytes": 18916,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "449",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/449.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-449.webp",
+      "bytes": 35426,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "450",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/450.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-450.webp",
+      "bytes": 25402,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "451",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/451.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-451.webp",
+      "bytes": 38050,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "452",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/452.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-452.webp",
+      "bytes": 31938,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "453",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/453.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-453.webp",
+      "bytes": 32586,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "454",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/454.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-454.webp",
+      "bytes": 31820,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "455",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/455.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-455.webp",
+      "bytes": 26462,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "456",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/456.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-456.webp",
+      "bytes": 28650,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "457",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/457.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-457.webp",
+      "bytes": 34578,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "458",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/458.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-458.webp",
+      "bytes": 59164,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "459",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/459.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-459.webp",
+      "bytes": 40580,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "460",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/460.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-460.webp",
+      "bytes": 12636,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "461",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/461.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-461.webp",
+      "bytes": 43456,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "462",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/462.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-462.webp",
+      "bytes": 41956,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "463",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/463.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-463.webp",
+      "bytes": 29642,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "464",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/464.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-464.webp",
+      "bytes": 44070,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "465",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/465.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-465.webp",
+      "bytes": 43872,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "466",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/466.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-466.webp",
+      "bytes": 28302,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "467",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/467.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-467.webp",
+      "bytes": 36142,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "468",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/468.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-468.webp",
+      "bytes": 16820,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "469",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/469.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-469.webp",
+      "bytes": 40402,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "470",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/470.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-470.webp",
+      "bytes": 36750,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "471",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/471.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-471.webp",
+      "bytes": 29120,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "472",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/472.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-472.webp",
+      "bytes": 33356,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "473",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/473.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-473.webp",
+      "bytes": 32254,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "474",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/474.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-474.webp",
+      "bytes": 33404,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "475",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/475.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-475.webp",
+      "bytes": 23858,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "476",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/476.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-476.webp",
+      "bytes": 31862,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "477",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/477.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-477.webp",
+      "bytes": 36164,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "478",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/478.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-478.webp",
+      "bytes": 28636,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "479",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/479.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-479.webp",
+      "bytes": 39626,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "480",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/480.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-480.webp",
+      "bytes": 34954,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "481",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/481.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-481.webp",
+      "bytes": 18486,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "482",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/482.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-482.webp",
+      "bytes": 34772,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "483",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/483.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-483.webp",
+      "bytes": 42642,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "484",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/484.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-484.webp",
+      "bytes": 29700,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "485",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/485.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-485.webp",
+      "bytes": 36038,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "486",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/486.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-486.webp",
+      "bytes": 33838,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "487",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/487.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-487.webp",
+      "bytes": 26480,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "488",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/488.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-488.webp",
+      "bytes": 34772,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "489",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/489.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-489.webp",
+      "bytes": 34214,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "490",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/490.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-490.webp",
+      "bytes": 31722,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "491",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/491.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-491.webp",
+      "bytes": 26964,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "492",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/492.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-492.webp",
+      "bytes": 23104,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "493",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/493.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-493.webp",
+      "bytes": 28596,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "494",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/494.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-494.webp",
+      "bytes": 35584,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "495",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/495.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-495.webp",
+      "bytes": 32740,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "496",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/496.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-496.webp",
+      "bytes": 40474,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "497",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/497.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-497.webp",
+      "bytes": 26582,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "498",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/498.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-498.webp",
+      "bytes": 26978,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "499",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/499.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-499.webp",
+      "bytes": 38162,
+      "width": 512,
+      "height": 384
+    },
+    {
+      "index": "500",
+      "sourceUrl": "https://myhk-1318485526.cos.ap-guangzhou.myqcloud.com/minewords/500.webp",
+      "path": "assets/learn/english-vocab/minecraft-reference/card-500.webp",
+      "bytes": 32046,
+      "width": 512,
+      "height": 384
+    }
+  ]
+}

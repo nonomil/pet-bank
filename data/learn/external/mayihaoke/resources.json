@@ -1202,5 +1202,9 @@
   ],
   "wordCardsPath": "word-cards.json",
   "wordCardsCount": 500,
-  "wordCardsFetchedAt": "2026-07-15T06:40:57.101Z"
+  "wordCardsFetchedAt": "2026-07-15T06:40:57.101Z",
+  "mediaManifestPath": "media-manifest.json",
+  "mediaCount": 500,
+  "mediaFormat": "webp",
+  "mediaFetchedAt": "2026-07-15T08:15:40.655390+00:00"
 }
