@@ -5,7 +5,6 @@
     const MODULE_ID = 'minecraft-vocab';
     const VISUAL_ROOT = 'assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/';
     const HERO_IMAGE = `${VISUAL_ROOT}study-camp-hero.png`;
-    const FALLBACK_IMAGE = 'assets/learn/english-vocab/minecraft-card.webp';
     const STAGE_IMAGES = {
         review: `${VISUAL_ROOT}warmup-grove.png`,
         new: `${VISUAL_ROOT}new-word-mine.png`,
@@ -30,12 +29,6 @@
     const REWARD_CHEST_IMAGE = `${UI_ASSET_ROOT}reward-chest.png`;
     const REWARD_STAR_IMAGE = `${UI_ASSET_ROOT}reward-star.png`;
     const COMPANION_IMAGE = `${UI_ASSET_ROOT}learning-companion.png`;
-    const CARD_CORNER_IMAGES = {
-        tl: `${UI_ASSET_ROOT}card-corner-tl.png`,
-        tr: `${UI_ASSET_ROOT}card-corner-tr.png`,
-        bl: `${UI_ASSET_ROOT}card-corner-bl.png`,
-        br: `${UI_ASSET_ROOT}card-corner-br.png`
-    };
 
     let mounted = false;
     let root = null;
@@ -91,7 +84,7 @@
 
     function cardImage(card) {
         const image = String(card?.image || '');
-        return image.startsWith('assets/') ? asset(image) : asset(FALLBACK_IMAGE);
+        return image.startsWith('assets/') ? asset(image) : '';
     }
 
     function cardAudio(card) {
@@ -130,13 +123,16 @@
 
     function renderShell(content) {
         if (!root || !mounted) return;
-        root.innerHTML = `<div class="minecraft-vocab-page" data-minecraft-vocab-page style="--mv-card-frame: ${escapeHtml(cssImage(CARD_FRAME_IMAGE))}; --mv-card-corner-tl: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.tl))}; --mv-card-corner-tr: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.tr))}; --mv-card-corner-bl: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.bl))}; --mv-card-corner-br: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.br))}">${content}</div>`;
+        root.innerHTML = `<div class="minecraft-vocab-page" data-minecraft-vocab-page style="--mv-card-frame: ${escapeHtml(cssImage(CARD_FRAME_IMAGE))}">${content}</div>`;
         bindEvents();
         if (global.lucide && typeof global.lucide.createIcons === 'function') global.lucide.createIcons();
         const image = root.querySelector('[data-mv-card-image]');
         if (image) {
             image.addEventListener('error', () => {
-                image.src = asset(FALLBACK_IMAGE);
+                const placeholder = document.createElement('div');
+                placeholder.className = 'mv-card-image-placeholder';
+                placeholder.textContent = '图片待补';
+                image.replaceWith(placeholder);
             }, { once: true });
         }
     }
@@ -254,7 +250,7 @@
                 <section class="mv-session-shell" data-mv-session data-mv-mode="${escapeHtml(task.mode)}" style="--mv-session-bg: ${escapeHtml(cssImage(STAGE_IMAGES[task.mode] || STAGE_IMAGES.new))}">
                     <div class="mv-session-meta"><span>第 ${taskIndex} / 11</span><span>${escapeHtml(stageLabel(task.mode))}</span></div>
                     <div class="mv-card-grid">
-                        <div class="mv-card-art"><span class="mv-card-corner mv-card-corner-tl" aria-hidden="true"></span><span class="mv-card-corner mv-card-corner-tr" aria-hidden="true"></span><span class="mv-card-corner mv-card-corner-bl" aria-hidden="true"></span><span class="mv-card-corner mv-card-corner-br" aria-hidden="true"></span><img src="${escapeHtml(cardImage(card))}" alt="${escapeHtml(card.word || 'Minecraft 词卡')}" data-mv-card-image loading="eager" decoding="async"></div>
+                        <div class="mv-card-art" data-mv-card-art>${cardImage(card) ? `<img src="${escapeHtml(cardImage(card))}" alt="${escapeHtml(card.word || 'Minecraft 词卡')}" data-mv-card-image loading="eager" decoding="async">` : '<div class="mv-card-image-placeholder">图片待补</div>'}</div>
                         <div class="mv-card-copy">
                             <div class="mv-word-line"><strong>${escapeHtml(isQuestion ? '？' : card.word || '')}</strong><button class="mv-icon-button" type="button" data-mv-listen aria-label="播放单词发音" title="播放单词发音"><i data-lucide="volume-2" aria-hidden="true"></i></button></div>
                             ${card.phonetic ? `<span class="mv-phonetic">${escapeHtml(card.phonetic)}</span>` : ''}

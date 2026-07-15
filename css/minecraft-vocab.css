@@ -135,7 +135,7 @@ body.learn-mode .minecraft-vocab-page {
     max-width: 620px;
     margin: 12px 0 10px;
     color: var(--mv-green-dark);
-    font-size: clamp(28px, 5vw, 54px);
+    font-size: clamp(28px, 4.4vw, 46px);
     line-height: 1.12;
     letter-spacing: 0;
 }
@@ -361,16 +361,37 @@ body.learn-mode .minecraft-vocab-page {
 }
 .mv-session-meta { display: flex; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--mv-line); color: var(--mv-muted); font-size: 13px; font-weight: 900; }
 .mv-card-grid { display: grid; grid-template-columns: minmax(260px, .9fr) minmax(0, 1.1fr); gap: 32px; padding: 28px; }
-.mv-card-art { display: flex; position: relative; min-height: 320px; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #d8e5d6; background-color: #dcefe1; background-image: var(--mv-card-frame); background-position: center; background-size: cover; }
-.mv-card-corner { position: absolute; z-index: 2; width: 58px; height: 58px; background-position: center; background-repeat: no-repeat; background-size: contain; pointer-events: none; }
-.mv-card-corner-tl { top: 0; left: 0; background-image: var(--mv-card-corner-tl); }
-.mv-card-corner-tr { top: 0; right: 0; background-image: var(--mv-card-corner-tr); }
-.mv-card-corner-bl { bottom: 0; left: 0; background-image: var(--mv-card-corner-bl); }
-.mv-card-corner-br { right: 0; bottom: 0; background-image: var(--mv-card-corner-br); }
-.mv-card-art img { width: 100%; height: 100%; min-height: 320px; object-fit: cover; }
+.mv-card-art {
+    display: flex;
+    position: relative;
+    aspect-ratio: 1;
+    min-height: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: clamp(28px, 4vw, 46px);
+    border: 1px solid #d7cda2;
+    border-radius: 14px;
+    background-color: #fff8df;
+    background-image: var(--mv-card-frame);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 200% 200%;
+    box-shadow: 0 12px 24px rgba(44, 69, 47, .12);
+}
+.mv-card-art img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: contain;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 8px 7px rgba(31, 45, 37, .16));
+}
+.mv-card-image-placeholder { display: grid; aspect-ratio: 1; width: 100%; place-items: center; color: #52705a; background: repeating-linear-gradient(135deg, rgba(255,255,255,.6) 0 12px, rgba(220,239,225,.8) 12px 24px); font-weight: 800; letter-spacing: .08em; }
 .mv-card-copy { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; justify-content: center; }
 .mv-word-line { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; }
-.mv-word-line strong { color: var(--mv-ink); font-size: clamp(42px, 7vw, 74px); line-height: 1; overflow-wrap: anywhere; }
+.mv-word-line strong { color: var(--mv-ink); font-size: clamp(40px, 6vw, 64px); line-height: 1; overflow-wrap: anywhere; }
 .mv-phonetic { margin-top: 12px; color: #7a8e90; font-size: 16px; }
 .mv-translation { margin-top: 10px; color: var(--mv-green); font-size: 28px; font-weight: 900; }
 .mv-phrase,
@@ -451,8 +472,8 @@ body.learn-mode .minecraft-vocab-page {
     .mv-stat-grid > div { min-height: 94px; padding: 12px; }
     .mv-stat-grid strong { font-size: 24px; }
     .mv-card-grid { grid-template-columns: 1fr; gap: 20px; padding: 14px; }
-    .mv-card-art, .mv-card-art img { min-height: 220px; max-height: 260px; }
-    .mv-card-corner { width: 44px; height: 44px; }
+    .mv-card-art { max-width: 360px; margin: 0 auto; padding: 34px; }
+    .mv-card-art img, .mv-card-image-placeholder { min-height: 0; }
     .mv-card-copy { padding: 4px 4px 0; }
     .mv-word-line strong { font-size: 52px; }
     .mv-mobile-actions { position: sticky; bottom: 0; z-index: 5; justify-content: stretch; padding-bottom: calc(16px + env(safe-area-inset-bottom)); background: rgba(255, 255, 255, .96); }

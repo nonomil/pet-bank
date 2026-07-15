@@ -1,16 +1,21 @@
 # Minecraft 单词远征 Hermes 执行手册
 
-本手册给 AI/Hermes 部署主站 `v0.7.48` 使用。它覆盖主站学习页、Minecraft 视觉素材包、GPT UI 组件包与 Pages 制品；完整 Anki 浏览器是另一个独立静态站，必须遵循 [ANKI-MINECRAFT-VOCAB-HERMES.md](./ANKI-MINECRAFT-VOCAB-HERMES.md)。
+本手册给 AI/Hermes 部署主站 `v0.7.49` 使用。它覆盖主站学习页、Minecraft 视觉素材包、GPT UI 组件包与 Pages 制品；完整 Anki 浏览器是另一个独立静态站，必须遵循 [ANKI-MINECRAFT-VOCAB-HERMES.md](./ANKI-MINECRAFT-VOCAB-HERMES.md)。
 
 ## 目标和边界
 
 - 主站入口：`/app/learn/minecraft-vocab/`。
-- 主站默认学习池：96 张已审查、带本地配图/发音或可回退播放的词卡。
+- 主站默认学习池：96 张已审查、使用 Anki 提取本地图片的词卡；图片映射 manifest 位于 `assets/learn/english-vocab/minecraft-cards/manifest.json`。
 - 参考词表：`data/learn/external/mayihaoke/word-cards.json`，当前 500 条结构化快照；每条有中英短语和中英短句，生产运行不实时请求外站。
 - 内容补全脚本：`node scripts/enrich_minecraft_vocab.cjs --apply`；内容门禁：`node scripts/test-minecraft-vocab-content.mjs`。更新词表后必须先跑脚本再跑门禁。
+- 主站 96 张词卡的人工内容整理：`node scripts/curate-minecraft-vocab-content.cjs --apply`；它写入 `contentCuration: curated-v1`，不得用通用模板覆盖这组已审校短语和场景句。
+- 词卡展示资源整理：先运行 `python -X utf8 scripts/normalize-minecraft-vocab-card-assets.py` 预览，再运行同一命令加 `--apply`；它会把透明素材裁切到统一 512px 正方形画布，并把场景图留白居中。完成后必须跑媒体门禁。
+- Anki 图片映射脚本：先执行 `node scripts/build-minecraft-vocab-local-media.mjs` 做 dry-run，确认逐卡映射后执行 `node scripts/build-minecraft-vocab-local-media.mjs --apply`，再执行展示资源整理脚本的 `--apply`；最后运行 `node scripts/test-minecraft-vocab-media.mjs`。脚本禁止低置信度模糊匹配，显式别名必须保留来源文件名。
+- 当前 95 张为语义匹配的 Anki 图片，`disk` 使用 Bee `gpt-image-2` 生成的像素圆盘图，manifest 标记为 `gpt-generated`；重新生成前必须保留该覆盖映射。
 - 完整 Anki 项目：`prj/anki-minecraft-vocab/`，11,241 张卡片，独立 release/current，Pages 制品必须排除。
 - 本地视觉包：`assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/`，运行时只使用根目录 `manifest.json` 和 9 张正式 PNG；`prompts/` 和 `tmp/` 原始图不得发布。
 - GPT UI 组件包：`assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/`，运行时使用 `manifest.json` 和 11 个无文字 RGBA PNG，包含四阶段徽章、奖励宝箱/星、学习伙伴和词卡角饰。
+- 词卡外框使用视觉包中的 `card-frame-sheet.png` 左上绿色书本框，通过 CSS 以 `200% 200%` 只取单框；不要把四联拼图直接改回 `cover` 背景，也不要重新叠加四角装饰。
 - 无数据库迁移；孩子学习状态仍写本地 Profile 快照，奖励走现有 `GameRewardReceipts` 和 `PetBankPoints`。
 
 ## AI 执行前检查
@@ -35,6 +40,7 @@ test -f assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/manifest.js
 ```bash
 node scripts/test-mayihaoke-minecraft-words.mjs
 node scripts/test-minecraft-vocab-content.mjs
+node scripts/test-minecraft-vocab-media.mjs
 node scripts/test-minecraft-vocab-ui-assets.mjs
 node scripts/test-minecraft-vocab-visual-assets.mjs
 node scripts/test-minecraft-vocab-session.mjs
@@ -53,7 +59,7 @@ MMWG_E2E_BASE_URL=http://127.0.0.1:8765/app/learn/minecraft-vocab \
   node scripts/test-minecraft-vocab-browser.mjs
 ```
 
-浏览器验收必须确认：首次打开能看到今日 11 步远征；完成 11 步后成长分增加 10；同一天再次完成不重复发分；刷新后会话状态可恢复；Profile 切换后会话不串号；390px 宽度下底部操作区和文字不横向溢出。
+浏览器验收必须确认：首次打开能看到今日 11 步远征；每一步词卡图片来自 `assets/learn/english-vocab/minecraft-cards/` 且能解码；完成 11 步后成长分增加 10；同一天再次完成不重复发分；刷新后会话状态可恢复；Profile 切换后会话不串号；390px 宽度下底部操作区和文字不横向溢出。
 
 首页、阶段背景、词卡框和完成页必须使用本地无嵌入文字素材；不要把参考站外链图片、prompt、raw 原图、失败 JSON 或密钥材料部署到运行时。若需重新生图，在仓库根目录执行：
 

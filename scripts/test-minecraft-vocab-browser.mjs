@@ -86,7 +86,12 @@ try {
       actionCount: root?.querySelectorAll('[data-mv-answer], [data-mv-self-assess]').length || 0,
       cornerCount: root?.querySelectorAll('.mv-card-corner').length || 0,
       taskMode: root?.querySelector('[data-mv-session]')?.dataset.mvMode || '',
-      sessionBg: getComputedStyle(root?.querySelector('[data-mv-session]')).backgroundImage
+      sessionBg: getComputedStyle(root?.querySelector('[data-mv-session]')).backgroundImage,
+      cardFrameSize: getComputedStyle(root?.querySelector('[data-mv-card-art]')).backgroundSize,
+      cardImage: root?.querySelector('[data-mv-card-image]')?.getAttribute('src') || '',
+      cardImageWidth: root?.querySelector('[data-mv-card-image]')?.naturalWidth || 0,
+      cardArtSize: Math.round(root?.querySelector('[data-mv-card-art]')?.getBoundingClientRect().width || 0),
+      cardObjectFit: root?.querySelector('[data-mv-card-image]') ? getComputedStyle(root.querySelector('[data-mv-card-image]')).objectFit : ''
     };
   });
   assert.match(session.text, /第 1\/11|1 \/ 11/);
@@ -95,9 +100,14 @@ try {
   assert.match(session.phrase, /短语/);
   assert.match(session.sentence, /场景句/);
   assert.equal(session.actionCount >= 2, true);
-  assert.equal(session.cornerCount, 4);
+  assert.equal(session.cornerCount, 0);
+  assert.equal(session.cardObjectFit, 'contain');
+  assert.equal(session.cardArtSize > 280, true);
+  assert.equal(session.cardFrameSize, '200% 200%');
   assert.equal(session.taskMode, 'review');
   assert.match(session.sessionBg, /warmup-grove\.png/);
+  assert.match(session.cardImage, /assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-/);
+  assert.equal(session.cardImageWidth > 0, true);
   await page.screenshot({ path: 'tmp/minecraft-vocab-session-gpt-ui-1280.png', fullPage: true });
 
   await page.click('[data-mv-self-assess="known"]');
@@ -121,6 +131,12 @@ try {
   await page.setViewportSize({ width: 1280, height: 900 });
 
   for (let index = 0; index < 10; index += 1) {
+    const cardMedia = await page.evaluate(() => ({
+      src: document.querySelector('[data-mv-card-image]')?.getAttribute('src') || '',
+      width: document.querySelector('[data-mv-card-image]')?.naturalWidth || 0
+    }));
+    assert.match(cardMedia.src, /assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-/);
+    assert.equal(cardMedia.width > 0, true);
     const selfAssess = page.locator('[data-mv-self-assess="known"]');
     if (await selfAssess.count()) {
       await selfAssess.click();

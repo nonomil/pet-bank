@@ -1,0 +1,1162 @@
+{
+  "id": "minecraft-vocab-card-media",
+  "schemaVersion": 1,
+  "source": "prj/anki-minecraft-vocab/data/cards.json",
+  "runtimeRoot": "assets/learn/english-vocab/minecraft-cards/",
+  "assets": [
+    {
+      "id": "mc-word-block",
+      "word": "block",
+      "source": "envsprite_block(585)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-001-block.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-world",
+      "word": "world",
+      "source": "envsprite_overworld(566)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-002-world.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-hello",
+      "word": "hello",
+      "source": "envsprite_player(589)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-003-hello.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-look",
+      "word": "look",
+      "source": "Player Head (8) JE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-004-look.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-stone",
+      "word": "stone",
+      "source": "Stone.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-005-stone.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-light",
+      "word": "light",
+      "source": "envsprite_light(173)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-006-light.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-run",
+      "word": "run",
+      "source": "envsprite_sprint(150)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-007-run.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-door",
+      "word": "door",
+      "source": "Oak Door JE5.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-008-door.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-friend",
+      "word": "friend",
+      "source": "entitysprite_tamed-wolf(119)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-009-friend.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-cat",
+      "word": "cat",
+      "source": "itemsprite_cat-spawn-egg(406)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-010-cat.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-bag",
+      "word": "bag",
+      "source": "itemsprite_bundle(60)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-011-bag.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-sun",
+      "word": "sun",
+      "source": "envsprite_sun(572)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-012-sun.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-tree",
+      "word": "tree",
+      "source": "Oak Leaves JE4.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-013-tree.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-red",
+      "word": "red",
+      "source": "Red Wool JE3 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-014-red.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-play",
+      "word": "play",
+      "source": "envsprite_player(589)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-015-play.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-sword",
+      "word": "sword",
+      "source": "AF2018 Diamond Sword.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-016-sword.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-pickaxe",
+      "word": "pickaxe",
+      "source": "itemsprite_diamond-pickaxe(194)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-017-pickaxe.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-diamond",
+      "word": "diamond",
+      "source": "itemsprite_diamond(188)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-018-diamond.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-creeper",
+      "word": "creeper",
+      "source": "Creeper Head (8) JE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-019-creeper.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-craft",
+      "word": "craft",
+      "source": "Crafting Table JE4 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-020-craft.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-water",
+      "word": "water",
+      "source": "Water JE8.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-021-water.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-fire",
+      "word": "fire",
+      "source": "Fire.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-022-fire.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-house",
+      "word": "house",
+      "source": "envsprite_new-village(84)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-023-house.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-word-apple",
+      "word": "apple",
+      "source": "itemsprite_apple(75)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-024-apple.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-001-cow",
+      "word": "cow",
+      "source": "itemsprite_cow-spawn-egg(411)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-025-cow.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-002-egg",
+      "word": "egg",
+      "source": "itemsprite_egg(27)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-026-egg.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-003-oak",
+      "word": "oak",
+      "source": "Oak Log (UD) JE5 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-027-oak.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-004-pig",
+      "word": "pig",
+      "source": "itemsprite_pig-spawn-egg(444)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-028-pig.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-005-blue",
+      "word": "blue",
+      "source": "Blue Wool JE3 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-029-blue.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-006-boat",
+      "word": "boat",
+      "source": "itemsprite_oak-boat(54)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-030-boat.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-007-book",
+      "word": "book",
+      "source": "itemsprite_book(301)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-031-book.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-008-bowl",
+      "word": "bowl",
+      "source": "itemsprite_bowl(87)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-032-bowl.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-009-dirt",
+      "word": "dirt",
+      "source": "Dirt.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-033-dirt.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-010-milk",
+      "word": "milk",
+      "source": "itemsprite_milk(198)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-034-milk.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-011-sand",
+      "word": "sand",
+      "source": "Sand JE5 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-035-sand.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-012-wood",
+      "word": "wood",
+      "source": "Oak Wood (UD) JE5 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-036-wood.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-013-wool",
+      "word": "wool",
+      "source": "White Wool JE2 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-037-wool.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-014-birch",
+      "word": "birch",
+      "source": "Birch Log (UD) JE5 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-038-birch.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-015-black",
+      "word": "black",
+      "source": "Black Wool JE3 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-039-black.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-016-bread",
+      "word": "bread",
+      "source": "itemsprite_bread(88)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-040-bread.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-017-clock",
+      "word": "clock",
+      "source": "itemsprite_clock(131)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-041-clock.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-018-daisy",
+      "word": "daisy",
+      "source": "Oxeye Daisy JE7 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-042-daisy.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-019-flint",
+      "word": "flint",
+      "source": "itemsprite_flint(323)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-043-flint.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-020-grass",
+      "word": "grass",
+      "source": "Grass JE7.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-044-grass.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-021-green",
+      "word": "green",
+      "source": "Green Wool JE3 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-045-green.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-022-paper",
+      "word": "paper",
+      "source": "itemsprite_paper(62)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-046-paper.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-023-poppy",
+      "word": "poppy",
+      "source": "Poppy JE8 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-047-poppy.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-024-seeds",
+      "word": "seeds",
+      "source": "itemsprite_seeds(73)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-048-seeds.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-025-sheep",
+      "word": "sheep",
+      "source": "itemsprite_sheep-spawn-egg(453)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-049-sheep.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-026-stick",
+      "word": "stick",
+      "source": "itemsprite_stick(393)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-050-stick.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-027-sugar",
+      "word": "sugar",
+      "source": "itemsprite_sugar(271)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-051-sugar.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-028-tulip",
+      "word": "tulip",
+      "source": "Red Tulip JE7 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-052-tulip.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-029-wheat",
+      "word": "wheat",
+      "source": "itemsprite_wheat(90)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-053-wheat.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-030-white",
+      "word": "white",
+      "source": "White Wool JE2 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-054-white.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-031-acacia",
+      "word": "acacia",
+      "source": "Acacia Log (UD) JE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-055-acacia.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-032-cactus",
+      "word": "cactus",
+      "source": "Cactus JE4.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-056-cactus.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-033-flower",
+      "word": "flower",
+      "source": "Dandelion JE8 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-057-flower.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-034-gravel",
+      "word": "gravel",
+      "source": "Gravel JE5 BE4.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-058-gravel.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-035-jungle",
+      "word": "jungle",
+      "source": "300px-Jungle.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-059-jungle.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-scene"
+    },
+    {
+      "id": "mc-core-036-leaves",
+      "word": "leaves",
+      "source": "Oak Leaves JE4.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-060-leaves.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-037-orchid",
+      "word": "orchid",
+      "source": "Blue Orchid JE7 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-061-orchid.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-038-planks",
+      "word": "planks",
+      "source": "Planks JA MCD.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-062-planks.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-039-sponge",
+      "word": "sponge",
+      "source": "Sponge JE3 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-063-sponge.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-040-spruce",
+      "word": "spruce",
+      "source": "Spruce Log (UD) JE5 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-064-spruce.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-041-string",
+      "word": "string",
+      "source": "itemsprite_string(68)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-065-string.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-042-yellow",
+      "word": "yellow",
+      "source": "Yellow Wool JE1 BE1.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-066-yellow.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-043-bedrock",
+      "word": "bedrock",
+      "source": "Bedrock JE2 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-067-bedrock.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-044-chicken",
+      "word": "chicken",
+      "source": "Chicken_JE2_BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-068-chicken.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-045-compass",
+      "word": "compass",
+      "source": "itemsprite_lodestone-compass(192)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-069-compass.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-046-diorite",
+      "word": "diorite",
+      "source": "Diorite JE4 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-070-diorite.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-047-feather",
+      "word": "feather",
+      "source": "itemsprite_feather(144)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-071-feather.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-048-granite",
+      "word": "granite",
+      "source": "Granite JE2 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-072-granite.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-049-leather",
+      "word": "leather",
+      "source": "itemsprite_leather(341)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-073-leather.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-050-sapling",
+      "word": "sapling",
+      "source": "Oak Sapling JE14.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-074-sapling.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-051-andesite",
+      "word": "andesite",
+      "source": "Andesite JE3 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-075-andesite.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-052-charcoal",
+      "word": "charcoal",
+      "source": "itemsprite_charcoal(99)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-076-charcoal.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-053-mushroom",
+      "word": "mushroom",
+      "source": "Brown Mushroom JE9.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-077-mushroom.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-054-snowball",
+      "word": "snowball",
+      "source": "itemsprite_snowball(64)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-078-snowball.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-055-air",
+      "word": "air",
+      "source": "blocksprite_air(553)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-079-air.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-056-ice",
+      "word": "ice",
+      "source": "Ice JE2 BE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-080-ice.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-057-mud",
+      "word": "mud",
+      "source": "Mud JE1 BE1.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-081-mud.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-058-tnt",
+      "word": "tnt",
+      "source": "TNT JE3 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-082-tnt.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-059-bell",
+      "word": "bell",
+      "source": "Floor Bell (N) JE4.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-083-bell.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-060-cake",
+      "word": "cake",
+      "source": "Cake JE4.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-084-cake.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-061-clay",
+      "word": "clay",
+      "source": "Clay JE2 BE2.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-085-clay.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-062-lava",
+      "word": "lava",
+      "source": "Lava JE9.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-086-lava.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-063-loom",
+      "word": "loom",
+      "source": "Loom (S) JE1 BE1.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-087-loom.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-064-rail",
+      "word": "rail",
+      "source": "blocksprite_powered-rail(184)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-088-rail.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-065-tuff",
+      "word": "tuff",
+      "source": "Tuff JE1 BE1.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-089-tuff.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-066-anvil",
+      "word": "anvil",
+      "source": "Anvil (N) JE3.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-090-anvil.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-067-chain",
+      "word": "chain",
+      "source": "itemsprite_chain-helmet(97)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-091-chain.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-068-axe",
+      "word": "axe",
+      "source": "itemsprite_axe(166)_processed.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-092-axe.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-069-ore",
+      "word": "ore",
+      "source": "Coal Ore JE5 BE4.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-093-ore.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-070-cave",
+      "word": "cave",
+      "source": "300px-Dripstone_Caves.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-094-cave.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-scene"
+    },
+    {
+      "id": "mc-core-071-disk",
+      "word": "disk",
+      "source": "minecraft-disk-gpt-image-2.png",
+      "sourceQuality": "gpt-generated",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-095-disk.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-transparent"
+    },
+    {
+      "id": "mc-core-072-hill",
+      "word": "hill",
+      "source": "300px-Windswept_Hills.png",
+      "sourceQuality": "anki-matched",
+      "path": "assets/learn/english-vocab/minecraft-cards/card-096-hill.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "presentation": "normalized-scene"
+    }
+  ],
+  "presentationVersion": 1,
+  "presentation": "512px square canvas; transparent sprites are cropped and scaled with nearest-neighbor; scenes are letterboxed."
+}

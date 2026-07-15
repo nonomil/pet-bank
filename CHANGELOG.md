@@ -2,6 +2,15 @@
 
 本项目版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。完整阶段性进度见 [docs/进度/](docs/进度/)。
 
+## [v0.7.49] - 2026-07-15
+### 统一 Minecraft 单词卡视觉与内容
+
+- 修复词卡把四联 `card-frame-sheet.png` 当作整张背景铺满的问题，改为单一绿色书本外框；删除卡片内重复四角装饰，降低视觉噪声。
+- 将主站 96 张词卡统一为 512px 正方形展示画布：透明像素素材按像素风裁切缩放，丛林/洞穴/丘陵场景图以留白方式展示，避免 `cover` 裁切主体。
+- 新增 `scripts/curate-minecraft-vocab-content.cjs`，逐卡补齐适合初学者的中英短语和中英场景句，并以 `contentCuration: curated-v1` 门禁。
+- 新增 `scripts/normalize-minecraft-vocab-card-assets.py`，带 dry-run/`--apply` 两阶段资源整理；媒体 manifest 增加展示尺寸与呈现模式记录。
+- 浏览器验证覆盖外框单一、图片 `contain`、11 步学习、奖励结算和 390px 移动端横向溢出；Minecraft 内容、媒体和浏览器测试全部通过。
+
 ## [v0.7.48] - 2026-07-14
 ### GPT 生图优化 Minecraft 单词远征 UI
 
@@ -172,6 +181,15 @@
 - 静态路由契约新增“开发原型不得进入发布产物”与远程图片 URL 格式检查；原型验证与 40 条静态路由检查通过
 - 像素探险原型补齐 README、词卡构建、主角切图、地图裁切、支援图标和语音入口脚本，资源生成可复现
 - 新增 `docs/项目全景优化方案-2026-07/`，记录系统现状、目标架构、学习系统、游戏与儿童体验、分阶段工作包和验收指标
+
+## [Unreleased]
+### 🖼️ Minecraft 单词远征接入 Anki 本地图卡
+
+- 将 96 张主站 Minecraft 词卡接入 `prj/anki-minecraft-vocab/assets/media/` 提取的本地图片，生成 `assets/learn/english-vocab/minecraft-cards/manifest.json` 和逐卡来源字段。
+- 收紧媒体匹配规则，禁止低置信度文件名包含匹配；`friend`、`house`、`white`、`disk` 等高风险词使用显式可审计映射。
+- 远征学习页不再把缺图静默回退为同一张 `minecraft-card.webp`，真实缺图时显示“图片待补”占位。
+- 使用 Bee `gpt-image-2` 补齐 `disk` 词卡，生成透明像素圆盘图并在 manifest 中标记 `gpt-generated`。
+- 新增媒体内容门禁与浏览器回归，覆盖 96/96 资源存在、11 步任务图片解码、移动端布局和奖励闭环。
 
 ## [v0.7.29] - 2026-07-11
 ### 🧹 独立游戏 iframe 图片与发布体积收口

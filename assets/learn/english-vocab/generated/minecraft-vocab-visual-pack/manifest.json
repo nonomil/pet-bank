@@ -1,7 +1,7 @@
 {
   "id": "minecraft-vocab-visual-pack",
   "schemaVersion": 1,
-  "status": "pending-generation",
+  "status": "generated-gpt-image-2",
   "runtimeRoot": "assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/",
   "main": {
     "assetIds": [
