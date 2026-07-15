@@ -1206,5 +1206,8 @@
   "mediaManifestPath": "media-manifest.json",
   "mediaCount": 500,
   "mediaFormat": "webp",
-  "mediaFetchedAt": "2026-07-15T08:15:40.655390+00:00"
+  "mediaFetchedAt": "2026-07-15T08:15:40.655390+00:00",
+  "wordMapPath": "word-map.json",
+  "wordMapUniqueWords": 3761,
+  "wordMapFetchedAt": "2026-07-15T08:38:56.026Z"
 }
