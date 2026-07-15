@@ -36,6 +36,8 @@ const referenceCards = readCards(referenceDoc);
 assert.ok(mainCards.length >= 2000, 'main Minecraft learning pool should include the full merged vocabulary');
 assert.equal(referenceCards.length, 500, 'reference snapshot should stay at 500 cards');
 assert.equal(mainDoc.contentCuration, 'full-anki-reference-v1', 'main vocabulary content should use the full merged content pass');
+assert.equal(mainDoc.mediaPolicy?.imageFallback, 'themed-text-card', 'merged pool should declare the themed image fallback');
+assert.equal(mainDoc.mediaPolicy?.audioFallback, 'speech-synthesis-en-US', 'merged pool should declare the speech fallback');
 assert.equal(mediaManifest.assets.length, 96, 'Minecraft card media manifest should cover all main cards');
 mainCards.forEach((card, index) => assertCard(card, `main[${index}]`));
 referenceCards.forEach((card, index) => assertCard(card, `reference[${index}]`));

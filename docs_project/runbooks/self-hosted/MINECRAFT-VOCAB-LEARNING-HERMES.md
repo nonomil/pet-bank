@@ -6,7 +6,7 @@
 
 - 主站入口：`/app/learn/minecraft-vocab/`。
 - 主站默认学习池：2,168 个去重词，合并参考站 500 条与 Anki 可读官方词条；独立 Anki 图鉴仍保留 11,241 张卡片。原 96 张精选卡的图片映射 manifest 仍位于 `assets/learn/english-vocab/minecraft-cards/manifest.json`。
-- 参考词表：`data/learn/external/mayihaoke/word-cards.json`，当前与线上 `minewords` API 逐词核对为 500 条；接口只提供文本字段，不提供单词卡图片或音频。生产运行不实时请求外站，能匹配的 Anki 官方图片/音频由构建脚本补挂，其余使用浏览器英语发音回退。
+- 参考词表：`data/learn/external/mayihaoke/word-cards.json`，当前与线上 `minewords` API 逐词核对为 500 条；接口只提供文本字段，不提供单词卡图片或音频。生产运行不实时请求外站，能匹配的 Anki 官方图片/音频由构建脚本补挂；缺图显示统一风格的文字词卡，缺音频使用浏览器英语发音回退，不要求为每个词生成独立媒体。
 - 参考站快照更新：`node scripts/fetch-mayihaoke-minecraft-words.mjs`；抓取器会先清洗 HTML/重复项，再自动补齐中英短语和中英短句，避免覆盖后丢字段。更新快照后依次运行 `node scripts/build_minecraft_full_learning_pool.cjs` 和 `node scripts/sync_vocab_registry.cjs`。
 - 内容补全脚本：`node scripts/enrich_minecraft_vocab.cjs --apply`；适用于已有本地快照的修复或重新生成，内容门禁：`node scripts/test-minecraft-vocab-content.mjs`。
 - 全量学习池构建：`node scripts/build_minecraft_full_learning_pool.cjs`；它写入 `contentCuration: full-anki-reference-v1`，并保留已有精选卡的内容优先级。

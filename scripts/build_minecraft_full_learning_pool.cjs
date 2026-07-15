@@ -214,7 +214,9 @@ function main() {
       referenceApi: 'text-only-500-cards',
       ankiImageMatches: cards.filter(card => card.sourceProvider === 'mayihaoke' && card.image).length,
       ankiAudioMatches: cards.filter(card => card.sourceProvider === 'mayihaoke' && card.audio).length,
-      browserSpeechFallback: true
+      browserSpeechFallback: true,
+      imageFallback: 'themed-text-card',
+      audioFallback: 'speech-synthesis-en-US'
     },
     cards
   };

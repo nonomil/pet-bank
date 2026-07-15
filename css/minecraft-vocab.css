@@ -403,6 +403,11 @@ body.learn-mode .minecraft-vocab-page {
     filter: drop-shadow(0 8px 7px rgba(31, 45, 37, .16));
 }
 .mv-card-image-placeholder { display: grid; aspect-ratio: 1; width: 100%; place-items: center; color: #52705a; background: repeating-linear-gradient(135deg, rgba(255,255,255,.6) 0 12px, rgba(220,239,225,.8) 12px 24px); font-weight: 800; letter-spacing: .08em; }
+.mv-card-text-visual { position: relative; align-content: center; gap: 10px; padding: 24px; border: 1px solid rgba(82, 112, 90, .24); text-align: center; }
+.mv-card-text-visual small { color: #6d8271; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.mv-card-text-visual strong { max-width: 100%; color: #2f4d38; font-size: clamp(24px, 4vw, 42px); line-height: 1.05; overflow-wrap: anywhere; }
+.mv-card-text-visual em { color: #52705a; font-size: 18px; font-style: normal; font-weight: 700; overflow-wrap: anywhere; }
+.mv-card-text-pixel { width: 32px; height: 32px; border: 6px solid #668f70; background: #b9d9bd; box-shadow: 8px 8px 0 #8ab894, -8px -8px 0 #d9edd8; image-rendering: pixelated; }
 .mv-card-copy { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; justify-content: center; }
 .mv-word-line { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; }
 .mv-word-line strong { color: var(--mv-ink); font-size: clamp(40px, 6vw, 64px); line-height: 1; overflow-wrap: anywhere; }

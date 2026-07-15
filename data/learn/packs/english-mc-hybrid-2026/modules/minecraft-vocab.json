@@ -78650,7 +78650,7 @@
     "mayihaoke",
     "anki-apkg"
   ],
-  "generatedAt": "2026-07-15T07:10:09.430Z",
+  "generatedAt": "2026-07-15T07:42:44.809Z",
   "contentCuration": "full-anki-reference-v1",
   "sourceStats": {
     "ankiCards": 11241,
@@ -78663,6 +78663,8 @@
     "referenceApi": "text-only-500-cards",
     "ankiImageMatches": 271,
     "ankiAudioMatches": 273,
-    "browserSpeechFallback": true
+    "browserSpeechFallback": true,
+    "imageFallback": "themed-text-card",
+    "audioFallback": "speech-synthesis-en-US"
   }
 }

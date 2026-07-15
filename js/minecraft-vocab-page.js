@@ -87,6 +87,30 @@
         return /^(?:assets|prj\/anki-minecraft-vocab)\//.test(image) ? asset(image) : '';
     }
 
+    function fallbackCardVisual(card) {
+        const category = String(card?.category || 'item').toLowerCase();
+        const categoryLabels = {
+            block: '方块',
+            mob: '生物',
+            biome: '生物群系',
+            structure: '结构',
+            tool: '工具',
+            weapon: '武器',
+            food: '食物',
+            plant: '植物',
+            color: '颜色',
+            effect: '状态效果',
+            advancement: '进度',
+            item: '物品'
+        };
+        return `<div class="mv-card-image-placeholder mv-card-text-visual" data-mv-card-image-fallback data-mv-category="${escapeHtml(category)}">
+            <span class="mv-card-text-pixel" aria-hidden="true"></span>
+            <small>文字词卡 · ${escapeHtml(categoryLabels[category] || 'Minecraft')}</small>
+            <strong>${escapeHtml(card?.word || 'Minecraft')}</strong>
+            <em>${escapeHtml(card?.translation || '')}</em>
+        </div>`;
+    }
+
     function cardAudio(card) {
         const audioPath = String(card?.audio || '');
         return /^(?:assets|prj\/anki-minecraft-vocab)\//.test(audioPath) ? asset(audioPath) : '';
@@ -250,7 +274,7 @@
                 <section class="mv-session-shell" data-mv-session data-mv-mode="${escapeHtml(task.mode)}" style="--mv-session-bg: ${escapeHtml(cssImage(STAGE_IMAGES[task.mode] || STAGE_IMAGES.new))}">
                     <div class="mv-session-meta"><span>第 ${taskIndex} / 11</span><span>${escapeHtml(stageLabel(task.mode))}</span></div>
                     <div class="mv-card-grid">
-                        <div class="mv-card-art" data-mv-card-art>${cardImage(card) ? `<img src="${escapeHtml(cardImage(card))}" alt="${escapeHtml(card.word || 'Minecraft 词卡')}" data-mv-card-image loading="eager" decoding="async">` : '<div class="mv-card-image-placeholder">图片待补</div>'}</div>
+                        <div class="mv-card-art" data-mv-card-art>${cardImage(card) ? `<img src="${escapeHtml(cardImage(card))}" alt="${escapeHtml(card.word || 'Minecraft 词卡')}" data-mv-card-image loading="eager" decoding="async">` : fallbackCardVisual(card)}</div>
                         <div class="mv-card-copy">
                             <div class="mv-word-line"><strong>${escapeHtml(isQuestion ? '？' : card.word || '')}</strong><button class="mv-icon-button" type="button" data-mv-listen aria-label="播放单词发音" title="播放单词发音"><i data-lucide="volume-2" aria-hidden="true"></i></button></div>
                             ${card.phonetic ? `<span class="mv-phonetic">${escapeHtml(card.phonetic)}</span>` : ''}
