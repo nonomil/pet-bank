@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>探险终端 · 三世界参考页</title>
+    <link rel="stylesheet" href="./explore-terminal.css">
+</head>
+<body data-active-world="forest">
+    <div class="terminal-page-shell">
+        <header class="terminal-topbar">
+            <a class="terminal-brand" href="/app/" aria-label="返回萌宠冒险岛">
+                <span class="terminal-brand-mark">萌</span>
+                <span>
+                    <strong>探险终端</strong>
+                    <small>三世界首页设计预览</small>
+                </span>
+            </a>
+            <div class="terminal-topbar-actions">
+                <span class="terminal-preview-chip">REFERENCE BUILD</span>
+                <a class="terminal-back-link" href="/app/">返回主站</a>
+            </div>
+        </header>
+
+        <main class="terminal-main">
+            <section class="terminal-heading" aria-labelledby="terminalTitle">
+                <div>
+                    <p class="terminal-kicker">ADVENTURE TERMINAL / HOME</p>
+                    <h1 id="terminalTitle">选择你的探险世界</h1>
+                    <p>一个统一入口，三种不同旅程。地图是主角，按钮只负责带你继续前进。</p>
+                </div>
+                <div class="terminal-heading-stat">
+                    <span>当前设计方向</span>
+                    <strong>统一探险终端</strong>
+                </div>
+            </section>
+
+            <section class="terminal-worlds" aria-label="探险世界切换">
+                <button class="terminal-world-button is-active" type="button" data-terminal-world="forest" aria-selected="true">
+                    <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-forest-card.png" alt="森林探险世界入口">
+                    <span><strong>森林探险</strong><small>溪流、树屋和荧光路线</small></span>
+                </button>
+                <button class="terminal-world-button" type="button" data-terminal-world="sci-fi" aria-selected="false">
+                    <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-space-card.png" alt="星港科技区世界入口">
+                    <span><strong>星港科技区</strong><small>空间站、穹顶和星际航线</small></span>
+                </button>
+                <button class="terminal-world-button" type="button" data-terminal-world="block" aria-selected="false">
+                    <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-block-card.png" alt="方块地下城世界入口">
+                    <span><strong>方块地下城</strong><small>村庄、水晶和地下遗迹</small></span>
+                </button>
+            </section>
+
+            <section class="terminal-workspace" aria-label="当前世界预览">
+                <div class="terminal-stage-wrap">
+                    <div class="terminal-stage" style="--world-accent: #5ee28a">
+                        <img id="terminalPreviewImage" class="terminal-preview-image" src="../../assets/story/pixel-dialogue/ui/adventure-terminal/reference/forest.png" alt="森林探险首页设计预览">
+                        <div class="terminal-stage-label">
+                            <span class="terminal-live-dot" aria-hidden="true"></span>
+                            <div>
+                                <strong id="terminalActiveWorld">森林探险</strong>
+                                <small id="terminalWorldSubtitle">溪流、树屋和荧光路线</small>
+                            </div>
+                        </div>
+                        <img id="terminalWorldMarker" class="terminal-world-marker" src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-forest-marker.png" alt="森林探险路线标记">
+                    </div>
+                    <div class="terminal-stage-footer">
+                        <div>
+                            <span class="terminal-footer-kicker">NEXT DESTINATION</span>
+                            <strong>准备好继续点亮下一站了吗？</strong>
+                        </div>
+                        <button class="terminal-secondary-action" type="button" aria-label="打开侦探小游戏">
+                            <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/detective-badge.png" alt="">
+                            <span>侦探小游戏</span>
+                        </button>
+                        <button class="terminal-primary-action" type="button" aria-label="继续冒险">
+                            <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/continue-button.png" alt="">
+                            <span>继续冒险</span>
+                        </button>
+                    </div>
+                </div>
+
+                <aside class="terminal-side-rail" aria-label="伙伴和进度信息">
+                    <section class="terminal-panel terminal-pet-panel">
+                        <div class="terminal-panel-title"><span>同行伙伴</span><span class="terminal-panel-code">01</span></div>
+                        <img class="terminal-pet" src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/pet-companion.png" alt="蓝色狐狸伙伴">
+                        <div class="terminal-pet-name"><strong>小蓝</strong><small>陪你探索每一站</small></div>
+                    </section>
+                    <section class="terminal-panel terminal-progress-panel">
+                        <div class="terminal-panel-title"><span>成长进度</span><span class="terminal-panel-code">TODAY</span></div>
+                        <img class="terminal-progress-ring" src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-ring.png" alt="成长进度环">
+                        <div class="terminal-progress-list" aria-label="成长维度">
+                            <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-coral.png" alt="活力进度">
+                            <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-yellow.png" alt="探索进度">
+                            <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-green.png" alt="学习进度">
+                            <img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-blue.png" alt="守护进度">
+                        </div>
+                        <div class="terminal-progress-summary"><strong>12</strong><span>/ 20 个节点</span></div>
+                    </section>
+                </aside>
+            </section>
+
+            <p id="terminalLiveStatus" class="terminal-live-status" aria-live="polite">森林探险已准备好，下一站正在等你。</p>
+
+            <section class="terminal-assets" aria-labelledby="terminalAssetsTitle">
+                <div class="terminal-assets-heading">
+                    <div>
+                        <p class="terminal-kicker">ASSET EXPLOSION SHEET</p>
+                        <h2 id="terminalAssetsTitle">这套首页使用的元素</h2>
+                    </div>
+                    <span>15 个透明 PNG 部件 · 可复用</span>
+                </div>
+                <div class="terminal-asset-shelf">
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/pet-companion.png" alt="宠物伙伴部件"><figcaption>宠物</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-forest-card.png" alt="森林世界卡片部件"><figcaption>森林卡片</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-space-card.png" alt="科幻世界卡片部件"><figcaption>科幻卡片</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-block-card.png" alt="方块世界卡片部件"><figcaption>方块卡片</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-ring.png" alt="进度环部件"><figcaption>进度环</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-coral.png" alt="珊瑚进度条部件"><figcaption>进度条</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-forest-marker.png" alt="森林路线标记部件"><figcaption>路线标记</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-space-marker.png" alt="科幻路线标记部件"><figcaption>路线标记</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/world-block-marker.png" alt="方块路线标记部件"><figcaption>路线标记</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-yellow.png" alt="黄色进度条部件"><figcaption>探索进度</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-green.png" alt="绿色进度条部件"><figcaption>学习进度</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/progress-blue.png" alt="蓝色进度条部件"><figcaption>守护进度</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/reward-badge.png" alt="奖励徽章部件"><figcaption>奖励徽章</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/detective-badge.png" alt="侦探徽章部件"><figcaption>侦探入口</figcaption></figure>
+                    <figure data-terminal-asset><img src="../../assets/story/pixel-dialogue/ui/adventure-terminal/published/continue-button.png" alt="继续按钮部件"><figcaption>主按钮</figcaption></figure>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="./explore-terminal.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "sourceSheet": "adventure-terminal-ui.png",
+  "sourceSplit": "split",
+  "alpha": "RGBA with transparent outer corners",
+  "assets": [
+    { "name": "pet-companion", "file": "published/pet-companion.png", "sourcePart": "part-01_313x394.png", "role": "left pet panel" },
+    { "name": "world-space-card", "file": "published/world-space-card.png", "sourcePart": "part-02_330x385.png", "role": "world selector" },
+    { "name": "world-forest-card", "file": "published/world-forest-card.png", "sourcePart": "part-03_326x381.png", "role": "world selector" },
+    { "name": "world-block-card", "file": "published/world-block-card.png", "sourcePart": "part-04_317x371.png", "role": "world selector" },
+    { "name": "world-block-marker", "file": "published/world-block-marker.png", "sourcePart": "part-05_208x279.png", "role": "map marker" },
+    { "name": "world-space-marker", "file": "published/world-space-marker.png", "sourcePart": "part-06_203x274.png", "role": "map marker" },
+    { "name": "progress-ring", "file": "published/progress-ring.png", "sourcePart": "part-07_258x265.png", "role": "progress visual" },
+    { "name": "progress-coral", "file": "published/progress-coral.png", "sourcePart": "part-08_301x69.png", "role": "progress bar" },
+    { "name": "world-forest-marker", "file": "published/world-forest-marker.png", "sourcePart": "part-09_198x264.png", "role": "map marker" },
+    { "name": "progress-yellow", "file": "published/progress-yellow.png", "sourcePart": "part-11_300x69.png", "role": "progress bar" },
+    { "name": "progress-green", "file": "published/progress-green.png", "sourcePart": "part-12_300x69.png", "role": "progress bar" },
+    { "name": "progress-blue", "file": "published/progress-blue.png", "sourcePart": "part-13_301x69.png", "role": "progress bar" },
+    { "name": "reward-badge", "file": "published/reward-badge.png", "sourcePart": "part-14_266x222.png", "role": "reward badge" },
+    { "name": "detective-badge", "file": "published/detective-badge.png", "sourcePart": "part-15_215x224.png", "role": "detective entry" },
+    { "name": "continue-button", "file": "published/continue-button.png", "sourcePart": "part-16_421x209.png", "role": "primary action" }
+  ]
+}
