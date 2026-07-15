@@ -298,39 +298,28 @@
                 <section class="home-explore-panel" id="homeExplorePanel" aria-labelledby="homeExploreTitle">
                     <div class="home-explore-panel-head">
                         <div>
-                            <p class="home-explore-kicker">首页 / 探索地图</p>
-                            <h2 id="homeExploreTitle">今天想走哪一条路线？</h2>
-                            <p>森林探险保留在首页；故事地图也从这里直接进入。</p>
+                            <p class="home-explore-kicker">探索地图</p>
+                            <h2 id="homeExploreTitle">选择一张地图继续冒险</h2>
                         </div>
-                        <span class="home-explore-panel-status"><i data-lucide="map" aria-hidden="true"></i><span>三张主地图 + 侦探路线</span></span>
                     </div>
                     <div class="home-explore-modebar" role="tablist" aria-label="探索地图入口">
                         <button class="home-explore-mode is-active" type="button" role="tab" aria-selected="true" data-home-explore-mode="forest" onclick="openHomeExploreMode('forest')">
                             <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="map"></i></span>
-                            <span><strong>森林探险</strong><small>原有场景路线</small></span>
+                            <span><strong>森林探险</strong></span>
                         </button>
                         <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="sci-fi" onclick="openHomeExploreMode('sci-fi')">
                             <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="book-open"></i></span>
-                            <span><strong>星港科技区</strong><small>科幻故事 20 站</small></span>
+                            <span><strong>星港科技区</strong></span>
                         </button>
                         <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="block" onclick="openHomeExploreMode('block')">
                             <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="box"></i></span>
-                            <span><strong>方块地下城</strong><small>方块故事 20 站</small></span>
-                        </button>
-                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="detective" onclick="openHomeExploreMode('detective')">
-                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="search"></i></span>
-                            <span><strong>星光侦探</strong><small>额外小游戏 20 站</small></span>
+                            <span><strong>方块地下城</strong></span>
                         </button>
                     </div>
                     <div class="home-explore-view" id="homeExploreView" aria-live="polite">
                         <section class="home-forest-map-view" aria-label="森林探险地图">
                             <div class="home-forest-map-head">
-                                <div>
-                                    <p>原有探索路线</p>
-                                    <h3>森林探险地图</h3>
-                                    <span>从森林入口出发，按宠物等级逐步解锁海边、洞窟和星空终点。</span>
-                                </div>
-                                <button type="button" class="home-forest-map-action" onclick="openHomeExploreMode('forest')"><i data-lucide="refresh-cw" aria-hidden="true"></i><span>刷新路线</span></button>
+                                <h3>森林探险</h3>
                             </div>
                             <div class="map-board-shell home-forest-map-shell">
                                 <div class="map-board-surface">
@@ -340,16 +329,8 @@
                             </div>
                         </section>
                         <section class="home-pixel-world-map-view" id="homePixelWorldMapView" aria-label="像素世界地图" hidden>
-                            <div class="home-pixel-world-map-head">
-                                <div>
-                                    <p>故事漫游 / 主线地图</p>
-                                    <h3>三张地图，继续同一段回家任务</h3>
-                                    <span>每张地图 20 个节点；点亮一站，就会留下一个故事记忆。</span>
-                                </div>
-                                <button type="button" class="home-forest-map-action" onclick="openHomeExploreMode('detective')"><i data-lucide="search" aria-hidden="true"></i><span>进入侦探小游戏</span></button>
-                            </div>
                             <div class="home-pixel-world-map-shell">
-                                <div id="homePixelWorldMapSlot" aria-live="polite"></div>
+                                <div id="homePixelWorldMapSlot" data-pixel-story-host="home" aria-live="polite"></div>
                             </div>
                         </section>
                     </div>

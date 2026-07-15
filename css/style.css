@@ -8192,32 +8192,7 @@ body.shell-parent .app-bottom-dock {
 .home-explore-panel h2 { font-size: clamp(22px, 3vw, 30px); }
 .home-forest-map-head h3 { font-size: 20px; }
 
-.home-explore-panel-head > div > p:last-child,
-.home-forest-map-head span {
-    display: block;
-    margin: 8px 0 0;
-    color: #718093;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-.home-explore-panel-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    flex: 0 0 auto;
-    padding: 9px 12px;
-    border: 1px solid #e3ded2;
-    border-radius: 11px;
-    background: rgba(255,255,255,.72);
-    color: #5aa995;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.home-explore-panel-status svg,
-.home-explore-mode-icon svg,
-.home-forest-map-action svg {
+.home-explore-mode-icon svg {
     width: 16px;
     height: 16px;
     stroke-width: 2.2;
@@ -8277,26 +8252,27 @@ body.shell-parent .app-bottom-dock {
 .home-explore-mode.is-active .home-explore-mode-icon { background: #e1f0e9; color: #5aa995; }
 
 .home-explore-view { margin-top: 14px; }
-.home-forest-map-head { align-items: center; padding: 0 2px 14px; }
-.home-forest-map-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    min-height: 34px;
-    padding: 7px 11px;
-    border: 1px solid #d8e0d8;
-    border-radius: 9px;
-    background: #fffdf8;
-    color: #486d63;
-    cursor: pointer;
-    font: inherit;
-    font-size: 12px;
-    font-weight: 800;
-}
-.home-forest-map-action:hover,
-.home-forest-map-action:focus-visible { border-color: #8bbba9; outline: none; background: #f2faf5; }
+.home-forest-map-head { align-items: center; padding: 0 2px 12px; }
 .home-forest-map-shell { margin-top: 0; }
 .home-explore-map-fallback { display: grid; place-items: center; min-height: 360px; color: #62729a; font-size: 14px; }
+.home-pixel-world-map-view[hidden] { display: none; }
+.home-pixel-world-map-shell {
+    min-height: 548px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #d8e0d8;
+    border-radius: 16px;
+    background: #12203b;
+}
+.home-pixel-world-map-shell .pixel-story-map { border: 0; border-radius: 15px; box-shadow: none; }
+.home-pixel-world-map-status {
+    display: grid;
+    min-height: 548px;
+    place-items: center;
+    color: #d7e7ff;
+    font-size: 14px;
+}
+.home-pixel-world-map-status.is-error { color: #ffd2c8; }
 
 /* 星光成长侦探社与故事漫游共用同一套浅色任务终端 token。 */
 .space-growth-map-shell {
@@ -8332,7 +8308,6 @@ body.shell-parent .app-bottom-dock {
 @media (max-width: 720px) {
     .home-explore-panel-head,
     .home-forest-map-head { align-items: stretch; flex-direction: column; }
-    .home-explore-panel-status { align-self: flex-start; }
     .home-explore-modebar { width: 100%; }
 }
 
@@ -8347,5 +8322,4 @@ body.shell-parent .app-bottom-dock {
 @media (max-width: 460px) {
     .home-explore-modebar { grid-template-columns: 1fr; }
     .home-explore-mode { min-height: 46px; }
-    .home-forest-map-action { align-self: flex-start; }
 }

@@ -106,15 +106,18 @@
         var pageTitle = pageNodes.length
             ? '第 ' + (page + 1) + ' 站 · ' + (pageNodes[0].label || '新的航线')
             : '新的航线正在等待点亮';
+        var isHomeEmbed = container.dataset.pixelStoryHost === 'home';
 
         var html = '<section class="pixel-story-map pixel-story-map-world pixel-story-map-tone-' + escapeHtml(track.tone || 'default') + '" data-map-page="' + page + '" aria-label="' + escapeHtml(track.title) + '">';
-        html += '<div class="pixel-story-map-world-tabs" role="tablist" aria-label="像素世界地图">';
-        worldTracks.concat(bonusTracks).forEach(function (item) {
-            var active = item.id === track.id;
-            html += '<button type="button" class="pixel-story-world-tab' + (active ? ' is-active' : '') + '" data-world="' + escapeHtml(item.id) + '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '">';
-            html += '<strong>' + escapeHtml(item.title) + '</strong><small>' + escapeHtml(item.subtitle || '') + '</small></button>';
-        });
-        html += '</div>';
+        if (!isHomeEmbed) {
+            html += '<div class="pixel-story-map-world-tabs" role="tablist" aria-label="像素世界地图">';
+            worldTracks.forEach(function (item) {
+                var active = item.id === track.id;
+                html += '<button type="button" class="pixel-story-world-tab' + (active ? ' is-active' : '') + '" data-world="' + escapeHtml(item.id) + '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '">';
+                html += '<strong>' + escapeHtml(item.title) + '</strong><small>' + escapeHtml(item.subtitle || '') + '</small></button>';
+            });
+            html += '</div>';
+        }
         if (background) html += '<img class="pixel-story-map-bg" src="' + background + '" alt="">';
         html += '<div class="pixel-story-map-chrome">';
         html += '<div><span class="pixel-story-map-kicker">PIXEL WORLDS / ' + escapeHtml(track.id.toUpperCase()) + '</span><strong>' + escapeHtml(track.title) + '</strong><small>' + escapeHtml(pageTitle) + '</small></div>';
