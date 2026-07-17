@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成长伙伴 · 萌宠冒险岛</title>
+    <link rel="icon" href="data:,">
+    <base id="routeBase" href="./">
+    <script>
+        (function () {
+            if (!/^https?:$/.test(window.location.protocol)) return;
+            var currentUrl;
+            try {
+                currentUrl = new URL(window.location.href);
+            } catch (error) {
+                return;
+            }
+            var route = currentUrl.searchParams.get('route');
+            if (!route) return;
+            try {
+                route = decodeURIComponent(route);
+            } catch (error) {
+                route = String(route || '');
+            }
+            route = route.trim();
+            if (!route) return;
+            if (route.charAt(0) !== '/') route = `/${route.replace(/^\/+/, '')}`;
+            // Keep the repository prefix when the static site is hosted at /<repo>/.
+            // Route shims redirect to index.html?route=..., including on GitHub Pages.
+            var routeBasePrefix = currentUrl.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '');
+            var routeRootMatch = routeBasePrefix.match(/\/(?:app|parent|settings)(?:\/|$)/);
+            if (routeRootMatch) routeBasePrefix = routeBasePrefix.slice(0, routeRootMatch.index);
+            currentUrl.pathname = `${routeBasePrefix}${route}`;
+            currentUrl.searchParams.delete('route');
+            var nextUrl = `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`;
+            window.history.replaceState(window.history.state, '', nextUrl);
+        })();
+    </script>
+    <script>
+        (function () {
+            var baseEl = document.getElementById('routeBase');
+            var base = './';
+            if (/^https?:$/.test(window.location.protocol)) {
+                var path = window.location.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/g, '') || '/';
+                    var routePrefixes = ['/app', '/settings', '/today', '/learn', '/picturebooks', '/pet', '/explore', '/playground', '/parent', '/shop'];
+                var matchedIndex = Infinity;
+                var matchedBase = null;
+                for (var i = 0; i < routePrefixes.length; i += 1) {
+                    var prefix = routePrefixes[i];
+                    var index = path.indexOf(prefix);
+                    var nextChar = path.charAt(index + prefix.length);
+                    if (index >= 0 && index < matchedIndex && (!nextChar || nextChar === '/')) {
+                        matchedIndex = index;
+                        matchedBase = path.slice(0, index) || '/';
+                    }
+                }
+                if (matchedBase !== null) {
+                    base = matchedBase;
+                    if (base !== '/' && !/\/$/.test(base)) base += '/';
+                }
+            }
+            if (baseEl) baseEl.setAttribute('href', base);
+        })();
+    </script>
+    <link rel="stylesheet" href="css/vendor/tailwind-lite.css">
+    <link rel="stylesheet" href="css/style.css?v=20260718-glass-home">
+    <link rel="stylesheet" href="css/showcase.css">
+    <link rel="stylesheet" href="css/treasure.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body class="map-page-bg">
+    <a class="skip-link" href="#mainContent">跳到主要内容</a>
+    <!-- TOP NAV -->
+    <div class="top-nav">
+        <div class="top-nav-inner max-w-7xl mx-auto">
+            <div class="top-nav-row flex items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="logo-circle">萌</div>
+                    <div>
+                        <h1 class="text-base font-bold">成长伙伴 · 萌宠冒险岛</h1>
+                        <p class="text-xs text-muted">任务 · 积分 · 宠物养成 · 探索冒险</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1 primary-nav">
+                    <div class="nav-tab active" data-page="map" onclick="switchPage('map')">🏠 首页</div>
+                    <div class="nav-hub" data-page="today">
+                        <button class="nav-tab nav-tab-parent" data-page="today" type="button" onclick="handlePrimaryNavClick('today')">
+                            <span>⭐ 积分</span>
+                            <span class="nav-tab-caret" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="nav-tab" data-page="learn" onclick="switchPage('learn')">📚 学习</div>
+                    <div class="nav-tab" data-page="picturebooks" onclick="switchPage('picturebooks')">📖 绘本</div>
+                    <div class="nav-hub" data-page="pet">
+                        <button class="nav-tab nav-tab-parent" data-page="pet" type="button" onclick="handlePrimaryNavClick('pet')">
+                            <span>🐾 宠物</span>
+                            <span class="nav-tab-caret" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="nav-tab" data-page="explore" onclick="switchPage('explore')">🗺️ 探索</div>
+                    <div class="nav-hub" data-page="playground">
+                        <button class="nav-tab nav-tab-parent" data-page="playground" type="button" onclick="handlePrimaryNavClick('playground')">
+                            <span>🎡 游乐场</span>
+                            <span class="nav-tab-caret" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="profile-switcher" id="profileSwitcher" onclick="ProfileUI.toggle(event)" title="切换孩子">
+                    <span id="profileCurEmoji">🧒</span>
+                    <span id="profileCurName">默认孩子</span>
+                    <span class="profile-caret">▾</span>
+                </div>
+                <button class="nav-tab nav-utility-settings" data-page="parent" type="button" onclick="switchPage('parent')" title="家长管理、设置、作品与低频工具">
+                    <span>⚙️ 家长区</span>
+                </button>
+                <div class="point-capsule">
+                    <span>分</span>
+                    <span class="num" id="topPoints">0</span>
+                    <span>成长分</span>
+                </div>
+            </div>
+            <div class="nav-tab-menu" id="topHubMenu" hidden></div>
+        </div>
+    </div>
+
+    <nav class="parent-shell-nav" aria-label="家长管理导航">
+        <div class="parent-shell-nav-inner max-w-7xl mx-auto">
+            <div class="parent-shell-context" aria-label="当前家庭">
+                <span class="parent-shell-context-mark" aria-hidden="true">⌂</span>
+                <span class="parent-shell-context-copy">
+                    <small>当前家庭</small>
+                    <strong id="parentShellHouseholdName">本机家庭</strong>
+                </span>
+            </div>
+            <span class="parent-shell-nav-divider" aria-hidden="true"></span>
+            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="parent" onclick="switchPage('parent')">
+                <i data-lucide="home" class="w-4 h-4" aria-hidden="true"></i>
+                <span>管理大厅</span>
+            </button>
+            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="settings" onclick="switchPage('settings', { settingsSection: 'family' })">
+                <i data-lucide="settings" class="w-4 h-4" aria-hidden="true"></i>
+                <span>设置管理</span>
+            </button>
+            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="works" onclick="switchPage('works')">
+                <i data-lucide="archive" class="w-4 h-4" aria-hidden="true"></i>
+                <span>成长作品</span>
+            </button>
+            <button class="parent-shell-nav-item" type="button" data-parent-shell-nav="tools" onclick="switchPage('tools')">
+                <i data-lucide="wrench" class="w-4 h-4" aria-hidden="true"></i>
+                <span>工具箱</span>
+            </button>
+            <button class="parent-shell-nav-item parent-shell-nav-item-app" type="button" data-parent-shell-nav="app" onclick="switchPage('map')">
+                <i data-lucide="gamepad-2" class="w-4 h-4" aria-hidden="true"></i>
+                <span>进入孩子端</span>
+            </button>
+            <button class="parent-shell-account" type="button" onclick="switchPage('settings', { settingsSection: 'family' })" title="账号与家庭设置">
+                <span class="parent-shell-account-mark" aria-hidden="true">家</span>
+                <span class="parent-shell-account-name">账号与家庭</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="app-shell-bar" aria-label="孩子端状态栏">
+        <button class="app-shell-brand" type="button" onclick="switchPage('map')" aria-label="返回孩子首页">
+            <i data-lucide="home" class="w-4 h-4" aria-hidden="true"></i>
+            <span>萌宠冒险岛</span>
+        </button>
+        <div class="app-shell-status">
+            <span id="appShellChildName">默认孩子</span>
+            <span><strong id="appShellPoints">0</strong> 成长分</span>
+        </div>
+        <button class="app-shell-parent-link" type="button" onclick="switchPage('parent')">
+            <i data-lucide="settings" class="w-4 h-4" aria-hidden="true"></i>
+            <span>家长区</span>
+        </button>
+    </div>
+
+    <div class="playground-arena-shell-bar" id="playgroundArenaShellBar" aria-label="卡牌对战快捷栏" hidden>
+        <button class="playground-stage-btn" type="button" onclick="switchPage('map')">回到首页</button>
+        <div class="playground-arena-shell-title">
+            <span>游乐场对战</span>
+            <strong>卡牌对战</strong>
+        </div>
+        <button class="playground-stage-btn is-close" type="button" onclick="closeCardArenaEntry()">关闭</button>
+    </div>
+
+    <div class="page-shell max-w-7xl mx-auto px-6 py-6 flex gap-6">
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar">
+            <div class="card">
+                <div class="card-header"><h3 class="text-sm font-bold">今日任务</h3></div>
+                <div class="card-body space-y-2" id="sidebarTasks"></div>
+            </div>
+            <div class="card home-summary-card">
+                <div class="card-body">
+                    <div class="home-summary-head">
+                        <div>
+                            <p class="home-summary-kicker">首页状态</p>
+                            <h3>今日概览</h3>
+                        </div>
+                        <span class="home-summary-child" id="mapHomeChildName">默认孩子</span>
+                    </div>
+                    <button class="home-summary-focus" type="button" onclick="switchPage('today')">
+                        <span class="home-summary-focus-label">今日建议</span>
+                        <strong id="mapHomeFocusTitle">阅读 20 分钟</strong>
+                        <span id="mapHomeFocusMeta">完成后拿 1 分，读完就能继续点开喜欢的栏目。</span>
+                    </button>
+                    <div class="home-summary-stats">
+                        <div>
+                            <span>总积分</span>
+                            <strong id="mapPoints">0</strong>
+                        </div>
+                        <div>
+                            <span>宠物等级</span>
+                            <strong id="mapPetLevel">Lv.1</strong>
+                        </div>
+                        <div>
+                            <span>胜场</span>
+                            <strong id="mapWins">0</strong>
+                        </div>
+                    </div>
+                    <button class="home-summary-pet" type="button" onclick="switchPage('pet')">
+                        <span class="home-summary-avatar">
+                            <img id="mapCompanionImg" alt="当前同行宠物" decoding="async">
+                        </span>
+                        <span class="home-summary-pet-copy">
+                            <span class="home-summary-pet-kicker">同行伙伴</span>
+                            <strong id="mapCompanionName">还没有领养宠物</strong>
+                            <span id="mapCompanionStage">去宠物养成页挑一位伙伴一起冒险</span>
+                            <small id="mapNextSceneHint">下一站会显示在这里</small>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <label class="text-xs font-medium block mb-2">孩子信息</label>
+                    <input type="text" class="text-input" placeholder="例如：小树苗" id="childName">
+                    <p class="text-xs text-muted mt-3">填写孩子昵称，首页会同步任务、积分和宠物状态。</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content" id="mainContent" tabindex="-1">
+            <!-- PAGE: 成长地图（场景探索首页） -->
+            <div class="page active" id="page-map">
+                <section class="child-journey-hero" id="childJourneyHero" aria-labelledby="childJourneyTitle">
+                    <div class="child-journey-hero-copy">
+                        <span class="child-journey-step">今天第 1 步</span>
+                        <h2 id="childJourneyTitle">先完成一件小事</h2>
+                        <p>完成今天的任务，再带小伙伴去看看有什么新变化。</p>
+                    </div>
+                    <button class="child-journey-hero-action" type="button" onclick="switchPage('today')">
+                        <span>开始今天的任务</span>
+                        <small>约 3 分钟 · 完成后有成长分</small>
+                    </button>
+                </section>
+                <section class="dash-launcher child-journey-launcher" aria-label="孩子主线入口">
+                    <div class="dash-launcher-head">
+                        <div>
+                            <p class="home-summary-kicker">接下来去哪儿</p>
+                            <h2>选一条小路继续</h2>
+                        </div>
+                        <span>先做今天，再陪伙伴冒险</span>
+                    </div>
+                    <div class="child-journey-main-grid">
+                        <button class="child-journey-entry is-today" id="childJourneyToday" type="button" onclick="switchPage('today')">
+                            <span class="child-journey-entry-icon" aria-hidden="true">📝</span>
+                            <span class="child-journey-entry-copy"><strong>今天</strong><small>任务、学习和今天的目标</small></span>
+                            <span class="child-journey-arrow" aria-hidden="true">→</span>
+                        </button>
+                        <button class="child-journey-entry is-pet" id="childJourneyPet" type="button" onclick="switchPage('pet')">
+                            <span class="child-journey-entry-icon" aria-hidden="true">🐾</span>
+                            <span class="child-journey-entry-copy"><strong>伙伴</strong><small>看看小伙伴今天怎么样</small></span>
+                            <span class="child-journey-arrow" aria-hidden="true">→</span>
+                        </button>
+                        <button class="child-journey-entry is-adventure" id="childJourneyAdventure" type="button" onclick="switchPage('playground')">
+                            <span class="child-journey-entry-icon" aria-hidden="true">🎮</span>
+                            <span class="child-journey-entry-copy"><strong>冒险</strong><small>选一局短挑战，练习新本领</small></span>
+                            <span class="child-journey-arrow" aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                    <div class="child-journey-more" id="childJourneyMore">
+                        <span>还想看看？</span>
+                        <button type="button" onclick="switchPage('explore')">去探索故事</button>
+                        <button type="button" onclick="switchPage('shop')">去兑换奖励</button>
+                    </div>
+                </section>
+
+                <section class="home-explore-panel" id="homeExplorePanel" aria-labelledby="homeExploreTitle">
+                    <div class="home-explore-panel-head">
+                        <div>
+                            <p class="home-explore-kicker">探索地图</p>
+                            <h2 id="homeExploreTitle">选择一张地图继续冒险</h2>
+                        </div>
+                    </div>
+                    <div class="home-explore-modebar" role="tablist" aria-label="探索地图入口">
+                        <button class="home-explore-mode is-active" type="button" role="tab" aria-selected="true" data-home-explore-mode="forest" onclick="openHomeExploreMode('forest')">
+                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="map"></i></span>
+                            <span><strong>森林探险</strong></span>
+                        </button>
+                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="sci-fi" onclick="openHomeExploreMode('sci-fi')">
+                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="book-open"></i></span>
+                            <span><strong>星港科技区</strong></span>
+                        </button>
+                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="block" onclick="openHomeExploreMode('block')">
+                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="box"></i></span>
+                            <span><strong>方块地下城</strong></span>
+                        </button>
+                    </div>
+                    <div class="home-explore-view" id="homeExploreView" aria-live="polite">
+                        <section class="home-forest-map-view" aria-label="森林探险地图">
+                            <div class="home-forest-map-head">
+                                <h3>森林探险</h3>
+                            </div>
+                            <div class="map-board-shell home-forest-map-shell">
+                                <div class="map-board-surface">
+                                    <div class="map-board-texture" aria-hidden="true"></div>
+                                    <div class="map-board" id="sceneGridMap" aria-label="森林探险场景路线"></div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="home-pixel-world-map-view" id="homePixelWorldMapView" aria-label="像素世界地图" hidden>
+                            <div class="home-pixel-world-map-shell">
+                                <div id="homePixelWorldMapSlot" data-pixel-story-host="home" aria-live="polite"></div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+                <div class="home-stage-stack">
+                    <section class="showcase" id="showcase" aria-label="首页栏目轮播">
+                        <div class="showcase-track" id="showcaseTrack"></div>
+                        <button class="showcase-arrow showcase-prev" id="showcasePrev" type="button" aria-label="上一张">‹</button>
+                        <button class="showcase-arrow showcase-next" id="showcaseNext" type="button" aria-label="下一张">›</button>
+                        <div class="showcase-dots" id="showcaseDots"></div>
+                    </section>
+                </div>
+
+                <section class="child-journey-feedback" id="childJourneyFeedback" hidden aria-live="polite" aria-labelledby="childJourneyFeedbackTitle">
+                    <div class="child-journey-feedback-copy">
+                        <span class="child-journey-step">小伙伴收到啦</span>
+                        <h2 id="childJourneyFeedbackTitle">你完成了一件很棒的小事！</h2>
+                        <p id="childJourneyFeedbackText">小伙伴正在为你鼓掌。</p>
+                    </div>
+                    <div class="child-journey-feedback-actions">
+                        <button type="button" onclick="switchPage('pet')">看看伙伴</button>
+                        <button type="button" class="is-quiet" onclick="switchPage('map')">回到首页</button>
+                    </div>
+                </section>
+
+                <section class="map-warehouse-panel" id="treasureWarehouseCard">
+                    <div class="map-panel-head">
+                        <div>
+                            <p class="map-warehouse-kicker">首页 / 宝箱仓库</p>
+                            <h3 class="text-lg font-bold">宝箱仓库</h3>
+                            <p class="map-warehouse-note">常用奖励集中放在这里，路线地图继续放在「探索」页。</p>
+                        </div>
+                        <div class="map-panel-head-right">
+                            <span class="map-ribbon">奖励集中收纳</span>
+                            <span class="map-count" id="chestDailyStatus">今日未领取</span>
+                        </div>
+                    </div>
+                    <div class="warehouse-grid warehouse-grid-expanded" id="treasureWarehouseGrid"></div>
+                </section>
+            </div>
+
+            <!-- PAGE: 家长管理首页 -->
+            <div class="page" id="page-parent">
+                <section class="map-hero parent-home-hero">
+                    <div class="map-hero-copy">
+                        <p class="map-eyebrow">家长区</p>
+                        <h2>家长管理</h2>
+                        <p>登录家长账号，创建家庭后再添加孩子。</p>
+                    </div>
+                </section>
+                <section class="parent-home-primary" aria-labelledby="parent-home-primary-title">
+                    <span class="parent-home-entry-kicker">开始使用</span>
+                    <h3 id="parent-home-primary-title">添加孩子</h3>
+                    <p>孩子会挂靠到当前家庭；没有登录或家庭时，系统会带你先完成设置。</p>
+                    <div class="parent-home-primary-actions">
+                        <button type="button" class="parent-home-primary-action is-featured" onclick="window.ParentAccountUI?.startChildSetup()">
+                            <i data-lucide="baby" class="w-5 h-5" aria-hidden="true"></i>
+                            <span><strong>添加孩子</strong><small>登录后创建孩子档案</small></span>
+                            <b aria-hidden="true">→</b>
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PAGE: 设置 / 账号管理 -->
+            <div class="page" id="page-settings">
+                <section class="map-hero" style="margin-bottom:16px;">
+                    <div class="map-hero-copy">
+                        <p class="map-eyebrow" id="settingsHeroEyebrow">设置 / 家长区</p>
+                        <h2 id="settingsHeroTitle">设置首页</h2>
+                        <p id="settingsHeroCopy">默认设置可以直接使用。需要调整时，再选择学习单或数学 PK 难度。</p>
+                    </div>
+                </section>
+                <section class="map-stage-panel parent-settings-panel settings-subpage-shell" aria-label="家长设置分区">
+                    <nav class="settings-subpage-nav" aria-label="设置子页面">
+                        <a class="settings-subpage-nav-item is-current" href="/settings/family" data-settings-nav="family" onclick="handleSettingsNavClick(event, 'family')">家庭与孩子</a>
+                        <details class="settings-subpage-nav-more">
+                            <summary>更多设置</summary>
+                            <a class="settings-subpage-nav-item" href="/settings/learning" data-settings-nav="learning" onclick="handleSettingsNavClick(event, 'learning')">学习与题目</a>
+                            <a class="settings-subpage-nav-item" href="/settings/rules" data-settings-nav="rules" onclick="handleSettingsNavClick(event, 'rules')">规则模板</a>
+                            <a class="settings-subpage-nav-item" href="/settings/advanced" data-settings-nav="advanced" onclick="handleSettingsNavClick(event, 'advanced')">高级操作</a>
+                        </details>
+                    </nav>
+                    <div class="parent-settings-shell settings-subpage-panels">
+                        <section class="parent-settings-section settings-subpage-panel is-active" data-settings-section="home" aria-labelledby="parent-settings-home-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">家长区目录</p>
+                                    <h3 id="parent-settings-home-title">设置首页</h3>
+                                </div>
+                                <span class="parent-settings-tag">可直达</span>
+                            </div>
+                            <p class="parent-settings-copy">设置首页只保留入口，不再把账号、云端、学习、规则和危险操作全部堆在同一屏。需要处理哪类事情，就进入对应子页。</p>
+                            <div class="settings-home-grid">
+                                <a class="settings-home-entry" href="/settings/family" onclick="handleSettingsNavClick(event, 'family')">
+                                    <span class="settings-home-entry-kicker">常用</span>
+                                    <strong>家庭与孩子</strong>
+                                    <span>登录家长账号，创建家庭后添加孩子。</span>
+                                </a>
+                                <a class="settings-home-entry" href="/settings/learning" onclick="handleSettingsNavClick(event, 'learning')">
+                                    <span class="settings-home-entry-kicker">低频调整</span>
+                                    <strong>学习与题目</strong>
+                                    <span>学习单模式与数学 PK 难度。</span>
+                                </a>
+                                <a class="settings-home-entry" href="/settings/advanced" onclick="handleSettingsNavClick(event, 'advanced')">
+                                    <span class="settings-home-entry-kicker">默认隐藏</span>
+                                    <strong>高级操作</strong>
+                                    <span>备份、诊断、覆盖类操作集中收纳。</span>
+                                </a>
+                            </div>
+                        </section>
+
+                        <section class="parent-settings-section settings-subpage-panel" data-settings-section="family" aria-labelledby="parent-settings-account-service-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                            <p class="parent-settings-kicker">家长管理</p>
+                                    <h3 id="parent-settings-account-service-title">家庭与孩子</h3>
+                                </div>
+                                <span class="parent-settings-tag">常用</span>
+                            </div>
+                            <p class="parent-settings-copy">登录家长账号，创建或加入家庭后，再添加孩子。</p>
+                            <div id="parent-account-root"></div>
+                        </section>
+
+                        <section class="parent-settings-section settings-subpage-panel" data-settings-section="learning" aria-labelledby="parent-settings-learning-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">学习体验</p>
+                                    <h3 id="parent-settings-learning-title">学习与题目</h3>
+                                </div>
+                                <span class="parent-settings-tag">低频调整</span>
+                            </div>
+                            <p class="parent-settings-copy">默认设置可以直接使用。需要调整时，再选择学习单或数学 PK 难度。</p>
+                            <div class="parent-settings-inline-grid">
+                                <div id="settings-learning-mode"></div>
+                                <div id="settings-math-diff"></div>
+                            </div>
+                        </section>
+
+                        <section class="parent-settings-section parent-settings-section-muted settings-subpage-panel" data-settings-section="rules" aria-labelledby="parent-settings-rules-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">积分规则</p>
+                                    <h3 id="parent-settings-rules-title">规则模板</h3>
+                                </div>
+                                <span class="parent-settings-tag">规划中</span>
+                            </div>
+                            <p class="parent-settings-copy">后续会把阅读完成、数学挑战、主动复盘、整理书包等加分/扣分项做成可编辑模板。</p>
+                            <div class="parent-settings-note">
+                                现在先保留为说明区，避免在没有角色权限和备份确认前开放批量规则编辑。
+                            </div>
+                        </section>
+
+                        <section class="parent-settings-section parent-settings-section-danger settings-subpage-panel" data-settings-section="advanced" aria-labelledby="parent-settings-advanced-title">
+                            <div class="parent-settings-section-head">
+                                <div>
+                                    <p class="parent-settings-kicker">备份与诊断</p>
+                                    <h3 id="parent-settings-advanced-title">高级与危险操作</h3>
+                                </div>
+                                <span class="parent-settings-tag">默认隐藏</span>
+                            </div>
+                            <p class="parent-settings-copy">数据导入、导出、本机诊断和覆盖类操作统一收纳到高级区，普通模式不直接打扰家长和孩子。</p>
+                            <p class="parent-settings-note">自托管账号服务上线后，备份和恢复将由 VPS 发布流程管理；当前高级操作仍只作用于本机数据。</p>
+                            <div id="diagnostics-root"></div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PAGE: 绘本馆 -->
+            <div class="page" id="page-picturebooks">
+                <div class="picturebooks-page" id="picturebooks-root">
+                    <div class="picturebooks-loading" aria-live="polite">正在打开绘本馆...</div>
+                </div>
+            </div>
+
+            <!-- PAGE: 今日打卡 -->
+            <div class="page" id="page-today">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：今日打卡</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
+                <section class="points-agnes-dashboard" aria-label="今日成长积分">
+                    <div class="points-agnes-top">
+                        <img class="points-agnes-child" src="assets/ui/points-exchange/kidstar-guide.webp" alt="星星向导" loading="lazy" decoding="async" fetchpriority="low">
+                        <div class="points-agnes-balance" aria-label="当前成长分">
+                            <span>⭐</span>
+                            <strong id="agnesTodayPoints">0</strong>
+                        </div>
+                    </div>
+                    <div class="points-agnes-message">
+                        <strong id="agnesTodayChild">宝贝</strong>，每天都不缺席，你就是好习惯的守护者！
+                    </div>
+
+                    <!-- 可点击宠物形象卡：点击弹出加分/扣分项目弹窗 -->
+                    <div class="reward-pet-card agnes-score-card" id="rewardPetCard" onclick="openPointItemModal()" role="button" tabindex="0" title="点击给 TA 加分或扣分">
+                        <div class="reward-pet-avatar">
+                            <img id="rewardPetImg" alt="宠物立绘" loading="lazy" decoding="async" fetchpriority="low">
+                        </div>
+                        <div class="reward-pet-copy">
+                            <p class="reward-pet-kicker">给 <span id="rewardChildName">宝贝</span> 加分 / 扣分</p>
+                            <h3 id="rewardPetName">点击伙伴开启奖惩</h3>
+                            <p class="reward-pet-hint">当前成长分 <strong id="rewardCurPoints">0</strong> · 轻触立绘即可操作</p>
+                        </div>
+                        <div class="reward-pet-cta">
+                            <span class="reward-pet-cta-btn">＋ － 积分</span>
+                        </div>
+                    </div>
+                </section>
+                <div class="card agnes-task-shell">
+                    <div class="card-header flex items-center justify-between">
+                        <div><h2 class="text-lg font-bold">今日成长卡片</h2><p class="text-xs mt-1 text-muted">点亮一张卡，就收下一颗小星星</p></div>
+                        <button class="btn-primary" onclick="completeRecommended()"><i data-lucide="check-check" class="w-4 h-4"></i>完成推荐</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="agnes-task-grid" id="taskGrid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: 学习单 -->
+            <div class="page" id="page-learning-sheet">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：学习单</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
+                <div id="points-learning-sheet-container"></div>
+                <div class="card">
+                    <div class="card-header flex items-center justify-between">
+                        <div><h2 class="text-lg font-bold">继续学习</h2><p class="text-xs mt-1 text-muted">先去学习入口大厅选内容，学完再回来这里打勾收口。</p></div>
+                        <button class="btn-secondary" onclick="switchPage('learn')">去学习入口</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: 每周复盘 -->
+            <div class="page" id="page-review">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：每周复盘</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
+                <section class="growth-sticker-report" aria-label="成长报表">
+                    <div class="growth-report-head">
+                        <div>
+                            <p class="growth-report-kicker">成长报表</p>
+                            <h2>今天点亮了 <span id="growthReportDone">0</span> 张习惯贴纸</h2>
+                            <p>像收集小星星一样，把好习惯一格一格点亮。</p>
+                        </div>
+                        <div class="growth-report-badge"><span>⭐</span><strong id="growthReportPoints">0</strong></div>
+                    </div>
+                    <div class="growth-heatmap" id="growthHeatmap" aria-label="今日打卡热力格"></div>
+                    <div class="growth-legend"><span><i class="is-done"></i>已打卡</span><span><i></i>未打卡</span></div>
+                    <div class="growth-habit-list" id="growthHabitRows"></div>
+                </section>
+                <section class="review-battle-board" aria-label="跨玩法成长复盘">
+                    <div class="review-battle-board-head">
+                        <div>
+                            <p class="growth-report-kicker">跨玩法成长复盘</p>
+                            <h2>把练习、对战和探索串成一条会继续推进的路线</h2>
+                            <p>不是只看一次胜负，而是看今天已经会了什么、下一步该去哪里继续。</p>
+                        </div>
+                        <div class="review-battle-board-badge"><span>🎮</span><strong id="reviewBattleMomentum">0</strong></div>
+                    </div>
+                    <div id="reviewBattleBoard"></div>
+                </section>
+                <div class="card">
+                    <div class="card-header"><h2 class="text-lg font-bold">每周家庭复盘</h2><p class="text-xs mt-1 text-muted">5-10 分钟，看清进度，下周再调整节奏</p></div>
+                    <div class="card-body">
+                        <div id="family-review-root"></div>
+                        <div class="grid grid-cols-2 gap-4 family-review-notes">
+                            <div class="review-box"><label class="text-xs font-bold block mb-2 text-sage">✨ 本周做得最好的事</label><textarea class="text-input h-24 resize-none"></textarea></div>
+                            <div class="review-box"><label class="text-xs font-bold block mb-2 text-sage">🧗 遇到的困难</label><textarea class="text-input h-24 resize-none"></textarea></div>
+                            <div class="review-box"><label class="text-xs font-bold block mb-2 text-sage">🎯 下周想调整的</label><textarea class="text-input h-24 resize-none"></textarea></div>
+                            <div class="review-box"><label class="text-xs font-bold block mb-2 text-sage">👨‍👩‍👧 家长看到的进步</label><textarea class="text-input h-24 resize-none"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: 学习中心 -->
+            <div class="page" id="page-learn">
+                <div id="learn-container"></div>
+            </div>
+
+            <!-- PAGE: 学习资料包 -->
+            <div class="page" id="page-learn-pack">
+                <div id="learn-pack-container"></div>
+            </div>
+
+            <!-- PAGE: 学习计划 -->
+            <div class="page" id="page-learn-plan">
+                <div id="learn-plan-container"></div>
+            </div>
+
+            <!-- PAGE: 学习内容 -->
+            <div class="page" id="page-learn-lesson">
+                <div id="learn-lesson-container"></div>
+            </div>
+
+            <!-- PAGE: 打印页 -->
+            <div class="page" id="page-learn-print">
+                <div id="learn-print-container"></div>
+            </div>
+
+            <!-- PAGE: Minecraft 单词远征 -->
+            <div class="page" id="page-minecraft-vocab">
+                <div id="minecraft-vocab-root"></div>
+            </div>
+
+            <!-- PAGE: 奖励兑换 -->
+            <div class="page" id="page-reward">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：奖励兑换</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
+                <section class="reward-exchange-deck" aria-label="星星兑换">
+                    <div class="reward-exchange-hero">
+                        <div class="reward-exchange-balance"><span>⭐</span><strong id="rewardExchangePoints">0</strong></div>
+                        <img src="assets/ui/points-exchange/kidstar-gift-box.webp" alt="星星兑换礼盒" loading="lazy" decoding="async" fetchpriority="low">
+                        <h2>点击抽盲盒，或换一个家庭小奖励</h2>
+                        <p>攒到足够成长分，就把今天的努力变成看得见的小惊喜。</p>
+                        <button class="btn-primary" type="button" onclick="switchPage('shop')">去盲盒商店</button>
+                    </div>
+                    <div class="reward-exchange-list">
+                        <article class="reward-tier agnes-reward-card">
+                            <span class="reward-tier-price">10 分</span>
+                            <h3>睡前故事加一页</h3>
+                            <p>今天多听一个小冒险，带着好心情睡觉。</p>
+                            <button class="btn-secondary w-full mt-4 text-xs" onclick="redeemFamilyReward(10, '睡前故事加一页')">兑换</button>
+                        </article>
+                        <article class="reward-tier agnes-reward-card">
+                            <span class="reward-tier-price">30 分</span>
+                            <h3>家庭小游戏 10 分钟</h3>
+                            <p>和家人玩一局轻松小游戏，把笑声也存进成长表。</p>
+                            <button class="btn-secondary w-full mt-4 text-xs" onclick="redeemFamilyReward(30, '家庭小游戏 10 分钟')">兑换</button>
+                        </article>
+                        <article class="reward-tier agnes-reward-card">
+                            <span class="reward-tier-price">60 分</span>
+                            <h3>周末小心愿</h3>
+                            <p>选一次小出游、小手作或心愿活动，庆祝坚持。</p>
+                            <button class="btn-secondary w-full mt-4 text-xs" onclick="redeemFamilyReward(60, '周末小心愿')">兑换</button>
+                        </article>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PAGE: 游乐场 Hub（分解图还原 v4） -->
+            <div class="page" id="page-playground">
+                <!-- Header：IP人物 + 金币徽章 -->
+                <div class="pg-header">
+                    <img class="pg-mascot-img" src="assets/ui/pg-mascot.webp" alt="吉祥物" loading="lazy" decoding="async" fetchpriority="low">
+                    <div class="pg-coin-badge" title="我的积分">
+                        <svg class="coin-svg" viewBox="0 0 286 132" width="143" height="66">
+                            <defs>
+                                <linearGradient id="coinGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#f8ebc2"/>
+                                    <stop offset="30%" stop-color="#c9a44d"/>
+                                    <stop offset="60%" stop-color="#b78c34"/>
+                                    <stop offset="100%" stop-color="#8a6a28"/>
+                                </linearGradient>
+                                <radialGradient id="coinIcon" cx="0.4" cy="0.35">
+                                    <stop offset="0%" stop-color="#ffe680"/>
+                                    <stop offset="60%" stop-color="#daa520"/>
+                                    <stop offset="100%" stop-color="#8a6a28"/>
+                                </radialGradient>
+                            </defs>
+                            <rect x="0" y="2" width="280" height="124" rx="26" fill="url(#coinGrad)"
+                                  stroke="#8a6a28" stroke-width="1.5" opacity="0.92"/>
+                            <rect x="8" y="4" width="264" height="38" rx="19"
+                                  fill="#fdf5d6" opacity="0.55"/>
+                            <circle cx="48" cy="63" r="34" fill="url(#coinIcon)"
+                                    stroke="#8a6a28" stroke-width="1"/>
+                            <ellipse cx="38" cy="48" rx="14" ry="8" fill="#fff" opacity="0.35"/>
+                            <text x="48" y="72" text-anchor="middle" font-size="30" font-weight="900"
+                                  fill="#5a3a08">¥</text>
+                            <line x1="90" y1="30" x2="90" y2="98" stroke="#5a4420" stroke-width="1" opacity="0.5"/>
+                        </svg>
+                        <span class="coin-num" id="pg-points">1280</span>
+                    </div>
+                </div>
+
+                <section class="playground-layout" aria-label="游乐场总览">
+                    <section class="playground-progress-shell" id="playgroundProgressBoard" aria-label="游乐场作战看板"></section>
+
+                    <section class="playground-grid" aria-label="游乐场游戏卡片">
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('mathpk')">
+                            <span class="pg-card-media">
+                                <img src="assets/ui/pg-card-mathpk.webp?v=20260711c" alt="数学PK" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">数学练习</span>
+                                <strong class="pg-card-title">数学PK</strong>
+                                <span class="pg-card-desc">从热身到冲星轨，适合先打一局把状态拉起来。</span>
+                            </span>
+                            <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('hanzi')">
+                            <span class="pg-card-media pg-card-media-crop-right">
+                                <img src="assets/ui/pg-card-hanzi.webp?v=20260711c" alt="汉字游戏" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">汉字挑战</span>
+                                <strong class="pg-card-title">汉字游戏</strong>
+                                <span class="pg-card-desc">看字、认音、接气泡，适合把记字和反应放在一起练。</span>
+                            </span>
+                            <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="openCardArenaEntry()">
+                            <span class="pg-card-media">
+                                <img src="assets/ui/pg-card-arena.webp?v=20260711c" alt="卡牌对战" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">战斗玩法</span>
+                                <strong class="pg-card-title">卡牌对战</strong>
+                                <span class="pg-card-desc">把组队、出招和结算接成完整一局，适合继续推训练营。</span>
+                            </span>
+                            <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('typing-defense')">
+                            <span class="pg-card-media pg-card-media-crop-right">
+                                <img src="assets/ui/pg-card-typing-defense.webp?v=20260711c" alt="消灭苦力怕" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">输入训练</span>
+                                <strong class="pg-card-title">消灭苦力怕</strong>
+                                <span class="pg-card-desc">弓箭起手、键盘命中，适合先热手再切别的训练。</span>
+                            </span>
+                            <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('word-shooter')">
+                            <span class="pg-card-media pg-card-media-crop-right">
+                                <img src="assets/ui/pg-card-word-shooter.webp?v=20260711c" alt="飞机大战" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">合集子游戏</span>
+                                <strong class="pg-card-title">飞机大战</strong>
+                                <span class="pg-card-desc">用字母射击开局，适合孩子先建立“按键马上有反馈”的感觉。</span>
+                            </span>
+                            <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('word-cannon')">
+                            <span class="pg-card-media pg-card-media-crop-center">
+                                <img src="assets/ui/pg-card-word-cannon.webp?v=20260711d" alt="拼音赛车" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">合集子游戏</span>
+                                <strong class="pg-card-title">拼音赛车</strong>
+                                <span class="pg-card-desc">看字换道、拼音发射，短局节奏很干脆，适合轮换着玩。</span>
+                            </span>
+                            <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('pinyin-snake')">
+                            <span class="pg-card-media pg-card-media-crop-center">
+                                <img src="assets/ui/pg-card-pinyin-snake.webp?v=20260711d" alt="贪吃蛇" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">合集子游戏</span>
+                                <strong class="pg-card-title">贪吃蛇</strong>
+                                <span class="pg-card-desc">方向键配拼音块，轻一点也很上头，适合切换手感。</span>
+                            </span>
+                            <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('word-memory-map')">
+                            <span class="pg-card-media pg-card-media-crop-center">
+                                <img src="assets/ui/pg-card-word-memory.webp?v=20260711c" alt="像素探险" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">英语新玩法</span>
+                                <strong class="pg-card-title">像素探险</strong>
+                                <span class="pg-card-desc">大地图探索加投掷记忆，保留现有角色、关卡和道具节奏。</span>
+                            </span>
+                            <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
+                        </button>
+                    </section>
+                </section>
+
+                <!-- 读取 localStorage petbank_points 实时刷新金币徽章 -->
+                <script>
+                (function () {
+                    var badge = document.getElementById('pg-points');
+                    function refresh() {
+                        var p = parseInt(localStorage.getItem('petbank_points') || '0', 10);
+                        if (badge) badge.textContent = isNaN(p) ? 0 : p;
+                    }
+                    refresh();
+                    document.addEventListener('visibilitychange', refresh);
+                    // 进入游乐场页时刷新（active 类切换）
+                    var page = document.getElementById('page-playground');
+                    if (page && window.MutationObserver) {
+                        new MutationObserver(refresh).observe(page, { attributes: true, attributeFilter: ['class'] });
+                    }
+                    window.addEventListener('storage', refresh);
+                })();
+                </script>
+            </div>
+
+            <!-- PAGE: 成长作品 -->
+            <div class="page" id="page-works">
+                <div class="card">
+                    <div class="card-header"><h2 class="text-lg font-bold">成长作品收集</h2></div>
+                    <div class="card-body space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="text-xs font-bold block mb-2 text-sage">作品名称</label>
+                                    <input id="worksTitleInput" type="text" class="text-input" placeholder="例如：暑假数学闯关海报">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold block mb-2 text-sage">作品类型</label>
+                                    <select id="worksTypeSelect" class="text-input">
+                                        <option value="绘画">绘画</option>
+                                        <option value="手工">手工</option>
+                                        <option value="写作">写作</option>
+                                        <option value="学习成果">学习成果</option>
+                                        <option value="照片记录">照片记录</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold block mb-2 text-sage">背后的故事</label>
+                                    <textarea id="worksStoryInput" class="text-input h-24 resize-none" placeholder="写下孩子完成这个作品时的亮点、困难或有趣瞬间..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold block mb-2 text-sage">家长备注</label>
+                                    <input id="worksNoteInput" type="text" class="text-input" placeholder="例如：第一次独立完成，值得复盘鼓励">
+                                </div>
+                                <button id="worksSaveBtn" class="btn-primary" type="button" onclick="saveGrowthWork()"><i data-lucide="archive" class="w-4 h-4"></i>存入成长档案</button>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="card" style="border-radius:12px;">
+                                    <div class="card-body">
+                                        <p class="text-xs text-muted mb-2">当前孩子</p>
+                                        <div class="text-sm font-bold" id="worksActiveChild">默认孩子</div>
+                                        <div class="text-xs text-muted mt-2" id="worksSummaryText">还没有保存作品，先记录一条今天的小成果。</div>
+                                    </div>
+                                </div>
+                                <div class="card" style="border-radius:12px;">
+                                    <div class="card-body">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <strong class="text-sm">最近成长档案</strong>
+                                            <span class="text-xs text-muted" id="worksCountText">0 条</span>
+                                        </div>
+                                        <div id="worksList" class="space-y-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: 宠物养成 -->
+            <div class="page" id="page-pet">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">宠物导航</span>
+                            <span class="section-menu-current">当前：我的宠物</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('pet')">我的宠物</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('walk')">遛弯</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('pet')">我的宠物</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('walk')">遛弯</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mb-4">
+                    <div class="card col-span-2">
+                        <div class="card-body text-center">
+                            <p class="text-xs text-muted tracking-wide mb-2">成长档案 / 形态预览</p>
+                            <h2 class="text-lg font-bold mb-3">🐾 我的宠物成长档案</h2>
+                            <div class="pet-display-area" id="petDisplayArea">
+                                <img id="petDisplayImg" class="pet-sprite" alt="宠物" onclick="onPetSpriteClick()" loading="lazy" decoding="async" fetchpriority="low" style="width:160px;height:160px;object-fit:contain;image-rendering:pixelated;cursor:pointer;">
+                                <div class="pet-pose-btns" id="petPoseBtns" style="display:none; margin-top:8px;">
+                                    <button class="btn-tiny" onclick="setPetPose('idle')">😊 待机</button>
+                                    <button class="btn-tiny" onclick="setPetPose('happy')">😄 开心</button>
+                                    <button class="btn-tiny" onclick="setPetPose('attack')">⚔️ 攻击</button>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="text-base font-bold" id="petNameDisplay">未知宠物</div>
+                                <div class="text-xs mt-1 text-muted" id="petStageDisplay">蛋阶段 · 点击下方选择宠物种类</div>
+                            </div>
+                            <div class="mt-4 text-left">
+                                <div class="flex justify-between text-xs mb-1"><span>❤️ HP</span><span id="petHPText">100/100</span></div>
+                                <div class="hp-bar"><div class="hp-fill" id="petHPFill" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="mt-3 text-left">
+                                <div class="flex justify-between text-xs mb-1"><span>✨ EXP</span><span id="petEXPText">0/30</span></div>
+                                <div class="exp-bar"><div class="exp-fill" id="petEXPFill" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-3 mt-4 text-center">
+                                <div><div class="text-xs text-muted">等级</div><div class="font-bold text-lg text-sage" id="petLevelDisplay">Lv.1</div></div>
+                                <div><div class="text-xs text-muted">攻击力</div><div class="font-bold text-lg text-hp-red" id="petATKDisplay">5</div></div>
+                                <div><div class="text-xs text-muted">探索次数</div><div class="font-bold text-lg stat-gold" id="petExploreDisplay">0</div></div>
+                            </div>
+                            <div class="pet-archive-note mt-4">
+                                互动喂养已经放到宠物小屋，好友遛弯也单独拆到了遛弯页。这里专门看成长、统计和后续升级后的样子。
+                            </div>
+                            <div class="pet-archive-links mt-4">
+                                <button class="btn-secondary text-xs" type="button" onclick="switchPage('home')">🏠 去宠物小屋互动</button>
+                                <button class="btn-secondary text-xs" type="button" onclick="switchPage('walk')">🚶 去遛弯页找好友</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3 class="text-sm font-bold">📊 成长统计</h3></div>
+                        <div class="card-body space-y-3 text-sm">
+                            <div class="flex justify-between"><span class="text-secondary">种类</span><span id="petSpeciesDisplay" class="font-bold">未选择</span></div>
+                            <div class="flex justify-between"><span class="text-secondary">陪伴天数</span><span class="font-bold" id="petDaysDisplay">0 天</span></div>
+                            <div class="flex justify-between"><span class="text-secondary">战斗胜利</span><span class="font-bold" id="petWinsDisplay">0 场</span></div>
+                            <div class="flex justify-between"><span class="text-secondary">收集道具</span><span class="font-bold" id="petItemsDisplay">0 件</span></div>
+                            <div class="flex justify-between"><span class="text-secondary">装备武器</span><span class="font-bold" id="petWeaponDisplay">无</span></div>
+                            <div class="flex justify-between"><span class="text-secondary">装备护甲</span><span class="font-bold" id="petArmorDisplay">无</span></div>
+                            <div class="pet-level-forecast" id="petLevelForecast">距离下一等级还差 30 EXP</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="card">
+                        <div class="card-header"><h3 class="text-sm font-bold">✨ 下一阶段预览</h3></div>
+                        <div class="card-body" id="petNextStagePreview">
+                            <div class="text-sm text-muted">认养宠物后，这里会显示下一个阶段的形态和解锁等级。</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3 class="text-sm font-bold">🪜 成长路线</h3></div>
+                        <div class="card-body">
+                            <div class="pet-growth-roadmap" id="petGrowthRoadmap">
+                                <div class="text-sm text-muted">成长档案会在这里展示蛋、幼崽、成长期到终极体的路线。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="petSpeciesCard">
+                    <div class="card-header flex items-center justify-between">
+                        <div><h3 class="text-sm font-bold">🎯 宠物图鉴</h3><p class="text-xs text-muted mt-1" id="petSpeciesCount">加载中...</p></div>
+                        <button class="btn-primary text-xs" onclick="openAdoptModal()">🏠 认养宠物</button>
+                    </div>
+                    <div class="card-body" id="petSpeciesPreview">
+                        <div class="text-center text-sm text-muted py-8">点击「认养宠物」选择你的伙伴</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 宠物认养弹窗（全屏 Modal） -->
+            <div id="adoptModal" class="modal">
+                <div class="modal-content modal-large">
+                    <div class="modal-header flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold">🏠 宠物图鉴 · 认养中心</h3>
+                            <p class="text-xs text-muted mt-1" id="adoptModalCount"></p>
+                        </div>
+                        <button class="close-btn text-2xl" onclick="closeAdoptModal()">&times;</button>
+                    </div>
+                    <!-- 筛选 Tab：来源 + 系列 + 稀有度 -->
+                    <div class="adopt-filters">
+                        <!-- 第一行：来源 Tab -->
+                        <div class="adopt-filter-row" id="adoptSourceTabs"></div>
+                        <!-- 第二行：系列/风格 Tab（动态） -->
+                        <div class="adopt-filter-row" id="adoptSeriesTabs"></div>
+                        <!-- 第三行：稀有度筛选 -->
+                        <div class="adopt-filter-row" id="adoptRarityTabs"></div>
+                    </div>
+                    <!-- 宠物卡片网格 -->
+                    <div class="adopt-grid-wrap" style="max-height: 65vh; overflow-y: auto;">
+                        <div class="adopt-grid" id="adoptGrid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: 遛弯 -->
+            <div class="page" id="page-walk">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">宠物导航</span>
+                            <span class="section-menu-current">当前：遛弯</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('pet')">我的宠物</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('walk')">遛弯</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('pet')">我的宠物</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('walk')">遛弯</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                </div>
+                <div id="walk-page-root"></div>
+            </div>
+
+            <!-- PAGE: 宠物小屋 -->
+            <div class="page" id="page-home">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">宠物导航</span>
+                            <span class="section-menu-current">当前：宠物小屋</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('pet')">我的宠物</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                        <button class="section-menu-item" type="button" onclick="openPetWalk()">遛弯</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('pet')">我的宠物</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                    <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
+                </div>
+                <div id="home-container"></div>
+            </div>
+
+            <!-- PAGE: 探索冒险（路线地图） -->
+            <div class="page" id="page-explore"></div>
+
+            <!-- PAGE: 数学PK -->
+            <div class="page" id="page-mathpk">
+                <div id="math-pk-container"></div>
+            </div>
+
+            <!-- PAGE: 汉字挑战 -->
+            <div class="page" id="page-hanzi">
+                <div id="hanzi-container"></div>
+            </div>
+
+            <!-- PAGE: 打字防线 -->
+            <div class="page" id="page-typing-defense">
+                <section class="playground-stage-shell">
+                    <div class="playground-stage-corner playground-stage-corner-left">
+                        <button class="playground-stage-btn" type="button" onclick="switchPage('map')">首页</button>
+                    </div>
+                    <div class="playground-stage-corner playground-stage-corner-right">
+                        <a class="playground-stage-btn is-link" id="typing-defense-launch" href="#" target="_blank" rel="noopener noreferrer" hidden>独立打开</a>
+                        <button class="playground-stage-btn is-close" type="button" onclick="switchPage('playground')">关闭</button>
+                    </div>
+                    <div class="playground-stage-status" id="typing-defense-status">正在准备消灭苦力怕...</div>
+                    <div class="playground-stage-frame-shell">
+                        <iframe id="typing-defense-frame" title="消灭苦力怕" loading="lazy" referrerpolicy="no-referrer"></iframe>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PAGE: 学习机小游戏 -->
+            <div class="page" id="page-learning-arcade">
+                <section class="playground-stage-shell">
+                    <div class="playground-stage-corner playground-stage-corner-left">
+                        <button class="playground-stage-btn" type="button" onclick="switchPage('map')">首页</button>
+                    </div>
+                    <div class="playground-stage-corner playground-stage-corner-right">
+                        <a class="playground-stage-btn is-link" id="learning-arcade-launch" href="#" target="_blank" rel="noopener noreferrer" hidden>独立打开</a>
+                        <button class="playground-stage-btn is-close" type="button" onclick="switchPage('playground')">关闭</button>
+                    </div>
+                    <div class="playground-stage-status" id="learning-arcade-status">正在准备学习机小游戏...</div>
+                    <div class="playground-stage-frame-shell">
+                        <iframe class="playground-embed-frame" id="learning-arcade-frame" title="学习机小游戏" loading="lazy" referrerpolicy="no-referrer"></iframe>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PAGE: 像素探险 -->
+            <div class="page" id="page-word-memory-map">
+                <section class="playground-stage-shell">
+                    <div class="playground-stage-corner playground-stage-corner-left">
+                        <button class="playground-stage-btn" type="button" onclick="switchPage('map')">首页</button>
+                    </div>
+                    <div class="playground-stage-corner playground-stage-corner-right">
+                        <a class="playground-stage-btn is-link" id="word-memory-map-launch" href="#" target="_blank" rel="noopener noreferrer" hidden>独立打开</a>
+                        <button class="playground-stage-btn is-close" type="button" onclick="switchPage('playground')">关闭</button>
+                    </div>
+                    <div class="playground-stage-status" id="word-memory-map-status">正在准备像素探险...</div>
+                    <div class="playground-stage-frame-shell">
+                        <iframe class="playground-embed-frame" id="word-memory-map-frame" title="像素探险" loading="lazy" referrerpolicy="no-referrer"></iframe>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PAGE: 排行榜 -->
+            <div class="page" id="page-leaderboard">
+                <!-- 自然场景背景装饰：☁️🌸✨ 散落背景层，不挡主卡 -->
+                <span class="lb-deco cloud" style="top:5%;left:5%;">☁️</span>
+                <span class="lb-deco bloom" style="top:9%;right:6%;">🌸</span>
+                <span class="lb-deco spark" style="top:20%;left:46%;">✨</span>
+                <span class="lb-deco bloom" style="bottom:7%;left:4%;">🌸</span>
+                <span class="lb-deco cloud" style="bottom:5%;right:6%;">☁️</span>
+                <div class="hz-lb-tabs">
+                    <button class="hz-lb-tab active" data-game="mathpk" onclick="switchLeaderboardTab('mathpk')">🔢 数学 PK</button>
+                    <button class="hz-lb-tab" data-game="hanzi" onclick="switchLeaderboardTab('hanzi')">📝 汉字挑战</button>
+                </div>
+                <div id="leaderboard-container"></div>
+            </div>
+
+            <!-- PAGE: 背包 -->
+            <div class="page" id="page-inventory">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：背包</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h2 class="text-lg font-bold">🎒 我的背包</h2><p class="text-xs mt-1 text-muted">点击物品查看详情</p></div>
+                    <div class="card-body">
+                        <div class="inventory-grid" id="inventoryGrid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: 卡片图鉴 -->
+            <div class="page" id="page-card">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">宠物导航</span>
+                            <span class="section-menu-current">当前：卡片图鉴</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('pet')">我的宠物</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('home')">宠物小屋</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                        <button class="section-menu-item" type="button" onclick="openPetWalk()">遛弯</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="宠物快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('pet')">我的宠物</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('home')">宠物小屋</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('card')">卡片图鉴</button>
+                    <button class="section-shortcut-btn" type="button" onclick="openPetWalk()">遛弯</button>
+                </div>
+                <div id="card-collection-container"></div>
+            </div>
+
+            <!-- PAGE: 兑换商店 -->
+            <div class="page" id="page-shop">
+                <details class="section-menu">
+                    <summary class="section-menu-trigger">
+                        <div class="section-menu-copy">
+                            <span class="section-menu-label">积分导航</span>
+                            <span class="section-menu-current">当前：兑换商店</span>
+                        </div>
+                        <span class="section-menu-arrow" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="section-menu-panel">
+                        <button class="section-menu-item" type="button" onclick="switchPage('today')">今日打卡</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('review')">每周复盘</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                        <button class="section-menu-item is-current" type="button" onclick="switchPage('shop')">兑换商店</button>
+                        <button class="section-menu-item" type="button" onclick="switchPage('inventory')">背包</button>
+                    </div>
+                </details>
+                <div class="section-shortcuts" role="navigation" aria-label="积分快捷导航">
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('today')">今日打卡</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('learning-sheet')">学习单</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('review')">每周复盘</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('reward')">奖励兑换</button>
+                    <button class="section-shortcut-btn is-current" type="button" onclick="switchPage('shop')">兑换商店</button>
+                    <button class="section-shortcut-btn" type="button" onclick="switchPage('inventory')">背包</button>
+                </div>
+                <div id="shop-ui"></div>
+            </div>
+
+            <!-- PAGE: 工具箱 -->
+            <div class="page" id="page-tools">
+                <div id="tools-ui"></div>
+            </div>
+
+            <!-- Card Detail Modal -->
+            <div id="cardDetailModal" class="modal">
+                <div class="modal-content" style="max-width: 400px;">
+                    <div id="cardDetailContent"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <nav class="app-bottom-dock" aria-label="孩子端主导航">
+        <button class="app-dock-item" type="button" data-app-dock="map" onclick="switchPage('map')">
+            <i data-lucide="home" aria-hidden="true"></i>
+            <span>首页</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="today" onclick="switchPage('today')">
+            <i data-lucide="star" aria-hidden="true"></i>
+            <span>积分</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="learn" onclick="switchPage('learn')">
+            <i data-lucide="book-open" aria-hidden="true"></i>
+            <span>学习</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="picturebooks" onclick="switchPage('picturebooks')">
+            <i data-lucide="library" aria-hidden="true"></i>
+            <span>绘本</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="pet" onclick="switchPage('pet')">
+            <i data-lucide="paw-print" aria-hidden="true"></i>
+            <span>宠物</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="explore" onclick="switchPage('explore')">
+            <i data-lucide="map" aria-hidden="true"></i>
+            <span>探索</span>
+        </button>
+        <button class="app-dock-item" type="button" data-app-dock="playground" onclick="switchPage('playground')">
+            <i data-lucide="gamepad-2" aria-hidden="true"></i>
+            <span>游乐场</span>
+        </button>
+    </nav>
+
+    <!-- Battle Modal -->
+    <div id="battleModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold">⚔️ 战斗</h3>
+                <button onclick="closeBattleModal()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div id="battleContent"></div>
+        </div>
+    </div>
+
+    <!-- 宠物训练营：关卡选择 Modal -->
+    <div id="arenaStagesModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-bold">🎯 训练挑战</h3>
+                <button onclick="CardArenaUI.closeStages()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div class="text-xs text-muted mb-2">完成训练解锁下一节。已完成的可随时重玩（奖励仅首次发放）。</div>
+            <div class="arena-stages-grid" id="arenaStagesGrid"></div>
+            <div style="margin-top:12px;padding-top:10px;border-top:1px dashed rgba(0,0,0,.12);">
+                <button class="btn-secondary" style="width:100%;" onclick="CardArenaUI.openPvpSetup()">🤝 家庭双人彩蛋（同设备两人）</button>
+                <div class="text-xs text-muted" style="margin-top:4px;text-align:center;">各选 2 只，轮流操作，无 AI</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 宠物训练营：选队 Modal -->
+    <div id="arenaTeamModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-bold">⚔️ 选队（2v2）</h3>
+                <button onclick="CardArenaUI.closeTeamModal()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div class="text-xs text-muted mb-1">从已收集的宠物中选 2 只上场（1 上场 + 1 替补，传说 SSR 每队最多 1 只）。按速度首发。</div>
+            <div class="arena-team-grid" id="arenaTeamGrid"></div>
+            <div class="arena-team-footer">
+                <span class="text-sm font-bold" id="arenaTeamCount">已选 0 / 2</span>
+                <button class="btn-primary" id="arenaTeamConfirm" disabled onclick="CardArenaUI.confirmTeam()">开始训练 ⚔️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 宠物训练营：2v2 全屏对战 Modal（math-pk 风格竞技台）-->
+    <div id="arenaBattleModal" class="modal">
+        <div class="modal-content modal-arena-fullscreen">
+            <div class="arena-stage" id="arenaStage"></div>
+        </div>
+    </div>
+
+    <!-- Item Modal -->
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold" id="itemModalTitle">物品详情</h3>
+                <button onclick="closeItemModal()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div id="itemModalContent"></div>
+        </div>
+    </div>
+
+    <!-- 宝箱开箱动画 Modal -->
+    <div id="chest-anim-modal">
+        <div id="chest-anim-icon"></div>
+        <div id="chest-anim-reward"></div>
+    </div>
+
+    <!-- 加分/扣分项目选择弹窗 -->
+    <div id="pointItemModal" class="modal">
+        <div class="modal-content pi-modal">
+            <div class="pi-header">
+                <button class="pi-close" onclick="closePointItemModal()" aria-label="关闭">&times;</button>
+                <div class="pi-pet"><img id="piPetImg" alt="宠物" loading="lazy" decoding="async" fetchpriority="low"></div>
+                <h3 class="pi-title">选择项目</h3>
+                <p class="pi-sub">给 <span class="pi-child" id="piChildName">宝贝</span> <span id="piModeText">加分</span></p>
+            </div>
+            <div class="pi-tabs">
+                <button class="pi-tab active" data-mode="add" onclick="switchPiMode('add')">＋ 加分</button>
+                <button class="pi-tab" data-mode="deduct" onclick="switchPiMode('deduct')">－ 扣分</button>
+            </div>
+            <div class="pi-search">
+                <input type="text" id="piSearchInput" placeholder="搜索项目…" oninput="filterPointItems()">
+            </div>
+            <div class="pi-grid" id="piGrid"></div>
+            <div class="pi-custom">
+                <div class="pi-custom-title">✏️ 自定义项目（输入名称和分数，自动收藏 · 长按列表项可删除）</div>
+                <div class="pi-custom-row">
+                    <input type="text" id="piCustomEmoji" class="pi-custom-emoji" placeholder="⭐" maxlength="2" title="图标（可选）">
+                    <input type="text" id="piCustomName" class="pi-custom-name" placeholder="项目名称">
+                    <input type="number" id="piCustomPts" class="pi-custom-pts" placeholder="分数" min="1" value="1">
+                    <button class="pi-custom-btn" id="piCustomBtn" onclick="applyCustomItem()">添加</button>
+                </div>
+            </div>
+            <p class="pi-tip">✨ 点击项目直接操作</p>
+        </div>
+    </div>
+
+    <!-- Scripts: pet.js must load first (PetSystem), then homepage runtime bootstrap, then app.js -->
+    <script src="js/pet.js"></script>
+    <script src="js/core-reward-service.js"></script>
+    <script src="js/core-reward-feedback.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/treasure.js"></script>
+    <script src="js/cloud-sync-outbox.js"></script>
+    <script src="js/profile-storage-policy.js"></script>
+    <script src="js/profiles.js"></script>
+    <script src="js/self-hosted-api.js"></script>
+    <script src="js/parent-account.js"></script>
+    <script src="js/storage-key-migrations.js"></script>
+    <script src="js/time-utils.js"></script>
+    <script src="js/runtime-loader.js?v=20260715-stage-fullscreen1"></script>
+    <script src="js/lucide-lite.js?v=20260713"></script>
+    <script src="js/battle-fx.js"></script>
+    <script src="js/task-catalog.js"></script>
+    <script src="js/page-router.js"></script>
+    <script src="js/app.js?v=20260714-home-maps2"></script>
+    <script src="js/child-journey-feedback.js"></script>
+    <script src="js/showcase.js"></script>
+</body>
+</html>
