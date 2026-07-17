@@ -8,10 +8,10 @@
 node --check scripts/normalize-anki-minecraft-vocab.mjs
 node --check scripts/fill-missing-card-images.mjs
 python -m unittest discover -s scripts -p "test_*.py" -v
-python -m http.server 8766 --bind 127.0.0.1
+python -m http.server 7001 --bind 127.0.0.1
 ```
 
-打开 <http://127.0.0.1:8766/>，确认根目录 `11,241`、官方词条 `7,578`、核心单词 `3,663`、清洗后媒体 `4,956`，再检查搜索能命中中文/短语/短句、折叠目录、翻卡、图片/音频和移动端抽屉。
+打开 <http://127.0.0.1:7001/>，确认根目录 `11,241`、官方词条 `7,578`、核心单词 `3,663`、清洗后媒体 `4,956`，再检查搜索能命中中文/短语/短句、折叠目录、翻卡、图片/音频和移动端抽屉。
 
 如果刚从 APKG 重新提取数据，必须先在项目目录执行：
 

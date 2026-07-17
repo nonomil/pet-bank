@@ -44,10 +44,10 @@ node scripts/fill-missing-card-images.mjs
 在本目录启动静态服务：
 
 ```powershell
-python -m http.server 8766 --bind 127.0.0.1
+python -m http.server 7001 --bind 127.0.0.1
 ```
 
-然后访问 <http://127.0.0.1:8766/>。由于页面通过 `fetch()` 读取 JSON，不能使用 `file://` 直接打开。
+然后访问 <http://127.0.0.1:7001/>。由于页面通过 `fetch()` 读取 JSON，不能使用 `file://` 直接打开。
 
 ## 字段说明
 

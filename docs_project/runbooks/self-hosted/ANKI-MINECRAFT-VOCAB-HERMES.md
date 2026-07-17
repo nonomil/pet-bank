@@ -5,7 +5,7 @@
 ## 目标与边界
 
 - 源码目录：`prj/anki-minecraft-vocab/`
-- 本地预览：`http://127.0.0.1:8766/`
+- 本地预览：`http://127.0.0.1:7001/`
 - 静态入口：`index.html`
 - 运行数据：`data/manifest.json`、`data/decks.json`、`data/cards.json`
 - 本地媒体：`assets/media/`
@@ -40,14 +40,14 @@ python3 -m py_compile \
   prj/anki-minecraft-vocab/scripts/extract_apkg.py \
   prj/anki-minecraft-vocab/scripts/test_extract_apkg.py \
   prj/anki-minecraft-vocab/scripts/test_web_contract.py
-python3 -m http.server 8766 --bind 127.0.0.1 \
+python3 -m http.server 7001 --bind 127.0.0.1 \
   --directory prj/anki-minecraft-vocab >/tmp/anki-minecraft-vocab-http.log 2>&1 &
 server_pid=$!
 trap 'kill "$server_pid" 2>/dev/null || true' EXIT
-curl --fail http://127.0.0.1:8766/
-curl --fail http://127.0.0.1:8766/data/manifest.json
-curl --fail http://127.0.0.1:8766/data/decks.json
-curl --fail http://127.0.0.1:8766/data/cards.json >/dev/null
+curl --fail http://127.0.0.1:7001/
+curl --fail http://127.0.0.1:7001/data/manifest.json
+curl --fail http://127.0.0.1:7001/data/decks.json
+curl --fail http://127.0.0.1:7001/data/cards.json >/dev/null
 kill "$server_pid" 2>/dev/null || true
 trap - EXIT
 ```
@@ -96,14 +96,14 @@ location /anki-minecraft-vocab/ {
 不要在验证前改链接：
 
 ```bash
-python3 -m http.server 8766 --bind 127.0.0.1 \
+python3 -m http.server 7001 --bind 127.0.0.1 \
   --directory "$release_dir/prj/anki-minecraft-vocab" >/tmp/anki-minecraft-vocab-release.log 2>&1 &
 server_pid=$!
 trap 'kill "$server_pid" 2>/dev/null || true' EXIT
-curl --fail http://127.0.0.1:8766/
-curl --fail http://127.0.0.1:8766/data/manifest.json
-curl --fail http://127.0.0.1:8766/data/decks.json
-curl --fail http://127.0.0.1:8766/data/cards.json >/dev/null
+curl --fail http://127.0.0.1:7001/
+curl --fail http://127.0.0.1:7001/data/manifest.json
+curl --fail http://127.0.0.1:7001/data/decks.json
+curl --fail http://127.0.0.1:7001/data/cards.json >/dev/null
 kill "$server_pid" 2>/dev/null || true
 trap - EXIT
 

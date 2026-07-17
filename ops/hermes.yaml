@@ -10,8 +10,8 @@ frontend:
   entryHtml: index.html
   adminEntryHtml: null
   adminStatus: deferred-until-self-hosted-auth
-  localServeCommand: python -m http.server 8765 --bind 127.0.0.1
-  localBaseUrl: http://127.0.0.1:8765
+  localServeCommand: node scripts/local-server.mjs
+  localBaseUrl: http://127.0.0.1:7000
   deploy:
     provider: github-pages
     workflow: .github/workflows/deploy.yml

@@ -3,8 +3,8 @@ name: anki-minecraft-vocab
 type: standalone-static-site
 sourceDir: prj/anki-minecraft-vocab
 publicDir: .
-localServeCommand: python -m http.server 8766 --bind 127.0.0.1
-localBaseUrl: http://127.0.0.1:8766/
+localServeCommand: python -m http.server 7001 --bind 127.0.0.1
+localBaseUrl: http://127.0.0.1:7001/
 deployGuide: docs_project/runbooks/self-hosted/ANKI-MINECRAFT-VOCAB-HERMES.md
 pagesArtifact: excluded-by-design
 releaseRoot: /srv/pet-bank/anki-minecraft-vocab/releases

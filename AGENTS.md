@@ -33,7 +33,7 @@
 
 ```powershell
 # 推荐本地静态服务；file:// 会导致 fetch JSON 失败
-python -m http.server 8765 --bind 127.0.0.1
+node scripts/local-server.mjs
 
 # 快速检查
 node scripts/smoke.mjs
@@ -50,7 +50,7 @@ node scripts/assemble-pages-artifact.mjs _site_verify
 node --test prj/petbank-server/test/*.test.mjs
 ```
 
-Windows 双击 `启动服务.bat` 等价于在 `127.0.0.1:8765` 启动静态服务。浏览器 smoke/Playwright 测试可能依赖本机 Chrome、环境变量和临时目录；失败时区分“环境未满足”和“业务断言失败”。测试制品放 `tmp/`，不要写进发布文档或 `docs/releases/`。
+Windows 双击 `启动服务.bat` 等价于在 `127.0.0.1:7000` 启动静态服务。浏览器 smoke/Playwright 测试可能依赖本机 Chrome、环境变量和临时目录；失败时区分“环境未满足”和“业务断言失败”。测试制品放 `tmp/`，不要写进发布文档或 `docs/releases/`。
 
 ## 3. 仓库地图
 

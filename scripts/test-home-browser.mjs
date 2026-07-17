@@ -28,6 +28,13 @@ async function clickUnique(selector, label) {
     await target.click();
 }
 
+async function assertPageBinding(pageId, contentSelector, runtimeMarker) {
+    await page.waitForSelector(contentSelector, { state: 'attached', timeout: 20000 });
+    if (runtimeMarker) {
+        await page.waitForSelector(`script[data-petbank-src="${runtimeMarker}"]`, { state: 'attached', timeout: 20000 });
+    }
+}
+
 try {
     await page.goto(homeUrl, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForFunction(() => window.PetBankRuntime && window.switchPage, { timeout: 20000 });
@@ -36,22 +43,25 @@ try {
     assert.equal(new URL(await page.url()).port, '7000', 'home should be opened on port 7000');
 
     const primaryEntries = [
-        ['.primary-nav > .nav-hub[data-page="today"] > button', 'today'],
-        ['.primary-nav > .nav-tab[data-page="learn"]', 'learn'],
-        ['.primary-nav > .nav-tab[data-page="picturebooks"]', 'picturebooks'],
-        ['.primary-nav > .nav-hub[data-page="pet"] > button', 'pet'],
-        ['.primary-nav > .nav-tab[data-page="explore"]', 'explore'],
-        ['.primary-nav > .nav-hub[data-page="playground"] > button', 'playground'],
+        ['.primary-nav > .nav-tab[data-page="map"]', 'map', '#sceneGridMap .map-scene-node'],
+        ['.primary-nav > .nav-hub[data-page="today"] > button', 'today', '#taskGrid .task-card'],
+        ['.primary-nav > .nav-tab[data-page="learn"]', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=6'],
+        ['.primary-nav > .nav-tab[data-page="picturebooks"]', 'picturebooks', '#picturebooks-root .picturebooks-portal', 'js/picturebook-external-bridge.js'],
+        ['.primary-nav > .nav-hub[data-page="pet"] > button', 'pet', '#petDisplayArea'],
+        ['.primary-nav > .nav-tab[data-page="explore"]', 'explore', '#page-explore #pixelStoryShell', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1'],
+        ['.primary-nav > .nav-hub[data-page="playground"] > button', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
     ];
-    for (const [selector, pageId] of primaryEntries) {
+    for (const [selector, pageId, contentSelector, runtimeMarker] of primaryEntries) {
         await clickUnique(selector, pageId);
         await assertActivePage(pageId);
+        await assertPageBinding(pageId, contentSelector, runtimeMarker);
         await page.evaluate(() => window.switchPage('map'));
         await assertActivePage('map');
     }
 
     await clickUnique('.nav-utility-settings[data-page="parent"]', 'parent');
     await assertActivePage('parent');
+    await assertPageBinding('parent', '#page-parent .parent-home-primary');
     await page.evaluate(() => window.switchPage('map'));
     await assertActivePage('map');
 
@@ -64,6 +74,9 @@ try {
     for (const [selector, pageId] of journeyEntries) {
         await clickUnique(selector, selector);
         await assertActivePage(pageId);
+        if (pageId === 'today') await assertPageBinding(pageId, '#taskGrid .task-card');
+        if (pageId === 'pet') await assertPageBinding(pageId, '#petDisplayArea');
+        if (pageId === 'playground') await assertPageBinding(pageId, '#playgroundProgressBoard');
         await page.evaluate(() => window.switchPage('map'));
         await assertActivePage('map');
     }
@@ -72,10 +85,13 @@ try {
     assert.equal(await moreEntries.count(), 2, 'home should keep exploration and shop secondary entries');
     await moreEntries.nth(0).click();
     await assertActivePage('explore');
+    await assertPageBinding('explore', '#page-explore #pixelStoryShell');
     await page.evaluate(() => window.switchPage('map'));
     await assertActivePage('map');
+
     await moreEntries.nth(1).click();
     await assertActivePage('shop');
+    await assertPageBinding('shop', '#shop-ui');
     await page.evaluate(() => window.switchPage('map'));
     await assertActivePage('map');
 

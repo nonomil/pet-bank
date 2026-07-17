@@ -52,7 +52,7 @@ async function withApi(run) {
             accessTokenTtlSeconds: 900,
             refreshTokenTtlSeconds: 86400,
             enableRegistration: true,
-            allowedOrigin: 'http://127.0.0.1:8765',
+            allowedOrigin: 'http://127.0.0.1:7000',
         },
         database,
     });

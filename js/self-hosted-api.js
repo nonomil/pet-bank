@@ -10,7 +10,7 @@
         if (injected) return injected.replace(/\/+$/, '');
         const saved = String(localStorage.getItem(BASE_KEY) || '').trim();
         if (saved) return saved.replace(/\/+$/, '');
-        if (window.location && window.location.port === '8765') return 'http://127.0.0.1:3000/api/v1';
+        if (window.location && window.location.port === '7000') return 'http://127.0.0.1:3000/api/v1';
         return '/api/v1';
     }
 

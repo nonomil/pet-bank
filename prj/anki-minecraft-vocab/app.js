@@ -44,7 +44,7 @@
   function setError(error) {
     const message = error instanceof Error ? error.message : String(error);
     $('[data-directory-status]').textContent = '目录读取失败';
-    $('[data-card-list]').innerHTML = `<div class="error-block"><strong>无法加载词卡数据</strong><p>${escapeHtml(message)}</p><p>请通过本地静态服务打开，例如 <code>python -m http.server 8766</code>，不要直接双击 HTML。</p></div>`;
+    $('[data-card-list]').innerHTML = `<div class="error-block"><strong>无法加载词卡数据</strong><p>${escapeHtml(message)}</p><p>请通过本地静态服务打开，例如 <code>python -m http.server 7001</code>，不要直接双击 HTML。</p></div>`;
     $('[data-source-status]').textContent = '加载失败';
   }
 
