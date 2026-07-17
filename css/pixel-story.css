@@ -890,8 +890,8 @@ body.pixel-story-stage-active #page-explore .pixel-story-dialogue {
 .pixel-story-detective-bonus > span:last-child { color: #ffd38e; font-size: 11px; font-weight: 900; white-space: nowrap; }
 
 /* 05-pixel-worlds: world selector and narrative mini-game controls */
-.top-nav [data-page="picturebooks"],
-.app-bottom-dock [data-app-dock="picturebooks"] { display: none !important; }
+body.pixel-story-page-route .top-nav [data-page="picturebooks"],
+body.pixel-story-page-route .app-bottom-dock [data-app-dock="picturebooks"] { display: none !important; }
 .pixel-story-map-world { background: #102d3d; }
 .pixel-story-map-world.pixel-story-map-tone-forest { background: #173b35; }
 .pixel-story-map-world.pixel-story-map-tone-block { background: #3a3028; }

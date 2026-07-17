@@ -2224,6 +2224,7 @@ function switchPage(page, options = {}) {
     document.body.classList.toggle('no-sidebar', page !== 'map');
     document.body.classList.toggle('learn-mode', page === 'learn' || page === 'minecraft-vocab' || page.startsWith('learn-'));
     document.body.classList.toggle('picturebooks-route', page === 'picturebooks');
+    document.body.classList.toggle('pixel-story-page-route', page === 'explore');
     updateBrowserRoute(page, {
         settingsSection: page === 'settings' ? activeSettingsSection : null,
         replace: options.replace === true,

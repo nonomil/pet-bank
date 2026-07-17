@@ -35,12 +35,34 @@ async function assertPageBinding(pageId, contentSelector, runtimeMarker) {
     }
 }
 
+async function returnHome() {
+    await page.evaluate(() => window.switchPage('map'));
+    await assertActivePage('map');
+}
+
 try {
     await page.goto(homeUrl, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForFunction(() => window.PetBankRuntime && window.switchPage, { timeout: 20000 });
     await assertActivePage('map');
     assert.match(await page.title(), /成长伙伴/);
     assert.equal(new URL(await page.url()).port, '7000', 'home should be opened on port 7000');
+
+    const homeActionEntries = [
+        ['.home-summary-focus', 'today', '#taskGrid .task-card'],
+        ['.home-summary-pet', 'pet', '#petDisplayArea'],
+        ['#childJourneyHero .child-journey-hero-action', 'today', '#taskGrid .task-card'],
+        ['#childJourneyToday', 'today', '#taskGrid .task-card'],
+        ['#childJourneyPet', 'pet', '#petDisplayArea'],
+        ['#childJourneyAdventure', 'playground', '#playgroundProgressBoard'],
+        ['#childJourneyMore button:nth-of-type(1)', 'explore', '#page-explore #pixelStoryShell'],
+        ['#childJourneyMore button:nth-of-type(2)', 'shop', '#shop-ui'],
+    ];
+    for (const [selector, pageId, contentSelector] of homeActionEntries) {
+        await clickUnique(selector, selector);
+        await assertActivePage(pageId);
+        await assertPageBinding(pageId, contentSelector);
+        await returnHome();
+    }
 
     const primaryEntries = [
         ['.primary-nav > .nav-tab[data-page="map"]', 'map', '#sceneGridMap .map-scene-node'],
@@ -55,15 +77,13 @@ try {
         await clickUnique(selector, pageId);
         await assertActivePage(pageId);
         await assertPageBinding(pageId, contentSelector, runtimeMarker);
-        await page.evaluate(() => window.switchPage('map'));
-        await assertActivePage('map');
+        await returnHome();
     }
 
     await clickUnique('.nav-utility-settings[data-page="parent"]', 'parent');
     await assertActivePage('parent');
     await assertPageBinding('parent', '#page-parent .parent-home-primary');
-    await page.evaluate(() => window.switchPage('map'));
-    await assertActivePage('map');
+    await returnHome();
 
     const journeyEntries = [
         ['#childJourneyHero .child-journey-hero-action', 'today'],
@@ -77,8 +97,7 @@ try {
         if (pageId === 'today') await assertPageBinding(pageId, '#taskGrid .task-card');
         if (pageId === 'pet') await assertPageBinding(pageId, '#petDisplayArea');
         if (pageId === 'playground') await assertPageBinding(pageId, '#playgroundProgressBoard');
-        await page.evaluate(() => window.switchPage('map'));
-        await assertActivePage('map');
+        await returnHome();
     }
 
     const moreEntries = page.locator('#childJourneyMore button');
@@ -86,8 +105,7 @@ try {
     await moreEntries.nth(0).click();
     await assertActivePage('explore');
     await assertPageBinding('explore', '#page-explore #pixelStoryShell');
-    await page.evaluate(() => window.switchPage('map'));
-    await assertActivePage('map');
+    await returnHome();
 
     await moreEntries.nth(1).click();
     await assertActivePage('shop');
@@ -109,6 +127,39 @@ try {
     await page.waitForSelector('#homePixelWorldMapSlot [data-detective-bonus]', { state: 'attached', timeout: 20000 });
     await clickUnique('#homePixelWorldMapSlot [data-detective-bonus]', 'detective bonus');
     await page.waitForFunction(() => document.querySelector('#homePixelWorldMapSlot .pixel-story-map')?.className.includes('pixel-story-map-tone-detective'), { timeout: 20000 });
+
+    await returnHome();
+    await page.waitForSelector('#showcaseTrack .showcase-slide', { state: 'attached', timeout: 20000 });
+    const showcaseSlides = page.locator('#showcaseTrack .showcase-slide');
+    const showcaseDots = page.locator('#showcaseDots .showcase-dot');
+    assert.equal(await showcaseSlides.count(), 5, 'home showcase should expose five clickable destinations');
+    assert.equal(await showcaseDots.count(), 5, 'home showcase should expose five slide controls');
+    const showcaseEntries = [
+        ['学习中心', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=6'],
+        ['宠物伙伴', 'pet', '#petDisplayArea'],
+        ['探索冒险', 'explore', '#page-explore #pixelStoryShell', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1'],
+        ['游乐场', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
+        ['今日打卡', 'today', '#taskGrid .task-card'],
+    ];
+    for (let index = 0; index < showcaseEntries.length; index += 1) {
+        const [title, pageId, contentSelector, runtimeMarker] = showcaseEntries[index];
+        await showcaseDots.nth(index).click();
+        await page.waitForFunction((expectedIndex) => document.querySelector('#showcaseTrack .showcase-slide.active')?.dataset.index === String(expectedIndex), index);
+        const slide = page.locator(`#showcaseTrack .showcase-slide[aria-label="打开${title}"]`);
+        assert.equal(await slide.count(), 1, `${title} showcase slide should exist`);
+        await slide.click();
+        await assertActivePage(pageId);
+        await assertPageBinding(pageId, contentSelector, runtimeMarker);
+        await returnHome();
+    }
+    await page.locator('#showcaseDots .showcase-dot').nth(0).click();
+    await page.locator('#showcaseNext').click();
+    await page.waitForFunction(() => document.querySelector('#showcaseTrack .showcase-slide.active')?.dataset.index === '1');
+    await page.locator('#showcasePrev').click();
+    await page.waitForFunction(() => document.querySelector('#showcaseTrack .showcase-slide.active')?.dataset.index === '0');
+
+    await page.waitForSelector('#treasureWarehouseGrid .chest-card', { state: 'attached', timeout: 20000 });
+    assert.equal(await page.locator('#treasureWarehouseGrid .chest-card').count(), 3, 'home should render all three reward chest entries');
 
     await page.setViewportSize({ width: 390, height: 844 });
     const layout = await page.evaluate(() => ({ bodyWidth: document.body.scrollWidth, viewportWidth: innerWidth }));
