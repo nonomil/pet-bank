@@ -6,6 +6,7 @@
 
 ```powershell
 node --check scripts/normalize-anki-minecraft-vocab.mjs
+node --check scripts/fill-missing-card-images.mjs
 python -m unittest discover -s scripts -p "test_*.py" -v
 python -m http.server 8766 --bind 127.0.0.1
 ```
@@ -16,6 +17,7 @@ python -m http.server 8766 --bind 127.0.0.1
 
 ```powershell
 node scripts/normalize-anki-minecraft-vocab.mjs --apply --prune-media
+node scripts/fill-missing-card-images.mjs
 ```
 
 规范化完成后再运行测试；不要直接把刚提取的原始 `cards.json` 部署到 Hermes。

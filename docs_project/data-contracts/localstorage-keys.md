@@ -86,6 +86,7 @@ receipt 不等于余额：奖励事件必须先校验和去重，再调用既有
   | `petbank_pixel_worlds_progress_v1` | JSON | `js/pixel-story-engine.js` | 三世界像素故事与 20 个侦探小游戏进度（`schemaVersion/storyId/chapters`）；认字内容不产生答题统计，按 Profile 快照隔离。旧 `petbank_pixel_story_progress_v1` 保留用于 04 故事包兼容回退 |
   | `petbank_minecraft_vocab_session_v1_*` | JSON object | `minecraft-vocab-session.js` | 主站 Minecraft 单词远征的 Profile 会话状态；按 Profile 隔离，不进入主站积分账本；完整 Anki 工作台仍独立部署 |
 | `petbank_picturebook_progress_v1` | JSON | `js/picturebooks.js` | 当前 Profile 的绘本阅读进度；`{schemaVersion:1,books:{storyId:{currentPage,completedCount,lastReadAt,lastCompletedAt,completionEventId,rewardClaimed}}}`，首读奖励由核心 receipt 去重 |
+| `petbank_picturebook_library_v1` | JSON | `js/picturebooks.js` | 当前 Profile 的收藏偏好；`{schemaVersion:1,favorites:string[]}` |
 
 英语当前采用显式 profile 后缀并保留旧固定键迁移；不能删除旧键直到迁移窗口和回滚验证完成。`mastered` 目前仍主要是短时连续答对语义，不能把它当作跨日保持证明。
 

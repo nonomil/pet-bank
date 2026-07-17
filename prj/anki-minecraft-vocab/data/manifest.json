@@ -4,19 +4,22 @@
   "databaseEntry": "collection.anki21",
   "noteCount": 11241,
   "cardCount": 11241,
-  "mediaCount": 4956,
+  "mediaCount": 4992,
   "deckCount": 231,
   "encryptedFieldCount": 0,
   "generatedAt": "2026-07-14T00:11:26",
   "normalizedAt": "2026-07-13T18:33:25.270Z",
   "sourceMediaCount": 6847,
   "sourceEncryptedFieldCount": 119880,
-  "curatedMediaCount": 4956,
+  "curatedMediaCount": 4992,
   "removedMediaCount": 1186,
   "generatedContentCount": 7395,
   "normalization": {
     "schemaVersion": 1,
     "removedDecorativeMedia": [],
-    "rule": "hide encrypted APKG fields, keep one meaningful image and one audio, add bilingual phrase and sentence"
-  }
+    "rule": "hide encrypted APKG fields, keep one meaningful image and one audio, add bilingual phrase and sentence",
+    "supplementalImages": "shared image mapping for cards without meaningful APKG images"
+  },
+  "generatedImageCount": 0,
+  "generatedImageWords": []
 }

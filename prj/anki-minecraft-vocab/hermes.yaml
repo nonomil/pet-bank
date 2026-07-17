@@ -15,7 +15,7 @@ normalizedData:
   cardCount: 11241
   deckCount: 231
   sourceMediaCount: 6847
-  curatedMediaCount: 4956
+  curatedMediaCount: 4992
   requiredCardContent:
     - word
     - chinese
@@ -23,7 +23,7 @@ normalizedData:
     - phraseTranslation
     - sentence
     - sentenceTranslation
-rebuildCommand: node scripts/normalize-anki-minecraft-vocab.mjs --apply --prune-media
+rebuildCommand: node scripts/normalize-anki-minecraft-vocab.mjs --apply --prune-media && node scripts/fill-missing-card-images.mjs
 testCommand: python -m unittest discover -s scripts -p "test_*.py" -v
 healthChecks:
   - /index.html

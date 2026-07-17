@@ -26,9 +26,13 @@ jobs:
         with:
           node-version: 20
       - uses: actions/configure-pages@v4
+      - name: Install asset validation dependencies
+        run: python -m pip install --disable-pip-version-check pillow soundfile
       - name: Run Pages fast gate
         run: |
           node scripts/test-pages-fast-gate-contract.mjs
+          python scripts/convert-runtime-image-variants.py --check
+          python scripts/convert-runtime-audio-variants.py --check
           node --check js/app.js
           node scripts/test-static-route-entries.mjs
           node prj/runtime_loader_route_base_contract.test.mjs

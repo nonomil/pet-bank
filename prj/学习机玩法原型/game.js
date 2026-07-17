@@ -2030,9 +2030,32 @@
     const ws = state.wordShooter;
     const lockedEnemy = getWordShooterEnemy(ws.activeEnemyId);
     if (lockedEnemy) {
-      return new Set([lockedEnemy.wordData.word[ws.currentTyped.length] || ''].filter(Boolean));
+      return new Set([
+        lockedEnemy.wordData.word[ws.currentTyped.length] || '',
+        ...wordShooterEnemiesSorted()
+          .filter(enemy => enemy.id !== lockedEnemy.id)
+          .map(enemy => enemy.wordData.word[0] || '')
+      ].filter(Boolean));
     }
     return new Set(wordShooterEnemiesSorted().map(enemy => enemy.wordData.word[0]).filter(Boolean));
+  }
+
+  function wordShooterEnemiesForPrefix(prefix, excludedEnemyId = '') {
+    const normalizedPrefix = String(prefix || '').toLowerCase();
+    if (!normalizedPrefix) return [];
+    return wordShooterEnemiesSorted().filter(enemy => (
+      enemy.id !== excludedEnemyId
+      && enemy.wordData.word.startsWith(normalizedPrefix)
+    ));
+  }
+
+  function canWordShooterTypeLetter(letter) {
+    const normalizedLetter = String(letter || '').toLowerCase();
+    if (!/^[a-z]$/.test(normalizedLetter)) return false;
+    const ws = state.wordShooter;
+    const lockedEnemy = getWordShooterEnemy(ws.activeEnemyId);
+    if (lockedEnemy && lockedEnemy.wordData.word[ws.currentTyped.length] === normalizedLetter) return true;
+    return wordShooterEnemiesForPrefix(normalizedLetter, lockedEnemy?.id).length > 0;
   }
 
   function pickWordShooterLane() {
@@ -2073,10 +2096,10 @@
     const ws = state.wordShooter;
     const phase = wordShooterPhaseForCompletedWords();
     const baseCount = phase.maxEnemies;
-    while (ws.enemies.length < baseCount) {
+    while (wordShooterEnemiesSorted().length < baseCount) {
       ws.enemies.push(createWordShooterEnemy(pickWordShooterLane()));
     }
-    if (ws.enemies.length < phase.maxEnemies && ws.enemies.every(enemy => enemy.x <= 76)) {
+    if (wordShooterEnemiesSorted().length < phase.maxEnemies && ws.enemies.every(enemy => enemy.x <= 76)) {
       ws.enemies.push(createWordShooterEnemy(pickWordShooterLane()));
     }
   }
@@ -2146,16 +2169,16 @@
   function wordShooterFeedbackText() {
     const ws = state.wordShooter;
     const focusEnemy = focusWordShooterEnemy();
-    if (!focusEnemy) return '看敌机上的单词，按首字母开始锁定。';
+    if (!focusEnemy) return '输入任意敌机上的单词，随时切换目标。';
     if (ws.activeEnemyId === focusEnemy.id && ws.currentTyped.length) {
       const remaining = focusEnemy.wordData.word.slice(ws.currentTyped.length);
-      if (!remaining) return `击破 ${focusEnemy.wordData.word}，准备锁定下一个。`;
-      return `锁定 ${focusEnemy.wordData.word}，继续输入 ${remaining}。`;
+      if (!remaining) return `击破 ${focusEnemy.wordData.word}，准备输入下一个。`;
+      return `继续输入 ${remaining}，也可以改打另一架敌机。`;
     }
     if (ws.combo > 1) {
-      return `连击 ${ws.combo}，按 ${displayTypingLetter(focusEnemy.wordData.word[0])} 继续击破 ${focusEnemy.wordData.word}。`;
+      return `连击 ${ws.combo}，输入任意敌机单词继续击破。`;
     }
-    return `按 ${displayTypingLetter(focusEnemy.wordData.word[0])} 开始锁定 ${focusEnemy.wordData.word}。`;
+    return `输入任意敌机单词，可随时切换目标；例如按 ${displayTypingLetter(focusEnemy.wordData.word[0])} 开始。`;
   }
 
   function renderEnemyWordMarkup(enemy, isLocked) {
@@ -2218,7 +2241,7 @@
       const translation = node.querySelector('.typing-enemy-translation');
       if (translation) translation.textContent = enemy.wordData.translation || '输入单词击破目标';
       const typedStatus = node.querySelector('.typing-enemy-typed-status');
-      if (typedStatus) typedStatus.textContent = isLocked && doneCount ? `${doneCount}/${enemy.wordData.word.length}` : '按首字母锁定';
+      if (typedStatus) typedStatus.textContent = isLocked && doneCount ? `${doneCount}/${enemy.wordData.word.length}` : '可自由选择';
       els.typingEnemyLayer.appendChild(node);
     });
   }
@@ -3287,7 +3310,7 @@
     if (state.activeGame !== 'word-shooter' || ws.roundComplete || ws.resolvingHit || !/^[a-z]$/.test(letter)) return;
     let targetEnemy = getWordShooterEnemy(ws.activeEnemyId);
     if (!targetEnemy) {
-      targetEnemy = wordShooterEnemiesSorted().find(enemy => enemy.wordData.word.startsWith(letter)) || null;
+      targetEnemy = wordShooterEnemiesForPrefix(letter)[0] || null;
       if (targetEnemy) {
         ws.activeEnemyId = targetEnemy.id;
         ws.currentTyped = '';
@@ -3296,6 +3319,21 @@
     }
     const expected = targetEnemy?.wordData.word?.[ws.currentTyped.length];
     if (!targetEnemy || letter !== expected) {
+      const switchTarget = wordShooterEnemiesForPrefix(letter, targetEnemy?.id)[0] || null;
+      if (switchTarget) {
+        targetEnemy = switchTarget;
+        ws.activeEnemyId = switchTarget.id;
+        ws.currentTyped = '';
+        sfx.lock();
+      } else {
+        sfx.wrong();
+        ws.combo = 0;
+        renderTypingArena();
+        return;
+      }
+    }
+    const nextExpected = targetEnemy.wordData.word[ws.currentTyped.length];
+    if (letter !== nextExpected) {
       sfx.wrong();
       ws.combo = 0;
       renderTypingArena();
@@ -3314,28 +3352,33 @@
       state.combo = ws.combo;
       grantWordShooterComboReward();
       const finisherWeaponId = getWordShooterWeapon().id;
+      const finisherNode = targetEnemyHitNode(targetEnemy.id);
+      const finisherPoint = getArenaPoint(finisherNode, 0.5, 0.5);
+      ws.completedWords.push(targetEnemy.wordData.word);
+      if (ws.boss.active && !ws.boss.defeated) {
+        damageWordShooterBoss(Math.max(1, Math.ceil(targetEnemy.wordData.word.length / 5)));
+      }
+      maybeDropWordShooterPickup(targetEnemy);
+      scheduleWordShooterEnemyDestroy(targetEnemy.id, 520);
+      ws.activeEnemyId = null;
+      ws.currentTyped = '';
+      ws.resolvingHit = false;
+      state.wordIndex = (state.wordIndex + 1) % Math.max(1, state.words.length);
+      state.input = '';
+      if (ws.completedWords.length >= ws.roundGoal) {
+        ws.roundComplete = true;
+      }
+      ensureWordShooterEnemies();
+      renderTypingArena();
+      if (!ws.roundComplete) speakCurrentWord(true);
       window.setTimeout(() => {
-        const finisherNode = targetEnemyHitNode(targetEnemy.id);
-        const finisherPoint = getArenaPoint(finisherNode, 0.5, 0.5);
+        if (state.activeGame !== 'word-shooter') return;
         if (finisherPoint) {
           spawnWordShooterScorePopup(finisherPoint.x, finisherPoint.y - 18, `+${targetEnemy.wordData.word.length}`, 'finisher');
           spawnWordShooterFinisher(finisherPoint.x, finisherPoint.y, finisherWeaponId, targetEnemy.wordData.word.length);
         }
         pulseWordShooterHud('combo');
-        ws.completedWords.push(targetEnemy.wordData.word);
-        if (ws.boss.active && !ws.boss.defeated) {
-          damageWordShooterBoss(Math.max(1, Math.ceil(targetEnemy.wordData.word.length / 5)));
-        }
-        maybeDropWordShooterPickup(targetEnemy);
-        scheduleWordShooterEnemyDestroy(targetEnemy.id);
-        ws.activeEnemyId = null;
-        ws.currentTyped = '';
-        ws.resolvingHit = false;
-        state.wordIndex = (state.wordIndex + 1) % Math.max(1, state.words.length);
-        state.input = '';
-        if (ws.completedWords.length >= ws.roundGoal) {
-          ws.roundComplete = true;
-          renderTypingArena();
+        if (ws.roundComplete) {
           finishRound('word-shooter', {
             kicker: 'English',
             title: '任务完成',
@@ -3346,12 +3389,8 @@
               { label: '漏怪', value: String(ws.misses) }
             ]
           });
-          return;
         }
-        ensureWordShooterEnemies();
-        renderTypingArena();
-        speakCurrentWord(true);
-      }, 520);
+      }, 120);
     }
   }
 
@@ -4656,7 +4695,7 @@
   }
 
   function shouldTreatWordShooterLetterAsTyping(key) {
-    return Boolean(key && /^[wasd]$/.test(key) && getWordShooterExpectedLetters().has(key));
+    return Boolean(key && /^[wasd]$/.test(key) && canWordShooterTypeLetter(key));
   }
 
   document.addEventListener('keydown', event => {

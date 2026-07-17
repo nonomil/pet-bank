@@ -13,76 +13,76 @@
       "lines": [
         {
           "type": "narration",
-          "text": "树屋邮局的风把信纸吹得满天都是。每封信都写着一个朋友的名字。",
+          "text": "树屋邮局收到了蓝色水光，可风把信纸吹得满天都是。朋友们看不见信，森林的回应又要停下来了。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "这里是“树屋邮局：送出信件”。我们的任务是“把发光的信件送到对应的树屋信箱”，先看清朋友信件，再决定下一步。",
+          "text": "这里是“树屋邮局：送出信件”。我们要把发光的朋友信件送到对应信箱，不能让森林的回应卡在半路。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "树叶、溪水和萤火虫的声音告诉我，朋友信件就在附近。",
+          "text": "水光在信封上画出小小的蓝线，可信箱的叶片门都关着。朋友信件就在附近，却送不出去。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "在树屋邮局：送出信件，发现问题不能只靠着急。我们要用温柔的动作帮助森林朋友，先处理朋友信件，也要照顾身边的朋友。",
+          "text": "林间向导说：每封信都要找到自己的朋友。我们先看颜色和气味，不能把问候送错地方。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "route",
-          "prompt": "把发光的信件送到对应的树屋信箱，让朋友信件的线索显现出来。",
+          "prompt": "把发光的信件送到对应的树屋信箱，让送不出去的森林回应显现出来。",
           "character": "forest_guide",
           "position": "right",
           "actions": [
             {
               "label": "送到红叶信箱",
-              "feedback": "送到红叶信箱后，朋友信件出现了；蘑菇谷的方向更清楚了。"
+              "feedback": "送到红叶信箱后，信箱门打开了；蓝光问候指向蘑菇谷。"
             },
             {
               "label": "送到蓝花信箱",
-              "feedback": "送到蓝花信箱让另一个细节亮起来：信标记指向蘑菇谷。"
+              "feedback": "送到蓝花信箱后，树屋响起回信声；蘑菇谷的小芽正在等待帮助。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "朋友信件被找到后，蘑菇谷的方向亮了起来。用温柔的动作帮助森林朋友，新的道路出现了。",
+          "text": "信件终于送到朋友手里，树屋邮局的蓝光连成一条线。蘑菇谷传来一封急急的回信。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "原来“信”也藏在这里。我们把它和地图上的光点连起来。",
+          "text": "原来“信”不只是纸，也是朋友说“我听见了”的方法。我们把回信标在地图上。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我听见蘑菇谷传来的声音了，刚才的努力真的让它更近了。",
+          "text": "我听见蘑菇谷传来的沙沙声了。小芽好像被风吹得不敢回应。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "朋友信件让大家知道，蘑菇谷不是远处的名字，而是一条可以走到的路。",
+          "text": "林间向导收好最后一封回信：蘑菇谷需要的不只是信，还需要有人温柔地陪小芽长大。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "这件事提醒我们：朋友信件不是终点，它会把故事带到蘑菇谷。",
+          "text": "这件事提醒我们：回应送到朋友手里，故事才会继续。下一站去蘑菇谷照顾小芽。",
           "character": "forest_guide",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "完成这一站后，蘑菇谷的入口已经亮起。我们带着“信”继续走。",
+          "text": "朋友信件已经送出，蘑菇谷的入口亮起。我们带着“信”和回声出发。",
           "character": "forest_guide",
           "position": "right"
         }

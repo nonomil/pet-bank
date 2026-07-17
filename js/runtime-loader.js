@@ -89,7 +89,7 @@
         playground: ['css/playground.css?v=8', 'css/leaderboard.css?v=2', 'css/hanzi-game.css?v=4'],
         learn: ['css/learn-center.css?v=6'],
         minecraftVocab: ['css/minecraft-vocab.css?v=1'],
-        picturebooks: ['css/picturebooks.css']
+        picturebooks: ['css/picturebook-portal.css']
     };
 
     const SCRIPT_BUNDLES = {
@@ -99,11 +99,11 @@
         walk: ['js/walk.js'],
         cardCollection: ['js/travel-memory.js', 'js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
-        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-map.js?v=20260714', 'js/pixel-story-engine.js?v=20260714'],
+        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1', 'js/pixel-story-engine.js?v=20260715-stage-fullscreen1'],
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=6'],
         minecraftVocab: ['js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=1'],
-        picturebooks: ['js/picturebooks.js'],
+        picturebooks: ['js/picturebook-external-bridge.js'],
         shop: ['js/shop.js'],
         review: ['js/family-review.js']
     };
@@ -348,11 +348,6 @@
                 window.ToolboxSystem.init();
                 initFlags.toolboxInit = true;
             }
-            window.setTimeout(function () {
-                ensureCardArenaFeature().catch(function (error) {
-                    console.warn('[runtime-loader] card arena prefetch failed:', error);
-                });
-            }, 400);
             return true;
         });
     }

@@ -1,0 +1,28 @@
+﻿{
+    "mode":  "preflight",
+    "checked_at":  "2026-07-13T15:47:47",
+    "repo_root":  "G:\\StudyCode\\宠物积分系统",
+    "workspace_dir":  "G:\\StudyCode\\宠物积分系统\\prj\\gpt-image-workflow",
+    "pipeline_root":  "G:\\StudyCode\\宠物积分系统\\.claude\\skills\\gpt-image-pipeline",
+    "python_available":  true,
+    "python_command":  "C:\\Users\\No\u0027mi\u0027l\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "browser_act_available":  true,
+    "browser_act_command":  "C:\\Users\\No\u0027mi\u0027l\\.local\\bin\\browser-act.exe",
+    "browser_act_skill_doc_exists":  true,
+    "scripts":  {
+                    "prompt_templates":  true,
+                    "split_asset_sheet":  true,
+                    "remove_background":  true,
+                    "pipeline":  true
+                },
+    "defaults":  {
+                     "prompt_file_exists":  true,
+                     "input_file_exists":  false,
+                     "config_file_exists":  true
+                 },
+    "image_env":  {
+                      "image_api_key_present":  false,
+                      "image_base_url":  null,
+                      "image_model":  null
+                  }
+}

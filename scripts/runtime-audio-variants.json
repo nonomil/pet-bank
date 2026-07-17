@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "sets": [
+    {
+      "id": "pixel-worlds-story-narration",
+      "sourceDir": "assets/story/pixel-worlds-v1/audio",
+      "include": ["**/*.wav"],
+      "runtimePrefix": "assets/story/pixel-worlds-v1/audio",
+      "publishRoot": "assets/story/pixel-worlds-v1/audio",
+      "format": "OGG",
+      "subtype": "OPUS",
+      "extension": ".ogg"
+    },
+    {
+      "id": "minecraft-vocab-narration",
+      "sourceDir": "assets/learn/english-vocab/minecraft-narration",
+      "include": ["*.mp3"],
+      "runtimePrefix": "assets/learn/english-vocab/minecraft-narration",
+      "publishRoot": "assets/learn/english-vocab/minecraft-narration",
+      "format": "OGG",
+      "subtype": "OPUS",
+      "extension": ".ogg"
+    }
+  ]
+}

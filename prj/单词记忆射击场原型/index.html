@@ -185,10 +185,20 @@
     </section>
   </main>
 
-  <script src="./assets/word-memory-cards.js?v=word-memory-topdown-v4"></script>
-  <script src="./assets/word-memory-core-cards.js?v=core-english-memory-v1"></script>
-  <script src="./assets/word-memory-extension-cards.js?v=extension-english-memory-v1"></script>
-  <script src="./assets/voice/map.js?v=word-memory-topdown-v4"></script>
+  <script>
+    (function loadFileFallbackScripts() {
+      if (window.location.protocol !== 'file:') return;
+      const vocabMode = new URLSearchParams(window.location.search).get('vocab');
+      const cardScript = vocabMode === 'extension'
+        ? './assets/word-memory-extension-cards.js?v=extension-english-memory-v1'
+        : (vocabMode === 'all'
+          ? './assets/word-memory-cards.js?v=word-memory-topdown-v4'
+          : './assets/word-memory-core-cards.js?v=core-english-memory-v1');
+      document.write([cardScript, './assets/voice/map.js?v=word-memory-topdown-v4'].map(function (src) {
+        return '<script src="' + src + '"><\/script>';
+      }).join(''));
+    }());
+  </script>
   <script>
     window.WORD_MEMORY_TTS_ENDPOINT = 'http://127.0.0.1:9885/tts';
     window.WORD_MEMORY_TTS_VOICE = 'child';

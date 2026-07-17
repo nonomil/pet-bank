@@ -21,6 +21,7 @@ cd "$release_dir"
 node scripts/test-pixel-worlds-contract.mjs
 node scripts/test-pixel-worlds-assets-contract.mjs
 node scripts/test-pixel-story-content-contract.mjs
+node scripts/test-pixel-worlds-story-audio-contract.mjs
 node scripts/test-explore-mode-contract.mjs
 node scripts/test-pages-fast-gate-contract.mjs
 node scripts/test-static-route-entries.mjs
@@ -91,6 +92,19 @@ python -X utf8 .codex/skills/gpt-image-bee-workflow/scripts/bee_image_workflow.p
 当前素材状态（2026-07-15）：80/80 个节点已有独立场景 WebP、80/80 个节点道具 WebP、80/80 个路线专属节点图标 WebP；科幻、森林、方块、侦探均为 20/20。图标来自四张 `1536x1024` 路线素材表，经透明化、碎片过滤和语义命名后接入。全部文件均已通过素材契约和发布制品检查，浏览器验证四路线的地图、节点图标、场景背景与道具实际加载。
 
 当前故事状态（2026-07-15）：80/80 个节点已完成剧情文本优化；科幻 → 森林 → 方块 → 回家门的主线转场统一，侦探 20 节点补齐跨世界案件收束。通过 `scripts/test-pixel-story-content-contract.mjs` 后，才可报告内容层完成。
+
+### 故事音频生成与发布
+
+正式文本源是 `data/story-packs/05-pixel-worlds-story/levels/*.json`，汇总审计稿由 `scripts/export-pixel-worlds-story-text.mjs` 生成到 `docs/探索地图故事/像素世界漫游/01-80节点台词清单.md`。节点级完整 WAV 保留作兼容归档；运行时播放使用 `audio-manifest.json` 中的 `entries[chapterId].scenes[].lines[]` 句级音频，每次点击只推进一条文字和一条语音。句级资源可由 VoxCPM2 逐句生成，或由已验收节点 WAV 经过 `scripts/split-pixel-worlds-story-audio-lines.py` 拆分后登记。
+
+```powershell
+node scripts/export-pixel-worlds-story-text.mjs
+& 'D:/PythonEnvs/tts-voxcpm/Scripts/python.exe' scripts/generate-pixel-worlds-story-tts.py
+node scripts/test-pixel-worlds-story-audio-contract.mjs
+node scripts/test-pixel-story-line-playback-contract.mjs
+```
+
+生成脚本会复用已有文件并持续写入 `partial` 清单，完成 80 个节点后才写为 `complete`。句级清单必须为 `lineAudioStatus: complete`，并包含全部 880 条可读台词的独立文件。未完成音频清单不得报告为音频已交付；地图点击不再预启动整章 WAV，故事舞台进入后自动播放当前句，点击对话框才切换并播放下一句，离开故事时停止当前音频。
 
 ```powershell
 $env:PIXEL_SCENE_BEE_DELAY_MS = '5000'

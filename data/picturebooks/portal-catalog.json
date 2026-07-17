@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "stories": [
+    {"id":"block-battle","titleZh":"方块大战","shelf":"冒险故事","cover":"assets/picturebooks/images/block-battle/page-1.jpg","tags":["方块世界","解谜","冒险"]},
+    {"id":"brave-pea-shooter","titleZh":"勇敢的豌豆射手","shelf":"冒险故事","cover":"assets/picturebooks/images/brave-pea-shooter/page-1.jpg","tags":["勇气","友谊","冒险"]},
+    {"id":"brave-tank","titleZh":"勇敢的小坦克","shelf":"冒险故事","cover":"assets/picturebooks/images/brave-tank/page-1.jpg","tags":["勇敢","坚持","成长"]},
+    {"id":"crayons-quit","titleZh":"蜡笔罢工的一天","shelf":"经典绘本","cover":"assets/picturebooks/images/crayons-quit/page-1.jpg","tags":["经典绘本","双语阅读"]},
+    {"id":"gruffalo","titleZh":"咕噜牛","shelf":"经典绘本","cover":"assets/picturebooks/images/gruffalo/page-1.jpg","tags":["经典绘本","双语阅读"]},
+    {"id":"hungry-snake","titleZh":"好饿的小蛇","shelf":"中文启蒙","cover":"assets/picturebooks/images/hungry-snake/page-1.jpg","tags":["中文","颜色","食物"]},
+    {"id":"invisible-tank","titleZh":"隐身战车奇袭","shelf":"我的世界","cover":"assets/picturebooks/images/invisible-tank/page-1.jpg","tags":["我的世界","双语阅读"]},
+    {"id":"knuffle-bunny","titleZh":"古纳什小兔","shelf":"经典绘本","cover":"assets/picturebooks/images/knuffle-bunny/page-1.jpg","tags":["经典绘本","双语阅读"]},
+    {"id":"little-critter","titleZh":"小怪物：放风筝","shelf":"经典绘本","cover":"assets/picturebooks/images/little-critter/page-1.jpg","tags":["经典绘本","双语阅读"]},
+    {"id":"minecraft","titleZh":"史蒂夫大战凋零","shelf":"我的世界","cover":"assets/picturebooks/images/minecraft/page-1.jpg","tags":["我的世界","双语阅读"]},
+    {"id":"obsidian-pinnacle","titleZh":"黑曜石山峰探险","shelf":"我的世界","cover":"assets/picturebooks/images/obsidian-pinnacle/page-1.jpg","tags":["方块世界","探险","建造"]},
+    {"id":"ocean-adventure","titleZh":"城市到海洋大冒险 🐙","shelf":"海洋故事","cover":"assets/picturebooks/images/ocean-adventure/page-1.jpg","tags":["海洋","观察","想象"]},
+    {"id":"pete-cat","titleZh":"皮特猫：我爱我的白鞋子","shelf":"经典绘本","cover":"assets/picturebooks/images/pete-cat/page-1.jpg","tags":["经典绘本","双语阅读"]},
+    {"id":"pigeon-bus","titleZh":"别让鸽子开巴士","shelf":"经典绘本","cover":"assets/picturebooks/images/pigeon-bus/page-1.jpg","tags":["经典绘本","双语阅读"]},
+    {"id":"planet-battle","titleZh":"行星大战","shelf":"太空故事","cover":"assets/picturebooks/images/planet-battle/page-1.jpg","tags":["太空","探索","机器人"]},
+    {"id":"robot-battle","titleZh":"家务机器人大战","shelf":"冒险故事","cover":"assets/picturebooks/images/robot-battle/page-1.jpg","tags":["劳动","合作","机器人"]},
+    {"id":"space-d1","titleZh":"星球大战游戏","shelf":"太空故事","cover":"assets/picturebooks/images/space-d1/page-1.jpg","tags":["太空","探索","科学"]},
+    {"id":"star-wars","titleZh":"星球大战","shelf":"太空故事","cover":"assets/picturebooks/images/star-wars/page-1.jpg","tags":["太空","伙伴","想象"]},
+    {"id":"storyfun-1-adventures","titleZh":"皮普的冒险","shelf":"英语启蒙","cover":"assets/picturebooks/images/storyfun-1-adventures/page-1.jpg","tags":["英语启蒙","双语阅读"]},
+    {"id":"sugarcane-tank","titleZh":"甘蔗坦克大作战","shelf":"我的世界","cover":"assets/picturebooks/images/sugarcane-tank/page-1.jpg","tags":["我的世界","双语阅读"]},
+    {"id":"tank-1","titleZh":"坦克大战·第一册","shelf":"我的世界","cover":"assets/picturebooks/images/tank-1/page-1.jpg","tags":["我的世界","双语阅读"]},
+    {"id":"tank-2","titleZh":"坦克大战·第二册","shelf":"我的世界","cover":"assets/picturebooks/images/tank-2/page-1.jpg","tags":["我的世界","双语阅读"]},
+    {"id":"tank-3","titleZh":"坦克大战·第三册","shelf":"我的世界","cover":"assets/picturebooks/images/tank-3/page-1.jpg","tags":["我的世界","双语阅读"]},
+    {"id":"wild-things","titleZh":"野兽出没的地方","shelf":"经典绘本","cover":"assets/picturebooks/images/wild-things/page-1.jpg","tags":["经典绘本","双语阅读"]},
+    {"id":"winnie-witch","titleZh":"女巫温妮","shelf":"经典绘本","cover":"assets/picturebooks/images/winnie-witch/page-1.jpg","tags":["经典绘本","双语阅读"]}
+  ]
+}

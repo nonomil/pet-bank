@@ -13,76 +13,76 @@
       "lines": [
         {
           "type": "narration",
-          "text": "矿洞里黑黑的，墙上只有一串忽明忽暗的火把。守门人说，光亮会带来安全。",
+          "text": "矿洞里黑黑的，墙上只有一串忽明忽暗的火把。村口路牌指向这里，可没有安全的光，大家还不能走到星门。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "这里是“矿洞火把路：寻找亮处”。我们的任务是“找出矿洞里下一盏亮着的火把”，先看清安全火把，再决定下一步。",
+          "text": "这里是“矿洞火把路：寻找亮处”。我们要找出下一盏安全火把，让路牌指向的通道真正可以通过。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "方块碰撞和远处的机关声告诉我，安全火把就在附近。",
+          "text": "方块碰撞声在黑暗里回响。远处有水滴声，安全火把就在能看见水路的地方。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "在矿洞火把路：寻找亮处，发现问题不能只靠着急。我们要一步一步搭出安全的路线，先处理安全火把，也要照顾身边的朋友。",
+          "text": "地下城守门人说：火把不是为了把洞照得很亮，而是让大家看见脚下的路和身边的朋友。",
           "character": "block_builder",
           "position": "left"
         },
         {
           "type": "activity",
           "activityType": "scan",
-          "prompt": "找出矿洞里下一盏亮着的火把，让安全火把的线索显现出来。",
+          "prompt": "找出矿洞里下一盏安全火把，让通往地下水渠的路显现出来。",
           "character": "hero",
           "position": "left",
           "actions": [
             {
               "label": "点亮左边火把",
-              "feedback": "点亮左边火把后，安全火把出现了；地下水渠的方向更清楚了。"
+              "feedback": "点亮左边火把后，地下水渠的入口被照亮了；水声就在前面。"
             },
             {
               "label": "观察墙上星点",
-              "feedback": "观察墙上星点让另一个细节亮起来：明标记指向地下水渠。"
+              "feedback": "观察墙上星点后，墙上的绿色光标记显现；它提醒我们水渠是星门的下一条件。"
             }
           ]
         },
         {
           "type": "narration",
-          "text": "安全火把被找到后，地下水渠的方向亮了起来。一步一步搭出安全的路线，新的道路出现了。",
+          "text": "安全火把固定在墙上，矿洞的路可以安全通过了。火光还照出一条缺水的地下水渠。",
           "character": "narrator"
         },
         {
           "type": "dialogue",
-          "text": "原来“明”也藏在这里。我们把它和地图上的光点连起来。",
+          "text": "原来“明”就是让大家看清下一步。我们把火光接到星门准备图上。",
           "character": "hero",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "我听见地下水渠传来的声音了，刚才的努力真的让它更近了。",
+          "text": "我听见地下水渠的水滴声了。可是水还没有流到村里的花田，星门也还没有能源。",
           "character": "pet",
           "position": "right"
         },
         {
           "type": "dialogue",
-          "text": "安全火把让大家知道，地下水渠不是远处的名字，而是一条可以走到的路。",
+          "text": "守门人把火把旁的水路画出来：下一步要让水回到花田，也让星门得到第一股流动的力量。",
           "character": "block_builder",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "这件事提醒我们：安全火把不是终点，它会把故事带到地下水渠。",
+          "text": "这件事提醒我们：看清路还不够，还要让路上的水重新流动。下一站去地下水渠。",
           "character": "block_builder",
           "position": "left"
         },
         {
           "type": "dialogue",
-          "text": "完成这一站后，地下水渠的入口已经亮起。我们带着“明”继续走。",
+          "text": "安全火把照亮地下水渠的入口。我们带着“明”和路牌方向，继续找星门需要的水。",
           "character": "cave_keeper",
           "position": "right"
         }

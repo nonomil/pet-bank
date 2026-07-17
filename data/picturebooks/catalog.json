@@ -9,6 +9,14 @@
       "titleEn": "The Brave Pea Shooter",
       "category": "Steve 的故事屋",
       "shelf": "冒险故事",
+      "author": "儿童绘本素材库",
+      "ageRange": "4-6岁",
+      "difficulty": "入门",
+      "durationMin": 8,
+      "tags": ["勇气", "友谊", "冒险"],
+      "keywords": ["豌豆射手", "僵尸", "花园"],
+      "license": "local-curated",
+      "publishable": true,
       "cover": "assets/picturebooks/images/brave-pea-shooter/page-1.png",
       "pages": [
         {
@@ -140,6 +148,14 @@
       "titleEn": "From the City to the Ocean",
       "category": "Steve 的故事屋",
       "shelf": "海洋故事",
+      "author": "儿童绘本素材库",
+      "ageRange": "4-6岁",
+      "difficulty": "入门",
+      "durationMin": 6,
+      "tags": ["海洋", "观察", "想象"],
+      "keywords": ["城市", "海洋", "章鱼"],
+      "license": "local-curated",
+      "publishable": true,
       "cover": "assets/picturebooks/images/ocean-adventure/page-1.png",
       "pages": [
         {
@@ -229,6 +245,14 @@
       "titleEn": "The Housework Robot Battle",
       "category": "Steve 的故事屋",
       "shelf": "冒险故事",
+      "author": "儿童绘本素材库",
+      "ageRange": "5-7岁",
+      "difficulty": "进阶",
+      "durationMin": 9,
+      "tags": ["劳动", "合作", "机器人"],
+      "keywords": ["家务", "机器人", "合作"],
+      "license": "local-curated",
+      "publishable": true,
       "cover": "assets/picturebooks/images/robot-battle/page-1.png",
       "pages": [
         {
@@ -366,6 +390,14 @@
       "titleEn": "The Brave Little Tank",
       "category": "Steve 的故事屋",
       "shelf": "冒险故事",
+      "author": "儿童绘本素材库",
+      "ageRange": "4-6岁",
+      "difficulty": "入门",
+      "durationMin": 8,
+      "tags": ["勇敢", "坚持", "成长"],
+      "keywords": ["坦克", "挑战", "朋友"],
+      "license": "local-curated",
+      "publishable": true,
       "cover": "assets/picturebooks/images/brave-tank/page-1.png",
       "pages": [
         {
@@ -497,6 +529,14 @@
       "titleEn": "The Very Hungry Little Snake",
       "category": "Steve 的故事屋",
       "shelf": "中文启蒙",
+      "author": "儿童绘本素材库",
+      "ageRange": "3-5岁",
+      "difficulty": "入门",
+      "durationMin": 4,
+      "tags": ["中文", "颜色", "食物"],
+      "keywords": ["小蛇", "水果", "颜色"],
+      "license": "local-curated",
+      "publishable": true,
       "cover": "assets/picturebooks/images/hungry-snake/page-1.png",
       "pages": [
         {
@@ -556,6 +596,14 @@
       "titleEn": "Planet Battle Game",
       "category": "Steve 的故事屋",
       "shelf": "太空故事",
+      "author": "儿童绘本素材库",
+      "ageRange": "5-7岁",
+      "difficulty": "进阶",
+      "durationMin": 10,
+      "tags": ["太空", "探索", "科学"],
+      "keywords": ["星球", "宇宙", "战斗"],
+      "license": "local-curated",
+      "publishable": true,
       "cover": "assets/picturebooks/images/space-d1/page-1.png",
       "pages": [
         {
@@ -705,6 +753,14 @@
       "titleEn": "Star Wars Adventure",
       "category": "Steve 的故事屋",
       "shelf": "太空故事",
+      "author": "儿童绘本素材库",
+      "ageRange": "5-7岁",
+      "difficulty": "进阶",
+      "durationMin": 10,
+      "tags": ["太空", "伙伴", "想象"],
+      "keywords": ["星球大战", "飞船", "冒险"],
+      "license": "local-curated",
+      "publishable": true,
       "cover": "assets/picturebooks/images/star-wars/page-1.png",
       "pages": [
         {
@@ -848,6 +904,14 @@
       "titleEn": "The Block Battle",
       "category": "Steve 的故事屋",
       "shelf": "冒险故事",
+      "author": "儿童绘本素材库",
+      "ageRange": "5-7岁",
+      "difficulty": "进阶",
+      "durationMin": 15,
+      "tags": ["方块世界", "解谜", "冒险"],
+      "keywords": ["方块", "地下城", "解谜"],
+      "license": "local-curated",
+      "publishable": true,
       "cover": "assets/picturebooks/images/block-battle/page-1.png",
       "pages": [
         {

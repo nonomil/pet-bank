@@ -194,7 +194,15 @@
         container.querySelectorAll('.pixel-story-node').forEach(function (node) {
             node.addEventListener('click', function () {
                 if (root.PixelStoryEngine && typeof root.PixelStoryEngine.setPreferredTrack === 'function') root.PixelStoryEngine.setPreferredTrack(track.id, false);
-                if (root.PixelStoryEngine && typeof root.PixelStoryEngine.enterChapter === 'function') root.PixelStoryEngine.enterChapter(node.dataset.chapter);
+                var chapterId = node.dataset.chapter;
+                if (container.id === 'homePixelWorldMapSlot' && typeof root.switchPage === 'function') {
+                    Promise.resolve(root.switchPage('explore')).then(function () {
+                        if (root.PixelStoryEngine && typeof root.PixelStoryEngine.setPreferredTrack === 'function') root.PixelStoryEngine.setPreferredTrack(track.id, false);
+                        if (root.PixelStoryEngine && typeof root.PixelStoryEngine.enterChapter === 'function') root.PixelStoryEngine.enterChapter(chapterId);
+                    });
+                    return;
+                }
+                if (root.PixelStoryEngine && typeof root.PixelStoryEngine.enterChapter === 'function') root.PixelStoryEngine.enterChapter(chapterId);
             });
         });
     }

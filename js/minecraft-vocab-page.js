@@ -29,6 +29,12 @@
     const REWARD_CHEST_IMAGE = `${UI_ASSET_ROOT}reward-chest.png`;
     const REWARD_STAR_IMAGE = `${UI_ASSET_ROOT}reward-star.png`;
     const COMPANION_IMAGE = `${UI_ASSET_ROOT}learning-companion.png`;
+    const CARD_CORNER_IMAGES = {
+        tl: `${UI_ASSET_ROOT}card-corner-tl.png`,
+        tr: `${UI_ASSET_ROOT}card-corner-tr.png`,
+        bl: `${UI_ASSET_ROOT}card-corner-bl.png`,
+        br: `${UI_ASSET_ROOT}card-corner-br.png`
+    };
 
     let mounted = false;
     let root = null;
@@ -36,6 +42,7 @@
     let state = null;
     let view = 'home';
     let revealed = false;
+    let flipped = false;
     let feedback = '';
     let rewardResult = null;
     let audio = null;
@@ -111,9 +118,22 @@
         </div>`;
     }
 
-    function cardAudio(card) {
-        const audioPath = String(card?.audio || '');
+    function cardAudio(card, key = 'word') {
+        const narration = card?.narrationAudio || {};
+        const audioPath = String(narration[key] || (key === 'word' ? card?.audio : '') || '');
         return /^(?:assets|prj\/anki-minecraft-vocab)\//.test(audioPath) ? asset(audioPath) : '';
+    }
+
+    function cardText(card, key) {
+        const aliases = {
+            sentence: ['sentence', 'example'],
+            sentenceTranslation: ['sentenceTranslation', 'exampleZh', 'exampleTranslation']
+        };
+        return (aliases[key] || [key]).map(field => String(card?.[field] || '').trim()).find(Boolean) || '';
+    }
+
+    function pronunciation(card) {
+        return String(card?.phonetic || '').trim() || '点击喇叭听发音';
     }
 
     function fallbackChoices(card) {
@@ -147,7 +167,7 @@
 
     function renderShell(content) {
         if (!root || !mounted) return;
-        root.innerHTML = `<div class="minecraft-vocab-page" data-minecraft-vocab-page style="--mv-card-frame: ${escapeHtml(cssImage(CARD_FRAME_IMAGE))}">${content}</div>`;
+        root.innerHTML = `<div class="minecraft-vocab-page" data-minecraft-vocab-page style="--mv-card-frame: ${escapeHtml(cssImage(CARD_FRAME_IMAGE))}; --mv-corner-tl: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.tl))}; --mv-corner-tr: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.tr))}; --mv-corner-bl: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.bl))}; --mv-corner-br: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.br))}">${content}</div>`;
         bindEvents();
         if (global.lucide && typeof global.lucide.createIcons === 'function') global.lucide.createIcons();
         const image = root.querySelector('[data-mv-card-image]');
@@ -199,39 +219,95 @@
         </div>`;
     }
 
+    function renderProgressSidebar(currentStats = stats()) {
+        const totalTasks = state?.queue?.length || 11;
+        const done = completedCount();
+        const percent = totalTasks ? Math.round((done / totalTasks) * 100) : 0;
+        const current = currentTask();
+        const currentStage = current ? stageLabel(current.mode) : '今日远征已完成';
+        const stageSteps = [
+            { key: 'warmup', label: '热身复习', detail: '唤醒熟悉的词', limit: 2 },
+            { key: 'new', label: '新词矿洞', detail: '认识 5 个新词', limit: 7 },
+            { key: 'recall', label: '回忆桥', detail: '主动说出英文', limit: 10 },
+            { key: 'scene', label: '村庄对话', detail: '把词放进句子', limit: 11 }
+        ];
+        return `
+            <aside class="mv-progress-sidebar" aria-label="今日学习汇总">
+                <div class="mv-sidebar-heading">
+                    <div>
+                        <span class="mv-sidebar-kicker">今日远征</span>
+                        <h2>学习进度</h2>
+                    </div>
+                    <span class="mv-sidebar-streak" title="今日完成任务"><i data-lucide="flame" aria-hidden="true"></i>${done}</span>
+                </div>
+                <div class="mv-progress-meter" style="--mv-progress: ${percent}%">
+                    <strong>${percent}%</strong>
+                    <span>完成今日路线</span>
+                </div>
+                <div class="mv-progress-count"><strong>${done}</strong><span>/ ${totalTasks} 张卡片</span></div>
+                <div class="mv-current-stage"><span>现在进行</span><strong>${escapeHtml(currentStage)}</strong></div>
+                <ol class="mv-sidebar-stages">
+                    ${stageSteps.map(stage => {
+                        const isDone = done >= stage.limit;
+                        const isActive = !isDone && (stage.limit === 2 || done >= stage.limit - (stage.key === 'new' ? 5 : stage.key === 'recall' ? 3 : 1));
+                        return `<li class="${isDone ? 'is-done' : ''}${isActive ? ' is-active' : ''}">
+                            <span class="mv-sidebar-stage-icon" style="--mv-stage-icon: ${escapeHtml(cssImage(STAGE_BADGE_IMAGES[stage.key]))}">${isDone ? '<i data-lucide="check" aria-hidden="true"></i>' : ''}</span>
+                            <span><strong>${stage.label}</strong><small>${stage.detail}</small></span>
+                            <em>${isDone ? '完成' : `${Math.min(done, stage.limit)}/${stage.limit}`}</em>
+                        </li>`;
+                    }).join('')}
+                </ol>
+                <div class="mv-sidebar-stats">
+                    <div><span>词库</span><strong>${Number(currentStats.total || 0).toLocaleString('zh-CN')}</strong></div>
+                    <div><span>已掌握</span><strong>${Number(currentStats.mastered || 0).toLocaleString('zh-CN')}</strong></div>
+                    <div><span>今日奖励</span><strong>+10</strong></div>
+                </div>
+                ${done < totalTasks ? `<button class="mv-sidebar-start" type="button" data-mv-start><i data-lucide="play" aria-hidden="true"></i><span>${done ? '继续学习' : '开始学习'}</span></button>` : ''}
+            </aside>
+        `;
+    }
+
+    function renderCardPreview(card) {
+        if (!card) return '<div class="mv-card-preview-empty">准备下一张词卡...</div>';
+        return `
+            <article class="mv-card-preview">
+                <div class="mv-card-preview-art">${cardImage(card) ? `<img src="${escapeHtml(cardImage(card))}" alt="${escapeHtml(card.word || 'Minecraft 词卡')}" loading="lazy" decoding="async">` : fallbackCardVisual(card)}</div>
+                <div class="mv-card-preview-copy">
+                    <span class="mv-sidebar-kicker">下一张词卡</span>
+                    <h3>${escapeHtml(card.word || '')}</h3>
+                    <p>${escapeHtml(card.translation || '先在学习中揭晓释义')}</p>
+                    <span class="mv-card-preview-note"><i data-lucide="volume-2" aria-hidden="true"></i>可听发音 · 可看短语 · 可练场景句</span>
+                </div>
+            </article>
+        `;
+    }
+
     function renderHome() {
         const currentStats = stats();
         const started = completedCount() > 0;
         return `
             ${renderHeader('Minecraft 单词远征', '学习中心 / 今日远征')}
-            <main class="mv-main">
-                <section class="mv-hero" data-mv-hero style="--mv-hero-bg: ${escapeHtml(cssImage(HERO_IMAGE))}">
-                    <div class="mv-hero-copy">
-                        <span class="mv-kicker">今日远征 · 约 10 分钟</span>
-                        <h2>带伙伴穿过方块世界，收集 11 颗词语星</h2>
-                        <p>先热身，再认识新词，最后把词放回场景里。</p>
-                        <button class="mv-primary-button" type="button" data-mv-start><i data-lucide="play" aria-hidden="true"></i><span>${started ? '继续今日远征' : '开始今日远征'}</span></button>
-                    </div>
-                    <img class="mv-hero-companion" src="${escapeHtml(asset(COMPANION_IMAGE))}" alt="学习伙伴" loading="eager" decoding="async">
-                </section>
-                <section class="mv-overview-band" aria-label="学习概览">
-                    <div class="mv-overview-copy">
-                        <span class="mv-kicker">本日路线</span>
-                        <h2>先完成眼前这一组</h2>
-                        <p>进度会跟着当前孩子 Profile 保存。</p>
-                    </div>
-                    ${renderStageTrack()}
-                    ${renderTaskDots()}
-                </section>
-                <section class="mv-stat-grid" aria-label="词汇统计">
-                    <div><span>词卡总数</span><strong>${currentStats.total}</strong><small>本地可播放词卡</small></div>
-                    <div><span>已掌握</span><strong>${currentStats.mastered}</strong><small>连续答对 2 次</small></div>
-                    <div><span>今日奖励</span><strong>+10</strong><small>完成远征后结算</small></div>
-                </section>
-                <section class="mv-source-line">
-                    <i data-lucide="archive" aria-hidden="true"></i>
-                    <span data-mv-source-summary>素材：Anki 原始 11,241 张 · 可学习 ${currentStats.total.toLocaleString('zh-CN')} 词 · 参考词表 500 条</span>
-                    <span class="mv-source-actions"><button class="mv-text-button" type="button" data-mv-open-pack>查看学习包</button><button class="mv-text-button" type="button" data-mv-open-anki>打开完整 Anki 图鉴</button></span>
+            <main class="mv-main mv-playground-layout">
+                ${renderProgressSidebar(currentStats)}
+                <section class="mv-learning-column" aria-label="Minecraft 单词卡学习区">
+                    <section class="mv-hero mv-hero-compact" data-mv-hero style="--mv-hero-bg: ${escapeHtml(cssImage(HERO_IMAGE))}">
+                        <div class="mv-hero-copy">
+                            <span class="mv-kicker">今日远征 · 约 10 分钟</span>
+                            <h2>带伙伴穿过方块世界，收集 11 颗词语星</h2>
+                            <p>先热身，再认识新词，最后把词放回场景里。</p>
+                            <button class="mv-primary-button" type="button" data-mv-start><i data-lucide="play" aria-hidden="true"></i><span>${started ? '继续今日远征' : '开始今日远征'}</span></button>
+                        </div>
+                        <img class="mv-hero-companion" src="${escapeHtml(asset(COMPANION_IMAGE))}" alt="学习伙伴" loading="eager" decoding="async">
+                    </section>
+                    <section class="mv-card-column" aria-label="下一张单词卡">
+                        <div class="mv-column-heading"><div><span class="mv-kicker">卡片栏目</span><h2>准备好，开始一张</h2></div><span class="mv-column-caption">图像 · 发音 · 场景</span></div>
+                        ${renderCardPreview(cardForTask(currentTask()))}
+                    </section>
+                    <section class="mv-source-line">
+                        <i data-lucide="archive" aria-hidden="true"></i>
+                        <span data-mv-source-summary>素材：Anki 原始 11,241 张 · 可学习 ${Number(currentStats.total || 0).toLocaleString('zh-CN')} 词 · 参考词表 500 条</span>
+                        <span class="mv-source-actions"><button class="mv-text-button" type="button" data-mv-open-pack>查看学习包</button><button class="mv-text-button" type="button" data-mv-open-anki>打开完整 Anki 图鉴</button></span>
+                    </section>
                 </section>
             </main>
         `;
@@ -252,6 +328,62 @@
         `;
     }
 
+    function renderFlashcard(card, mode) {
+        const isQuestion = ['recall', 'scene'].includes(mode);
+        const word = card?.word || '';
+        const image = cardImage(card);
+        const faceLabel = isQuestion ? '先看提示，再回忆英文' : '点击单词翻转看句子';
+        const detailAudioButton = (key, label = '播放') => `<button class="mv-audio-button mv-detail-audio-button" type="button" data-mv-listen="${escapeHtml(key)}" aria-label="播放${escapeHtml(key.includes('Translation') || key === 'translation' ? '中文' : '英文')}音频" title="播放音频"><i data-lucide="volume-2" aria-hidden="true"></i><span>${label}</span></button>`;
+        return `
+            <article class="mv-flip-card${flipped ? ' is-flipped' : ''}" data-mv-flip-card aria-label="${escapeHtml(word || 'Minecraft 单词卡')}">
+                <div class="mv-flip-inner">
+                    <div class="mv-card-face mv-card-front" data-mv-flip role="button" tabindex="0" aria-label="翻转查看例句">
+                        <div class="mv-card-face-top"><span>${escapeHtml(stageLabel(mode))}</span><span class="mv-card-face-count">词卡正面</span></div>
+                        <div class="mv-card-art" data-mv-card-art>${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(word || 'Minecraft 词卡')}" data-mv-card-image loading="eager" decoding="async">` : fallbackCardVisual(card)}</div>
+                        <div class="mv-card-front-copy">
+                            <span class="mv-card-flip-hint"><i data-lucide="mouse-pointer-click" aria-hidden="true"></i>${faceLabel}</span>
+                            <div class="mv-card-word-row">
+                                <strong>${escapeHtml(isQuestion ? '？' : word)}</strong>
+                                <button class="mv-audio-button" type="button" data-mv-listen="word" aria-label="播放 ${escapeHtml(word)} 的发音" title="播放单词发音"><i data-lucide="volume-2" aria-hidden="true"></i><span>听发音</span></button>
+                            </div>
+                            <span class="mv-card-phonetic">${escapeHtml(pronunciation(card))}</span>
+                            ${isQuestion ? `<span class="mv-card-question-note">${escapeHtml(card.translation || '看图回忆英文单词')}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="mv-card-face mv-card-back" data-mv-flip role="button" tabindex="0" aria-label="翻转回到单词正面">
+                        <div class="mv-card-face-top"><span>场景记忆</span><span class="mv-card-face-count">词卡背面</span></div>
+                        <div class="mv-card-back-copy">
+                            <div class="mv-card-back-word"><strong>${escapeHtml(word)}</strong><button class="mv-audio-button is-light" type="button" data-mv-listen="word" aria-label="播放 ${escapeHtml(word)} 的发音" title="播放单词发音"><i data-lucide="volume-2" aria-hidden="true"></i><span>再听一次</span></button></div>
+                            <span class="mv-card-phonetic">${escapeHtml(pronunciation(card))}</span>
+                            <div class="mv-card-detail-block is-meaning"><div class="mv-detail-heading"><span>中文释义</span>${detailAudioButton('translation')}</div><strong>${escapeHtml(card.translation || '')}</strong></div>
+                            <div class="mv-card-detail-block is-phrase"><div class="mv-detail-heading"><span>短语 Phrase</span>${detailAudioButton('phrase')}</div><strong>${escapeHtml(card.phrase || '')}</strong><small>${escapeHtml(card.phraseTranslation || '')}</small><div class="mv-detail-translation-line">${detailAudioButton('phraseTranslation', '听中文')}</div></div>
+                            <div class="mv-card-detail-block is-sentence"><div class="mv-detail-heading"><span>场景句 Sentence</span>${detailAudioButton('sentence')}</div><strong>${escapeHtml(cardText(card, 'sentence'))}</strong><small>${escapeHtml(cardText(card, 'sentenceTranslation'))}</small><div class="mv-detail-translation-line">${detailAudioButton('sentenceTranslation', '听中文')}</div></div>
+                            <span class="mv-card-flip-hint"><i data-lucide="rotate-ccw" aria-hidden="true"></i>点击卡片回到正面</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        `;
+    }
+
+    function renderUpcomingCards() {
+        const currentIndex = (state?.queue || []).findIndex(item => item.cardId === currentTask()?.cardId);
+        const upcoming = currentIndex >= 0 ? state.queue.slice(currentIndex + 1, currentIndex + 3) : [];
+        if (!upcoming.length) return '';
+        return `<div class="mv-upcoming-cards" aria-label="后续词卡">
+            ${upcoming.map((task, index) => {
+                const card = cardForTask(task) || {};
+                return `<article class="mv-upcoming-card" aria-label="后续第 ${index + 1} 张词卡">
+                    <span class="mv-upcoming-index">${currentIndex + index + 2}</span>
+                    <div class="mv-upcoming-art">${cardImage(card) ? `<img src="${escapeHtml(cardImage(card))}" alt="" loading="lazy" decoding="async">` : fallbackCardVisual(card)}</div>
+                    <strong>${escapeHtml(card.word || '')}</strong>
+                    <small>${escapeHtml(card.translation || '')}</small>
+                    <span class="mv-upcoming-lock"><i data-lucide="lock" aria-hidden="true"></i>待学习</span>
+                </article>`;
+            }).join('')}
+        </div>`;
+    }
+
     function renderSession() {
         const task = currentTask();
         if (!task) {
@@ -267,38 +399,23 @@
         const card = cardForTask(task) || {};
         const taskIndex = (state.queue || []).findIndex(item => item.cardId === task.cardId) + 1;
         const isQuestion = ['recall', 'scene'].includes(task.mode);
-        const translation = isQuestion || revealed ? card.translation : '先听一遍，再翻开释义';
         return `
             ${renderHeader('今日远征', `Minecraft 单词 / ${stageLabel(task.mode)}`)}
-            <main class="mv-main">
+            <main class="mv-main mv-playground-layout mv-session-layout">
+                ${renderProgressSidebar(stats())}
+                <section class="mv-learning-column">
                 <section class="mv-session-shell" data-mv-session data-mv-mode="${escapeHtml(task.mode)}" style="--mv-session-bg: ${escapeHtml(cssImage(STAGE_IMAGES[task.mode] || STAGE_IMAGES.new))}">
                     <div class="mv-session-meta"><span>第 ${taskIndex} / 11</span><span>${escapeHtml(stageLabel(task.mode))}</span></div>
-                    <div class="mv-card-grid">
-                        <div class="mv-card-art" data-mv-card-art>${cardImage(card) ? `<img src="${escapeHtml(cardImage(card))}" alt="${escapeHtml(card.word || 'Minecraft 词卡')}" data-mv-card-image loading="eager" decoding="async">` : fallbackCardVisual(card)}</div>
-                        <div class="mv-card-copy">
-                            <div class="mv-word-line"><strong>${escapeHtml(isQuestion ? '？' : card.word || '')}</strong><button class="mv-icon-button" type="button" data-mv-listen aria-label="播放单词发音" title="播放单词发音"><i data-lucide="volume-2" aria-hidden="true"></i></button></div>
-                            ${card.phonetic ? `<span class="mv-phonetic">${escapeHtml(card.phonetic)}</span>` : ''}
-                            <span class="mv-translation">${escapeHtml(translation || '')}</span>
-                            ${!isQuestion ? '<button class="mv-text-button" type="button" data-mv-reveal><i data-lucide="eye" aria-hidden="true"></i><span>显示释义</span></button>' : ''}
-                            ${renderChoices(card, task.mode)}
-                            ${!isQuestion ? `
-                                <div class="mv-phrase" data-mv-phrase>
-                                    <span>短语</span>
-                                    <strong>${escapeHtml(card.phrase || '')}</strong>
-                                    <small>${escapeHtml(card.phraseTranslation || '')}</small>
-                                </div>
-                                <div class="mv-sentence" data-mv-sentence>
-                                    <span>场景句</span>
-                                    <p>${escapeHtml(card.sentence || card.example || '')}</p>
-                                    <small>${escapeHtml(card.sentenceTranslation || card.exampleZh || card.exampleTranslation || '')}</small>
-                                </div>
-                            ` : ''}
-                        </div>
+                    <div class="mv-card-rack">
+                        <div class="mv-current-card-wrap">${renderFlashcard(card, task.mode)}</div>
+                        ${renderUpcomingCards()}
                     </div>
+                    ${isQuestion ? renderChoices(card, task.mode) : ''}
                     ${feedback ? `<p class="mv-feedback" data-mv-feedback aria-live="polite">${escapeHtml(feedback)}</p>` : ''}
-                    <div class="mv-mobile-actions" data-mv-mobile-actions>
+                    <div class="mv-card-actions" data-mv-mobile-actions>
                         ${!isQuestion ? `<button class="mv-secondary-button" type="button" data-mv-self-assess="unknown"><i data-lucide="rotate-ccw" aria-hidden="true"></i><span>还不熟</span></button><button class="mv-primary-button" type="button" data-mv-self-assess="known"><i data-lucide="check" aria-hidden="true"></i><span>认识了</span></button>` : ''}
                     </div>
+                </section>
                 </section>
             </main>
         `;
@@ -325,23 +442,32 @@
         else renderShell(renderHome());
     }
 
-    function playAudio(card) {
-        const src = cardAudio(card);
+    function speakText(card, key = 'word') {
+        if (global.speechSynthesis && global.SpeechSynthesisUtterance) {
+            global.speechSynthesis.cancel();
+            const text = key === 'word' ? String(card?.word || '') : cardText(card, key);
+            const utterance = new global.SpeechSynthesisUtterance(text);
+            utterance.lang = key === 'translation' || key.includes('Translation') ? 'zh-CN' : 'en-US';
+            global.speechSynthesis.speak(utterance);
+        }
+    }
+
+    function playAudio(card, key = 'word') {
+        const src = cardAudio(card, key);
         if (audio) {
             try { audio.pause(); } catch (error) {}
             audio = null;
         }
         if (src && typeof global.Audio === 'function') {
             audio = new global.Audio(src);
-            audio.play().catch(error => console.warn('[MinecraftVocabPage] audio play failed', error));
+            audio.addEventListener('error', () => speakText(card, key), { once: true });
+            audio.play().catch(error => {
+                console.warn('[MinecraftVocabPage] audio play failed, using speech fallback', error);
+                speakText(card, key);
+            });
             return;
         }
-        if (global.speechSynthesis && global.SpeechSynthesisUtterance) {
-            global.speechSynthesis.cancel();
-            const utterance = new global.SpeechSynthesisUtterance(card?.word || '');
-            utterance.lang = 'en-US';
-            global.speechSynthesis.speak(utterance);
-        }
+        speakText(card, key);
     }
 
     function finishAction(correct) {
@@ -363,6 +489,7 @@
         state = next.state;
         feedback = correct ? '答对了，继续前进。' : `再看一次：${card.word}`;
         revealed = false;
+        flipped = false;
         if (global.MinecraftVocabSession.isComplete(state)) {
             rewardResult = global.MinecraftVocabSession.claimReward(state);
             if (rewardResult?.accepted || rewardResult?.reason === 'duplicate') {
@@ -382,6 +509,7 @@
         root.querySelectorAll('[data-mv-start]').forEach(button => button.addEventListener('click', () => {
             view = 'session';
             feedback = '';
+            flipped = false;
             renderRoot();
         }));
         root.querySelectorAll('[data-mv-open-pack]').forEach(button => button.addEventListener('click', () => {
@@ -395,7 +523,26 @@
             revealed = true;
             renderRoot();
         }));
-        root.querySelectorAll('[data-mv-listen]').forEach(button => button.addEventListener('click', () => playAudio(cardForTask(currentTask()))));
+        root.querySelectorAll('[data-mv-flip]').forEach(target => {
+            const flip = () => {
+                flipped = !flipped;
+                renderRoot();
+            };
+            target.addEventListener('click', event => {
+                if (event.target.closest('[data-mv-listen]')) return;
+                flip();
+            });
+            target.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    flip();
+                }
+            });
+        });
+        root.querySelectorAll('[data-mv-listen]').forEach(button => button.addEventListener('click', event => {
+            event.stopPropagation();
+            playAudio(cardForTask(currentTask()), button.dataset.mvListen || 'word');
+        }));
         root.querySelectorAll('[data-mv-self-assess]').forEach(button => button.addEventListener('click', () => finishAction(button.dataset.mvSelfAssess === 'known')));
         root.querySelectorAll('[data-mv-choice]').forEach(button => button.addEventListener('click', () => {
             const card = cardForTask(currentTask());

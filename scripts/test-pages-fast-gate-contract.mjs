@@ -4,6 +4,8 @@ import path from 'node:path';
 const workflowPath = path.join(process.cwd(), '.github', 'workflows', 'deploy.yml');
 const workflow = fs.readFileSync(workflowPath, 'utf8');
 const requiredCommands = [
+    'python scripts/convert-runtime-image-variants.py --check',
+    'python scripts/convert-runtime-audio-variants.py --check',
     'node --check js/app.js',
     'node scripts/test-static-route-entries.mjs',
     'node prj/runtime_loader_route_base_contract.test.mjs',
@@ -26,6 +28,9 @@ const gateBlock = gateIndex === -1
 
 if (!/uses:\s*actions\/setup-node@v4[\s\S]*?node-version:\s*['\"]?20['\"]?/.test(workflow)) {
     fail('Pages deployment must configure Node.js 20 before the fast gate');
+}
+if (!workflow.includes('python -m pip install --disable-pip-version-check pillow soundfile')) {
+    fail('Pages deployment must install Pillow and soundfile before asset validation');
 }
 if (gateIndex === -1) {
     fail('Pages deployment must name the fast gate step');

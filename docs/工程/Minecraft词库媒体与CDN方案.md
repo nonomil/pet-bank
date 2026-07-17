@@ -29,10 +29,20 @@ data/learn/packs/.../minecraft-vocab.json  合并后的学习池
 
 1. Anki 本地图片/音频。
 2. MineWords 本地图片。
-3. 浏览器英语发音。
-4. 统一文字词卡视觉 fallback。
+3. VoxCPM2 本地 WAV（只覆盖缺少 Anki 音频的卡片，来源由 `audioSource: voxcpm2` 标记）。
+4. 浏览器英语发音。
+5. 统一文字词卡视觉 fallback。
 
-当前主学习池为 `2,168` 个词，图片覆盖 `2,142` 个，音频覆盖 `1,910` 个。MineWords 来源卡片全部有本地图片。
+当前主学习池为 `2,168` 个词，图片覆盖 `2,142` 个，已有 Anki/本地音频覆盖 `1,910` 个；剩余 `258` 个由 `scripts/generate_minecraft_vocab_audio.py` 使用 VoxCPM2 补全后，目标为 `2,168 / 2,168`。MineWords 来源卡片全部有本地图片。
+
+VoxCPM2 静态音频目录和审计清单：
+
+```text
+assets/learn/english-vocab/minecraft-audio/card-*.wav
+data/vocab/english-minecraft/audio-manifest.json
+```
+
+该批处理要求 NVIDIA GPU 和本地 VoxCPM2 权重；没有可用 GPU 时保持浏览器 SpeechSynthesis 回退，不把 edge-tts 生成结果标记为 VoxCPM2。WAV 与图片一样会随 `assets/` 进入 Pages 制品，不要求单独 CDN；媒体规模增大后可把整个版本化目录同步到对象存储，并只替换运行时媒体前缀。
 
 ## 稳定字段
 

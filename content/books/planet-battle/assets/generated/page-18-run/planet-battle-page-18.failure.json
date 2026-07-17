@@ -1,0 +1,32 @@
+{
+  "status": "failed",
+  "prefix": "planet-battle-page-18",
+  "model": "gpt-image-2",
+  "apiUrl": "https://beeapi.ai/v1/images/generations",
+  "sizeRequested": "1536x1024",
+  "promptFile": "G:\\StudyCode\\宠物积分系统\\content\\books\\planet-battle\\assets\\generated\\page-18-run\\planet-battle-page-18.prompt.txt",
+  "attempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-07-16T00:12:23",
+      "response": "G:\\StudyCode\\宠物积分系统\\content\\books\\planet-battle\\assets\\generated\\page-18-run\\planet-battle-page-18.response.attempt1.json",
+      "status": "api-error",
+      "error": {
+        "message": "Upstream temporarily unavailable, please retry shortly.",
+        "type": "upstream_error"
+      }
+    },
+    {
+      "attempt": 2,
+      "startedAt": "2026-07-16T00:13:27",
+      "response": "G:\\StudyCode\\宠物积分系统\\content\\books\\planet-battle\\assets\\generated\\page-18-run\\planet-battle-page-18.response.attempt2.json",
+      "status": "api-error",
+      "error": {
+        "message": "Upstream timed out, please retry.",
+        "type": "upstream_error"
+      }
+    }
+  ],
+  "createdAt": "2026-07-16T00:18:28",
+  "nextAction": "re-run with --resume after the provider enables the model/channel"
+}

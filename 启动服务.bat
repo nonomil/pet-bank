@@ -9,6 +9,6 @@ echo ============================================
 echo Starting server, please wait...
 ping -n 2 127.0.0.1 >nul
 start "" http://127.0.0.1:8765/
-python -m http.server 8765 --bind 127.0.0.1
+node scripts/local-server.mjs
 echo Server stopped. Press any key to exit.
 pause >nul

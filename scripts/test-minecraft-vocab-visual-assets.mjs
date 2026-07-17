@@ -118,7 +118,7 @@ function assertPagesAllowlist() {
         assert.equal(result.status, 0, `Pages artifact assembly succeeds: ${result.stderr.trim()}`);
         const publishedRoot = path.join(artifactDir, runtimeRoot.replaceAll('/', path.sep));
         const publishedFiles = fs.readdirSync(publishedRoot).sort();
-        const expectedFiles = ['manifest.json', ...manifest.assets.map((asset) => path.basename(asset.path))].sort();
+        const expectedFiles = ['manifest.json', ...manifest.assets.map((asset) => `${path.basename(asset.path, path.extname(asset.path))}.webp`)].sort();
         assert.deepEqual(publishedFiles, expectedFiles, 'Pages publishes only the visual manifest and formal root images');
     } finally {
         fs.rmSync(artifactDir, { recursive: true, force: true });

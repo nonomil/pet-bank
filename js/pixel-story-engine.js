@@ -500,7 +500,7 @@
             var charData = getCharacterData(line.character);
             var text = line.text || line.prompt || '';
             if (text) {
-                var audioUrl = getLineAudioUrl(line);
+                var audioUrl = getLineAudioUrl();
                 var voicePreset = charData && charData.voicePreset ? charData.voicePreset : 'child';
                 if (boxEl) {
                     boxEl.dataset.storyAudio = audioUrl || '';
@@ -517,12 +517,22 @@
         }
     }
 
-    function getLineAudioUrl(line) {
+    function getLineAudioUrl() {
         if (!audioManifest || !audioManifest.entries || !currentChapter) return '';
+        var entry = audioManifest.entries[currentChapter.chapterId];
+        if (!entry) return '';
+        if (Array.isArray(entry.scenes)) {
+            var scene = getCurrentScene();
+            var sceneEntry = entry.scenes[currentSceneIdx];
+            var lineEntry = sceneEntry && sceneEntry.sceneId === (scene && scene.sceneId)
+                ? sceneEntry.lines[currentLineIdx]
+                : null;
+            return lineEntry && lineEntry.file ? assetUrl(lineEntry.file) : '';
+        }
         var scene = getCurrentScene();
-        var key = currentChapter.chapterId + '/' + (scene ? scene.sceneId : 'scene') + '/' + currentLineIdx;
-        var entry = audioManifest.entries[key];
-        return entry && entry.file ? assetUrl(entry.file) : '';
+        var legacyKey = currentChapter.chapterId + '/' + (scene ? scene.sceneId : 'scene') + '/' + currentLineIdx;
+        var legacyEntry = audioManifest.entries[legacyKey];
+        return legacyEntry && legacyEntry.file ? assetUrl(legacyEntry.file) : '';
     }
 
     function getCharacterData(charId) {
@@ -538,6 +548,7 @@
     /* ===== 地图渲染 ===== */
     function showMap() {
         if (!shellElement) return;
+        if (root.VoiceSystem && typeof root.VoiceSystem.stop === 'function') root.VoiceSystem.stop();
         setView('map');
         // dispatch to PixelStoryMap if available
         if (root.PixelStoryMap && typeof root.PixelStoryMap.render === 'function') {
@@ -561,6 +572,7 @@
     /* ===== 入口：进入章节 ===== */
     function enterChapter(chapterId) {
         if (!shellElement) return;
+        if (root.VoiceSystem && typeof root.VoiceSystem.stop === 'function') root.VoiceSystem.stop();
         loadChapter(chapterId).then(function (chapter) {
             currentChapter = chapter;
             currentSceneIdx = 0;

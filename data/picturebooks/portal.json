@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "libraryUrl": "https://nonomil.github.io/picturebook-library/",
+  "devLibraryUrl": "http://127.0.0.1:5174/picturebook-library/",
+  "sessionTtlMs": 7200000
+}

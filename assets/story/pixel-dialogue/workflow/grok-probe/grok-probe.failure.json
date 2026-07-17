@@ -1,0 +1,28 @@
+{
+  "status": "failed",
+  "prefix": "grok-probe",
+  "model": "grok-imagine-image-quality",
+  "apiUrl": "https://beeapi.ai/v1/images/generations",
+  "sizeRequested": "1024x1024",
+  "promptFile": "G:\\StudyCode\\宠物积分系统\\assets\\story\\pixel-dialogue\\workflow\\grok-probe\\grok-probe.prompt.txt",
+  "attempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-07-13T16:37:45",
+      "response": "G:\\StudyCode\\宠物积分系统\\assets\\story\\pixel-dialogue\\workflow\\grok-probe\\grok-probe.response.attempt1.json",
+      "status": "transient-error",
+      "httpStatus": 502,
+      "body": "error code: 502\n"
+    },
+    {
+      "attempt": 2,
+      "startedAt": "2026-07-13T16:37:56",
+      "response": "G:\\StudyCode\\宠物积分系统\\assets\\story\\pixel-dialogue\\workflow\\grok-probe\\grok-probe.response.attempt2.json",
+      "status": "transient-error",
+      "httpStatus": 502,
+      "body": "error code: 502\n"
+    }
+  ],
+  "createdAt": "2026-07-13T16:37:59",
+  "nextAction": "re-run with --resume after the provider enables the model/channel"
+}

@@ -16,6 +16,17 @@ const fullReport = process.argv.includes('--full-report');
 const ORIGINAL_MEDIA_COUNT = 6847;
 const ORIGINAL_ENCRYPTED_FIELD_COUNT = 119880;
 const TOTAL_PRUNED_IMAGE_COUNT = 1186;
+const SUPPLEMENTAL_IMAGE_WORDS = new Set([
+  'jack o\'lantern', 'minecraft item', 'head blocks', 'mob blocks', 'light blocks',
+  'utility blocks', 'glass blocks', 'redstone components', 'wool blocks', 'creative blocks',
+  'mineral and ore blocks', 'aquatic blocks', 'nether blocks', 'end blocks', 'dirt blocks',
+  'wood blocks', 'stone blocks', 'concrete blocks', 'terracotta blocks', 'spectral arrow',
+  'bottle of enchanting', 'mob eggs', 'advancements and achievements',
+  'enchanted book with glowing', 'hardcore heart', 'empty heart', 'black concrete',
+  'steve and alex face', 'nether portal', 'navbar friends', 'furnace lit block',
+  'enchanting table block', 'crafting table block', 'command block', 'chest block',
+  'dolphin\'s grace'
+]);
 
 const paths = {
   cards: path.join(dataDir, 'cards.json'),
@@ -466,6 +477,20 @@ function cleanMedia(card) {
   return selected.map(item => ({ ...item }));
 }
 
+function supplementalImageItem(word) {
+  const slug = String(word).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'word';
+  const name = `${slug}.png`;
+  const relative = `assets/media/minecraft-vocab-generated/${name}`;
+  if (!fs.existsSync(path.join(projectRoot, relative))) return null;
+  return {
+    name,
+    path: relative,
+    kind: 'image',
+    available: true,
+    source: 'supplemental-image-mapping'
+  };
+}
+
 function normalizeCard(card, sourceIndex) {
   const encryptedFieldCount = Object.values(card.fields || {}).filter(field => field.encrypted).length;
   const content = buildContent(card, sourceIndex);
@@ -521,7 +546,15 @@ function main() {
   const originalManifest = readJson(paths.manifest);
   const originalCards = readJson(paths.cards);
   const sourceIndex = buildSourceIndex(loadSourceRecords());
-  const cards = originalCards.map(card => normalizeCard(card, sourceIndex));
+  const cards = originalCards.map(card => {
+    const normalized = normalizeCard(card, sourceIndex);
+    const wordKey = String(normalized.content.word || '').trim().toLowerCase();
+    if (!normalized.media.some(item => item.kind === 'image') && SUPPLEMENTAL_IMAGE_WORDS.has(wordKey)) {
+      const image = supplementalImageItem(normalized.content.word);
+      if (image) normalized.media.unshift(image);
+    }
+    return normalized;
+  });
   const media = pruneUnusedMedia(cards);
   const sourceEncryptedFieldCount = originalManifest.schemaVersion >= 2
     ? Math.max(Number(originalManifest.sourceEncryptedFieldCount) || 0, ORIGINAL_ENCRYPTED_FIELD_COUNT)

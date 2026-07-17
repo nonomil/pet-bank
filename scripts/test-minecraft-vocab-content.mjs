@@ -38,12 +38,13 @@ assert.equal(referenceCards.length, 500, 'reference snapshot should stay at 500 
 assert.equal(mainDoc.contentCuration, 'full-anki-reference-v1', 'main vocabulary content should use the full merged content pass');
 assert.equal(mainDoc.mediaPolicy?.imageFallback, 'themed-text-card', 'merged pool should declare the themed image fallback');
 assert.equal(mainDoc.mediaPolicy?.audioFallback, 'speech-synthesis-en-US', 'merged pool should declare the speech fallback');
-assert.equal(mediaManifest.assets.length, 96, 'Minecraft card media manifest should cover all main cards');
+assert.ok(mediaManifest.assets.length >= 122, 'Minecraft card media manifest should include the curated and generated card images');
 mainCards.forEach((card, index) => assertCard(card, `main[${index}]`));
 referenceCards.forEach((card, index) => assertCard(card, `reference[${index}]`));
 
 assert.ok(mainCards.filter(card => card.image).length >= 1600, 'merged pool should retain Anki/local images');
 assert.ok(mainCards.filter(card => card.audio).length >= 1600, 'merged pool should retain Anki/local audio');
+assert.ok(mainCards.filter(card => card.imageSource === 'agnes-image-2.1-flash').length >= 26, 'generated image gap should be attached to the main pool');
 
 for (const [index, card] of mainCards.entries()) {
   if (card.image) assert.ok(fs.existsSync(path.join(repoRoot, card.image)), `missing image for ${card.word}`);

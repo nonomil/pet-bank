@@ -1,4 +1,4 @@
-"""Generate the fixed audio pack for the pixel dialogue story.
+"""Generate a fixed audio pack for a pixel story pack.
 
 The local tts service chooses VoxCPM2 when engine=auto and falls back to
 edge-tts when the model is unavailable. The manifest records the requested
@@ -20,8 +20,9 @@ import edge_tts
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PACK = ROOT / "data" / "story-packs" / "04-pixel-dialogue-story"
+DEFAULT_PACK = ROOT / "data" / "story-packs" / "04-pixel-dialogue-story"
 DEFAULT_OUT = ROOT / "assets" / "story" / "pixel-dialogue" / "audio"
+DEFAULT_ASSET_PREFIX = "assets/story/pixel-dialogue/audio"
 PRESET_TO_VOICE = {
     "kind_grandpa": "grandpa",
     "child": "child",
@@ -68,10 +69,18 @@ def write_direct_edge(text: str, voice: str, target: Path) -> None:
     asyncio.run(edge_tts.Communicate(text, voice=edge_voice, rate=rate, pitch=pitch).save(str(target)))
 
 
-def story_lines(manifest: dict):
+def story_lines(pack: Path, manifest: dict):
     characters = manifest.get("characters", {})
-    for chapter_id in manifest["chapters"]:
-        chapter = json.loads((PACK / "chapters" / f"{chapter_id}.json").read_text(encoding="utf-8"))
+    if manifest.get("chapters"):
+        chapter_ids = manifest["chapters"]
+        chapter_files = [(chapter_id, pack / "chapters" / f"{chapter_id}.json") for chapter_id in chapter_ids]
+    else:
+        tracks = list(manifest.get("worlds", [])) + list(manifest.get("bonusTracks", []))
+        nodes = [node for track in tracks for node in sorted(track.get("nodes", []), key=lambda item: item.get("order", 99))]
+        chapter_files = [(node["levelId"], pack / "levels" / f"{node['levelId']}.json") for node in nodes]
+
+    for chapter_id, chapter_file in chapter_files:
+        chapter = json.loads(chapter_file.read_text(encoding="utf-8"))
         for scene in chapter.get("scenes", []):
             for line_index, line in enumerate(scene.get("lines", [])):
                 text = (line.get("text") or line.get("prompt") or "").strip()
@@ -84,29 +93,35 @@ def story_lines(manifest: dict):
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--pack-dir", type=Path, default=DEFAULT_PACK)
     parser.add_argument("--server-url", default="http://127.0.0.1:9885")
     parser.add_argument("--engine", choices=("auto", "voxcpm2", "edge", "direct-edge"), default="auto")
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    parser.add_argument("--asset-prefix", default=DEFAULT_ASSET_PREFIX)
+    parser.add_argument("--extension", default=".mp3")
     parser.add_argument("--timeout", type=int, default=360)
     parser.add_argument("--pause-ms", type=int, default=100)
     parser.add_argument("--existing-engine", default="unknown", help="engine label for an already present file")
     args = parser.parse_args()
 
-    manifest = json.loads((PACK / "manifest.json").read_text(encoding="utf-8"))
+    pack = args.pack_dir.resolve()
+    manifest = json.loads((pack / "manifest.json").read_text(encoding="utf-8"))
     if args.engine == "direct-edge":
         health = {"ok": True, "edge": True, "voxcpm2": False, "source": "local edge-tts"}
     else:
         health = get_json(args.server_url.rstrip("/") + "/health", args.timeout)
         if not health.get("ok"):
             raise RuntimeError(f"TTS service is not healthy: {health}")
+        if args.engine == "voxcpm2" and not health.get("voxcpm2"):
+            raise RuntimeError(f"VoxCPM2 is not ready: {health}")
     args.out.mkdir(parents=True, exist_ok=True)
     entries = {}
     failures = []
     total = 0
-    for chapter_id, scene_id, line_index, text, voice in story_lines(manifest):
+    for chapter_id, scene_id, line_index, text, voice in story_lines(pack, manifest):
         total += 1
         key = f"{chapter_id}/{scene_id}/{line_index}"
-        relative = Path(chapter_id) / f"{scene_id}-{line_index:02d}.mp3"
+        relative = Path(chapter_id) / f"{scene_id}-{line_index:02d}{args.extension}"
         target = args.out / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         was_existing = target.exists() and target.stat().st_size >= 256
@@ -117,7 +132,7 @@ def main() -> int:
                 else:
                     target.write_bytes(request_audio(args.server_url, text, voice, args.engine, args.timeout))
             entries[key] = {
-                "file": "assets/story/pixel-dialogue/audio/" + relative.as_posix(),
+                "file": args.asset_prefix.rstrip("/") + "/" + relative.as_posix(),
                 "voice": voice,
                 "engineRequested": args.engine,
                 "engineActual": args.existing_engine if was_existing else args.engine,
@@ -143,8 +158,9 @@ def main() -> int:
         "failures": failures,
         "entries": entries,
     }
-    (PACK / "audio-manifest.json").write_text(json.dumps(audio_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"WROTE {PACK / 'audio-manifest.json'}: {len(entries)}/{total}")
+    audio_manifest["engineActual"] = args.existing_engine if args.existing_engine != "unknown" else args.engine
+    (pack / "audio-manifest.json").write_text(json.dumps(audio_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"WROTE {pack / 'audio-manifest.json'}: {len(entries)}/{total}")
     return 0 if not failures else 2
 
 

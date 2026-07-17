@@ -52,20 +52,19 @@ try {
     const pageRoot = root?.querySelector('[data-minecraft-vocab-page]');
     return {
       text: root?.innerText || '',
-      stageCount: root?.querySelectorAll('[data-mv-stage]').length || 0,
-      taskCount: root?.querySelectorAll('[data-mv-task-dot]').length || 0,
+      stageCount: root?.querySelectorAll('.mv-sidebar-stages li').length || 0,
+      taskCount: root?.querySelectorAll('.mv-progress-count').length || 0,
       heroBg: hero ? getComputedStyle(hero).backgroundImage : '',
       cardFrame: pageRoot ? getComputedStyle(pageRoot).getPropertyValue('--mv-card-frame') : '',
       start: !!root?.querySelector('[data-mv-start]'),
       companion: root?.querySelector('.mv-hero-companion')?.naturalWidth || 0,
-      stageBadges: [...(root?.querySelectorAll('[data-mv-stage]') || [])]
-        .filter(node => getComputedStyle(node, '::after').backgroundImage.includes('stage-')).length
+      stageBadges: root?.querySelectorAll('.mv-sidebar-stage-icon').length || 0
     };
   });
   assert.match(home.text, /Minecraft 单词远征/);
   assert.match(home.text, /今日远征/);
   assert.equal(home.stageCount, 4);
-  assert.equal(home.taskCount, 11);
+  assert.equal(home.taskCount, 1);
   assert.match(home.heroBg, /study-camp-hero\.png/);
   assert.match(home.cardFrame, /card-frame-sheet\.png/);
   assert.equal(home.start, true);
@@ -80,14 +79,14 @@ try {
     return {
       text: root?.innerText || '',
       audio: !!root?.querySelector('[data-mv-listen]'),
-      reveal: !!root?.querySelector('[data-mv-reveal]'),
-      phrase: root?.querySelector('[data-mv-phrase]')?.textContent || '',
-      sentence: root?.querySelector('[data-mv-sentence]')?.textContent || '',
+      audioKeys: [...new Set((root ? [...root.querySelectorAll('[data-mv-listen]')] : []).map(button => button.dataset.mvListen))],
+      flip: !!root?.querySelector('[data-mv-flip]'),
+      phrase: root?.querySelector('.mv-card-detail-block.is-phrase')?.textContent || '',
+      sentence: root?.querySelector('.mv-card-detail-block.is-sentence')?.textContent || '',
       actionCount: root?.querySelectorAll('[data-mv-answer], [data-mv-self-assess]').length || 0,
       cornerCount: root?.querySelectorAll('.mv-card-corner').length || 0,
       taskMode: root?.querySelector('[data-mv-session]')?.dataset.mvMode || '',
       sessionBg: getComputedStyle(root?.querySelector('[data-mv-session]')).backgroundImage,
-      cardFrameSize: getComputedStyle(root?.querySelector('[data-mv-card-art]')).backgroundSize,
       cardImage: root?.querySelector('[data-mv-card-image]')?.getAttribute('src') || '',
       cardImageWidth: root?.querySelector('[data-mv-card-image]')?.naturalWidth || 0,
       cardArtSize: Math.round(root?.querySelector('[data-mv-card-art]')?.getBoundingClientRect().width || 0),
@@ -96,18 +95,28 @@ try {
   });
   assert.match(session.text, /第 1\/11|1 \/ 11/);
   assert.equal(session.audio, true);
-  assert.equal(session.reveal, true);
+  assert.deepEqual(session.audioKeys.sort(), ['phrase', 'phraseTranslation', 'sentence', 'sentenceTranslation', 'translation', 'word'].sort());
+  assert.equal(session.flip, true);
   assert.match(session.phrase, /短语/);
   assert.match(session.sentence, /场景句/);
   assert.equal(session.actionCount >= 2, true);
   assert.equal(session.cornerCount, 0);
   assert.equal(session.cardObjectFit, 'contain');
   assert.equal(session.cardArtSize > 280, true);
-  assert.equal(session.cardFrameSize, '200% 200%');
   assert.equal(session.taskMode, 'review');
   assert.match(session.sessionBg, /warmup-grove\.png/);
-  assert.match(session.cardImage, /(?:assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-|prj\/anki-minecraft-vocab\/assets\/media\/)/);
+  assert.match(session.cardImage, /(?:assets\/learn\/english-vocab\/minecraft-cards\/normalized\/card-\d{4}-|assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-|prj\/anki-minecraft-vocab\/assets\/media\/)/);
   assert.equal(session.cardImageWidth > 0, true);
+  await page.click('[data-mv-flip]');
+  await page.waitForFunction(() => document.querySelector('[data-mv-flip-card]')?.classList.contains('is-flipped'));
+  const flipped = await page.evaluate(() => ({
+    isFlipped: document.querySelector('[data-mv-flip-card]')?.classList.contains('is-flipped') || false,
+    backText: document.querySelector('.mv-card-back')?.textContent || ''
+  }));
+  assert.equal(flipped.isFlipped, true);
+  assert.match(flipped.backText, /短语|场景句/);
+  await page.click('.mv-card-back[data-mv-flip]');
+  await page.waitForFunction(() => !document.querySelector('[data-mv-flip-card]')?.classList.contains('is-flipped'));
   await page.screenshot({ path: 'tmp/minecraft-vocab-session-gpt-ui-1280.png', fullPage: true });
 
   await page.click('[data-mv-self-assess="known"]');
@@ -135,7 +144,7 @@ try {
       src: document.querySelector('[data-mv-card-image]')?.getAttribute('src') || '',
       width: document.querySelector('[data-mv-card-image]')?.naturalWidth || 0
     }));
-    assert.match(cardMedia.src, /(?:assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-|prj\/anki-minecraft-vocab\/assets\/media\/)/);
+    assert.match(cardMedia.src, /(?:assets\/learn\/english-vocab\/minecraft-cards\/normalized\/card-\d{4}-|assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-|prj\/anki-minecraft-vocab\/assets\/media\/)/);
     assert.equal(cardMedia.width > 0, true);
     const selfAssess = page.locator('[data-mv-self-assess="known"]');
     if (await selfAssess.count()) {

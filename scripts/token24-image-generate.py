@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import io
 import json
 import urllib.error
 import urllib.request
@@ -87,8 +88,16 @@ def main() -> int:
     if not image:
         raise SystemExit("TokenX24 image generation failed: response contains no image bytes")
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_bytes(image)
-    print(f"SAVED={args.out} bytes={len(image)} model={args.model} size={args.size}")
+    if args.out.suffix.lower() == ".webp":
+        try:
+            from PIL import Image
+        except ImportError as error:
+            raise SystemExit("Writing WebP requires Pillow") from error
+        with Image.open(io.BytesIO(image)) as source:
+            source.convert("RGB").save(args.out, "WEBP", quality=84, method=6)
+    else:
+        args.out.write_bytes(image)
+    print(f"SAVED={args.out} bytes={args.out.stat().st_size} model={args.model} size={args.size}")
     return 0
 
 

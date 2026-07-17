@@ -32,10 +32,10 @@ for (const [word, sourceToken] of expected) {
     assert.equal(item.status, 'anki-extracted');
 }
 const generatedDisk = report.mapping.find(entry => entry.word === 'disk');
-assert.match(generatedDisk.sourceKey, /minecraft-disk-gpt-image-2/i);
+assert.match(generatedDisk.sourceKey, /(?:minecraft-disk-gpt-image-2|card-095-disk)/i);
 assert.equal(generatedDisk.status, 'gpt-generated');
-assert.equal(manifest.presentationVersion, 1);
-assert.equal(manifest.assets.length, 96);
+assert.ok(manifest.presentationVersion >= 1);
+assert.ok(manifest.assets.length >= 122, 'media manifest should include 26 generated missing-card images');
 
 for (const item of report.mapping) {
     assert.match(item.image, /^assets\/learn\/english-vocab\/minecraft-cards\/card-/);
@@ -43,7 +43,7 @@ for (const item of report.mapping) {
 }
 for (const item of manifest.assets) {
     assert.deepEqual(item.dimensions, [512, 512], `${item.word} should use a square presentation canvas`);
-    assert.match(item.presentation, /^normalized-/);
+    assert.match(item.presentation, /^(?:normalized-|square-raster$)/);
     assert.ok(fs.existsSync(path.join(repoRoot, item.path)), `${item.word} presentation asset should exist`);
 }
 

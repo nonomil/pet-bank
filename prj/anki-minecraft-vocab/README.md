@@ -10,6 +10,7 @@
 - 原始媒体映射：6,847；清洗后保留：4,956
 - 官方词条：7,578 张，9 个主题
 - 核心单词：3,663 张，基础认读/听音辨意/主动输出各 1,221 张
+- 图片补全：273 张原本无图片的卡片共享 36 张词条图，其中 7 张由 Grok 图像通道生成，29 张复用主站本地图片
 
 参考目录页：<https://file.ankichinas.cn/card/6a04e490ea980mB8>
 
@@ -33,6 +34,7 @@ python scripts/extract_apkg.py `
   --copy-media
 
 node scripts/normalize-anki-minecraft-vocab.mjs --apply --prune-media
+node scripts/fill-missing-card-images.mjs
 ```
 
 提取器会优先使用 `collection.anki21`。`collection.anki2` 是新版 Anki 为旧客户端留下的兼容占位库，只有一条“请更新 Anki”的提示。

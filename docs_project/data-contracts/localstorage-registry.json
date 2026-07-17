@@ -61,6 +61,8 @@
     {"pattern":"petbank_minecraft_vocab_session_v1","owner":"minecraft-vocab-session.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_minecraft_vocab_session_v1_*","owner":"minecraft-vocab-session.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_picturebook_progress_v1","owner":"js/picturebooks.js","scope":"profile","snapshot":true},
+    {"pattern":"petbank_picturebook_library_v1","owner":"js/picturebooks.js","scope":"profile","snapshot":true},
+    {"pattern":"petbank_picturebook_launches_v1","owner":"js/picturebook-external-bridge.js","scope":"device","snapshot":false},
     {"pattern":"petbank_learning_arcade_settings_v1","owner":"app.js","scope":"device","snapshot":false},
     {"pattern":"petbank_typing_defense_progress","owner":"app.js","scope":"profile","snapshot":true},
     {"pattern":"petbank_word_memory_map_progress","owner":"app.js","scope":"profile","snapshot":true},

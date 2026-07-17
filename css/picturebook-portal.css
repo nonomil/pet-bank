@@ -1,0 +1,19 @@
+.picturebooks-portal { padding: 28px clamp(16px, 3vw, 44px) 54px; }
+.picturebooks-portal-heading { max-width: 680px; margin-bottom: 24px; }
+.picturebooks-portal-heading > span { color: #d2693b; font-size: 13px; font-weight: 800; letter-spacing: .08em; }
+.picturebooks-portal-heading h2 { margin: 8px 0; color: #263b42; font-size: clamp(30px, 4vw, 52px); line-height: 1.1; }
+.picturebooks-portal-heading p { margin: 0; color: #68777b; }
+.picturebooks-portal-feedback { min-height: 25px; margin: 16px 0; color: #4d7463; }
+.picturebooks-portal-feedback.is-success { color: #2b7a5b; font-weight: 800; }
+.picturebooks-portal-feedback.is-error { color: #a44f3e; }
+.picturebooks-portal-feedback.is-muted { color: #7b8580; }
+.picturebooks-portal-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 18px; }
+.picturebooks-portal-card { overflow: hidden; border: 1px solid #e0e4dc; border-radius: 8px; background: #fffdf8; box-shadow: 0 9px 24px rgb(52 67 57 / 7%); }
+.picturebooks-portal-cover { display: block; width: 100%; padding: 0; border: 0; background: #d7eee4; }
+.picturebooks-portal-cover img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.picturebooks-portal-card-content { padding: 13px; }
+.picturebooks-portal-shelf { color: #d2693b; font-size: 11px; font-weight: 800; }
+.picturebooks-portal-card h3 { margin: 6px 0 10px; color: #263b42; font-size: 17px; }
+.picturebooks-portal-tags { display: flex; flex-wrap: wrap; gap: 5px; min-height: 22px; color: #52806d; font-size: 11px; }
+.picturebooks-portal-action { width: 100%; margin-top: 12px; padding: 9px; border: 1px solid #478a6c; border-radius: 6px; background: #478a6c; color: #fff; }
+@media (max-width: 540px) { .picturebooks-portal { padding: 20px 14px 40px; } .picturebooks-portal-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .picturebooks-portal-card h3 { font-size: 15px; } }

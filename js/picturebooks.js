@@ -3,8 +3,10 @@
     'use strict';
 
     const STORAGE_KEY = 'petbank_picturebook_progress_v1';
+    const LIBRARY_STORAGE_KEY = 'petbank_picturebook_library_v1';
     const CATALOG_PATH = 'data/picturebooks/catalog.json';
     const DEFAULT_PROGRESS = { schemaVersion: 1, books: {} };
+    const DEFAULT_LIBRARY = { schemaVersion: 1, favorites: [] };
     const SHELF_LABELS = {
         snake: '中文启蒙',
         'pete-cat': '生活故事',
@@ -19,6 +21,9 @@
     const state = {
         catalog: [],
         category: '全部',
+        search: '',
+        status: 'all',
+        sort: 'recommended',
         activeStoryId: '',
         activePage: 0,
         loaded: false,
@@ -108,6 +113,47 @@
         }
     }
 
+    function normalizeLibrary(value) {
+        const source = value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+        const favorites = Array.isArray(source.favorites)
+            ? Array.from(new Set(source.favorites.map(item => String(item || '').trim()).filter(Boolean)))
+            : [];
+        return { schemaVersion: 1, favorites };
+    }
+
+    function readLibrary() {
+        try {
+            const raw = root.localStorage && root.localStorage.getItem(LIBRARY_STORAGE_KEY);
+            return normalizeLibrary(raw ? JSON.parse(raw) : DEFAULT_LIBRARY);
+        } catch (error) {
+            console.warn('[Picturebooks] library preferences read failed; using defaults:', error);
+            return { ...DEFAULT_LIBRARY, favorites: [] };
+        }
+    }
+
+    function writeLibrary(value) {
+        try {
+            if (!root.localStorage) return false;
+            root.localStorage.setItem(LIBRARY_STORAGE_KEY, JSON.stringify(normalizeLibrary(value)));
+            return true;
+        } catch (error) {
+            console.warn('[Picturebooks] library preferences write failed:', error);
+            return false;
+        }
+    }
+
+    function isFavorite(library, storyId) {
+        return library.favorites.includes(storyId);
+    }
+
+    function toggleFavorite(storyId) {
+        const library = readLibrary();
+        const favorites = isFavorite(library, storyId)
+            ? library.favorites.filter(id => id !== storyId)
+            : library.favorites.concat(storyId);
+        if (writeLibrary({ ...library, favorites })) renderDirectory();
+    }
+
     function progressFor(progress, storyId) {
         return progress.books[storyId] || defaultBookProgress();
     }
@@ -135,6 +181,14 @@
             titleEn: String(story.titleEn || story.title || story.id),
             category: String(story.category || '绘本'),
             shelf: getShelf(story),
+            author: String(story.author || '儿童绘本素材库'),
+            ageRange: String(story.ageRange || '4-6岁'),
+            difficulty: String(story.difficulty || '入门'),
+            durationMin: Math.max(1, Math.floor(Number(story.durationMin) || 1)),
+            tags: Array.isArray(story.tags) ? story.tags.map(item => String(item)).filter(Boolean) : [],
+            keywords: Array.isArray(story.keywords) ? story.keywords.map(item => String(item)).filter(Boolean) : [],
+            license: String(story.license || 'unspecified'),
+            publishable: story.publishable === true,
             cover: String(story.cover || pages[0].image),
             pages
         };
@@ -153,10 +207,31 @@
         return ['全部'].concat(Array.from(new Set(state.catalog.map(getShelf))));
     }
 
-    function getVisibleStories() {
-        return state.category === '全部'
-            ? state.catalog
-            : state.catalog.filter(story => getShelf(story) === state.category);
+    function getStoryStatus(story, progress) {
+        const item = progressFor(progress, story.id);
+        if (item.completedCount > 0) return 'completed';
+        if (item.currentPage > 0) return 'reading';
+        return 'unread';
+    }
+
+    function getVisibleStories(progress) {
+        const query = state.search.trim().toLocaleLowerCase();
+        const library = readLibrary();
+        const visible = state.catalog.filter(function (story) {
+            if (state.category !== '全部' && getShelf(story) !== state.category) return false;
+            if (state.status === 'favorite' && !isFavorite(library, story.id)) return false;
+            if (state.status !== 'all' && state.status !== 'favorite' && getStoryStatus(story, progress) !== state.status) return false;
+            if (!query) return true;
+            const haystack = [story.titleZh, story.titleEn, story.author, story.shelf, story.ageRange, story.difficulty]
+                .concat(story.tags, story.keywords).join(' ').toLocaleLowerCase();
+            return haystack.includes(query);
+        });
+        return visible.sort(function (left, right) {
+            if (state.sort === 'title') return left.titleZh.localeCompare(right.titleZh, 'zh-CN');
+            if (state.sort === 'duration') return left.durationMin - right.durationMin;
+            if (state.sort === 'newest') return state.catalog.indexOf(right) - state.catalog.indexOf(left);
+            return state.catalog.indexOf(left) - state.catalog.indexOf(right);
+        });
     }
 
     function makeElement(tag, className, text) {
@@ -234,6 +309,37 @@
         count.id = 'picturebooks-result-count';
         contentHead.appendChild(count);
         content.appendChild(contentHead);
+        const tools = makeElement('div', 'picturebooks-library-tools');
+        const searchLabel = makeElement('label', 'picturebooks-search-label');
+        searchLabel.setAttribute('for', 'picturebooks-search');
+        searchLabel.appendChild(icon('search'));
+        const search = makeElement('input');
+        search.id = 'picturebooks-search';
+        search.className = 'picturebooks-search';
+        search.type = 'search';
+        search.placeholder = '搜索书名、主题或关键词';
+        search.value = state.search;
+        searchLabel.appendChild(search);
+        tools.appendChild(searchLabel);
+        const status = makeElement('select', 'picturebooks-status');
+        status.id = 'picturebooks-status';
+        [['all', '全部状态'], ['unread', '未读'], ['reading', '阅读中'], ['completed', '已读'], ['favorite', '我的收藏']].forEach(function (item) {
+            const option = makeElement('option', '', item[1]);
+            option.value = item[0];
+            option.selected = state.status === item[0];
+            status.appendChild(option);
+        });
+        tools.appendChild(status);
+        const sort = makeElement('select', 'picturebooks-sort');
+        sort.id = 'picturebooks-sort';
+        [['recommended', '推荐顺序'], ['newest', '最近加入'], ['title', '按书名'], ['duration', '阅读时长']].forEach(function (item) {
+            const option = makeElement('option', '', item[1]);
+            option.value = item[0];
+            option.selected = state.sort === item[0];
+            sort.appendChild(option);
+        });
+        tools.appendChild(sort);
+        content.appendChild(tools);
         const cards = makeElement('div', 'picturebooks-card-waterfall');
         cards.id = 'picturebooks-cards';
         cards.setAttribute('aria-live', 'polite');
@@ -299,11 +405,25 @@
         body.appendChild(meta);
         body.appendChild(makeElement('h4', '', story.titleZh));
         body.appendChild(makeElement('p', 'picturebook-card-en', story.titleEn));
+        const details = makeElement('div', 'picturebook-card-details');
+        [story.ageRange, story.difficulty, `${story.durationMin} 分钟`].forEach(function (value) {
+            details.appendChild(makeElement('span', '', value));
+        });
+        body.appendChild(details);
+        const tags = makeElement('div', 'picturebook-card-tags');
+        story.tags.slice(0, 3).forEach(tag => tags.appendChild(makeElement('span', '', `#${tag}`)));
+        body.appendChild(tags);
         const footer = makeElement('div', 'picturebook-card-footer');
         const progressText = item.completedCount > 0
             ? `读过 ${item.completedCount} 次`
             : (item.currentPage > 0 ? `读到第 ${item.currentPage + 1} 页` : '从第一页开始');
         footer.appendChild(makeElement('span', 'picturebook-card-progress', progressText));
+        const favorite = makeElement('button', `picturebook-favorite ${isFavorite(readLibrary(), story.id) ? 'is-active' : ''}`);
+        favorite.type = 'button';
+        favorite.dataset.picturebookFavorite = story.id;
+        favorite.setAttribute('aria-label', isFavorite(readLibrary(), story.id) ? `取消收藏《${story.titleZh}》` : `收藏《${story.titleZh}》`);
+        favorite.appendChild(icon('bookmark'));
+        footer.appendChild(favorite);
         const action = makeElement('button', 'picturebook-card-action');
         action.type = 'button';
         action.dataset.picturebookId = story.id;
@@ -324,11 +444,18 @@
         const title = root.document.getElementById('picturebooks-shelf-title');
         const count = root.document.getElementById('picturebooks-result-count');
         if (!cards || !title || !count) return;
-        const visible = getVisibleStories();
+        const visible = getVisibleStories(progress);
         title.textContent = state.category === '全部' ? '故事书架' : state.category;
         count.textContent = `${visible.length} 本可读`;
         cards.textContent = '';
-        visible.forEach(story => cards.appendChild(renderCard(story, progress)));
+        if (visible.length) {
+            visible.forEach(story => cards.appendChild(renderCard(story, progress)));
+        } else {
+            const empty = makeElement('div', 'picturebooks-empty');
+            empty.appendChild(makeElement('strong', '', '没有找到匹配的绘本'));
+            empty.appendChild(makeElement('span', '', '试试换个关键词，或清空筛选条件。'));
+            cards.appendChild(empty);
+        }
 
         const completed = state.catalog.filter(story => progressFor(progress, story.id).completedCount > 0).length;
         const total = root.document.getElementById('picturebooks-total-count');
@@ -338,6 +465,28 @@
         cards.querySelectorAll('[data-picturebook-id]').forEach(function (item) {
             item.addEventListener('click', function () { openStory(item.dataset.picturebookId); });
         });
+        cards.querySelectorAll('[data-picturebook-favorite]').forEach(function (item) {
+            item.addEventListener('click', function (event) {
+                event.stopPropagation();
+                toggleFavorite(item.dataset.picturebookFavorite);
+            });
+        });
+        const search = root.document.getElementById('picturebooks-search');
+        const status = root.document.getElementById('picturebooks-status');
+        const sort = root.document.getElementById('picturebooks-sort');
+        if (search) {
+            search.addEventListener('input', function () {
+                state.search = search.value;
+                renderDirectory();
+                const nextSearch = root.document.getElementById('picturebooks-search');
+                if (nextSearch) {
+                    nextSearch.focus();
+                    nextSearch.setSelectionRange(state.search.length, state.search.length);
+                }
+            });
+        }
+        if (status) status.addEventListener('change', function () { state.status = status.value; renderDirectory(); });
+        if (sort) sort.addEventListener('change', function () { state.sort = sort.value; renderDirectory(); });
         if (root.lucide && typeof root.lucide.createIcons === 'function') root.lucide.createIcons();
     }
 

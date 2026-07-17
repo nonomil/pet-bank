@@ -40,6 +40,7 @@ await page.addInitScript(() => { Math.random = () => 0.99; });
 try {
   await page.goto(`http://127.0.0.1:${server.address().port}/${prototypePath}?game=word-shooter`, { waitUntil: 'networkidle' });
   await page.waitForSelector('#wordShooter:not([hidden])');
+  await page.evaluate(() => window.LearningArcadePrototype.setWordShooterEnemyFireEnabled(false));
   for (let index = 0; index < 3; index += 1) {
     const targetWord = await page.evaluate(() => {
       const snapshot = window.LearningArcadePrototype.wordShooter();
@@ -51,6 +52,8 @@ try {
       await page.waitForTimeout(25);
     }
     await page.waitForTimeout(650);
+    const afterWord = await page.evaluate(() => window.LearningArcadePrototype.wordShooter());
+    assert.equal(afterWord.completedWords.length, index + 1, `free input should complete target word ${index + 1}`);
   }
   const snapshot = await page.evaluate(() => window.LearningArcadePrototype.wordShooter());
   assert.equal(snapshot.combo, 3, 'three completed words should produce a three-hit combo');

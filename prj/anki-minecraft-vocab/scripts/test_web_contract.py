@@ -51,8 +51,8 @@ class WebContractTests(unittest.TestCase):
         self.assertEqual(manifest["noteCount"], 11241)
         self.assertEqual(manifest["cardCount"], 11241)
         self.assertEqual(manifest["deckCount"], 231)
-        self.assertEqual(manifest["mediaCount"], 4956)
-        self.assertEqual(manifest["curatedMediaCount"], 4956)
+        self.assertEqual(manifest["mediaCount"], 4992)
+        self.assertEqual(manifest["curatedMediaCount"], 4992)
         self.assertEqual(manifest["sourceMediaCount"], 6847)
         self.assertEqual(manifest["encryptedFieldCount"], 0)
         self.assertEqual(manifest["sourceEncryptedFieldCount"], 119880)
@@ -62,6 +62,7 @@ class WebContractTests(unittest.TestCase):
         self.assertEqual(decks["tree"][0]["children"][0]["cardCount"], 7578)
         self.assertEqual(decks["tree"][0]["children"][1]["cardCount"], 3663)
 
+        cards_without_image = 0
         for card in cards:
             content = card["content"]
             for field in ("word", "chinese", "phrase", "phraseTranslation", "sentence", "sentenceTranslation"):
@@ -70,10 +71,14 @@ class WebContractTests(unittest.TestCase):
                 self.assertNotIn("Minecraft词条", content[field])
             self.assertEqual(content["schemaVersion"], 1)
             self.assertFalse(any(field.get("encrypted") for field in card["fields"].values()))
+            if not any(media["kind"] == "image" for media in card["media"]):
+                cards_without_image += 1
             for media in card["media"]:
                 if media["kind"] == "image":
                     self.assertNotIn("哈基米薯仔.png", media["name"])
                     self.assertNotRegex(media["name"], r"^(?:show(?:-|\.)|[0-9a-f]{24,})")
+                    self.assertTrue((ROOT / media["path"]).exists(), media["path"])
+        self.assertEqual(cards_without_image, 0)
 
 
 if __name__ == "__main__":

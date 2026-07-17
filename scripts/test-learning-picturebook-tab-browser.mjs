@@ -27,10 +27,10 @@ try {
     await page.locator('#learn-container [data-learn-hub-tab="picturebooks"]').click();
     await page.waitForSelector('#learn-picturebooks-root .picturebooks-portal', { state: 'attached', timeout: 20000 });
     assert.equal(await page.locator('#learn-container [data-learn-hub-tab].is-active').textContent(), '绘本', 'picturebook tab becomes active');
-    assert.equal(await page.locator('#learn-picturebooks-root .picturebooks-portal-card').count(), 8, 'picturebook library renders inside learning');
+    assert.equal(await page.locator('#learn-picturebooks-root .picturebooks-portal-card').count(), 25, 'picturebook library renders inside learning');
     assert.equal(await page.locator('#learn-hub-panel[role="tabpanel"]').count(), 1, 'learning tab panel is exposed');
     assert.deepEqual(errors, [], 'learning picturebook tab has no page errors');
-    console.log(JSON.stringify({ tab: 'picturebooks', portalCards: 8, errors }));
+    console.log(JSON.stringify({ tab: 'picturebooks', portalCards: 25, errors }));
 } finally {
     await browser.close();
 }

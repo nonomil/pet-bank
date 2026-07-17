@@ -19,6 +19,7 @@ const expectedRoutes = [
     '/app/learn/lesson',
     '/app/learn/print',
     '/app/learn/minecraft-vocab',
+    '/app/picturebooks',
     '/app/pet',
     '/app/pet/home',
     '/app/pet/walk',
@@ -98,6 +99,11 @@ try {
             fail(`playground card ${name} exceeds the 250KB publish budget`);
         }
     }
+    const picturebookCatalog = path.join(artifactDir, 'data', 'picturebooks', 'catalog.json');
+    const picturebookCover = path.join(artifactDir, 'assets', 'picturebooks', 'images', 'brave-pea-shooter', 'page-1.png');
+    if (!fs.existsSync(picturebookCatalog) || !fs.existsSync(picturebookCover)) {
+        fail('picturebook catalog or cover image is missing from the Pages artifact');
+    }
     if (!appSource.includes('<base id="routeBase" href="./">')) {
         fail('index.html must use a relative initial route base before the browser preloads assets');
     }
@@ -124,11 +130,23 @@ try {
         }
     }
 
-    const farmPanorama = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'generated', 'world-bg-single', 'farm-gpt-panorama.png');
+    const farmPanorama = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'generated', 'world-bg-single', 'farm-gpt-panorama.webp');
     if (!fs.existsSync(farmPanorama)) {
-        fail('word memory default farm panorama is missing from the Pages artifact');
+        fail('word memory default farm panorama WebP is missing from the Pages artifact');
     }
-    for (const excludedPanorama of ['farm-panorama.png', 'space-panorama.png']) {
+    const publishedAppSource = fs.readFileSync(path.join(artifactDir, 'js', 'app.js'), 'utf8');
+    if (publishedAppSource.includes('assets/arena/arena-${battle.chapter || 1}.png')) {
+        fail('published app.js still builds an arena PNG URL after PNG removal');
+    }
+    const publishedCardArenaSource = fs.readFileSync(path.join(artifactDir, 'js', 'card-arena-ui.js'), 'utf8');
+    if (publishedCardArenaSource.includes("'assets/arena/training-bg-' + st.chapter + '.png'")) {
+        fail('published card-arena-ui.js still builds a training PNG URL after PNG removal');
+    }
+    const publishedMinecraftVocabSource = fs.readFileSync(path.join(artifactDir, 'js', 'minecraft-vocab-page.js'), 'utf8');
+    if (publishedMinecraftVocabSource.includes('${VISUAL_ROOT}study-camp-hero.png')) {
+        fail('published minecraft-vocab-page.js still builds a visual PNG URL after PNG removal');
+    }
+    for (const excludedPanorama of ['farm-panorama.png', 'farm-panorama.webp', 'space-panorama.png', 'space-panorama.webp']) {
         if (fs.existsSync(path.join(path.dirname(farmPanorama), excludedPanorama))) {
             fail(`word memory optional panorama ${excludedPanorama} exceeds the Pages artifact budget`);
         }

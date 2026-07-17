@@ -154,7 +154,7 @@
         <section class="keyboard-panel stage-keyboard" aria-label="小写键盘">
           <div class="keyboard" id="keyboard"></div>
         </section>
-        <p class="game-feedback" id="wordFeedback">看敌机上的单词，按首字母开始锁定。</p>
+        <p class="game-feedback" id="wordFeedback">输入任意敌机上的单词，随时切换目标。</p>
       </section>
 
       <section class="game-panel word-cannon pinyin-racer" id="wordCannon" data-game-panel="word-cannon" hidden>
@@ -262,12 +262,22 @@
     </section>
   </main>
 
-  <script src="./assets/generated/minecraft-typing-expanded.js?v=graded-vocab-v1"></script>
-  <script src="./assets/generated/english-typing-unified.js?v=english-curriculum-v1"></script>
-  <script src="../../data/vocab/单词库_分级/01_幼儿园/幼儿园完整词库.js"></script>
-  <script src="../../data/vocab/单词库_分级/06_汉字/幼儿园汉字.js"></script>
-  <script src="../../data/vocab/单词库_分级/07_拼音/常用拼音.js"></script>
-  <script src="../../data/vocab/单词库_分级/08_幼小衔接/幼小衔接总词库.js"></script>
+  <script>
+    (function loadFileFallbackScripts() {
+      if (window.location.protocol !== 'file:') return;
+      const fallbackScripts = [
+        './assets/generated/minecraft-typing-expanded.js?v=graded-vocab-v1',
+        './assets/generated/english-typing-unified.js?v=english-curriculum-v1',
+        '../../data/vocab/单词库_分级/01_幼儿园/幼儿园完整词库.js',
+        '../../data/vocab/单词库_分级/06_汉字/幼儿园汉字.js',
+        '../../data/vocab/单词库_分级/07_拼音/常用拼音.js',
+        '../../data/vocab/单词库_分级/08_幼小衔接/幼小衔接总词库.js'
+      ];
+      document.write(fallbackScripts.map(function (src) {
+        return '<script src="' + src + '"><\/script>';
+      }).join(''));
+    }());
+  </script>
   <script src="./game.js?v=pinyin-racer-v2"></script>
 </body>
 </html>

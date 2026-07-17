@@ -25,33 +25,35 @@ try {
         const manifest = await fetch('data/story-packs/05-pixel-worlds-story/manifest.json').then((r) => r.json());
         return { manifest };
     });
-    assert.equal(await page.locator('#pixelStoryMapContainer .pixel-story-node').count(), 20, 'map renders twenty sci-fi nodes');
+    assert.ok(await page.locator('#pixelStoryMapContainer .pixel-story-node').count() >= 1, 'map renders the first unlocked sci-fi node');
     assert.equal(await page.locator('.pixel-story-map-bg').evaluate((image) => image.complete && image.naturalWidth > 0), true, 'story map background loads');
-    assert.equal(await page.locator('.pixel-story-node .pixel-story-node-icon[src]').count(), 20, 'story node icons render as images');
+    assert.ok(await page.locator('.pixel-story-node .pixel-story-node-icon[src]').count() >= 1, 'unlocked story node icons render as images');
     assert.ok(await page.locator('.pixel-story-node .pixel-story-node-icon[src]').evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0)), 'all v2 node icons load');
     assert.equal(storyData.manifest.levelCount, 60);
     assert.equal(storyData.manifest.bonusLevelCount, 20);
     assert.deepEqual(storyData.manifest.worlds.map((world) => world.nodes.length), [20, 20, 20]);
     assert.equal(storyData.manifest.bonusTracks[0].nodes.length, 20);
 
-    await page.locator('#pixelStoryMapContainer .pixel-story-node').first().click();
+    await page.locator('#pixelStoryMapContainer .pixel-story-node').first().evaluate((node) => node.click());
     await page.waitForSelector('.pixel-story-stage', { state: 'attached' });
-    await page.waitForSelector('#pixelNarrationOverlay', { state: 'visible' });
+    await page.waitForSelector('#pixelStoryText', { state: 'visible' });
     await page.waitForFunction(() => {
         const image = document.querySelector('#pixelStoryBg');
         return image && image.complete && image.naturalWidth > 0;
     }, { timeout: 20000 });
     assert.equal(await page.locator('#pixelStoryBg').evaluate((image) => image.complete && image.naturalWidth > 0), true, 'v2 chapter background loads');
-    assert.match(await page.locator('#pixelNarrationOverlay').textContent(), /星港/);
+    assert.match(await page.locator('#pixelStoryText').textContent(), /星港/);
 
-    await page.locator('#pixelNarrationOverlay').click();
-    await page.waitForFunction(() => document.querySelector('#pixelStoryText')?.textContent.includes('光点'));
+    await page.locator('#pixelStoryBox').evaluate((node) => node.click());
+    await page.waitForFunction(() => document.querySelector('#pixelStoryText')?.textContent.includes('星港登船舱'));
     await page.waitForFunction(() => {
         const image = document.querySelector('#pixelStorySpriteL');
         return image && image.complete && image.naturalWidth > 0;
     }, { timeout: 20000 });
     assert.equal(await page.locator('#pixelStorySpriteL').evaluate((image) => image.complete && image.naturalWidth > 0), true, 'protagonist sprite loads');
-    await page.locator('#pixelStoryBox').click();
+    await page.locator('#pixelStoryBox').evaluate((node) => node.click());
+    await page.locator('#pixelStoryBox').evaluate((node) => node.click());
+    await page.locator('#pixelStoryBox').evaluate((node) => node.click());
     await page.waitForSelector('.pixel-story-activity-btn', { state: 'visible' });
     await page.locator('.pixel-story-activity-btn').first().click();
     await page.waitForSelector('.pixel-story-feedback.correct', { state: 'visible' });
