@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { browserLaunchOpts } from './playwright-browser.mjs';
 
-const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765';
+const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:7000';
 const expectedAudioExtension = process.env.PETBANK_PIXEL_STORY_AUDIO_EXT || 'wav';
 const browser = await chromium.launch(browserLaunchOpts());
 const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });

@@ -42,9 +42,10 @@ test -f site/assets/story/pixel-worlds-v1/maps/detective.png
 如果服务器带有可用 Chrome/Playwright，再运行：
 
 ```bash
-PETBANK_BASE_URL="http://127.0.0.1:8765/" node scripts/test-exploration-entry-browser.mjs
-PETBANK_BASE_URL="http://127.0.0.1:8765/" node scripts/test-pixel-story-pagination-browser.mjs
-PETBANK_BASE_URL="http://127.0.0.1:8765/" node scripts/test-pixel-story-all-chapters-browser.mjs
+PETBANK_BASE_URL="http://127.0.0.1:7000/" node scripts/test-exploration-entry-browser.mjs
+PETBANK_BASE_URL="http://127.0.0.1:7000/" node scripts/test-pixel-story-pagination-browser.mjs
+PETBANK_BASE_URL="http://127.0.0.1:7000/" node scripts/test-pixel-story-all-chapters-browser.mjs
+PETBANK_BASE_URL="http://127.0.0.1:7000/" node scripts/test-home-browser.mjs
 ```
 
 地图交互约定：每条路线分为 4 页，每页最多 5 个节点；未完成前置节点时，后续节点不渲染卡片或气泡。完成当前节点后，刷新地图才显示下一节点。故事舞台按“场景图片 → 图片下方对话栏 → 互动按钮”排列，对话栏不覆盖场景图。

@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const repoRoot = path.resolve(process.env.PETBANK_STATIC_ROOT || path.join(path.dirname(fileURLToPath(import.meta.url)), '..'));
 const host = process.env.PETBANK_HOST || '127.0.0.1';
-const port = Number(process.env.PETBANK_PORT || 8765);
+const port = Number(process.env.PETBANK_PORT || 7000);
 
 const MIME_TYPES = {
     '.css': 'text/css; charset=utf-8',

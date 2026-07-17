@@ -4,7 +4,7 @@ import http from 'node:http';
 import https from 'node:https';
 
 const ROOT = process.cwd();
-const BASE_URL = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765';
+const BASE_URL = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:7000';
 const TASK_TIMEOUT_MS = Number(process.env.PETBANK_REGRESSION_TASK_TIMEOUT_MS || 120000);
 
 const TASKS = [
@@ -36,6 +36,8 @@ const TASKS = [
     { label: 'typing defense simulation', cmd: 'node', args: ['prj/消灭苦力怕打字游戏/web/simulate.mjs'] },
     { label: 'child journey feedback', cmd: 'node', args: ['scripts/test-child-journey-feedback.mjs'] },
     { label: 'child journey home', cmd: 'node', args: ['scripts/test-child-journey-home.mjs'] },
+    { label: 'local preview port contract', cmd: 'node', args: ['scripts/test-local-preview-port-contract.mjs'] },
+    { label: 'home browser journey', cmd: 'node', args: ['scripts/test-home-browser.mjs'] },
     { label: 'space growth detective runtime', cmd: 'node', args: ['scripts/test-space-growth-detective-runtime.mjs'] },
     { label: 'space growth detective map contract', cmd: 'node', args: ['scripts/test-space-growth-detective-map-contract.mjs'] },
     { label: 'space growth detective browser journey', cmd: 'node', args: ['scripts/test-space-growth-detective-browser.mjs'] },
@@ -132,7 +134,7 @@ async function main() {
     const healthy = await checkBaseUrl(`${BASE_URL}/index.html`);
     if (!healthy) {
         console.error('\nBase URL is not reachable.');
-        console.error(`Please start a local static server first, for example: python -m http.server 8765 --bind 127.0.0.1`);
+        console.error(`Please start a local static server first, for example: node scripts/local-server.mjs`);
         process.exit(1);
     }
 

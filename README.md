@@ -241,7 +241,7 @@ php -S localhost:8000
 
 然后在浏览器访问：<http://localhost:8000>
 
-> 💡 **Windows 一键启动**：双击项目根目录的 `启动服务.bat`，自动起服务并打开浏览器（访问 <http://127.0.0.1:8765>）。
+> 💡 **Windows 一键启动**：双击项目根目录的 `启动服务.bat`，自动起服务并打开浏览器（访问 <http://127.0.0.1:7000>）。
 
 ### 部署到 GitHub Pages
 仓库已配置 `.github/workflows/deploy.yml`，推送到 `main` 后会自动发布到 GitHub Pages。

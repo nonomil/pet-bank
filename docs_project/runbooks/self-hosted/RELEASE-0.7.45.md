@@ -18,7 +18,7 @@
 node scripts/test-minecraft-vocab-content.mjs                 PASS
 node scripts/test-mayihaoke-minecraft-words.mjs               PASS
 node scripts/test-minecraft-vocab-session.mjs                 PASS
-MMWG_E2E_BASE_URL=http://127.0.0.1:8765 node scripts/test-minecraft-vocab-browser.mjs PASS
+MMWG_E2E_BASE_URL=http://127.0.0.1:7000 node scripts/test-minecraft-vocab-browser.mjs PASS
 node scripts/learning-center-smoke.mjs                        PASS: 104/104
 node scripts/run-full-regression.mjs                          PASS: 70/70
 python -m unittest discover -s prj/anki-minecraft-vocab/scripts -p "test_*.py" -v PASS: 5/5

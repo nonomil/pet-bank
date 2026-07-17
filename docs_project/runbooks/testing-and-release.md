@@ -14,7 +14,7 @@
 node scripts/local-server.mjs
 ```
 
-默认地址：`http://127.0.0.1:8765/`。需要自定义地址时设置 `PETBANK_BASE_URL`，但必须确保 `index.html` 可访问。
+默认地址：`http://127.0.0.1:7000/`。需要自定义地址时设置 `PETBANK_BASE_URL`，但必须确保 `index.html` 可访问。
 
 ## 2. 快速检查
 

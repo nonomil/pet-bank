@@ -30,7 +30,7 @@ node scripts/test-pages-fast-gate-contract.mjs
 git diff --check
 ```
 
-需要浏览器的测试应先启动 `node scripts/local-server.mjs`，默认地址为 `http://127.0.0.1:8765/`。测试截图和报告只允许写入 `tmp/`，不应写入根目录、`docs_project/` 或 Pages 制品目录。
+需要浏览器的测试应先启动 `node scripts/local-server.mjs`，默认地址为 `http://127.0.0.1:7000/`。首页真实入口回归使用 `node scripts/test-home-browser.mjs`，覆盖 `/app`、顶部导航、首页主线、三张探索地图和侦探 bonus。测试截图和报告只允许写入 `tmp/`，不应写入根目录、`docs_project/` 或 Pages 制品目录。
 
 ## 本次验证结果
 

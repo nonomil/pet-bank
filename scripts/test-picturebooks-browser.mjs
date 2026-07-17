@@ -4,7 +4,7 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 import { browserLaunchOpts } from './playwright-browser.mjs';
 
-const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765/';
+const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:7000/';
 const libraryUrl = process.env.PETBANK_LIBRARY_URL || 'http://127.0.0.1:5174/picturebook-library/';
 const reportPath = path.join(process.cwd(), 'tmp', 'picturebooks-library-browser-report.json');
 const browser = await chromium.launch(browserLaunchOpts());

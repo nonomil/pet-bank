@@ -1666,7 +1666,7 @@ Manual checks:
 
 **Step 1: Start the local server**
 
-Run: \`python -m http.server 8765 --bind 127.0.0.1\`
+Run: \`node scripts/local-server.mjs\` (default: http://127.0.0.1:7000/)
 
 **Step 2: Validate card detail**
 

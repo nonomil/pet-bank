@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { browserLaunchOpts } from './playwright-browser.mjs';
 
-const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:8765/';
+const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:7000/';
 const chapters = [
     ['sci-fi', 'sf-01', 'sf-01.webp'],
     ['forest', 'forest-01', 'forest-01.webp'],
