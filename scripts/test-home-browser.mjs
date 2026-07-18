@@ -104,13 +104,16 @@ try {
     await page.waitForSelector('#showcaseTrack .showcase-slide', { state: 'attached', timeout: 20000 });
     const showcaseSlides = page.locator('#showcaseTrack .showcase-slide');
     const showcaseDots = page.locator('#showcaseDots .showcase-dot');
-    assert.equal(await showcaseSlides.count(), 4, 'home showcase should expose four clickable destinations');
-    assert.equal(await showcaseDots.count(), 4, 'home showcase should expose four slide controls');
+    assert.equal(await showcaseSlides.count(), 7, 'home showcase should expose seven clickable primary columns');
+    assert.equal(await showcaseDots.count(), 7, 'home showcase should expose seven slide controls');
     const showcaseEntries = [
+        ['成长总览', 'map', '#page-map .home-demo-workspace'],
         ['今日打卡', 'today', '#taskGrid .task-card'],
         ['学习中心', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=7'],
-        ['宠物伙伴', 'pet', '#petDisplayArea'],
         ['绘本书架', 'picturebooks', '#picturebooks-root .picturebooks-portal', 'js/picturebook-external-bridge.js'],
+        ['宠物伙伴', 'pet', '#petDisplayArea'],
+        ['故事地图', 'explore', '#page-explore #pixelStoryShell', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1'],
+        ['游乐场', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
     ];
     for (let index = 0; index < showcaseEntries.length; index += 1) {
         const [title, pageId, contentSelector, runtimeMarker] = showcaseEntries[index];

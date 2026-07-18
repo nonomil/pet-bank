@@ -23,6 +23,7 @@
     };
 
     const VOCAB_STAGE_SIZE = 6;
+    const LEARN_HUB_TAB_IDS = new Set(['today', 'packs', 'sites', 'prints', 'progress']);
     const VOCAB_IMAGE_BY_WORD = {
         block: 'assets/learn/english-vocab/block.webp',
         world: 'assets/learn/english-vocab/world.webp',
@@ -595,7 +596,7 @@
     }
 
     function setHubTab(tabId) {
-        state.activeHubTab = tabId || 'today';
+        state.activeHubTab = LEARN_HUB_TAB_IDS.has(tabId) ? tabId : 'today';
         persistCatalogState();
     }
 
@@ -3065,15 +3066,6 @@
                 progress: literacyProgress.percent,
                 action: `LearnCenter.openLesson('${summerRecord.id}', 'morning-reading', '${readingTodayId || readingContinueId || ''}')`
             } : null,
-            {
-                theme: 'picturebook',
-                image: 'assets/story/pixel-worlds-v1/maps/detective.webp',
-                meta: '故事世界 · 绘本',
-                title: '绘本书架',
-                desc: '每本绘本都是一张可探索的地图。',
-                progress: overallPercent,
-                action: `LearnCenter.openHubTab('picturebooks')`
-            },
             literacyModule ? {
                 theme: 'literacy',
                 image: 'assets/story/pixel-worlds-v1/maps/sci-fi.webp',
@@ -3258,14 +3250,13 @@
             </article>
         `;
 
-        const activeHubTab = ['today', 'packs', 'sites', 'prints', 'progress', 'picturebooks'].includes(state.activeHubTab) ? state.activeHubTab : 'today';
+        const activeHubTab = LEARN_HUB_TAB_IDS.has(state.activeHubTab) ? state.activeHubTab : 'today';
         const hubTabMeta = {
             today: { icon: '☀️', label: '今日学习', title: '今天学什么', desc: '按今天的节奏，直接打开一项学习内容。' },
             packs: { icon: '📚', label: '资料包', title: '学习资料包', desc: '中文、英语和幼小衔接资料集中在这里。' },
             sites: { icon: '🌐', label: '学习网站', title: '学习网站入口', desc: '先选入口，再去外部网站学习，回来继续记录。' },
             prints: { icon: '🖨️', label: '打印讲义', title: '打印与讲义', desc: '需要纸面学习时，从这里打开 A4 讲义。' },
             progress: { icon: '📈', label: '全部进度', title: '学习总览', desc: '查看每个资料包和模块的完成情况。' },
-            picturebooks: { icon: '📖', label: '绘本阅读', title: '绘本阅读', desc: '读完绘本，再回来继续学习和领取成长奖励。' }
         };
         const activeHubMeta = hubTabMeta[activeHubTab];
         const workspaceProgress = `
@@ -3308,10 +3299,9 @@
                         <div class="learn-demo-mission-copy">
                             <span class="learn-demo-mission-kicker">今日主线任务 · ${todayPlan.todayLabel}</span>
                             <h3>${readingTodayLesson?.title || '先完成一小块，学习基地就会升级'}</h3>
-                            <p>${todayPlan.note} 晨读、识字、绘本和单词远征都放在同一条清晰的成长路线上。</p>
+                            <p>${todayPlan.note} 晨读、识字和单词远征都放在同一条清晰的成长路线上。</p>
                             <div class="learn-demo-mission-actions">
                                 ${readingTodayId ? `<button class="learn-btn learn-btn-primary" type="button" onclick="LearnCenter.openLesson('${summerRecord.id}', 'morning-reading', '${readingTodayId}')">继续今日任务</button>` : `<button class="learn-btn learn-btn-primary" type="button" onclick="LearnCenter.openHubTab('packs')">查看资料包</button>`}
-                                <button class="learn-btn learn-btn-secondary" type="button" onclick="LearnCenter.openHubTab('picturebooks')">打开绘本书架</button>
                             </div>
                         </div>
                         <div class="learn-demo-mission-visual"><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="萤火森林学习地图"></div>
@@ -3398,18 +3388,6 @@
                     </section>
                 </div>
             `,
-            picturebooks: `
-                <div class="learn-stage-head learn-stage-head-tight">
-                    <div>
-                        <h3 class="learn-section-title">绘本阅读</h3>
-                        <p class="learn-section-subtitle">读完独立绘本，再回来继续学习和领取成长奖励。</p>
-                    </div>
-                    ${buildBadges(['📖 独立绘本馆', '⭐ 首读奖励', '👨‍👩‍👧 亲子共读'])}
-                </div>
-                <div class="learn-hub-picturebooks" id="learn-picturebooks-root">
-                    <div class="picturebooks-loading" aria-live="polite">正在打开绘本馆...</div>
-                </div>
-            `
         };
 
         container.innerHTML = `
@@ -3465,8 +3443,7 @@
                             <div class="learn-demo-rail-heading"><div><h2>下一步</h2><p>右侧只保留最重要的行动。</p></div></div>
                             <div class="learn-demo-next-list">
                                 ${readingTodayId ? `<button type="button" onclick="LearnCenter.openLesson('${summerRecord.id}', 'morning-reading', '${readingTodayId}')"><b>1</b><span><strong>继续晨读</strong><small>新手村 · 约 8 分钟</small></span></button>` : ''}
-                                <button type="button" onclick="LearnCenter.openHubTab('picturebooks')"><b>2</b><span><strong>读一本绘本</strong><small>完成后解锁成长奖励</small></span></button>
-                                <button type="button" onclick="LearnCenter.openMinecraftVocab()"><b>3</b><span><strong>玩一局学习游戏</strong><small>单词远征或互动挑战</small></span></button>
+                                <button type="button" onclick="LearnCenter.openMinecraftVocab()"><b>2</b><span><strong>玩一局学习游戏</strong><small>单词远征或互动挑战</small></span></button>
                             </div>
                         </section>
                         <section class="learn-demo-rail-section">
@@ -3484,22 +3461,6 @@
                 void renderHub(containerId || 'learn-container');
             });
         });
-        if (activeHubTab === 'picturebooks') {
-            try {
-                if (window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function') {
-                    await window.PetBankRuntime.ensurePage('picturebooks');
-                }
-                if (window.Picturebooks && typeof window.Picturebooks.render === 'function') {
-                    await window.Picturebooks.render('learn-picturebooks-root');
-                } else {
-                    throw new Error('Picturebooks bridge is unavailable');
-                }
-            } catch (error) {
-                console.warn('[LearnCenter] picturebook tab load failed:', error);
-                const picturebooksRoot = document.getElementById('learn-picturebooks-root');
-                if (picturebooksRoot) picturebooksRoot.innerHTML = '<div class="picturebooks-error"><strong>绘本馆暂时没有打开</strong><span>请稍后重试，或检查绘本项目网址。</span></div>';
-            }
-        }
         bindDailySheetInteractions(container, () => void renderHub(containerId || 'learn-container'));
     }
 

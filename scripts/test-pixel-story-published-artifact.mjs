@@ -74,8 +74,8 @@ for (const card of publishedVocab.cards || []) {
 }
 assert.ok(fs.existsSync(path.join(outDir, 'js', 'pixel-story-map.js')));
 const publishedMapSource = fs.readFileSync(path.join(outDir, 'js', 'pixel-story-map.js'), 'utf8');
-assert.match(publishedMapSource, /chapterId \+ '\.ogg'/, 'published dynamic map audio path should use OGG');
-assert.doesNotMatch(publishedMapSource, /chapterId \+ '\.wav'/, 'published dynamic map audio path must not use WAV');
+assert.match(publishedMapSource, /PixelStoryEngine\.enterChapter\(chapterId\)/, 'published map should delegate chapter audio and content to the story engine');
+assert.doesNotMatch(publishedMapSource, /chapterId \+ '\.(?:ogg|wav)'/, 'published map must not own a legacy dynamic audio path');
 assert.ok(fs.existsSync(path.join(outDir, 'js', 'pixel-story-engine.js')));
 assert.ok(fs.existsSync(path.join(outDir, 'css', 'pixel-story.css')));
 const levelDir = path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'levels');

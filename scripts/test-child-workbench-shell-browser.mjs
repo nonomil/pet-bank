@@ -28,6 +28,7 @@ try {
     assert.equal(await page.locator('body').evaluate((element) => element.classList.contains('child-workbench-secondary')), true, 'learning should expose its secondary navigation state');
     assert.equal(await page.locator('#childPrimarySidebar [data-child-action="profile"]').count(), 1, 'child workbench should expose profile switching outside the top bar');
     assert.equal(await page.locator('#childPrimarySidebar [data-child-action="parent"]').count(), 1, 'child workbench should expose parent access outside the top bar');
+    assert.equal(await page.locator('#childProgressRail [data-child-next="picturebooks"]').count(), 0, 'learning progress rail should not link to picturebooks');
     const desktopShell = await page.locator('.page-shell').evaluate((element) => {
         const rect = element.getBoundingClientRect();
         const primary = document.querySelector('#childPrimarySidebar').getBoundingClientRect();

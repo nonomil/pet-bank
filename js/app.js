@@ -2812,7 +2812,12 @@ function runPageActivation(page) {
     if (page === 'walk') renderWalkPage();
     if (page === 'explore' && window.ExplorationSystem) void renderExplorePage();
     if (page === 'forest-map' && window.ExplorationSystem) void renderForestMapPage();
-    if (page === 'playground') renderPlaygroundProgressBoard();
+    if (page === 'playground') {
+        renderPlaygroundProgressBoard();
+        if (window.PetBankPlaygroundCatalog && typeof window.PetBankPlaygroundCatalog.mount === 'function') {
+            window.PetBankPlaygroundCatalog.mount();
+        }
+    }
     if (page === 'review') renderReviewBattleBoard();
     if (page === 'mathpk' && window.MathPKGame) MathPKGame.renderUI('math-pk-container');
     if (page === 'review') renderReviewBattleBoard();

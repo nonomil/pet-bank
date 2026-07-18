@@ -46,7 +46,6 @@
         ],
         learn: [
             ['继续今日学习', '约 8 分钟', 'learn'],
-            ['读一本绘本', '完成后领取成长奖励', 'picturebooks'],
             ['玩一局学习游戏', '飞机大战或拼音赛车', 'playground']
         ],
         picturebooks: [

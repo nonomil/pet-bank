@@ -487,6 +487,7 @@ const STATIC_ROUTE_ENTRIES = [
     '/app/pet/walk',
     '/app/pet/cards',
     '/app/explore',
+    '/app/explore/forest',
     '/app/playground',
     '/app/playground/math-pk',
     '/app/playground/hanzi',

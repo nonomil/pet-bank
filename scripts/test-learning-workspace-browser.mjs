@@ -27,7 +27,7 @@ try {
     assert.equal(await page.locator('#childPrimaryNav [data-child-primary]').count(), 7, 'child workbench should expose seven primary entries');
     assert.equal(await page.locator('#childProgressRail').count(), 1, 'personal progress should stay visible in the shared rail');
 
-    const tabs = ['packs', 'sites', 'prints', 'progress', 'picturebooks', 'today'];
+    const tabs = ['packs', 'sites', 'prints', 'progress', 'today'];
     for (const tabId of tabs) {
         await page.locator(`.learn-demo-side-link[role="tab"][data-learn-hub-tab="${tabId}"]`).click();
         await page.waitForFunction(expected => document.querySelector(`.learn-demo-side-link[role="tab"][data-learn-hub-tab="${expected}"]`)?.getAttribute('aria-selected') === 'true', tabId);
@@ -36,7 +36,8 @@ try {
 
     await page.locator('.learn-demo-side-link[role="tab"][data-learn-hub-tab="today"]').click();
     await page.waitForSelector('.learn-demo-resource-grid .learn-demo-resource-card', { state: 'attached', timeout: 20000 });
-    assert.equal(await page.locator('.learn-demo-resource-card').count(), 5, 'today tab should show compact learning resource cards');
+    assert.equal(await page.locator('.learn-demo-resource-card').count(), 4, 'today tab should show compact learning resource cards without picturebooks');
+    assert.equal(await page.locator('.learn-demo-resource-card-picturebook').count(), 0, 'today tab should not show a picturebook card');
     assert.equal(await page.locator('.learn-demo-focus-grid').count(), 1, 'today tab should show the main mission and completion card');
     const primaryAction = page.locator('.learn-demo-mission-actions .learn-btn-primary');
     assert.equal(await primaryAction.count(), 1, 'today card should have a primary action');

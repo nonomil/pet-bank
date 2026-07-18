@@ -22,8 +22,13 @@ try {
     await page.waitForSelector('#page-map.active #showcaseTrack .showcase-slide', { state: 'attached', timeout: 20000 });
 
     assert.equal(await page.locator('#page-map .home-demo-main #showcase').count(), 1, 'carousel belongs to the home main workspace');
-    assert.equal(await page.locator('#showcaseTrack .showcase-slide').count(), 4, 'home carousel exposes four current columns');
-    assert.equal(await page.locator('#showcaseDots .showcase-dot').count(), 4, 'home carousel exposes four slide controls');
+    assert.equal(await page.locator('#showcaseTrack .showcase-slide').count(), 7, 'home carousel exposes seven primary columns');
+    assert.equal(await page.locator('#showcaseDots .showcase-dot').count(), 7, 'home carousel exposes seven slide controls');
+    assert.deepEqual(
+        await page.locator('#showcaseTrack .showcase-slide').evaluateAll(slides => slides.map(slide => slide.getAttribute('aria-label'))),
+        ['打开成长总览', '打开今日打卡', '打开学习中心', '打开绘本书架', '打开宠物伙伴', '打开故事地图', '打开游乐场'],
+        'home carousel titles should match the seven primary columns'
+    );
     assert.equal(await page.locator('#exploreMapSwitcher').isHidden(), true, 'explore map switcher is hidden on home');
     assert.equal(await page.locator('#homeCommonEntries .home-demo-resource-card').count(), 5, 'home exposes five common entries');
 
@@ -38,7 +43,7 @@ try {
     const layout = await page.evaluate(() => ({ bodyWidth: document.body.scrollWidth, viewportWidth: innerWidth }));
     assert.ok(layout.bodyWidth <= layout.viewportWidth, `home carousel has no mobile overflow: ${JSON.stringify(layout)}`);
     assert.deepEqual(errors, [], `home carousel has no browser errors: ${JSON.stringify(errors)}`);
-    console.log(JSON.stringify({ homeUrl, slides: 4, commonEntries: 5, layout, errors }));
+    console.log(JSON.stringify({ homeUrl, slides: 7, commonEntries: 5, layout, errors }));
 } finally {
     await browser.close();
 }

@@ -2,6 +2,13 @@
 (function () {
   const SLIDES = [
     {
+      icon: '⌂',
+      title: '成长总览',
+      desc: '看看今天的任务、伙伴状态和正在进行的成长路线。',
+      img: 'assets/home-bg/map-board.webp',
+      page: 'map',
+    },
+    {
       icon: '✓',
       title: '今日打卡',
       desc: '把今天最重要的一件小事做完，成长分会马上加进来。',
@@ -16,6 +23,13 @@
       page: 'learn',
     },
     {
+      icon: '▤',
+      title: '绘本书架',
+      desc: '挑一本喜欢的故事，从上次读到的地方继续看下去。',
+      img: 'assets/story/pixel-worlds-v1/maps/forest.webp',
+      page: 'picturebooks',
+    },
+    {
       icon: '♣',
       title: '宠物伙伴',
       desc: '去看看今天的同行伙伴，照料、互动，再一起继续成长。',
@@ -23,11 +37,18 @@
       page: 'pet',
     },
     {
-      icon: '▤',
-      title: '绘本书架',
-      desc: '挑一本喜欢的故事，从上次读到的地方继续看下去。',
-      img: 'assets/story/pixel-worlds-v1/maps/forest.webp',
-      page: 'picturebooks',
+      icon: '↗',
+      title: '故事地图',
+      desc: '进入科幻故事、森林冒险和方块世界，选择一条路线出发。',
+      img: 'assets/story/space-growth-detective/map.webp',
+      page: 'explore',
+    },
+    {
+      icon: '◇',
+      title: '游乐场',
+      desc: '用一局轻量小游戏练反应、认字和新本领。',
+      img: 'assets/ui/playground-bg.webp',
+      page: 'playground',
     },
   ];
 

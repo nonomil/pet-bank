@@ -765,7 +765,13 @@
             <div class="page" id="page-playground">
                 <!-- Header：IP人物 + 金币徽章 -->
                 <div class="pg-header">
-                    <img class="pg-mascot-img" src="assets/ui/pg-mascot.webp" alt="吉祥物" loading="lazy" decoding="async" fetchpriority="low">
+                    <div class="pg-header-leading">
+                        <button class="pg-home-button" id="playgroundHomeButton" type="button" onclick="switchPage('map')" title="回到首页">
+                            <i data-lucide="house" aria-hidden="true"></i>
+                            <span>首页</span>
+                        </button>
+                        <img class="pg-mascot-img" src="assets/ui/pg-mascot.webp" alt="吉祥物" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
                     <div class="pg-coin-badge" title="我的积分">
                         <svg class="coin-svg" viewBox="0 0 286 132" width="143" height="66">
                             <defs>
@@ -799,8 +805,28 @@
                 <section class="playground-layout" aria-label="游乐场总览">
                     <section class="playground-progress-shell" id="playgroundProgressBoard" aria-label="游乐场作战看板"></section>
 
-                    <section class="playground-grid" aria-label="游乐场游戏卡片">
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('word-memory-map')">
+                    <section class="playground-games-panel" aria-labelledby="playgroundGamesTitle">
+                        <header class="playground-games-header">
+                            <div>
+                                <span class="playground-games-kicker">学习游戏库</span>
+                                <h2 id="playgroundGamesTitle">选择一项挑战</h2>
+                                <p id="playgroundCatalogHint">英语打字 · 3 款游戏</p>
+                            </div>
+                            <strong class="playground-visible-count"><span id="playgroundVisibleCount">3</span> 款</strong>
+                        </header>
+                        <nav class="playground-category-tabs" id="playgroundCategoryTabs" aria-label="游戏分类" role="tablist">
+                            <button class="playground-category-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="playgroundGameGrid" data-playground-category="english" data-playground-category-tab>
+                                <span>英语打字</span><small>3</small>
+                            </button>
+                            <button class="playground-category-tab" type="button" role="tab" aria-selected="false" aria-controls="playgroundGameGrid" data-playground-category="pinyin" data-playground-category-tab>
+                                <span>拼音识字</span><small>3</small>
+                            </button>
+                            <button class="playground-category-tab" type="button" role="tab" aria-selected="false" aria-controls="playgroundGameGrid" data-playground-category="challenge" data-playground-category-tab>
+                                <span>数学对战</span><small>2</small>
+                            </button>
+                        </nav>
+                        <section class="playground-grid" id="playgroundGameGrid" aria-label="游乐场游戏卡片">
+                        <button class="pg-img-card pg-feature-card" type="button" data-playground-category="english" onclick="switchPage('word-memory-map')">
                             <span class="pg-card-media pg-card-media-crop-center">
                                 <img src="assets/ui/pg-card-word-memory.webp?v=20260711c" alt="单词跑酷" loading="lazy" decoding="async" fetchpriority="high">
                             </span>
@@ -811,7 +837,7 @@
                             </span>
                             <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
                         </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('typing-defense')">
+                        <button class="pg-img-card pg-feature-card" type="button" data-playground-category="english" onclick="switchPage('typing-defense')">
                             <span class="pg-card-media pg-card-media-crop-right">
                                 <img src="assets/ui/pg-card-typing-defense.webp?v=20260711c" alt="消灭苦力怕" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
@@ -822,7 +848,7 @@
                             </span>
                             <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
                         </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('word-cannon')">
+                        <button class="pg-img-card pg-feature-card" type="button" data-playground-category="pinyin" onclick="openLearningArcadeGame('word-cannon')">
                             <span class="pg-card-media pg-card-media-crop-center">
                                 <img src="assets/ui/pg-card-word-cannon.webp?v=20260711d" alt="拼音赛车" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
@@ -833,7 +859,7 @@
                             </span>
                             <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
                         </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('word-shooter')">
+                        <button class="pg-img-card pg-feature-card" type="button" data-playground-category="english" onclick="openLearningArcadeGame('word-shooter')">
                             <span class="pg-card-media pg-card-media-crop-right">
                                 <img src="assets/ui/pg-card-word-shooter.webp?v=20260711c" alt="飞机大战" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
@@ -844,7 +870,7 @@
                             </span>
                             <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
                         </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('mathpk')">
+                        <button class="pg-img-card pg-feature-card" type="button" data-playground-category="challenge" onclick="switchPage('mathpk')">
                             <span class="pg-card-media">
                                 <img src="assets/ui/pg-card-mathpk.webp?v=20260711c" alt="数学PK" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
@@ -855,7 +881,7 @@
                             </span>
                             <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
                         </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('hanzi')">
+                        <button class="pg-img-card pg-feature-card" type="button" data-playground-category="pinyin" onclick="switchPage('hanzi')">
                             <span class="pg-card-media pg-card-media-crop-right">
                                 <img src="assets/ui/pg-card-hanzi.webp?v=20260711c" alt="汉字游戏" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
@@ -866,7 +892,7 @@
                             </span>
                             <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
                         </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="openCardArenaEntry()">
+                        <button class="pg-img-card pg-feature-card" type="button" data-playground-category="challenge" onclick="openCardArenaEntry()">
                             <span class="pg-card-media">
                                 <img src="assets/ui/pg-card-arena.webp?v=20260711c" alt="卡牌对战" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
@@ -877,7 +903,7 @@
                             </span>
                             <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
                         </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('pinyin-snake')">
+                        <button class="pg-img-card pg-feature-card" type="button" data-playground-category="pinyin" onclick="openLearningArcadeGame('pinyin-snake')">
                             <span class="pg-card-media pg-card-media-crop-center">
                                 <img src="assets/ui/pg-card-pinyin-snake.webp?v=20260711d" alt="贪吃蛇" loading="lazy" decoding="async" fetchpriority="low">
                             </span>
@@ -888,6 +914,7 @@
                             </span>
                             <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
                         </button>
+                        </section>
                     </section>
                 </section>
 
