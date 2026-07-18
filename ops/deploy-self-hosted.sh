@@ -61,18 +61,30 @@ if command -v nginx >/dev/null 2>&1; then
   nginx -t
   systemctl reload nginx
 fi
-STATIC_ROUTES=("/app/" "/parent/")
+PUBLIC_STATIC_ROUTES=("/parent/" "/app/picturebooks/" "/app/playground/")
 for runtime_entry in "${GAME_RUNTIME_ENTRIES[@]}"; do
-  STATIC_ROUTES+=("/${runtime_entry}")
+  PUBLIC_STATIC_ROUTES+=("/${runtime_entry}")
 done
+PROTECTED_STATIC_ROUTES=("/" "/app/" "/settings/learning/")
 
 static_routes_ready=1
-for static_route in "${STATIC_ROUTES[@]}"; do
+for static_route in "${PUBLIC_STATIC_ROUTES[@]}"; do
   if ! curl --fail --silent --show-error "http://127.0.0.1${PETBANK_STATIC_PREFIX:-}${static_route}" >/dev/null; then
     static_routes_ready=0
     break
   fi
 done
+
+if [[ "$static_routes_ready" -eq 1 ]]; then
+  for static_route in "${PROTECTED_STATIC_ROUTES[@]}"; do
+    status_code="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "http://127.0.0.1${PETBANK_STATIC_PREFIX:-}${static_route}")"
+    if [[ "$status_code" != "302" ]]; then
+      echo "expected protected static route redirect: ${static_route} returned ${status_code}" >&2
+      static_routes_ready=0
+      break
+    fi
+  done
+fi
 
 if [[ "$static_routes_ready" -ne 1 ]]; then
   echo "deployment failed after activation; restoring previous release" >&2

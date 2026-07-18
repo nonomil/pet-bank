@@ -30,7 +30,10 @@
         const text = await response.text();
         if (!text) return null;
         try { return JSON.parse(text); } catch (error) {
-            throw new Error(`服务返回了无法识别的数据（${response.status}）`);
+            const result = new Error(`服务返回了无法识别的数据（${response.status}）`);
+            result.status = response.status;
+            result.code = 'INVALID_RESPONSE';
+            throw result;
         }
     }
 
@@ -116,6 +119,7 @@
         login,
         logout,
         refresh,
+        checkAccess: () => request('/auth/check'),
         me: () => request('/auth/me'),
         deleteAccount: (password) => request('/auth/account', { method: 'DELETE', body: { password } }),
         listHouseholds: () => request('/households'),

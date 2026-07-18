@@ -2300,7 +2300,36 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
+function continueLocalPageNavigation(page, options) {
+    return switchPage(page, Object.assign({}, options, { skipAccessGate: true }));
+}
+
+function guardPageAccess(page, options) {
+    const api = window.SelfHostedApi;
+    if (!api || typeof api.checkAccess !== 'function') return continueLocalPageNavigation(page, options);
+    return api.checkAccess().then(() => continueLocalPageNavigation(page, options)).catch((error) => {
+        const isLocalOnly = error && (
+            error.status === 404 ||
+            error.status === 405 ||
+            (error.status === 200 && error.code === 'INVALID_RESPONSE')
+        );
+        if (isLocalOnly) return continueLocalPageNavigation(page, options);
+
+        if (typeof api.clearSession === 'function') api.clearSession();
+        if (typeof window.showToast === 'function') {
+            window.showToast(error?.status === 401 || error?.status === 403
+                ? '当前账号未授权或授权已失效，请先登录。'
+                : '授权服务暂时不可用，核心页面已锁定。');
+        }
+        return switchPage('parent', { skipAccessGate: true, replace: true });
+    });
+}
+
 function switchPage(page, options = {}) {
+    const router = window.PetBankPageRouter;
+    if (!options.skipAccessGate && router && typeof router.requiresAccess === 'function' && router.requiresAccess(page, options.settingsSection || activeSettingsSection)) {
+        return guardPageAccess(page, options);
+    }
     closeSectionMenus();
     closeTopHubMenus();
     if (window.ScheduledCheckins) {

@@ -13,7 +13,7 @@ async function withApi(run, options = {}) {
     const database = openDatabase({ databasePath: path.join(dataDir, 'petbank.db') });
     const server = createServer({
         config: {
-            production: false,
+            production: Boolean(options.production),
             host: '127.0.0.1',
             port: 0,
             jwtSecret: 'test-secret-that-is-long-enough-for-api-tests',
@@ -21,6 +21,7 @@ async function withApi(run, options = {}) {
             refreshTokenTtlSeconds: 86400,
             enableRegistration: true,
             requireRegistrationCode: Boolean(options.requireRegistrationCode),
+            sessionCookieSecure: Boolean(options.production),
             allowedOrigin: 'http://127.0.0.1:7000',
         },
         database,
@@ -28,10 +29,11 @@ async function withApi(run, options = {}) {
     await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
     const address = server.address();
     const baseUrl = `http://127.0.0.1:${address.port}`;
-    const request = async (method, pathname, body, token) => {
+    const request = async (method, pathname, body, token, extraHeaders = {}) => {
         const headers = { accept: 'application/json' };
         if (body !== undefined) headers['content-type'] = 'application/json';
         if (token) headers.authorization = `Bearer ${token}`;
+        Object.assign(headers, extraHeaders);
         const response = await fetch(`${baseUrl}${pathname}`, {
             method,
             headers,
@@ -289,4 +291,38 @@ test('production registration requires a one-time code and grants account access
         assert.equal(blocked.response.status, 403);
         assert.equal(blocked.data.error.code, 'ACCESS_NOT_AUTHORIZED');
     }, { requireRegistrationCode: true });
+});
+
+test('browser sessions expose an HttpOnly cookie for static auth_request checks', async () => {
+    await withApi(async ({ request }) => {
+        const registered = await request('POST', '/api/v1/auth/register', {
+            username: 'cookie_parent', password: 'StrongPass123!', displayName: 'Cookie 家长',
+        });
+        const setCookie = registered.response.headers.get('set-cookie') || '';
+        assert.match(setCookie, /petbank_access_token=/);
+        assert.match(setCookie, /HttpOnly/);
+        assert.match(setCookie, /SameSite=Lax/);
+        const cookie = setCookie.split(';', 1)[0];
+
+        const checked = await request('GET', '/api/v1/auth/check', undefined, undefined, { cookie });
+        assert.equal(checked.response.status, 204);
+
+        const anonymous = await request('GET', '/api/v1/auth/check');
+        assert.equal(anonymous.response.status, 401);
+
+        const loggedOut = await request('POST', '/api/v1/auth/logout', {
+            refreshToken: registered.data.refreshToken,
+        }, undefined, { cookie });
+        assert.equal(loggedOut.response.status, 204);
+        assert.match(loggedOut.response.headers.get('set-cookie') || '', /Max-Age=0/);
+    });
+});
+
+test('production browser sessions mark the access cookie Secure', async () => {
+    await withApi(async ({ request }) => {
+        const registered = await request('POST', '/api/v1/auth/register', {
+            username: 'secure_cookie_parent', password: 'StrongPass123!', displayName: 'Secure 家长',
+        });
+        assert.match(registered.response.headers.get('set-cookie') || '', /Secure/);
+    }, { production: true });
 });

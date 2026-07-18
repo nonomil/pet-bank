@@ -64,6 +64,11 @@
 
     const PARENT_SHELL_PAGES = new Set(['parent', 'works', 'tools', 'settings']);
 
+    const PUBLIC_ACCESS_PAGES = new Set([
+        'parent', 'picturebooks', 'playground', 'mathpk', 'hanzi', 'typing-defense',
+        'learning-arcade', 'word-memory-map', 'leaderboard'
+    ]);
+
     const SETTINGS_SECTION_ROUTES = {
         home: '/settings',
         account: '/settings/account',
@@ -274,6 +279,11 @@
         return 'home';
     }
 
+    function requiresAccess(page, settingsSection) {
+        if (page === 'settings' && ['home', 'family', 'account'].includes(normalizeSettingsSection(settingsSection))) return false;
+        return !PUBLIC_ACCESS_PAGES.has(page);
+    }
+
     global.PetBankPageRouter = Object.freeze({
         getHomeTabMap: () => Object.assign({}, HOME_TAB_MAP),
         getPageToTab: page => PAGE_TO_TAB[page] || page,
@@ -287,6 +297,7 @@
         canUsePathRouting,
         getRouteShell,
         getParentShellNavKey,
-        getAppShellSurface
+        getAppShellSurface,
+        requiresAccess
     });
 }(window));

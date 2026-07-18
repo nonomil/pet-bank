@@ -35,6 +35,7 @@ jobs:
           python scripts/convert-runtime-audio-variants.py --check
           node --check js/app.js
           node scripts/test-static-route-entries.mjs
+          node scripts/test-static-access-policy-contract.mjs
           node prj/runtime_loader_route_base_contract.test.mjs
           node prj/route_aware_shell_contract.test.mjs
           node prj/profile_isolation_journey_simulation.mjs

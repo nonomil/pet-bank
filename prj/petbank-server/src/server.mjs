@@ -19,9 +19,10 @@ const JSON_HEADERS = {
     'content-type': 'application/json; charset=utf-8',
     'cache-control': 'no-store',
 };
+const SESSION_COOKIE_NAME = 'petbank_access_token';
 
-function sendJson(response, statusCode, payload, config) {
-    const headers = { ...JSON_HEADERS };
+function sendJson(response, statusCode, payload, config, extraHeaders = {}) {
+    const headers = { ...JSON_HEADERS, ...extraHeaders };
     if (config.allowedOrigin) {
         headers['access-control-allow-origin'] = config.allowedOrigin;
         headers.vary = 'Origin';
@@ -92,8 +93,18 @@ function getBearerToken(request) {
     return value.startsWith('Bearer ') ? value.slice(7).trim() : '';
 }
 
+function getCookie(request, name) {
+    const cookies = String(request.headers.cookie || '').split(';');
+    for (const item of cookies) {
+        const separator = item.indexOf('=');
+        if (separator === -1) continue;
+        if (item.slice(0, separator).trim() === name) return item.slice(separator + 1).trim();
+    }
+    return '';
+}
+
 function requireAccount(request, database, config) {
-    const token = getBearerToken(request);
+    const token = getBearerToken(request) || getCookie(request, SESSION_COOKIE_NAME);
     if (!token) throw Object.assign(new Error('UNAUTHORIZED'), { statusCode: 401 });
     let claims;
     try {
@@ -145,6 +156,16 @@ function issueSession(database, config, accountId, now = Math.floor(Date.now() /
         values (?, ?, ?, ?)
     `).run(refreshTokenId, accountId, hashRefreshToken(refreshToken), now + config.refreshTokenTtlSeconds);
     return { accessToken, refreshToken, expiresIn: config.accessTokenTtlSeconds };
+}
+
+function sessionCookie(config, token, maxAge) {
+    const secure = (config.sessionCookieSecure ?? config.production) ? '; Secure' : '';
+    return `${SESSION_COOKIE_NAME}=${token}; Path=/; Max-Age=${maxAge}; HttpOnly; SameSite=Lax${secure}`;
+}
+
+function clearSessionCookie(config) {
+    const secure = (config.sessionCookieSecure ?? config.production) ? '; Secure' : '';
+    return `${SESSION_COOKIE_NAME}=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax${secure}`;
 }
 
 function requireAccountAccess(database, account, now = Math.floor(Date.now() / 1000)) {
@@ -204,7 +225,7 @@ function mapKnownError(error) {
 }
 
 export function createServer({ config, database }) {
-    const json = (response, status, payload) => sendJson(response, status, payload, config);
+    const json = (response, status, payload, headers) => sendJson(response, status, payload, config, headers);
     return http.createServer(async (request, response) => {
         if (request.method === 'OPTIONS') {
             response.writeHead(204, {
@@ -260,7 +281,9 @@ export function createServer({ config, database }) {
                 }
                 const session = issueSession(database, config, accountId);
                 const account = database.prepare('select * from accounts where id = ?').get(accountId);
-                return json(response, 201, { ...session, account: accountView(account) });
+                return json(response, 201, { ...session, account: accountView(account) }, {
+                    'set-cookie': sessionCookie(config, session.accessToken, session.expiresIn),
+                });
             }
 
             if (request.method === 'POST' && url.pathname === '/api/v1/auth/login') {
@@ -269,7 +292,10 @@ export function createServer({ config, database }) {
                 const account = database.prepare('select * from accounts where username = ? or identifier = ?').get(username, username);
                 if (!account || !verifyPassword(body.password, account.password_hash)) throw new Error('INVALID_CREDENTIALS');
                 requireAccountAccess(database, account);
-                return json(response, 200, { ...issueSession(database, config, account.id), account: accountView(account) });
+                const session = issueSession(database, config, account.id);
+                return json(response, 200, { ...session, account: accountView(account) }, {
+                    'set-cookie': sessionCookie(config, session.accessToken, session.expiresIn),
+                });
             }
 
             if (request.method === 'POST' && url.pathname === '/api/v1/auth/refresh') {
@@ -288,21 +314,28 @@ export function createServer({ config, database }) {
                         .run(nextId, current.account_id, hashRefreshToken(nextToken), now + config.refreshTokenTtlSeconds);
                     database.prepare('update auth_refresh_tokens set revoked_at = ?, replaced_by_id = ? where id = ?').run(now, nextId, current.id);
                 })();
+                const accessToken = createAccessToken(current.account_id, config.jwtSecret, config.accessTokenTtlSeconds, now);
                 return json(response, 200, {
-                    accessToken: createAccessToken(current.account_id, config.jwtSecret, config.accessTokenTtlSeconds, now),
+                    accessToken,
                     refreshToken: nextToken,
                     expiresIn: config.accessTokenTtlSeconds,
-                });
+                }, { 'set-cookie': sessionCookie(config, accessToken, config.accessTokenTtlSeconds) });
             }
 
             if (request.method === 'POST' && url.pathname === '/api/v1/auth/logout') {
                 const body = await parseJsonBody(request);
                 if (body.refreshToken) database.prepare('update auth_refresh_tokens set revoked_at = coalesce(revoked_at, ?) where token_hash = ?')
                     .run(Math.floor(Date.now() / 1000), hashRefreshToken(body.refreshToken));
+                return json(response, 204, {}, { 'set-cookie': clearSessionCookie(config) });
+            }
+
+            if (request.method === 'GET' && url.pathname === '/api/v1/auth/check') {
+                const account = requireAccount(request, database, config);
+                requireAccountAccess(database, account);
                 return json(response, 204, {});
             }
 
-    const account = requireAccount(request, database, config);
+            const account = requireAccount(request, database, config);
             requireAccountAccess(database, account);
             if (request.method === 'DELETE' && url.pathname === '/api/v1/auth/account') {
                 const body = await parseJsonBody(request);

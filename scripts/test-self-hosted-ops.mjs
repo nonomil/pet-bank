@@ -21,8 +21,11 @@ test('self-hosted shell scripts keep data outside releases and require restore c
     assert.match(deploy, /node --test prj\/petbank-server\/test/);
     assert.match(deploy, /backup-sqlite\.sh/);
     assert.match(deploy, /docker compose -p petbank-api stop api/);
-    assert.match(deploy, /STATIC_ROUTES=\("\/app\/" "\/parent\/"\)/);
-    assert.match(deploy, /for static_route in "\$\{STATIC_ROUTES\[@\]\}"/);
+    assert.match(deploy, /PUBLIC_STATIC_ROUTES=\("\/parent\/" "\/app\/picturebooks\/" "\/app\/playground\/"\)/);
+    assert.match(deploy, /PROTECTED_STATIC_ROUTES=\("\/" "\/app\/" "\/settings\/learning\/"\)/);
+    assert.match(deploy, /for static_route in "\$\{PUBLIC_STATIC_ROUTES\[@\]\}"/);
+    assert.match(deploy, /for static_route in "\$\{PROTECTED_STATIC_ROUTES\[@\]\}"/);
+    assert.match(deploy, /expected protected static route redirect/);
     assert.match(deploy, /http:\/\/127\.0\.0\.1\$\{PETBANK_STATIC_PREFIX:-\}\$\{static_route\}/);
     assert.match(deploy, /docker compose -p petbank-api up -d --build/);
     assert.match(deploy, /nginx -t/);
