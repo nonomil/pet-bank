@@ -389,6 +389,60 @@ function renderSidebarTasks() {
     }).join('');
 }
 
+function renderHomeDemoTaskMirror() {
+    const container = document.getElementById('homeDemoTaskMirror');
+    if (!container) return;
+    container.innerHTML = HOME_PRIORITY_TASKS.map((task) => {
+        const taskId = `${task.dim}-${task.task}`;
+        const done = completedTasks.has(taskId);
+        return `
+            <button class="home-demo-task-item ${done ? 'is-done' : ''}" type="button" onclick="toggleTask('${task.dim}', '${task.task}', ${task.pts})">
+                <span class="home-demo-task-check" aria-hidden="true">${done ? '✓' : ''}</span>
+                <span class="home-demo-task-copy"><strong>${escapePiHtml(task.task)}</strong><small>${escapePiHtml(task.hint)}</small></span>
+                <span class="home-demo-task-points">+${task.pts}</span>
+            </button>
+        `;
+    }).join('');
+}
+
+function updateHomeDemoSummary() {
+    const totalTasks = HOME_PRIORITY_TASKS.length;
+    const completedCount = HOME_PRIORITY_TASKS.filter((task) => completedTasks.has(`${task.dim}-${task.task}`)).length;
+    const percent = Math.round((completedCount / Math.max(1, totalTasks)) * 100);
+    const focusTask = getHomeFocusTask();
+    const petState = (window.PetSystem && typeof PetSystem.getState === 'function') ? PetSystem.getState() : null;
+    const profile = (window.ProfileManager && typeof ProfileManager.getActive === 'function') ? ProfileManager.getActive() : null;
+    const values = {
+        homeDemoChildName: profile?.name || '默认孩子',
+        homeDemoPoints: String(totalPoints),
+        homeDemoPetLevel: `Lv.${petState?.level || 1}`,
+        homeDemoWins: String(petState?.wins || 0),
+        homeDemoFocusTitle: focusTask.task,
+        homeDemoFocusMeta: completedTasks.has(`${focusTask.dim}-${focusTask.task}`) ? '今天的优先任务已完成，可以自由探索。' : `完成后拿 ${focusTask.pts} 分，${focusTask.hint}`,
+        homeDemoTodayCount: `${completedCount} / ${totalTasks}`,
+        homeDemoTodayPercent: `${percent}%`,
+        homeDemoRailToday: `${completedCount} / ${totalTasks}`,
+        homeDemoRailPoints: String(totalPoints),
+        homeDemoOverallPercent: `${percent}%`
+    };
+    Object.entries(values).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value;
+    });
+    ['homeDemoTodayMeter', 'homeDemoOverallMeter'].forEach((id) => {
+        const meter = document.getElementById(id);
+        if (meter) meter.style.width = `${percent}%`;
+    });
+    const companionImg = document.getElementById('homeDemoCompanionImg');
+    const companionName = document.getElementById('homeDemoCompanionName');
+    const companionStage = document.getElementById('homeDemoCompanionStage');
+    if (companionImg && petState && typeof PetSystem.getCurrentStageImage === 'function') {
+        companionImg.src = PetSystem.getCurrentStageImage() || 'assets/pets/poses/dog_idle.webp';
+    }
+    if (companionName) companionName.textContent = petState?.species_data?.name || petState?.species || '还没有领养宠物';
+    if (companionStage) companionStage.textContent = petState?.species ? `Lv.${petState.level || 1} · 继续一起冒险` : '下一站会显示在这里';
+}
+
 function getHomeFocusTask() {
     return HOME_PRIORITY_TASKS.find((task) => !completedTasks.has(`${task.dim}-${task.task}`)) || HOME_PRIORITY_TASKS[0];
 }
@@ -4507,7 +4561,9 @@ function renderAll() {
     const activePage = getActivePageId();
     renderTaskGrid();
     renderSidebarTasks();
+    renderHomeDemoTaskMirror();
     updateStats();
+    updateHomeDemoSummary();
     renderGrowthStickerReport();
     renderReviewBattleBoard();
     if (activePage === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {

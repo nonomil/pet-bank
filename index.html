@@ -245,6 +245,46 @@
         <main class="main-content" id="mainContent" tabindex="-1">
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
+                <div class="home-demo-workspace">
+                    <aside class="home-demo-sidebar" aria-label="首页任务与陪伴">
+                        <section class="home-demo-sidebar-card home-demo-task-card">
+                            <div class="home-demo-sidebar-heading"><h2>今日任务</h2><span>全部</span></div>
+                            <div id="homeDemoTaskMirror" class="home-demo-task-list"></div>
+                        </section>
+                        <section class="home-demo-sidebar-card home-demo-summary-card">
+                            <div class="home-demo-sidebar-heading"><div><p>首页状态</p><h2>今日概览</h2></div><span id="homeDemoChildName">默认孩子</span></div>
+                            <button class="home-demo-sidebar-focus" type="button" onclick="switchPage('today')"><small>今日建议</small><strong id="homeDemoFocusTitle">阅读 20 分钟</strong><span id="homeDemoFocusMeta">完成后拿成长分</span></button>
+                            <div class="home-demo-stats"><div><small>总积分</small><strong id="homeDemoPoints">0</strong></div><div><small>宠物等级</small><strong id="homeDemoPetLevel">Lv.1</strong></div><div><small>胜场</small><strong id="homeDemoWins">0</strong></div></div>
+                            <button class="home-demo-companion" type="button" onclick="switchPage('pet')"><span class="home-demo-companion-art"><img id="homeDemoCompanionImg" alt="当前同行宠物"></span><span><small>同行伙伴</small><strong id="homeDemoCompanionName">还没有领养宠物</strong><em id="homeDemoCompanionStage">下一站会显示在这里</em></span></button>
+                        </section>
+                    </aside>
+
+                    <main class="home-demo-main">
+                        <header class="home-demo-stage-heading">
+                            <div><p class="home-demo-eyebrow">PIXEL ADVENTURE HOME</p><h1>今天，也和小伙伴一起发光。</h1><p>把学习、探索和奖励放在一条清晰的成长航线上。先完成一小步，再去打开喜欢的世界。</p></div>
+                            <span class="home-demo-stage-note"><i></i> 原创主题 · 萌宠冒险岛</span>
+                        </header>
+                        <section class="home-demo-focus-grid" aria-label="今日主线">
+                            <article class="home-demo-mission-card">
+                                <div class="home-demo-mission-copy">
+                                    <span class="home-demo-mission-kicker">今日主线任务 · 新手村</span>
+                                    <h2 id="homeDemoMissionTitle">先完成一小块，基地就会升级</h2>
+                                    <p id="homeDemoMissionDescription">完成今天的任务，再带小伙伴去看看有什么新变化。</p>
+                                    <div class="home-demo-mission-actions"><button class="home-demo-primary-button" type="button" onclick="switchPage('today')">继续今日任务</button><button class="home-demo-light-button" type="button" onclick="switchPage('explore')">查看世界地图</button></div>
+                                </div>
+                                <div class="home-demo-mission-visual"><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="萤火森林像素地图"></div>
+                            </article>
+                            <article class="home-demo-today-card"><span>今日任务完成度</span><strong id="homeDemoTodayCount">0 / 3</strong><p>完成一节阅读，再收集一个故事方块。</p><div class="home-demo-meter"><i id="homeDemoTodayMeter" style="width:0%"></i></div><div><small>已完成</small><em id="homeDemoTodayPercent">0%</em></div></article>
+                        </section>
+                        <section aria-labelledby="homeDemoResourceTitle"><div class="home-demo-section-heading"><div><h2 id="homeDemoResourceTitle">当前可进入的区域</h2><p>一行三张卡片，方便快速比较今天要做什么。</p></div><button type="button" onclick="switchPage('learn')">查看全部区域</button></div><div class="home-demo-resource-grid">
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('learn')"><span><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="学习中心入口"></span><small>新手村 · 学习</small><strong>学习中心</strong><em>晨读、识字和英语一起收集。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('picturebooks')"><span><img src="assets/story/pixel-worlds-v1/maps/detective.webp" alt="绘本入口"></span><small>故事世界 · 绘本</small><strong>绘本书架</strong><em>每本绘本都是一张可探索的地图。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('playground')"><span><img src="assets/story/pixel-worlds-v1/maps/sci-fi.webp" alt="学习游戏入口"></span><small>互动挑战 · 游戏</small><strong>学习游戏</strong><em>飞机大战和小游戏等你来挑战。</em></button>
+                        </div></section>
+
+                        <section class="home-demo-world-section" aria-labelledby="homeDemoWorldTitle"><div class="home-demo-section-heading"><div><h2 id="homeDemoWorldTitle">选择一个世界继续</h2><p>三张地图分别承载不同的冒险节奏，首页只展示清晰入口。</p></div><button type="button" onclick="switchPage('explore')">查看全部世界</button></div><div class="home-demo-world-grid"><button type="button" onclick="openHomeExploreMode('forest')"><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="森林探险"><strong>森林探险</strong><small>寻找树屋里的第一束光</small></button><button type="button" onclick="openHomeExploreMode('sci-fi')"><img src="assets/story/pixel-worlds-v1/maps/sci-fi.webp" alt="星际科技区"><strong>星港科技区</strong><small>修复失灵的星光信标</small></button><button type="button" onclick="openHomeExploreMode('block')"><img src="assets/story/pixel-worlds-v1/maps/block.webp" alt="方块地下城"><strong>方块地下城</strong><small>穿过矿洞找到蓝色水晶</small></button></div></section>
+
+                        <div class="home-demo-original-content" aria-label="原首页功能区">
                 <section class="child-journey-hero" id="childJourneyHero" aria-labelledby="childJourneyTitle">
                     <div class="child-journey-hero-copy">
                         <span class="child-journey-step">今天第 1 步</span>
@@ -364,6 +404,14 @@
                     </div>
                     <div class="warehouse-grid warehouse-grid-expanded" id="treasureWarehouseGrid"></div>
                 </section>
+                        </div>
+                    </main>
+                    <aside class="home-demo-right-rail" aria-label="成长与下一步">
+                        <section><div class="home-demo-rail-heading"><div><h2>我的成长</h2><p>本周的闪光记录</p></div><span id="homeDemoOverallPercent">0%</span></div><div class="home-demo-rail-meter"><i id="homeDemoOverallMeter" style="width:0%"></i></div><div class="home-demo-rail-stats"><div><small>今日完成</small><strong id="homeDemoRailToday">0 / 3</strong></div><div><small>连续学习</small><strong>0 天</strong></div><div><small>故事方块</small><strong>0 本</strong></div><div><small>成长分</small><strong id="homeDemoRailPoints">0</strong></div></div></section>
+                        <section><div class="home-demo-rail-heading"><div><h2>下一步要做什么</h2><p>右侧只保留最重要的行动。</p></div></div><div class="home-demo-next-list"><button type="button" onclick="switchPage('today')"><b>1</b><span><strong>继续今天任务</strong><small>新手村 · 约 3 分钟</small></span></button><button type="button" onclick="switchPage('picturebooks')"><b>2</b><span><strong>读一本绘本</strong><small>完成后解锁成长奖励</small></span></button><button type="button" onclick="switchPage('playground')"><b>3</b><span><strong>玩一局学习游戏</strong><small>互动挑战等你来</small></span></button></div></section>
+                        <section><div class="home-demo-rail-heading"><div><h2>最近获得</h2><p>把完成的小事留下来。</p></div></div><div class="home-demo-recent-list"><div><strong>欢迎来到冒险岛</strong><small>今天 · 开始新的旅程</small></div><div><strong>森林探险已准备</strong><small>今天 · 12 个节点等待探索</small></div><div><strong>学习中心已解锁</strong><small>今天 · 晨读和绘本都在这里</small></div></div></section>
+                    </aside>
+                </div>
             </div>
 
             <!-- PAGE: 家长管理首页 -->

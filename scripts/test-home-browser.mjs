@@ -46,16 +46,20 @@ try {
     await assertActivePage('map');
     assert.match(await page.title(), /成长伙伴/);
     assert.equal(new URL(await page.url()).port, '7000', 'home should be opened on port 7000');
+    await page.waitForSelector('#page-map .home-demo-workspace', { state: 'attached', timeout: 20000 });
+    assert.equal(await page.locator('#page-map .home-demo-sidebar').count(), 1, 'home should render the demo-style left sidebar');
+    assert.equal(await page.locator('#page-map .home-demo-focus-grid').count(), 1, 'home should render the demo-style main focus grid');
+    assert.equal(await page.locator('#page-map .home-demo-right-rail').count(), 1, 'home should render the demo-style right progress rail');
+    assert.equal(await page.locator('#page-map .home-demo-resource-card').count(), 3, 'home should render three compact resource cards');
 
     const homeActionEntries = [
-        ['.home-summary-focus', 'today', '#taskGrid .task-card'],
-        ['.home-summary-pet', 'pet', '#petDisplayArea'],
-        ['#childJourneyHero .child-journey-hero-action', 'today', '#taskGrid .task-card'],
-        ['#childJourneyToday', 'today', '#taskGrid .task-card'],
-        ['#childJourneyPet', 'pet', '#petDisplayArea'],
-        ['#childJourneyAdventure', 'playground', '#playgroundProgressBoard'],
-        ['#childJourneyMore button:nth-of-type(1)', 'explore', '#page-explore #pixelStoryShell'],
-        ['#childJourneyMore button:nth-of-type(2)', 'shop', '#shop-ui'],
+        ['.home-demo-sidebar-focus', 'today', '#taskGrid .task-card'],
+        ['.home-demo-companion', 'pet', '#petDisplayArea'],
+        ['.home-demo-primary-button', 'today', '#taskGrid .task-card'],
+        ['.home-demo-light-button', 'explore', '#page-explore #pixelStoryShell'],
+        ['.home-demo-resource-card:nth-child(1)', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=7'],
+        ['.home-demo-resource-card:nth-child(2)', 'picturebooks', '#picturebooks-root .picturebooks-portal', 'js/picturebook-external-bridge.js'],
+        ['.home-demo-resource-card:nth-child(3)', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
     ];
     for (const [selector, pageId, contentSelector] of homeActionEntries) {
         await clickUnique(selector, selector);
@@ -67,7 +71,7 @@ try {
     const primaryEntries = [
         ['.primary-nav > .nav-tab[data-page="map"]', 'map', '#sceneGridMap .map-scene-node'],
         ['.primary-nav > .nav-hub[data-page="today"] > button', 'today', '#taskGrid .task-card'],
-        ['.primary-nav > .nav-tab[data-page="learn"]', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=6'],
+        ['.primary-nav > .nav-tab[data-page="learn"]', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=7'],
         ['.primary-nav > .nav-tab[data-page="picturebooks"]', 'picturebooks', '#picturebooks-root .picturebooks-portal', 'js/picturebook-external-bridge.js'],
         ['.primary-nav > .nav-hub[data-page="pet"] > button', 'pet', '#petDisplayArea'],
         ['.primary-nav > .nav-tab[data-page="explore"]', 'explore', '#page-explore #pixelStoryShell', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1'],
@@ -86,10 +90,10 @@ try {
     await returnHome();
 
     const journeyEntries = [
-        ['#childJourneyHero .child-journey-hero-action', 'today'],
-        ['#childJourneyToday', 'today'],
-        ['#childJourneyPet', 'pet'],
-        ['#childJourneyAdventure', 'playground'],
+        ['.home-demo-sidebar-focus', 'today'],
+        ['.home-demo-companion', 'pet'],
+        ['.home-demo-primary-button', 'today'],
+        ['.home-demo-light-button', 'explore'],
     ];
     for (const [selector, pageId] of journeyEntries) {
         await clickUnique(selector, selector);
@@ -100,18 +104,11 @@ try {
         await returnHome();
     }
 
-    const moreEntries = page.locator('#childJourneyMore button');
-    assert.equal(await moreEntries.count(), 2, 'home should keep exploration and shop secondary entries');
-    await moreEntries.nth(0).click();
-    await assertActivePage('explore');
-    await assertPageBinding('explore', '#page-explore #pixelStoryShell');
-    await returnHome();
-
-    await moreEntries.nth(1).click();
-    await assertActivePage('shop');
-    await assertPageBinding('shop', '#shop-ui');
-    await page.evaluate(() => window.switchPage('map'));
+    const worldEntries = page.locator('.home-demo-world-grid > button');
+    assert.equal(await worldEntries.count(), 3, 'home should keep three world entries');
+    await worldEntries.nth(0).click();
     await assertActivePage('map');
+    await page.waitForSelector('#sceneGridMap .map-scene-node', { state: 'attached', timeout: 20000 });
 
     await page.waitForSelector('#sceneGridMap .map-scene-node', { state: 'attached', timeout: 20000 });
     assert.equal(await page.locator('#sceneGridMap .map-scene-node').count(), 12, 'forest map should retain all original nodes');
@@ -135,7 +132,7 @@ try {
     assert.equal(await showcaseSlides.count(), 5, 'home showcase should expose five clickable destinations');
     assert.equal(await showcaseDots.count(), 5, 'home showcase should expose five slide controls');
     const showcaseEntries = [
-        ['学习中心', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=6'],
+        ['学习中心', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=7'],
         ['宠物伙伴', 'pet', '#petDisplayArea'],
         ['探索冒险', 'explore', '#page-explore #pixelStoryShell', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1'],
         ['游乐场', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
