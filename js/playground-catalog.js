@@ -1,7 +1,7 @@
 (function (global) {
     'use strict';
 
-    const DEFAULT_CATEGORY = 'english';
+    const DEFAULT_CATEGORY = 'all';
     let activeCategory = DEFAULT_CATEGORY;
 
     function getPage() {
@@ -31,7 +31,7 @@
             tab.tabIndex = selected ? 0 : -1;
         });
         cards.forEach((card) => {
-            const visible = card.dataset.playgroundCategory === nextCategory;
+            const visible = nextCategory === 'all' || card.dataset.playgroundCategory === nextCategory;
             card.hidden = !visible;
             card.setAttribute('aria-hidden', visible ? 'false' : 'true');
             if (visible) visibleCount += 1;

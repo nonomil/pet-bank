@@ -117,6 +117,12 @@ word-memory-map-page.png
 live-home-*.png
 local-playground-*.png
 playwright-home-*.png
+artifacts-minecraft-flashcard-*.png
+picturebook-library-*.png
+child-audit-apple.png
+picturebook-mobile.png
+ui-390-final.png
+ui-768-final.png
 prj/单词记忆射击场原型/.visual-*.png
 prj/单词记忆射击场原型/test-artifacts/
 # 像素探险的本地原始备份、导入参考与生成中间物；正式发布资源在 world-bg-tiles 清单中单独跟踪。

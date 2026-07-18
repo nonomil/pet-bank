@@ -105,7 +105,7 @@
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px;
     align-content: start;
 }
@@ -200,6 +200,7 @@
 }
 .pg-img-card[hidden] { display: none !important; }
 .pg-img-card {
+    min-width: 0;
     border: none;
     background: rgba(255, 253, 248, 0.9);
     padding: 0;
@@ -720,11 +721,17 @@ body.shell-app[data-app-route-page="typing-defense"] #typing-defense-frame {
     }
 
     .playground-grid {
-        grid-template-columns: repeat(2, minmax(260px, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .playground-progress-shell {
         position: static;
+    }
+}
+
+@media (max-width: 900px) and (min-width: 721px) {
+    .playground-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
