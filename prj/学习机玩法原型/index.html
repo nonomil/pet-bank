@@ -174,6 +174,7 @@
           <div class="game-settings-panel">
             <div class="difficulty-switch vocab-pack-switch" id="cannonPackSwitch" aria-label="拼音词库"></div>
             <p class="cannon-pack-hint" id="cannonPackHint" aria-live="polite"></p>
+            <div class="difficulty-switch cannon-map-switch" id="cannonMapSwitch" aria-label="赛车地图"></div>
             <div class="difficulty-switch" id="cannonDifficultySwitch" aria-label="拼音难度"></div>
             <button class="settings-reset-button" type="button" id="cannonSettingsReset" title="恢复认汉字基础训练">恢复推荐</button>
           </div>
@@ -203,9 +204,11 @@
             <span class="cannon-aim-dot"></span>
           </div>
           <div class="cannon-base" id="cannonBase" aria-hidden="true"></div>
-          <div class="pinyin-stage-controls pinyin-racer-controls" aria-label="赛车换道">
-            <button class="key-button" type="button" data-key="left" aria-label="向左换道">←</button>
-            <button class="key-button" type="button" data-key="right" aria-label="向右换道">→</button>
+          <div class="pinyin-stage-controls pinyin-racer-controls" aria-label="赛车移动">
+            <button class="key-button racer-up" type="button" data-key="up" aria-label="向上移动">↑</button>
+            <button class="key-button racer-left" type="button" data-key="left" aria-label="向左移动">←</button>
+            <button class="key-button racer-down" type="button" data-key="down" aria-label="向下移动">↓</button>
+            <button class="key-button racer-right" type="button" data-key="right" aria-label="向右移动">→</button>
           </div>
         </section>
         <p class="game-feedback" id="cannonFeedback">看汉字，左右移动车子，接住正确拼音卡。</p>

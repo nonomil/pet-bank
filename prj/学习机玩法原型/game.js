@@ -416,6 +416,7 @@
       feedbackTick: 0,
       announcedKey: '',
       playerLane: 1,
+      player: { x: 50, y: 80 },
       drift: 0,
       sprintUntil: 0,
       hintUntil: 0,
@@ -425,6 +426,7 @@
       roundGoal: WORD_CANNON_ROUND_GOAL,
       stageGoal: WORD_CANNON_STAGE_GOAL,
       mapIndex: 0,
+      mapLocked: false,
       segmentIndex: 0,
       segment: null,
       roundComplete: false
@@ -541,6 +543,7 @@
     cannonDifficultySwitch: document.getElementById('cannonDifficultySwitch'),
     cannonPackSwitch: document.getElementById('cannonPackSwitch'),
     cannonPackHint: document.getElementById('cannonPackHint'),
+    cannonMapSwitch: document.getElementById('cannonMapSwitch'),
     cannonSettingsReset: document.getElementById('cannonSettingsReset'),
     cannonDifficultyBadge: document.getElementById('cannonDifficultyBadge'),
     cannonStage: document.getElementById('cannonStage'),
@@ -1244,6 +1247,16 @@
     }
   }
 
+  function renderWordCannonMapSwitch() {
+    if (!els.cannonMapSwitch) return;
+    const wc = state.wordCannon;
+    els.cannonMapSwitch.innerHTML = WORD_CANNON_MAPS.map((map, index) => `
+      <button class="difficulty-chip${wc.mapIndex === index ? ' is-active' : ''}" type="button" data-cannon-map="${index}" aria-pressed="${wc.mapIndex === index ? 'true' : 'false'}">
+        <span>${map.title}</span>
+      </button>
+    `).join('');
+  }
+
   function triggerDifficultyCue(gameId = state.activeGame, level = state.wordDifficulty) {
     const badge = gameId === 'word-cannon' ? els.cannonDifficultyBadge : els.wordDifficultyBadge;
     if (!badge) return;
@@ -1270,6 +1283,7 @@
     if (els.cannonDifficultySwitch) els.cannonDifficultySwitch.innerHTML = markup;
     renderWordPackSwitch();
     renderHanziPackSwitch();
+    renderWordCannonMapSwitch();
     renderDifficultyBadge(els.wordDifficultyBadge, 'word-shooter');
     renderDifficultyBadge(els.cannonDifficultyBadge, 'word-cannon');
   }
@@ -1907,6 +1921,11 @@
     });
     if (gameId === 'hanzi-jumper') startHanziJumper();
     window.setTimeout(() => els.gameScreen?.focus({ preventScroll: true }), 0);
+  }
+
+  function restoreActiveGameInputFocus() {
+    if (state.activeGame === 'home' || els.gameScreen.hidden) return;
+    els.gameScreen?.focus({ preventScroll: true });
   }
 
   function initialGameFromQuery() {
@@ -3411,8 +3430,7 @@
   }
 
   function getWordCannonMapIndex() {
-    const wc = state.wordCannon;
-    return clampNumber(Math.floor(wc.completedWords.length / Math.max(1, wc.stageGoal)), 0, WORD_CANNON_MAPS.length - 1);
+    return state.wordCannon.mapIndex;
   }
 
   function focusWordCannonTarget() {
@@ -3492,9 +3510,9 @@
 
   function createPinyinRacerWave() {
     const wc = state.wordCannon;
-    const segment = PINYIN_RACER_SEGMENTS[wc.segmentIndex % PINYIN_RACER_SEGMENTS.length];
+    const mapSegments = PINYIN_RACER_SEGMENTS.filter(item => item.mapIndex === wc.mapIndex);
+    const segment = (mapSegments.length ? mapSegments : PINYIN_RACER_SEGMENTS)[wc.segmentIndex % Math.max(1, mapSegments.length)];
     wc.segment = segment;
-    wc.mapIndex = segment.mapIndex;
     const retryTask = wc.retryTask;
     const wordData = retryTask || pinyinCannonItemAt(wc.spawnCursor);
     const targetNumber = wc.targetId + 1;
@@ -3589,10 +3607,11 @@
       els.cannonStage.dataset.segment = segment.id;
       els.cannonStage.dataset.taskType = segment.taskType;
       els.cannonStage.dataset.route = wc.activeTargetId ? (focusTarget?.route || segment.correctRoute) : segment.recoveryRoute;
-      els.cannonStage.style.setProperty('--pinyin-car-x', `${WORD_CANNON_LANES[wc.playerLane] || 50}%`);
+      els.cannonStage.style.setProperty('--pinyin-car-x', `${wc.player.x}%`);
+      els.cannonStage.style.setProperty('--pinyin-car-y', `${wc.player.y}%`);
       els.cannonStage.style.setProperty('--pinyin-car-progress', `${wc.carProgress || 0}px`);
       els.cannonStage.style.setProperty('--cannon-aim-x', `${focusTarget?.x || 50}%`);
-      els.cannonStage.style.setProperty('--cannon-angle', `${(((WORD_CANNON_LANES[wc.playerLane] || 50) - 50) * 0.28).toFixed(2)}deg`);
+      els.cannonStage.style.setProperty('--cannon-angle', `${((wc.player.x - 50) * 0.28).toFixed(2)}deg`);
       els.cannonStage.style.setProperty('--cannon-stage-image', `url("${currentMap.asset}")`);
     }
     const aimRing = document.getElementById('cannonAimRing');
@@ -3640,7 +3659,7 @@
     }
     if (els.cannonTargetLayer) {
       els.cannonTargetLayer.innerHTML = wordCannonTargetsSorted().map(target => {
-        const locked = wc.playerLane === target.laneIndex;
+        const locked = Math.hypot(target.x - wc.player.x, target.y - wc.player.y) < 18;
         const warning = target.y >= PINYIN_RACER_CATCH_Y - 12 ? ' is-warning' : '';
         const hint = wc.hintUntil > wc.elapsedMs && target.correct;
         return `
@@ -3762,12 +3781,16 @@
     });
     const catchWave = wc.targets.length && wc.targets.some(target => target.y >= PINYIN_RACER_CATCH_Y);
     if (catchWave) {
-      const caught = wc.targets.find(target => target.laneIndex === wc.playerLane) || null;
-      const correct = !!caught?.correct;
-      wc.activeTargetId = caught?.id || null;
+      const caught = wc.targets.reduce((nearest, target) => {
+        const distance = Math.hypot(target.x - wc.player.x, target.y - wc.player.y);
+        return !nearest || distance < nearest.distance ? { target, distance } : nearest;
+      }, null);
+      const caughtTarget = caught?.distance <= 19 ? caught.target : null;
+      const correct = !!caughtTarget?.correct;
+      wc.activeTargetId = caughtTarget?.id || null;
       wc.feedbackTick += 1;
       if (correct) {
-        const finishedWord = caught.pinyin;
+        const finishedWord = caughtTarget.pinyin;
         wc.completedWords.push(finishedWord);
         wc.completedReview.push({ char: caught.char || '', pinyin: finishedWord });
         wc.score += Math.max(1, finishedWord.length);
@@ -3775,27 +3798,26 @@
         wc.sprintUntil = wc.elapsedMs + 420;
         wc.segmentIndex = (wc.segmentIndex + 1) % PINYIN_RACER_SEGMENTS.length;
         state.combo = wc.combo;
-        spawnCannonImpact(caught.id, `+${Math.max(1, finishedWord.length)}`);
+        spawnCannonImpact(caughtTarget.id, `+${Math.max(1, finishedWord.length)}`);
         sfx.impact('basic');
         if (els.cannonFeedback) els.cannonFeedback.textContent = `接到 ${caught.char || ''} 的拼音 ${finishedWord}，连击 ${wc.combo}`;
       } else {
         wc.combo = 0;
         wc.misses += 1;
         wc.retryTask = {
-          ...(wc.currentTask || caught?.wordData || {}),
-          word: caught?.pinyin || wc.currentTask?.pinyin || '',
-          pinyin: caught?.pinyin || wc.currentTask?.pinyin || ''
+          ...(wc.currentTask || caughtTarget?.wordData || {}),
+          word: caughtTarget?.pinyin || wc.currentTask?.pinyin || '',
+          pinyin: caughtTarget?.pinyin || wc.currentTask?.pinyin || ''
         };
         wc.hintUntil = wc.elapsedMs + 5000;
         sfx.wrong();
-        if (els.cannonFeedback) els.cannonFeedback.textContent = caught
-          ? `${caught.word} 不是这个字的拼音，再找 ${caught.pinyin}。`
-          : '差一点，再看汉字和拼音，慢慢找。';
+        if (els.cannonFeedback) els.cannonFeedback.textContent = caughtTarget
+          ? `${caughtTarget.word} 不是这个字的拼音，再找 ${caughtTarget.pinyin}。`
+          : '还没靠近拼音卡，继续开过去。';
       }
       wc.targets = [];
       wc.currentTyped = '';
       state.input = '';
-      wc.mapIndex = PINYIN_RACER_SEGMENTS[wc.segmentIndex % PINYIN_RACER_SEGMENTS.length].mapIndex;
       wc.shotTick += correct ? 1 : 0;
       wc.feedbackTick += 1;
       if (correct && wc.completedWords.length >= wc.roundGoal) {
@@ -3843,9 +3865,11 @@
       stageGoal: state.wordCannon.stageGoal,
       difficulty: { ...wordDifficultyTuning().cannon },
         playerLane: state.wordCannon.playerLane,
+        player: { ...state.wordCannon.player },
         hintActive: state.wordCannon.hintUntil > state.wordCannon.elapsedMs,
         currentTask: state.wordCannon.currentTask ? { ...state.wordCannon.currentTask } : null,
         mapIndex: state.wordCannon.mapIndex,
+        mapLocked: state.wordCannon.mapLocked,
         mapTitle: currentWordCannonMap().title,
         mapAsset: currentWordCannonMap().asset
       };
@@ -3882,6 +3906,7 @@
     wc.feedbackTick = 0;
     wc.announcedKey = '';
     wc.playerLane = 1;
+    wc.player = { x: 50, y: 80 };
     wc.drift = 0;
     wc.sprintUntil = 0;
     wc.hintUntil = 0;
@@ -3890,6 +3915,7 @@
     wc.roundGoal = wordDifficultyTuning().cannon.roundGoal;
     wc.stageGoal = wordDifficultyTuning().cannon.stageGoal;
     wc.mapIndex = 0;
+    wc.mapLocked = false;
     wc.segmentIndex = 0;
     wc.segment = PINYIN_RACER_SEGMENTS[0];
     wc.carProgress = 0;
@@ -3919,12 +3945,13 @@
   function moveWordCannonCar(direction) {
     const wc = state.wordCannon;
     if (state.activeGame !== 'word-cannon' || wc.roundComplete) return;
-    const nextLane = clampNumber(wc.playerLane + direction, 0, WORD_CANNON_LANES.length - 1);
-    if (nextLane === wc.playerLane) {
+    const nextX = clampNumber(wc.player.x + direction * 10, 17, 83);
+    if (nextX === wc.player.x) {
       sfx.wrong();
       return;
     }
-    wc.playerLane = nextLane;
+    wc.player.x = nextX;
+    wc.playerLane = nextX < 40 ? 0 : nextX > 60 ? 2 : 1;
     wc.drift = direction;
     wc.feedbackTick += 1;
     if (els.cannonFeedback) els.cannonFeedback.textContent = direction < 0 ? '向左换道，准备接拼音卡。' : '向右换道，准备接拼音卡。';
@@ -3941,11 +3968,8 @@
     const wc = state.wordCannon;
     if (state.activeGame !== 'word-cannon' || wc.roundComplete) return;
     const targetLane = clampNumber(Number(laneIndex) || 0, 0, WORD_CANNON_LANES.length - 1);
-    if (targetLane === wc.playerLane) {
-      if (els.cannonFeedback) els.cannonFeedback.textContent = '已经在这条车道，准备接拼音卡。';
-      return;
-    }
     const direction = targetLane > wc.playerLane ? 1 : -1;
+    wc.player.x = WORD_CANNON_LANES[targetLane];
     wc.playerLane = targetLane;
     wc.drift = direction;
     wc.feedbackTick += 1;
@@ -3972,12 +3996,51 @@
     return 1;
   }
 
+  function moveWordCannonPlayer(direction) {
+    const wc = state.wordCannon;
+    if (state.activeGame !== 'word-cannon' || wc.roundComplete) return;
+    const step = 8;
+    if (direction === 'left' || direction === 'right') {
+      moveWordCannonCar(direction === 'left' ? -1 : 1);
+      return;
+    }
+    wc.player.y = clampNumber(wc.player.y + (direction === 'up' ? -step : step), 58, 88);
+    wc.feedbackTick += 1;
+    if (els.cannonFeedback) els.cannonFeedback.textContent = direction === 'up' ? '向前开，靠近拼音卡。' : '向后调整位置。';
+    renderWordCannonStage();
+  }
+
+  function moveWordCannonToPoint(event) {
+    if (!els.cannonStage) return;
+    const rect = els.cannonStage.getBoundingClientRect();
+    const wc = state.wordCannon;
+    wc.player.x = clampNumber(((event.clientX - rect.left) / Math.max(1, rect.width)) * 100, 17, 83);
+    wc.player.y = clampNumber(((event.clientY - rect.top) / Math.max(1, rect.height)) * 100, 58, 88);
+    wc.playerLane = wc.player.x < 40 ? 0 : wc.player.x > 60 ? 2 : 1;
+    wc.feedbackTick += 1;
+    renderWordCannonStage();
+  }
+
+  function selectWordCannonMap(mapIndex) {
+    const wc = state.wordCannon;
+    const nextMapIndex = clampNumber(Number(mapIndex) || 0, 0, WORD_CANNON_MAPS.length - 1);
+    wc.mapIndex = nextMapIndex;
+    wc.mapLocked = true;
+    wc.segmentIndex = 0;
+    wc.targets = [];
+    wc.currentTask = null;
+    ensureWordCannonTargets();
+    renderWordCannonStage();
+  }
+
   function inputWordCannonLetter(letter) {
     const wc = state.wordCannon;
     if (state.activeGame !== 'word-cannon' || wc.roundComplete) return;
     const key = String(letter || '').toLowerCase();
-    if (key === 'left' || key === 'arrowleft' || key === 'a') moveWordCannonCar(-1);
-    if (key === 'right' || key === 'arrowright' || key === 'd') moveWordCannonCar(1);
+    if (key === 'left' || key === 'arrowleft' || key === 'a') moveWordCannonPlayer('left');
+    if (key === 'right' || key === 'arrowright' || key === 'd') moveWordCannonPlayer('right');
+    if (key === 'up' || key === 'arrowup' || key === 'w') moveWordCannonPlayer('up');
+    if (key === 'down' || key === 'arrowdown' || key === 's') moveWordCannonPlayer('down');
   }
 
   function currentSnakeTarget() {
@@ -4629,6 +4692,7 @@
       setWordDifficulty(difficultyButton.dataset.wordDifficulty, {
         restart: state.activeGame === 'word-shooter' || state.activeGame === 'word-cannon'
       });
+      restoreActiveGameInputFocus();
       return;
     }
     const wordPackButton = event.target.closest('[data-word-pack]');
@@ -4636,6 +4700,7 @@
       setWordPack(wordPackButton.dataset.wordPack, {
         restart: state.activeGame === 'word-shooter'
       });
+      restoreActiveGameInputFocus();
       return;
     }
     const hangarShip = event.target.closest('[data-hangar-ship]');
@@ -4658,6 +4723,7 @@
       setHanziPack(hanziPackButton.dataset.hanziPack, {
         restart: state.activeGame === 'word-cannon' || state.activeGame === 'pinyin-snake'
       });
+      restoreActiveGameInputFocus();
       return;
     }
     if (event.target.closest('#wordSettingsReset')) {
@@ -4673,7 +4739,13 @@
       return;
     }
     if (state.activeGame === 'word-cannon' && event.target.closest('#cannonStage')) {
-      moveWordCannonToLane(wordCannonLaneFromPointer(event));
+      moveWordCannonToPoint(event);
+      return;
+    }
+    const cannonMap = event.target.closest('[data-cannon-map]');
+    if (cannonMap && state.activeGame === 'word-cannon') {
+      selectWordCannonMap(cannonMap.dataset.cannonMap);
+      restoreActiveGameInputFocus();
       return;
     }
     if (roundAction?.dataset.roundAction === 'home') {
@@ -4705,7 +4777,7 @@
     if (state.activeGame === 'word-shooter' && movementDirection && !(letterKey && shouldTreatWordShooterLetterAsTyping(key))) {
       event.preventDefault();
       state.wordShooter.moveInput[movementDirection] = true;
-    } else if (state.activeGame === 'word-cannon' && ['arrowleft', 'arrowright', 'a', 'd'].includes(key)) {
+    } else if (state.activeGame === 'word-cannon' && ['arrowleft', 'arrowright', 'arrowup', 'arrowdown', 'a', 'd', 'w', 's'].includes(key)) {
       event.preventDefault();
       inputWordCannonLetter(key);
     } else if (state.activeGame === 'word-shooter' && letterKey) {
@@ -4750,6 +4822,11 @@
 
   window.addEventListener('blur', () => {
     setWordShooterMoveInput({});
+  });
+
+  window.addEventListener('focus', restoreActiveGameInputFocus);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) restoreActiveGameInputFocus();
   });
 
   els.backHomeButton.addEventListener('click', showHome);
@@ -4928,6 +5005,12 @@
       }))
     }),
     wordCannon: () => wordCannonSnapshot(),
+    selectWordCannonMap,
+    debugAdvanceWordCannon: (count = 1) => {
+      state.wordCannon.completedWords = Array.from({ length: Math.max(0, Number(count) || 0) }, (_, index) => `debug-${index}`);
+      renderWordCannonStage();
+      return wordCannonSnapshot();
+    },
     tickWordCannonFrame: (stepMs = WORD_CANNON_TICK_MS, frames = 1) => {
       for (let index = 0; index < Math.max(1, frames); index += 1) {
         updateWordCannon(stepMs);

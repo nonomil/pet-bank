@@ -5960,12 +5960,13 @@ button {
 
 .pinyin-racer .cannon-base {
   left: var(--pinyin-car-x, 50%);
-  bottom: clamp(36px, 7vh, 72px);
+  top: var(--pinyin-car-y, 80%);
+  bottom: auto;
   width: clamp(62px, 6.4vw, 88px);
   height: clamp(90px, 9.8vw, 132px);
   transition: left 180ms ease;
-  transform: translate(-50%, calc(var(--pinyin-car-progress, 0px) * -1));
-  transition: left 180ms ease, transform 140ms linear;
+  transform: translate(-50%, calc(-50% - var(--pinyin-car-progress, 0px)));
+  transition: left 180ms ease, top 180ms ease, transform 140ms linear;
 }
 
 .pinyin-race-car {
@@ -6423,10 +6424,17 @@ button {
   left: max(18px, 4vw);
   right: max(18px, 4vw);
   bottom: clamp(18px, 4vh, 34px);
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 6px;
   pointer-events: none;
 }
+
+.pinyin-stage-controls .racer-up { grid-column: 2; grid-row: 1; }
+.pinyin-stage-controls .racer-left { grid-column: 1; grid-row: 2; }
+.pinyin-stage-controls .racer-down { grid-column: 2; grid-row: 2; }
+.pinyin-stage-controls .racer-right { grid-column: 3; grid-row: 2; }
 
 .pinyin-stage-controls .key-button {
   pointer-events: auto;
@@ -6580,7 +6588,7 @@ button {
   .pinyin-racer .cannon-current-word {
     left: 10px;
     top: auto;
-    bottom: 125px;
+    bottom: 172px;
     width: 150px;
     min-height: 42px;
     grid-template-columns: 38px minmax(0, 1fr);
@@ -6873,7 +6881,7 @@ button {
   .pinyin-racer .cannon-current-word {
     left: 10px;
     top: auto;
-    bottom: 125px;
+    bottom: 172px;
     width: 150px;
     min-height: 42px;
     grid-template-columns: 38px minmax(0, 1fr);
