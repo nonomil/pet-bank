@@ -24,7 +24,8 @@
         'petbank_self_hosted_access_token',
         'petbank_self_hosted_refresh_token',
         'petbank_self_hosted_api_base_url',
-        'petbank_self_hosted_snapshot_outbox_v1'
+        'petbank_self_hosted_snapshot_outbox_v1',
+        'petbank_picturebook_launches_v1'
     ]);
 
     function matches(key, pattern) {

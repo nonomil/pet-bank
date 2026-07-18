@@ -43,6 +43,7 @@ async function returnHome() {
 try {
     await page.goto(homeUrl, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForFunction(() => window.PetBankRuntime && window.switchPage, { timeout: 20000 });
+    await page.waitForFunction(() => document.body.classList.contains('app-ready'), { timeout: 20000 });
     await assertActivePage('map');
     assert.match(await page.title(), /成长伙伴/);
     assert.equal(new URL(await page.url()).port, '7000', 'home should be opened on port 7000');
@@ -50,16 +51,14 @@ try {
     assert.equal(await page.locator('#page-map .home-demo-sidebar').count(), 1, 'home should render the demo-style left sidebar');
     assert.equal(await page.locator('#page-map .home-demo-focus-grid').count(), 1, 'home should render the demo-style main focus grid');
     assert.equal(await page.locator('#page-map .home-demo-right-rail').count(), 1, 'home should render the demo-style right progress rail');
-    assert.equal(await page.locator('#page-map .home-demo-resource-card').count(), 3, 'home should render three compact resource cards');
+    assert.equal(await page.locator('#page-map .home-demo-resource-card').count(), 5, 'home should render five compact common entries');
 
     const homeActionEntries = [
-        ['.home-demo-sidebar-focus', 'today', '#taskGrid .task-card'],
-        ['.home-demo-companion', 'pet', '#petDisplayArea'],
-        ['.home-demo-primary-button', 'today', '#taskGrid .task-card'],
-        ['.home-demo-light-button', 'explore', '#page-explore #pixelStoryShell'],
-        ['.home-demo-resource-card:nth-child(1)', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=7'],
-        ['.home-demo-resource-card:nth-child(2)', 'picturebooks', '#picturebooks-root .picturebooks-portal', 'js/picturebook-external-bridge.js'],
-        ['.home-demo-resource-card:nth-child(3)', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
+        ['#homeCommonEntries .home-demo-resource-card:nth-child(1)', 'today', '#taskGrid .task-card'],
+        ['#homeCommonEntries .home-demo-resource-card:nth-child(2)', 'pet', '#petDisplayArea'],
+        ['#homeCommonEntries .home-demo-resource-card:nth-child(3)', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=7'],
+        ['#homeCommonEntries .home-demo-resource-card:nth-child(4)', 'picturebooks', '#picturebooks-root .picturebooks-portal', 'js/picturebook-external-bridge.js'],
+        ['#homeCommonEntries .home-demo-resource-card:nth-child(5)', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
     ];
     for (const [selector, pageId, contentSelector] of homeActionEntries) {
         await clickUnique(selector, selector);
@@ -69,13 +68,13 @@ try {
     }
 
     const primaryEntries = [
-        ['.primary-nav > .nav-tab[data-page="map"]', 'map', '#sceneGridMap .map-scene-node'],
-        ['.primary-nav > .nav-hub[data-page="today"] > button', 'today', '#taskGrid .task-card'],
-        ['.primary-nav > .nav-tab[data-page="learn"]', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=7'],
-        ['.primary-nav > .nav-tab[data-page="picturebooks"]', 'picturebooks', '#picturebooks-root .picturebooks-portal', 'js/picturebook-external-bridge.js'],
-        ['.primary-nav > .nav-hub[data-page="pet"] > button', 'pet', '#petDisplayArea'],
-        ['.primary-nav > .nav-tab[data-page="explore"]', 'explore', '#page-explore #pixelStoryShell', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1'],
-        ['.primary-nav > .nav-hub[data-page="playground"] > button', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
+        ['#childPrimaryNav [data-child-primary="map"]', 'map', '#page-map .home-demo-workspace'],
+        ['#childPrimaryNav [data-child-primary="today"]', 'today', '#taskGrid .task-card'],
+        ['#childPrimaryNav [data-child-primary="learn"]', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=7'],
+        ['#childPrimaryNav [data-child-primary="picturebooks"]', 'picturebooks', '#picturebooks-root .picturebooks-portal', 'js/picturebook-external-bridge.js'],
+        ['#childPrimaryNav [data-child-primary="pet"]', 'pet', '#petDisplayArea'],
+        ['#childPrimaryNav [data-child-primary="explore"]', 'explore', '#page-explore #pixelStoryShell', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1'],
+        ['#childPrimaryNav [data-child-primary="playground"]', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
     ];
     for (const [selector, pageId, contentSelector, runtimeMarker] of primaryEntries) {
         await clickUnique(selector, pageId);
@@ -84,16 +83,14 @@ try {
         await returnHome();
     }
 
-    await clickUnique('.nav-utility-settings[data-page="parent"]', 'parent');
+    await clickUnique('#childPrimarySidebar [data-child-action="parent"]', 'parent');
     await assertActivePage('parent');
     await assertPageBinding('parent', '#page-parent .parent-home-primary');
     await returnHome();
 
     const journeyEntries = [
-        ['.home-demo-sidebar-focus', 'today'],
-        ['.home-demo-companion', 'pet'],
-        ['.home-demo-primary-button', 'today'],
-        ['.home-demo-light-button', 'explore'],
+        ['#childProgressRail [data-child-next="today"]', 'today'],
+        ['#childProgressRail [data-child-next="learn"]', 'learn'],
     ];
     for (const [selector, pageId] of journeyEntries) {
         await clickUnique(selector, selector);
@@ -104,39 +101,16 @@ try {
         await returnHome();
     }
 
-    const worldEntries = page.locator('.home-demo-world-grid > button');
-    assert.equal(await worldEntries.count(), 3, 'home should keep three world entries');
-    await worldEntries.nth(0).click();
-    await assertActivePage('map');
-    await page.waitForSelector('#sceneGridMap .map-scene-node', { state: 'attached', timeout: 20000 });
-
-    await page.waitForSelector('#sceneGridMap .map-scene-node', { state: 'attached', timeout: 20000 });
-    assert.equal(await page.locator('#sceneGridMap .map-scene-node').count(), 12, 'forest map should retain all original nodes');
-
-    await clickUnique('[data-home-explore-mode="sci-fi"]', 'sci-fi map');
-    await page.waitForSelector('#homePixelWorldMapSlot .pixel-story-map', { state: 'attached', timeout: 20000 });
-    assert.ok(await page.locator('#homePixelWorldMapSlot .pixel-story-node').count() >= 1, 'sci-fi map should expose an unlocked node');
-
-    await clickUnique('[data-home-explore-mode="block"]', 'block map');
-    await page.waitForFunction(() => document.querySelector('#homePixelWorldMapSlot .pixel-story-map')?.className.includes('pixel-story-map-tone-block'), { timeout: 20000 });
-
-    await clickUnique('[data-home-explore-mode="sci-fi"]', 'sci-fi map return');
-    await page.waitForSelector('#homePixelWorldMapSlot [data-detective-bonus]', { state: 'attached', timeout: 20000 });
-    await clickUnique('#homePixelWorldMapSlot [data-detective-bonus]', 'detective bonus');
-    await page.waitForFunction(() => document.querySelector('#homePixelWorldMapSlot .pixel-story-map')?.className.includes('pixel-story-map-tone-detective'), { timeout: 20000 });
-
-    await returnHome();
     await page.waitForSelector('#showcaseTrack .showcase-slide', { state: 'attached', timeout: 20000 });
     const showcaseSlides = page.locator('#showcaseTrack .showcase-slide');
     const showcaseDots = page.locator('#showcaseDots .showcase-dot');
-    assert.equal(await showcaseSlides.count(), 5, 'home showcase should expose five clickable destinations');
-    assert.equal(await showcaseDots.count(), 5, 'home showcase should expose five slide controls');
+    assert.equal(await showcaseSlides.count(), 4, 'home showcase should expose four clickable destinations');
+    assert.equal(await showcaseDots.count(), 4, 'home showcase should expose four slide controls');
     const showcaseEntries = [
+        ['今日打卡', 'today', '#taskGrid .task-card'],
         ['学习中心', 'learn', '#learn-container .learn-shell', 'js/learn-center.js?v=7'],
         ['宠物伙伴', 'pet', '#petDisplayArea'],
-        ['探索冒险', 'explore', '#page-explore #pixelStoryShell', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1'],
-        ['游乐场', 'playground', '#playgroundProgressBoard', 'js/math-pk.js?v=4'],
-        ['今日打卡', 'today', '#taskGrid .task-card'],
+        ['绘本书架', 'picturebooks', '#picturebooks-root .picturebooks-portal', 'js/picturebook-external-bridge.js'],
     ];
     for (let index = 0; index < showcaseEntries.length; index += 1) {
         const [title, pageId, contentSelector, runtimeMarker] = showcaseEntries[index];
@@ -162,7 +136,7 @@ try {
     const layout = await page.evaluate(() => ({ bodyWidth: document.body.scrollWidth, viewportWidth: innerWidth }));
     assert.ok(layout.bodyWidth <= layout.viewportWidth, `home should not overflow on mobile: ${JSON.stringify(layout)}`);
     assert.deepEqual(errors, [], `home flow should have no browser errors: ${JSON.stringify(errors)}`);
-    console.log(JSON.stringify({ homeUrl, primaryEntries: primaryEntries.map(([, pageId]) => pageId), forestNodes: 12, layout, errors }));
+    console.log(JSON.stringify({ homeUrl, primaryEntries: primaryEntries.map(([, pageId]) => pageId), layout, errors }));
 } finally {
     await browser.close();
 }

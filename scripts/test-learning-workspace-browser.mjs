@@ -19,20 +19,19 @@ page.on('requestfailed', request => {
 try {
     await page.goto(new URL('app', baseUrl).href, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForFunction(() => window.PetBankRuntime && window.switchPage, { timeout: 20000 });
-    await page.locator('.primary-nav > .nav-tab[data-page="learn"]').click();
+    await page.locator('#childPrimaryNav [data-child-primary="learn"]').click();
     await page.waitForSelector('#learn-container .learn-demo-workspace', { state: 'attached', timeout: 20000 });
 
-    const columns = await page.locator('.learn-demo-workspace').evaluate(element => getComputedStyle(element).gridTemplateColumns);
-    assert.match(columns, /^220px\s+\S+\s+280px$/, `desktop learning workspace should have three columns: ${columns}`);
-    assert.equal(await page.locator('.learn-demo-sidebar .learn-demo-side-link').count(), 8, 'learning sidebar should expose the demo sections');
-    assert.equal(await page.locator('.learn-demo-right-rail').count(), 1, 'personal progress should stay visible');
-    assert.ok(await page.locator('.learn-demo-right-rail .learn-demo-rail-section').count() >= 3, 'personal progress should show growth, next step, and recent sections');
+    const columns = await page.locator('.page-shell').evaluate(element => getComputedStyle(element).gridTemplateColumns);
+    assert.match(columns, /^224px\s+.+\s+264px$/, `desktop child workbench should have three columns: ${columns}`);
+    assert.equal(await page.locator('#childPrimaryNav [data-child-primary]').count(), 7, 'child workbench should expose seven primary entries');
+    assert.equal(await page.locator('#childProgressRail').count(), 1, 'personal progress should stay visible in the shared rail');
 
     const tabs = ['packs', 'sites', 'prints', 'progress', 'picturebooks', 'today'];
     for (const tabId of tabs) {
         await page.locator(`.learn-demo-side-link[role="tab"][data-learn-hub-tab="${tabId}"]`).click();
         await page.waitForFunction(expected => document.querySelector(`.learn-demo-side-link[role="tab"][data-learn-hub-tab="${expected}"]`)?.getAttribute('aria-selected') === 'true', tabId);
-        assert.equal(await page.locator('.learn-demo-right-rail').count(), 1, `${tabId} should keep personal progress visible`);
+        assert.equal(await page.locator('#childProgressRail').count(), 1, `${tabId} should keep personal progress visible`);
     }
 
     await page.locator('.learn-demo-side-link[role="tab"][data-learn-hub-tab="today"]').click();
@@ -50,10 +49,11 @@ try {
     const mobileLayout = await page.evaluate(() => ({
         bodyWidth: document.body.scrollWidth,
         viewportWidth: window.innerWidth,
-        columns: getComputedStyle(document.querySelector('.learn-demo-workspace')).gridTemplateColumns
+        columns: getComputedStyle(document.querySelector('.page-shell')).gridTemplateColumns,
+        display: getComputedStyle(document.querySelector('.page-shell')).display
     }));
     assert.ok(mobileLayout.bodyWidth <= mobileLayout.viewportWidth, `learning page should not overflow on mobile: ${JSON.stringify(mobileLayout)}`);
-    assert.ok(!mobileLayout.columns.includes(' '), `mobile learning workspace should collapse to one column: ${mobileLayout.columns}`);
+    assert.equal(mobileLayout.display, 'flex', `mobile child workbench should stack: ${JSON.stringify(mobileLayout)}`);
     assert.deepEqual(errors, [], `learning workspace should have no browser errors: ${JSON.stringify(errors)}`);
     console.log(JSON.stringify({ columns, mobileLayout, sidebarTabs: tabs.length, errors }));
 } finally {

@@ -42,6 +42,7 @@
         card: 'pet',
         walk: 'pet',
         explore: 'explore',
+        'forest-map': 'explore',
         picturebooks: 'picturebooks',
         parent: 'parent',
         works: 'parent',
@@ -53,7 +54,7 @@
         'map', 'today', 'learning-sheet', 'review', 'reward', 'shop', 'inventory',
         'learn', 'learn-pack', 'learn-plan', 'learn-lesson', 'learn-print',
         'minecraft-vocab',
-        'pet', 'home', 'explore', 'picturebooks', 'playground'
+        'pet', 'home', 'explore', 'forest-map', 'picturebooks', 'playground'
     ]);
 
     const APP_SHELL_PAGES = new Set([
@@ -92,6 +93,7 @@
         walk: '/app/pet/walk',
         card: '/app/pet/cards',
         explore: '/app/explore',
+        'forest-map': '/app/explore/forest',
         playground: '/app/playground',
         mathpk: '/app/playground/math-pk',
         hanzi: '/app/playground/hanzi',
@@ -126,6 +128,7 @@
         '/app/pet/walk': { page: 'walk' },
         '/app/pet/cards': { page: 'card' },
         '/app/explore': { page: 'explore' },
+        '/app/explore/forest': { page: 'forest-map' },
         '/app/playground': { page: 'playground' },
         '/app/playground/math-pk': { page: 'mathpk' },
         '/app/playground/hanzi': { page: 'hanzi' },
@@ -152,6 +155,7 @@
         '/pet/walk': { page: 'walk' },
         '/pet/cards': { page: 'card' },
         '/explore': { page: 'explore' },
+        '/explore/forest': { page: 'forest-map' },
         '/playground': { page: 'playground' },
         '/playground/math-pk': { page: 'mathpk' },
         '/playground/hanzi': { page: 'hanzi' },

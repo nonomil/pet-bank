@@ -31,6 +31,7 @@
 | `petbank_daily_state` | JSON object | `app.js` | 当前日合同：`date/profileId/completedTasks/dailyChestClaimed/dailyChestCount` |
 | `petbank_daily_state_migrated` | flag | `app.js` | 旧每日状态迁移标记 |
 | `petbank_daily_claim_date` | string | `app.js`/宝箱兼容路径 | 旧本地化日期格式；只读迁移/兼容 |
+| `petbank_scheduled_checkins_v1` | JSON object | `scheduled-checkins.js` | Profile 快照内的暑假作息打卡状态；`{schemaVersion:1,date,profileId,checkins}`，窗口内奖励经 `CoreRewardService` receipt 去重，错过时段补记不发分 |
 | `petbank_pet` | JSON object | `pet.js` | 宠物完整状态、经验、进化、衰减时间 |
 | `petbank_growth_history_v1` | JSON array | 成长历史模块 | 奖励/成长事件历史 |
 | `petbank_pet_story_cases_v1` | JSON object | `pet-story-cases.js` | 当前 profile 快照内的故事案件收据；记录含 `storyId/caseId/profileId/petIdentity/receiptId`，同一 scope 不可重复结案 |
@@ -85,6 +86,7 @@ receipt 不等于余额：奖励事件必须先校验和去重，再调用既有
 | `petbank_learning_arcade_word_shooter_progression_v1` | JSON object | `prj/学习机玩法原型/game.js` | 飞机大战独立机库存档：`version/level/experience/starDust/totalRuns/selectedShip/equippedWeapon/shipUpgrades`；当前原型 scope，损坏时回退默认值，不进入主站积分账本 |
   | `petbank_pixel_worlds_progress_v1` | JSON | `js/pixel-story-engine.js` | 三世界像素故事与 20 个侦探小游戏进度（`schemaVersion/storyId/chapters`）；认字内容不产生答题统计，按 Profile 快照隔离。旧 `petbank_pixel_story_progress_v1` 保留用于 04 故事包兼容回退 |
   | `petbank_minecraft_vocab_session_v1_*` | JSON object | `minecraft-vocab-session.js` | 主站 Minecraft 单词远征的 Profile 会话状态；按 Profile 隔离，不进入主站积分账本；完整 Anki 工作台仍独立部署 |
+  | `petbank_minecraft_expedition_state_v1_*` | JSON object | `minecraft-vocab-expedition.js` | Minecraft 单词远征营地/地图节点状态；按 Profile 隔离，记录 `locked/available/active/cleared`、当前节点、已清除任务和收藏印章，进入 Profile 快照但不单独记积分 |
 | `petbank_picturebook_progress_v1` | JSON | `js/picturebooks.js` | 当前 Profile 的绘本阅读进度；`{schemaVersion:1,books:{storyId:{currentPage,completedCount,lastReadAt,lastCompletedAt,completionEventId,rewardClaimed}}}`，首读奖励由核心 receipt 去重 |
 | `petbank_picturebook_library_v1` | JSON | `js/picturebooks.js` | 当前 Profile 的收藏偏好；`{schemaVersion:1,favorites:string[]}` |
 

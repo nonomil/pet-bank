@@ -64,11 +64,12 @@
     </script>
     <link rel="stylesheet" href="css/vendor/tailwind-lite.css">
     <link rel="stylesheet" href="css/style.css?v=20260718-glass-home">
+    <link rel="stylesheet" href="css/child-workbench-shell.css?v=20260718-playground-wide">
     <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/animations.css">
 </head>
-<body class="map-page-bg">
+<body class="map-page-bg app-booting">
     <a class="skip-link" href="#mainContent">跳到主要内容</a>
     <!-- TOP NAV -->
     <div class="top-nav">
@@ -81,29 +82,10 @@
                         <p class="text-xs text-muted">任务 · 积分 · 宠物养成 · 探索冒险</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-1 primary-nav">
-                    <div class="nav-tab active" data-page="map" onclick="switchPage('map')">🏠 首页</div>
-                    <div class="nav-hub" data-page="today">
-                        <button class="nav-tab nav-tab-parent" data-page="today" type="button" onclick="handlePrimaryNavClick('today')">
-                            <span>⭐ 积分</span>
-                            <span class="nav-tab-caret" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div class="nav-tab" data-page="learn" onclick="switchPage('learn')">📚 学习</div>
-                    <div class="nav-tab" data-page="picturebooks" onclick="switchPage('picturebooks')">📖 绘本</div>
-                    <div class="nav-hub" data-page="pet">
-                        <button class="nav-tab nav-tab-parent" data-page="pet" type="button" onclick="handlePrimaryNavClick('pet')">
-                            <span>🐾 宠物</span>
-                            <span class="nav-tab-caret" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div class="nav-tab" data-page="explore" onclick="switchPage('explore')">🗺️ 探索</div>
-                    <div class="nav-hub" data-page="playground">
-                        <button class="nav-tab nav-tab-parent" data-page="playground" type="button" onclick="handlePrimaryNavClick('playground')">
-                            <span>🎡 游乐场</span>
-                            <span class="nav-tab-caret" aria-hidden="true"></span>
-                        </button>
-                    </div>
+                <div class="app-route-breadcrumb" aria-live="polite">
+                    <span id="appRouteCategory">首页</span>
+                    <b aria-hidden="true">›</b>
+                    <strong id="appRouteTitle">成长总览</strong>
                 </div>
                 <div class="profile-switcher" id="profileSwitcher" onclick="ProfileUI.toggle(event)" title="切换孩子">
                     <span id="profileCurEmoji">🧒</span>
@@ -185,6 +167,7 @@
     </div>
 
     <div class="page-shell max-w-7xl mx-auto px-6 py-6 flex gap-6">
+        <aside id="childPrimarySidebar" class="child-primary-sidebar" aria-label="孩子端一级分类" hidden></aside>
         <!-- LEFT SIDEBAR -->
         <aside class="sidebar">
             <div class="card">
@@ -243,6 +226,13 @@
 
         <!-- MAIN CONTENT -->
         <main class="main-content" id="mainContent" tabindex="-1">
+            <nav class="explore-map-switcher" id="exploreMapSwitcher" aria-label="探索地图选择" hidden>
+                <div class="explore-map-switcher-copy"><span>探索地图</span><strong>选择一条路线继续</strong></div>
+                <div class="explore-map-switcher-tabs" role="tablist" aria-label="探索地图类型">
+                    <button type="button" role="tab" data-explore-map="story" onclick="switchPage('explore')"><span aria-hidden="true">✦</span><span><strong>故事地图</strong><small>三世界卡片探索</small></span></button>
+                    <button type="button" role="tab" data-explore-map="forest" onclick="switchPage('forest-map')"><span aria-hidden="true">🌿</span><span><strong>森林冒险</strong><small>原版螺旋路线</small></span></button>
+                </div>
+            </nav>
             <!-- PAGE: 成长地图（场景探索首页） -->
             <div class="page active" id="page-map">
                 <div class="home-demo-workspace">
@@ -259,32 +249,42 @@
                         </section>
                     </aside>
 
-                    <main class="home-demo-main">
+                    <section class="home-demo-main">
                         <header class="home-demo-stage-heading">
                             <div><p class="home-demo-eyebrow">PIXEL ADVENTURE HOME</p><h1>今天，也和小伙伴一起发光。</h1><p>把学习、探索和奖励放在一条清晰的成长航线上。先完成一小步，再去打开喜欢的世界。</p></div>
                             <span class="home-demo-stage-note"><i></i> 原创主题 · 萌宠冒险岛</span>
                         </header>
-                        <section class="home-demo-focus-grid" aria-label="今日主线">
-                            <article class="home-demo-mission-card">
-                                <div class="home-demo-mission-copy">
-                                    <span class="home-demo-mission-kicker">今日主线任务 · 新手村</span>
-                                    <h2 id="homeDemoMissionTitle">先完成一小块，基地就会升级</h2>
-                                    <p id="homeDemoMissionDescription">完成今天的任务，再带小伙伴去看看有什么新变化。</p>
-                                    <div class="home-demo-mission-actions"><button class="home-demo-primary-button" type="button" onclick="switchPage('today')">继续今日任务</button><button class="home-demo-light-button" type="button" onclick="switchPage('explore')">查看世界地图</button></div>
+                        <section class="home-demo-focus-grid" aria-label="首页轮播与今日进度">
+                            <div class="home-demo-carousel-panel">
+                                <div class="home-demo-carousel-heading"><div><p>今天从这里继续</p><h2>常用内容，一眼就能打开</h2></div><span>自动轮播 · 点击卡片进入</span></div>
+                                <div class="home-stage-stack">
+                                    <section class="showcase" id="showcase" aria-label="首页栏目轮播">
+                                        <div class="showcase-track" id="showcaseTrack"></div>
+                                        <button class="showcase-arrow showcase-prev" id="showcasePrev" type="button" aria-label="上一张">‹</button>
+                                        <button class="showcase-arrow showcase-next" id="showcaseNext" type="button" aria-label="下一张">›</button>
+                                        <div class="showcase-dots" id="showcaseDots"></div>
+                                    </section>
                                 </div>
-                                <div class="home-demo-mission-visual"><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="萤火森林像素地图"></div>
-                            </article>
+                            </div>
                             <article class="home-demo-today-card"><span>今日任务完成度</span><strong id="homeDemoTodayCount">0 / 3</strong><p>完成一节阅读，再收集一个故事方块。</p><div class="home-demo-meter"><i id="homeDemoTodayMeter" style="width:0%"></i></div><div><small>已完成</small><em id="homeDemoTodayPercent">0%</em></div></article>
                         </section>
-                        <section aria-labelledby="homeDemoResourceTitle"><div class="home-demo-section-heading"><div><h2 id="homeDemoResourceTitle">当前可进入的区域</h2><p>一行三张卡片，方便快速比较今天要做什么。</p></div><button type="button" onclick="switchPage('learn')">查看全部区域</button></div><div class="home-demo-resource-grid">
-                            <button class="home-demo-resource-card" type="button" onclick="switchPage('learn')"><span><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="学习中心入口"></span><small>新手村 · 学习</small><strong>学习中心</strong><em>晨读、识字和英语一起收集。</em></button>
-                            <button class="home-demo-resource-card" type="button" onclick="switchPage('picturebooks')"><span><img src="assets/story/pixel-worlds-v1/maps/detective.webp" alt="绘本入口"></span><small>故事世界 · 绘本</small><strong>绘本书架</strong><em>每本绘本都是一张可探索的地图。</em></button>
-                            <button class="home-demo-resource-card" type="button" onclick="switchPage('playground')"><span><img src="assets/story/pixel-worlds-v1/maps/sci-fi.webp" alt="学习游戏入口"></span><small>互动挑战 · 游戏</small><strong>学习游戏</strong><em>飞机大战和小游戏等你来挑战。</em></button>
+                        <section id="homeCommonEntries" aria-labelledby="homeCommonEntriesTitle"><div class="home-demo-section-heading"><div><h2 id="homeCommonEntriesTitle">常用入口</h2><p>宠物、积分、学习和游戏都放在这里。</p></div></div><div class="home-demo-resource-grid">
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('today')"><span><img src="assets/scenes/stargarden.webp" alt="今日积分入口"></span><small>成长记录 · 积分</small><strong>今日打卡</strong><em>完成小任务，领取成长分。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('pet')"><span><img src="assets/home-bg/room-forest.webp" alt="宠物伙伴入口"></span><small>陪伴养成 · 宠物</small><strong>我的宠物</strong><em>看看伙伴状态，继续照料和成长。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('learn')"><span><img src="assets/ui/hanzi-new-bg.webp" alt="学习工作台入口"></span><small>成长训练 · 学习</small><strong>学习工作台</strong><em>识字、英语和数学一起练习。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('picturebooks')"><span><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="绘本书架入口"></span><small>故事阅读 · 绘本</small><strong>绘本书架</strong><em>挑一本故事，读到最后一页。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('playground')"><span><img src="assets/ui/playground-bg.webp" alt="游乐场入口"></span><small>互动挑战 · 游戏</small><strong>游乐场</strong><em>用小游戏练习反应和新本领。</em></button>
                         </div></section>
 
-                        <section class="home-demo-world-section" aria-labelledby="homeDemoWorldTitle"><div class="home-demo-section-heading"><div><h2 id="homeDemoWorldTitle">选择一个世界继续</h2><p>三张地图分别承载不同的冒险节奏，首页只展示清晰入口。</p></div><button type="button" onclick="switchPage('explore')">查看全部世界</button></div><div class="home-demo-world-grid"><button type="button" onclick="openHomeExploreMode('forest')"><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="森林探险"><strong>森林探险</strong><small>寻找树屋里的第一束光</small></button><button type="button" onclick="openHomeExploreMode('sci-fi')"><img src="assets/story/pixel-worlds-v1/maps/sci-fi.webp" alt="星际科技区"><strong>星港科技区</strong><small>修复失灵的星光信标</small></button><button type="button" onclick="openHomeExploreMode('block')"><img src="assets/story/pixel-worlds-v1/maps/block.webp" alt="方块地下城"><strong>方块地下城</strong><small>穿过矿洞找到蓝色水晶</small></button></div></section>
+                    </section>
+                    <aside class="home-demo-right-rail" aria-label="成长与下一步">
+                        <section><div class="home-demo-rail-heading"><div><h2>我的成长</h2><p>本周的闪光记录</p></div><span id="homeDemoOverallPercent">0%</span></div><div class="home-demo-rail-meter"><i id="homeDemoOverallMeter" style="width:0%"></i></div><div class="home-demo-rail-stats"><div><small>今日完成</small><strong id="homeDemoRailToday">0 / 3</strong></div><div><small>连续学习</small><strong>0 天</strong></div><div><small>故事方块</small><strong>0 本</strong></div><div><small>成长分</small><strong id="homeDemoRailPoints">0</strong></div></div></section>
+                        <section><div class="home-demo-rail-heading"><div><h2>下一步要做什么</h2><p>右侧只保留最重要的行动。</p></div></div><div class="home-demo-next-list"><button type="button" onclick="switchPage('today')"><b>1</b><span><strong>继续今天任务</strong><small>新手村 · 约 3 分钟</small></span></button><button type="button" onclick="switchPage('picturebooks')"><b>2</b><span><strong>读一本绘本</strong><small>完成后解锁成长奖励</small></span></button><button type="button" onclick="switchPage('playground')"><b>3</b><span><strong>玩一局学习游戏</strong><small>互动挑战等你来</small></span></button></div></section>
+                        <section><div class="home-demo-rail-heading"><div><h2>最近获得</h2><p>把完成的小事留下来。</p></div></div><div class="home-demo-recent-list"><div><strong>欢迎来到冒险岛</strong><small>今天 · 开始新的旅程</small></div><div><strong>森林探险已准备</strong><small>今天 · 12 个节点等待探索</small></div><div><strong>学习中心已解锁</strong><small>今天 · 晨读和绘本都在这里</small></div></div></section>
+                    </aside>
+                </div>
 
-                        <div class="home-demo-original-content" aria-label="原首页功能区">
+                <div class="home-secondary-content" aria-label="首页辅助功能">
                 <section class="child-journey-hero" id="childJourneyHero" aria-labelledby="childJourneyTitle">
                     <div class="child-journey-hero-copy">
                         <span class="child-journey-step">今天第 1 步</span>
@@ -328,56 +328,6 @@
                     </div>
                 </section>
 
-                <section class="home-explore-panel" id="homeExplorePanel" aria-labelledby="homeExploreTitle">
-                    <div class="home-explore-panel-head">
-                        <div>
-                            <p class="home-explore-kicker">探索地图</p>
-                            <h2 id="homeExploreTitle">选择一张地图继续冒险</h2>
-                        </div>
-                    </div>
-                    <div class="home-explore-modebar" role="tablist" aria-label="探索地图入口">
-                        <button class="home-explore-mode is-active" type="button" role="tab" aria-selected="true" data-home-explore-mode="forest" onclick="openHomeExploreMode('forest')">
-                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="map"></i></span>
-                            <span><strong>森林探险</strong></span>
-                        </button>
-                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="sci-fi" onclick="openHomeExploreMode('sci-fi')">
-                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="book-open"></i></span>
-                            <span><strong>星港科技区</strong></span>
-                        </button>
-                        <button class="home-explore-mode" type="button" role="tab" aria-selected="false" data-home-explore-mode="block" onclick="openHomeExploreMode('block')">
-                            <span class="home-explore-mode-icon" aria-hidden="true"><i data-lucide="box"></i></span>
-                            <span><strong>方块地下城</strong></span>
-                        </button>
-                    </div>
-                    <div class="home-explore-view" id="homeExploreView" aria-live="polite">
-                        <section class="home-forest-map-view" aria-label="森林探险地图">
-                            <div class="home-forest-map-head">
-                                <h3>森林探险</h3>
-                            </div>
-                            <div class="map-board-shell home-forest-map-shell">
-                                <div class="map-board-surface">
-                                    <div class="map-board-texture" aria-hidden="true"></div>
-                                    <div class="map-board" id="sceneGridMap" aria-label="森林探险场景路线"></div>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="home-pixel-world-map-view" id="homePixelWorldMapView" aria-label="像素世界地图" hidden>
-                            <div class="home-pixel-world-map-shell">
-                                <div id="homePixelWorldMapSlot" data-pixel-story-host="home" aria-live="polite"></div>
-                            </div>
-                        </section>
-                    </div>
-                </section>
-
-                <div class="home-stage-stack">
-                    <section class="showcase" id="showcase" aria-label="首页栏目轮播">
-                        <div class="showcase-track" id="showcaseTrack"></div>
-                        <button class="showcase-arrow showcase-prev" id="showcasePrev" type="button" aria-label="上一张">‹</button>
-                        <button class="showcase-arrow showcase-next" id="showcaseNext" type="button" aria-label="下一张">›</button>
-                        <div class="showcase-dots" id="showcaseDots"></div>
-                    </section>
-                </div>
-
                 <section class="child-journey-feedback" id="childJourneyFeedback" hidden aria-live="polite" aria-labelledby="childJourneyFeedbackTitle">
                     <div class="child-journey-feedback-copy">
                         <span class="child-journey-step">小伙伴收到啦</span>
@@ -404,14 +354,7 @@
                     </div>
                     <div class="warehouse-grid warehouse-grid-expanded" id="treasureWarehouseGrid"></div>
                 </section>
-                        </div>
-                    </main>
-                    <aside class="home-demo-right-rail" aria-label="成长与下一步">
-                        <section><div class="home-demo-rail-heading"><div><h2>我的成长</h2><p>本周的闪光记录</p></div><span id="homeDemoOverallPercent">0%</span></div><div class="home-demo-rail-meter"><i id="homeDemoOverallMeter" style="width:0%"></i></div><div class="home-demo-rail-stats"><div><small>今日完成</small><strong id="homeDemoRailToday">0 / 3</strong></div><div><small>连续学习</small><strong>0 天</strong></div><div><small>故事方块</small><strong>0 本</strong></div><div><small>成长分</small><strong id="homeDemoRailPoints">0</strong></div></div></section>
-                        <section><div class="home-demo-rail-heading"><div><h2>下一步要做什么</h2><p>右侧只保留最重要的行动。</p></div></div><div class="home-demo-next-list"><button type="button" onclick="switchPage('today')"><b>1</b><span><strong>继续今天任务</strong><small>新手村 · 约 3 分钟</small></span></button><button type="button" onclick="switchPage('picturebooks')"><b>2</b><span><strong>读一本绘本</strong><small>完成后解锁成长奖励</small></span></button><button type="button" onclick="switchPage('playground')"><b>3</b><span><strong>玩一局学习游戏</strong><small>互动挑战等你来</small></span></button></div></section>
-                        <section><div class="home-demo-rail-heading"><div><h2>最近获得</h2><p>把完成的小事留下来。</p></div></div><div class="home-demo-recent-list"><div><strong>欢迎来到冒险岛</strong><small>今天 · 开始新的旅程</small></div><div><strong>森林探险已准备</strong><small>今天 · 12 个节点等待探索</small></div><div><strong>学习中心已解锁</strong><small>今天 · 晨读和绘本都在这里</small></div></div></section>
-                    </aside>
-                </div>
+            </div>
             </div>
 
             <!-- PAGE: 家长管理首页 -->
@@ -602,6 +545,21 @@
                             <span class="reward-pet-cta-btn">＋ － 积分</span>
                         </div>
                     </div>
+                </section>
+                <section class="scheduled-checkin-panel" aria-labelledby="scheduledCheckinTitle">
+                    <div class="scheduled-checkin-head">
+                        <div>
+                            <p class="scheduled-checkin-kicker">暑假生活打卡</p>
+                            <h2 id="scheduledCheckinTitle">今天按自己的节奏，一项一项完成</h2>
+                            <p id="scheduledCheckinSummary" class="text-sm text-muted">正在读取今天的作息安排…</p>
+                        </div>
+                        <div class="scheduled-checkin-date" id="scheduledCheckinDate" aria-label="今天日期"></div>
+                    </div>
+                    <div class="scheduled-checkin-progress" aria-label="定时打卡完成进度">
+                        <span class="scheduled-checkin-progress-track"><i id="scheduledCheckinProgressBar"></i></span>
+                        <strong id="scheduledCheckinProgressText">0 / 0</strong>
+                    </div>
+                    <div id="scheduledCheckinTimeline" class="scheduled-checkin-timeline" aria-live="polite"></div>
                 </section>
                 <div class="card agnes-task-shell">
                     <div class="card-header flex items-center justify-between">
@@ -842,6 +800,50 @@
                     <section class="playground-progress-shell" id="playgroundProgressBoard" aria-label="游乐场作战看板"></section>
 
                     <section class="playground-grid" aria-label="游乐场游戏卡片">
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('word-memory-map')">
+                            <span class="pg-card-media pg-card-media-crop-center">
+                                <img src="assets/ui/pg-card-word-memory.webp?v=20260711c" alt="单词跑酷" loading="lazy" decoding="async" fetchpriority="high">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">英语跑酷</span>
+                                <strong class="pg-card-title">单词跑酷</strong>
+                                <span class="pg-card-desc">沿着像素地图跑起来，把单词、记忆和闯关放进一局游戏里。</span>
+                            </span>
+                            <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('typing-defense')">
+                            <span class="pg-card-media pg-card-media-crop-right">
+                                <img src="assets/ui/pg-card-typing-defense.webp?v=20260711c" alt="消灭苦力怕" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">输入训练</span>
+                                <strong class="pg-card-title">消灭苦力怕</strong>
+                                <span class="pg-card-desc">弓箭起手、键盘命中，适合先热手再切别的训练。</span>
+                            </span>
+                            <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('word-cannon')">
+                            <span class="pg-card-media pg-card-media-crop-center">
+                                <img src="assets/ui/pg-card-word-cannon.webp?v=20260711d" alt="拼音赛车" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">合集子游戏</span>
+                                <strong class="pg-card-title">拼音赛车</strong>
+                                <span class="pg-card-desc">看字换道、拼音发射，短局节奏很干脆，适合轮换着玩。</span>
+                            </span>
+                            <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('word-shooter')">
+                            <span class="pg-card-media pg-card-media-crop-right">
+                                <img src="assets/ui/pg-card-word-shooter.webp?v=20260711c" alt="飞机大战" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">合集子游戏</span>
+                                <strong class="pg-card-title">飞机大战</strong>
+                                <span class="pg-card-desc">用字母射击开局，适合孩子先建立“按键马上有反馈”的感觉。</span>
+                            </span>
+                            <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
+                        </button>
                         <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('mathpk')">
                             <span class="pg-card-media">
                                 <img src="assets/ui/pg-card-mathpk.webp?v=20260711c" alt="数学PK" loading="lazy" decoding="async" fetchpriority="low">
@@ -875,39 +877,6 @@
                             </span>
                             <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
                         </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('typing-defense')">
-                            <span class="pg-card-media pg-card-media-crop-right">
-                                <img src="assets/ui/pg-card-typing-defense.webp?v=20260711c" alt="消灭苦力怕" loading="lazy" decoding="async" fetchpriority="low">
-                            </span>
-                            <span class="pg-card-copy">
-                                <span class="pg-card-kicker">输入训练</span>
-                                <strong class="pg-card-title">消灭苦力怕</strong>
-                                <span class="pg-card-desc">弓箭起手、键盘命中，适合先热手再切别的训练。</span>
-                            </span>
-                            <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
-                        </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('word-shooter')">
-                            <span class="pg-card-media pg-card-media-crop-right">
-                                <img src="assets/ui/pg-card-word-shooter.webp?v=20260711c" alt="飞机大战" loading="lazy" decoding="async" fetchpriority="low">
-                            </span>
-                            <span class="pg-card-copy">
-                                <span class="pg-card-kicker">合集子游戏</span>
-                                <strong class="pg-card-title">飞机大战</strong>
-                                <span class="pg-card-desc">用字母射击开局，适合孩子先建立“按键马上有反馈”的感觉。</span>
-                            </span>
-                            <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
-                        </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('word-cannon')">
-                            <span class="pg-card-media pg-card-media-crop-center">
-                                <img src="assets/ui/pg-card-word-cannon.webp?v=20260711d" alt="拼音赛车" loading="lazy" decoding="async" fetchpriority="low">
-                            </span>
-                            <span class="pg-card-copy">
-                                <span class="pg-card-kicker">合集子游戏</span>
-                                <strong class="pg-card-title">拼音赛车</strong>
-                                <span class="pg-card-desc">看字换道、拼音发射，短局节奏很干脆，适合轮换着玩。</span>
-                            </span>
-                            <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
-                        </button>
                         <button class="pg-img-card pg-feature-card" type="button" onclick="openLearningArcadeGame('pinyin-snake')">
                             <span class="pg-card-media pg-card-media-crop-center">
                                 <img src="assets/ui/pg-card-pinyin-snake.webp?v=20260711d" alt="贪吃蛇" loading="lazy" decoding="async" fetchpriority="low">
@@ -918,17 +887,6 @@
                                 <span class="pg-card-desc">方向键配拼音块，轻一点也很上头，适合切换手感。</span>
                             </span>
                             <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
-                        </button>
-                        <button class="pg-img-card pg-feature-card" type="button" onclick="switchPage('word-memory-map')">
-                            <span class="pg-card-media pg-card-media-crop-center">
-                                <img src="assets/ui/pg-card-word-memory.webp?v=20260711c" alt="像素探险" loading="lazy" decoding="async" fetchpriority="low">
-                            </span>
-                            <span class="pg-card-copy">
-                                <span class="pg-card-kicker">英语新玩法</span>
-                                <strong class="pg-card-title">像素探险</strong>
-                                <span class="pg-card-desc">大地图探索加投掷记忆，保留现有角色、关卡和道具节奏。</span>
-                            </span>
-                            <span class="pg-card-footer">进入游戏<span aria-hidden="true">→</span></span>
                         </button>
                     </section>
                 </section>
@@ -1187,8 +1145,36 @@
                 <div id="home-container"></div>
             </div>
 
-            <!-- PAGE: 探索冒险（路线地图） -->
-            <div class="page" id="page-explore"></div>
+            <!-- PAGE: 探索冒险（故事地图） -->
+            <div class="page" id="page-explore">
+                <section class="explore-loading-state" id="exploreLoadingState" aria-live="polite">正在打开故事地图…</section>
+                <section id="pixelStoryMapHost" aria-label="三世界故事地图" hidden>
+                    <div class="pixel-story-shell" id="pixelStoryShell" data-mode="story" data-view="map">
+                        <div class="pixel-story-map-slot" id="pixelStoryMapContainer"></div>
+                    </div>
+                </section>
+                <section id="pixelStoryChapterHost" aria-label="故事章节" hidden></section>
+            </div>
+            <!-- PAGE: 经典森林冒险地图（独立于像素故事地图） -->
+            <div class="page" id="page-forest-map">
+                <section class="forest-map-page" aria-labelledby="forestMapPageTitle">
+                    <header class="forest-map-page-header">
+                        <div>
+                            <p class="forest-map-page-kicker">经典探索路线 · 非像素地图</p>
+                            <h1 id="forestMapPageTitle">森林冒险</h1>
+                            <p>沿着原来的螺旋路线出发，逐个解锁 12 个自然场景。它和三世界故事地图各自保存进度、各自进入故事。</p>
+                        </div>
+                        <button class="forest-map-page-home" type="button" onclick="switchPage('map')">回到首页</button>
+                    </header>
+                    <div class="map-board-shell forest-map-page-shell">
+                        <div class="map-board-surface">
+                            <div class="map-board-texture" aria-hidden="true"></div>
+                            <div class="map-board" id="forestMapSceneGrid" aria-label="经典森林冒险场景路线"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div id="explorationStageRoot" hidden></div>
 
             <!-- PAGE: 数学PK -->
             <div class="page" id="page-mathpk">
@@ -1234,7 +1220,7 @@
                 </section>
             </div>
 
-            <!-- PAGE: 像素探险 -->
+            <!-- PAGE: 单词跑酷（原像素探险） -->
             <div class="page" id="page-word-memory-map">
                 <section class="playground-stage-shell">
                     <div class="playground-stage-corner playground-stage-corner-left">
@@ -1244,9 +1230,9 @@
                         <a class="playground-stage-btn is-link" id="word-memory-map-launch" href="#" target="_blank" rel="noopener noreferrer" hidden>独立打开</a>
                         <button class="playground-stage-btn is-close" type="button" onclick="switchPage('playground')">关闭</button>
                     </div>
-                    <div class="playground-stage-status" id="word-memory-map-status">正在准备像素探险...</div>
+                    <div class="playground-stage-status" id="word-memory-map-status">正在准备单词跑酷...</div>
                     <div class="playground-stage-frame-shell">
-                        <iframe class="playground-embed-frame" id="word-memory-map-frame" title="像素探险" loading="lazy" referrerpolicy="no-referrer"></iframe>
+                        <iframe class="playground-embed-frame" id="word-memory-map-frame" title="单词跑酷" loading="lazy" referrerpolicy="no-referrer"></iframe>
                     </div>
                 </section>
             </div>
@@ -1369,6 +1355,7 @@
                 </div>
             </div>
         </main>
+        <aside id="childProgressRail" class="child-progress-rail" aria-label="个人成长进度" hidden></aside>
     </div>
 
     <nav class="app-bottom-dock" aria-label="孩子端主导航">
@@ -1503,6 +1490,7 @@
     <script src="js/pet.js"></script>
     <script src="js/core-reward-service.js"></script>
     <script src="js/core-reward-feedback.js"></script>
+    <script src="js/scheduled-checkins.js"></script>
     <script src="js/inventory.js"></script>
     <script src="js/treasure.js"></script>
     <script src="js/cloud-sync-outbox.js"></script>
@@ -1517,6 +1505,7 @@
     <script src="js/battle-fx.js"></script>
     <script src="js/task-catalog.js"></script>
     <script src="js/page-router.js"></script>
+    <script src="js/child-workbench-shell.js?v=20260718-playground-wide"></script>
     <script src="js/app.js?v=20260714-home-maps2"></script>
     <script src="js/child-journey-feedback.js"></script>
     <script src="js/showcase.js"></script>

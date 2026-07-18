@@ -184,24 +184,14 @@
         if (next) next.addEventListener('click', function () { renderTrack(container, manifest, track.id, page + 1); });
         container.querySelectorAll('[data-detective-bonus]').forEach(function (button) {
             button.addEventListener('click', function () {
-                if (container.id === 'homePixelWorldMapSlot' && typeof root.openHomeExploreMode === 'function') root.openHomeExploreMode('detective');
-                else {
-                    if (root.PixelStoryEngine && typeof root.PixelStoryEngine.setPreferredTrack === 'function') root.PixelStoryEngine.setPreferredTrack('detective', false);
-                    renderTrack(container, manifest, 'detective', pageByTrack.detective || 0);
-                }
+                if (root.PixelStoryEngine && typeof root.PixelStoryEngine.setPreferredTrack === 'function') root.PixelStoryEngine.setPreferredTrack('detective', false);
+                renderTrack(container, manifest, 'detective', pageByTrack.detective || 0);
             });
         });
         container.querySelectorAll('.pixel-story-node').forEach(function (node) {
             node.addEventListener('click', function () {
                 if (root.PixelStoryEngine && typeof root.PixelStoryEngine.setPreferredTrack === 'function') root.PixelStoryEngine.setPreferredTrack(track.id, false);
                 var chapterId = node.dataset.chapter;
-                if (container.id === 'homePixelWorldMapSlot' && typeof root.switchPage === 'function') {
-                    Promise.resolve(root.switchPage('explore')).then(function () {
-                        if (root.PixelStoryEngine && typeof root.PixelStoryEngine.setPreferredTrack === 'function') root.PixelStoryEngine.setPreferredTrack(track.id, false);
-                        if (root.PixelStoryEngine && typeof root.PixelStoryEngine.enterChapter === 'function') root.PixelStoryEngine.enterChapter(chapterId);
-                    });
-                    return;
-                }
                 if (root.PixelStoryEngine && typeof root.PixelStoryEngine.enterChapter === 'function') root.PixelStoryEngine.enterChapter(chapterId);
             });
         });

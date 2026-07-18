@@ -84,9 +84,24 @@
 
 每个场景的数学题和遭遇战仍保留在原事件数组，但只有孩子点击“挑战一下”时才进入；挑战路径继续复用现有数学题、探索战斗、经验和掉落规则。旅行记忆目录覆盖 12 个场景，其中 3 个使用已验证 Agnes 图片，9 个使用 placeholder 状态和 emoji/CSS 回退；所有场景都有可收入小屋的装饰 ID。
 
-短流程状态由 `js/exploration-progress.js` 写入同一场景进度键的附加字段（`flowMode`、`flowPhase`、`challengeStatus`），刷新从根入口恢复；直接访问静态服务器的 `/app/explore` 仍会 404，真实验收必须从 `/` 进入。
+短流程状态由 `js/exploration-progress.js` 写入同一场景进度键的附加字段（`flowMode`、`flowPhase`、`challengeStatus`），刷新从根入口恢复；直接访问静态服务器的 `/app/explore` 会先显示加载态，再进入固定宿主的故事地图。
 
 探索页默认还装配 `js/pixel-story-engine.js` 与 `js/pixel-story-map.js` 的像素故事模式。当前正式故事包位于 `data/story-packs/05-pixel-worlds-story/`：科幻、森林、方块三条主线各 20 节点，另有 20 个侦探支线节点；使用 `petbank_pixel_worlds_progress_v1` 保存章节位置，完成奖励经 `CoreRewardService` 去重。内容策略为 `recognition-only`，不把故事对白改成数学题；资源、内容和浏览器验收以 `scripts/test-pixel-worlds-assets-contract.mjs`、`scripts/test-pixel-story-content-contract.mjs` 和像素故事浏览器脚本为准。旧的 `04-pixel-dialogue-story` 仅作为历史资料包保留。
+
+### 首页与故事探索的页面边界
+
+当前页面有四个固定宿主，写入者不得跨宿主接管顶级容器：
+
+| 宿主 | 唯一职责 | 主要写入模块 |
+| --- | --- | --- |
+| `#page-forest-map` / `#forestMapSceneGrid` | 探索下“森林冒险”独立子页面，展示早期非像素森林螺旋地图 | `ExplorationSystem.renderSceneGridMap()`，由 `forest-map` 页面激活流程调用 |
+| `#pixelStoryMapHost` / `#pixelStoryShell` | 探索 Tab 默认的科幻、森林、方块三世界卡片地图与侦探入口 | `PixelStoryPage`、`PixelStoryEngine` |
+| `#pixelStoryChapterHost` | 像素故事章节内部视图的预留宿主 | `PixelStoryPage` |
+| `#explorationStageRoot` | 原森林场景的对话、选择和战斗舞台 | `ExplorationDetail` |
+
+森林螺旋路线不再渲染到首页或 `#page-explore`，故事地图也不再接管森林路线。`/app/explore` 默认只展示三世界像素卡片地图；`/app/explore/forest`（页面 ID `forest-map`）单独展示早期非像素森林地图。探索页的“故事地图 / 森林冒险”切换器只切换页面，不把两个地图宿主嵌套在一起。`ExplorationDetail.show(sceneId, { hostId, returnTarget })` 必须显式接收舞台和返回目标；退出时清空舞台、停止语音并发送 `petbank:exploration-stage-exit`，森林子页面返回 `forest-map`，故事章节返回 `explore`。代码中禁止通过改写 `#page-explore.innerHTML` 来切换视图。
+
+直接访问 `/app/explore` 时，页面先显示 `#exploreLoadingState`，资源完成后才显示三世界地图；直接访问 `/app/explore/forest` 时加载同一探索运行时，但只渲染 `#forestMapSceneGrid`。资源初始化失败必须保留可见错误态和重试按钮。静态服务器与 Pages 制品均提供 `/app/explore` 和 `/app/explore/forest` 深层入口。
 
 ---
 
@@ -123,7 +138,7 @@
 
 | 函数 | 文件:行号 | 说明 |
 |------|----------|------|
-| `ExplorationDetail.show(sceneId)` | exploration-detail.js:74 | 打开 galgame 探索详情并加载场景故事 |
+| `ExplorationDetail.show(sceneId, options)` | exploration-detail.js:74 | 打开 galgame 探索详情并按显式宿主/返回目标加载场景故事 |
 | `buildMathRetryHint(hint, explanation)` | exploration-detail.js:199 | 将题目 hint/explanation 转成"下一步/复盘"提示 |
 | `ExplorationDetail.answerMath(correct, exp, msg, hint, explanation)` | exploration-detail.js:205 | 处理探索数学小题答题反馈和奖励 |
 | `ExplorationDetail.choose(eventIdx, choiceIdx)` | exploration-detail.js:288 | 处理探索事件选项 |
@@ -131,7 +146,7 @@
 | `ExplorationDetail.completeShortJourney()` | exploration-detail.js | 跳过可选挑战并完成短旅行 |
 | `ExplorationDetail.startShortChallenge()` | exploration-detail.js | 从短旅行进入数学挑战 |
 | `ExplorationDetail.startShortBattle()` | exploration-detail.js | 从短旅行进入遭遇战 |
-| `ExplorationDetail.exit()` | exploration-detail.js | 退出详情页并恢复地图 |
+| `ExplorationDetail.exit()` | exploration-detail.js | 清理独立舞台、停止语音并按返回目标恢复首页路线或故事地图 |
 | `ExplorationDetail.showEnding()` | exploration-detail.js | 展示场景探索结束语 |
 
 ### 探索数学题反馈

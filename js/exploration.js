@@ -237,9 +237,10 @@ const ExplorationSystem = (function () {
         const unlockCost = scene.unlock_cost || 0;
         const isLockedByPoints = unlockCost > 0 && !unlockedScenes[scene.id];
         // S0(F2)：解锁动作透传 boardId，避免重渲回首页板
-        const safeBoard = boardId || 'sceneGridMap';
+        const safeBoard = boardId || 'forestMapSceneGrid';
+        const returnTarget = safeBoard === 'forestMapSceneGrid' ? 'forest-map' : 'explore';
         const action = unlocked
-            ? `ExplorationSystem.goExplore('${scene.id}')`
+            ? `ExplorationSystem.goExplore('${scene.id}', { returnTarget: '${returnTarget}' })`
             : `ExplorationSystem.tryUnlock('${scene.id}', '${safeBoard}')`;
         const theme = CHAPTER_THEME[layout.chapter] || CHAPTER_THEME[1];
         const stateClass = [
@@ -284,7 +285,7 @@ const ExplorationSystem = (function () {
         `;
     }
 
-    function renderSceneGridMap(activeSceneId = null, boardId = 'sceneGridMap') {
+    function renderSceneGridMap(activeSceneId = null, boardId = 'forestMapSceneGrid') {
         const board = document.getElementById(boardId);
         if (!board || !scenes) return;
 
@@ -345,7 +346,7 @@ const ExplorationSystem = (function () {
         }
         if (result.success) {
             // S0(F2)：重渲保留调用方所在 board，默认首页板；探索 tab 内调用透传 'sceneGrid'。
-            const targetBoard = boardId || 'sceneGridMap';
+            const targetBoard = boardId || 'forestMapSceneGrid';
             renderSceneGridMap(sceneId, targetBoard);
             if (targetBoard === 'sceneGrid' && typeof window.renderExplorePage === 'function') {
                 void window.renderExplorePage(sceneId);
@@ -354,13 +355,14 @@ const ExplorationSystem = (function () {
     }
 
     // 跳转探索页
-    function goExplore(sceneId) {
+    function goExplore(sceneId, options = {}) {
+        const targetPage = options.returnTarget === 'forest-map' ? 'forest-map' : 'explore';
         // 宠物小屋 R5 第二守卫（F1）：hp<=0 且已选宠 → 拦截，不进任何探索页
         if (window.PetSystem) {
             try {
                 const s = PetSystem.getState();
                 if (s.species && s.hp <= 0) {
-                    if (typeof window.switchPage === 'function') window.switchPage('explore');
+                    if (typeof window.switchPage === 'function') window.switchPage(targetPage);
                     if (typeof window.showToast === 'function') {
                         window.showToast('宠物倒下了，先去宠物小屋救援吧');
                     } else {
@@ -370,20 +372,28 @@ const ExplorationSystem = (function () {
                 }
             } catch (e) {}
         }
-        if (window.ExplorationDetail && typeof window.ExplorationDetail.show === 'function') {
-            window.ExplorationDetail.show(sceneId);
-            return;
-        }
+        const openStage = function () {
+            if (window.ExplorationDetail && typeof window.ExplorationDetail.show === 'function') {
+                return window.ExplorationDetail.show(sceneId, {
+                    hostId: 'explorationStageRoot',
+                    returnTarget: options.returnTarget || 'forest-map'
+                });
+            }
+            if (typeof window.startExplorationUI === 'function') {
+                return window.startExplorationUI(sceneId);
+            }
+            return null;
+        };
         if (typeof window.switchPage === 'function') {
-            window.switchPage('explore');
-        }
-        if (typeof window.startExplorationUI === 'function') {
-            window.startExplorationUI(sceneId);
+            const pageReady = window.switchPage(targetPage);
+            if (pageReady && typeof pageReady.then === 'function') {
+                void pageReady.then(openStage);
+            } else {
+                openStage();
+            }
             return;
         }
-        if (typeof window.renderExplorePage === 'function') {
-            void window.renderExplorePage(sceneId);
-        }
+        openStage();
     }
 
     function showSceneDetail(sceneId) {

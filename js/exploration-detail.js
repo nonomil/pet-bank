@@ -14,8 +14,8 @@ const ExplorationDetail = (function () {
     let shortChallengeStatus = 'available';
     let shortChoiceFeedback = null;
     let foundItemsGranted = false;
-    const EXPLORE_SHELL_HTML = document.getElementById('page-explore')?.innerHTML || '';
-    const EXPLORE_ACTIVE_HTML = '<div id="exploreContainer"></div>';
+    let stageHostId = 'explorationStageRoot';
+    let returnTarget = 'forest-map';
 
     // CMATH 应用题池（data/math-cmath.json，来源 XiaoMi/cmath CC BY 4.0）
     // 懒加载：进入探索即后台 fetch 一次缓存到内存，genMathQuestion 同步读取
@@ -82,13 +82,15 @@ const ExplorationDetail = (function () {
     };
 
     // 显示探索页（galgame 风格：背景 + 左右立绘 + 底部对话框 + 推进）
-    async function show(sceneId) {
+    async function show(sceneId, options = {}) {
+        stageHostId = options.hostId || 'explorationStageRoot';
+        returnTarget = options.returnTarget || 'forest-map';
         // 宠物小屋 R5 第二守卫（F1 兜底）：hp<=0 且已选宠 → 拦截
         if (window.PetSystem) {
             try {
                 const s = PetSystem.getState();
                 if (s.species && s.hp <= 0) {
-                    if (typeof window.switchPage === 'function') window.switchPage('explore');
+                    if (typeof window.switchPage === 'function') window.switchPage(returnTarget === 'forest-map' ? 'forest-map' : 'explore');
                     if (typeof window.showToast === 'function') {
                         window.showToast('宠物倒下了，先去宠物小屋救援吧');
                     } else {
@@ -107,9 +109,12 @@ const ExplorationDetail = (function () {
         }
         // 故事未加载(file://协议或fetch失败) → 明确提示，不再静默回退兜底（R1 单一源）
         if (!storyData[currentScene.id]) {
-            switchPage('explore');
-            const pe = document.getElementById('page-explore');
-            if (pe) pe.innerHTML = '<div style="padding:60px;text-align:center;color:#fbbf24;font-size:18px;line-height:1.8;">📖 故事加载失败<br><span style="font-size:14px;color:#888;">请用本地服务器打开：<code>python -m http.server 8000</code><br>然后访问 http://localhost:8000/</span></div>';
+            await switchPage(returnTarget === 'forest-map' ? 'forest-map' : 'explore');
+            const failedHost = document.getElementById(stageHostId);
+            if (failedHost) {
+                failedHost.hidden = false;
+                failedHost.innerHTML = '<div class="exploration-stage-error">📖 故事加载失败<br><span>请稍后重试，故事信号暂时没有接通。</span></div>';
+            }
             currentScene = null;
             return;
         }
@@ -133,15 +138,13 @@ const ExplorationDetail = (function () {
         }
         _ensureCmathPool();  // 后台预加载应用题库（CMATH）
 
-        switchPage('explore');
+        await switchPage(returnTarget === 'forest-map' ? 'forest-map' : 'explore');
 
-        const pageExplore = document.getElementById('page-explore');
-        if (!pageExplore) return;
-        if (pageExplore.innerHTML !== EXPLORE_ACTIVE_HTML) {
-            pageExplore.innerHTML = EXPLORE_ACTIVE_HTML;
-        }
-        const el = document.getElementById('exploreContainer');
+        const el = document.getElementById(stageHostId);
         if (!el) return;
+        el.hidden = false;
+        el.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('exploration-stage-active');
 
         // galgame 框架：背景 + 左右立绘位 + 退出 + 底部对话框（点击推进）
         el.innerHTML = `
@@ -662,10 +665,11 @@ const ExplorationDetail = (function () {
     }
 
     function exit() {
+        const exitedSceneId = currentScene?.id || null;
+        const exitedReturnTarget = returnTarget;
         if (window.VoiceSystem && typeof VoiceSystem.stop === 'function') {
             VoiceSystem.stop();
         }
-        const sceneId = currentScene?.id;
         clearProgress();
         currentScene = null;
         eventIndex = 0;
@@ -677,16 +681,17 @@ const ExplorationDetail = (function () {
         shortChallengeStatus = 'available';
         shortChoiceFeedback = null;
 
-        const pageExplore = document.getElementById('page-explore');
-        if (pageExplore) {
-            if (window.ensureExploreMapShell) {
-                window.ensureExploreMapShell();
-            } else {
-                pageExplore.innerHTML = EXPLORE_SHELL_HTML;
-            }
-            void renderExplorePage(sceneId);
-            window.scrollTo(0, 0);
+        const stageHost = document.getElementById(stageHostId);
+        if (stageHost) {
+            stageHost.innerHTML = '';
+            stageHost.hidden = true;
+            stageHost.setAttribute('aria-hidden', 'true');
         }
+        document.body.classList.remove('exploration-stage-active');
+        window.dispatchEvent(new CustomEvent('petbank:exploration-stage-exit', {
+            detail: { returnTarget: exitedReturnTarget, sceneId: exitedSceneId }
+        }));
+        window.scrollTo(0, 0);
     }
 
     // 战斗胜利后显示结束叙事（点 ▶ 回场景列表）

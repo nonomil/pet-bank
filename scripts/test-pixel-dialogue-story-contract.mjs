@@ -33,7 +33,8 @@ for (const chapterId of chapterIds) {
 }
 
 const appSource = fs.readFileSync('js/app.js', 'utf8');
-assert.match(appSource, /pixel-story-map-slot/);
+const indexSource = fs.readFileSync('index.html', 'utf8');
+assert.match(indexSource, /pixel-story-map-slot/);
 assert.match(appSource, /function switchExploreToAdventure/);
 
 console.log(`PASS: ${chapterIds.length} pixel dialogue chapters and dual-mode shell contract`);

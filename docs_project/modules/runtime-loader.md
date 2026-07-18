@@ -17,7 +17,7 @@ Bundle 映射:
   SCRIPT_BUNDLES: { page → [js文件列表] }
 
 页面→Bundle 路由 (ensurePage):
-  map → ensureMapFeature()             → exploration.js + 场景数据（首页森林路线）
+  map → ensureMapFeature()             → 基础探索资源预热（首页不嵌入地图）
   today/reward/inventory/works → 无额外加载（核心已预加载）
   playground → ensurePlaygroundFeature()  → math-pk + leaderboard + hanzi + tools
   pet → ensurePetCatalog()               → pet.js
@@ -48,7 +48,7 @@ Bundle 映射:
 | `ensurePetCatalog()` | :131-138 | 确保宠物数据库已加载 |
 | `ensurePetSkills()` | :140-151 | 确保技能定义已加载 |
 | `ensureAudioFeature()` | :153-158 | 加载音效系统 |
-| `ensureMapFeature()` | :249-260 | 加载首页森林路线与场景数据 |
+| `ensureMapFeature()` | :249-260 | 预热地图模块与场景数据，实际森林地图由 `forest-map` 页面渲染 |
 | `ensureHomeFeature()` | :160-175 | 加载宠物小屋（含 catalog 初始化） |
 | `ensureWalkFeature()` | :178-185 | 加载遛弯功能 |
 | `ensureCardFeature()` | :187-200 | 加载卡牌收集（含 CardCollection.init） |

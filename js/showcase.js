@@ -2,44 +2,37 @@
 (function () {
   const SLIDES = [
     {
-      icon: '📚',
+      icon: '✓',
+      title: '今日打卡',
+      desc: '把今天最重要的一件小事做完，成长分会马上加进来。',
+      img: 'assets/scenes/stargarden.webp',
+      page: 'today',
+    },
+    {
+      icon: '✦',
       title: '学习中心',
-      desc: '先进入今天的学习内容，打开就能继续读、练、看。',
+      desc: '打开今天的学习内容，继续读、练、看，完成后领取成长奖励。',
       img: 'assets/ui/hanzi-new-bg.webp',
       page: 'learn',
     },
     {
-      icon: '🐾',
+      icon: '♣',
       title: '宠物伙伴',
-      desc: '去看看今天的同行伙伴，喂食、互动，再一起继续成长。',
+      desc: '去看看今天的同行伙伴，照料、互动，再一起继续成长。',
       img: 'assets/home-bg/room-forest.webp',
       page: 'pet',
     },
     {
-      icon: '🗺️',
-      title: '探索冒险',
-      desc: '沿着发光路线去下一站，点亮新的场景和故事。',
-      img: 'assets/scenes/forest.webp',
-      page: 'explore',
-    },
-    {
-      icon: '🎡',
-      title: '游乐场',
-      desc: '想轻松一点时，就去数学、汉字和卡牌小游戏里玩一会儿。',
-      img: 'assets/ui/playground-bg.webp',
-      page: 'playground',
-    },
-    {
-      icon: '⭐',
-      title: '今日打卡',
-      desc: '把今天最重要的一件小事做完，积分就会马上加进来。',
-      img: 'assets/scenes/stargarden.webp',
-      page: 'today',
+      icon: '▤',
+      title: '绘本书架',
+      desc: '挑一本喜欢的故事，从上次读到的地方继续看下去。',
+      img: 'assets/story/pixel-worlds-v1/maps/forest.webp',
+      page: 'picturebooks',
     },
   ];
 
-  const INTERVAL = 4200;
-  const START_DELAY = 14000;
+  const INTERVAL = 5000;
+  const START_DELAY = 5000;
   const track = document.getElementById('showcaseTrack');
   const dotsBox = document.getElementById('showcaseDots');
   const prevBtn = document.getElementById('showcasePrev');
@@ -50,6 +43,7 @@
   let current = 0;
   let timer = null;
   let startTimer = null;
+  let active = false;
 
   function openSlide(slide) {
     if (!slide || !slide.page || typeof window.switchPage !== 'function') return;
@@ -124,13 +118,13 @@
   }
 
   function start() {
-    if (SLIDES.length <= 1) return;
+    if (!active || SLIDES.length <= 1) return;
     if (timer) clearInterval(timer);
     timer = setInterval(next, INTERVAL);
   }
 
   function scheduleStart() {
-    if (SLIDES.length <= 1 || startTimer || timer) return;
+    if (!active || SLIDES.length <= 1 || startTimer || timer) return;
     startTimer = setTimeout(() => {
       startTimer = null;
       start();
@@ -138,8 +132,18 @@
   }
 
   function restart() {
+    if (!active) return;
     if (root.matches(':hover')) return;
     start();
+  }
+
+  function setActive(nextActive) {
+    active = Boolean(nextActive);
+    if (!active) {
+      stop();
+      return;
+    }
+    scheduleStart();
   }
 
   dotsBox.addEventListener('click', (event) => {
@@ -153,5 +157,5 @@
   root.addEventListener('mouseenter', stop);
   root.addEventListener('mouseleave', scheduleStart);
 
-  scheduleStart();
+  window.HomeShowcase = Object.freeze({ setActive, go, next, prev });
 })();

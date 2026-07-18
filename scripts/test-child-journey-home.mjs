@@ -17,9 +17,9 @@ assert.match(html, /id="childJourneyPet"[\s\S]*switchPage\('pet'\)/, 'pet entry 
 assert.match(html, /id="childJourneyAdventure"[\s\S]*switchPage\('playground'\)/, 'adventure entry should lead to playground');
 assert.match(html, /id="childJourneyMore"[\s\S]*switchPage\('explore'\)[\s\S]*switchPage\('shop'\)/, 'more entry should retain exploration and shop');
 assert.ok(
-    html.indexOf('id="childJourneyHero"') < html.indexOf('class="child-journey-main-grid"')
-        && html.indexOf('class="child-journey-main-grid"') < html.indexOf('id="showcase"'),
-    'children should see the main journey choices before the optional showcase carousel'
+    html.indexOf('id="showcase"') < html.indexOf('id="childJourneyHero"')
+        && html.indexOf('id="childJourneyHero"') < html.indexOf('class="child-journey-main-grid"'),
+    'children should see the primary carousel before the secondary journey choices'
 );
 
 for (const selector of ['.child-journey-hero', '.child-journey-main-grid', '.child-journey-entry:focus-visible', '@media (max-width: 760px)']) {

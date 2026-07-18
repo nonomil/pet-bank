@@ -17,40 +17,36 @@ try {
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForFunction(() => window.PetBankRuntime && window.switchPage, { timeout: 20000 });
     await page.evaluate(() => window.switchPage('map'));
-    await page.waitForSelector('#sceneGridMap .map-scene-node', { state: 'attached', timeout: 20000 });
+    await page.waitForSelector('#page-map .home-demo-workspace', { state: 'attached', timeout: 20000 });
 
-    const homePanel = page.locator('#homeExplorePanel');
-    const modes = homePanel.locator('[data-home-explore-mode]');
-    assert.deepEqual(await modes.evaluateAll((buttons) => buttons.map((button) => button.dataset.homeExploreMode)), ['forest', 'sci-fi', 'block']);
-    assert.deepEqual(await modes.locator('strong').allTextContents(), ['森林探险', '星港科技区', '方块地下城']);
-    assert.equal(await homePanel.locator('.home-explore-panel-status').count(), 0, 'home map status card should be removed');
-    assert.equal(await homePanel.locator('.home-forest-map-action').count(), 0, 'forest refresh action should be removed');
-    assert.equal(await homePanel.locator('.home-forest-map-head h3').textContent(), '森林探险');
-    assert.equal(await homePanel.locator('.home-forest-map-head').textContent().then((text) => text.includes('原有探索路线')), false);
-    assert.equal(await homePanel.locator('.home-explore-modebar').evaluate((bar, view) => bar.compareDocumentPosition(view) & Node.DOCUMENT_POSITION_FOLLOWING, await homePanel.locator('#homeExploreView').elementHandle()) !== 0, true, 'map selector should precede map views');
-    assert.equal(await homePanel.locator('#sceneGridMap .map-scene-node').count(), 12, 'forest map keeps all 12 original nodes');
+    assert.equal(await page.locator('[data-home-explore-mode]').count(), 0, 'home should not embed the pixel world selector');
+    assert.equal(await page.locator('#homePixelWorldMapSlot').count(), 0, 'home should not embed the pixel world map');
+    assert.equal(await page.locator('body > .page-shell > .sidebar').count(), 1, 'legacy shell remains in the DOM for compatibility');
+    assert.equal(await page.locator('#page-map #forestMapSceneGrid').count(), 0, 'home does not mount the forest route');
 
-    await modes.nth(1).click();
-    await page.waitForSelector('#homePixelWorldMapSlot .pixel-story-map', { state: 'attached', timeout: 20000 });
-    assert.equal(await page.locator('#homePixelWorldMapSlot .pixel-story-world-tabs').count(), 0, 'home embed should hide duplicate world tabs');
-    assert.equal(await page.locator('#homePixelWorldMapSlot [data-detective-bonus]').count(), 1, 'detective mini-games remain an auxiliary entry');
-    await page.locator('#homePixelWorldMapSlot [data-detective-bonus]').click();
-    await page.waitForFunction(() => document.querySelector('#homePixelWorldMapSlot .pixel-story-map')?.className.includes('pixel-story-map-tone-detective'));
-    assert.equal(await page.locator('#homePixelWorldMapSlot .pixel-story-world-tabs').count(), 0, 'detective auxiliary view should not add a fourth world tab');
-
-    await modes.nth(2).click();
-    await page.waitForFunction(() => document.querySelector('#homePixelWorldMapSlot .pixel-story-map')?.className.includes('pixel-story-map-tone-block'));
-    assert.equal(await page.locator('#homePixelWorldMapSlot .pixel-story-world-tabs').count(), 0, 'block home embed should hide duplicate world tabs');
+    await page.evaluate(() => window.switchPage('forest-map'));
+    await page.waitForSelector('#page-forest-map #forestMapSceneGrid .map-scene-node', { state: 'attached', timeout: 20000 });
+    assert.equal(await page.locator('#forestMapSceneGrid .map-scene-node').count(), 12, 'forest map keeps all 12 original nodes on its dedicated page');
 
     await page.evaluate(() => window.switchPage('explore'));
     await page.waitForSelector('#pixelStoryMapContainer .pixel-story-world-tab', { state: 'attached', timeout: 20000 });
     assert.equal(await page.locator('#pixelStoryMapContainer .pixel-story-world-tab').count(), 3, 'standalone story map keeps three world tabs');
+    assert.equal(await page.locator('#page-explore #sceneGrid').count(), 0, 'explore tab should not render the forest route');
+    assert.equal(await page.locator('#page-explore .map-scene-node').count(), 0, 'explore tab should not render forest route nodes');
+
+    await page.evaluate(() => window.switchPage('forest-map'));
+    await page.waitForSelector('#page-forest-map.active #forestMapSceneGrid .map-scene-node', { state: 'attached', timeout: 20000 });
+    await page.locator('#forestMapSceneGrid .map-scene-node').first().click();
+    await page.waitForSelector('#explorationStageRoot .galgame-stage', { state: 'attached', timeout: 20000 });
+    await page.locator('#explorationStageRoot .galgame-back').evaluate((button) => button.click());
+    await page.waitForSelector('#page-forest-map.active #forestMapSceneGrid', { state: 'attached', timeout: 20000 });
+    assert.equal(await page.locator('#page-explore #sceneGrid').count(), 0, 'forest page keeps the card map separate');
 
     await page.setViewportSize({ width: 390, height: 844 });
     const layout = await page.evaluate(() => ({ bodyWidth: document.body.scrollWidth, viewportWidth: innerWidth }));
     assert.ok(layout.bodyWidth <= layout.viewportWidth, `home exploration has no mobile horizontal overflow: ${JSON.stringify(layout)}`);
     assert.deepEqual(errors, [], 'home exploration flow has no page errors');
-    console.log(JSON.stringify({ modes: ['forest', 'sci-fi', 'block'], forestNodes: 12, layout, errors }));
+    console.log(JSON.stringify({ homeEmbedsForest: false, forestPageNodes: 12, storyWorlds: 3, layout, errors }));
 } finally {
     await browser.close();
 }

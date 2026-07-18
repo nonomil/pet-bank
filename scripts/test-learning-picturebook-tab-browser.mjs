@@ -21,12 +21,13 @@ try {
     });
     await page.waitForSelector('#learn-container [data-learn-hub-tab="picturebooks"]', { state: 'attached', timeout: 20000 });
 
-    assert.equal(await page.locator('.top-nav [data-page="picturebooks"]').evaluate((element) => getComputedStyle(element).display), 'none', 'standalone top-nav picturebook entry is hidden');
-    assert.equal(await page.locator('.app-bottom-dock [data-app-dock="picturebooks"]').evaluate((element) => getComputedStyle(element).display), 'none', 'standalone bottom-dock picturebook entry is hidden');
+    assert.equal(await page.locator('.top-nav [data-page="picturebooks"]').count(), 0, 'top-nav should not own the picturebook primary entry');
+    assert.equal(await page.locator('#childPrimaryNav [data-child-primary="picturebooks"]').count(), 1, 'picturebooks should be a child workbench primary entry');
+    assert.equal(await page.locator('.app-bottom-dock [data-app-dock="picturebooks"]').count(), 1, 'legacy bottom-dock picturebook entry remains as a compatibility node');
 
     await page.locator('#learn-container [data-learn-hub-tab="picturebooks"]').click();
     await page.waitForSelector('#learn-picturebooks-root .picturebooks-portal', { state: 'attached', timeout: 20000 });
-    assert.equal(await page.locator('#learn-container [data-learn-hub-tab].is-active').textContent(), '绘本', 'picturebook tab becomes active');
+    assert.equal((await page.locator('#learn-container [data-learn-hub-tab].is-active .learn-demo-side-copy strong').textContent()).includes('绘本'), true, 'picturebook tab becomes active');
     assert.equal(await page.locator('#learn-picturebooks-root .picturebooks-portal-card').count(), 25, 'picturebook library renders inside learning');
     assert.equal(await page.locator('#learn-hub-panel[role="tabpanel"]').count(), 1, 'learning tab panel is exposed');
     assert.deepEqual(errors, [], 'learning picturebook tab has no page errors');

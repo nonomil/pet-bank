@@ -15,6 +15,7 @@ const map = fs.readFileSync(path.join(root, 'js', 'pixel-story-map.js'), 'utf8')
 const runtime = fs.readFileSync(path.join(root, 'js', 'runtime-loader.js'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const app = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
+const storyPage = fs.readFileSync(path.join(root, 'js', 'pixel-story-page.js'), 'utf8');
 const keys = fs.readFileSync(path.join(root, 'docs_project', 'data-contracts', 'localstorage-keys.md'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'pixel-story.css'), 'utf8');
 
@@ -73,7 +74,7 @@ for (const chapterId of manifest.chapters) {
 
 assert.match(runtime, /pixel-story-map\.js/);
 assert.match(runtime, /pixel-story-engine\.js/);
-assert.match(index, /css\/pixel-story\.css/);
+assert.match(runtime, /css\/pixel-story\.css/);
 assert.match(engine, /resolvePetBankAssetUrl/);
 assert.match(map, /resolvePetBankAssetUrl/);
 assert.match(engine, /audio-manifest\.json/);
@@ -91,6 +92,7 @@ assert.match(engine, /selectedButton\.className/);
 assert.match(engine, /ProfileManager[\s\S]{0,100}getActiveId/);
 assert.doesNotMatch(engine, /getCurrentProfileId|getCurrentProfile/, 'profile reward scope uses the real ProfileManager API');
 assert.match(css, /pixel-story-choice-btn\.correct-answer/);
-assert.match(app, /existingShell\.dataset\.mode === 'adventure'[\s\S]{0,300}SpaceGrowthDetective\.render\('adventureContainer'\)/);
+assert.match(storyPage, /shell\.dataset\.mode = 'adventure'/);
+assert.match(storyPage, /SpaceGrowthDetective\.render\('adventureContainer'\)/);
 
 console.log(`PASS pixel story contract: ${manifest.chapters.length} chapters`);

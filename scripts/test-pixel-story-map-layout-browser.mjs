@@ -29,8 +29,8 @@ async function openStoryMap(page) {
 async function openHomeSciFiMap(page) {
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForFunction(() => window.PetBankRuntime && window.switchPage, { timeout: 20000 });
-    await page.evaluate(async () => { await window.switchPage('map'); window.openHomeExploreMode('sci-fi'); });
-    await page.waitForSelector('#homePixelWorldMapSlot .pixel-story-map', { state: 'attached', timeout: 20000 });
+    await page.evaluate(async () => { await window.switchPage('explore'); });
+    await page.waitForSelector('#pixelStoryMapContainer .pixel-story-map', { state: 'attached', timeout: 20000 });
 }
 
 async function checkStoryMap(page, viewportName) {
@@ -49,7 +49,7 @@ async function checkStoryMap(page, viewportName) {
 
 async function checkHomeMap(page) {
     await openHomeSciFiMap(page);
-    const rootSelector = '#homePixelWorldMapSlot';
+    const rootSelector = '#pixelStoryMapContainer';
     const chrome = await rect(page, '.pixel-story-map-chrome', rootSelector);
     const node = await rect(page, '.pixel-story-node', rootSelector);
     if (chrome && node && intersects(chrome, node)) failures.push('home mobile: first node overlaps map chrome');

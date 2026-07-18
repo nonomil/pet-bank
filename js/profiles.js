@@ -859,6 +859,7 @@
     const ProfileUI = {
         _panel: null,
         _outsideHandler: null,
+        _trigger: null,
         render() {
             const cur = ProfileManager.getActive();
             if (!cur) return;
@@ -870,6 +871,7 @@
         toggle(ev) {
             if (ev) ev.stopPropagation();
             if (this._panel && document.body.contains(this._panel)) { this._close(); return; }
+            this._trigger = ev?.currentTarget || document.getElementById('profileSwitcher');
             this._open();
         },
         _open() {
@@ -891,7 +893,7 @@
                 <button class="profile-new" onclick="ProfileUI._close();switchPage('settings')">⚙️ 账号管理 →</button>
             `;
             document.body.appendChild(panel);
-            const sw = document.getElementById('profileSwitcher');
+            const sw = this._trigger || document.getElementById('profileSwitcher');
             if (sw) {
                 const r = sw.getBoundingClientRect();
                 panel.style.top = (r.bottom + 6) + 'px';
@@ -899,13 +901,14 @@
             }
             this._panel = panel;
             setTimeout(() => {
-                this._outsideHandler = (e) => { if (!panel.contains(e.target) && e.target.id !== 'profileSwitcher') this._close(); };
+                this._outsideHandler = (e) => { if (!panel.contains(e.target) && !e.target.closest('[data-profile-trigger]') && e.target.id !== 'profileSwitcher') this._close(); };
                 document.addEventListener('click', this._outsideHandler);
             }, 0);
         },
         _close() {
             if (this._panel) { this._panel.remove(); this._panel = null; }
             if (this._outsideHandler) { document.removeEventListener('click', this._outsideHandler); this._outsideHandler = null; }
+            this._trigger = null;
         },
         select(id) {
             this._close();

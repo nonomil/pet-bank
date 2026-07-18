@@ -512,6 +512,35 @@
 }
 
 /* === 探索页整合版：轻量任务终端 === */
+.explore-loading-state {
+  display: grid;
+  min-height: 280px;
+  place-items: center;
+  gap: 10px;
+  padding: 32px;
+  border: 1px solid rgba(116, 142, 196, 0.28);
+  border-radius: 24px;
+  background: rgba(244, 246, 251, 0.92);
+  color: #526080;
+  text-align: center;
+}
+.explore-loading-state[hidden] { display: none; }
+.explore-loading-state strong,
+.explore-loading-state span { display: block; }
+.explore-loading-state strong { color: #17213f; font-size: 20px; }
+.explore-loading-state button {
+  padding: 9px 16px;
+  border: 1px solid rgba(90, 169, 149, 0.42);
+  border-radius: 999px;
+  background: #fff;
+  color: #315345;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+}
+.explore-loading-state.is-error { color: #8d554c; }
+.explore-loading-state.is-error strong { color: #7b4037; }
+
 #page-explore .pixel-story-shell {
   --pixel-ink: #25364a;
   --pixel-muted: #718093;
@@ -661,6 +690,8 @@ body.pixel-story-stage-active .app-shell-bar,
 body.pixel-story-stage-active .app-bottom-dock,
 body.pixel-story-stage-active .parent-shell-nav,
 body.pixel-story-stage-active .sidebar,
+body.pixel-story-stage-active .child-primary-sidebar,
+body.pixel-story-stage-active .child-progress-rail,
 body.pixel-story-stage-active .playground-arena-shell-bar {
   display: none !important;
 }
@@ -716,6 +747,43 @@ body.pixel-story-stage-active #page-explore .pixel-story-scene {
 body.pixel-story-stage-active #page-explore .pixel-story-dialogue {
   max-height: min(34dvh, 280px);
   overflow-y: auto;
+}
+
+body.exploration-stage-active {
+  height: 100dvh;
+  overflow: hidden !important;
+  background: #071a2a;
+}
+body.exploration-stage-active .top-nav,
+body.exploration-stage-active .app-shell-bar,
+body.exploration-stage-active .app-bottom-dock,
+body.exploration-stage-active .parent-shell-nav,
+body.exploration-stage-active .sidebar,
+body.exploration-stage-active .child-primary-sidebar,
+body.exploration-stage-active .child-progress-rail,
+body.exploration-stage-active .playground-arena-shell-bar {
+  display: none !important;
+}
+body.exploration-stage-active .page-shell,
+body.exploration-stage-active .main-content {
+  display: block;
+  width: 100%;
+  max-width: none;
+  min-height: 100dvh;
+  height: 100dvh;
+  padding: 0 !important;
+  margin: 0;
+  overflow: hidden;
+}
+body.exploration-stage-active #page-explore {
+  display: none !important;
+}
+body.exploration-stage-active #explorationStageRoot {
+  display: block;
+  width: 100%;
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 .pixel-story-map-slot,
@@ -992,8 +1060,7 @@ body.pixel-story-page-route .app-bottom-dock [data-app-dock="picturebooks"] { di
   .pixel-story-overview { display: grid; gap: 14px; }
   .pixel-story-overview-status { width: 100%; }
   .pixel-story-modebar { width: 100%; }
-  .pixel-story-map-slot > .pixel-story-map,
-  #homePixelWorldMapSlot > .pixel-story-map { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; min-height: 620px; padding: 112px 12px 82px; }
+  .pixel-story-map-slot > .pixel-story-map { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; min-height: 620px; padding: 112px 12px 82px; }
   .pixel-story-map-slot > .pixel-story-map { padding-top: 92px; }
   .pixel-story-scene { min-height: 240px; }
   .pixel-story-map-chrome { top: 16px; left: 16px; right: 16px; }

@@ -11,7 +11,6 @@ const { DIMENSIONS, HOME_PRIORITY_TASKS, POINT_TASK_ART, getPointTaskArt } = tas
 let totalPoints = 0;
 let completedTasks = new Set();
 let activeExploreSceneId = null;
-let activeHomeExploreMode = 'forest';
 let pageActivationToken = 0;
 const GROWTH_WORKS_KEY = 'petbank_growth_works';
 const DAILY_STATE_KEY = 'petbank_daily_state';
@@ -389,6 +388,82 @@ function renderSidebarTasks() {
     }).join('');
 }
 
+function formatScheduledCheckinDate(dateKey) {
+    const date = new Date(`${dateKey}T12:00:00`);
+    if (Number.isNaN(date.getTime())) return dateKey;
+    const weekday = ['日', '一', '二', '三', '四', '五', '六'][date.getDay()];
+    return `${date.getMonth() + 1}月${date.getDate()}日 · 周${weekday}`;
+}
+
+function renderScheduledCheckins() {
+    const timeline = document.getElementById('scheduledCheckinTimeline');
+    if (!timeline || !window.ScheduledCheckins || typeof window.ScheduledCheckins.getToday !== 'function') return;
+
+    const items = window.ScheduledCheckins.getToday({ now: new Date() });
+    const completed = items.filter((item) => item.completed).length;
+    const rewardPoints = items.reduce((sum, item) => sum + (item.completed ? Number(item.points || 0) : 0), 0);
+    const dateKey = items[0]?.date || getLocalDateKey();
+    const dateEl = document.getElementById('scheduledCheckinDate');
+    const summaryEl = document.getElementById('scheduledCheckinSummary');
+    const progressText = document.getElementById('scheduledCheckinProgressText');
+    const progressBar = document.getElementById('scheduledCheckinProgressBar');
+    if (dateEl) dateEl.textContent = formatScheduledCheckinDate(dateKey);
+    if (progressText) progressText.textContent = `${completed} / ${items.length} 已完成`;
+    if (progressBar) progressBar.style.width = `${Math.round((completed / Math.max(1, items.length)) * 100)}%`;
+
+    const activeItem = items.find((item) => item.status === 'active');
+    const nextItem = items.find((item) => item.status === 'upcoming');
+    if (summaryEl) {
+        summaryEl.textContent = activeItem
+            ? `现在是「${activeItem.title}」时间，完成后可以领取 ${activeItem.points > 0 ? `+${activeItem.points} 成长分` : '今日的小成就'}。`
+            : nextItem
+                ? `下一项是 ${nextItem.start} 开始的「${nextItem.title}」，先准备好就很棒。`
+                : `今天已经完成 ${completed} 项，${rewardPoints > 0 ? `收下了 ${rewardPoints} 成长分。` : '给自己一个轻松的收尾。'}`;
+    }
+
+    const statusText = { active: '现在进行中', upcoming: '即将开始', completed: '已完成', missed: '已错过，可补记' };
+    timeline.innerHTML = items.map((item) => {
+        const buttonLabel = item.completed ? '已打卡' : item.status === 'upcoming' ? '未开始' : item.status === 'missed' ? '补记' : '完成打卡';
+        const buttonDisabled = item.completed || item.status === 'upcoming';
+        const pointText = item.points > 0 ? `+${item.points} 分` : '自由记录';
+        return `
+            <article class="scheduled-checkin-item is-${item.status} ${item.late ? 'is-late' : ''}">
+                <div class="scheduled-checkin-rail" aria-hidden="true"><span></span></div>
+                <div class="scheduled-checkin-time"><span>${item.start}</span><small>${item.end}</small></div>
+                <div class="scheduled-checkin-card">
+                    <div class="scheduled-checkin-card-icon"><i data-lucide="${item.icon}" class="w-4 h-4" aria-hidden="true"></i></div>
+                    <div class="scheduled-checkin-copy">
+                        <div class="scheduled-checkin-card-top"><strong>${escapePiHtml(item.title)}</strong><span>${statusText[item.status] || ''}</span></div>
+                        <p>${escapePiHtml(item.subtitle)}</p>
+                        <div class="scheduled-checkin-meta"><span>${escapePiHtml(item.tag)}</span><em>${pointText}</em>${item.late ? '<small>补记不发分</small>' : ''}</div>
+                    </div>
+                    <button class="scheduled-checkin-action" type="button" onclick="completeScheduledCheckin('${item.id}')" ${buttonDisabled ? 'disabled' : ''}>${buttonLabel}</button>
+                </div>
+            </article>
+        `;
+    }).join('');
+    if (window.lucide) lucide.createIcons();
+}
+
+function completeScheduledCheckin(itemId) {
+    if (!window.ScheduledCheckins || typeof window.ScheduledCheckins.complete !== 'function') return;
+    const result = window.ScheduledCheckins.complete(itemId, { now: new Date() });
+    if (result.accepted) {
+        const message = result.late ? '已补记这项作息，补记不发成长分。' : result.points > 0 ? `打卡成功，成长分 +${result.points}！` : '打卡成功，给自己一个小小的肯定。';
+        if (typeof window.showToast === 'function') window.showToast(message);
+        renderAll();
+        return;
+    }
+    if (result.duplicate) {
+        if (typeof window.showToast === 'function') window.showToast('这一项今天已经打卡过啦。');
+        renderAll();
+        return;
+    }
+    const messages = { 'not-open': '这项还没开始，先等到时间再来打卡。', storage: '打卡没有保存成功，请稍后重试。', 'reward-unavailable': '奖励服务暂时不可用，打卡没有完成。' };
+    if (typeof window.showToast === 'function') window.showToast(messages[result.reason] || '这项暂时无法打卡，请稍后重试。');
+    renderAll();
+}
+
 function renderHomeDemoTaskMirror() {
     const container = document.getElementById('homeDemoTaskMirror');
     if (!container) return;
@@ -735,7 +810,7 @@ function recordWordMemoryMapResult(payload) {
     pushBattleRecentActivity({
         id: `word_memory_map_${Date.now()}`,
         mode: 'word-memory-map',
-        title: `像素探险通关 · ${lastLevelOrder > 0 ? `第 ${lastLevelOrder} 关` : '大地图'}`,
+        title: `单词跑酷通关 · ${lastLevelOrder > 0 ? `第 ${lastLevelOrder} 关` : '大地图'}`,
         detail: `同步 ${points} 成长分，点亮 ${stars} 颗星，命中率 ${accuracy}%`
     });
     return next;
@@ -2047,6 +2122,9 @@ function applyRouteShell(page) {
         item.setAttribute('aria-current', item.dataset.parentShellNav === parentNavKey ? 'page' : 'false');
     });
     syncRouteShellStatus();
+    if (window.ChildWorkbenchShell && typeof window.ChildWorkbenchShell.sync === 'function') {
+        window.ChildWorkbenchShell.sync(page);
+    }
 }
 
 function applySettingsSection(section) {
@@ -2112,7 +2190,7 @@ const TOP_HUB_MENU_CONFIG = {
         { page: 'hanzi', label: '汉字游戏' },
         { page: 'typing-defense', label: '消灭苦力怕' },
         { page: 'learning-arcade', label: '学习机小游戏' },
-        { page: 'word-memory-map', label: '像素探险' },
+        { page: 'word-memory-map', label: '单词跑酷' },
         { action: 'cardArena', label: '卡牌对战' },
         { page: 'leaderboard', label: '排行榜' }
     ]
@@ -2225,6 +2303,15 @@ document.addEventListener('keydown', (event) => {
 function switchPage(page, options = {}) {
     closeSectionMenus();
     closeTopHubMenus();
+    if (window.ScheduledCheckins) {
+        if (page === 'today' && typeof window.ScheduledCheckins.startTicker === 'function') {
+            window.ScheduledCheckins.startTicker(() => {
+                if (getActivePageId() === 'today') renderScheduledCheckins();
+            });
+        } else if (page !== 'today' && typeof window.ScheduledCheckins.stopTicker === 'function') {
+            window.ScheduledCheckins.stopTicker();
+        }
+    }
     if (page !== 'playground' && document.body.classList.contains('card-arena-shell-active')) {
         document.body.classList.remove('card-arena-shell-active');
         const shellBar = document.getElementById('playgroundArenaShellBar');
@@ -2239,7 +2326,7 @@ function switchPage(page, options = {}) {
     if (prevPage === 'home' && page !== 'home' && window.PetSystem && typeof PetSystem.markHomeExit === 'function') {
         PetSystem.markHomeExit();
     }
-    if (prevPage === 'explore' && page !== 'explore' && window.VoiceSystem && typeof VoiceSystem.stop === 'function') {
+    if ((prevPage === 'explore' || prevPage === 'forest-map') && page !== prevPage && window.VoiceSystem && typeof VoiceSystem.stop === 'function') {
         VoiceSystem.stop();
     }
     if (prevPage === 'tools' && page !== 'tools' && window.ToolboxSystem && typeof ToolboxSystem.destroy === 'function') {
@@ -2279,6 +2366,20 @@ function switchPage(page, options = {}) {
     document.body.classList.toggle('learn-mode', page === 'learn' || page === 'minecraft-vocab' || page.startsWith('learn-'));
     document.body.classList.toggle('picturebooks-route', page === 'picturebooks');
     document.body.classList.toggle('pixel-story-page-route', page === 'explore');
+    document.body.classList.toggle('forest-map-page-route', page === 'forest-map');
+    const exploreMapSwitcher = document.getElementById('exploreMapSwitcher');
+    if (exploreMapSwitcher) {
+        const visible = page === 'explore' || page === 'forest-map';
+        exploreMapSwitcher.hidden = !visible;
+        exploreMapSwitcher.querySelectorAll('[data-explore-map]').forEach((item) => {
+            const active = item.dataset.exploreMap === (page === 'forest-map' ? 'forest' : 'story');
+            item.classList.toggle('is-current', active);
+            item.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+    }
+    if (window.HomeShowcase && typeof window.HomeShowcase.setActive === 'function') {
+        window.HomeShowcase.setActive(page === 'map');
+    }
     updateBrowserRoute(page, {
         settingsSection: page === 'settings' ? activeSettingsSection : null,
         replace: options.replace === true,
@@ -2293,6 +2394,21 @@ function switchPage(page, options = {}) {
 }
 
 window.switchPage = switchPage;
+
+window.addEventListener('petbank:exploration-stage-exit', function (event) {
+    const target = event.detail?.returnTarget || 'forest-map';
+    if (target === 'forest-map') {
+        void switchPage('forest-map');
+        return;
+    }
+    if (target === 'explore-story-map') {
+        void switchPage('explore');
+        return;
+    }
+    if (target === 'forest-map') {
+        void switchPage('forest-map');
+    }
+});
 
 function maybeSeedStarterCards() {
     if (!window.CardCollection || typeof window.CardCollection.addCard !== 'function') return;
@@ -2451,7 +2567,7 @@ function handleWordMemoryMapBridgeMessage(event) {
     renderReviewBattleBoard();
     if (typeof showToast === 'function') {
         const stars = Math.max(0, Math.floor(Number(payload.earnedStars) || 0));
-        showToast(`像素探险通关，本局已同步 ${points} 成长分，拿到 ${stars} 颗星，累计通关 ${progress.sessions} 张图`);
+        showToast(`单词跑酷通关，本局已同步 ${points} 成长分，拿到 ${stars} 颗星，累计通关 ${progress.sessions} 张图`);
     }
 }
 
@@ -2653,7 +2769,7 @@ function ensureWordMemoryMapEmbed() {
     if (frame.dataset.loaded === '1') return;
     if (status) {
         status.classList.remove('is-ready');
-        status.textContent = '正在加载像素探险...';
+        status.textContent = '正在加载单词跑酷...';
     }
     frame.addEventListener('load', function onLoad() {
         frame.dataset.loaded = '1';
@@ -2668,107 +2784,34 @@ function ensureWordMemoryMapEmbed() {
     frame.addEventListener('error', function onError() {
         if (status) {
             status.classList.remove('is-ready');
-            status.textContent = '加载失败，请检查像素探险原型的静态资源路径。';
+            status.textContent = '加载失败，请检查单词跑酷原型的静态资源路径。';
         }
         frame.removeEventListener('error', onError);
     });
     frame.src = src;
 }
 
-function setHomeExploreView(mode) {
-    const forestView = document.querySelector('.home-forest-map-view');
-    const pixelView = document.getElementById('homePixelWorldMapView');
-    const isForest = mode === 'forest';
-    if (forestView) forestView.hidden = !isForest;
-    if (pixelView) pixelView.hidden = isForest;
-}
-
-async function ensurePixelWorldRuntime() {
-    if (window.PixelStoryMap && window.PixelStoryEngine) return true;
-    if (!window.PetBankRuntime || typeof window.PetBankRuntime.ensurePage !== 'function') return false;
-    try {
-        await window.PetBankRuntime.ensurePage('explore');
-        return Boolean(window.PixelStoryMap && window.PixelStoryEngine);
-    } catch (error) {
-        console.warn('[app] pixel world runtime ensure failed:', error);
-        return false;
-    }
-}
-
-async function renderHomePixelWorldMap(trackId) {
-    const slot = document.getElementById('homePixelWorldMapSlot');
-    if (!slot) return;
-    slot.innerHTML = '<div class="home-pixel-world-map-status">正在接收像素世界地图信号…</div>';
-    const ready = await ensurePixelWorldRuntime();
-    if (!ready || activeHomeExploreMode === 'forest' || getActivePageId() !== 'map') {
-        if (!ready && activeHomeExploreMode !== 'forest') {
-            slot.innerHTML = '<div class="home-pixel-world-map-status is-error">地图信号暂时离线，请稍后再试。</div>';
-        }
-        return;
-    }
-    window.PixelStoryMap.render('homePixelWorldMapSlot', trackId);
-}
-
-async function renderHomeExploreMap() {
-    const pageMap = document.getElementById('page-map');
-    const board = document.getElementById('sceneGridMap');
-    if (!pageMap) return;
-    updateHomeExploreModeButtons(activeHomeExploreMode);
-    setHomeExploreView(activeHomeExploreMode);
-    if (activeHomeExploreMode !== 'forest') {
-        void renderHomePixelWorldMap(activeHomeExploreMode);
-        return;
-    }
-    if (!board || !window.ExplorationSystem) return;
+async function renderForestMapPage() {
+    const page = document.getElementById('page-forest-map');
+    const board = document.getElementById('forestMapSceneGrid');
+    if (!page || !board || !window.ExplorationSystem) return;
     try {
         await ExplorationSystem.loadScenes();
-        if (!pageMap.classList.contains('active')) return;
-        ExplorationSystem.renderSceneGridMap(null, 'sceneGridMap');
+        if (!page.classList.contains('active')) return;
+        ExplorationSystem.renderSceneGridMap(null, 'forestMapSceneGrid');
     } catch (error) {
-        console.warn('[app] home forest map render failed:', error);
-        board.innerHTML = '<div class="home-explore-map-fallback">森林探险地图暂时没有收到信号，请稍后重试。</div>';
+        console.warn('[app] forest map page render failed:', error);
+        board.innerHTML = '<div class="home-explore-map-fallback">森林冒险地图暂时没有收到信号，请稍后重试。</div>';
     }
 }
-
-function updateHomeExploreModeButtons(mode) {
-    document.querySelectorAll('[data-home-explore-mode]').forEach(function (button) {
-        const active = button.dataset.homeExploreMode === mode;
-        button.classList.toggle('is-active', active);
-        button.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-}
-
-function openHomeExploreMode(mode) {
-    const nextMode = ['forest', 'sci-fi', 'block', 'detective'].includes(mode) ? mode : 'forest';
-    updateHomeExploreModeButtons(nextMode);
-    activeExploreSceneId = null;
-    activeHomeExploreMode = nextMode;
-
-    if (nextMode === 'forest') {
-        if (getActivePageId() === 'map') void renderHomeExploreMap();
-        else void switchPage('map');
-        return;
-    }
-
-    if (nextMode === 'sci-fi' || nextMode === 'block') {
-        if (getActivePageId() === 'map') void renderHomeExploreMap();
-        else void switchPage('map');
-        return;
-    }
-
-    if (getActivePageId() === 'map') void renderHomeExploreMap();
-    else void switchPage('map');
-}
-
-window.openHomeExploreMode = openHomeExploreMode;
 
 function runPageActivation(page) {
-    if (page === 'map') void renderHomeExploreMap();
     if (page === 'parent') updateParentHomePage();
     if (page === 'works') renderGrowthWorksPage();
     if (page === 'pet') renderPetPage();
     if (page === 'walk') renderWalkPage();
     if (page === 'explore' && window.ExplorationSystem) void renderExplorePage();
+    if (page === 'forest-map' && window.ExplorationSystem) void renderForestMapPage();
     if (page === 'playground') renderPlaygroundProgressBoard();
     if (page === 'review') renderReviewBattleBoard();
     if (page === 'mathpk' && window.MathPKGame) MathPKGame.renderUI('math-pk-container');
@@ -3727,144 +3770,38 @@ function getExploreRescueCardHTML(petState) {
     `;
 }
 
-function getExploreMapShellHTML() {
-    return `
-        <div id="exploreLegacyContainer">
-            <div id="sceneGrid"></div>
-            <div id="petStoryCasePanel"></div>
-            <div id="spaceGrowthDetectiveContainer"></div>
-        </div>
-    `;
-}
-
-function ensureExploreMapShell() {
-    const pageExplore = document.getElementById('page-explore');
-    if (!pageExplore) return null;
-
-    let storyContainer = pageExplore.querySelector('#spaceGrowthDetectiveContainer');
-    if (storyContainer) return storyContainer;
-
-    const activeGalgame = pageExplore.querySelector('.galgame-stage')
-        && window.ExplorationDetail
-        && typeof ExplorationDetail.isActive === 'function'
-        && ExplorationDetail.isActive();
-    if (activeGalgame) return null;
-
-    pageExplore.innerHTML = getExploreMapShellHTML();
-    return pageExplore.querySelector('#spaceGrowthDetectiveContainer');
-}
-
-async function renderExplorePage(selectedSceneId = activeExploreSceneId) {
-    const pageExplore = document.getElementById('page-explore');
-
-    // 故事漫游是探索页默认入口。旧冒险路线只在用户明确选中场景时使用。
-    if (!selectedSceneId && pageExplore) {
-        const hasActiveGalgame = pageExplore.querySelector('.galgame-stage')
-            && window.ExplorationDetail
-            && typeof ExplorationDetail.isActive === 'function'
-            && ExplorationDetail.isActive();
-        const existingShell = pageExplore.querySelector('#pixelStoryShell');
-        if (existingShell) {
-            if (existingShell.dataset.mode === 'adventure'
-                && window.SpaceGrowthDetective
-                && typeof window.SpaceGrowthDetective.render === 'function'
-                && document.getElementById('adventureContainer')) {
-                await window.SpaceGrowthDetective.render('adventureContainer');
-                if (window.lucide) lucide.createIcons();
-            }
-            return;
-        }
-        if (hasActiveGalgame) return;
-        if (window.PixelStoryEngine && typeof window.PixelStoryEngine.render === 'function') {
-            await renderPixelStoryExplorePage();
-        }
+async function renderExplorePage(selectedSceneId) {
+    if (selectedSceneId === 'space-growth-detective') {
+        await renderPixelStoryExplorePage();
+        await switchExploreToAdventure();
         return;
     }
-
-    const storyContainer = ensureExploreMapShell();
-    if (!storyContainer) return;
-
-    if (window.SpaceGrowthDetective && typeof window.SpaceGrowthDetective.render === 'function') {
-        await window.SpaceGrowthDetective.render(storyContainer.id);
-        if (window.lucide) lucide.createIcons();
-        return;
-    }
-
-    const grid = storyContainer;
-
-    // 宠物小屋 R5 渲染层兜底（F1 第二道）：hp<=0 且已选宠 → 探索页不渲染场景网格
-    if (window.PetSystem) {
-        try {
-            const s = PetSystem.getState();
-            if (s.species && s.hp <= 0) {
-                grid.innerHTML = getExploreRescueCardHTML(s);
-                return;
-            }
-        } catch (e) {}
-    }
-    await ExplorationSystem.loadScenes();
-    // 探索 tab 复用首页路线地图（MAP_LAYOUT 坐标 + SVG 连线 + 点击 goExplore），渲染到 #sceneGrid
-    ExplorationSystem.renderSceneGridMap(selectedSceneId, 'sceneGrid');
-    if (window.PetStoryCases && typeof PetStoryCases.render === 'function') {
-        await PetStoryCases.render('petStoryCasePanel');
-    }
-    if (window.SpaceGrowthDetective && typeof window.SpaceGrowthDetective.render === 'function') {
-        await window.SpaceGrowthDetective.render('spaceGrowthDetectiveContainer');
-    }
-    if (window.lucide) lucide.createIcons();
-}
-
-/** 像素故事探索页（默认主模式） */
-async function renderPixelStoryExplorePage(preferredTrackId = 'sci-fi') {
-    const pageExplore = document.getElementById('page-explore');
-    if (!pageExplore) return;
-
-    if (pageExplore.querySelector('.galgame-stage') && window.ExplorationDetail
-        && typeof ExplorationDetail.isActive === 'function' && ExplorationDetail.isActive()) {
-        return;
-    }
-
-    const existing = pageExplore.querySelector('#pixelStoryShell');
-    if (existing && existing.dataset.mode === 'story') {
-        if (window.PixelStoryEngine && typeof window.PixelStoryEngine.setPreferredTrack === 'function') {
-            window.PixelStoryEngine.setPreferredTrack(preferredTrackId);
-        }
-        return;
-    }
-
-    pageExplore.innerHTML =
-        '<div class="pixel-story-shell" id="pixelStoryShell" data-mode="story" data-view="map">' +
-        '  <div class="pixel-story-map-slot" id="pixelStoryMapContainer"></div>' +
-        '</div>';
-
-    if (window.PixelStoryEngine && typeof window.PixelStoryEngine.render === 'function') {
-        await window.PixelStoryEngine.render('pixelStoryMapContainer', preferredTrackId);
-    }
-
-    if (window.lucide) lucide.createIcons();
-}
-
-function switchExploreToAdventure() {
-    var shell = document.getElementById('pixelStoryShell');
-    if (!shell) return;
-    shell.dataset.mode = 'adventure';
-    shell.innerHTML =
-        '<div class="pixel-story-modebar" role="tablist" aria-label="探索模式">' +
-        '  <button class="pixel-story-mode" data-explore-mode="story" role="tab" aria-selected="false"><span aria-hidden="true"><i data-lucide="book-open"></i></span><strong>故事漫游</strong><small>读一段，学一点</small></button>' +
-        '  <button class="pixel-story-mode is-active" data-explore-mode="adventure" role="tab" aria-selected="true"><span aria-hidden="true"><i data-lucide="compass"></i></span><strong>冒险挑战</strong><small>选路线，赢奖励</small></button>' +
-        '</div>' +
-        '<div id="adventureContainer"></div>';
-
-    shell.querySelectorAll('[data-explore-mode]').forEach(function (tab) {
-        tab.addEventListener('click', function () {
-            if (this.dataset.exploreMode === 'story') void renderPixelStoryExplorePage();
+    if (selectedSceneId && window.ExplorationDetail && typeof window.ExplorationDetail.show === 'function') {
+        await window.ExplorationDetail.show(selectedSceneId, {
+            hostId: 'explorationStageRoot',
+            returnTarget: 'explore-story-map'
         });
-    });
-
-    if (window.SpaceGrowthDetective && typeof SpaceGrowthDetective.render === 'function') {
-        SpaceGrowthDetective.render('adventureContainer');
+        return;
     }
-    if (window.lucide) lucide.createIcons();
+    const shell = document.getElementById('pixelStoryShell');
+    if (shell?.dataset.mode === 'adventure' && window.PixelStoryPage
+        && typeof window.PixelStoryPage.showAdventure === 'function') {
+        await window.PixelStoryPage.showAdventure();
+        return;
+    }
+    await renderPixelStoryExplorePage();
+}
+
+async function renderPixelStoryExplorePage(preferredTrackId = 'sci-fi') {
+    if (!window.PixelStoryPage || typeof window.PixelStoryPage.activate !== 'function') return;
+    await window.PixelStoryPage.activate({ preferredTrackId });
+}
+
+async function switchExploreToAdventure() {
+    if (window.PixelStoryPage && typeof window.PixelStoryPage.showAdventure === 'function') {
+        return window.PixelStoryPage.showAdventure();
+    }
+    return false;
 }
 
 function focusExploreScene(sceneId) {
@@ -3874,13 +3811,19 @@ function focusExploreScene(sceneId) {
 
 function startExplorationUI(sceneId) {
     activeExploreSceneId = sceneId;
+    if (window.ExplorationDetail && typeof window.ExplorationDetail.show === 'function') {
+        void window.ExplorationDetail.show(sceneId, {
+            hostId: 'explorationStageRoot',
+            returnTarget: 'forest-map'
+        });
+        return;
+    }
     void renderExplorePage(sceneId);
 }
 
 window.focusExploreScene = focusExploreScene;
 window.startExplorationUI = startExplorationUI;
 window.renderExplorePage = renderExplorePage;
-window.ensureExploreMapShell = ensureExploreMapShell;
 window.switchExploreToAdventure = switchExploreToAdventure;
 function darken(hex, percent) {
     const num = parseInt(hex.replace('#', ''), 16);
@@ -4565,6 +4508,7 @@ function renderAll() {
     updateStats();
     updateHomeDemoSummary();
     renderGrowthStickerReport();
+    renderScheduledCheckins();
     renderReviewBattleBoard();
     if (activePage === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
         void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
@@ -4573,7 +4517,6 @@ function renderAll() {
     renderInventoryPage();
     if (activePage === 'explore' && window.ExplorationSystem) void renderExplorePage();
     if (activePage === 'playground') renderPlaygroundProgressBoard();
-    if (activePage === 'map') void renderHomeExploreMap();
     if (activePage === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (activePage === 'works') renderGrowthWorksPage();
     if (window.lucide) lucide.createIcons();
@@ -4608,10 +4551,13 @@ window.saveGrowthWork = saveGrowthWork;
 window.removeGrowthWork = removeGrowthWork;
 window.renderAll = renderAll;
 window.saveAppState = saveAppState;
+window.completeScheduledCheckin = completeScheduledCheckin;
 
 // ============ 初始化 ============
 async function init() {
     const initialRoute = resolveRouteFromLocation(window.location);
+    if (initialRoute.page === 'explore' || initialRoute.page === 'forest-map') document.body.classList.add('app-loading-explore');
+    if (initialRoute.page === 'forest-map') document.body.classList.add('app-loading-forest-map');
     if (initialRoute.page === 'settings') {
         activeSettingsSection = normalizeSettingsSection(initialRoute.settingsSection);
     }
@@ -4641,10 +4587,13 @@ async function init() {
     renderAll();
     // 初始化宝箱系统
     if (window.TreasureChest) TreasureChest.init();
-    switchPage(initialRoute.page, {
+    await switchPage(initialRoute.page, {
         settingsSection: initialRoute.settingsSection,
         replace: true
     });
+    document.body.classList.add('app-ready');
+    document.body.classList.remove('app-loading-explore');
+    document.body.classList.remove('app-loading-forest-map');
     if (window.lucide) lucide.createIcons();
 }
 

@@ -9,6 +9,7 @@ const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 const app = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
 const map = fs.readFileSync(path.join(root, 'js', 'pixel-story-map.js'), 'utf8');
 const engine = fs.readFileSync(path.join(root, 'js', 'pixel-story-engine.js'), 'utf8');
+const storyPage = fs.readFileSync(path.join(root, 'js', 'pixel-story-page.js'), 'utf8');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
 assert.equal(manifest.id, 'pixel-worlds-story');
@@ -63,8 +64,10 @@ for (const node of manifest.bonusTracks[0].nodes) {
   assert.ok(node.icon && fs.existsSync(path.join(root, node.icon)), `${node.levelId}: detective icon exists`);
   assert.ok(Array.isArray(node.actions) && node.actions.length >= 2, `${node.levelId}: detective actions`);
 }
-assert.match(index, /data-home-explore-mode="block"/);
-assert.match(app, /openHomeExploreMode/);
+assert.doesNotMatch(index, /data-home-explore-mode=/, 'home should not embed pixel world mode buttons');
+assert.doesNotMatch(index, /id="homePixelWorldMapSlot"/, 'home should not embed the pixel world map');
+assert.match(app, /function renderPixelStoryExplorePage\(/);
+assert.match(storyPage, /pixelStoryMapHost/);
 assert.match(app, /block/);
 assert.match(map, /worlds/);
 assert.match(engine, /line\.type === 'activity'/);

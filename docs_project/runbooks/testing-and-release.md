@@ -1,6 +1,6 @@
 # 运行与验证入口
 
-> 当前基线：2026-07-13。测试文件是否存在、回归顺序和 Pages 门禁以代码脚本和 workflow 为准；本文件只描述怎么选入口。
+> 当前基线：2026-07-18。测试文件是否存在、回归顺序和 Pages 门禁以代码脚本和 workflow 为准；本文件只描述怎么选入口。
 
 ## 1. 本地启动
 
@@ -29,6 +29,8 @@ python scripts/convert-runtime-audio-variants.py --check
 node scripts/test-regression-runner-integrity.mjs
 node scripts/test-no-legacy-account-runtime.mjs
 node scripts/test-static-route-entries.mjs
+node scripts/test-home-explore-dom-ownership.mjs
+node scripts/test-explore-deep-route-browser.mjs
 node prj/runtime_loader_route_base_contract.test.mjs
 node prj/route_aware_shell_contract.test.mjs
 node prj/profile_isolation_journey_simulation.mjs
@@ -47,7 +49,7 @@ runner 会：
 
 1. 先检查 `PETBANK_BASE_URL/index.html` 可访问。
 2. 按 `scripts/run-full-regression.mjs` 中的 `TASKS` 顺序执行。
-3. 每项使用 `PETBANK_REGRESSION_TASK_TIMEOUT_MS`（默认 120 秒）超时控制。
+3. 每项使用 `PETBANK_REGRESSION_TASK_TIMEOUT_MS`（默认 120 秒）超时控制；家长账号浏览器旅程在资源较慢的本机环境可能需要临时设置为 `240000`，超时后应单独重跑确认。
 4. 首个失败即停止并报告任务名；不要只看最后一行。
 
 runner 是当前回归清单的唯一来源。新增测试后要么接入 runner，要么在对应专项 runbook 记录；不要手工复制一份长期清单到文档。
@@ -64,7 +66,9 @@ runner 是当前回归清单的唯一来源。新增测试后要么接入 runner
 | 首页/孩子主线/复盘 | `node scripts/test-child-journey-home.mjs`、`node scripts/test-child-journey-feedback.mjs`、`node prj/growth_review_insights_contract.test.mjs` |
 | 宠物/照料/成长 | `node scripts/test-pet-care-daily-state.mjs`、`node scripts/test-pet-growth-feedback.mjs`、`node scripts/test-pet-growth-history.mjs` |
 | 路由/深层页面 | `node scripts/test-static-route-entries.mjs`、`node prj/route_aware_shell_contract.test.mjs`、`node scripts/test-playground-entry-shell.mjs` |
+| 首页/探索页面解耦 | `node scripts/test-home-explore-dom-ownership.mjs`、`node scripts/test-home-explore-layout.mjs`、`node scripts/test-exploration-return-target-browser.mjs`、`node scripts/test-explore-deep-route-browser.mjs` |
 | 学习中心 | `node scripts/learning-center-smoke.mjs` |
+| Minecraft 单词远征营地 | `node scripts/test-minecraft-expedition-contract.mjs`、启动静态服务后 `node scripts/test-minecraft-expedition-browser.mjs` |
 | 独立小游戏 | 对应原型目录的 `verify.mjs`/simulation，以及 runner 中的同名任务 |
 | Pages 资源/发布 | fast gate + `python scripts/convert-runtime-image-variants.py --check` + `python scripts/convert-runtime-audio-variants.py --check` + `node scripts/assemble-pages-artifact.mjs _site_verify` |
 | 自托管后端 | `node --test prj/petbank-server/test/*.test.mjs` |

@@ -55,16 +55,15 @@ try {
     const afterNextCalls = await page.evaluate(() => window.__pixelStoryAudioCalls || []);
     assert.equal(afterNextCalls.length, 2, `one dialogue click must add exactly one audio, got ${JSON.stringify(afterNextCalls)}`);
 
-    await page.evaluate(async () => {
-        await window.switchPage('map');
-        window.openHomeExploreMode('sci-fi');
-    });
-    await page.waitForSelector('#homePixelWorldMapSlot .pixel-story-node', { state: 'attached', timeout: 20000 });
-    await page.locator('#homePixelWorldMapSlot .pixel-story-node').first().click();
+    await page.locator('#pixelStoryBack').click();
+    await page.waitForSelector('#pixelStoryMapContainer .pixel-story-node', { state: 'attached', timeout: 20000 });
+    await page.evaluate(async () => { await window.switchPage('explore'); });
+    await page.waitForSelector('#pixelStoryMapContainer .pixel-story-node', { state: 'attached', timeout: 20000 });
+    await page.locator('#pixelStoryMapContainer .pixel-story-node').first().click();
     await page.waitForSelector('.pixel-story-stage', { state: 'visible', timeout: 20000 });
     const homeCalls = await page.evaluate(() => window.__pixelStoryAudioCalls || []);
-    assert.equal(homeCalls.length, 3, `home map entry plus one click must add two current-line audios, got ${JSON.stringify(homeCalls)}`);
-    assert.ok(homeCalls.every((src) => src.startsWith('tts:') || src.includes('/lines/')), `home map must not play whole-chapter audio: ${JSON.stringify(homeCalls)}`);
+    assert.equal(homeCalls.length, 3, `returning to the story map plus one click must add two current-line audios, got ${JSON.stringify(homeCalls)}`);
+    assert.ok(homeCalls.every((src) => src.startsWith('tts:') || src.includes('/lines/')), `story map must not play whole-chapter audio: ${JSON.stringify(homeCalls)}`);
     console.log(JSON.stringify({ audioCalls: homeCalls }));
 } finally {
     await browser.close();
