@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "camp": {
+    "id": "minecraft-camp",
+    "title": "方块营地",
+    "subtitle": "从篝火出发，收集你的第一册单词卡"
+  },
+  "regions": [
+    {
+      "id": "grassland-trail",
+      "title": "草原小径",
+      "subtitle": "沿着河流找到村庄",
+      "icon": "🌾",
+      "status": "available",
+      "prerequisiteRegionIds": [],
+      "missions": [
+        {
+          "id": "grassland-first-steps",
+          "title": "点亮草原路牌",
+          "cardIds": ["mc-word-block", "mc-word-world", "mc-word-stone", "mc-word-light"],
+          "reward": {"rewardId": "minecraft-expedition-grassland-stamp", "points": 3, "collectionItem": "grassland-stamp"}
+        }
+      ]
+    },
+    {
+      "id": "mineshaft-entrance",
+      "title": "矿洞入口",
+      "subtitle": "带上工具，发现闪亮的矿石",
+      "icon": "⛏️",
+      "status": "locked",
+      "prerequisiteRegionIds": ["grassland-trail"],
+      "missions": [
+        {
+          "id": "mineshaft-light-the-way",
+          "title": "火把照亮矿洞",
+          "cardIds": ["mc-word-sword", "mc-word-pickaxe", "mc-word-diamond", "mc-word-creeper"],
+          "reward": {"rewardId": "minecraft-expedition-mineshaft-stamp", "points": 4, "collectionItem": "mineshaft-stamp"}
+        }
+      ]
+    },
+    {
+      "id": "broken-bridge-cove",
+      "title": "断桥河湾",
+      "subtitle": "让伙伴和你一起跨过小河",
+      "icon": "🌉",
+      "status": "locked",
+      "prerequisiteRegionIds": ["mineshaft-entrance"],
+      "missions": [
+        {
+          "id": "broken-bridge-crossing",
+          "title": "修好通往村庄的桥",
+          "cardIds": ["mc-word-house", "mc-word-tree", "anki-mc-0927-grass", "mc-word-water"],
+          "reward": {"rewardId": "minecraft-expedition-bridge-stamp", "points": 5, "collectionItem": "bridge-stamp"}
+        }
+      ]
+    }
+  ],
+  "collection": {
+    "id": "word-card-collection",
+    "title": "词语收藏册",
+    "description": "每完成一个节点，就为收藏册点亮一枚区域印章。"
+  }
+}

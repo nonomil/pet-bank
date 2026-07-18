@@ -4,7 +4,13 @@ body.learn-mode .minecraft-vocab-page {
     color: #1e2d31;
 }
 
+body.learn-mode .main-content:has(> #page-minecraft-vocab.active) {
+    width: 100%;
+}
+
 .minecraft-vocab-page {
+    width: 100%;
+    min-width: 0;
     --mv-green: #3b7d5b;
     --mv-green-dark: #22543e;
     --mv-blue: #287aa5;
@@ -759,6 +765,63 @@ body.learn-mode .minecraft-vocab-page {
     gap: 18px;
 }
 
+.mv-camp-map {
+    display: grid;
+    gap: 16px;
+    padding: 20px;
+    border: 1px solid #d9c18f;
+    border-radius: 22px;
+    background: linear-gradient(135deg, rgba(255, 250, 233, .98), rgba(236, 246, 231, .96));
+    box-shadow: 0 12px 24px rgba(88, 67, 35, .09);
+}
+
+.mv-camp-map-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.mv-camp-map-heading h2 { margin: 5px 0 3px; color: #345743; font-size: 24px; }
+.mv-camp-map-heading p { margin: 0; color: #718273; font-size: 13px; }
+.mv-camp-map-progress { padding: 8px 11px; border-radius: 999px; background: #fff; color: #8a651f; font-size: 12px; font-weight: 900; white-space: nowrap; }
+
+.mv-region-route {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+    gap: 8px;
+}
+
+.mv-region-node {
+    display: grid;
+    min-width: 0;
+    min-height: 166px;
+    align-content: start;
+    gap: 5px;
+    padding: 12px 10px;
+    border: 1px solid #d8dfce;
+    border-radius: 17px;
+    background: rgba(255, 255, 255, .9);
+    color: #314b39;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.mv-region-node:hover, .mv-region-node:focus-visible { border-color: #6ca276; box-shadow: 0 8px 16px rgba(76, 112, 76, .16); transform: translateY(-2px); outline: none; }
+.mv-region-node.is-locked { cursor: not-allowed; opacity: .58; background: rgba(239, 239, 232, .7); }
+.mv-region-node.is-cleared { border-color: #78aa75; background: #f1faed; }
+.mv-region-node-number { display: inline-flex; width: 25px; height: 25px; align-items: center; justify-content: center; border-radius: 8px; background: #eef4e8; color: #4f8b5d; font-size: 12px; font-weight: 900; }
+.mv-region-node-icon { font-size: 28px; line-height: 1.1; }
+.mv-region-node strong { overflow-wrap: anywhere; font-size: 15px; }
+.mv-region-node small, .mv-region-node em { color: #839184; font-size: 11px; line-height: 1.4; }
+.mv-region-node em { margin-top: auto; font-style: normal; font-weight: 800; }
+.mv-region-path { color: #c08b3e; font-size: 20px; text-align: center; }
+.mv-collection-strip { display: flex; align-items: center; gap: 12px; padding-top: 12px; border-top: 1px solid rgba(210, 194, 153, .7); color: #765d2b; font-size: 13px; }
+.mv-collection-strip strong { margin-left: auto; color: #4f8b5d; }
+.mv-collection-strip small { color: #8a968b; }
+
 .mv-hero-compact {
     min-height: 300px;
 }
@@ -858,6 +921,52 @@ body.learn-mode .minecraft-vocab-page {
     min-width: 0;
 }
 
+.mv-session-main {
+    display: block;
+}
+
+.mv-session-main .mv-learning-column {
+    width: min(760px, 100%);
+    margin: 0 auto;
+}
+
+.mv-progress-toggle {
+    cursor: pointer;
+}
+
+.mv-progress-toggle small {
+    color: #8a651f;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.mv-progress-panel {
+    display: grid;
+    gap: 14px;
+    margin: 0 22px 18px;
+    padding: 16px;
+    border: 1px solid #e4d7b7;
+    border-radius: 16px;
+    background: rgba(255, 252, 245, .98);
+    box-shadow: 0 8px 18px rgba(88, 67, 35, .08);
+}
+
+.mv-progress-panel[data-open="false"] {
+    display: none;
+}
+
+.mv-progress-panel[data-open="true"] {
+    display: grid;
+}
+
+.mv-progress-panel .mv-sidebar-stages {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
 @media (max-width: 900px) {
     .mv-playground-layout {
         grid-template-columns: minmax(215px, 255px) minmax(0, 1fr);
@@ -880,6 +989,9 @@ body.learn-mode .minecraft-vocab-page {
     .mv-card-preview-art {
         max-width: 220px;
     }
+
+    .mv-region-route { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .mv-region-path { display: none; }
 }
 
 @media (max-width: 760px) {
@@ -909,6 +1021,10 @@ body.learn-mode .minecraft-vocab-page {
         display: none;
     }
 
+    .mv-progress-panel {
+        margin: 0 14px 14px;
+    }
+
     .mv-hero-compact {
         min-height: 410px;
     }
@@ -924,6 +1040,17 @@ body.learn-mode .minecraft-vocab-page {
     .mv-card-preview-art {
         max-width: none;
     }
+
+    .mv-camp-map { padding: 14px; }
+    .mv-camp-map-heading { display: grid; }
+    .mv-region-route { grid-template-columns: 1fr; }
+    .mv-region-node { min-height: 96px; grid-template-columns: auto 1fr; align-items: center; column-gap: 10px; }
+    .mv-region-node-number { grid-row: span 2; }
+    .mv-region-node-icon { grid-column: 2; grid-row: 1; font-size: 21px; }
+    .mv-region-node strong { grid-column: 2; grid-row: 2; }
+    .mv-region-node small, .mv-region-node em { grid-column: 2; }
+    .mv-collection-strip { display: grid; gap: 5px; }
+    .mv-collection-strip strong { margin-left: 0; }
 }
 
 /* Flashcard surface: image first, word second, sentence on the reverse. */
@@ -1004,6 +1131,25 @@ body.learn-mode .minecraft-vocab-page {
     background: #fffaf0;
 }
 
+.mv-card-back-art {
+    display: flex;
+    width: calc(100% - 36px);
+    height: 178px;
+    margin: 0 18px 2px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid #e5d9b5;
+    border-radius: 16px;
+    background: #fff8df;
+}
+
+.mv-card-back-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .mv-card-face-top {
     display: flex;
     align-items: center;
@@ -1078,7 +1224,9 @@ body.learn-mode .minecraft-vocab-page {
     color: #27422f;
     font-size: clamp(30px, 4vw, 48px);
     line-height: 1;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
 }
 
 .mv-card-phonetic {
@@ -1283,7 +1431,9 @@ body.learn-mode .minecraft-vocab-page {
 .mv-upcoming-card strong,
 .mv-upcoming-card small {
     min-width: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
 }
 
 .mv-upcoming-card strong {
@@ -1343,10 +1493,58 @@ body.learn-mode .minecraft-vocab-page {
     }
 
     .mv-card-front .mv-card-art {
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .mv-card-back-art {
         width: calc(100% - 28px);
         margin-right: 14px;
         margin-left: 14px;
-        padding: 16px;
+    }
+}
+
+/* Keep the main card readable; preview cards are a horizontal rail below it. */
+@media (min-width: 761px) {
+    .mv-card-rack {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mv-upcoming-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .mv-upcoming-card {
+        grid-template-columns: minmax(0, 1fr);
+        align-content: start;
+        min-height: 178px;
+        padding: 10px 14px;
+    }
+
+    .mv-upcoming-art {
+        grid-row: auto;
+        width: 100%;
+        height: 84px;
+        aspect-ratio: auto;
+    }
+
+    .mv-upcoming-card strong {
+        padding-right: 24px;
+        font-size: 18px;
+        line-height: 1.2;
+    }
+
+    .mv-card-word-row strong {
+        flex: 1 1 100%;
+        font-size: clamp(28px, 3vw, 42px);
+    }
+
+    .mv-card-word-row,
+    .mv-card-back-word {
+        align-items: flex-start;
+        flex-wrap: wrap;
     }
 }
 

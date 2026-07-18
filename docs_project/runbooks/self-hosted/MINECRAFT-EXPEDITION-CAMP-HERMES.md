@@ -1,0 +1,62 @@
+# Minecraft 单词远征营地 Hermes 验收手册
+
+这份手册给 Hermes 或其他自动化部署代理使用。它描述当前已经实现的第一版营地闭环，不代表完整 Minecraft 游戏或完整 Anki 工作台已经迁移到主站。
+
+## 当前实现边界
+
+- 主站入口仍是孩子端 `学习` tab → `Minecraft 单词远征`。
+- 营地地图数据在 `data/learn/minecraft-expedition/camp-regions.json`。
+- Profile 隔离状态由 `js/minecraft-vocab-expedition.js` 写入 `petbank_minecraft_expedition_state_v1_{profileId}`。
+- 词卡、图片、发音、短语、例句继续由 `minecraft-vocab-page.js`、`minecraft-vocab-session.js` 和现有英语词库提供。
+- 积分必须继续经过 `GameRewardReceipts` / `PetBankPoints`；不要新增营地积分账本。
+- `docs/` 中的调研截图和生图参考只用于设计审查，不得复制到发布目录。
+
+## 发布前检查
+
+在仓库根目录执行：
+
+```powershell
+node scripts/test-minecraft-expedition-contract.mjs
+node scripts/test-minecraft-vocab-session.mjs
+node scripts/test-minecraft-vocab-card-completeness.mjs
+node scripts/test-minecraft-vocab-narration.mjs
+node scripts/test-static-route-entries.mjs
+node scripts/test-pages-fast-gate-contract.mjs
+node scripts/assemble-pages-artifact.mjs _site_verify
+git diff --check
+```
+
+需要本地浏览器时：
+
+```powershell
+node scripts/local-server.mjs
+node scripts/test-minecraft-expedition-browser.mjs
+node scripts/test-minecraft-vocab-browser.mjs
+```
+
+浏览器验收必须确认：桌面横屏显示营地路线和多张后续卡，手机竖屏节点与词卡单列显示，点击词卡可以翻转，六种中英文音频按钮存在，完成草原小径后矿洞入口解锁，重复进入不重复加分。
+
+## Pages 制品验收
+
+只部署组装后的制品：
+
+```powershell
+node scripts/assemble-pages-artifact.mjs site
+```
+
+Nginx 或静态服务器根目录必须指向 release 下的 `site`，不能指向仓库根目录。上线前检查：
+
+```bash
+curl --fail https://<domain>/app/learn/minecraft-vocab/
+curl --fail https://<domain>/data/learn/minecraft-expedition/camp-regions.json
+curl --fail https://<domain>/js/minecraft-vocab-expedition.js
+```
+
+若任一资源失败，不切换 `current`，保留旧 release 并回滚。不要把完整 Anki 原始素材目录、`docs/`、真实 token 或测试截图发布到站点。
+
+## 回滚与数据说明
+
+- 静态资源回滚：切回上一 release 的 `current` symlink。
+- 本次没有新增数据库 migration。
+- 孩子端状态是本地 Profile 快照；回滚代码后旧的 `petbank_minecraft_expedition_state_v1_*` 应安全保留，旧版本不识别时不会影响积分和其他学习记录。
+- 如果营地奖励重复或状态异常，先保留浏览器 localStorage 导出与 receipt 记录，再处理，不得直接清空整个 Profile。

@@ -39,6 +39,9 @@
     let mounted = false;
     let root = null;
     let module = null;
+    let expedition = null;
+    let expeditionState = null;
+    let selectedRegionId = '';
     let state = null;
     let view = 'home';
     let revealed = false;
@@ -46,6 +49,7 @@
     let feedback = '';
     let rewardResult = null;
     let audio = null;
+    let progressOpen = false;
 
     function escapeHtml(value) {
         return String(value ?? '')
@@ -72,6 +76,28 @@
         return Array.isArray(module?.cards) ? module.cards : [];
     }
 
+    function regionList() {
+        return Array.isArray(expedition?.regions) ? expedition.regions : [];
+    }
+
+    function regionForId(regionId) {
+        return regionList().find(region => region.id === regionId) || null;
+    }
+
+    function missionForRegion(regionId) {
+        return regionForId(regionId)?.missions?.[0] || null;
+    }
+
+    function cardsForRegion(regionId) {
+        const mission = missionForRegion(regionId);
+        const ids = new Set(mission?.cardIds || []);
+        return cards().filter(card => ids.has(card.id));
+    }
+
+    function activeQueueCards() {
+        return selectedRegionId ? cardsForRegion(selectedRegionId) : cards();
+    }
+
     function progressApi() {
         return global.EnglishVocabProgress || null;
     }
@@ -89,8 +115,23 @@
         return state?.queue?.find(item => !state.completed.includes(item.cardId)) || null;
     }
 
+    function currentRegion() {
+        return regionForId(selectedRegionId || state?.regionId || '');
+    }
+
+    function resolveDataUrl(path) {
+        return global.PetBankRuntime && typeof global.PetBankRuntime.resolveAssetUrl === 'function'
+            ? global.PetBankRuntime.resolveAssetUrl(path)
+            : path;
+    }
+
     function cardImage(card) {
         const image = String(card?.image || '');
+        return /^(?:assets|prj\/anki-minecraft-vocab)\//.test(image) ? asset(image) : '';
+    }
+
+    function cardBackImage(card) {
+        const image = String(card?.backImage || '');
         return /^(?:assets|prj\/anki-minecraft-vocab)\//.test(image) ? asset(image) : '';
     }
 
@@ -182,6 +223,7 @@
     }
 
     function renderHeader(title, kicker = '学习 / Minecraft 单词') {
+        const isSessionHeader = view === 'session';
         return `
             <header class="minecraft-vocab-header">
                 <button class="mv-icon-button" type="button" data-mv-back aria-label="返回学习中心" title="返回学习中心"><i data-lucide="arrow-left" aria-hidden="true"></i></button>
@@ -189,10 +231,14 @@
                     <span class="mv-eyebrow">${escapeHtml(kicker)}</span>
                     <h1>${escapeHtml(title)}</h1>
                 </div>
-                <div class="mv-points-badge" aria-label="今日完成任务">
+                ${isSessionHeader ? `<button class="mv-points-badge mv-progress-toggle" type="button" data-mv-toggle-progress aria-expanded="${progressOpen ? 'true' : 'false'}" aria-controls="mvProgressPanel" aria-label="查看今日学习进度">
                     <i data-lucide="sparkles" aria-hidden="true"></i>
-                    <span data-mv-progress>${completedCount()} / 11</span>
-                </div>
+                    <span data-mv-progress>${completedCount()} / ${state?.queue?.length || 11}</span>
+                    <small>进度</small>
+                </button>` : `<div class="mv-points-badge" aria-label="今日完成任务">
+                    <i data-lucide="sparkles" aria-hidden="true"></i>
+                    <span data-mv-progress>${completedCount()} / ${state?.queue?.length || 11}</span>
+                </div>`}
             </header>
         `;
     }
@@ -267,6 +313,47 @@
         `;
     }
 
+    function renderProgressPanel(currentStats = stats()) {
+        const totalTasks = state?.queue?.length || 11;
+        const done = completedCount();
+        const percent = totalTasks ? Math.round((done / totalTasks) * 100) : 0;
+        const current = currentTask();
+        const currentStage = current ? stageLabel(current.mode) : '今日远征已完成';
+        const stageSteps = [
+            { key: 'warmup', label: '热身复习', detail: '唤醒熟悉的词', limit: 2 },
+            { key: 'new', label: '新词矿洞', detail: '认识 5 个新词', limit: 7 },
+            { key: 'recall', label: '回忆桥', detail: '主动说出英文', limit: 10 },
+            { key: 'scene', label: '村庄对话', detail: '把词放进句子', limit: 11 }
+        ];
+        return `
+            <section class="mv-progress-panel" id="mvProgressPanel" data-mv-progress-panel data-open="${progressOpen ? 'true' : 'false'}" aria-label="学习进度详情">
+                <div class="mv-sidebar-heading">
+                    <div><span class="mv-sidebar-kicker">今日远征</span><h2>学习进度</h2></div>
+                    <span class="mv-sidebar-streak" title="今日完成任务"><i data-lucide="flame" aria-hidden="true"></i>${done}</span>
+                </div>
+                <div class="mv-progress-meter" style="--mv-progress: ${percent}%"><strong>${percent}%</strong><span>完成今日路线</span></div>
+                <div class="mv-progress-count"><strong>${done}</strong><span>/ ${totalTasks} 张卡片</span></div>
+                <div class="mv-current-stage"><span>现在进行</span><strong>${escapeHtml(currentStage)}</strong></div>
+                <ol class="mv-sidebar-stages">
+                    ${stageSteps.map(stage => {
+                        const isDone = done >= stage.limit;
+                        const isActive = !isDone && (stage.limit === 2 || done >= stage.limit - (stage.key === 'new' ? 5 : stage.key === 'recall' ? 3 : 1));
+                        return `<li class="${isDone ? 'is-done' : ''}${isActive ? ' is-active' : ''}">
+                            <span class="mv-sidebar-stage-icon" style="--mv-stage-icon: ${escapeHtml(cssImage(STAGE_BADGE_IMAGES[stage.key]))}">${isDone ? '<i data-lucide="check" aria-hidden="true"></i>' : ''}</span>
+                            <span><strong>${stage.label}</strong><small>${stage.detail}</small></span>
+                            <em>${isDone ? '完成' : `${Math.min(done, stage.limit)}/${stage.limit}`}</em>
+                        </li>`;
+                    }).join('')}
+                </ol>
+                <div class="mv-sidebar-stats">
+                    <div><span>词库</span><strong>${Number(currentStats.total || 0).toLocaleString('zh-CN')}</strong></div>
+                    <div><span>已掌握</span><strong>${Number(currentStats.mastered || 0).toLocaleString('zh-CN')}</strong></div>
+                    <div><span>今日奖励</span><strong>+10</strong></div>
+                </div>
+            </section>
+        `;
+    }
+
     function renderCardPreview(card) {
         if (!card) return '<div class="mv-card-preview-empty">准备下一张词卡...</div>';
         return `
@@ -279,6 +366,27 @@
                     <span class="mv-card-preview-note"><i data-lucide="volume-2" aria-hidden="true"></i>可听发音 · 可看短语 · 可练场景句</span>
                 </div>
             </article>
+        `;
+    }
+
+    function renderCampMap() {
+        const summary = global.MinecraftVocabExpedition?.getSummary(expeditionState) || { cleared: 0, total: regionList().length, percent: 0 };
+        return `
+            <section class="mv-camp-map" aria-labelledby="mvCampMapTitle">
+                <div class="mv-camp-map-heading"><div><span class="mv-kicker">冒险地图</span><h2 id="mvCampMapTitle">${escapeHtml(expedition?.camp?.title || '方块营地')}</h2><p>${escapeHtml(expedition?.camp?.subtitle || '')}</p></div><span class="mv-camp-map-progress">${summary.cleared}/${summary.total} 区域</span></div>
+                <div class="mv-region-route">
+                    ${regionList().map((region, index) => {
+                        const status = global.MinecraftVocabExpedition?.getRegionState(expeditionState, region.id) || 'locked';
+                        const mission = region.missions?.[0];
+                        const isCleared = status === 'cleared';
+                        const isAvailable = status === 'available' || status === 'active';
+                        return `<button class="mv-region-node is-${escapeHtml(status)}" type="button" data-mv-region="${escapeHtml(region.id)}" ${status === 'locked' ? 'disabled' : ''} aria-label="${escapeHtml(region.title)}，${escapeHtml(status === 'locked' ? '未解锁' : isCleared ? '已完成' : '可以进入')}">
+                            <span class="mv-region-node-number">${isCleared ? '✓' : index + 1}</span><span class="mv-region-node-icon">${escapeHtml(region.icon || '◆')}</span><strong>${escapeHtml(region.title)}</strong><small>${escapeHtml(region.subtitle || '')}</small><em>${isCleared ? '已点亮' : status === 'locked' ? '完成前置后解锁' : `${mission?.cardIds?.length || 0} 张词卡`}</em>
+                        </button>${index < regionList().length - 1 ? '<span class="mv-region-path" aria-hidden="true">➜</span>' : ''}`;
+                    }).join('')}
+                </div>
+                <div class="mv-collection-strip"><span>📖 ${escapeHtml(expedition?.collection?.title || '词语收藏册')}</span><strong>${summary.percent}% 点亮</strong><small>每完成一个节点，收藏册就会多一枚区域印章。</small></div>
+            </section>
         `;
     }
 
@@ -303,6 +411,7 @@
                         <div class="mv-column-heading"><div><span class="mv-kicker">卡片栏目</span><h2>准备好，开始一张</h2></div><span class="mv-column-caption">图像 · 发音 · 场景</span></div>
                         ${renderCardPreview(cardForTask(currentTask()))}
                     </section>
+                    ${renderCampMap()}
                     <section class="mv-source-line">
                         <i data-lucide="archive" aria-hidden="true"></i>
                         <span data-mv-source-summary>素材：Anki 原始 11,241 张 · 可学习 ${Number(currentStats.total || 0).toLocaleString('zh-CN')} 词 · 参考词表 500 条</span>
@@ -350,9 +459,10 @@
                             ${isQuestion ? `<span class="mv-card-question-note">${escapeHtml(card.translation || '看图回忆英文单词')}</span>` : ''}
                         </div>
                     </div>
-                    <div class="mv-card-face mv-card-back" data-mv-flip role="button" tabindex="0" aria-label="翻转回到单词正面">
-                        <div class="mv-card-face-top"><span>场景记忆</span><span class="mv-card-face-count">词卡背面</span></div>
-                        <div class="mv-card-back-copy">
+                        <div class="mv-card-face mv-card-back" data-mv-flip role="button" tabindex="0" aria-label="翻转回到单词正面">
+                            <div class="mv-card-face-top"><span>场景记忆</span><span class="mv-card-face-count">词卡背面</span></div>
+                            ${cardBackImage(card) ? `<div class="mv-card-back-art"><img src="${escapeHtml(cardBackImage(card))}" alt="${escapeHtml(word)} 场景记忆图" loading="eager" decoding="async"></div>` : ''}
+                            <div class="mv-card-back-copy">
                             <div class="mv-card-back-word"><strong>${escapeHtml(word)}</strong><button class="mv-audio-button is-light" type="button" data-mv-listen="word" aria-label="播放 ${escapeHtml(word)} 的发音" title="播放单词发音"><i data-lucide="volume-2" aria-hidden="true"></i><span>再听一次</span></button></div>
                             <span class="mv-card-phonetic">${escapeHtml(pronunciation(card))}</span>
                             <div class="mv-card-detail-block is-meaning"><div class="mv-detail-heading"><span>中文释义</span>${detailAudioButton('translation')}</div><strong>${escapeHtml(card.translation || '')}</strong></div>
@@ -400,16 +510,15 @@
         const taskIndex = (state.queue || []).findIndex(item => item.cardId === task.cardId) + 1;
         const isQuestion = ['recall', 'scene'].includes(task.mode);
         return `
-            ${renderHeader('今日远征', `Minecraft 单词 / ${stageLabel(task.mode)}`)}
-            <main class="mv-main mv-playground-layout mv-session-layout">
-                ${renderProgressSidebar(stats())}
+            ${renderHeader('今日远征', `${currentRegion()?.title || 'Minecraft 单词'} / ${stageLabel(task.mode)}`)}
+            <main class="mv-main mv-session-main">
                 <section class="mv-learning-column">
                 <section class="mv-session-shell" data-mv-session data-mv-mode="${escapeHtml(task.mode)}" style="--mv-session-bg: ${escapeHtml(cssImage(STAGE_IMAGES[task.mode] || STAGE_IMAGES.new))}">
-                    <div class="mv-session-meta"><span>第 ${taskIndex} / 11</span><span>${escapeHtml(stageLabel(task.mode))}</span></div>
+                    <div class="mv-session-meta"><span>第 ${taskIndex} / ${state.queue.length}</span><span>${escapeHtml(stageLabel(task.mode))}</span></div>
                     <div class="mv-card-rack">
                         <div class="mv-current-card-wrap">${renderFlashcard(card, task.mode)}</div>
-                        ${renderUpcomingCards()}
                     </div>
+                    ${progressOpen ? renderProgressPanel(stats()) : ''}
                     ${isQuestion ? renderChoices(card, task.mode) : ''}
                     ${feedback ? `<p class="mv-feedback" data-mv-feedback aria-live="polite">${escapeHtml(feedback)}</p>` : ''}
                     <div class="mv-card-actions" data-mv-mobile-actions>
@@ -422,15 +531,16 @@
     }
 
     function renderComplete() {
+        const isRegionMission = !!selectedRegionId;
         return `
             ${renderHeader('远征完成', '今日远征 / 已结算')}
             <main class="mv-main"><section class="mv-complete-panel" data-mv-complete style="--mv-complete-bg: ${escapeHtml(cssImage(REWARD_IMAGE))}">
                 <div class="mv-reward-stack" aria-hidden="true"><img class="mv-reward-chest" src="${escapeHtml(asset(REWARD_CHEST_IMAGE))}" alt=""><img class="mv-reward-star" src="${escapeHtml(asset(REWARD_STAR_IMAGE))}" alt=""></div>
                 <div class="mv-complete-icon"><i data-lucide="trophy" aria-hidden="true"></i></div>
-                <span class="mv-kicker">11 / 11</span>
+                <span class="mv-kicker">${state?.queue?.length || 11} / ${state?.queue?.length || 11}</span>
                 <h2>今天的词语星已收集</h2>
-                <p>${rewardResult?.duplicate ? '今日奖励已经领取过了。' : '成长分 +10，宠物经验 +10'}</p>
-                <button class="mv-primary-button" type="button" data-mv-back><i data-lucide="book-open" aria-hidden="true"></i><span>回到学习中心</span></button>
+                <p>${rewardResult?.duplicate ? '今日奖励已经领取过了。' : `成长分 +${Number(rewardResult?.event?.points || state?.rewardPoints || 10)}，宠物经验同步增加`}</p>
+                <button class="mv-primary-button" type="button" data-mv-return-camp><i data-lucide="map" aria-hidden="true"></i><span>${isRegionMission ? '回到营地地图' : '回到学习中心'}</span></button>
             </section></main>
         `;
     }
@@ -493,6 +603,12 @@
         if (global.MinecraftVocabSession.isComplete(state)) {
             rewardResult = global.MinecraftVocabSession.claimReward(state);
             if (rewardResult?.accepted || rewardResult?.reason === 'duplicate') {
+                if (selectedRegionId && global.MinecraftVocabExpedition) {
+                    const region = currentRegion();
+                    const mission = missionForRegion(selectedRegionId);
+                    const completed = global.MinecraftVocabExpedition.completeRegion(expeditionState, selectedRegionId, regionList(), mission?.id || '', mission?.reward?.collectionItem || '');
+                    if (completed.persisted) expeditionState = completed.state;
+                }
                 view = 'complete';
                 if (typeof global.showToast === 'function' && rewardResult.accepted) global.showToast('今日远征完成，成长分 +10');
             } else {
@@ -506,10 +622,45 @@
         root.querySelectorAll('[data-mv-back]').forEach(button => button.addEventListener('click', () => {
             if (typeof global.switchPage === 'function') global.switchPage('learn');
         }));
+        root.querySelectorAll('[data-mv-return-camp]').forEach(button => button.addEventListener('click', () => {
+            if (!selectedRegionId) {
+                if (typeof global.switchPage === 'function') global.switchPage('learn');
+                return;
+            }
+            selectedRegionId = '';
+            const result = global.MinecraftVocabSession.start(cards(), card => progressApi()?.get?.(card.id), '', { regionId: '', queueSize: 11 });
+            state = result.state;
+            view = 'home';
+            feedback = '';
+            renderRoot();
+        }));
         root.querySelectorAll('[data-mv-start]').forEach(button => button.addEventListener('click', () => {
+            selectedRegionId = '';
             view = 'session';
             feedback = '';
             flipped = false;
+            progressOpen = false;
+            renderRoot();
+        }));
+        root.querySelectorAll('[data-mv-toggle-progress]').forEach(button => button.addEventListener('click', () => {
+            progressOpen = !progressOpen;
+            renderRoot();
+        }));
+        root.querySelectorAll('[data-mv-region]').forEach(button => button.addEventListener('click', () => {
+            const regionId = button.dataset.mvRegion || '';
+            const region = regionForId(regionId);
+            const mission = missionForRegion(regionId);
+            if (!region || !mission || !global.MinecraftVocabExpedition) return;
+            const entered = global.MinecraftVocabExpedition.enterRegion(expeditionState, regionId, regionList());
+            if (entered.reason === 'locked' || entered.reason === 'cleared') return;
+            selectedRegionId = regionId;
+            if (entered.persisted) expeditionState = entered.state;
+            const result = global.MinecraftVocabSession.start(cardsForRegion(regionId), card => progressApi()?.get?.(card.id), '', { regionId, missionId: mission.id, queueSize: mission.cardIds.length, rewardPoints: mission.reward?.points || 3 });
+            state = result.state;
+            view = 'session';
+            feedback = result.persisted ? '' : '节点进度暂时无法保存，仍可查看词卡。';
+            flipped = false;
+            progressOpen = false;
             renderRoot();
         }));
         root.querySelectorAll('[data-mv-open-pack]').forEach(button => button.addEventListener('click', () => {
@@ -571,11 +722,27 @@
         if (!root) return;
         root.innerHTML = '<div class="mv-loading" aria-live="polite">正在准备今日远征...</div>';
         try {
-            module = await global.LearnCenter.getModule(PACK_ID, MODULE_ID);
+            const [loadedModule, response] = await Promise.all([
+                global.LearnCenter.getModule(PACK_ID, MODULE_ID),
+                fetch(resolveDataUrl('data/learn/minecraft-expedition/camp-regions.json'))
+            ]);
+            if (!response.ok) throw new Error(`expedition data request failed: ${response.status}`);
+            module = loadedModule;
+            expedition = await response.json();
+            expeditionState = global.MinecraftVocabExpedition?.readState(regionList()) || null;
             if (!mounted) return;
-            const result = global.MinecraftVocabSession.start(cards(), card => progressApi()?.get?.(card.id), '');
+            const savedSession = global.MinecraftVocabSession.readState?.();
+            const savedRegionId = String(savedSession?.regionId || expeditionState?.activeRegionId || '');
+            const savedRegion = regionForId(savedRegionId);
+            const savedMission = missionForRegion(savedRegionId);
+            const sessionOptions = savedRegion && savedMission
+                ? { regionId: savedRegionId, missionId: savedMission.id, queueSize: savedMission.cardIds.length, rewardPoints: savedMission.reward?.points || 3 }
+                : { regionId: '', queueSize: 11 };
+            const sessionCards = savedRegion && savedMission ? cardsForRegion(savedRegionId) : cards();
+            const result = global.MinecraftVocabSession.start(sessionCards, card => progressApi()?.get?.(card.id), '', sessionOptions);
             state = result.state;
-            view = global.MinecraftVocabSession.isComplete(state) ? 'complete' : 'home';
+            selectedRegionId = String(state.regionId || '');
+            view = global.MinecraftVocabSession.isComplete(state) ? 'complete' : selectedRegionId ? 'session' : 'home';
             feedback = result.persisted ? '' : '本日进度暂时无法保存，仍可查看词卡。';
             renderRoot();
         } catch (error) {

@@ -9,6 +9,173 @@ function clean(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
 }
 
+const TRANSLATION_OVERRIDES = {
+  'tnt': 'TNT 炸药',
+  'boss bar': '首领血条',
+  'cobblestone wall': '圆石墙',
+  'mossy cobblestone': '苔石',
+  'polished diorite stairs': '磨制闪长岩楼梯',
+  'polished blackstone brick stairs': '磨制黑石砖楼梯',
+  'polished andesite stairs': '磨制安山岩楼梯',
+  'polished granite stairs': '磨制花岗岩楼梯',
+  'polished blackstone slab': '磨制黑石台阶',
+  'polished blackstone stairs': '磨制黑石楼梯',
+  'mossy cobblestone stairs': '苔石楼梯',
+  'polished blackstone wall': '磨制黑石墙',
+  'polished blackstone brick wall': '磨制黑石砖墙',
+  'polished blackstone brick slab': '磨制黑石砖台阶',
+  'polished basalt': '磨制玄武岩',
+  'mossy stone brick stairs': '苔石砖楼梯',
+  'crimson fungus': '绯红菌',
+  'crimson hyphae': '绯红菌柄',
+  'crimson roots': '绯红菌根',
+  'crimson nylium': '绯红菌岩',
+  'chiseled nether bricks': '錾制下界砖',
+  'warped nylium': '诡异菌岩',
+  'stripped crimson hyphae': '去皮绯红菌柄',
+  'warped roots': '诡异菌根',
+  'warped fungus': '诡异菌',
+  'warped stem': '诡异菌柄',
+  'stripped warped stem': '去皮诡异菌柄',
+  'stripped warped hyphae': '去皮诡异菌柄',
+  'gilded blackstone': '镶金黑石',
+  'warped hyphae': '诡异菌柄',
+  'the end water': '末地水',
+  'purpur stairs': '紫珀楼梯',
+  'nether sprouts': '下界芽',
+  'lily of the valley': '铃兰',
+  'brown glazed terracotta': '棕色带釉陶瓦',
+  'cyan glazed terracotta': '青色带釉陶瓦',
+  'purple glazed terracotta': '紫色带釉陶瓦',
+  'red glazed terracotta': '红色带釉陶瓦',
+  'white glazed terracotta': '白色带釉陶瓦',
+  'lime glazed terracotta': '黄绿色带釉陶瓦',
+  'blue glazed terracotta': '蓝色带釉陶瓦',
+  'black glazed terracotta': '黑色带釉陶瓦',
+  'magenta glazed terracotta': '品红色带釉陶瓦',
+  'gray glazed terracotta': '灰色带釉陶瓦',
+  'pink glazed terracotta': '粉红色带釉陶瓦',
+  'orange glazed terracotta': '橙色带釉陶瓦',
+  'green glazed terracotta': '绿色带釉陶瓦',
+  'light blue glazed terracotta': '淡蓝色带釉陶瓦',
+  'yellow glazed terracotta': '黄色带釉陶瓦',
+  'usb charger': 'USB 充电器',
+  'iron trapdoor': '铁活板门',
+  'trapped chest': '陷阱箱',
+  'light weighted pressure plate': '轻质测重压力板',
+  'heavy weighted pressure plate': '重质测重压力板',
+  'orange dye': '橙色染料',
+  'pink dye': '粉红色染料',
+  'purple dye': '紫色染料',
+  'white dye': '白色染料',
+  'red dye': '红色染料',
+  'yellow dye': '黄色染料',
+  'arrow of poison': '药箭（中毒）',
+  'arrow of weakness': '虚弱之箭',
+  'arrow of invisibility': '隐身之箭',
+  'arrow of leaping': '跳跃之箭',
+  'arrow of healing': '治疗之箭',
+  'arrow of water breathing': '水下呼吸之箭',
+  'arrow of the turtle master': '神龟之箭',
+  'arrow of decay': '衰变之箭',
+  'arrow of fire resistance': '抗火之箭',
+  'arrow of strength': '力量之箭',
+  'arrow of luck': '幸运之箭',
+  'arrow of regeneration': '再生之箭',
+  'arrow of harming': '伤害之箭',
+  'arrow of slowness': '迟缓之箭',
+  'arrow of slow falling': '缓降之箭',
+  'arrow of swiftness': '迅捷之箭',
+  'netherite helmet': '下界合金头盔',
+  'netherite leggings': '下界合金护腿',
+  'turtle helmet': '海龟壳',
+  'leather horse armor': '皮革马铠',
+  'netherite boots': '下界合金靴子',
+  'netherite chestplate': '下界合金胸甲',
+  'music disc mellohi': 'Mellohi 音乐唱片',
+  'minecart with tnt': 'TNT 矿车',
+  'netherite hoe': '下界合金锄',
+  'netherite shovel': '下界合金铲',
+  'netherite axe': '下界合金斧',
+  'netherite pickaxe': '下界合金镐',
+  'warped fungus on a stick': '诡异菌钓竿',
+  'tropical fish spawn egg': '热带鱼刷怪蛋',
+  'elder guardian spawn egg': '远古守卫者刷怪蛋',
+  'magma cube spawn egg': '岩浆怪刷怪蛋',
+  'polar bear spawn egg': '北极熊刷怪蛋',
+  'skeleton horse spawn egg': '骷髅马刷怪蛋',
+  'zombie horse spawn egg': '僵尸马刷怪蛋',
+  'wandering trader spawn egg': '流浪商人刷怪蛋',
+  'zombie villager spawn egg': '僵尸村民刷怪蛋',
+  'wither skeleton spawn egg': '凋灵骷髅刷怪蛋',
+  'piglin brute spawn egg': '蛮猪兽刷怪蛋',
+  'cave spider spawn egg': '洞穴蜘蛛刷怪蛋',
+  'npc spawn egg': 'NPC 刷怪蛋',
+  'glowstone dust': '荧石粉',
+  'netherite ingot': '下界合金锭',
+  'alex': 'Alex（角色）',
+  'breath of the nautilus': '鹦鹉螺之息'
+};
+
+const WORD_TRANSLATIONS = {
+  polished: '磨制', mossy: '苔', cobblestone: '圆石', wall: '墙', stairs: '楼梯', slab: '台阶',
+  brick: '砖', blackstone: '黑石', andesite: '安山岩', diorite: '闪长岩', granite: '花岗岩',
+  basalt: '玄武岩', crimson: '绯红', warped: '诡异', fungus: '菌', roots: '菌根',
+  nylium: '菌岩', hyphae: '菌柄', stripped: '去皮', gilded: '镶金', purpur: '紫珀',
+  sprouts: '芽', glazed: '带釉陶瓦', terracotta: '陶瓦', dye: '染料', weighted: '测重',
+  pressure: '压力', plate: '板', trapdoor: '活板门', trapped: '陷阱', chest: '箱',
+  helmet: '头盔', leggings: '护腿', boots: '靴子', chestplate: '胸甲', hoe: '锄', shovel: '铲',
+  axe: '斧', pickaxe: '镐', spawn: '刷怪', egg: '蛋', tropical: '热带', fish: '鱼',
+  guardian: '守卫者', magma: '岩浆', cube: '怪', polar: '北极', bear: '熊', skeleton: '骷髅',
+  zombie: '僵尸', horse: '马', wandering: '流浪', trader: '商人', villager: '村民', wither: '凋灵',
+  piglin: '猪灵', brute: '蛮', cave: '洞穴', spider: '蜘蛛', glowstone: '荧石', dust: '粉', ingot: '锭'
+};
+
+function translationFor(word, original) {
+  const key = clean(word).toLowerCase();
+  if (TRANSLATION_OVERRIDES[key]) return TRANSLATION_OVERRIDES[key];
+  if (!/[A-Za-z]{3,}|箭关|组组|原模|Cobble|Polished|MossyCobble/.test(clean(original))) return clean(original);
+  const tokens = key.split(/\s+/).filter(Boolean);
+  const translated = tokens.map(token => WORD_TRANSLATIONS[token] || '').filter(Boolean);
+  return translated.length ? translated.join('') : clean(original).replace(/[A-Za-z]+/g, '').trim() || clean(word);
+}
+
+function semanticCategory(word, category) {
+  const key = clean(word).toLowerCase();
+  if (key === 'hello') return 'greeting';
+  if (key === 'friend') return 'people';
+  if (key === 'world' || key === 'house' || key === 'cave') return 'place';
+  if (/^(run|look|play|craft|build|mine|jump|eat|open|find|use)$/.test(key)) return 'verb';
+  if (/cow|pig|sheep|chicken|cat|wolf|horse|villager|zombie|skeleton|creeper|spider|guardian|bee|fox|goat|parrot|rabbit|enderman|blaze|slime|phantom|wither|witch|hoglin|piglin|strider|dolphin|squid|fish|axolotl|frog|turtle/.test(key)) return 'mob';
+  if (/apple|bread|cake|carrot|potato|beef|pork|chicken|mutton|cod|salmon|cookie|melon|stew|soup|milk/.test(key) && !/spawn egg/.test(key)) return 'food';
+  if (/pickaxe|sword|axe|shovel|hoe|bow|crossbow|shield|trident|fishing rod|flint and steel|shears/.test(key)) return 'tool';
+  if (/flower|tree|leaves|sapling|seed|wheat|grass|mushroom|fungus|roots|nylium|hyphae|sprouts|cactus|bamboo|vine|lily|orchid|daisy|tulip|poppy/.test(key)) return 'plant';
+  if (/status effect|poison|strength|haste|luck|blindness|slowness|speed|regeneration|resistance|breath of the nautilus/.test(key)) return 'effect';
+  if (/biome|forest|desert|ocean|plains|savanna|taiga|swamp|jungle|nether|end dimension/.test(key)) return 'biome';
+  if (/village|castle|temple|mansion|monument|fortress|portal|shipwreck|stronghold|outpost|pyramid/.test(key)) return 'structure';
+  if (/red|blue|green|white|black|yellow|orange|purple|pink|gray|grey|cyan|magenta|lime|brown|dye/.test(key)) return 'color';
+  if (/^arrow of /.test(key) || /spawn egg|charger|disc|helmet|leggings|boots|chestplate|hoe|shovel|pickaxe|\baxe\b|ingot|dust/.test(key)) return 'item';
+  if (/status effect|breath of the nautilus/.test(key)) return 'effect';
+  if (/spawner with fire/.test(key)) return 'block';
+  if (/lily of the valley|fungus|roots|nylium|hyphae|sprouts|flower|tree|grass|wheat|seed/.test(key)) return 'plant';
+  if (/mode$|^minecraft$/.test(key)) return 'mode';
+  if (/^(run|look|play|craft|build|mine|jump|eat|open|find|use)$/.test(key)) return 'verb';
+  return category || 'item';
+}
+
+function backImagePrompt(word, translation, category, phrase, sentence, sentenceTranslation) {
+  const subject = clean(word).toLowerCase();
+  const actionText = `${sentence} ${sentenceTranslation}`.toLowerCase();
+  const scene = /lava|熔岩|fire|火|nether|下界/.test(actionText) ? 'a glowing Nether lava lake with a safe basalt ledge' : /village|村庄|villager|村民/.test(actionText) ? 'a welcoming Minecraft village with a path and small houses' : /cave|洞穴|mine|挖矿/.test(actionText) ? 'a bright Minecraft cave with torches and a wooden mine bridge' : /river|lake|water|河|湖|水/.test(actionText) ? 'a Minecraft riverbank or lakeside with a small bridge' : category === 'mob' ? 'a friendly village path' : category === 'plant' ? 'a sunny garden beside a Minecraft village' : category === 'biome' ? 'a wide Minecraft exploration landscape' : category === 'effect' ? 'a glowing potion effect around a brave explorer' : category === 'block' ? 'a small Minecraft building site' : category === 'place' ? 'a recognizable Minecraft landscape or landmark' : 'a warm Minecraft adventure camp';
+  return `Create a child-friendly Minecraft-inspired voxel memory scene for the English learning card “${subject}”, meaning “${translation}”. Visualize this phrase: “${clean(phrase)}”. Visualize this sentence and action: “${clean(sentence)}” (${clean(sentenceTranslation)}). Show one clear ${category} subject being used in the action, inside ${scene}; make the action easy for a child to understand, with a brave child adventurer or friendly blocky companion only when helpful. Use bright natural colors, soft pixel-art lighting, simple shapes, and a small ground shadow. This is the BACK illustration of a flashcard, so leave calm empty space around the edges for HTML text. No readable text, no letters, no numbers, no Chinese characters, no logos, no watermark, no UI, no collage, no unrelated objects, square composition.`;
+}
+
+function hasBadContent(card, translation) {
+  const values = [card.phrase, card.phraseTranslation, card.sentence, card.sentenceTranslation, card.example, card.exampleZh, translation].map(clean).join(' ');
+  return /箭关|组组|原模|Cobble|Polished|MossyCobble|携带|^carry\s|一个有用的|效果效果|一只友好的/.test(values)
+    || /\b(?:the|a|an)\s+\w+\s+effect\s+effect\b/i.test(values);
+}
+
 function readCards(document) {
   if (Array.isArray(document)) return document;
   if (document && Array.isArray(document.cards)) return document.cards;
@@ -61,20 +228,27 @@ function generatedPhrase(word, translation, category) {
   }
   if (category === 'object') return { phrase: `look at the ${w}`, phraseTranslation: `看看${zh}` };
   if (category === 'block') return { phrase: `place ${w}`, phraseTranslation: `放置${zh}` };
-  if (category === 'item') return { phrase: `carry ${w}`, phraseTranslation: `携带${zh}` };
+  if (category === 'item') {
+    if (/^arrow of /.test(w)) return { phrase: `shoot ${w}`, phraseTranslation: `发射${zh}` };
+    if (/spawn egg/.test(w)) return { phrase: `use ${w}`, phraseTranslation: `使用${zh}` };
+    return { phrase: `use the ${w}`, phraseTranslation: `使用${zh}` };
+  }
   if (category === 'verb') {
     if (w === 'look') return { phrase: 'look at the block', phraseTranslation: '看方块' };
     if (w === 'run') return { phrase: 'run to the village', phraseTranslation: '跑向村庄' };
     if (w === 'play') return { phrase: 'play in the world', phraseTranslation: '在世界里玩' };
     if (w === 'craft') return { phrase: 'craft a tool', phraseTranslation: '合成工具' };
   }
-  if (category === 'mob') return { phrase: `a friendly ${w}`, phraseTranslation: `一只友好的${zh}` };
+  if (category === 'mob') return { phrase: `spot a ${w}`, phraseTranslation: `发现一只${zh}` };
   if (category === 'biome') return { phrase: `explore the ${w}`, phraseTranslation: `探索${zh}` };
   if (category === 'structure') return { phrase: `find a ${w}`, phraseTranslation: `找到${zh}` };
   if (category === 'tool' || category === 'weapon') return { phrase: `use a ${w}`, phraseTranslation: `使用${zh}` };
   if (category === 'food') return { phrase: `eat ${w}`, phraseTranslation: `吃${zh}` };
   if (category === 'plant') return { phrase: `grow ${w}`, phraseTranslation: `种植${zh}` };
-  if (category === 'effect') return { phrase: `get the ${w} effect`, phraseTranslation: `获得${zh}效果` };
+  if (category === 'effect') {
+    if (w === 'status effect') return { phrase: 'a status effect', phraseTranslation: '一种状态效果' };
+    return { phrase: `get the ${w} effect`, phraseTranslation: `获得${zh}效果` };
+  }
   if (category === 'advancement') return { phrase: `complete ${w}`, phraseTranslation: `完成${zh}` };
   if (category === 'color') return { phrase: `${w} wool`, phraseTranslation: `${zh}羊毛` };
   if (category === 'verb') return { phrase: `${w} in the village`, phraseTranslation: `在村庄里${zh}` };
@@ -90,6 +264,14 @@ function variantIndex(word, category, length) {
 function generatedSentence(word, translation, category) {
   const w = clean(word).toLowerCase();
   const zh = clean(translation);
+  if (w === 'arrow of fire resistance') return {
+    sentence: 'I shoot the arrow of fire resistance before crossing the lava lake.',
+    sentenceTranslation: '我在穿过熔岩湖前发射抗火之箭。'
+  };
+  if (/^arrow of /.test(w)) return {
+    sentence: `I shoot the ${w} during our Minecraft mission.`,
+    sentenceTranslation: `我在 Minecraft 任务中发射${zh}。`
+  };
   const variants = {
     block: [
       [`I place the ${w} beside the doorway.`, `我把${zh}放在门口旁边。`],
@@ -99,11 +281,11 @@ function generatedSentence(word, translation, category) {
       [`The builder stores the ${w} in a chest.`, `建筑师把${zh}存进箱子里。`]
     ],
     item: [
-      [`I keep the ${w} in my backpack.`, `我把${zh}放在背包里。`],
-      [`The ${w} helps us prepare for the journey.`, `${zh}帮助我们为旅程做准备。`],
-      [`We trade the ${w} with a friendly villager.`, `我们和友好的村民交换${zh}。`],
-      [`I find the ${w} beside the campfire.`, `我在篝火旁找到${zh}。`],
-      [`The chest contains a useful ${w}.`, `箱子里有一个有用的${zh}。`]
+      [`I use the ${w} during our mission.`, `我在任务中使用${zh}。`],
+      [`I place the ${w} in my adventure chest.`, `我把${zh}放进冒险箱。`],
+      [`We prepare the ${w} before sunset.`, `我们在日落前准备好${zh}。`],
+      [`I show the ${w} to my teammate at camp.`, `我在营地把${zh}展示给队友看。`],
+      [`The ${w} is ready for our next adventure.`, `${zh}已经准备好陪我们开始下一次冒险。`]
     ],
     tool: [
       [`I use the ${w} to gather materials.`, `我用${zh}收集材料。`],
@@ -127,7 +309,7 @@ function generatedSentence(word, translation, category) {
       [`A bee flies over the ${w}.`, `一只蜜蜂飞过${zh}。`]
     ],
     mob: [
-      [`A ${w} is walking near the village.`, `一只${zh}正在村庄附近散步。`],
+      [`I spot a ${w} near the village.`, `我在村庄附近发现一只${zh}。`],
       [`We watch the ${w} from a safe hill.`, `我们从安全的小山上观察${zh}。`],
       [`The ${w} follows us along the path.`, `${zh}沿着小路跟着我们。`]
     ],
@@ -142,9 +324,9 @@ function generatedSentence(word, translation, category) {
       [`We place a flag beside the ${w}.`, `我们在${zh}旁边插上一面旗子。`]
     ],
     effect: [
-      [`The ${w} effect helps me cross the cave.`, `${zh}效果帮助我穿过洞穴。`],
-      [`I notice the ${w} effect during the challenge.`, `我在挑战中注意到了${zh}效果。`],
-      [`The potion gives me the ${w} effect.`, `药水让我获得${zh}效果。`]
+      [`The ${w} helps me cross the cave.`, `${zh}帮助我穿过洞穴。`],
+      [`I notice the ${w} during the challenge.`, `我在挑战中注意到了${zh}。`],
+      [`The potion gives me ${w}.`, `药水让我获得${zh}。`]
     ],
     advancement: [
       [`We celebrate after completing ${w}.`, `完成${zh}后我们一起庆祝。`],
@@ -189,9 +371,9 @@ function generatedSentence(word, translation, category) {
 function enrichCard(card, options = {}) {
   const next = { ...card };
   const word = clean(card.word);
-  const translation = clean(card.translation || card.chinese);
-  const category = categoryOf(card);
-  const regenerate = Boolean(options.refreshGenerated);
+  const translation = translationFor(word, card.translation || card.chinese);
+  const category = semanticCategory(word, categoryOf(card));
+  const regenerate = Boolean(options.refreshGenerated) || hasBadContent(card, translation);
   const phrase = regenerate ? '' : clean(card.phrase);
   const phraseTranslation = regenerate ? '' : clean(card.phraseTranslation);
   const sentence = regenerate ? '' : clean(card.sentence || card.example);
@@ -203,8 +385,12 @@ function enrichCard(card, options = {}) {
   next.phraseTranslation = phraseTranslation || generated.phraseTranslation;
   next.sentence = sentence || generatedSentenceValue.sentence;
   next.sentenceTranslation = sentenceTranslation || generatedSentenceValue.sentenceTranslation;
-  if (!clean(next.example)) next.example = next.sentence;
-  if (!clean(next.exampleZh || next.exampleTranslation)) {
+  next.translation = translation;
+  next.category = category;
+  next.contentQuality = 'curated-v2';
+  next.backImagePrompt = backImagePrompt(word, translation, category, next.phrase, next.sentence, next.sentenceTranslation);
+  if (regenerate || !clean(next.example)) next.example = next.sentence;
+  if (regenerate || !clean(next.exampleZh || next.exampleTranslation)) {
     if ('exampleTranslation' in next) next.exampleTranslation = next.sentenceTranslation;
     else next.exampleZh = next.sentenceTranslation;
   }

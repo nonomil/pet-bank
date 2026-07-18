@@ -88,7 +88,7 @@
         return result;
     }
 
-    function createQueue(cards, readProgress, date) {
+    function createQueue(cards, readProgress, date, queueSize = QUEUE_SIZE) {
         const source = Array.isArray(cards) ? cards.filter(card => card && card.id) : [];
         const ordered = interleaveByCategory(stableSort(source, date));
         const review = ordered.filter(card => ['learning', 'mastered'].includes(cardStatus(readProgress, card)));
@@ -97,31 +97,35 @@
         const queue = [];
         const pick = (list, count) => {
             for (const card of list) {
-                if (queue.length >= QUEUE_SIZE || count <= 0) break;
+                if (queue.length >= queueSize || count <= 0) break;
                 if (used.has(card.id)) continue;
                 used.add(card.id);
                 queue.push({ cardId: card.id });
                 count -= 1;
             }
         };
-        pick(review, 2);
-        pick(ordered, 2 - queue.length);
-        pick(fresh, 5);
-        pick(ordered, 3);
-        pick(ordered, 1);
-        return queue.slice(0, QUEUE_SIZE).map((item, index) => ({ ...item, mode: STAGE_MODES[index] }));
+        const stageModes = queueSize === QUEUE_SIZE
+            ? STAGE_MODES
+            : Array.from({ length: queueSize }, (_, index) => index === queueSize - 1 ? 'scene' : index === 0 ? 'review' : 'new');
+        pick(review, Math.min(2, queueSize));
+        pick(ordered, Math.max(0, Math.min(2, queueSize) - queue.length));
+        pick(fresh, Math.max(0, Math.min(5, queueSize) - queue.length));
+        pick(ordered, Math.max(0, queueSize - queue.length));
+        return queue.slice(0, queueSize).map((item, index) => ({ ...item, mode: stageModes[index] || 'new' }));
     }
 
-    function emptyState(cards, readProgress, date, profileId) {
-        return { version: 1, profileId, localDate: localDate(date), queue: createQueue(cards, readProgress, date), completed: [], startedAt: new Date().toISOString(), completedAt: '' };
+    function emptyState(cards, readProgress, date, profileId, options = {}) {
+        const queueSize = Math.max(1, Number(options.queueSize || QUEUE_SIZE));
+        return { version: 1, profileId, localDate: localDate(date), regionId: String(options.regionId || ''), missionId: String(options.missionId || ''), rewardPoints: Number(options.rewardPoints || REWARD_POINTS), queue: createQueue(cards, readProgress, date, queueSize), completed: [], startedAt: new Date().toISOString(), completedAt: '' };
     }
 
-    function start(cards, readProgress, date = '') {
+    function start(cards, readProgress, date = '', options = {}) {
         const profileId = activeProfileId();
         const today = localDate(date);
         const current = readState(profileId);
-        if (current && current.localDate === today && current.queue.length) return { state: current, persisted: true, resumed: true };
-        const state = emptyState(cards, readProgress, today, profileId);
+        const requestedRegionId = String(options.regionId || '');
+        if (current && current.localDate === today && current.queue.length && String(current.regionId || '') === requestedRegionId) return { state: current, persisted: true, resumed: true };
+        const state = emptyState(cards, readProgress, today, profileId, options);
         return { state, persisted: writeState(state), resumed: false };
     }
 
@@ -133,11 +137,12 @@
         return { state: next, persisted: writeState(next), duplicate: false };
     }
 
-    function isComplete(state) { return !!state && state.queue.length === QUEUE_SIZE && state.completed.length >= state.queue.length; }
+    function isComplete(state) { return !!state && state.queue.length > 0 && state.completed.length >= state.queue.length; }
 
     function getRewardEvent(state) {
         if (!isComplete(state)) return null;
-        return { source: REWARD_SOURCE, eventId: `session:${state.localDate}`, points: REWARD_POINTS, profileId: state.profileId, localDate: state.localDate };
+        const eventId = state.regionId ? `session:${state.localDate}:${state.regionId}` : `session:${state.localDate}`;
+        return { source: REWARD_SOURCE, eventId, points: Number(state.rewardPoints || REWARD_POINTS), profileId: state.profileId, localDate: state.localDate };
     }
 
     function claimReward(state) {

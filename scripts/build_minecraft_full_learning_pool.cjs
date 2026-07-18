@@ -7,6 +7,8 @@ const manifestPath = path.join(repoRoot, 'data', 'learn', 'packs', 'english-mc-h
 const referencePath = path.join(repoRoot, 'data', 'learn', 'external', 'mayihaoke', 'word-cards.json');
 const referenceMediaPath = path.join(repoRoot, 'data', 'learn', 'external', 'mayihaoke', 'media-manifest.json');
 const ankiPath = path.join(repoRoot, 'prj', 'anki-minecraft-vocab', 'data', 'cards.json');
+const promptPath = path.join(repoRoot, 'data', 'learn', 'packs', 'english-mc-hybrid-2026', 'minecraft-card-back-prompts.json');
+const narrationPath = path.join(repoRoot, 'data', 'vocab', 'english-minecraft', 'narration-manifest.json');
 
 const PROMPT_WORD_RE = /(compressed|shot of|woman|man |freedom|success in|full frame|doing calming|at home|portrait|happy black|adventure travel|achievement|construction site|closeup|close-up|render|stock photo|photo of)/i;
 const BAD_CONTENT_RE = /^(?:Minecraft中的|Minecraft词条)/;
@@ -30,6 +32,7 @@ function readJson(filePath) {
 
 const referenceMedia = fs.existsSync(referenceMediaPath) ? readJson(referenceMediaPath) : { cards: [] };
 const referenceMediaByIndex = new Map((referenceMedia.cards || []).map(item => [String(item.index), item.path]));
+const narrationByWord = new Map((fs.existsSync(narrationPath) ? readJson(narrationPath).entries || [] : []).map(item => [key(item.word), item.cardId]));
 
 function writeJson(filePath, value) {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
@@ -149,6 +152,7 @@ function prefer(candidate, current) {
 function addUnique(map, card) {
   const normalized = {
     ...card,
+    id: narrationByWord.get(key(card.word)) || card.id || `mc-word-${key(card.word || card.translation || card.chinese)}`,
     word: clean(card.word, 120),
     translation: clean(card.translation || card.chinese, 100),
     category: card.category || categoryFor(card),
@@ -200,7 +204,10 @@ function main() {
     }
   }
 
-  const cards = addDistractors([...map.values()]);
+  const cards = addDistractors([...map.values()]).map((card, index) => ({
+    ...card,
+    id: card.id || `card-${String(index + 1).padStart(4, '0')}`
+  }));
   const next = {
     ...existing,
     id: 'minecraft-vocab',
@@ -210,6 +217,16 @@ function main() {
     sourceSnapshot: 'prj/anki-minecraft-vocab/data/cards.json + data/learn/external/mayihaoke/word-cards.json',
     description: '完整学习池：保留参考站词卡，并合并 Anki 可读官方词条；原始 Anki 逐卡目录仍保留在独立图鉴中。',
     contentCuration: 'full-anki-reference-v1',
+    imagePromptPolicy: {
+      version: 'minecraft-card-back-v1',
+      provider: 'agnes-image-2.1-flash',
+      purpose: 'sentence-scene-memory',
+      promptField: 'backImagePrompt',
+      assetField: 'backImage',
+      assetRoot: 'assets/learn/english-vocab/minecraft-card-backs/',
+      status: cards.some(card => card.backImage) ? 'partially-generated' : 'prompt-ready-not-generated',
+      generatedCount: cards.filter(card => card.backImage).length
+    },
     generatedAt: new Date().toISOString(),
     sourceStats: {
       ankiCards: Array.isArray(anki) ? anki.length : (anki.cards || []).length,
@@ -229,6 +246,22 @@ function main() {
     cards
   };
   writeJson(mainPath, next);
+  writeJson(promptPath, {
+    schemaVersion: 1,
+    promptPolicy: next.imagePromptPolicy,
+    source: path.relative(repoRoot, mainPath).replace(/\\/g, '/'),
+    cards: cards.map(card => ({
+      cardId: card.id,
+      word: card.word,
+      translation: card.translation,
+      category: card.category,
+      phrase: card.phrase,
+      sentence: card.sentence,
+      sentenceTranslation: card.sentenceTranslation,
+      prompt: card.backImagePrompt,
+      image: card.backImage || ''
+    }))
+  });
 
   const manifest = readJson(manifestPath);
   const moduleMeta = (manifest.modules || []).find(item => item.id === 'minecraft-vocab');

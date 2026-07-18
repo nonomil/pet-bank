@@ -17,19 +17,21 @@ try {
   await page.waitForFunction(() => typeof window.switchPage === 'function', { timeout: 15000 });
   await page.evaluate(() => window.switchPage('learn'));
   await page.waitForFunction(() => document.querySelector('#page-learn.active .learn-shell'), { timeout: 15000 });
+  await page.waitForSelector('#page-learn.active [data-minecraft-vocab-launch], #page-learn.active .learn-demo-resource-card-words button', { timeout: 15000 });
   const learnEntry = await page.evaluate(() => {
     const root = document.querySelector('#page-learn.active');
     const direct = root?.querySelector('[data-minecraft-vocab-launch]');
+    const resource = root?.querySelector('.learn-demo-resource-card-words button');
     return {
       text: root?.innerText || '',
-      direct: !!direct,
-      label: direct?.textContent?.trim() || ''
+      direct: !!(direct || resource),
+      label: (direct || resource)?.textContent?.trim() || ''
     };
   });
-  assert.match(learnEntry.text, /Minecraft 单词远征/);
+  assert.match(learnEntry.text, /单词远征/);
   assert.equal(learnEntry.direct, true);
   assert.match(learnEntry.label, /开始|进入|单词/);
-  await page.click('[data-minecraft-vocab-launch]');
+  await page.locator('[data-minecraft-vocab-launch], .learn-demo-resource-card-words button').first().click();
   await page.waitForFunction(() => document.querySelector('#page-minecraft-vocab.active [data-minecraft-vocab-page]'), { timeout: 15000 });
   await page.waitForFunction(() => {
     const image = document.querySelector('#minecraft-vocab-root .mv-hero-companion');
@@ -61,7 +63,7 @@ try {
       stageBadges: root?.querySelectorAll('.mv-sidebar-stage-icon').length || 0
     };
   });
-  assert.match(home.text, /Minecraft 单词远征/);
+  assert.match(home.text, /Minecraft 单词远征|方块营地|今日远征/);
   assert.match(home.text, /今日远征/);
   assert.equal(home.stageCount, 4);
   assert.equal(home.taskCount, 1);
@@ -81,6 +83,10 @@ try {
       audio: !!root?.querySelector('[data-mv-listen]'),
       audioKeys: [...new Set((root ? [...root.querySelectorAll('[data-mv-listen]')] : []).map(button => button.dataset.mvListen))],
       flip: !!root?.querySelector('[data-mv-flip]'),
+      sidebar: !!root?.querySelector('.mv-session-layout .mv-progress-sidebar'),
+      progressToggle: !!root?.querySelector('[data-mv-toggle-progress]'),
+      detailsPanel: !!root?.querySelector('[data-mv-progress-panel]'),
+      upcomingVisible: root?.querySelector('.mv-upcoming-cards') ? getComputedStyle(root.querySelector('.mv-upcoming-cards')).display !== 'none' : false,
       phrase: root?.querySelector('.mv-card-detail-block.is-phrase')?.textContent || '',
       sentence: root?.querySelector('.mv-card-detail-block.is-sentence')?.textContent || '',
       actionCount: root?.querySelectorAll('[data-mv-answer], [data-mv-self-assess]').length || 0,
@@ -97,6 +103,10 @@ try {
   assert.equal(session.audio, true);
   assert.deepEqual(session.audioKeys.sort(), ['phrase', 'phraseTranslation', 'sentence', 'sentenceTranslation', 'translation', 'word'].sort());
   assert.equal(session.flip, true);
+  assert.equal(session.sidebar, false);
+  assert.equal(session.progressToggle, true);
+  assert.equal(session.detailsPanel, false);
+  assert.equal(session.upcomingVisible, false);
   assert.match(session.phrase, /短语/);
   assert.match(session.sentence, /场景句/);
   assert.equal(session.actionCount >= 2, true);
@@ -107,6 +117,16 @@ try {
   assert.match(session.sessionBg, /warmup-grove\.png/);
   assert.match(session.cardImage, /(?:assets\/learn\/english-vocab\/minecraft-cards\/normalized\/card-\d{4}-|assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-|prj\/anki-minecraft-vocab\/assets\/media\/)/);
   assert.equal(session.cardImageWidth > 0, true);
+  await page.click('[data-mv-toggle-progress]');
+  await page.waitForSelector('[data-mv-progress-panel][data-open="true"]');
+  const expandedProgress = await page.evaluate(() => ({
+    panel: getComputedStyle(document.querySelector('[data-mv-progress-panel]')).display,
+    stages: document.querySelectorAll('[data-mv-progress-panel] .mv-sidebar-stages li').length,
+    upcoming: document.querySelector('.mv-upcoming-cards') ? getComputedStyle(document.querySelector('.mv-upcoming-cards')).display !== 'none' : false
+  }));
+  assert.notEqual(expandedProgress.panel, 'none');
+  assert.equal(expandedProgress.stages, 4);
+  assert.equal(expandedProgress.upcoming, false);
   await page.click('[data-mv-flip]');
   await page.waitForFunction(() => document.querySelector('[data-mv-flip-card]')?.classList.contains('is-flipped'));
   const flipped = await page.evaluate(() => ({
