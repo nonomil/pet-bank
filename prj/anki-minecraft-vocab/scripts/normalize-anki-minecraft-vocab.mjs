@@ -407,6 +407,80 @@ function generatedPhrase(word, chinese, category) {
 
 function generatedSentence(word, chinese, category) {
   const first = word.toLowerCase();
+  let value = 0;
+  for (const character of `${category}:${first}`) value = (value * 31 + character.charCodeAt(0)) >>> 0;
+  const variants = {
+    block: [
+      [`I place the ${first} beside the doorway.`, `我把${chinese}放在门口旁边。`],
+      [`The ${first} makes my base look brighter.`, `${chinese}让我的基地看起来更明亮。`],
+      [`We use the ${first} to mark the path home.`, `我们用${chinese}标记回家的路。`],
+      [`I collect the ${first} before sunset.`, `我在日落前收集${chinese}。`],
+      [`The builder stores the ${first} in a chest.`, `建筑师把${chinese}存进箱子里。`]
+    ],
+    item: [
+      [`I keep the ${first} in my backpack.`, `我把${chinese}放在背包里。`],
+      [`The ${first} helps us prepare for the journey.`, `${chinese}帮助我们为旅程做准备。`],
+      [`We trade the ${first} with a friendly villager.`, `我们和友好的村民交换${chinese}。`],
+      [`I find the ${first} beside the campfire.`, `我在篝火旁找到${chinese}。`],
+      [`The chest contains a useful ${first}.`, `箱子里有一个有用的${chinese}。`]
+    ],
+    tool: [
+      [`I use the ${first} to gather materials.`, `我用${chinese}收集材料。`],
+      [`The ${first} is ready for our next mission.`, `${chinese}已经准备好参加下一次任务。`],
+      [`I repair the ${first} at the crafting table.`, `我在工作台修理${chinese}。`],
+      [`The ${first} helps me work faster.`, `${chinese}帮助我更快地工作。`]
+    ],
+    weapon: [
+      [`I hold the ${first} when night falls.`, `夜幕降临时我拿着${chinese}。`],
+      [`The ${first} protects our team on the trail.`, `${chinese}保护我们的小队走过小路。`],
+      [`I keep the ${first} ready for a surprise attack.`, `我准备好${chinese}应对突然袭击。`]
+    ],
+    food: [
+      [`I share the ${first} with my teammate.`, `我和队友分享${chinese}。`],
+      [`The ${first} gives us energy for the climb.`, `${chinese}给我们爬山的能量。`],
+      [`We cook the ${first} at the camp.`, `我们在营地烹饪${chinese}。`]
+    ],
+    plant: [
+      [`I plant the ${first} beside the farm.`, `我把${chinese}种在农场旁边。`],
+      [`The ${first} grows well after the rain.`, `下雨后${chinese}长得很好。`],
+      [`A bee flies over the ${first}.`, `一只蜜蜂飞过${chinese}。`]
+    ],
+    mob: [
+      [`A ${first} is walking near the village.`, `一只${chinese}正在村庄附近散步。`],
+      [`We watch the ${first} from a safe hill.`, `我们从安全的小山上观察${chinese}。`],
+      [`The ${first} follows us along the path.`, `${chinese}沿着小路跟着我们。`]
+    ],
+    biome: [
+      [`We explore the ${first} after breakfast.`, `我们早餐后探索${chinese}。`],
+      [`The ${first} is full of new plants to discover.`, `${chinese}里有许多等待发现的新植物。`],
+      [`Our map shows a trail through the ${first}.`, `我们的地图显示有一条穿过${chinese}的小路。`]
+    ],
+    structure: [
+      [`We discover the ${first} beyond the river.`, `我们在河流对岸发现${chinese}。`],
+      [`A secret treasure may be inside the ${first}.`, `${chinese}里面可能藏着秘密宝藏。`],
+      [`We place a flag beside the ${first}.`, `我们在${chinese}旁边插上一面旗子。`]
+    ],
+    effect: [
+      [`The ${first} effect helps me cross the cave.`, `${chinese}效果帮助我穿过洞穴。`],
+      [`I notice the ${first} effect during the challenge.`, `我在挑战中注意到了${chinese}效果。`],
+      [`The potion gives me the ${first} effect.`, `药水让我获得${chinese}效果。`]
+    ],
+    advancement: [
+      [`We celebrate after completing ${first}.`, `完成${chinese}后我们一起庆祝。`],
+      [`This challenge unlocks the ${first} badge.`, `这个挑战会解锁“${chinese}”徽章。`],
+      [`I record ${first} in my adventure book.`, `我把${chinese}记录在冒险书里。`]
+    ],
+    color: [
+      [`The banner is ${first} under the sunlight.`, `阳光下的旗帜是${chinese}色的。`],
+      [`We choose ${first} wool for the cozy room.`, `我们为舒适的房间选择${chinese}色羊毛。`],
+      [`A ${first} path leads to the garden.`, `一条${chinese}色的小路通向花园。`]
+    ]
+  };
+  const selected = variants[category];
+  if (selected) {
+    const [sentence, sentenceTranslation] = selected[value % selected.length];
+    return { sentence, sentenceTranslation };
+  }
   if (category === 'mob') return { sentence: `A ${first} is near the village.`, sentenceTranslation: `一只${chinese}在村庄附近。` };
   if (category === 'biome') return { sentence: `We explore the ${first} at sunrise.`, sentenceTranslation: `我们在日出时探索${chinese}。` };
   if (category === 'structure') return { sentence: `We find the ${first} in the new world.`, sentenceTranslation: `我们在新世界里找到${chinese}。` };

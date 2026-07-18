@@ -86,8 +86,8 @@
       "exampleTranslation": "按 E 键打开你的物品栏。",
       "phrase": "carry inventory",
       "phraseTranslation": "携带物品栏",
-      "sentence": "I carry the inventory in my bag.",
-      "sentenceTranslation": "我把物品栏带在包里。"
+      "sentence": "We trade the inventory with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换物品栏。"
     },
     {
       "index": "008",
@@ -98,8 +98,8 @@
       "exampleTranslation": "制作一把镐子是你应该做的第一件事。",
       "phrase": "carry crafting",
       "phraseTranslation": "携带合成",
-      "sentence": "I carry the crafting in my bag.",
-      "sentenceTranslation": "我把合成带在包里。"
+      "sentence": "The chest contains a useful crafting.",
+      "sentenceTranslation": "箱子里有一个有用的合成。"
     },
     {
       "index": "009",
@@ -110,8 +110,8 @@
       "exampleTranslation": "你需要一个熔炉来熔炼铁矿石。",
       "phrase": "carry smelting",
       "phraseTranslation": "携带熔炼",
-      "sentence": "I carry the smelting in my bag.",
-      "sentenceTranslation": "我把熔炼带在包里。"
+      "sentence": "The chest contains a useful smelting.",
+      "sentenceTranslation": "箱子里有一个有用的熔炼。"
     },
     {
       "index": "010",
@@ -122,8 +122,8 @@
       "exampleTranslation": "附魔你的剑会让它更强大。",
       "phrase": "carry enchanting",
       "phraseTranslation": "携带附魔",
-      "sentence": "I carry the enchanting in my bag.",
-      "sentenceTranslation": "我把附魔带在包里。"
+      "sentence": "The enchanting helps us prepare for the journey.",
+      "sentenceTranslation": "附魔帮助我们为旅程做准备。"
     },
     {
       "index": "011",
@@ -134,8 +134,8 @@
       "exampleTranslation": "酿造药水需要时间和特殊材料。",
       "phrase": "carry brewing",
       "phraseTranslation": "携带酿造",
-      "sentence": "I carry the brewing in my bag.",
-      "sentenceTranslation": "我把酿造带在包里。"
+      "sentence": "The brewing helps us prepare for the journey.",
+      "sentenceTranslation": "酿造帮助我们为旅程做准备。"
     },
     {
       "index": "012",
@@ -146,8 +146,8 @@
       "exampleTranslation": "别担心 — 你会在床上重生。",
       "phrase": "carry respawn",
       "phraseTranslation": "携带重生",
-      "sentence": "I carry the respawn in my bag.",
-      "sentenceTranslation": "我把重生带在包里。"
+      "sentence": "The respawn helps us prepare for the journey.",
+      "sentenceTranslation": "重生帮助我们为旅程做准备。"
     },
     {
       "index": "013",
@@ -158,8 +158,8 @@
       "exampleTranslation": "怪物会在夜晚的黑暗中生成。",
       "phrase": "carry spawn",
       "phraseTranslation": "携带生成/出生点",
-      "sentence": "I carry the spawn in my bag.",
-      "sentenceTranslation": "我把生成/出生点带在包里。"
+      "sentence": "We trade the spawn with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换生成/出生点。"
     },
     {
       "index": "014",
@@ -170,8 +170,8 @@
       "exampleTranslation": "生物是《我的世界》中任何活着的生物。",
       "phrase": "a friendly mob",
       "phraseTranslation": "一只友好的生物",
-      "sentence": "A mob is near the village.",
-      "sentenceTranslation": "一只生物在村庄附近。"
+      "sentence": "The mob follows us along the path.",
+      "sentenceTranslation": "生物沿着小路跟着我们。"
     },
     {
       "index": "015",
@@ -182,8 +182,8 @@
       "exampleTranslation": "敌对生物一看到你就会攻击你。",
       "phrase": "carry hostile",
       "phraseTranslation": "携带敌对的",
-      "sentence": "I carry the hostile in my bag.",
-      "sentenceTranslation": "我把敌对的带在包里。"
+      "sentence": "I keep the hostile in my backpack.",
+      "sentenceTranslation": "我把敌对的放在背包里。"
     },
     {
       "index": "016",
@@ -194,8 +194,8 @@
       "exampleTranslation": "被动生物比如牛永远不会伤害你。",
       "phrase": "carry passive",
       "phraseTranslation": "携带被动的",
-      "sentence": "I carry the passive in my bag.",
-      "sentenceTranslation": "我把被动的带在包里。"
+      "sentence": "The passive helps us prepare for the journey.",
+      "sentenceTranslation": "被动的帮助我们为旅程做准备。"
     },
     {
       "index": "017",
@@ -206,8 +206,8 @@
       "exampleTranslation": "狼是中立的——只有你先攻击它们时它们才会反击。",
       "phrase": "carry neutral",
       "phraseTranslation": "携带中立的",
-      "sentence": "I carry the neutral in my bag.",
-      "sentenceTranslation": "我把中立的带在包里。"
+      "sentence": "The neutral helps us prepare for the journey.",
+      "sentenceTranslation": "中立的帮助我们为旅程做准备。"
     },
     {
       "index": "018",
@@ -218,8 +218,8 @@
       "exampleTranslation": "击败生物和采矿可以获得经验值。",
       "phrase": "carry experience (xp)",
       "phraseTranslation": "携带经验值",
-      "sentence": "I carry the experience (xp) in my bag.",
-      "sentenceTranslation": "我把经验值带在包里。"
+      "sentence": "I keep the experience (xp) in my backpack.",
+      "sentenceTranslation": "我把经验值放在背包里。"
     },
     {
       "index": "019",
@@ -230,8 +230,8 @@
       "exampleTranslation": "吃食物来保持你的生命值满。",
       "phrase": "carry health",
       "phraseTranslation": "携带生命值",
-      "sentence": "I carry the health in my bag.",
-      "sentenceTranslation": "我把生命值带在包里。"
+      "sentence": "I keep the health in my backpack.",
+      "sentenceTranslation": "我把生命值放在背包里。"
     },
     {
       "index": "020",
@@ -242,8 +242,8 @@
       "exampleTranslation": "当你奔跑和战斗时，饥饿值会下降。",
       "phrase": "carry hunger",
       "phraseTranslation": "携带饥饿值",
-      "sentence": "I carry the hunger in my bag.",
-      "sentenceTranslation": "我把饥饿值带在包里。"
+      "sentence": "The chest contains a useful hunger.",
+      "sentenceTranslation": "箱子里有一个有用的饥饿值。"
     },
     {
       "index": "021",
@@ -254,8 +254,8 @@
       "exampleTranslation": "钻石剑造成的伤害比木剑更多。",
       "phrase": "carry damage",
       "phraseTranslation": "携带伤害",
-      "sentence": "I carry the damage in my bag.",
-      "sentenceTranslation": "我把伤害带在包里。"
+      "sentence": "We trade the damage with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换伤害。"
     },
     {
       "index": "022",
@@ -266,8 +266,8 @@
       "exampleTranslation": "这个种子在开始时就生成一个巨大的丛林世界。",
       "phrase": "grow seed",
       "phraseTranslation": "种植世界种子",
-      "sentence": "I grow seed near the farm.",
-      "sentenceTranslation": "我在农场旁种植世界种子。"
+      "sentence": "The seed grows well after the rain.",
+      "sentenceTranslation": "下雨后世界种子长得很好。"
     },
     {
       "index": "023",
@@ -278,8 +278,8 @@
       "exampleTranslation": "每个区块是世界中16x16的区域。",
       "phrase": "carry chunk",
       "phraseTranslation": "携带区块",
-      "sentence": "I carry the chunk in my bag.",
-      "sentenceTranslation": "我把区块带在包里。"
+      "sentence": "The chunk helps us prepare for the journey.",
+      "sentenceTranslation": "区块帮助我们为旅程做准备。"
     },
     {
       "index": "024",
@@ -290,8 +290,8 @@
       "exampleTranslation": "当你杀死僵尸时，它会掉落腐肉。",
       "phrase": "carry drops",
       "phraseTranslation": "携带掉落物",
-      "sentence": "I carry the drops in my bag.",
-      "sentenceTranslation": "我把掉落物带在包里。"
+      "sentence": "The drops helps us prepare for the journey.",
+      "sentenceTranslation": "掉落物帮助我们为旅程做准备。"
     },
     {
       "index": "025",
@@ -302,8 +302,8 @@
       "exampleTranslation": "地下城宝箱里有很棒的战利品。",
       "phrase": "carry loot",
       "phraseTranslation": "携带战利品",
-      "sentence": "I carry the loot in my bag.",
-      "sentenceTranslation": "我把战利品带在包里。"
+      "sentence": "I keep the loot in my backpack.",
+      "sentenceTranslation": "我把战利品放在背包里。"
     },
     {
       "index": "026",
@@ -314,8 +314,8 @@
       "exampleTranslation": "你可以用绿宝石和村民交易获得有用的物品。",
       "phrase": "carry trade",
       "phraseTranslation": "携带交易",
-      "sentence": "I carry the trade in my bag.",
-      "sentenceTranslation": "我把交易带在包里。"
+      "sentence": "We trade the trade with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换交易。"
     },
     {
       "index": "027",
@@ -326,8 +326,8 @@
       "exampleTranslation": "给一只狼骨头来驯服它成为你的宠物。",
       "phrase": "carry tame",
       "phraseTranslation": "携带驯服",
-      "sentence": "I carry the tame in my bag.",
-      "sentenceTranslation": "我把驯服带在包里。"
+      "sentence": "We trade the tame with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换驯服。"
     },
     {
       "index": "028",
@@ -338,8 +338,8 @@
       "exampleTranslation": "喂两头奶牛小麦来繁殖它们。",
       "phrase": "carry breed",
       "phraseTranslation": "携带繁殖",
-      "sentence": "I carry the breed in my bag.",
-      "sentenceTranslation": "我把繁殖带在包里。"
+      "sentence": "I find the breed beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到繁殖。"
     },
     {
       "index": "029",
@@ -350,8 +350,8 @@
       "exampleTranslation": "在与Boss战斗前喝一个力量药水。",
       "phrase": "carry potion",
       "phraseTranslation": "携带药水",
-      "sentence": "I carry the potion in my bag.",
-      "sentenceTranslation": "我把药水带在包里。"
+      "sentence": "I keep the potion in my backpack.",
+      "sentenceTranslation": "我把药水放在背包里。"
     },
     {
       "index": "030",
@@ -362,8 +362,8 @@
       "exampleTranslation": "中毒是一种会慢慢伤害你的不良状态效果。",
       "phrase": "get the status effect effect",
       "phraseTranslation": "获得状态效果效果",
-      "sentence": "The status effect effect helps me explore.",
-      "sentenceTranslation": "状态效果效果帮助我探索。"
+      "sentence": "The status effect effect helps me cross the cave.",
+      "sentenceTranslation": "状态效果效果帮助我穿过洞穴。"
     },
     {
       "index": "031",
@@ -374,8 +374,8 @@
       "exampleTranslation": "你知道弓的配方吗？",
       "phrase": "carry recipe",
       "phraseTranslation": "携带配方",
-      "sentence": "I carry the recipe in my bag.",
-      "sentenceTranslation": "我把配方带在包里。"
+      "sentence": "We trade the recipe with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换配方。"
     },
     {
       "index": "032",
@@ -386,8 +386,8 @@
       "exampleTranslation": "村民卖给了我一本很棒的附魔书。",
       "phrase": "a friendly villager",
       "phraseTranslation": "一只友好的村民",
-      "sentence": "A villager is near the village.",
-      "sentenceTranslation": "一只村民在村庄附近。"
+      "sentence": "A villager is walking near the village.",
+      "sentenceTranslation": "一只村民正在村庄附近散步。"
     },
     {
       "index": "033",
@@ -398,8 +398,8 @@
       "exampleTranslation": "我合成工作台时获得了我的第一个成就。",
       "phrase": "complete achievement",
       "phraseTranslation": "完成成就",
-      "sentence": "We complete the achievement challenge.",
-      "sentenceTranslation": "我们完成“成就”挑战。"
+      "sentence": "This challenge unlocks the achievement badge.",
+      "sentenceTranslation": "这个挑战会解锁“成就”徽章。"
     },
     {
       "index": "034",
@@ -410,8 +410,8 @@
       "exampleTranslation": "Minecraft中的一切都是由方块组成的。",
       "phrase": "place block",
       "phraseTranslation": "放置方块",
-      "sentence": "I place the block near my house.",
-      "sentenceTranslation": "我把方块放在房子附近。"
+      "sentence": "I collect the block before sunset.",
+      "sentenceTranslation": "我在日落前收集方块。"
     },
     {
       "index": "035",
@@ -422,8 +422,8 @@
       "exampleTranslation": "泥土是最容易挖掘的方块。",
       "phrase": "carry dirt",
       "phraseTranslation": "携带泥土",
-      "sentence": "I carry the dirt in my bag.",
-      "sentenceTranslation": "我把泥土带在包里。"
+      "sentence": "The chest contains a useful dirt.",
+      "sentenceTranslation": "箱子里有一个有用的泥土。"
     },
     {
       "index": "036",
@@ -434,8 +434,8 @@
       "exampleTranslation": "地表的草方块看起来绿色又漂亮。",
       "phrase": "place grass block",
       "phraseTranslation": "放置草方块",
-      "sentence": "I place the grass block near my house.",
-      "sentenceTranslation": "我把草方块放在房子附近。"
+      "sentence": "I collect the grass block before sunset.",
+      "sentenceTranslation": "我在日落前收集草方块。"
     },
     {
       "index": "037",
@@ -446,8 +446,8 @@
       "exampleTranslation": "石头比泥土更坚硬，在地下非常常见。",
       "phrase": "carry stone",
       "phraseTranslation": "携带石头",
-      "sentence": "I carry the stone in my bag.",
-      "sentenceTranslation": "我把石头带在包里。"
+      "sentence": "We trade the stone with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换石头。"
     },
     {
       "index": "038",
@@ -458,8 +458,8 @@
       "exampleTranslation": "当你挖掘石头时，它会变成圆石。",
       "phrase": "carry cobblestone",
       "phraseTranslation": "携带圆石",
-      "sentence": "I carry the cobblestone in my bag.",
-      "sentenceTranslation": "我把圆石带在包里。"
+      "sentence": "I keep the cobblestone in my backpack.",
+      "sentenceTranslation": "我把圆石放在背包里。"
     },
     {
       "index": "039",
@@ -470,8 +470,8 @@
       "exampleTranslation": "当下面没有方块时，沙子会掉落下来。",
       "phrase": "carry sand",
       "phraseTranslation": "携带沙子",
-      "sentence": "I carry the sand in my bag.",
-      "sentenceTranslation": "我把沙子带在包里。"
+      "sentence": "The sand helps us prepare for the journey.",
+      "sentenceTranslation": "沙子帮助我们为旅程做准备。"
     },
     {
       "index": "040",
@@ -482,8 +482,8 @@
       "exampleTranslation": "沙砾也会像沙子一样掉落，所以要小心。",
       "phrase": "carry gravel",
       "phraseTranslation": "携带沙砾",
-      "sentence": "I carry the gravel in my bag.",
-      "sentenceTranslation": "我把沙砾带在包里。"
+      "sentence": "The gravel helps us prepare for the journey.",
+      "sentenceTranslation": "沙砾帮助我们为旅程做准备。"
     },
     {
       "index": "041",
@@ -494,8 +494,8 @@
       "exampleTranslation": "砍一根树上的原木来获得你的第一块木材。",
       "phrase": "carry log",
       "phraseTranslation": "携带原木",
-      "sentence": "I carry the log in my bag.",
-      "sentenceTranslation": "我把原木带在包里。"
+      "sentence": "The chest contains a useful log.",
+      "sentenceTranslation": "箱子里有一个有用的原木。"
     },
     {
       "index": "042",
@@ -506,8 +506,8 @@
       "exampleTranslation": "四块木板可以做一个工作台。",
       "phrase": "carry plank",
       "phraseTranslation": "携带木板",
-      "sentence": "I carry the plank in my bag.",
-      "sentenceTranslation": "我把木板带在包里。"
+      "sentence": "I find the plank beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到木板。"
     },
     {
       "index": "043",
@@ -518,8 +518,8 @@
       "exampleTranslation": "当你破坏树叶时，它们有时会掉落树苗。",
       "phrase": "carry leaves",
       "phraseTranslation": "携带树叶",
-      "sentence": "I carry the leaves in my bag.",
-      "sentenceTranslation": "我把树叶带在包里。"
+      "sentence": "I keep the leaves in my backpack.",
+      "sentenceTranslation": "我把树叶放在背包里。"
     },
     {
       "index": "044",
@@ -530,8 +530,8 @@
       "exampleTranslation": "种下一棵树苗，它会长成一棵大树。",
       "phrase": "carry sapling",
       "phraseTranslation": "携带树苗",
-      "sentence": "I carry the sapling in my bag.",
-      "sentenceTranslation": "我把树苗带在包里。"
+      "sentence": "We trade the sapling with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换树苗。"
     },
     {
       "index": "045",
@@ -542,8 +542,8 @@
       "exampleTranslation": "你不能破坏基岩——它是世界的底部。",
       "phrase": "carry bedrock",
       "phraseTranslation": "携带基岩",
-      "sentence": "I carry the bedrock in my bag.",
-      "sentenceTranslation": "我把基岩带在包里。"
+      "sentence": "The bedrock helps us prepare for the journey.",
+      "sentenceTranslation": "基岩帮助我们为旅程做准备。"
     },
     {
       "index": "046",
@@ -554,8 +554,8 @@
       "exampleTranslation": "黑曜石是游戏中最坚硬的方块之一。",
       "phrase": "carry obsidian",
       "phraseTranslation": "携带黑曜石",
-      "sentence": "I carry the obsidian in my bag.",
-      "sentenceTranslation": "我把黑曜石带在包里。"
+      "sentence": "The obsidian helps us prepare for the journey.",
+      "sentenceTranslation": "黑曜石帮助我们为旅程做准备。"
     },
     {
       "index": "047",
@@ -566,8 +566,8 @@
       "exampleTranslation": "用玻璃建一个窗户，这样你就能看到外面。",
       "phrase": "carry glass",
       "phraseTranslation": "携带玻璃",
-      "sentence": "I carry the glass in my bag.",
-      "sentenceTranslation": "我把玻璃带在包里。"
+      "sentence": "We trade the glass with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换玻璃。"
     },
     {
       "index": "048",
@@ -578,8 +578,8 @@
       "exampleTranslation": "台阶只有半个方块高。",
       "phrase": "carry slab",
       "phraseTranslation": "携带台阶",
-      "sentence": "I carry the slab in my bag.",
-      "sentenceTranslation": "我把台阶带在包里。"
+      "sentence": "We trade the slab with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换台阶。"
     },
     {
       "index": "049",
@@ -590,8 +590,8 @@
       "exampleTranslation": "把楼梯放在你的房子上，这样你就可以轻松走上去。",
       "phrase": "carry stair",
       "phraseTranslation": "携带楼梯",
-      "sentence": "I carry the stair in my bag.",
-      "sentenceTranslation": "我把楼梯带在包里。"
+      "sentence": "The stair helps us prepare for the journey.",
+      "sentenceTranslation": "楼梯帮助我们为旅程做准备。"
     },
     {
       "index": "050",
@@ -602,8 +602,8 @@
       "exampleTranslation": "栅栏可以把你的动物留在农场里。",
       "phrase": "carry fence",
       "phraseTranslation": "携带栅栏",
-      "sentence": "I carry the fence in my bag.",
-      "sentenceTranslation": "我把栅栏带在包里。"
+      "sentence": "We trade the fence with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换栅栏。"
     },
     {
       "index": "051",
@@ -614,8 +614,8 @@
       "exampleTranslation": "晚上关上门，把怪物挡在外面。",
       "phrase": "carry door",
       "phraseTranslation": "携带门",
-      "sentence": "I carry the door in my bag.",
-      "sentenceTranslation": "我把门带在包里。"
+      "sentence": "I keep the door in my backpack.",
+      "sentenceTranslation": "我把门放在背包里。"
     },
     {
       "index": "052",
@@ -626,8 +626,8 @@
       "exampleTranslation": "地牢的地板里藏着一扇活板门。",
       "phrase": "carry trapdoor",
       "phraseTranslation": "携带活板门",
-      "sentence": "I carry the trapdoor in my bag.",
-      "sentenceTranslation": "我把活板门带在包里。"
+      "sentence": "I keep the trapdoor in my backpack.",
+      "sentenceTranslation": "我把活板门放在背包里。"
     },
     {
       "index": "053",
@@ -638,8 +638,8 @@
       "exampleTranslation": "把多余的物品放进箱子里以节省空间。",
       "phrase": "carry chest",
       "phraseTranslation": "携带箱子",
-      "sentence": "I carry the chest in my bag.",
-      "sentenceTranslation": "我把箱子带在包里。"
+      "sentence": "The chest contains a useful chest.",
+      "sentenceTranslation": "箱子里有一个有用的箱子。"
     },
     {
       "index": "054",
@@ -650,8 +650,8 @@
       "exampleTranslation": "末影箱会在你所有的世界中共享其中的物品。",
       "phrase": "explore the ender chest",
       "phraseTranslation": "探索末影箱",
-      "sentence": "We explore the ender chest at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末影箱。"
+      "sentence": "The ender chest is full of new plants to discover.",
+      "sentenceTranslation": "末影箱里有许多等待发现的新植物。"
     },
     {
       "index": "055",
@@ -662,8 +662,8 @@
       "exampleTranslation": "把煤放进熔炉来熔炼铁矿石。",
       "phrase": "carry furnace",
       "phraseTranslation": "携带熔炉",
-      "sentence": "I carry the furnace in my bag.",
-      "sentenceTranslation": "我把熔炉带在包里。"
+      "sentence": "I keep the furnace in my backpack.",
+      "sentenceTranslation": "我把熔炉放在背包里。"
     },
     {
       "index": "056",
@@ -674,8 +674,8 @@
       "exampleTranslation": "你需要工作台来制作大多数工具和武器。",
       "phrase": "carry crafting table",
       "phraseTranslation": "携带工作台",
-      "sentence": "I carry the crafting table in my bag.",
-      "sentenceTranslation": "我把工作台带在包里。"
+      "sentence": "The crafting table helps us prepare for the journey.",
+      "sentenceTranslation": "工作台帮助我们为旅程做准备。"
     },
     {
       "index": "057",
@@ -686,8 +686,8 @@
       "exampleTranslation": "把书架放在附魔台周围，可以获得更好的附魔。",
       "phrase": "carry bookshelf",
       "phraseTranslation": "携带书架",
-      "sentence": "I carry the bookshelf in my bag.",
-      "sentenceTranslation": "我把书架带在包里。"
+      "sentence": "The chest contains a useful bookshelf.",
+      "sentenceTranslation": "箱子里有一个有用的书架。"
     },
     {
       "index": "058",
@@ -698,8 +698,8 @@
       "exampleTranslation": "睡在床上可以设置你的出生点并跳过夜晚。",
       "phrase": "carry bed",
       "phraseTranslation": "携带床",
-      "sentence": "I carry the bed in my bag.",
-      "sentenceTranslation": "我把床带在包里。"
+      "sentence": "The bed helps us prepare for the journey.",
+      "sentenceTranslation": "床帮助我们为旅程做准备。"
     },
     {
       "index": "059",
@@ -710,8 +710,8 @@
       "exampleTranslation": "小心——TNT 会爆炸并摧毁附近的一切！",
       "phrase": "carry tnt",
       "phraseTranslation": "携带TNT炸药",
-      "sentence": "I carry the tnt in my bag.",
-      "sentenceTranslation": "我把TNT炸药带在包里。"
+      "sentence": "The chest contains a useful tnt.",
+      "sentenceTranslation": "箱子里有一个有用的TNT炸药。"
     },
     {
       "index": "060",
@@ -722,8 +722,8 @@
       "exampleTranslation": "当你用红石给活塞供能时，它会推动方块。",
       "phrase": "carry piston",
       "phraseTranslation": "携带活塞",
-      "sentence": "I carry the piston in my bag.",
-      "sentenceTranslation": "我把活塞带在包里。"
+      "sentence": "The chest contains a useful piston.",
+      "sentenceTranslation": "箱子里有一个有用的活塞。"
     },
     {
       "index": "061",
@@ -734,8 +734,8 @@
       "exampleTranslation": "发射器会自动向怪物射出箭矢。",
       "phrase": "carry dispenser",
       "phraseTranslation": "携带发射器",
-      "sentence": "I carry the dispenser in my bag.",
-      "sentenceTranslation": "我把发射器带在包里。"
+      "sentence": "I keep the dispenser in my backpack.",
+      "sentenceTranslation": "我把发射器放在背包里。"
     },
     {
       "index": "062",
@@ -746,8 +746,8 @@
       "exampleTranslation": "投掷器将物品从一个地方移动到另一个地方。",
       "phrase": "carry dropper",
       "phraseTranslation": "携带投掷器",
-      "sentence": "I carry the dropper in my bag.",
-      "sentenceTranslation": "我把投掷器带在包里。"
+      "sentence": "The chest contains a useful dropper.",
+      "sentenceTranslation": "箱子里有一个有用的投掷器。"
     },
     {
       "index": "063",
@@ -758,8 +758,8 @@
       "exampleTranslation": "漏斗收集掉入其中的物品。",
       "phrase": "carry hopper",
       "phraseTranslation": "携带漏斗",
-      "sentence": "I carry the hopper in my bag.",
-      "sentenceTranslation": "我把漏斗带在包里。"
+      "sentence": "The chest contains a useful hopper.",
+      "sentenceTranslation": "箱子里有一个有用的漏斗。"
     },
     {
       "index": "064",
@@ -770,8 +770,8 @@
       "exampleTranslation": "把火把放在墙上，这样洞穴就亮了。",
       "phrase": "carry torch",
       "phraseTranslation": "携带火把",
-      "sentence": "I carry the torch in my bag.",
-      "sentenceTranslation": "我把火把带在包里。"
+      "sentence": "I find the torch beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到火把。"
     },
     {
       "index": "065",
@@ -782,8 +782,8 @@
       "exampleTranslation": "爬上梯子到达塔顶。",
       "phrase": "carry ladder",
       "phraseTranslation": "携带梯子",
-      "sentence": "I carry the ladder in my bag.",
-      "sentenceTranslation": "我把梯子带在包里。"
+      "sentence": "I keep the ladder in my backpack.",
+      "sentenceTranslation": "我把梯子放在背包里。"
     },
     {
       "index": "066",
@@ -794,8 +794,8 @@
       "exampleTranslation": "在地上铺设铁轨以建造矿车轨道。",
       "phrase": "carry rail",
       "phraseTranslation": "携带铁轨",
-      "sentence": "I carry the rail in my bag.",
-      "sentenceTranslation": "我把铁轨带在包里。"
+      "sentence": "I find the rail beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到铁轨。"
     },
     {
       "index": "067",
@@ -806,8 +806,8 @@
       "exampleTranslation": "信标发出一道光束直射天空。",
       "phrase": "carry beacon",
       "phraseTranslation": "携带信标",
-      "sentence": "I carry the beacon in my bag.",
-      "sentenceTranslation": "我把信标带在包里。"
+      "sentence": "The beacon helps us prepare for the journey.",
+      "sentenceTranslation": "信标帮助我们为旅程做准备。"
     },
     {
       "index": "068",
@@ -818,8 +818,8 @@
       "exampleTranslation": "使用铁砧修理你的破损剑。",
       "phrase": "carry anvil",
       "phraseTranslation": "携带铁砧",
-      "sentence": "I carry the anvil in my bag.",
-      "sentenceTranslation": "我把铁砧带在包里。"
+      "sentence": "We trade the anvil with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换铁砧。"
     },
     {
       "index": "069",
@@ -830,8 +830,8 @@
       "exampleTranslation": "用水装满炼药锅来染色你的皮革盔甲。",
       "phrase": "carry cauldron",
       "phraseTranslation": "携带炼药锅",
-      "sentence": "I carry the cauldron in my bag.",
-      "sentenceTranslation": "我把炼药锅带在包里。"
+      "sentence": "I find the cauldron beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到炼药锅。"
     },
     {
       "index": "070",
@@ -842,8 +842,8 @@
       "exampleTranslation": "坐在附魔台旁边使用你的经验值。",
       "phrase": "carry enchanting table",
       "phraseTranslation": "携带附魔台",
-      "sentence": "I carry the enchanting table in my bag.",
-      "sentenceTranslation": "我把附魔台带在包里。"
+      "sentence": "I find the enchanting table beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到附魔台。"
     },
     {
       "index": "071",
@@ -854,8 +854,8 @@
       "exampleTranslation": "你需要烈焰棒来制作酿造台。",
       "phrase": "carry brewing stand",
       "phraseTranslation": "携带酿造台",
-      "sentence": "I carry the brewing stand in my bag.",
-      "sentenceTranslation": "我把酿造台带在包里。"
+      "sentence": "I find the brewing stand beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到酿造台。"
     },
     {
       "index": "072",
@@ -866,8 +866,8 @@
       "exampleTranslation": "萤石是一种你可以在下界找到的发光方块。",
       "phrase": "carry glowstone",
       "phraseTranslation": "携带萤石",
-      "sentence": "I carry the glowstone in my bag.",
-      "sentenceTranslation": "我把萤石带在包里。"
+      "sentence": "We trade the glowstone with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换萤石。"
     },
     {
       "index": "073",
@@ -878,8 +878,8 @@
       "exampleTranslation": "海晶灯在水下发光，看起来很美丽。",
       "phrase": "carry sea lantern",
       "phraseTranslation": "携带海晶灯",
-      "sentence": "I carry the sea lantern in my bag.",
-      "sentenceTranslation": "我把海晶灯带在包里。"
+      "sentence": "I keep the sea lantern in my backpack.",
+      "sentenceTranslation": "我把海晶灯放在背包里。"
     },
     {
       "index": "074",
@@ -890,8 +890,8 @@
       "exampleTranslation": "下界岩几乎覆盖了整个下界的地面。",
       "phrase": "explore the netherrack",
       "phraseTranslation": "探索下界岩",
-      "sentence": "We explore the netherrack at sunrise.",
-      "sentenceTranslation": "我们在日出时探索下界岩。"
+      "sentence": "The netherrack is full of new plants to discover.",
+      "sentenceTranslation": "下界岩里有许多等待发现的新植物。"
     },
     {
       "index": "075",
@@ -902,8 +902,8 @@
       "exampleTranslation": "行走在灵魂沙上会让你移动得非常缓慢。",
       "phrase": "carry soul sand",
       "phraseTranslation": "携带灵魂沙",
-      "sentence": "I carry the soul sand in my bag.",
-      "sentenceTranslation": "我把灵魂沙带在包里。"
+      "sentence": "The chest contains a useful soul sand.",
+      "sentenceTranslation": "箱子里有一个有用的灵魂沙。"
     },
     {
       "index": "076",
@@ -914,8 +914,8 @@
       "exampleTranslation": "末地石是末地维度的主要方块。",
       "phrase": "explore the end stone",
       "phraseTranslation": "探索末地石",
-      "sentence": "We explore the end stone at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末地石。"
+      "sentence": "Our map shows a trail through the end stone.",
+      "sentenceTranslation": "我们的地图显示有一条穿过末地石的小路。"
     },
     {
       "index": "077",
@@ -926,8 +926,8 @@
       "exampleTranslation": "陶瓦有多种颜色，非常适合装饰。",
       "phrase": "carry terracotta",
       "phraseTranslation": "携带陶瓦",
-      "sentence": "I carry the terracotta in my bag.",
-      "sentenceTranslation": "我把陶瓦带在包里。"
+      "sentence": "We trade the terracotta with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换陶瓦。"
     },
     {
       "index": "078",
@@ -938,8 +938,8 @@
       "exampleTranslation": "混凝土比羊毛坚固且不会燃烧。",
       "phrase": "carry concrete",
       "phraseTranslation": "携带混凝土",
-      "sentence": "I carry the concrete in my bag.",
-      "sentenceTranslation": "我把混凝土带在包里。"
+      "sentence": "I keep the concrete in my backpack.",
+      "sentenceTranslation": "我把混凝土放在背包里。"
     },
     {
       "index": "079",
@@ -950,8 +950,8 @@
       "exampleTranslation": "剪羊毛可以获得制做床用的羊毛。",
       "phrase": "carry wool",
       "phraseTranslation": "携带羊毛",
-      "sentence": "I carry the wool in my bag.",
-      "sentenceTranslation": "我把羊毛带在包里。"
+      "sentence": "I find the wool beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到羊毛。"
     },
     {
       "index": "080",
@@ -962,8 +962,8 @@
       "exampleTranslation": "你可以在冰块上滑得非常快。",
       "phrase": "carry ice",
       "phraseTranslation": "携带冰",
-      "sentence": "I carry the ice in my bag.",
-      "sentenceTranslation": "我把冰带在包里。"
+      "sentence": "We trade the ice with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换冰。"
     },
     {
       "index": "081",
@@ -974,8 +974,8 @@
       "exampleTranslation": "不要碰仙人掌——它会伤害你！",
       "phrase": "carry cactus",
       "phraseTranslation": "携带仙人掌",
-      "sentence": "I carry the cactus in my bag.",
-      "sentenceTranslation": "我把仙人掌带在包里。"
+      "sentence": "I find the cactus beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到仙人掌。"
     },
     {
       "index": "082",
@@ -986,8 +986,8 @@
       "exampleTranslation": "竹子在丛林生物群系中生长得非常高。",
       "phrase": "grow bamboo",
       "phraseTranslation": "种植竹子",
-      "sentence": "I grow bamboo near the farm.",
-      "sentenceTranslation": "我在农场旁种植竹子。"
+      "sentence": "The bamboo grows well after the rain.",
+      "sentenceTranslation": "下雨后竹子长得很好。"
     },
     {
       "index": "083",
@@ -998,8 +998,8 @@
       "exampleTranslation": "你可以踩在睡莲上走过水面。",
       "phrase": "carry lily pad",
       "phraseTranslation": "携带睡莲",
-      "sentence": "I carry the lily pad in my bag.",
-      "sentenceTranslation": "我把睡莲带在包里。"
+      "sentence": "The lily pad helps us prepare for the journey.",
+      "sentenceTranslation": "睡莲帮助我们为旅程做准备。"
     },
     {
       "index": "084",
@@ -1010,8 +1010,8 @@
       "exampleTranslation": "当你落在干草块上时，它会减少摔落伤害。",
       "phrase": "carry hay bale",
       "phraseTranslation": "携带干草块",
-      "sentence": "I carry the hay bale in my bag.",
-      "sentenceTranslation": "我把干草块带在包里。"
+      "sentence": "I find the hay bale beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到干草块。"
     },
     {
       "index": "085",
@@ -1022,8 +1022,8 @@
       "exampleTranslation": "在海洋神殿内使用海绵来吸收水。",
       "phrase": "carry sponge",
       "phraseTranslation": "携带海绵",
-      "sentence": "I carry the sponge in my bag.",
-      "sentenceTranslation": "我把海绵带在包里。"
+      "sentence": "We trade the sponge with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换海绵。"
     },
     {
       "index": "086",
@@ -1034,8 +1034,8 @@
       "exampleTranslation": "在地下深处挖矿石会给你有用的材料。",
       "phrase": "carry ore",
       "phraseTranslation": "携带矿石",
-      "sentence": "I carry the ore in my bag.",
-      "sentenceTranslation": "我把矿石带在包里。"
+      "sentence": "I find the ore beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到矿石。"
     },
     {
       "index": "087",
@@ -1046,8 +1046,8 @@
       "exampleTranslation": "煤炭是最常见的矿石，也是你熔炉的好燃料。",
       "phrase": "carry coal",
       "phraseTranslation": "携带煤炭",
-      "sentence": "I carry the coal in my bag.",
-      "sentenceTranslation": "我把煤炭带在包里。"
+      "sentence": "The chest contains a useful coal.",
+      "sentenceTranslation": "箱子里有一个有用的煤炭。"
     },
     {
       "index": "088",
@@ -1058,8 +1058,8 @@
       "exampleTranslation": "熔炼铁矿石以获得制造工具的铁锭。",
       "phrase": "carry iron",
       "phraseTranslation": "携带铁",
-      "sentence": "I carry the iron in my bag.",
-      "sentenceTranslation": "我把铁带在包里。"
+      "sentence": "The chest contains a useful iron.",
+      "sentenceTranslation": "箱子里有一个有用的铁。"
     },
     {
       "index": "089",
@@ -1070,8 +1070,8 @@
       "exampleTranslation": "铜随着时间会变绿，就像真实的铜一样。",
       "phrase": "carry copper",
       "phraseTranslation": "携带铜",
-      "sentence": "I carry the copper in my bag.",
-      "sentenceTranslation": "我把铜带在包里。"
+      "sentence": "The chest contains a useful copper.",
+      "sentenceTranslation": "箱子里有一个有用的铜。"
     },
     {
       "index": "090",
@@ -1082,8 +1082,8 @@
       "exampleTranslation": "金制工具速度快，但很容易损坏。",
       "phrase": "carry gold",
       "phraseTranslation": "携带金",
-      "sentence": "I carry the gold in my bag.",
-      "sentenceTranslation": "我把金带在包里。"
+      "sentence": "The gold helps us prepare for the journey.",
+      "sentenceTranslation": "金帮助我们为旅程做准备。"
     },
     {
       "index": "091",
@@ -1094,8 +1094,8 @@
       "exampleTranslation": "找到钻石是游戏中最令人兴奋的时刻！",
       "phrase": "carry diamond",
       "phraseTranslation": "携带钻石",
-      "sentence": "I carry the diamond in my bag.",
-      "sentenceTranslation": "我把钻石带在包里。"
+      "sentence": "We trade the diamond with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换钻石。"
     },
     {
       "index": "092",
@@ -1106,8 +1106,8 @@
       "exampleTranslation": "与村民交易物品，你会得到绿宝石。",
       "phrase": "carry emerald",
       "phraseTranslation": "携带绿宝石",
-      "sentence": "I carry the emerald in my bag.",
-      "sentenceTranslation": "我把绿宝石带在包里。"
+      "sentence": "I keep the emerald in my backpack.",
+      "sentenceTranslation": "我把绿宝石放在背包里。"
     },
     {
       "index": "093",
@@ -1118,8 +1118,8 @@
       "exampleTranslation": "你需要青金石才能使用附魔台。",
       "phrase": "carry lapis lazuli",
       "phraseTranslation": "携带青金石",
-      "sentence": "I carry the lapis lazuli in my bag.",
-      "sentenceTranslation": "我把青金石带在包里。"
+      "sentence": "The chest contains a useful lapis lazuli.",
+      "sentenceTranslation": "箱子里有一个有用的青金石。"
     },
     {
       "index": "094",
@@ -1130,8 +1130,8 @@
       "exampleTranslation": "红石粉可以传送能量到机器和门。",
       "phrase": "redstone wool",
       "phraseTranslation": "红石羊毛",
-      "sentence": "The wool is redstone.",
-      "sentenceTranslation": "羊毛是红石色的。"
+      "sentence": "A redstone path leads to the garden.",
+      "sentenceTranslation": "一条红石色的小路通向花园。"
     },
     {
       "index": "095",
@@ -1142,8 +1142,8 @@
       "exampleTranslation": "下界合金护甲比钻石护甲更强。",
       "phrase": "explore the netherite",
       "phraseTranslation": "探索下界合金",
-      "sentence": "We explore the netherite at sunrise.",
-      "sentenceTranslation": "我们在日出时探索下界合金。"
+      "sentence": "Our map shows a trail through the netherite.",
+      "sentenceTranslation": "我们的地图显示有一条穿过下界合金的小路。"
     },
     {
       "index": "096",
@@ -1154,8 +1154,8 @@
       "exampleTranslation": "石英块看起来非常干净洁白，适合建筑。",
       "phrase": "carry quartz",
       "phraseTranslation": "携带石英",
-      "sentence": "I carry the quartz in my bag.",
-      "sentenceTranslation": "我把石英带在包里。"
+      "sentence": "The chest contains a useful quartz.",
+      "sentenceTranslation": "箱子里有一个有用的石英。"
     },
     {
       "index": "097",
@@ -1166,8 +1166,8 @@
       "exampleTranslation": "紫水晶晶体生长在一种特殊的紫色晶洞内。",
       "phrase": "carry amethyst",
       "phraseTranslation": "携带紫水晶",
-      "sentence": "I carry the amethyst in my bag.",
-      "sentenceTranslation": "我把紫水晶带在包里。"
+      "sentence": "The amethyst helps us prepare for the journey.",
+      "sentenceTranslation": "紫水晶帮助我们为旅程做准备。"
     },
     {
       "index": "098",
@@ -1178,8 +1178,8 @@
       "exampleTranslation": "你需要六个铁锭来制作一套铁甲。",
       "phrase": "carry ingot",
       "phraseTranslation": "携带锭",
-      "sentence": "I carry the ingot in my bag.",
-      "sentenceTranslation": "我把锭带在包里。"
+      "sentence": "The chest contains a useful ingot.",
+      "sentenceTranslation": "箱子里有一个有用的锭。"
     },
     {
       "index": "099",
@@ -1190,8 +1190,8 @@
       "exampleTranslation": "九个金粒可以合成为一个金锭。",
       "phrase": "carry nugget",
       "phraseTranslation": "携带粒",
-      "sentence": "I carry the nugget in my bag.",
-      "sentenceTranslation": "我把粒带在包里。"
+      "sentence": "I keep the nugget in my backpack.",
+      "sentenceTranslation": "我把粒放在背包里。"
     },
     {
       "index": "100",
@@ -1202,8 +1202,8 @@
       "exampleTranslation": "在地上放置红石粉来制作电路。",
       "phrase": "carry dust",
       "phraseTranslation": "携带粉末",
-      "sentence": "I carry the dust in my bag.",
-      "sentenceTranslation": "我把粉末带在包里。"
+      "sentence": "We trade the dust with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换粉末。"
     },
     {
       "index": "101",
@@ -1214,8 +1214,8 @@
       "exampleTranslation": "当你挖掘碎石时，有时会得到燧石。",
       "phrase": "carry flint",
       "phraseTranslation": "携带燧石",
-      "sentence": "I carry the flint in my bag.",
-      "sentenceTranslation": "我把燧石带在包里。"
+      "sentence": "I keep the flint in my backpack.",
+      "sentenceTranslation": "我把燧石放在背包里。"
     },
     {
       "index": "102",
@@ -1226,8 +1226,8 @@
       "exampleTranslation": "木炭的作用类似于煤，但它是由木头制成的。",
       "phrase": "carry charcoal",
       "phraseTranslation": "携带木炭",
-      "sentence": "I carry the charcoal in my bag.",
-      "sentenceTranslation": "我把木炭带在包里。"
+      "sentence": "I keep the charcoal in my backpack.",
+      "sentenceTranslation": "我把木炭放在背包里。"
     },
     {
       "index": "103",
@@ -1238,8 +1238,8 @@
       "exampleTranslation": "你需要用线来合成弓和钓鱼竿。",
       "phrase": "carry string",
       "phraseTranslation": "携带线",
-      "sentence": "I carry the string in my bag.",
-      "sentenceTranslation": "我把线带在包里。"
+      "sentence": "I find the string beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到线。"
     },
     {
       "index": "104",
@@ -1250,8 +1250,8 @@
       "exampleTranslation": "鸡会掉落羽毛，羽毛用来制作箭矢。",
       "phrase": "carry feather",
       "phraseTranslation": "携带羽毛",
-      "sentence": "I carry the feather in my bag.",
-      "sentenceTranslation": "我把羽毛带在包里。"
+      "sentence": "I keep the feather in my backpack.",
+      "sentenceTranslation": "我把羽毛放在背包里。"
     },
     {
       "index": "105",
@@ -1262,8 +1262,8 @@
       "exampleTranslation": "皮革盔甲很弱，但它是最容易制作的。",
       "phrase": "carry leather",
       "phraseTranslation": "携带皮革",
-      "sentence": "I carry the leather in my bag.",
-      "sentenceTranslation": "我把皮革带在包里。"
+      "sentence": "I keep the leather in my backpack.",
+      "sentenceTranslation": "我把皮革放在背包里。"
     },
     {
       "index": "106",
@@ -1274,8 +1274,8 @@
       "exampleTranslation": "将骨头研磨成骨粉可以让作物生长更快。",
       "phrase": "carry bone",
       "phraseTranslation": "携带骨头",
-      "sentence": "I carry the bone in my bag.",
-      "sentenceTranslation": "我把骨头带在包里。"
+      "sentence": "The chest contains a useful bone.",
+      "sentenceTranslation": "箱子里有一个有用的骨头。"
     },
     {
       "index": "107",
@@ -1286,8 +1286,8 @@
       "exampleTranslation": "当你击杀爬行者时，他们会掉落火药。",
       "phrase": "carry gunpowder",
       "phraseTranslation": "携带火药",
-      "sentence": "I carry the gunpowder in my bag.",
-      "sentenceTranslation": "我把火药带在包里。"
+      "sentence": "We trade the gunpowder with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换火药。"
     },
     {
       "index": "108",
@@ -1298,8 +1298,8 @@
       "exampleTranslation": "把黏液球制作成粘性活塞。",
       "phrase": "carry slimeball",
       "phraseTranslation": "携带黏液球",
-      "sentence": "I carry the slimeball in my bag.",
-      "sentenceTranslation": "我把黏液球带在包里。"
+      "sentence": "I keep the slimeball in my backpack.",
+      "sentenceTranslation": "我把黏液球放在背包里。"
     },
     {
       "index": "109",
@@ -1310,8 +1310,8 @@
       "exampleTranslation": "建造酿造台需要烈焰棒。",
       "phrase": "carry blaze rod",
       "phraseTranslation": "携带烈焰棒",
-      "sentence": "I carry the blaze rod in my bag.",
-      "sentenceTranslation": "我把烈焰棒带在包里。"
+      "sentence": "We trade the blaze rod with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换烈焰棒。"
     },
     {
       "index": "110",
@@ -1322,8 +1322,8 @@
       "exampleTranslation": "将烈焰棒研磨成烈焰粉来为酿造提供燃料。",
       "phrase": "carry blaze powder",
       "phraseTranslation": "携带烈焰粉",
-      "sentence": "I carry the blaze powder in my bag.",
-      "sentenceTranslation": "我把烈焰粉带在包里。"
+      "sentence": "The blaze powder helps us prepare for the journey.",
+      "sentenceTranslation": "烈焰粉帮助我们为旅程做准备。"
     },
     {
       "index": "111",
@@ -1334,8 +1334,8 @@
       "exampleTranslation": "当你击败凋灵时，它会掉落下界之星。",
       "phrase": "explore the nether star",
       "phraseTranslation": "探索下界之星",
-      "sentence": "We explore the nether star at sunrise.",
-      "sentenceTranslation": "我们在日出时探索下界之星。"
+      "sentence": "Our map shows a trail through the nether star.",
+      "sentenceTranslation": "我们的地图显示有一条穿过下界之星的小路。"
     },
     {
       "index": "112",
@@ -1346,8 +1346,8 @@
       "exampleTranslation": "击败末影龙后，龙蛋会出现。",
       "phrase": "carry dragon egg",
       "phraseTranslation": "携带龙蛋",
-      "sentence": "I carry the dragon egg in my bag.",
-      "sentenceTranslation": "我把龙蛋带在包里。"
+      "sentence": "The chest contains a useful dragon egg.",
+      "sentenceTranslation": "箱子里有一个有用的龙蛋。"
     },
     {
       "index": "113",
@@ -1358,8 +1358,8 @@
       "exampleTranslation": "手持不死图腾可以挽救你的生命。",
       "phrase": "carry totem of undying",
       "phraseTranslation": "携带不死图腾",
-      "sentence": "I carry the totem of undying in my bag.",
-      "sentenceTranslation": "我把不死图腾带在包里。"
+      "sentence": "I keep the totem of undying in my backpack.",
+      "sentenceTranslation": "我把不死图腾放在背包里。"
     },
     {
       "index": "114",
@@ -1370,8 +1370,8 @@
       "exampleTranslation": "扔出末影珍珠可以传送到那个地点。",
       "phrase": "explore the ender pearl",
       "phraseTranslation": "探索末影珍珠",
-      "sentence": "We explore the ender pearl at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末影珍珠。"
+      "sentence": "The ender pearl is full of new plants to discover.",
+      "sentenceTranslation": "末影珍珠里有许多等待发现的新植物。"
     },
     {
       "index": "115",
@@ -1382,8 +1382,8 @@
       "exampleTranslation": "扔出末影之眼可以找到要塞。",
       "phrase": "explore the eye of ender",
       "phraseTranslation": "探索末影之眼",
-      "sentence": "We explore the eye of ender at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末影之眼。"
+      "sentence": "Our map shows a trail through the eye of ender.",
+      "sentenceTranslation": "我们的地图显示有一条穿过末影之眼的小路。"
     },
     {
       "index": "116",
@@ -1394,8 +1394,8 @@
       "exampleTranslation": "两个潜影壳和一个箱子可以制作潜影盒。",
       "phrase": "carry shulker shell",
       "phraseTranslation": "携带潜影壳",
-      "sentence": "I carry the shulker shell in my bag.",
-      "sentenceTranslation": "我把潜影壳带在包里。"
+      "sentence": "I find the shulker shell beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到潜影壳。"
     },
     {
       "index": "117",
@@ -1406,8 +1406,8 @@
       "exampleTranslation": "守卫者在海洋纪念碑中掉落海晶碎片。",
       "phrase": "carry prismarine shard",
       "phraseTranslation": "携带海晶碎片",
-      "sentence": "I carry the prismarine shard in my bag.",
-      "sentenceTranslation": "我把海晶碎片带在包里。"
+      "sentence": "The chest contains a useful prismarine shard.",
+      "sentenceTranslation": "箱子里有一个有用的海晶碎片。"
     },
     {
       "index": "118",
@@ -1418,8 +1418,8 @@
       "exampleTranslation": "你可以通过钓鱼或击杀溺尸获得鹦鹉螺壳。",
       "phrase": "carry nautilus shell",
       "phraseTranslation": "携带鹦鹉螺壳",
-      "sentence": "I carry the nautilus shell in my bag.",
-      "sentenceTranslation": "我把鹦鹉螺壳带在包里。"
+      "sentence": "The chest contains a useful nautilus shell.",
+      "sentenceTranslation": "箱子里有一个有用的鹦鹉螺壳。"
     },
     {
       "index": "119",
@@ -1430,8 +1430,8 @@
       "exampleTranslation": "在埋藏的宝藏箱子里找到海洋之心。",
       "phrase": "carry heart of the sea",
       "phraseTranslation": "携带海洋之心",
-      "sentence": "I carry the heart of the sea in my bag.",
-      "sentenceTranslation": "我把海洋之心带在包里。"
+      "sentence": "We trade the heart of the sea with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换海洋之心。"
     },
     {
       "index": "120",
@@ -1442,8 +1442,8 @@
       "exampleTranslation": "小海龟长大后会掉落鳞甲。",
       "phrase": "carry scute",
       "phraseTranslation": "携带鳞甲",
-      "sentence": "I carry the scute in my bag.",
-      "sentenceTranslation": "我把鳞甲带在包里。"
+      "sentence": "We trade the scute with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换鳞甲。"
     },
     {
       "index": "121",
@@ -1454,8 +1454,8 @@
       "exampleTranslation": "幻翼薄膜用来修复鞘翅。",
       "phrase": "carry phantom membrane",
       "phraseTranslation": "携带幻翼薄膜",
-      "sentence": "I carry the phantom membrane in my bag.",
-      "sentenceTranslation": "我把幻翼薄膜带在包里。"
+      "sentence": "The chest contains a useful phantom membrane.",
+      "sentenceTranslation": "箱子里有一个有用的幻翼薄膜。"
     },
     {
       "index": "122",
@@ -1466,8 +1466,8 @@
       "exampleTranslation": "兔子脚是一种稀有掉落物，用于制作药水。",
       "phrase": "carry rabbit's foot",
       "phraseTranslation": "携带兔子脚",
-      "sentence": "I carry the rabbit's foot in my bag.",
-      "sentenceTranslation": "我把兔子脚带在包里。"
+      "sentence": "I find the rabbit's foot beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到兔子脚。"
     },
     {
       "index": "123",
@@ -1478,8 +1478,8 @@
       "exampleTranslation": "蜘蛛眼是酿造毒药的材料。",
       "phrase": "a friendly spider eye",
       "phraseTranslation": "一只友好的蜘蛛眼",
-      "sentence": "A spider eye is near the village.",
-      "sentenceTranslation": "一只蜘蛛眼在村庄附近。"
+      "sentence": "A spider eye is walking near the village.",
+      "sentenceTranslation": "一只蜘蛛眼正在村庄附近散步。"
     },
     {
       "index": "124",
@@ -1490,8 +1490,8 @@
       "exampleTranslation": "用镐来挖掘石头和矿石。",
       "phrase": "use a pickaxe",
       "phraseTranslation": "使用镐",
-      "sentence": "I use the pickaxe to collect resources.",
-      "sentenceTranslation": "我用镐收集资源。"
+      "sentence": "The pickaxe helps me work faster.",
+      "sentenceTranslation": "镐帮助我更快地工作。"
     },
     {
       "index": "125",
@@ -1502,8 +1502,8 @@
       "exampleTranslation": "用斧头砍木头比徒手更快。",
       "phrase": "use a axe",
       "phraseTranslation": "使用斧",
-      "sentence": "I use the axe to collect resources.",
-      "sentenceTranslation": "我用斧收集资源。"
+      "sentence": "I use the axe to gather materials.",
+      "sentenceTranslation": "我用斧收集材料。"
     },
     {
       "index": "126",
@@ -1514,8 +1514,8 @@
       "exampleTranslation": "锹非常适合挖掘泥土、沙子和砾石。",
       "phrase": "use a shovel",
       "phraseTranslation": "使用锹",
-      "sentence": "I use the shovel to collect resources.",
-      "sentenceTranslation": "我用锹收集资源。"
+      "sentence": "The shovel is ready for our next mission.",
+      "sentenceTranslation": "锹已经准备好参加下一次任务。"
     },
     {
       "index": "127",
@@ -1526,8 +1526,8 @@
       "exampleTranslation": "用锄头把泥土变成耕地来种作物。",
       "phrase": "use a hoe",
       "phraseTranslation": "使用锄",
-      "sentence": "I use the hoe to collect resources.",
-      "sentenceTranslation": "我用锄收集资源。"
+      "sentence": "I use the hoe to gather materials.",
+      "sentenceTranslation": "我用锄收集材料。"
     },
     {
       "index": "128",
@@ -1538,8 +1538,8 @@
       "exampleTranslation": "钻石剑是对抗怪物的最佳武器。",
       "phrase": "use a sword",
       "phraseTranslation": "使用剑",
-      "sentence": "I use the sword to collect resources.",
-      "sentenceTranslation": "我用剑收集资源。"
+      "sentence": "The sword helps me work faster.",
+      "sentenceTranslation": "剑帮助我更快地工作。"
     },
     {
       "index": "129",
@@ -1550,8 +1550,8 @@
       "exampleTranslation": "用弓从远处射击怪物。",
       "phrase": "use a bow",
       "phraseTranslation": "使用弓",
-      "sentence": "I use the bow to collect resources.",
-      "sentenceTranslation": "我用弓收集资源。"
+      "sentence": "I use the bow to gather materials.",
+      "sentenceTranslation": "我用弓收集材料。"
     },
     {
       "index": "130",
@@ -1562,8 +1562,8 @@
       "exampleTranslation": "每支箭射中怪物都会造成伤害。",
       "phrase": "carry arrow",
       "phraseTranslation": "携带箭",
-      "sentence": "I carry the arrow in my bag.",
-      "sentenceTranslation": "我把箭带在包里。"
+      "sentence": "The chest contains a useful arrow.",
+      "sentenceTranslation": "箱子里有一个有用的箭。"
     },
     {
       "index": "131",
@@ -1574,8 +1574,8 @@
       "exampleTranslation": "你可以提前装填弩。",
       "phrase": "use a crossbow",
       "phraseTranslation": "使用弩",
-      "sentence": "I use the crossbow to collect resources.",
-      "sentenceTranslation": "我用弩收集资源。"
+      "sentence": "I use the crossbow to gather materials.",
+      "sentenceTranslation": "我用弩收集材料。"
     },
     {
       "index": "132",
@@ -1586,8 +1586,8 @@
       "exampleTranslation": "像投掷长矛一样投掷你的三叉戟。",
       "phrase": "carry trident",
       "phraseTranslation": "携带三叉戟",
-      "sentence": "I carry the trident in my bag.",
-      "sentenceTranslation": "我把三叉戟带在包里。"
+      "sentence": "The chest contains a useful trident.",
+      "sentenceTranslation": "箱子里有一个有用的三叉戟。"
     },
     {
       "index": "133",
@@ -1598,8 +1598,8 @@
       "exampleTranslation": "坐在河边，用你的钓鱼竿钓鱼。",
       "phrase": "eat fishing rod",
       "phraseTranslation": "吃钓鱼竿",
-      "sentence": "I eat the fishing rod after mining.",
-      "sentenceTranslation": "挖矿后我吃钓鱼竿。"
+      "sentence": "I share the fishing rod with my teammate.",
+      "sentenceTranslation": "我和队友分享钓鱼竿。"
     },
     {
       "index": "134",
@@ -1610,8 +1610,8 @@
       "exampleTranslation": "用打火石点燃地狱传送门。",
       "phrase": "carry flint and steel",
       "phraseTranslation": "携带打火石",
-      "sentence": "I carry the flint and steel in my bag.",
-      "sentenceTranslation": "我把打火石带在包里。"
+      "sentence": "The chest contains a useful flint and steel.",
+      "sentenceTranslation": "箱子里有一个有用的打火石。"
     },
     {
       "index": "135",
@@ -1622,8 +1622,8 @@
       "exampleTranslation": "用剪刀剪羊毛而不会伤害羊。",
       "phrase": "carry shears",
       "phraseTranslation": "携带剪刀",
-      "sentence": "I carry the shears in my bag.",
-      "sentenceTranslation": "我把剪刀带在包里。"
+      "sentence": "The shears helps us prepare for the journey.",
+      "sentenceTranslation": "剪刀帮助我们为旅程做准备。"
     },
     {
       "index": "136",
@@ -1634,8 +1634,8 @@
       "exampleTranslation": "用盾牌格挡攻击保护自己。",
       "phrase": "use a shield",
       "phraseTranslation": "使用盾牌",
-      "sentence": "I use the shield to collect resources.",
-      "sentenceTranslation": "我用盾牌收集资源。"
+      "sentence": "The shield helps me work faster.",
+      "sentenceTranslation": "盾牌帮助我更快地工作。"
     },
     {
       "index": "137",
@@ -1646,8 +1646,8 @@
       "exampleTranslation": "用水桶装水扑灭火焰。",
       "phrase": "carry bucket",
       "phraseTranslation": "携带桶",
-      "sentence": "I carry the bucket in my bag.",
-      "sentenceTranslation": "我把桶带在包里。"
+      "sentence": "I find the bucket beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到桶。"
     },
     {
       "index": "138",
@@ -1658,8 +1658,8 @@
       "exampleTranslation": "指南针总是指向你的出生点。",
       "phrase": "carry compass",
       "phraseTranslation": "携带指南针",
-      "sentence": "I carry the compass in my bag.",
-      "sentenceTranslation": "我把指南针带在包里。"
+      "sentence": "The chest contains a useful compass.",
+      "sentenceTranslation": "箱子里有一个有用的指南针。"
     },
     {
       "index": "139",
@@ -1670,8 +1670,8 @@
       "exampleTranslation": "看你的时钟判断是白天还是黑夜。",
       "phrase": "carry clock",
       "phraseTranslation": "携带时钟",
-      "sentence": "I carry the clock in my bag.",
-      "sentenceTranslation": "我把时钟带在包里。"
+      "sentence": "I find the clock beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到时钟。"
     },
     {
       "index": "140",
@@ -1682,8 +1682,8 @@
       "exampleTranslation": "拿着地图可以看到你在世界的位置。",
       "phrase": "carry map",
       "phraseTranslation": "携带地图",
-      "sentence": "I carry the map in my bag.",
-      "sentenceTranslation": "我把地图带在包里。"
+      "sentence": "I keep the map in my backpack.",
+      "sentenceTranslation": "我把地图放在背包里。"
     },
     {
       "index": "141",
@@ -1694,8 +1694,8 @@
       "exampleTranslation": "使用命名牌给你的宠物起一个特别的名字。",
       "phrase": "carry name tag",
       "phraseTranslation": "携带命名牌",
-      "sentence": "I carry the name tag in my bag.",
-      "sentenceTranslation": "我把命名牌带在包里。"
+      "sentence": "The name tag helps us prepare for the journey.",
+      "sentenceTranslation": "命名牌帮助我们为旅程做准备。"
     },
     {
       "index": "142",
@@ -1706,8 +1706,8 @@
       "exampleTranslation": "用拴绳绑住你的马，让它跟着你。",
       "phrase": "carry lead",
       "phraseTranslation": "携带拴绳",
-      "sentence": "I carry the lead in my bag.",
-      "sentenceTranslation": "我把拴绳带在包里。"
+      "sentence": "I keep the lead in my backpack.",
+      "sentenceTranslation": "我把拴绳放在背包里。"
     },
     {
       "index": "143",
@@ -1718,8 +1718,8 @@
       "exampleTranslation": "你需要一个马鞍才能骑马或骑猪。",
       "phrase": "carry saddle",
       "phraseTranslation": "携带马鞍",
-      "sentence": "I carry the saddle in my bag.",
-      "sentenceTranslation": "我把马鞍带在包里。"
+      "sentence": "The saddle helps us prepare for the journey.",
+      "sentenceTranslation": "马鞍帮助我们为旅程做准备。"
     },
     {
       "index": "144",
@@ -1730,8 +1730,8 @@
       "exampleTranslation": "在书里写下你的冒险故事。",
       "phrase": "carry book",
       "phraseTranslation": "携带书",
-      "sentence": "I carry the book in my bag.",
-      "sentenceTranslation": "我把书带在包里。"
+      "sentence": "The book helps us prepare for the journey.",
+      "sentenceTranslation": "书帮助我们为旅程做准备。"
     },
     {
       "index": "145",
@@ -1742,8 +1742,8 @@
       "exampleTranslation": "在铁砧上将附魔书和你的剑合成。",
       "phrase": "carry enchanted book",
       "phraseTranslation": "携带附魔书",
-      "sentence": "I carry the enchanted book in my bag.",
-      "sentenceTranslation": "我把附魔书带在包里。"
+      "sentence": "The chest contains a useful enchanted book.",
+      "sentenceTranslation": "箱子里有一个有用的附魔书。"
     },
     {
       "index": "146",
@@ -1754,8 +1754,8 @@
       "exampleTranslation": "跳上矿车，沿着轨道穿过洞穴行驶。",
       "phrase": "carry minecart",
       "phraseTranslation": "携带矿车",
-      "sentence": "I carry the minecart in my bag.",
-      "sentenceTranslation": "我把矿车带在包里。"
+      "sentence": "We trade the minecart with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换矿车。"
     },
     {
       "index": "147",
@@ -1766,8 +1766,8 @@
       "exampleTranslation": "用船比游泳穿越海洋快得多。",
       "phrase": "carry boat",
       "phraseTranslation": "携带船",
-      "sentence": "I carry the boat in my bag.",
-      "sentenceTranslation": "我把船带在包里。"
+      "sentence": "The boat helps us prepare for the journey.",
+      "sentenceTranslation": "船帮助我们为旅程做准备。"
     },
     {
       "index": "148",
@@ -1778,8 +1778,8 @@
       "exampleTranslation": "通过望远镜观看远处的山脉。",
       "phrase": "carry spyglass",
       "phraseTranslation": "携带望远镜",
-      "sentence": "I carry the spyglass in my bag.",
-      "sentenceTranslation": "我把望远镜带在包里。"
+      "sentence": "We trade the spyglass with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换望远镜。"
     },
     {
       "index": "149",
@@ -1790,8 +1790,8 @@
       "exampleTranslation": "吹响山羊角，为你的朋友发出响亮的声音。",
       "phrase": "carry goat horn",
       "phraseTranslation": "携带山羊角",
-      "sentence": "I carry the goat horn in my bag.",
-      "sentenceTranslation": "我把山羊角带在包里。"
+      "sentence": "The chest contains a useful goat horn.",
+      "sentenceTranslation": "箱子里有一个有用的山羊角。"
     },
     {
       "index": "150",
@@ -1814,8 +1814,8 @@
       "exampleTranslation": "背上鞘翅，在天空中翱翔。",
       "phrase": "carry elytra",
       "phraseTranslation": "携带鞘翅",
-      "sentence": "I carry the elytra in my bag.",
-      "sentenceTranslation": "我把鞘翅带在包里。"
+      "sentence": "We trade the elytra with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换鞘翅。"
     },
     {
       "index": "152",
@@ -1826,8 +1826,8 @@
       "exampleTranslation": "把灯笼挂在门上方，为你的道路照亮。",
       "phrase": "carry lantern",
       "phraseTranslation": "携带灯笼",
-      "sentence": "I carry the lantern in my bag.",
-      "sentenceTranslation": "我把灯笼带在包里。"
+      "sentence": "I keep the lantern in my backpack.",
+      "sentenceTranslation": "我把灯笼放在背包里。"
     },
     {
       "index": "153",
@@ -1838,8 +1838,8 @@
       "exampleTranslation": "使用刷怪蛋生成你想要的任何生物。",
       "phrase": "carry spawn egg",
       "phraseTranslation": "携带刷怪蛋",
-      "sentence": "I carry the spawn egg in my bag.",
-      "sentenceTranslation": "我把刷怪蛋带在包里。"
+      "sentence": "The chest contains a useful spawn egg.",
+      "sentenceTranslation": "箱子里有一个有用的刷怪蛋。"
     },
     {
       "index": "154",
@@ -1850,8 +1850,8 @@
       "exampleTranslation": "随时戴头盔保护你的头部安全。",
       "phrase": "carry helmet",
       "phraseTranslation": "携带头盔",
-      "sentence": "I carry the helmet in my bag.",
-      "sentenceTranslation": "我把头盔带在包里。"
+      "sentence": "The chest contains a useful helmet.",
+      "sentenceTranslation": "箱子里有一个有用的头盔。"
     },
     {
       "index": "155",
@@ -1862,8 +1862,8 @@
       "exampleTranslation": "胸甲提供所有装备中最高的护甲值。",
       "phrase": "carry chestplate",
       "phraseTranslation": "携带胸甲",
-      "sentence": "I carry the chestplate in my bag.",
-      "sentenceTranslation": "我把胸甲带在包里。"
+      "sentence": "I find the chestplate beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到胸甲。"
     },
     {
       "index": "156",
@@ -1874,8 +1874,8 @@
       "exampleTranslation": "钻石护腿是你能获得的最好的腿部防护。",
       "phrase": "carry leggings",
       "phraseTranslation": "携带护腿",
-      "sentence": "I carry the leggings in my bag.",
-      "sentenceTranslation": "我把护腿带在包里。"
+      "sentence": "The leggings helps us prepare for the journey.",
+      "sentenceTranslation": "护腿帮助我们为旅程做准备。"
     },
     {
       "index": "157",
@@ -1886,8 +1886,8 @@
       "exampleTranslation": "给你的靴子附加轻羽下降，让坠落伤害减轻。",
       "phrase": "carry boots",
       "phraseTranslation": "携带靴子",
-      "sentence": "I carry the boots in my bag.",
-      "sentenceTranslation": "我把靴子带在包里。"
+      "sentence": "I keep the boots in my backpack.",
+      "sentenceTranslation": "我把靴子放在背包里。"
     },
     {
       "index": "158",
@@ -1898,8 +1898,8 @@
       "exampleTranslation": "面包很容易制作——只需把小麦放到工作台上。",
       "phrase": "eat bread",
       "phraseTranslation": "吃面包",
-      "sentence": "I eat the bread after mining.",
-      "sentenceTranslation": "挖矿后我吃面包。"
+      "sentence": "I share the bread with my teammate.",
+      "sentenceTranslation": "我和队友分享面包。"
     },
     {
       "index": "159",
@@ -1910,8 +1910,8 @@
       "exampleTranslation": "苹果有时会从橡树叶上掉下来。",
       "phrase": "eat apple",
       "phraseTranslation": "吃苹果",
-      "sentence": "I eat the apple after mining.",
-      "sentenceTranslation": "挖矿后我吃苹果。"
+      "sentence": "We cook the apple at the camp.",
+      "sentenceTranslation": "我们在营地烹饪苹果。"
     },
     {
       "index": "160",
@@ -1922,8 +1922,8 @@
       "exampleTranslation": "吃金苹果可以给你带来有益的状态效果。",
       "phrase": "eat golden apple",
       "phraseTranslation": "吃金苹果",
-      "sentence": "I eat the golden apple after mining.",
-      "sentenceTranslation": "挖矿后我吃金苹果。"
+      "sentence": "We cook the golden apple at the camp.",
+      "sentenceTranslation": "我们在营地烹饪金苹果。"
     },
     {
       "index": "161",
@@ -1934,8 +1934,8 @@
       "exampleTranslation": "附魔金苹果是游戏中最稀有的食物之一。",
       "phrase": "eat enchanted golden apple",
       "phraseTranslation": "吃附魔金苹果",
-      "sentence": "I eat the enchanted golden apple after mining.",
-      "sentenceTranslation": "挖矿后我吃附魔金苹果。"
+      "sentence": "We cook the enchanted golden apple at the camp.",
+      "sentenceTranslation": "我们在营地烹饪附魔金苹果。"
     },
     {
       "index": "162",
@@ -1946,8 +1946,8 @@
       "exampleTranslation": "熟牛肉比生牛肉更能填满你的饥饿度。",
       "phrase": "a friendly cooked beef",
       "phraseTranslation": "一只友好的熟牛肉",
-      "sentence": "A cooked beef is near the village.",
-      "sentenceTranslation": "一只熟牛肉在村庄附近。"
+      "sentence": "We watch the cooked beef from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察熟牛肉。"
     },
     {
       "index": "163",
@@ -1958,8 +1958,8 @@
       "exampleTranslation": "把猪排放进熔炉烤，做一顿美味的饭菜。",
       "phrase": "carry cooked porkchop",
       "phraseTranslation": "携带熟猪排",
-      "sentence": "I carry the cooked porkchop in my bag.",
-      "sentenceTranslation": "我把熟猪排带在包里。"
+      "sentence": "The cooked porkchop helps us prepare for the journey.",
+      "sentenceTranslation": "熟猪排帮助我们为旅程做准备。"
     },
     {
       "index": "164",
@@ -1970,8 +1970,8 @@
       "exampleTranslation": "不要吃生鸡肉——先煮熟才能保持健康。",
       "phrase": "a friendly cooked chicken",
       "phraseTranslation": "一只友好的熟鸡肉",
-      "sentence": "A cooked chicken is near the village.",
-      "sentenceTranslation": "一只熟鸡肉在村庄附近。"
+      "sentence": "We watch the cooked chicken from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察熟鸡肉。"
     },
     {
       "index": "165",
@@ -1982,8 +1982,8 @@
       "exampleTranslation": "我钓到了一条鲑鱼，并把它煮熟做晚餐。",
       "phrase": "carry cooked salmon",
       "phraseTranslation": "携带熟鲑鱼",
-      "sentence": "I carry the cooked salmon in my bag.",
-      "sentenceTranslation": "我把熟鲑鱼带在包里。"
+      "sentence": "I keep the cooked salmon in my backpack.",
+      "sentenceTranslation": "我把熟鲑鱼放在背包里。"
     },
     {
       "index": "166",
@@ -1994,8 +1994,8 @@
       "exampleTranslation": "胡萝卜生长在农场，是一种健康的零食。",
       "phrase": "eat carrot",
       "phraseTranslation": "吃胡萝卜",
-      "sentence": "I eat the carrot after mining.",
-      "sentenceTranslation": "挖矿后我吃胡萝卜。"
+      "sentence": "We cook the carrot at the camp.",
+      "sentenceTranslation": "我们在营地烹饪胡萝卜。"
     },
     {
       "index": "167",
@@ -2006,8 +2006,8 @@
       "exampleTranslation": "把马铃薯放进熔炉烤成烤马铃薯。",
       "phrase": "eat potato",
       "phraseTranslation": "吃马铃薯",
-      "sentence": "I eat the potato after mining.",
-      "sentenceTranslation": "挖矿后我吃马铃薯。"
+      "sentence": "We cook the potato at the camp.",
+      "sentenceTranslation": "我们在营地烹饪马铃薯。"
     },
     {
       "index": "168",
@@ -2018,8 +2018,8 @@
       "exampleTranslation": "西瓜植株生长在丛林和农场里。",
       "phrase": "carry melon",
       "phraseTranslation": "携带西瓜",
-      "sentence": "I carry the melon in my bag.",
-      "sentenceTranslation": "我把西瓜带在包里。"
+      "sentence": "I find the melon beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到西瓜。"
     },
     {
       "index": "169",
@@ -2030,8 +2030,8 @@
       "exampleTranslation": "南瓜派是我在《我的世界》中最喜欢的食物之一。",
       "phrase": "carry pumpkin pie",
       "phraseTranslation": "携带南瓜派",
-      "sentence": "I carry the pumpkin pie in my bag.",
-      "sentenceTranslation": "我把南瓜派带在包里。"
+      "sentence": "I keep the pumpkin pie in my backpack.",
+      "sentenceTranslation": "我把南瓜派放在背包里。"
     },
     {
       "index": "170",
@@ -2042,8 +2042,8 @@
       "exampleTranslation": "长时间冒险后，和朋友分享一块曲奇。",
       "phrase": "carry cookie",
       "phraseTranslation": "携带曲奇",
-      "sentence": "I carry the cookie in my bag.",
-      "sentenceTranslation": "我把曲奇带在包里。"
+      "sentence": "The chest contains a useful cookie.",
+      "sentenceTranslation": "箱子里有一个有用的曲奇。"
     },
     {
       "index": "171",
@@ -2054,8 +2054,8 @@
       "exampleTranslation": "将蛋糕放在地板上，右键即可食用。",
       "phrase": "eat cake",
       "phraseTranslation": "吃蛋糕",
-      "sentence": "I eat the cake after mining.",
-      "sentenceTranslation": "挖矿后我吃蛋糕。"
+      "sentence": "I share the cake with my teammate.",
+      "sentenceTranslation": "我和队友分享蛋糕。"
     },
     {
       "index": "172",
@@ -2066,8 +2066,8 @@
       "exampleTranslation": "蘑菇汤是一种能快速填满饥饿度的不错食物。",
       "phrase": "grow mushroom stew",
       "phraseTranslation": "种植蘑菇汤",
-      "sentence": "I grow mushroom stew near the farm.",
-      "sentenceTranslation": "我在农场旁种植蘑菇汤。"
+      "sentence": "The mushroom stew grows well after the rain.",
+      "sentenceTranslation": "下雨后蘑菇汤长得很好。"
     },
     {
       "index": "173",
@@ -2078,8 +2078,8 @@
       "exampleTranslation": "甜菜根生长在村庄里，拥有鲜艳的红色。",
       "phrase": "a friendly beetroot",
       "phraseTranslation": "一只友好的甜菜根",
-      "sentence": "A beetroot is near the village.",
-      "sentenceTranslation": "一只甜菜根在村庄附近。"
+      "sentence": "The beetroot follows us along the path.",
+      "sentenceTranslation": "甜菜根沿着小路跟着我们。"
     },
     {
       "index": "174",
@@ -2090,8 +2090,8 @@
       "exampleTranslation": "喝一瓶蜂蜜可以解除中毒效果。",
       "phrase": "carry honey bottle",
       "phraseTranslation": "携带蜂蜜瓶",
-      "sentence": "I carry the honey bottle in my bag.",
-      "sentenceTranslation": "我把蜂蜜瓶带在包里。"
+      "sentence": "The chest contains a useful honey bottle.",
+      "sentenceTranslation": "箱子里有一个有用的蜂蜜瓶。"
     },
     {
       "index": "175",
@@ -2102,8 +2102,8 @@
       "exampleTranslation": "食用迷之炖菜会获得随机的状态效果。",
       "phrase": "carry suspicious stew",
       "phraseTranslation": "携带迷之炖菜",
-      "sentence": "I carry the suspicious stew in my bag.",
-      "sentenceTranslation": "我把迷之炖菜带在包里。"
+      "sentence": "The suspicious stew helps us prepare for the journey.",
+      "sentenceTranslation": "迷之炖菜帮助我们为旅程做准备。"
     },
     {
       "index": "176",
@@ -2114,8 +2114,8 @@
       "exampleTranslation": "干海带是一种可以快速食用的零食。",
       "phrase": "carry dried kelp",
       "phraseTranslation": "携带干海带",
-      "sentence": "I carry the dried kelp in my bag.",
-      "sentenceTranslation": "我把干海带带在包里。"
+      "sentence": "I keep the dried kelp in my backpack.",
+      "sentenceTranslation": "我把干海带放在背包里。"
     },
     {
       "index": "177",
@@ -2126,8 +2126,8 @@
       "exampleTranslation": "甜浆果生长在针叶林生物群系的灌木丛中。",
       "phrase": "carry sweet berries",
       "phraseTranslation": "携带甜浆果",
-      "sentence": "I carry the sweet berries in my bag.",
-      "sentenceTranslation": "我把甜浆果带在包里。"
+      "sentence": "I find the sweet berries beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到甜浆果。"
     },
     {
       "index": "178",
@@ -2138,8 +2138,8 @@
       "exampleTranslation": "发光浆果挂在洞穴藤蔓上，为黑暗处带来光亮。",
       "phrase": "carry glow berries",
       "phraseTranslation": "携带发光浆果",
-      "sentence": "I carry the glow berries in my bag.",
-      "sentenceTranslation": "我把发光浆果带在包里。"
+      "sentence": "I find the glow berries beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到发光浆果。"
     },
     {
       "index": "179",
@@ -2150,8 +2150,8 @@
       "exampleTranslation": "杀死一头牛会掉落牛肉和皮革。",
       "phrase": "a friendly cow",
       "phraseTranslation": "一只友好的牛",
-      "sentence": "A cow is near the village.",
-      "sentenceTranslation": "一只牛在村庄附近。"
+      "sentence": "We watch the cow from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察牛。"
     },
     {
       "index": "180",
@@ -2162,8 +2162,8 @@
       "exampleTranslation": "如果你给猪装上马鞍，就可以骑它。",
       "phrase": "a friendly pig",
       "phraseTranslation": "一只友好的猪",
-      "sentence": "A pig is near the village.",
-      "sentenceTranslation": "一只猪在村庄附近。"
+      "sentence": "We watch the pig from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察猪。"
     },
     {
       "index": "181",
@@ -2174,8 +2174,8 @@
       "exampleTranslation": "剪羊毛可获得用于制作床的羊毛。",
       "phrase": "carry sheep",
       "phraseTranslation": "携带羊",
-      "sentence": "I carry the sheep in my bag.",
-      "sentenceTranslation": "我把羊带在包里。"
+      "sentence": "We trade the sheep with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换羊。"
     },
     {
       "index": "182",
@@ -2186,8 +2186,8 @@
       "exampleTranslation": "鸡每隔几分钟就会下蛋。",
       "phrase": "a friendly chicken",
       "phraseTranslation": "一只友好的鸡",
-      "sentence": "A chicken is near the village.",
-      "sentenceTranslation": "一只鸡在村庄附近。"
+      "sentence": "The chicken follows us along the path.",
+      "sentenceTranslation": "鸡沿着小路跟着我们。"
     },
     {
       "index": "183",
@@ -2198,8 +2198,8 @@
       "exampleTranslation": "马跑得比玩家快得多。",
       "phrase": "a friendly horse",
       "phraseTranslation": "一只友好的马",
-      "sentence": "A horse is near the village.",
-      "sentenceTranslation": "一只马在村庄附近。"
+      "sentence": "We watch the horse from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察马。"
     },
     {
       "index": "184",
@@ -2210,8 +2210,8 @@
       "exampleTranslation": "驴可以携带装满物品的箱子。",
       "phrase": "carry donkey",
       "phraseTranslation": "携带驴",
-      "sentence": "I carry the donkey in my bag.",
-      "sentenceTranslation": "我把驴带在包里。"
+      "sentence": "I keep the donkey in my backpack.",
+      "sentenceTranslation": "我把驴放在背包里。"
     },
     {
       "index": "185",
@@ -2222,8 +2222,8 @@
       "exampleTranslation": "骡子是通过马和驴繁殖而来的。",
       "phrase": "carry mule",
       "phraseTranslation": "携带骡子",
-      "sentence": "I carry the mule in my bag.",
-      "sentenceTranslation": "我把骡子带在包里。"
+      "sentence": "The chest contains a useful mule.",
+      "sentenceTranslation": "箱子里有一个有用的骡子。"
     },
     {
       "index": "186",
@@ -2234,8 +2234,8 @@
       "exampleTranslation": "兔子跳来跳去，非常迅速——它们很难抓住！",
       "phrase": "carry rabbit",
       "phraseTranslation": "携带兔子",
-      "sentence": "I carry the rabbit in my bag.",
-      "sentenceTranslation": "我把兔子带在包里。"
+      "sentence": "I find the rabbit beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到兔子。"
     },
     {
       "index": "187",
@@ -2246,8 +2246,8 @@
       "exampleTranslation": "蝙蝠倒挂在黑暗的洞穴中。",
       "phrase": "carry bat",
       "phraseTranslation": "携带蝙蝠",
-      "sentence": "I carry the bat in my bag.",
-      "sentenceTranslation": "我把蝙蝠带在包里。"
+      "sentence": "I find the bat beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到蝙蝠。"
     },
     {
       "index": "188",
@@ -2258,8 +2258,8 @@
       "exampleTranslation": "鱿鱼在河流和海洋中游泳，会掉落墨囊。",
       "phrase": "carry squid",
       "phraseTranslation": "携带鱿鱼",
-      "sentence": "I carry the squid in my bag.",
-      "sentenceTranslation": "我把鱿鱼带在包里。"
+      "sentence": "The chest contains a useful squid.",
+      "sentenceTranslation": "箱子里有一个有用的鱿鱼。"
     },
     {
       "index": "189",
@@ -2270,8 +2270,8 @@
       "exampleTranslation": "哇——发光鱿鱼发出美丽的蓝色光芒！",
       "phrase": "carry glow squid",
       "phraseTranslation": "携带发光鱿鱼",
-      "sentence": "I carry the glow squid in my bag.",
-      "sentenceTranslation": "我把发光鱿鱼带在包里。"
+      "sentence": "The chest contains a useful glow squid.",
+      "sentenceTranslation": "箱子里有一个有用的发光鱿鱼。"
     },
     {
       "index": "190",
@@ -2282,8 +2282,8 @@
       "exampleTranslation": "美西螈生活在水中，帮助你对抗守卫者。",
       "phrase": "carry axolotl",
       "phraseTranslation": "携带美西螈",
-      "sentence": "I carry the axolotl in my bag.",
-      "sentenceTranslation": "我把美西螈带在包里。"
+      "sentence": "We trade the axolotl with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换美西螈。"
     },
     {
       "index": "191",
@@ -2294,8 +2294,8 @@
       "exampleTranslation": "海龟在海滩上产卵。",
       "phrase": "carry turtle",
       "phraseTranslation": "携带海龟",
-      "sentence": "I carry the turtle in my bag.",
-      "sentenceTranslation": "我把海龟带在包里。"
+      "sentence": "We trade the turtle with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换海龟。"
     },
     {
       "index": "192",
@@ -2306,8 +2306,8 @@
       "exampleTranslation": "蜜蜂制作蜂蜜并帮助花朵生长。",
       "phrase": "a friendly bee",
       "phraseTranslation": "一只友好的蜜蜂",
-      "sentence": "A bee is near the village.",
-      "sentenceTranslation": "一只蜜蜂在村庄附近。"
+      "sentence": "The bee follows us along the path.",
+      "sentenceTranslation": "蜜蜂沿着小路跟着我们。"
     },
     {
       "index": "193",
@@ -2318,8 +2318,8 @@
       "exampleTranslation": "狐狸白天睡觉，晚上狩猎。",
       "phrase": "carry fox",
       "phraseTranslation": "携带狐狸",
-      "sentence": "I carry the fox in my bag.",
-      "sentenceTranslation": "我把狐狸带在包里。"
+      "sentence": "I keep the fox in my backpack.",
+      "sentenceTranslation": "我把狐狸放在背包里。"
     },
     {
       "index": "194",
@@ -2330,8 +2330,8 @@
       "exampleTranslation": "熊猫喜欢在丛林里吃竹子。",
       "phrase": "carry panda",
       "phraseTranslation": "携带熊猫",
-      "sentence": "I carry the panda in my bag.",
-      "sentenceTranslation": "我把熊猫带在包里。"
+      "sentence": "I keep the panda in my backpack.",
+      "sentenceTranslation": "我把熊猫放在背包里。"
     },
     {
       "index": "195",
@@ -2342,8 +2342,8 @@
       "exampleTranslation": "喂鹦鹉吃饼干——等等，那会伤害它！",
       "phrase": "carry parrot",
       "phraseTranslation": "携带鹦鹉",
-      "sentence": "I carry the parrot in my bag.",
-      "sentenceTranslation": "我把鹦鹉带在包里。"
+      "sentence": "The chest contains a useful parrot.",
+      "sentenceTranslation": "箱子里有一个有用的鹦鹉。"
     },
     {
       "index": "196",
@@ -2354,8 +2354,8 @@
       "exampleTranslation": "青蛙生活在沼泽地里，吃史莱姆。",
       "phrase": "carry frog",
       "phraseTranslation": "携带青蛙",
-      "sentence": "I carry the frog in my bag.",
-      "sentenceTranslation": "我把青蛙带在包里。"
+      "sentence": "The chest contains a useful frog.",
+      "sentenceTranslation": "箱子里有一个有用的青蛙。"
     },
     {
       "index": "197",
@@ -2366,8 +2366,8 @@
       "exampleTranslation": "蝌蚪随着时间长大变成青蛙。",
       "phrase": "carry tadpole",
       "phraseTranslation": "携带蝌蚪",
-      "sentence": "I carry the tadpole in my bag.",
-      "sentenceTranslation": "我把蝌蚪带在包里。"
+      "sentence": "We trade the tadpole with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换蝌蚪。"
     },
     {
       "index": "198",
@@ -2378,8 +2378,8 @@
       "exampleTranslation": "嗅探兽用它的大鼻子寻找远古种子。",
       "phrase": "carry sniffer",
       "phraseTranslation": "携带嗅探兽",
-      "sentence": "I carry the sniffer in my bag.",
-      "sentenceTranslation": "我把嗅探兽带在包里。"
+      "sentence": "The sniffer helps us prepare for the journey.",
+      "sentenceTranslation": "嗅探兽帮助我们为旅程做准备。"
     },
     {
       "index": "199",
@@ -2390,8 +2390,8 @@
       "exampleTranslation": "悦灵会收集物品并随着音乐跳舞。",
       "phrase": "carry allay",
       "phraseTranslation": "携带悦灵",
-      "sentence": "I carry the allay in my bag.",
-      "sentenceTranslation": "我把悦灵带在包里。"
+      "sentence": "I keep the allay in my backpack.",
+      "sentenceTranslation": "我把悦灵放在背包里。"
     },
     {
       "index": "200",
@@ -2402,8 +2402,8 @@
       "exampleTranslation": "两名玩家可以同时骑乘一只骆驼。",
       "phrase": "carry camel",
       "phraseTranslation": "携带骆驼",
-      "sentence": "I carry the camel in my bag.",
-      "sentenceTranslation": "我把骆驼带在包里。"
+      "sentence": "I find the camel beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到骆驼。"
     },
     {
       "index": "201",
@@ -2414,8 +2414,8 @@
       "exampleTranslation": "当犰狳害怕时，它会卷成一个球。",
       "phrase": "carry armadillo",
       "phraseTranslation": "携带犰狳",
-      "sentence": "I carry the armadillo in my bag.",
-      "sentenceTranslation": "我把犰狳带在包里。"
+      "sentence": "I keep the armadillo in my backpack.",
+      "sentenceTranslation": "我把犰狳放在背包里。"
     },
     {
       "index": "202",
@@ -2426,8 +2426,8 @@
       "exampleTranslation": "一只被驯服的猫会把苦力怕赶出你的房子。",
       "phrase": "a friendly cat",
       "phraseTranslation": "一只友好的猫",
-      "sentence": "A cat is near the village.",
-      "sentenceTranslation": "一只猫在村庄附近。"
+      "sentence": "The cat follows us along the path.",
+      "sentenceTranslation": "猫沿着小路跟着我们。"
     },
     {
       "index": "203",
@@ -2438,8 +2438,8 @@
       "exampleTranslation": "豹猫是生活在丛林里的野猫。",
       "phrase": "carry ocelot",
       "phraseTranslation": "携带豹猫",
-      "sentence": "I carry the ocelot in my bag.",
-      "sentenceTranslation": "我把豹猫带在包里。"
+      "sentence": "The ocelot helps us prepare for the journey.",
+      "sentenceTranslation": "豹猫帮助我们为旅程做准备。"
     },
     {
       "index": "204",
@@ -2450,8 +2450,8 @@
       "exampleTranslation": "哞菇牛是一种全身长满红色蘑菇的特殊奶牛。",
       "phrase": "carry mooshroom",
       "phraseTranslation": "携带哞菇牛",
-      "sentence": "I carry the mooshroom in my bag.",
-      "sentenceTranslation": "我把哞菇牛带在包里。"
+      "sentence": "We trade the mooshroom with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换哞菇牛。"
     },
     {
       "index": "205",
@@ -2462,8 +2462,8 @@
       "exampleTranslation": "用骨头驯服狼，它会为你而战。",
       "phrase": "a friendly wolf",
       "phraseTranslation": "一只友好的狼",
-      "sentence": "A wolf is near the village.",
-      "sentenceTranslation": "一只狼在村庄附近。"
+      "sentence": "The wolf follows us along the path.",
+      "sentenceTranslation": "狼沿着小路跟着我们。"
     },
     {
       "index": "206",
@@ -2474,8 +2474,8 @@
       "exampleTranslation": "永远不要直视末影人的眼睛，否则它会攻击你。",
       "phrase": "explore the enderman",
       "phraseTranslation": "探索末影人",
-      "sentence": "We explore the enderman at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末影人。"
+      "sentence": "The enderman is full of new plants to discover.",
+      "sentenceTranslation": "末影人里有许多等待发现的新植物。"
     },
     {
       "index": "207",
@@ -2486,8 +2486,8 @@
       "exampleTranslation": "海豚游得很快并引导你找到宝藏。",
       "phrase": "carry dolphin",
       "phraseTranslation": "携带海豚",
-      "sentence": "I carry the dolphin in my bag.",
-      "sentenceTranslation": "我把海豚带在包里。"
+      "sentence": "I keep the dolphin in my backpack.",
+      "sentenceTranslation": "我把海豚放在背包里。"
     },
     {
       "index": "208",
@@ -2498,8 +2498,8 @@
       "exampleTranslation": "铁傀儡保护村民免受怪物袭击。",
       "phrase": "carry iron golem",
       "phraseTranslation": "携带铁傀儡",
-      "sentence": "I carry the iron golem in my bag.",
-      "sentenceTranslation": "我把铁傀儡带在包里。"
+      "sentence": "The chest contains a useful iron golem.",
+      "sentenceTranslation": "箱子里有一个有用的铁傀儡。"
     },
     {
       "index": "209",
@@ -2510,8 +2510,8 @@
       "exampleTranslation": "僵尸在夜晚出现，在阳光下会燃烧。",
       "phrase": "a friendly zombie",
       "phraseTranslation": "一只友好的僵尸",
-      "sentence": "A zombie is near the village.",
-      "sentenceTranslation": "一只僵尸在村庄附近。"
+      "sentence": "The zombie follows us along the path.",
+      "sentenceTranslation": "僵尸沿着小路跟着我们。"
     },
     {
       "index": "210",
@@ -2522,8 +2522,8 @@
       "exampleTranslation": "骷髅从远处向你射箭。",
       "phrase": "a friendly skeleton",
       "phraseTranslation": "一只友好的骷髅",
-      "sentence": "A skeleton is near the village.",
-      "sentenceTranslation": "一只骷髅在村庄附近。"
+      "sentence": "We watch the skeleton from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察骷髅。"
     },
     {
       "index": "211",
@@ -2534,8 +2534,8 @@
       "exampleTranslation": "在苦力怕爆炸之前赶紧跑开！",
       "phrase": "a friendly creeper",
       "phraseTranslation": "一只友好的苦力怕",
-      "sentence": "A creeper is near the village.",
-      "sentenceTranslation": "一只苦力怕在村庄附近。"
+      "sentence": "We watch the creeper from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察苦力怕。"
     },
     {
       "index": "212",
@@ -2546,8 +2546,8 @@
       "exampleTranslation": "蜘蛛能爬墙并向你跳跃。",
       "phrase": "a friendly spider",
       "phraseTranslation": "一只友好的蜘蛛",
-      "sentence": "A spider is near the village.",
-      "sentenceTranslation": "一只蜘蛛在村庄附近。"
+      "sentence": "A spider is walking near the village.",
+      "sentenceTranslation": "一只蜘蛛正在村庄附近散步。"
     },
     {
       "index": "213",
@@ -2558,8 +2558,8 @@
       "exampleTranslation": "洞穴蜘蛛比普通蜘蛛小，但会使你中毒。",
       "phrase": "a friendly cave spider",
       "phraseTranslation": "一只友好的洞穴蜘蛛",
-      "sentence": "A cave spider is near the village.",
-      "sentenceTranslation": "一只洞穴蜘蛛在村庄附近。"
+      "sentence": "We watch the cave spider from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察洞穴蜘蛛。"
     },
     {
       "index": "214",
@@ -2570,8 +2570,8 @@
       "exampleTranslation": "女巫朝你扔坏药水。",
       "phrase": "carry witch",
       "phraseTranslation": "携带女巫",
-      "sentence": "I carry the witch in my bag.",
-      "sentenceTranslation": "我把女巫带在包里。"
+      "sentence": "We trade the witch with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换女巫。"
     },
     {
       "index": "215",
@@ -2582,8 +2582,8 @@
       "exampleTranslation": "大的史莱姆被击中后会分裂成更小的史莱姆。",
       "phrase": "carry slime",
       "phraseTranslation": "携带史莱姆",
-      "sentence": "I carry the slime in my bag.",
-      "sentenceTranslation": "我把史莱姆带在包里。"
+      "sentence": "We trade the slime with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换史莱姆。"
     },
     {
       "index": "216",
@@ -2594,8 +2594,8 @@
       "exampleTranslation": "幻翼攻击那些多日未睡的玩家。",
       "phrase": "carry phantom",
       "phraseTranslation": "携带幻翼",
-      "sentence": "I carry the phantom in my bag.",
-      "sentenceTranslation": "我把幻翼带在包里。"
+      "sentence": "We trade the phantom with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换幻翼。"
     },
     {
       "index": "217",
@@ -2606,8 +2606,8 @@
       "exampleTranslation": "溺尸生活在水下，能投掷三叉戟。",
       "phrase": "carry drowned",
       "phraseTranslation": "携带溺尸",
-      "sentence": "I carry the drowned in my bag.",
-      "sentenceTranslation": "我把溺尸带在包里。"
+      "sentence": "I keep the drowned in my backpack.",
+      "sentenceTranslation": "我把溺尸放在背包里。"
     },
     {
       "index": "218",
@@ -2618,8 +2618,8 @@
       "exampleTranslation": "尸壳在沙漠生成，不会在阳光下燃烧。",
       "phrase": "carry husk",
       "phraseTranslation": "携带尸壳",
-      "sentence": "I carry the husk in my bag.",
-      "sentenceTranslation": "我把尸壳带在包里。"
+      "sentence": "We trade the husk with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换尸壳。"
     },
     {
       "index": "219",
@@ -2630,8 +2630,8 @@
       "exampleTranslation": "流浪者是生活在寒冷生物群系的骷髅。",
       "phrase": "carry stray",
       "phraseTranslation": "携带流浪者",
-      "sentence": "I carry the stray in my bag.",
-      "sentenceTranslation": "我把流浪者带在包里。"
+      "sentence": "We trade the stray with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换流浪者。"
     },
     {
       "index": "220",
@@ -2642,8 +2642,8 @@
       "exampleTranslation": "凋灵骷髅生活在下界要塞，非常危险。",
       "phrase": "a friendly wither skeleton",
       "phraseTranslation": "一只友好的凋灵骷髅",
-      "sentence": "A wither skeleton is near the village.",
-      "sentenceTranslation": "一只凋灵骷髅在村庄附近。"
+      "sentence": "The wither skeleton follows us along the path.",
+      "sentenceTranslation": "凋灵骷髅沿着小路跟着我们。"
     },
     {
       "index": "221",
@@ -2654,8 +2654,8 @@
       "exampleTranslation": "烈焰人会飞行并向你发射火球。",
       "phrase": "carry blaze",
       "phraseTranslation": "携带烈焰人",
-      "sentence": "I carry the blaze in my bag.",
-      "sentenceTranslation": "我把烈焰人带在包里。"
+      "sentence": "I keep the blaze in my backpack.",
+      "sentenceTranslation": "我把烈焰人放在背包里。"
     },
     {
       "index": "222",
@@ -2666,8 +2666,8 @@
       "exampleTranslation": "恶魂漂浮在下界，并发射巨大的火球。",
       "phrase": "carry ghast",
       "phraseTranslation": "携带恶魂",
-      "sentence": "I carry the ghast in my bag.",
-      "sentenceTranslation": "我把恶魂带在包里。"
+      "sentence": "The chest contains a useful ghast.",
+      "sentenceTranslation": "箱子里有一个有用的恶魂。"
     },
     {
       "index": "223",
@@ -2678,8 +2678,8 @@
       "exampleTranslation": "岩浆怪在下界跳跃生活。",
       "phrase": "carry magma cube",
       "phraseTranslation": "携带岩浆怪",
-      "sentence": "I carry the magma cube in my bag.",
-      "sentenceTranslation": "我把岩浆怪带在包里。"
+      "sentence": "I keep the magma cube in my backpack.",
+      "sentenceTranslation": "我把岩浆怪放在背包里。"
     },
     {
       "index": "224",
@@ -2690,8 +2690,8 @@
       "exampleTranslation": "疣猪兽是下界中危险的猪形生物。",
       "phrase": "carry hoglin",
       "phraseTranslation": "携带疣猪兽",
-      "sentence": "I carry the hoglin in my bag.",
-      "sentenceTranslation": "我把疣猪兽带在包里。"
+      "sentence": "The hoglin helps us prepare for the journey.",
+      "sentenceTranslation": "疣猪兽帮助我们为旅程做准备。"
     },
     {
       "index": "225",
@@ -2702,8 +2702,8 @@
       "exampleTranslation": "给猪灵金子，它们会与你交易物品。",
       "phrase": "a friendly piglin",
       "phraseTranslation": "一只友好的猪灵",
-      "sentence": "A piglin is near the village.",
-      "sentenceTranslation": "一只猪灵在村庄附近。"
+      "sentence": "The piglin follows us along the path.",
+      "sentenceTranslation": "猪灵沿着小路跟着我们。"
     },
     {
       "index": "226",
@@ -2714,8 +2714,8 @@
       "exampleTranslation": "潜影贝藏在它的壳里，并向你发射子弹。",
       "phrase": "carry shulker",
       "phraseTranslation": "携带潜影贝",
-      "sentence": "I carry the shulker in my bag.",
-      "sentenceTranslation": "我把潜影贝带在包里。"
+      "sentence": "I find the shulker beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到潜影贝。"
     },
     {
       "index": "227",
@@ -2726,8 +2726,8 @@
       "exampleTranslation": "守卫者用激光束保护海洋神殿。",
       "phrase": "carry guardian",
       "phraseTranslation": "携带守卫者",
-      "sentence": "I carry the guardian in my bag.",
-      "sentenceTranslation": "我把守卫者带在包里。"
+      "sentence": "I keep the guardian in my backpack.",
+      "sentenceTranslation": "我把守卫者放在背包里。"
     },
     {
       "index": "228",
@@ -2738,8 +2738,8 @@
       "exampleTranslation": "远古守卫者是海洋神殿的首领。",
       "phrase": "carry elder guardian",
       "phraseTranslation": "携带远古守卫者",
-      "sentence": "I carry the elder guardian in my bag.",
-      "sentenceTranslation": "我把远古守卫者带在包里。"
+      "sentence": "The elder guardian helps us prepare for the journey.",
+      "sentenceTranslation": "远古守卫者帮助我们为旅程做准备。"
     },
     {
       "index": "229",
@@ -2750,8 +2750,8 @@
       "exampleTranslation": "蠹鱼藏在要塞附近的石块内。",
       "phrase": "eat silverfish",
       "phraseTranslation": "吃蠹鱼",
-      "sentence": "I eat the silverfish after mining.",
-      "sentenceTranslation": "挖矿后我吃蠹鱼。"
+      "sentence": "We cook the silverfish at the camp.",
+      "sentenceTranslation": "我们在营地烹饪蠹鱼。"
     },
     {
       "index": "230",
@@ -2762,8 +2762,8 @@
       "exampleTranslation": "劫掠兽是巨大野兽，在袭击中摧毁庄稼。",
       "phrase": "carry ravager",
       "phraseTranslation": "携带劫掠兽",
-      "sentence": "I carry the ravager in my bag.",
-      "sentenceTranslation": "我把劫掠兽带在包里。"
+      "sentence": "We trade the ravager with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换劫掠兽。"
     },
     {
       "index": "231",
@@ -2774,8 +2774,8 @@
       "exampleTranslation": "掠夺者手持弩，攻击村庄。",
       "phrase": "carry pillager",
       "phraseTranslation": "携带掠夺者",
-      "sentence": "I carry the pillager in my bag.",
-      "sentenceTranslation": "我把掠夺者带在包里。"
+      "sentence": "I keep the pillager in my backpack.",
+      "sentenceTranslation": "我把掠夺者放在背包里。"
     },
     {
       "index": "232",
@@ -2786,8 +2786,8 @@
       "exampleTranslation": "卫道士向你冲过来，猛烈挥动斧头。",
       "phrase": "a friendly vindicator",
       "phraseTranslation": "一只友好的卫道士",
-      "sentence": "A vindicator is near the village.",
-      "sentenceTranslation": "一只卫道士在村庄附近。"
+      "sentence": "A vindicator is walking near the village.",
+      "sentenceTranslation": "一只卫道士正在村庄附近散步。"
     },
     {
       "index": "233",
@@ -2798,8 +2798,8 @@
       "exampleTranslation": "唤魔者召唤恼鬼灵魂为它战斗。",
       "phrase": "carry evoker",
       "phraseTranslation": "携带唤魔者",
-      "sentence": "I carry the evoker in my bag.",
-      "sentenceTranslation": "我把唤魔者带在包里。"
+      "sentence": "We trade the evoker with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换唤魔者。"
     },
     {
       "index": "234",
@@ -2810,8 +2810,8 @@
       "exampleTranslation": "恼鬼幽灵可以穿墙飞行并攻击你。",
       "phrase": "carry vex",
       "phraseTranslation": "携带恼鬼",
-      "sentence": "I carry the vex in my bag.",
-      "sentenceTranslation": "我把恼鬼带在包里。"
+      "sentence": "The vex helps us prepare for the journey.",
+      "sentenceTranslation": "恼鬼帮助我们为旅程做准备。"
     },
     {
       "index": "235",
@@ -2822,8 +2822,8 @@
       "exampleTranslation": "监守者几乎失明，但具有非常强的听觉。",
       "phrase": "carry warden",
       "phraseTranslation": "携带监守者",
-      "sentence": "I carry the warden in my bag.",
-      "sentenceTranslation": "我把监守者带在包里。"
+      "sentence": "The warden helps us prepare for the journey.",
+      "sentenceTranslation": "监守者帮助我们为旅程做准备。"
     },
     {
       "index": "236",
@@ -2834,8 +2834,8 @@
       "exampleTranslation": "风弹怪跳来跳去，向你发射风能冲击。",
       "phrase": "carry breeze",
       "phraseTranslation": "携带风弹怪",
-      "sentence": "I carry the breeze in my bag.",
-      "sentenceTranslation": "我把风弹怪带在包里。"
+      "sentence": "We trade the breeze with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换风弹怪。"
     },
     {
       "index": "237",
@@ -2846,8 +2846,8 @@
       "exampleTranslation": "平原生物群系地势平坦，非常适合建造你的第一个房子。",
       "phrase": "carry plains",
       "phraseTranslation": "携带平原",
-      "sentence": "I carry the plains in my bag.",
-      "sentenceTranslation": "我把平原带在包里。"
+      "sentence": "We trade the plains with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换平原。"
     },
     {
       "index": "238",
@@ -2858,8 +2858,8 @@
       "exampleTranslation": "森林生物群系中有许多树木。",
       "phrase": "explore the forest",
       "phraseTranslation": "探索森林",
-      "sentence": "We explore the forest at sunrise.",
-      "sentenceTranslation": "我们在日出时探索森林。"
+      "sentence": "Our map shows a trail through the forest.",
+      "sentenceTranslation": "我们的地图显示有一条穿过森林的小路。"
     },
     {
       "index": "239",
@@ -2870,8 +2870,8 @@
       "exampleTranslation": "沙漠生物群系非常炎热且干燥。",
       "phrase": "explore the desert",
       "phraseTranslation": "探索沙漠",
-      "sentence": "We explore the desert at sunrise.",
-      "sentenceTranslation": "我们在日出时探索沙漠。"
+      "sentence": "Our map shows a trail through the desert.",
+      "sentenceTranslation": "我们的地图显示有一条穿过沙漠的小路。"
     },
     {
       "index": "240",
@@ -2882,8 +2882,8 @@
       "exampleTranslation": "丛林中有高大的树木、藤蔓和鹦鹉。",
       "phrase": "carry jungle",
       "phraseTranslation": "携带丛林",
-      "sentence": "I carry the jungle in my bag.",
-      "sentenceTranslation": "我把丛林带在包里。"
+      "sentence": "I keep the jungle in my backpack.",
+      "sentenceTranslation": "我把丛林放在背包里。"
     },
     {
       "index": "241",
@@ -2894,8 +2894,8 @@
       "exampleTranslation": "女巫和青蛙生活在黑暗的沼泽生物群系中。",
       "phrase": "carry swamp",
       "phraseTranslation": "携带沼泽",
-      "sentence": "I carry the swamp in my bag.",
-      "sentenceTranslation": "我把沼泽带在包里。"
+      "sentence": "The swamp helps us prepare for the journey.",
+      "sentenceTranslation": "沼泽帮助我们为旅程做准备。"
     },
     {
       "index": "242",
@@ -2906,8 +2906,8 @@
       "exampleTranslation": "针叶林寒冷且覆盖着云杉树。",
       "phrase": "carry taiga",
       "phraseTranslation": "携带针叶林",
-      "sentence": "I carry the taiga in my bag.",
-      "sentenceTranslation": "我把针叶林带在包里。"
+      "sentence": "We trade the taiga with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换针叶林。"
     },
     {
       "index": "243",
@@ -2918,8 +2918,8 @@
       "exampleTranslation": "冻原是一片极地熊生活的冰冻土地。",
       "phrase": "carry tundra",
       "phraseTranslation": "携带冻原",
-      "sentence": "I carry the tundra in my bag.",
-      "sentenceTranslation": "我把冻原带在包里。"
+      "sentence": "The chest contains a useful tundra.",
+      "sentenceTranslation": "箱子里有一个有用的冻原。"
     },
     {
       "index": "244",
@@ -2930,8 +2930,8 @@
       "exampleTranslation": "海洋辽阔，充满了鱼类、海豚和沉船。",
       "phrase": "explore the ocean",
       "phraseTranslation": "探索海洋",
-      "sentence": "We explore the ocean at sunrise.",
-      "sentenceTranslation": "我们在日出时探索海洋。"
+      "sentence": "Our map shows a trail through the ocean.",
+      "sentenceTranslation": "我们的地图显示有一条穿过海洋的小路。"
     },
     {
       "index": "245",
@@ -2942,8 +2942,8 @@
       "exampleTranslation": "山羊在高耸入云的山峰上跳跃。",
       "phrase": "carry mountain",
       "phraseTranslation": "携带山地",
-      "sentence": "I carry the mountain in my bag.",
-      "sentenceTranslation": "我把山地带在包里。"
+      "sentence": "I keep the mountain in my backpack.",
+      "sentenceTranslation": "我把山地放在背包里。"
     },
     {
       "index": "246",
@@ -2954,8 +2954,8 @@
       "exampleTranslation": "热带草原上有高大的金合欢树和晴朗的天空。",
       "phrase": "carry savanna",
       "phraseTranslation": "携带热带草原",
-      "sentence": "I carry the savanna in my bag.",
-      "sentenceTranslation": "我把热带草原带在包里。"
+      "sentence": "The savanna helps us prepare for the journey.",
+      "sentenceTranslation": "热带草原帮助我们为旅程做准备。"
     },
     {
       "index": "247",
@@ -2966,8 +2966,8 @@
       "exampleTranslation": "恶地到处都是橙色和红色的陶瓦。",
       "phrase": "carry badlands",
       "phraseTranslation": "携带恶地",
-      "sentence": "I carry the badlands in my bag.",
-      "sentenceTranslation": "我把恶地带在包里。"
+      "sentence": "I find the badlands beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到恶地。"
     },
     {
       "index": "248",
@@ -2978,8 +2978,8 @@
       "exampleTranslation": "多么奇怪的生物群系——所有东西都是由蘑菇构成的！",
       "phrase": "grow mushroom fields",
       "phraseTranslation": "种植蘑菇岛",
-      "sentence": "I grow mushroom fields near the farm.",
-      "sentenceTranslation": "我在农场旁种植蘑菇岛。"
+      "sentence": "I plant the mushroom fields beside the farm.",
+      "sentenceTranslation": "我把蘑菇岛种在农场旁边。"
     },
     {
       "index": "249",
@@ -2990,8 +2990,8 @@
       "exampleTranslation": "海龟在沙滩上产卵。",
       "phrase": "carry beach",
       "phraseTranslation": "携带沙滩",
-      "sentence": "I carry the beach in my bag.",
-      "sentenceTranslation": "我把沙滩带在包里。"
+      "sentence": "I find the beach beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到沙滩。"
     },
     {
       "index": "250",
@@ -3002,8 +3002,8 @@
       "exampleTranslation": "沿着河流可以找到附近的村庄。",
       "phrase": "carry river",
       "phraseTranslation": "携带河流",
-      "sentence": "I carry the river in my bag.",
-      "sentenceTranslation": "我把河流带在包里。"
+      "sentence": "The river helps us prepare for the journey.",
+      "sentenceTranslation": "河流帮助我们为旅程做准备。"
     },
     {
       "index": "251",
@@ -3014,8 +3014,8 @@
       "exampleTranslation": "探险黑暗的洞穴时带上火把。",
       "phrase": "explore the cave",
       "phraseTranslation": "探索洞穴",
-      "sentence": "We explore the cave at sunrise.",
-      "sentenceTranslation": "我们在日出时探索洞穴。"
+      "sentence": "We explore the cave after breakfast.",
+      "sentenceTranslation": "我们早餐后探索洞穴。"
     },
     {
       "index": "252",
@@ -3026,8 +3026,8 @@
       "exampleTranslation": "深暗之地非常安静，但守卫者正在倾听。",
       "phrase": "carry deep dark",
       "phraseTranslation": "携带深暗之地",
-      "sentence": "I carry the deep dark in my bag.",
-      "sentenceTranslation": "我把深暗之地带在包里。"
+      "sentence": "The chest contains a useful deep dark.",
+      "sentenceTranslation": "箱子里有一个有用的深暗之地。"
     },
     {
       "index": "253",
@@ -3038,8 +3038,8 @@
       "exampleTranslation": "红树林生长在红树林沼泽的水中。",
       "phrase": "carry mangrove swamp",
       "phraseTranslation": "携带红树林沼泽",
-      "sentence": "I carry the mangrove swamp in my bag.",
-      "sentenceTranslation": "我把红树林沼泽带在包里。"
+      "sentence": "I keep the mangrove swamp in my backpack.",
+      "sentenceTranslation": "我把红树林沼泽放在背包里。"
     },
     {
       "index": "254",
@@ -3050,8 +3050,8 @@
       "exampleTranslation": "樱花树林是拥有粉色花朵的最美丽生物群系。",
       "phrase": "carry cherry grove",
       "phraseTranslation": "携带樱花树林",
-      "sentence": "I carry the cherry grove in my bag.",
-      "sentenceTranslation": "我把樱花树林带在包里。"
+      "sentence": "I find the cherry grove beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到樱花树林。"
     },
     {
       "index": "255",
@@ -3062,8 +3062,8 @@
       "exampleTranslation": "锋利使你的剑造成额外伤害。",
       "phrase": "carry sharpness",
       "phraseTranslation": "携带锋利",
-      "sentence": "I carry the sharpness in my bag.",
-      "sentenceTranslation": "我把锋利带在包里。"
+      "sentence": "The sharpness helps us prepare for the journey.",
+      "sentenceTranslation": "锋利帮助我们为旅程做准备。"
     },
     {
       "index": "256",
@@ -3074,8 +3074,8 @@
       "exampleTranslation": "亡灵杀手非常适合杀死僵尸和骷髅。",
       "phrase": "carry smite",
       "phraseTranslation": "携带亡灵杀手",
-      "sentence": "I carry the smite in my bag.",
-      "sentenceTranslation": "我把亡灵杀手带在包里。"
+      "sentence": "I keep the smite in my backpack.",
+      "sentenceTranslation": "我把亡灵杀手放在背包里。"
     },
     {
       "index": "257",
@@ -3086,8 +3086,8 @@
       "exampleTranslation": "节肢杀手对蜘蛛效果很好。",
       "phrase": "carry bane of arthropods",
       "phraseTranslation": "携带节肢杀手",
-      "sentence": "I carry the bane of arthropods in my bag.",
-      "sentenceTranslation": "我把节肢杀手带在包里。"
+      "sentence": "The chest contains a useful bane of arthropods.",
+      "sentenceTranslation": "箱子里有一个有用的节肢杀手。"
     },
     {
       "index": "258",
@@ -3098,8 +3098,8 @@
       "exampleTranslation": "击退使敌人在被击中时向后飞出。",
       "phrase": "carry knockback",
       "phraseTranslation": "携带击退",
-      "sentence": "I carry the knockback in my bag.",
-      "sentenceTranslation": "我把击退带在包里。"
+      "sentence": "The knockback helps us prepare for the journey.",
+      "sentenceTranslation": "击退帮助我们为旅程做准备。"
     },
     {
       "index": "259",
@@ -3122,8 +3122,8 @@
       "exampleTranslation": "抢夺附魔帮助生物掉落更多物品。",
       "phrase": "carry looting",
       "phraseTranslation": "携带抢夺",
-      "sentence": "I carry the looting in my bag.",
-      "sentenceTranslation": "我把抢夺带在包里。"
+      "sentence": "I find the looting beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到抢夺。"
     },
     {
       "index": "261",
@@ -3134,8 +3134,8 @@
       "exampleTranslation": "带有效率的镐子采矿速度更快。",
       "phrase": "carry efficiency",
       "phraseTranslation": "携带效率",
-      "sentence": "I carry the efficiency in my bag.",
-      "sentenceTranslation": "我把效率带在包里。"
+      "sentence": "I keep the efficiency in my backpack.",
+      "sentenceTranslation": "我把效率放在背包里。"
     },
     {
       "index": "262",
@@ -3146,8 +3146,8 @@
       "exampleTranslation": "使用精准采集，你可以完整地拾取草方块而不将其破坏。",
       "phrase": "carry silk touch",
       "phraseTranslation": "携带精准采集",
-      "sentence": "I carry the silk touch in my bag.",
-      "sentenceTranslation": "我把精准采集带在包里。"
+      "sentence": "The silk touch helps us prepare for the journey.",
+      "sentenceTranslation": "精准采集帮助我们为旅程做准备。"
     },
     {
       "index": "263",
@@ -3158,8 +3158,8 @@
       "exampleTranslation": "时运附魔让你在挖掘钻石矿时获得更多钻石。",
       "phrase": "carry fortune",
       "phraseTranslation": "携带时运",
-      "sentence": "I carry the fortune in my bag.",
-      "sentenceTranslation": "我把时运带在包里。"
+      "sentence": "The fortune helps us prepare for the journey.",
+      "sentenceTranslation": "时运帮助我们为旅程做准备。"
     },
     {
       "index": "264",
@@ -3170,8 +3170,8 @@
       "exampleTranslation": "给你的盔甲附加保护可以减少受到的伤害。",
       "phrase": "carry protection",
       "phraseTranslation": "携带保护",
-      "sentence": "I carry the protection in my bag.",
-      "sentenceTranslation": "我把保护带在包里。"
+      "sentence": "We trade the protection with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换保护。"
     },
     {
       "index": "265",
@@ -3182,8 +3182,8 @@
       "exampleTranslation": "荆棘附魔在敌人攻击你时会反弹伤害。",
       "phrase": "carry thorns",
       "phraseTranslation": "携带荆棘",
-      "sentence": "I carry the thorns in my bag.",
-      "sentenceTranslation": "我把荆棘带在包里。"
+      "sentence": "I keep the thorns in my backpack.",
+      "sentenceTranslation": "我把荆棘放在背包里。"
     },
     {
       "index": "266",
@@ -3194,8 +3194,8 @@
       "exampleTranslation": "经验修补让你在收集经验时自动修复工具。",
       "phrase": "explore the mending",
       "phraseTranslation": "探索经验修补",
-      "sentence": "We explore the mending at sunrise.",
-      "sentenceTranslation": "我们在日出时探索经验修补。"
+      "sentence": "We explore the mending after breakfast.",
+      "sentenceTranslation": "我们早餐后探索经验修补。"
     },
     {
       "index": "267",
@@ -3206,8 +3206,8 @@
       "exampleTranslation": "有了无限附魔，你只需要一支箭就能无限射击。",
       "phrase": "carry infinity",
       "phraseTranslation": "携带无限",
-      "sentence": "I carry the infinity in my bag.",
-      "sentenceTranslation": "我把无限带在包里。"
+      "sentence": "I keep the infinity in my backpack.",
+      "sentenceTranslation": "我把无限放在背包里。"
     },
     {
       "index": "268",
@@ -3218,8 +3218,8 @@
       "exampleTranslation": "力量附魔让你的弓箭射得更远更有力。",
       "phrase": "carry power",
       "phraseTranslation": "携带力量",
-      "sentence": "I carry the power in my bag.",
-      "sentenceTranslation": "我把力量带在包里。"
+      "sentence": "The power helps us prepare for the journey.",
+      "sentenceTranslation": "力量帮助我们为旅程做准备。"
     },
     {
       "index": "269",
@@ -3230,8 +3230,8 @@
       "exampleTranslation": "冲击附魔让每支箭射中敌人时都会将其击退。",
       "phrase": "carry punch",
       "phraseTranslation": "携带冲击",
-      "sentence": "I carry the punch in my bag.",
-      "sentenceTranslation": "我把冲击带在包里。"
+      "sentence": "The punch helps us prepare for the journey.",
+      "sentenceTranslation": "冲击帮助我们为旅程做准备。"
     },
     {
       "index": "270",
@@ -3242,8 +3242,8 @@
       "exampleTranslation": "火矢附魔让你的箭射中生物时点燃它们。",
       "phrase": "carry flame",
       "phraseTranslation": "携带火矢",
-      "sentence": "I carry the flame in my bag.",
-      "sentenceTranslation": "我把火矢带在包里。"
+      "sentence": "The flame helps us prepare for the journey.",
+      "sentenceTranslation": "火矢帮助我们为旅程做准备。"
     },
     {
       "index": "271",
@@ -3254,8 +3254,8 @@
       "exampleTranslation": "摔落保护附魔的靴子大幅减少掉落伤害。",
       "phrase": "carry feather falling",
       "phraseTranslation": "携带摔落保护",
-      "sentence": "I carry the feather falling in my bag.",
-      "sentenceTranslation": "我把摔落保护带在包里。"
+      "sentence": "The feather falling helps us prepare for the journey.",
+      "sentenceTranslation": "摔落保护帮助我们为旅程做准备。"
     },
     {
       "index": "272",
@@ -3266,8 +3266,8 @@
       "exampleTranslation": "深海探索者附魔让你在水下游泳更快。",
       "phrase": "carry depth strider",
       "phraseTranslation": "携带深海探索者",
-      "sentence": "I carry the depth strider in my bag.",
-      "sentenceTranslation": "我把深海探索者带在包里。"
+      "sentence": "The depth strider helps us prepare for the journey.",
+      "sentenceTranslation": "深海探索者帮助我们为旅程做准备。"
     },
     {
       "index": "273",
@@ -3278,8 +3278,8 @@
       "exampleTranslation": "冰霜行者附魔让你走过水面时变成冰。",
       "phrase": "carry frost walker",
       "phraseTranslation": "携带冰霜行者",
-      "sentence": "I carry the frost walker in my bag.",
-      "sentenceTranslation": "我把冰霜行者带在包里。"
+      "sentence": "We trade the frost walker with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换冰霜行者。"
     },
     {
       "index": "274",
@@ -3290,8 +3290,8 @@
       "exampleTranslation": "水下速掘附魔让你在水下矿速不受影响。",
       "phrase": "carry aqua affinity",
       "phraseTranslation": "携带水下速掘",
-      "sentence": "I carry the aqua affinity in my bag.",
-      "sentenceTranslation": "我把水下速掘带在包里。"
+      "sentence": "The chest contains a useful aqua affinity.",
+      "sentenceTranslation": "箱子里有一个有用的水下速掘。"
     },
     {
       "index": "275",
@@ -3302,8 +3302,8 @@
       "exampleTranslation": "水下呼吸附魔让你在水下憋气时间更长。",
       "phrase": "carry respiration",
       "phraseTranslation": "携带水下呼吸",
-      "sentence": "I carry the respiration in my bag.",
-      "sentenceTranslation": "我把水下呼吸带在包里。"
+      "sentence": "I find the respiration beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到水下呼吸。"
     },
     {
       "index": "276",
@@ -3314,8 +3314,8 @@
       "exampleTranslation": "引雷附魔使你在暴风雨中投掷三叉戟时召唤闪电。",
       "phrase": "carry channeling",
       "phraseTranslation": "携带引雷",
-      "sentence": "I carry the channeling in my bag.",
-      "sentenceTranslation": "我把引雷带在包里。"
+      "sentence": "I find the channeling beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到引雷。"
     },
     {
       "index": "277",
@@ -3326,8 +3326,8 @@
       "exampleTranslation": "激流附魔让你在下雨时被推进空中飞行。",
       "phrase": "carry riptide",
       "phraseTranslation": "携带激流",
-      "sentence": "I carry the riptide in my bag.",
-      "sentenceTranslation": "我把激流带在包里。"
+      "sentence": "The riptide helps us prepare for the journey.",
+      "sentenceTranslation": "激流帮助我们为旅程做准备。"
     },
     {
       "index": "278",
@@ -3338,8 +3338,8 @@
       "exampleTranslation": "忠诚附魔让附魔的三叉戟总会飞回你手中。",
       "phrase": "carry loyalty",
       "phraseTranslation": "携带忠诚",
-      "sentence": "I carry the loyalty in my bag.",
-      "sentenceTranslation": "我把忠诚带在包里。"
+      "sentence": "The loyalty helps us prepare for the journey.",
+      "sentenceTranslation": "忠诚帮助我们为旅程做准备。"
     },
     {
       "index": "279",
@@ -3350,8 +3350,8 @@
       "exampleTranslation": "穿刺附魔对海洋生物造成额外伤害。",
       "phrase": "carry impaling",
       "phraseTranslation": "携带穿刺",
-      "sentence": "I carry the impaling in my bag.",
-      "sentenceTranslation": "我把穿刺带在包里。"
+      "sentence": "I keep the impaling in my backpack.",
+      "sentenceTranslation": "我把穿刺放在背包里。"
     },
     {
       "index": "280",
@@ -3362,8 +3362,8 @@
       "exampleTranslation": "耐久附魔让你的工具在损坏前使用时间更久。",
       "phrase": "carry unbreaking",
       "phraseTranslation": "携带耐久",
-      "sentence": "I carry the unbreaking in my bag.",
-      "sentenceTranslation": "我把耐久带在包里。"
+      "sentence": "We trade the unbreaking with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换耐久。"
     },
     {
       "index": "281",
@@ -3374,8 +3374,8 @@
       "exampleTranslation": "多重射击可以让你的弩同时发射三支箭。",
       "phrase": "carry multishot",
       "phraseTranslation": "携带多重射击",
-      "sentence": "I carry the multishot in my bag.",
-      "sentenceTranslation": "我把多重射击带在包里。"
+      "sentence": "I keep the multishot in my backpack.",
+      "sentenceTranslation": "我把多重射击放在背包里。"
     },
     {
       "index": "282",
@@ -3386,8 +3386,8 @@
       "exampleTranslation": "穿透箭能穿过敌人，击中后面的目标。",
       "phrase": "carry piercing",
       "phraseTranslation": "携带穿透",
-      "sentence": "I carry the piercing in my bag.",
-      "sentenceTranslation": "我把穿透带在包里。"
+      "sentence": "The piercing helps us prepare for the journey.",
+      "sentenceTranslation": "穿透帮助我们为旅程做准备。"
     },
     {
       "index": "283",
@@ -3398,8 +3398,8 @@
       "exampleTranslation": "快速装填让你的弩装填速度大大加快。",
       "phrase": "carry quick charge",
       "phraseTranslation": "携带快速装填",
-      "sentence": "I carry the quick charge in my bag.",
-      "sentenceTranslation": "我把快速装填带在包里。"
+      "sentence": "We trade the quick charge with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换快速装填。"
     },
     {
       "index": "284",
@@ -3410,8 +3410,8 @@
       "exampleTranslation": "灵魂疾行让你在下界的灵魂沙上快速奔跑。",
       "phrase": "carry soul speed",
       "phraseTranslation": "携带灵魂疾行",
-      "sentence": "I carry the soul speed in my bag.",
-      "sentenceTranslation": "我把灵魂疾行带在包里。"
+      "sentence": "I keep the soul speed in my backpack.",
+      "sentenceTranslation": "我把灵魂疾行放在背包里。"
     },
     {
       "index": "285",
@@ -3422,8 +3422,8 @@
       "exampleTranslation": "带有消失诅咒的物品在你死亡时会消失。",
       "phrase": "carry curse of vanishing",
       "phraseTranslation": "携带消失诅咒",
-      "sentence": "I carry the curse of vanishing in my bag.",
-      "sentenceTranslation": "我把消失诅咒带在包里。"
+      "sentence": "I find the curse of vanishing beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到消失诅咒。"
     },
     {
       "index": "286",
@@ -3434,8 +3434,8 @@
       "exampleTranslation": "绑定诅咒意味着你无法取下那件盔甲。",
       "phrase": "carry curse of binding",
       "phraseTranslation": "携带绑定诅咒",
-      "sentence": "I carry the curse of binding in my bag.",
-      "sentenceTranslation": "我把绑定诅咒带在包里。"
+      "sentence": "The chest contains a useful curse of binding.",
+      "sentenceTranslation": "箱子里有一个有用的绑定诅咒。"
     },
     {
       "index": "287",
@@ -3446,8 +3446,8 @@
       "exampleTranslation": "主世界是你开始游戏的主要世界。",
       "phrase": "carry overworld",
       "phraseTranslation": "携带主世界",
-      "sentence": "I carry the overworld in my bag.",
-      "sentenceTranslation": "我把主世界带在包里。"
+      "sentence": "I find the overworld beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到主世界。"
     },
     {
       "index": "288",
@@ -3458,8 +3458,8 @@
       "exampleTranslation": "下界是一个炎热、黑暗且充满危险怪物的地方。",
       "phrase": "explore the the nether",
       "phraseTranslation": "探索下界",
-      "sentence": "We explore the the nether at sunrise.",
-      "sentenceTranslation": "我们在日出时探索下界。"
+      "sentence": "Our map shows a trail through the the nether.",
+      "sentenceTranslation": "我们的地图显示有一条穿过下界的小路。"
     },
     {
       "index": "289",
@@ -3470,8 +3470,8 @@
       "exampleTranslation": "前往末地去面对末影龙。",
       "phrase": "explore the the end",
       "phraseTranslation": "探索末地",
-      "sentence": "We explore the the end at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末地。"
+      "sentence": "We explore the the end after breakfast.",
+      "sentenceTranslation": "我们早餐后探索末地。"
     },
     {
       "index": "290",
@@ -3482,8 +3482,8 @@
       "exampleTranslation": "走进下界传送门就能进入下界维度。",
       "phrase": "explore the nether portal",
       "phraseTranslation": "探索下界传送门",
-      "sentence": "We explore the nether portal at sunrise.",
-      "sentenceTranslation": "我们在日出时探索下界传送门。"
+      "sentence": "We explore the nether portal after breakfast.",
+      "sentenceTranslation": "我们早餐后探索下界传送门。"
     },
     {
       "index": "291",
@@ -3494,8 +3494,8 @@
       "exampleTranslation": "你需要十二个末影之眼来激活末地传送门。",
       "phrase": "explore the end portal",
       "phraseTranslation": "探索末地传送门",
-      "sentence": "We explore the end portal at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末地传送门。"
+      "sentence": "We explore the end portal after breakfast.",
+      "sentenceTranslation": "我们早餐后探索末地传送门。"
     },
     {
       "index": "292",
@@ -3506,8 +3506,8 @@
       "exampleTranslation": "要塞是一个巨大的地下堡垒，有许多房间。",
       "phrase": "carry stronghold",
       "phraseTranslation": "携带要塞",
-      "sentence": "I carry the stronghold in my bag.",
-      "sentenceTranslation": "我把要塞带在包里。"
+      "sentence": "I keep the stronghold in my backpack.",
+      "sentenceTranslation": "我把要塞放在背包里。"
     },
     {
       "index": "293",
@@ -3518,8 +3518,8 @@
       "exampleTranslation": "村庄里住着许多友好的村民。",
       "phrase": "find a village",
       "phraseTranslation": "找到村庄",
-      "sentence": "We find the village in the new world.",
-      "sentenceTranslation": "我们在新世界里找到村庄。"
+      "sentence": "A secret treasure may be inside the village.",
+      "sentenceTranslation": "村庄里面可能藏着秘密宝藏。"
     },
     {
       "index": "294",
@@ -3530,8 +3530,8 @@
       "exampleTranslation": "地牢里面有一个怪物刷怪笼和两个箱子。",
       "phrase": "carry dungeon",
       "phraseTranslation": "携带地牢",
-      "sentence": "I carry the dungeon in my bag.",
-      "sentenceTranslation": "我把地牢带在包里。"
+      "sentence": "We trade the dungeon with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换地牢。"
     },
     {
       "index": "295",
@@ -3542,8 +3542,8 @@
       "exampleTranslation": "废弃矿井很容易迷路——请小心！",
       "phrase": "carry mineshaft",
       "phraseTranslation": "携带废弃矿井",
-      "sentence": "I carry the mineshaft in my bag.",
-      "sentenceTranslation": "我把废弃矿井带在包里。"
+      "sentence": "I keep the mineshaft in my backpack.",
+      "sentenceTranslation": "我把废弃矿井放在背包里。"
     },
     {
       "index": "296",
@@ -3554,8 +3554,8 @@
       "exampleTranslation": "丛林神殿内部有陷阱和宝藏。",
       "phrase": "find a temple",
       "phraseTranslation": "找到神殿",
-      "sentence": "We find the temple in the new world.",
-      "sentenceTranslation": "我们在新世界里找到神殿。"
+      "sentence": "We place a flag beside the temple.",
+      "sentenceTranslation": "我们在神殿旁边插上一面旗子。"
     },
     {
       "index": "297",
@@ -3566,8 +3566,8 @@
       "exampleTranslation": "沙漠金字塔的地板下面藏有四个宝箱。",
       "phrase": "carry pyramid",
       "phraseTranslation": "携带金字塔",
-      "sentence": "I carry the pyramid in my bag.",
-      "sentenceTranslation": "我把金字塔带在包里。"
+      "sentence": "The pyramid helps us prepare for the journey.",
+      "sentenceTranslation": "金字塔帮助我们为旅程做准备。"
     },
     {
       "index": "298",
@@ -3578,8 +3578,8 @@
       "exampleTranslation": "烈焰棒只从下界堡垒内的烈焰人那里掉落。",
       "phrase": "explore the nether fortress",
       "phraseTranslation": "探索下界堡垒",
-      "sentence": "We explore the nether fortress at sunrise.",
-      "sentenceTranslation": "我们在日出时探索下界堡垒。"
+      "sentence": "Our map shows a trail through the nether fortress.",
+      "sentenceTranslation": "我们的地图显示有一条穿过下界堡垒的小路。"
     },
     {
       "index": "299",
@@ -3590,8 +3590,8 @@
       "exampleTranslation": "猪灵居住在堡垒遗迹中，守护着大量黄金。",
       "phrase": "carry bastion remnant",
       "phraseTranslation": "携带堡垒遗迹",
-      "sentence": "I carry the bastion remnant in my bag.",
-      "sentenceTranslation": "我把堡垒遗迹带在包里。"
+      "sentence": "I keep the bastion remnant in my backpack.",
+      "sentenceTranslation": "我把堡垒遗迹放在背包里。"
     },
     {
       "index": "300",
@@ -3602,8 +3602,8 @@
       "exampleTranslation": "末地城里有潜影贝和等待发现的鞘翅。",
       "phrase": "explore the end city",
       "phraseTranslation": "探索末地城",
-      "sentence": "We explore the end city at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末地城。"
+      "sentence": "We explore the end city after breakfast.",
+      "sentenceTranslation": "我们早餐后探索末地城。"
     },
     {
       "index": "301",
@@ -3614,8 +3614,8 @@
       "exampleTranslation": "海底神殿是一个巨大的水下神殿，有守卫守护。",
       "phrase": "explore the ocean monument",
       "phraseTranslation": "探索海底神殿",
-      "sentence": "We explore the ocean monument at sunrise.",
-      "sentenceTranslation": "我们在日出时探索海底神殿。"
+      "sentence": "The ocean monument is full of new plants to discover.",
+      "sentenceTranslation": "海底神殿里有许多等待发现的新植物。"
     },
     {
       "index": "302",
@@ -3626,8 +3626,8 @@
       "exampleTranslation": "林地府邸是一座非常大的房子，里面满是掠夺者。",
       "phrase": "find a woodland mansion",
       "phraseTranslation": "找到林地府邸",
-      "sentence": "We find the woodland mansion in the new world.",
-      "sentenceTranslation": "我们在新世界里找到林地府邸。"
+      "sentence": "We discover the woodland mansion beyond the river.",
+      "sentenceTranslation": "我们在河流对岸发现林地府邸。"
     },
     {
       "index": "303",
@@ -3638,8 +3638,8 @@
       "exampleTranslation": "远古城市位于幽暗深渊，是守卫者的家。",
       "phrase": "carry ancient city",
       "phraseTranslation": "携带远古城市",
-      "sentence": "I carry the ancient city in my bag.",
-      "sentenceTranslation": "我把远古城市带在包里。"
+      "sentence": "I find the ancient city beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到远古城市。"
     },
     {
       "index": "304",
@@ -3650,8 +3650,8 @@
       "exampleTranslation": "在考验密室里，你会面对一波又一波的强敌。",
       "phrase": "carry trial chamber",
       "phraseTranslation": "携带考验密室",
-      "sentence": "I carry the trial chamber in my bag.",
-      "sentenceTranslation": "我把考验密室带在包里。"
+      "sentence": "The trial chamber helps us prepare for the journey.",
+      "sentenceTranslation": "考验密室帮助我们为旅程做准备。"
     },
     {
       "index": "305",
@@ -3662,8 +3662,8 @@
       "exampleTranslation": "末影龙是《我的世界》的最终 boss。",
       "phrase": "explore the ender dragon",
       "phraseTranslation": "探索末影龙",
-      "sentence": "We explore the ender dragon at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末影龙。"
+      "sentence": "Our map shows a trail through the ender dragon.",
+      "sentenceTranslation": "我们的地图显示有一条穿过末影龙的小路。"
     },
     {
       "index": "306",
@@ -3674,8 +3674,8 @@
       "exampleTranslation": "如果你想要一个巨大的挑战，就自己召唤一个凋灵。",
       "phrase": "carry wither",
       "phraseTranslation": "携带凋灵",
-      "sentence": "I carry the wither in my bag.",
-      "sentenceTranslation": "我把凋灵带在包里。"
+      "sentence": "The chest contains a useful wither.",
+      "sentenceTranslation": "箱子里有一个有用的凋灵。"
     },
     {
       "index": "307",
@@ -3686,8 +3686,8 @@
       "exampleTranslation": "你可以将难度从和平调整到困难。",
       "phrase": "carry difficulty",
       "phraseTranslation": "携带难度",
-      "sentence": "I carry the difficulty in my bag.",
-      "sentenceTranslation": "我把难度带在包里。"
+      "sentence": "The difficulty helps us prepare for the journey.",
+      "sentenceTranslation": "难度帮助我们为旅程做准备。"
     },
     {
       "index": "308",
@@ -3698,8 +3698,8 @@
       "exampleTranslation": "在和平模式下，不会有敌对生物生成。",
       "phrase": "carry peaceful",
       "phraseTranslation": "携带和平模式",
-      "sentence": "I carry the peaceful in my bag.",
-      "sentenceTranslation": "我把和平模式带在包里。"
+      "sentence": "I keep the peaceful in my backpack.",
+      "sentenceTranslation": "我把和平模式放在背包里。"
     },
     {
       "index": "309",
@@ -3710,8 +3710,8 @@
       "exampleTranslation": "按 F3 键可以在屏幕上看到你的坐标。",
       "phrase": "carry coordinates",
       "phraseTranslation": "携带坐标",
-      "sentence": "I carry the coordinates in my bag.",
-      "sentenceTranslation": "我把坐标带在包里。"
+      "sentence": "I find the coordinates beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到坐标。"
     },
     {
       "index": "310",
@@ -3722,8 +3722,8 @@
       "exampleTranslation": "和朋友一起玩多人游戏真的太有趣了！",
       "phrase": "carry multiplayer",
       "phraseTranslation": "携带多人游戏",
-      "sentence": "I carry the multiplayer in my bag.",
-      "sentenceTranslation": "我把多人游戏带在包里。"
+      "sentence": "I find the multiplayer beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到多人游戏。"
     },
     {
       "index": "311",
@@ -3734,8 +3734,8 @@
       "exampleTranslation": "我的朋友邀请我加入他的领域服务器。",
       "phrase": "carry realm",
       "phraseTranslation": "携带领域服务器",
-      "sentence": "I carry the realm in my bag.",
-      "sentenceTranslation": "我把领域服务器带在包里。"
+      "sentence": "I find the realm beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到领域服务器。"
     },
     {
       "index": "312",
@@ -3746,8 +3746,8 @@
       "exampleTranslation": "我通过进入下界解锁了一个新的进度。",
       "phrase": "complete advancement",
       "phraseTranslation": "完成进度",
-      "sentence": "We complete the advancement challenge.",
-      "sentenceTranslation": "我们完成“进度”挑战。"
+      "sentence": "This challenge unlocks the advancement badge.",
+      "sentenceTranslation": "这个挑战会解锁“进度”徽章。"
     },
     {
       "index": "313",
@@ -3758,8 +3758,8 @@
       "exampleTranslation": "当我带着凶兆走进村庄时，袭击开始了。",
       "phrase": "carry raid",
       "phraseTranslation": "携带袭击",
-      "sentence": "I carry the raid in my bag.",
-      "sentenceTranslation": "我把袭击带在包里。"
+      "sentence": "I keep the raid in my backpack.",
+      "sentenceTranslation": "我把袭击放在背包里。"
     },
     {
       "index": "314",
@@ -3770,8 +3770,8 @@
       "exampleTranslation": "游戏每秒更新 20 个游戏刻。",
       "phrase": "carry tick",
       "phraseTranslation": "携带游戏刻",
-      "sentence": "I carry the tick in my bag.",
-      "sentenceTranslation": "我把游戏刻带在包里。"
+      "sentence": "The tick helps us prepare for the journey.",
+      "sentenceTranslation": "游戏刻帮助我们为旅程做准备。"
     },
     {
       "index": "315",
@@ -3782,8 +3782,8 @@
       "exampleTranslation": "当你在床上睡觉时，出生点就会被设置。",
       "phrase": "carry spawn point",
       "phraseTranslation": "携带出生点",
-      "sentence": "I carry the spawn point in my bag.",
-      "sentenceTranslation": "我把出生点带在包里。"
+      "sentence": "The spawn point helps us prepare for the journey.",
+      "sentenceTranslation": "出生点帮助我们为旅程做准备。"
     },
     {
       "index": "316",
@@ -3794,8 +3794,8 @@
       "exampleTranslation": "在聊天框中输入命令来改变天气。",
       "phrase": "carry command",
       "phraseTranslation": "携带命令",
-      "sentence": "I carry the command in my bag.",
-      "sentenceTranslation": "我把命令带在包里。"
+      "sentence": "The command helps us prepare for the journey.",
+      "sentenceTranslation": "命令帮助我们为旅程做准备。"
     },
     {
       "index": "317",
@@ -3806,8 +3806,8 @@
       "exampleTranslation": "建造红石电路可以打开一扇秘密的门。",
       "phrase": "redstone circuit wool",
       "phraseTranslation": "红石电路羊毛",
-      "sentence": "The wool is redstone circuit.",
-      "sentenceTranslation": "羊毛是红石电路色的。"
+      "sentence": "The banner is redstone circuit under the sunlight.",
+      "sentenceTranslation": "阳光下的旗帜是红石电路色的。"
     },
     {
       "index": "318",
@@ -3818,8 +3818,8 @@
       "exampleTranslation": "刷怪塔帮助你快速收集大量掉落物。",
       "phrase": "a friendly mob farm",
       "phraseTranslation": "一只友好的刷怪塔",
-      "sentence": "A mob farm is near the village.",
-      "sentenceTranslation": "一只刷怪塔在村庄附近。"
+      "sentence": "The mob farm follows us along the path.",
+      "sentenceTranslation": "刷怪塔沿着小路跟着我们。"
     },
     {
       "index": "319",
@@ -3830,8 +3830,8 @@
       "exampleTranslation": "你能在 20 分钟内速通游戏吗？",
       "phrase": "carry speedrun",
       "phraseTranslation": "携带速通",
-      "sentence": "I carry the speedrun in my bag.",
-      "sentenceTranslation": "我把速通带在包里。"
+      "sentence": "The speedrun helps us prepare for the journey.",
+      "sentenceTranslation": "速通帮助我们为旅程做准备。"
     },
     {
       "index": "320",
@@ -3842,8 +3842,8 @@
       "exampleTranslation": "这个资源包让所有方块看起来更加真实。",
       "phrase": "carry resource pack",
       "phraseTranslation": "携带资源包",
-      "sentence": "I carry the resource pack in my bag.",
-      "sentenceTranslation": "我把资源包带在包里。"
+      "sentence": "We trade the resource pack with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换资源包。"
     },
     {
       "index": "321",
@@ -3854,8 +3854,8 @@
       "exampleTranslation": "流浪商人带着两头羊驼出现在我的基地附近。",
       "phrase": "carry wandering trader",
       "phraseTranslation": "携带流浪商人",
-      "sentence": "I carry the wandering trader in my bag.",
-      "sentenceTranslation": "我把流浪商人带在包里。"
+      "sentence": "I keep the wandering trader in my backpack.",
+      "sentenceTranslation": "我把流浪商人放在背包里。"
     },
     {
       "index": "322",
@@ -3866,8 +3866,8 @@
       "exampleTranslation": "灾厄村民是攻击村庄的坏人。",
       "phrase": "carry illager",
       "phraseTranslation": "携带灾厄村民",
-      "sentence": "I carry the illager in my bag.",
-      "sentenceTranslation": "我把灾厄村民带在包里。"
+      "sentence": "I keep the illager in my backpack.",
+      "sentenceTranslation": "我把灾厄村民放在背包里。"
     },
     {
       "index": "323",
@@ -3878,8 +3878,8 @@
       "exampleTranslation": "游戏中有三个维度：主世界、下界和末地。",
       "phrase": "carry dimension",
       "phraseTranslation": "携带维度",
-      "sentence": "I carry the dimension in my bag.",
-      "sentenceTranslation": "我把维度带在包里。"
+      "sentence": "The chest contains a useful dimension.",
+      "sentenceTranslation": "箱子里有一个有用的维度。"
     },
     {
       "index": "324",
@@ -3890,8 +3890,8 @@
       "exampleTranslation": "服务器管理员可以封禁违反规则的玩家。",
       "phrase": "carry operator",
       "phraseTranslation": "携带管理员",
-      "sentence": "I carry the operator in my bag.",
-      "sentenceTranslation": "我把管理员带在包里。"
+      "sentence": "I find the operator beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到管理员。"
     },
     {
       "index": "325",
@@ -3902,8 +3902,8 @@
       "exampleTranslation": "查看记分板，看看谁击杀最多。",
       "phrase": "carry scoreboard",
       "phraseTranslation": "携带记分板",
-      "sentence": "I carry the scoreboard in my bag.",
-      "sentenceTranslation": "我把记分板带在包里。"
+      "sentence": "I find the scoreboard beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到记分板。"
     },
     {
       "index": "326",
@@ -3926,8 +3926,8 @@
       "exampleTranslation": "安装数据包可以为游戏添加新的配方。",
       "phrase": "carry datapack",
       "phraseTranslation": "携带数据包",
-      "sentence": "I carry the datapack in my bag.",
-      "sentenceTranslation": "我把数据包带在包里。"
+      "sentence": "I keep the datapack in my backpack.",
+      "sentenceTranslation": "我把数据包放在背包里。"
     },
     {
       "index": "328",
@@ -3938,8 +3938,8 @@
       "exampleTranslation": "当我找到远古守卫者时，Boss血条出现在屏幕顶部。",
       "phrase": "carry boss bar",
       "phraseTranslation": "携带Boss血条",
-      "sentence": "I carry the boss bar in my bag.",
-      "sentenceTranslation": "我把Boss血条带在包里。"
+      "sentence": "I keep the boss bar in my backpack.",
+      "sentenceTranslation": "我把Boss血条放在背包里。"
     },
     {
       "index": "329",
@@ -3950,8 +3950,8 @@
       "exampleTranslation": "村庄是世界中自然生成的一种结构。",
       "phrase": "find a structure",
       "phraseTranslation": "找到结构",
-      "sentence": "We find the structure in the new world.",
-      "sentenceTranslation": "我们在新世界里找到结构。"
+      "sentence": "We place a flag beside the structure.",
+      "sentenceTranslation": "我们在结构旁边插上一面旗子。"
     },
     {
       "index": "330",
@@ -3962,8 +3962,8 @@
       "exampleTranslation": "每个地牢都有一张战利品表，决定箱子里有什么。",
       "phrase": "carry loot table",
       "phraseTranslation": "携带战利品表",
-      "sentence": "I carry the loot table in my bag.",
-      "sentenceTranslation": "我把战利品表带在包里。"
+      "sentence": "I keep the loot table in my backpack.",
+      "sentenceTranslation": "我把战利品表放在背包里。"
     },
     {
       "index": "331",
@@ -3974,8 +3974,8 @@
       "exampleTranslation": "在下界使用重生锚，这样你就可以在那里重生。",
       "phrase": "carry respawn anchor",
       "phraseTranslation": "携带重生锚",
-      "sentence": "I carry the respawn anchor in my bag.",
-      "sentenceTranslation": "我把重生锚带在包里。"
+      "sentence": "I find the respawn anchor beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到重生锚。"
     },
     {
       "index": "332",
@@ -3986,8 +3986,8 @@
       "exampleTranslation": "深板岩是在地下深处发现的一种深色坚硬方块。",
       "phrase": "carry deepslate",
       "phraseTranslation": "携带深板岩",
-      "sentence": "I carry the deepslate in my bag.",
-      "sentenceTranslation": "我把深板岩带在包里。"
+      "sentence": "The deepslate helps us prepare for the journey.",
+      "sentenceTranslation": "深板岩帮助我们为旅程做准备。"
     },
     {
       "index": "333",
@@ -3998,8 +3998,8 @@
       "exampleTranslation": "方解石是一种在紫水晶晶洞内发现的白色岩石。",
       "phrase": "carry calcite",
       "phraseTranslation": "携带方解石",
-      "sentence": "I carry the calcite in my bag.",
-      "sentenceTranslation": "我把方解石带在包里。"
+      "sentence": "The calcite helps us prepare for the journey.",
+      "sentenceTranslation": "方解石帮助我们为旅程做准备。"
     },
     {
       "index": "334",
@@ -4010,8 +4010,8 @@
       "exampleTranslation": "凝灰岩是一种在地下成团分布的灰色斑点岩石。",
       "phrase": "carry tuff",
       "phraseTranslation": "携带凝灰岩",
-      "sentence": "I carry the tuff in my bag.",
-      "sentenceTranslation": "我把凝灰岩带在包里。"
+      "sentence": "The tuff helps us prepare for the journey.",
+      "sentenceTranslation": "凝灰岩帮助我们为旅程做准备。"
     },
     {
       "index": "335",
@@ -4022,8 +4022,8 @@
       "exampleTranslation": "锋利的尖型滴水石锥悬挂在洞穴的天花板上。",
       "phrase": "carry pointed dripstone",
       "phraseTranslation": "携带尖型滴水石锥",
-      "sentence": "I carry the pointed dripstone in my bag.",
-      "sentenceTranslation": "我把尖型滴水石锥带在包里。"
+      "sentence": "The chest contains a useful pointed dripstone.",
+      "sentenceTranslation": "箱子里有一个有用的尖型滴水石锥。"
     },
     {
       "index": "336",
@@ -4034,8 +4034,8 @@
       "exampleTranslation": "苔藓块会蔓延扩散，让洞穴感觉充满生机。",
       "phrase": "place moss block",
       "phraseTranslation": "放置苔藓块",
-      "sentence": "I place the moss block near my house.",
-      "sentenceTranslation": "我把苔藓块放在房子附近。"
+      "sentence": "We use the moss block to mark the path home.",
+      "sentenceTranslation": "我们用苔藓块标记回家的路。"
     },
     {
       "index": "337",
@@ -4046,8 +4046,8 @@
       "exampleTranslation": "缠根泥土下方有悬挂的根系延伸进洞穴。",
       "phrase": "carry rooted dirt",
       "phraseTranslation": "携带缠根泥土",
-      "sentence": "I carry the rooted dirt in my bag.",
-      "sentenceTranslation": "我把缠根泥土带在包里。"
+      "sentence": "I find the rooted dirt beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到缠根泥土。"
     },
     {
       "index": "338",
@@ -4058,8 +4058,8 @@
       "exampleTranslation": "你可以用水瓶浇在泥土上来制作泥巴。",
       "phrase": "carry mud",
       "phraseTranslation": "携带泥巴",
-      "sentence": "I carry the mud in my bag.",
-      "sentenceTranslation": "我把泥巴带在包里。"
+      "sentence": "I find the mud beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到泥巴。"
     },
     {
       "index": "339",
@@ -4070,8 +4070,8 @@
       "exampleTranslation": "将泥巴紧密压缩，制作用于建筑的压实泥土。",
       "phrase": "carry packed mud",
       "phraseTranslation": "携带压实泥土",
-      "sentence": "I carry the packed mud in my bag.",
-      "sentenceTranslation": "我把压实泥土带在包里。"
+      "sentence": "I keep the packed mud in my backpack.",
+      "sentenceTranslation": "我把压实泥土放在背包里。"
     },
     {
       "index": "340",
@@ -4082,8 +4082,8 @@
       "exampleTranslation": "泥砖非常适合用来建造丛林风格房屋的墙壁。",
       "phrase": "carry mud bricks",
       "phraseTranslation": "携带泥砖",
-      "sentence": "I carry the mud bricks in my bag.",
-      "sentenceTranslation": "我把泥砖带在包里。"
+      "sentence": "I find the mud bricks beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到泥砖。"
     },
     {
       "index": "341",
@@ -4094,8 +4094,8 @@
       "exampleTranslation": "当生物在附近死亡时，幽匿块会在深暗之地蔓延。",
       "phrase": "carry sculk",
       "phraseTranslation": "携带幽匿块",
-      "sentence": "I carry the sculk in my bag.",
-      "sentenceTranslation": "我把幽匿块带在包里。"
+      "sentence": "I keep the sculk in my backpack.",
+      "sentenceTranslation": "我把幽匿块放在背包里。"
     },
     {
       "index": "342",
@@ -4106,8 +4106,8 @@
       "exampleTranslation": "幽匿感测体能探测声音并发出红石信号。",
       "phrase": "carry sculk sensor",
       "phraseTranslation": "携带幽匿感测体",
-      "sentence": "I carry the sculk sensor in my bag.",
-      "sentenceTranslation": "我把幽匿感测体带在包里。"
+      "sentence": "The chest contains a useful sculk sensor.",
+      "sentenceTranslation": "箱子里有一个有用的幽匿感测体。"
     },
     {
       "index": "343",
@@ -4118,8 +4118,8 @@
       "exampleTranslation": "当生物在幽匿催发体附近死亡时，幽匿块会在其周围生长。",
       "phrase": "a friendly sculk catalyst",
       "phraseTranslation": "一只友好的幽匿催发体",
-      "sentence": "A sculk catalyst is near the village.",
-      "sentenceTranslation": "一只幽匿催发体在村庄附近。"
+      "sentence": "The sculk catalyst follows us along the path.",
+      "sentenceTranslation": "幽匿催发体沿着小路跟着我们。"
     },
     {
       "index": "344",
@@ -4130,8 +4130,8 @@
       "exampleTranslation": "不要激活幽匿尖啸体，否则监守者就会来了！",
       "phrase": "carry sculk shrieker",
       "phraseTranslation": "携带幽匿尖啸体",
-      "sentence": "I carry the sculk shrieker in my bag.",
-      "sentenceTranslation": "我把幽匿尖啸体带在包里。"
+      "sentence": "The sculk shrieker helps us prepare for the journey.",
+      "sentenceTranslation": "幽匿尖啸体帮助我们为旅程做准备。"
     },
     {
       "index": "345",
@@ -4142,8 +4142,8 @@
       "exampleTranslation": "在蛋糕上放蜡烛来庆祝你的生日！",
       "phrase": "carry candle",
       "phraseTranslation": "携带蜡烛",
-      "sentence": "I carry the candle in my bag.",
-      "sentenceTranslation": "我把蜡烛带在包里。"
+      "sentence": "I keep the candle in my backpack.",
+      "sentenceTranslation": "我把蜡烛放在背包里。"
     },
     {
       "index": "346",
@@ -4154,8 +4154,8 @@
       "exampleTranslation": "把仙人掌放进花盆来装饰你的家。",
       "phrase": "grow flower pot",
       "phraseTranslation": "种植花盆",
-      "sentence": "I grow flower pot near the farm.",
-      "sentenceTranslation": "我在农场旁种植花盆。"
+      "sentence": "A bee flies over the flower pot.",
+      "sentenceTranslation": "一只蜜蜂飞过花盆。"
     },
     {
       "index": "347",
@@ -4166,8 +4166,8 @@
       "exampleTranslation": "把食物和植物放进堆肥桶来制作骨粉。",
       "phrase": "carry composter",
       "phraseTranslation": "携带堆肥桶",
-      "sentence": "I carry the composter in my bag.",
-      "sentenceTranslation": "我把堆肥桶带在包里。"
+      "sentence": "The composter helps us prepare for the journey.",
+      "sentenceTranslation": "堆肥桶帮助我们为旅程做准备。"
     },
     {
       "index": "348",
@@ -4178,8 +4178,8 @@
       "exampleTranslation": "使用切石机可以轻松将石头切割成楼梯和台阶。",
       "phrase": "carry stonecutter",
       "phraseTranslation": "携带切石机",
-      "sentence": "I carry the stonecutter in my bag.",
-      "sentenceTranslation": "我把切石机带在包里。"
+      "sentence": "I find the stonecutter beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到切石机。"
     },
     {
       "index": "349",
@@ -4190,8 +4190,8 @@
       "exampleTranslation": "使用锻造台将你的钻石护甲升级为下界合金护甲。",
       "phrase": "carry smithing table",
       "phraseTranslation": "携带锻造台",
-      "sentence": "I carry the smithing table in my bag.",
-      "sentenceTranslation": "我把锻造台带在包里。"
+      "sentence": "The chest contains a useful smithing table.",
+      "sentenceTranslation": "箱子里有一个有用的锻造台。"
     },
     {
       "index": "350",
@@ -4202,8 +4202,8 @@
       "exampleTranslation": "砂轮可以去除你物品上的附魔。",
       "phrase": "carry grindstone",
       "phraseTranslation": "携带砂轮",
-      "sentence": "I carry the grindstone in my bag.",
-      "sentenceTranslation": "我把砂轮带在包里。"
+      "sentence": "I keep the grindstone in my backpack.",
+      "sentenceTranslation": "我把砂轮放在背包里。"
     },
     {
       "index": "351",
@@ -4214,8 +4214,8 @@
       "exampleTranslation": "把一本书放在讲台上，这样每个人都能阅读。",
       "phrase": "carry lectern",
       "phraseTranslation": "携带讲台",
-      "sentence": "I carry the lectern in my bag.",
-      "sentenceTranslation": "我把讲台带在包里。"
+      "sentence": "I find the lectern beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到讲台。"
     },
     {
       "index": "352",
@@ -4226,8 +4226,8 @@
       "exampleTranslation": "敲响村庄里的钟，警告所有人有袭击来临。",
       "phrase": "carry bell",
       "phraseTranslation": "携带钟",
-      "sentence": "I carry the bell in my bag.",
-      "sentenceTranslation": "我把钟带在包里。"
+      "sentence": "The chest contains a useful bell.",
+      "sentenceTranslation": "箱子里有一个有用的钟。"
     },
     {
       "index": "353",
@@ -4238,8 +4238,8 @@
       "exampleTranslation": "使用织布机在你的旗帜上添加图案和设计。",
       "phrase": "carry loom",
       "phraseTranslation": "携带织布机",
-      "sentence": "I carry the loom in my bag.",
-      "sentenceTranslation": "我把织布机带在包里。"
+      "sentence": "I find the loom beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到织布机。"
     },
     {
       "index": "354",
@@ -4250,8 +4250,8 @@
       "exampleTranslation": "使用制图台放大缩小或复制你的地图。",
       "phrase": "carry cartography table",
       "phraseTranslation": "携带制图台",
-      "sentence": "I carry the cartography table in my bag.",
-      "sentenceTranslation": "我把制图台带在包里。"
+      "sentence": "I keep the cartography table in my backpack.",
+      "sentenceTranslation": "我把制图台放在背包里。"
     },
     {
       "index": "355",
@@ -4262,8 +4262,8 @@
       "exampleTranslation": "木桶和箱子一样存储物品，但占用的空间更少。",
       "phrase": "carry barrel",
       "phraseTranslation": "携带木桶",
-      "sentence": "I carry the barrel in my bag.",
-      "sentenceTranslation": "我把木桶带在包里。"
+      "sentence": "We trade the barrel with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换木桶。"
     },
     {
       "index": "356",
@@ -4274,8 +4274,8 @@
       "exampleTranslation": "烟熏炉烹饪食物的速度是普通熔炉的两倍。",
       "phrase": "carry smoker",
       "phraseTranslation": "携带烟熏炉",
-      "sentence": "I carry the smoker in my bag.",
-      "sentenceTranslation": "我把烟熏炉带在包里。"
+      "sentence": "We trade the smoker with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换烟熏炉。"
     },
     {
       "index": "357",
@@ -4286,8 +4286,8 @@
       "exampleTranslation": "高炉熔炼矿石的速度是普通熔炉的两倍。",
       "phrase": "carry blast furnace",
       "phraseTranslation": "携带高炉",
-      "sentence": "I carry the blast furnace in my bag.",
-      "sentenceTranslation": "我把高炉带在包里。"
+      "sentence": "I find the blast furnace beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到高炉。"
     },
     {
       "index": "358",
@@ -4322,8 +4322,8 @@
       "exampleTranslation": "把音乐唱片放入唱片机来播放音乐。",
       "phrase": "carry jukebox",
       "phraseTranslation": "携带唱片机",
-      "sentence": "I carry the jukebox in my bag.",
-      "sentenceTranslation": "我把唱片机带在包里。"
+      "sentence": "The chest contains a useful jukebox.",
+      "sentenceTranslation": "箱子里有一个有用的唱片机。"
     },
     {
       "index": "361",
@@ -4334,8 +4334,8 @@
       "exampleTranslation": "敲击音符盒来发出音乐声音。",
       "phrase": "place note block",
       "phraseTranslation": "放置音符盒",
-      "sentence": "I place the note block near my house.",
-      "sentenceTranslation": "我把音符盒放在房子附近。"
+      "sentence": "The note block makes my base look brighter.",
+      "sentenceTranslation": "音符盒让我的基地看起来更明亮。"
     },
     {
       "index": "362",
@@ -4346,8 +4346,8 @@
       "exampleTranslation": "侦测器能检测方块变化并发出红石脉冲。",
       "phrase": "carry observer",
       "phraseTranslation": "携带侦测器",
-      "sentence": "I carry the observer in my bag.",
-      "sentenceTranslation": "我把侦测器带在包里。"
+      "sentence": "We trade the observer with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换侦测器。"
     },
     {
       "index": "363",
@@ -4358,8 +4358,8 @@
       "exampleTranslation": "比较器可以测量箱子的填充程度。",
       "phrase": "carry comparator",
       "phraseTranslation": "携带比较器",
-      "sentence": "I carry the comparator in my bag.",
-      "sentenceTranslation": "我把比较器带在包里。"
+      "sentence": "I find the comparator beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到比较器。"
     },
     {
       "index": "364",
@@ -4370,8 +4370,8 @@
       "exampleTranslation": "中继器让红石信号能传输得更远。",
       "phrase": "carry repeater",
       "phraseTranslation": "携带中继器",
-      "sentence": "I carry the repeater in my bag.",
-      "sentenceTranslation": "我把中继器带在包里。"
+      "sentence": "The repeater helps us prepare for the journey.",
+      "sentenceTranslation": "中继器帮助我们为旅程做准备。"
     },
     {
       "index": "365",
@@ -4382,8 +4382,8 @@
       "exampleTranslation": "扳动拉杆来打开或关闭灯光。",
       "phrase": "carry lever",
       "phraseTranslation": "携带拉杆",
-      "sentence": "I carry the lever in my bag.",
-      "sentenceTranslation": "我把拉杆带在包里。"
+      "sentence": "The lever helps us prepare for the journey.",
+      "sentenceTranslation": "拉杆帮助我们为旅程做准备。"
     },
     {
       "index": "366",
@@ -4394,8 +4394,8 @@
       "exampleTranslation": "踩上压力板打开隐藏的门。",
       "phrase": "carry pressure plate",
       "phraseTranslation": "携带压力板",
-      "sentence": "I carry the pressure plate in my bag.",
-      "sentenceTranslation": "我把压力板带在包里。"
+      "sentence": "We trade the pressure plate with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换压力板。"
     },
     {
       "index": "367",
@@ -4406,8 +4406,8 @@
       "exampleTranslation": "射击靶标的中心可以获得更强的信号。",
       "phrase": "place target block",
       "phraseTranslation": "放置靶标",
-      "sentence": "I place the target block near my house.",
-      "sentenceTranslation": "我把靶标放在房子附近。"
+      "sentence": "I collect the target block before sunset.",
+      "sentenceTranslation": "我在日落前收集靶标。"
     },
     {
       "index": "368",
@@ -4430,8 +4430,8 @@
       "exampleTranslation": "铜块会随着时间慢慢变成绿色。",
       "phrase": "place copper block",
       "phraseTranslation": "放置铜块",
-      "sentence": "I place the copper block near my house.",
-      "sentenceTranslation": "我把铜块放在房子附近。"
+      "sentence": "I place the copper block beside the doorway.",
+      "sentenceTranslation": "我把铜块放在门口旁边。"
     },
     {
       "index": "370",
@@ -4454,8 +4454,8 @@
       "exampleTranslation": "小心地刷可疑的沙子，找出里面隐藏的文物。",
       "phrase": "carry suspicious sand",
       "phraseTranslation": "携带可疑的沙子",
-      "sentence": "I carry the suspicious sand in my bag.",
-      "sentenceTranslation": "我把可疑的沙子带在包里。"
+      "sentence": "We trade the suspicious sand with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换可疑的沙子。"
     },
     {
       "index": "372",
@@ -4466,8 +4466,8 @@
       "exampleTranslation": "可疑的沙砾里面藏着古老的物品——用刷子刷！",
       "phrase": "carry suspicious gravel",
       "phraseTranslation": "携带可疑的沙砾",
-      "sentence": "I carry the suspicious gravel in my bag.",
-      "sentenceTranslation": "我把可疑的沙砾带在包里。"
+      "sentence": "We trade the suspicious gravel with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换可疑的沙砾。"
     },
     {
       "index": "373",
@@ -4478,8 +4478,8 @@
       "exampleTranslation": "如果你走在细雪上，就会陷进去。",
       "phrase": "carry powder snow",
       "phraseTranslation": "携带细雪",
-      "sentence": "I carry the powder snow in my bag.",
-      "sentenceTranslation": "我把细雪带在包里。"
+      "sentence": "I keep the powder snow in my backpack.",
+      "sentenceTranslation": "我把细雪放在背包里。"
     },
     {
       "index": "374",
@@ -4490,8 +4490,8 @@
       "exampleTranslation": "叠放雪块，用南瓜头建造一个雪傀儡。",
       "phrase": "place snow block",
       "phraseTranslation": "放置雪块",
-      "sentence": "I place the snow block near my house.",
-      "sentenceTranslation": "我把雪块放在房子附近。"
+      "sentence": "I place the snow block beside the doorway.",
+      "sentenceTranslation": "我把雪块放在门口旁边。"
     },
     {
       "index": "375",
@@ -4502,8 +4502,8 @@
       "exampleTranslation": "花岗岩是一种粉色斑点岩石，可用于装饰。",
       "phrase": "carry granite",
       "phraseTranslation": "携带花岗岩",
-      "sentence": "I carry the granite in my bag.",
-      "sentenceTranslation": "我把花岗岩带在包里。"
+      "sentence": "The granite helps us prepare for the journey.",
+      "sentenceTranslation": "花岗岩帮助我们为旅程做准备。"
     },
     {
       "index": "376",
@@ -4514,8 +4514,8 @@
       "exampleTranslation": "安山岩是一种灰色岩石，与普通石头搭配得很好。",
       "phrase": "carry andesite",
       "phraseTranslation": "携带安山岩",
-      "sentence": "I carry the andesite in my bag.",
-      "sentenceTranslation": "我把安山岩带在包里。"
+      "sentence": "We trade the andesite with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换安山岩。"
     },
     {
       "index": "377",
@@ -4526,8 +4526,8 @@
       "exampleTranslation": "闪长岩是白色斑点状的——非常适合用于小径和墙壁。",
       "phrase": "carry diorite",
       "phraseTranslation": "携带闪长岩",
-      "sentence": "I carry the diorite in my bag.",
-      "sentenceTranslation": "我把闪长岩带在包里。"
+      "sentence": "We trade the diorite with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换闪长岩。"
     },
     {
       "index": "378",
@@ -4538,8 +4538,8 @@
       "exampleTranslation": "你会从蜂蜜块上缓缓滑落——它们太黏了！",
       "phrase": "place honey block",
       "phraseTranslation": "放置蜂蜜块",
-      "sentence": "I place the honey block near my house.",
-      "sentenceTranslation": "我把蜂蜜块放在房子附近。"
+      "sentence": "The honey block makes my base look brighter.",
+      "sentenceTranslation": "蜂蜜块让我的基地看起来更明亮。"
     },
     {
       "index": "379",
@@ -4550,8 +4550,8 @@
       "exampleTranslation": "挖掘铁矿石可以获得粗铁，然后将其熔炼。",
       "phrase": "carry raw iron",
       "phraseTranslation": "携带粗铁",
-      "sentence": "I carry the raw iron in my bag.",
-      "sentenceTranslation": "我把粗铁带在包里。"
+      "sentence": "I find the raw iron beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到粗铁。"
     },
     {
       "index": "380",
@@ -4562,8 +4562,8 @@
       "exampleTranslation": "挖掘金矿石时会掉落粗金。",
       "phrase": "carry raw gold",
       "phraseTranslation": "携带粗金",
-      "sentence": "I carry the raw gold in my bag.",
-      "sentenceTranslation": "我把粗金带在包里。"
+      "sentence": "I keep the raw gold in my backpack.",
+      "sentenceTranslation": "我把粗金放在背包里。"
     },
     {
       "index": "381",
@@ -4574,8 +4574,8 @@
       "exampleTranslation": "你可以在地下找到大量粗铜。",
       "phrase": "carry raw copper",
       "phraseTranslation": "携带粗铜",
-      "sentence": "I carry the raw copper in my bag.",
-      "sentenceTranslation": "我把粗铜带在包里。"
+      "sentence": "I find the raw copper beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到粗铜。"
     },
     {
       "index": "382",
@@ -4586,8 +4586,8 @@
       "exampleTranslation": "远古残骸非常稀有，藏在下界深处。",
       "phrase": "carry ancient debris",
       "phraseTranslation": "携带远古残骸",
-      "sentence": "I carry the ancient debris in my bag.",
-      "sentenceTranslation": "我把远古残骸带在包里。"
+      "sentence": "The chest contains a useful ancient debris.",
+      "sentenceTranslation": "箱子里有一个有用的远古残骸。"
     },
     {
       "index": "383",
@@ -4598,8 +4598,8 @@
       "exampleTranslation": "在熔炉中熔炼远古残骸可以获得下界合金碎片。",
       "phrase": "explore the netherite scrap",
       "phraseTranslation": "探索下界合金碎片",
-      "sentence": "We explore the netherite scrap at sunrise.",
-      "sentenceTranslation": "我们在日出时探索下界合金碎片。"
+      "sentence": "Our map shows a trail through the netherite scrap.",
+      "sentenceTranslation": "我们的地图显示有一条穿过下界合金碎片的小路。"
     },
     {
       "index": "384",
@@ -4610,8 +4610,8 @@
       "exampleTranslation": "岩浆膏由岩浆怪掉落，可用于酿造药水。",
       "phrase": "carry magma cream",
       "phraseTranslation": "携带岩浆膏",
-      "sentence": "I carry the magma cream in my bag.",
-      "sentenceTranslation": "我把岩浆膏带在包里。"
+      "sentence": "The magma cream helps us prepare for the journey.",
+      "sentenceTranslation": "岩浆膏帮助我们为旅程做准备。"
     },
     {
       "index": "385",
@@ -4622,8 +4622,8 @@
       "exampleTranslation": "发酵蜘蛛眼能使药水变质，产生负面效果。",
       "phrase": "a friendly fermented spider eye",
       "phraseTranslation": "一只友好的发酵蜘蛛眼",
-      "sentence": "A fermented spider eye is near the village.",
-      "sentenceTranslation": "一只发酵蜘蛛眼在村庄附近。"
+      "sentence": "A fermented spider eye is walking near the village.",
+      "sentenceTranslation": "一只发酵蜘蛛眼正在村庄附近散步。"
     },
     {
       "index": "386",
@@ -4634,8 +4634,8 @@
       "exampleTranslation": "甘蔗生长在河边，可用于制造纸张。",
       "phrase": "carry sugar cane",
       "phraseTranslation": "携带甘蔗",
-      "sentence": "I carry the sugar cane in my bag.",
-      "sentenceTranslation": "我把甘蔗带在包里。"
+      "sentence": "I find the sugar cane beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到甘蔗。"
     },
     {
       "index": "387",
@@ -4646,8 +4646,8 @@
       "exampleTranslation": "用甘蔗合成糖，用来制作蛋糕和药水。",
       "phrase": "carry sugar",
       "phraseTranslation": "携带糖",
-      "sentence": "I carry the sugar in my bag.",
-      "sentenceTranslation": "我把糖带在包里。"
+      "sentence": "I keep the sugar in my backpack.",
+      "sentenceTranslation": "我把糖放在背包里。"
     },
     {
       "index": "388",
@@ -4658,8 +4658,8 @@
       "exampleTranslation": "可可豆生长在丛林树上，用来制作棕色曲奇。",
       "phrase": "carry cocoa beans",
       "phraseTranslation": "携带可可豆",
-      "sentence": "I carry the cocoa beans in my bag.",
-      "sentenceTranslation": "我把可可豆带在包里。"
+      "sentence": "I find the cocoa beans beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到可可豆。"
     },
     {
       "index": "389",
@@ -4670,8 +4670,8 @@
       "exampleTranslation": "在农田上种植小麦并收割，用来制作面包。",
       "phrase": "grow wheat",
       "phraseTranslation": "种植小麦",
-      "sentence": "I grow wheat near the farm.",
-      "sentenceTranslation": "我在农场旁种植小麦。"
+      "sentence": "The wheat grows well after the rain.",
+      "sentenceTranslation": "下雨后小麦长得很好。"
     },
     {
       "index": "390",
@@ -4682,8 +4682,8 @@
       "exampleTranslation": "鱿鱼掉落墨囊，可用于制作黑色染料。",
       "phrase": "carry ink sac",
       "phraseTranslation": "携带墨囊",
-      "sentence": "I carry the ink sac in my bag.",
-      "sentenceTranslation": "我把墨囊带在包里。"
+      "sentence": "The chest contains a useful ink sac.",
+      "sentenceTranslation": "箱子里有一个有用的墨囊。"
     },
     {
       "index": "391",
@@ -4694,8 +4694,8 @@
       "exampleTranslation": "使用荧光墨囊可以让告示牌上的文字发光。",
       "phrase": "carry glow ink sac",
       "phraseTranslation": "携带荧光墨囊",
-      "sentence": "I carry the glow ink sac in my bag.",
-      "sentenceTranslation": "我把荧光墨囊带在包里。"
+      "sentence": "I find the glow ink sac beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到荧光墨囊。"
     },
     {
       "index": "392",
@@ -4706,8 +4706,8 @@
       "exampleTranslation": "使用染料来给你的羊毛、玻璃和护甲染色。",
       "phrase": "carry dye",
       "phraseTranslation": "携带染料",
-      "sentence": "I carry the dye in my bag.",
-      "sentenceTranslation": "我把染料带在包里。"
+      "sentence": "The chest contains a useful dye.",
+      "sentenceTranslation": "箱子里有一个有用的染料。"
     },
     {
       "index": "393",
@@ -4718,8 +4718,8 @@
       "exampleTranslation": "两根木棍和三块木板可以合成一把木镐。",
       "phrase": "carry stick",
       "phraseTranslation": "携带木棍",
-      "sentence": "I carry the stick in my bag.",
-      "sentenceTranslation": "我把木棍带在包里。"
+      "sentence": "The stick helps us prepare for the journey.",
+      "sentenceTranslation": "木棍帮助我们为旅程做准备。"
     },
     {
       "index": "394",
@@ -4730,8 +4730,8 @@
       "exampleTranslation": "你需要一个碗来制作蘑菇汤或兔肉汤。",
       "phrase": "use a bowl",
       "phraseTranslation": "使用碗",
-      "sentence": "I use the bowl to collect resources.",
-      "sentenceTranslation": "我用碗收集资源。"
+      "sentence": "I use the bowl to gather materials.",
+      "sentenceTranslation": "我用碗收集材料。"
     },
     {
       "index": "395",
@@ -4742,8 +4742,8 @@
       "exampleTranslation": "挖掘紫水晶来收集紫水晶碎片。",
       "phrase": "carry amethyst shard",
       "phraseTranslation": "携带紫水晶碎片",
-      "sentence": "I carry the amethyst shard in my bag.",
-      "sentenceTranslation": "我把紫水晶碎片带在包里。"
+      "sentence": "I find the amethyst shard beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到紫水晶碎片。"
     },
     {
       "index": "396",
@@ -4754,8 +4754,8 @@
       "exampleTranslation": "在远古城市找到回响碎片来合成恢复指南针。",
       "phrase": "carry echo shard",
       "phraseTranslation": "携带回响碎片",
-      "sentence": "I carry the echo shard in my bag.",
-      "sentenceTranslation": "我把回响碎片带在包里。"
+      "sentence": "The chest contains a useful echo shard.",
+      "sentenceTranslation": "箱子里有一个有用的回响碎片。"
     },
     {
       "index": "397",
@@ -4766,8 +4766,8 @@
       "exampleTranslation": "刷可疑的沙子找到陶片，用于装饰陶罐。",
       "phrase": "carry pottery sherd",
       "phraseTranslation": "携带陶片",
-      "sentence": "I carry the pottery sherd in my bag.",
-      "sentenceTranslation": "我把陶片带在包里。"
+      "sentence": "The chest contains a useful pottery sherd.",
+      "sentenceTranslation": "箱子里有一个有用的陶片。"
     },
     {
       "index": "398",
@@ -4778,8 +4778,8 @@
       "exampleTranslation": "吃紫颂果会将你传送到附近随机位置。",
       "phrase": "carry chorus fruit",
       "phraseTranslation": "携带紫颂果",
-      "sentence": "I carry the chorus fruit in my bag.",
-      "sentenceTranslation": "我把紫颂果带在包里。"
+      "sentence": "I keep the chorus fruit in my backpack.",
+      "sentenceTranslation": "我把紫颂果放在背包里。"
     },
     {
       "index": "399",
@@ -4790,8 +4790,8 @@
       "exampleTranslation": "下界疣是几乎所有药水的基础材料。",
       "phrase": "explore the nether wart",
       "phraseTranslation": "探索下界疣",
-      "sentence": "We explore the nether wart at sunrise.",
-      "sentenceTranslation": "我们在日出时探索下界疣。"
+      "sentence": "We explore the nether wart after breakfast.",
+      "sentenceTranslation": "我们早餐后探索下界疣。"
     },
     {
       "index": "400",
@@ -4802,8 +4802,8 @@
       "exampleTranslation": "恶魂之泪用于酿造再生药水。",
       "phrase": "carry ghast tear",
       "phraseTranslation": "携带恶魂之泪",
-      "sentence": "I carry the ghast tear in my bag.",
-      "sentenceTranslation": "我把恶魂之泪带在包里。"
+      "sentence": "The ghast tear helps us prepare for the journey.",
+      "sentenceTranslation": "恶魂之泪帮助我们为旅程做准备。"
     },
     {
       "index": "401",
@@ -4814,8 +4814,8 @@
       "exampleTranslation": "凋零玫瑰很美，但触碰它会受到伤害。",
       "phrase": "carry wither rose",
       "phraseTranslation": "携带凋零玫瑰",
-      "sentence": "I carry the wither rose in my bag.",
-      "sentenceTranslation": "我把凋零玫瑰带在包里。"
+      "sentence": "The wither rose helps us prepare for the journey.",
+      "sentenceTranslation": "凋零玫瑰帮助我们为旅程做准备。"
     },
     {
       "index": "402",
@@ -4826,8 +4826,8 @@
       "exampleTranslation": "当骷髅用箭射死苦力怕时，它会掉落唱片。",
       "phrase": "carry music disc",
       "phraseTranslation": "携带唱片",
-      "sentence": "I carry the music disc in my bag.",
-      "sentenceTranslation": "我把唱片带在包里。"
+      "sentence": "The music disc helps us prepare for the journey.",
+      "sentenceTranslation": "唱片帮助我们为旅程做准备。"
     },
     {
       "index": "403",
@@ -4850,8 +4850,8 @@
       "exampleTranslation": "使用织布机设计带有你专属图案的旗帜。",
       "phrase": "carry banner",
       "phraseTranslation": "携带旗帜",
-      "sentence": "I carry the banner in my bag.",
-      "sentenceTranslation": "我把旗帜带在包里。"
+      "sentence": "I keep the banner in my backpack.",
+      "sentenceTranslation": "我把旗帜放在背包里。"
     },
     {
       "index": "405",
@@ -4862,8 +4862,8 @@
       "exampleTranslation": "为你的护甲添加盔甲纹饰，让它看起来更酷。",
       "phrase": "carry armor trim",
       "phraseTranslation": "携带盔甲纹饰",
-      "sentence": "I carry the armor trim in my bag.",
-      "sentenceTranslation": "我把盔甲纹饰带在包里。"
+      "sentence": "The armor trim helps us prepare for the journey.",
+      "sentenceTranslation": "盔甲纹饰帮助我们为旅程做准备。"
     },
     {
       "index": "406",
@@ -4874,8 +4874,8 @@
       "exampleTranslation": "你需要一个锻造模板来应用盔甲纹饰。",
       "phrase": "carry smithing template",
       "phraseTranslation": "携带锻造模板",
-      "sentence": "I carry the smithing template in my bag.",
-      "sentenceTranslation": "我把锻造模板带在包里。"
+      "sentence": "The chest contains a useful smithing template.",
+      "sentenceTranslation": "箱子里有一个有用的锻造模板。"
     },
     {
       "index": "407",
@@ -4886,8 +4886,8 @@
       "exampleTranslation": "用刷子刷可疑的沙子来发现埋藏的宝藏。",
       "phrase": "carry brush",
       "phraseTranslation": "携带刷子",
-      "sentence": "I carry the brush in my bag.",
-      "sentenceTranslation": "我把刷子带在包里。"
+      "sentence": "We trade the brush with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换刷子。"
     },
     {
       "index": "408",
@@ -4898,8 +4898,8 @@
       "exampleTranslation": "风弹怪发射风弹，可以推动方块和玩家。",
       "phrase": "carry wind charge",
       "phraseTranslation": "携带风弹",
-      "sentence": "I carry the wind charge in my bag.",
-      "sentenceTranslation": "我把风弹带在包里。"
+      "sentence": "I keep the wind charge in my backpack.",
+      "sentenceTranslation": "我把风弹放在背包里。"
     },
     {
       "index": "409",
@@ -4910,8 +4910,8 @@
       "exampleTranslation": "腐肉能填充饥饿值，但会让你食物中毒。",
       "phrase": "carry rotten flesh",
       "phraseTranslation": "携带腐肉",
-      "sentence": "I carry the rotten flesh in my bag.",
-      "sentenceTranslation": "我把腐肉带在包里。"
+      "sentence": "I find the rotten flesh beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到腐肉。"
     },
     {
       "index": "410",
@@ -4922,8 +4922,8 @@
       "exampleTranslation": "用剪刀剪蜂巢来收集蜂巢蜡。",
       "phrase": "carry honeycomb",
       "phraseTranslation": "携带蜂巢",
-      "sentence": "I carry the honeycomb in my bag.",
-      "sentenceTranslation": "我把蜂巢带在包里。"
+      "sentence": "The chest contains a useful honeycomb.",
+      "sentenceTranslation": "箱子里有一个有用的蜂巢。"
     },
     {
       "index": "411",
@@ -4934,8 +4934,8 @@
       "exampleTranslation": "从高处跳下后用狼牙棒猛击，造成巨大伤害。",
       "phrase": "carry mace",
       "phraseTranslation": "携带狼牙棒",
-      "sentence": "I carry the mace in my bag.",
-      "sentenceTranslation": "我把狼牙棒带在包里。"
+      "sentence": "I keep the mace in my backpack.",
+      "sentenceTranslation": "我把狼牙棒放在背包里。"
     },
     {
       "index": "412",
@@ -4946,8 +4946,8 @@
       "exampleTranslation": "击败试炼密室中所有的生物来获得试炼钥匙。",
       "phrase": "carry trial key",
       "phraseTranslation": "携带试炼钥匙",
-      "sentence": "I carry the trial key in my bag.",
-      "sentenceTranslation": "我把试炼钥匙带在包里。"
+      "sentence": "I keep the trial key in my backpack.",
+      "sentenceTranslation": "我把试炼钥匙放在背包里。"
     },
     {
       "index": "413",
@@ -4958,8 +4958,8 @@
       "exampleTranslation": "凶兆试炼钥匙可以打开特殊的金库，获取稀有战利品。",
       "phrase": "carry ominous trial key",
       "phraseTranslation": "携带凶兆试炼钥匙",
-      "sentence": "I carry the ominous trial key in my bag.",
-      "sentenceTranslation": "我把凶兆试炼钥匙带在包里。"
+      "sentence": "I keep the ominous trial key in my backpack.",
+      "sentenceTranslation": "我把凶兆试炼钥匙放在背包里。"
     },
     {
       "index": "414",
@@ -4970,8 +4970,8 @@
       "exampleTranslation": "把许多不同的小物品放进一个收纳袋来节省空间。",
       "phrase": "carry bundle",
       "phraseTranslation": "携带收纳袋",
-      "sentence": "I carry the bundle in my bag.",
-      "sentenceTranslation": "我把收纳袋带在包里。"
+      "sentence": "The chest contains a useful bundle.",
+      "sentenceTranslation": "箱子里有一个有用的收纳袋。"
     },
     {
       "index": "415",
@@ -4982,8 +4982,8 @@
       "exampleTranslation": "幻影箭让敌人发光，让你能透过墙看到它们。",
       "phrase": "carry spectral arrow",
       "phraseTranslation": "携带幻影箭",
-      "sentence": "I carry the spectral arrow in my bag.",
-      "sentenceTranslation": "我把幻影箭带在包里。"
+      "sentence": "I keep the spectral arrow in my backpack.",
+      "sentenceTranslation": "我把幻影箭放在背包里。"
     },
     {
       "index": "416",
@@ -4994,8 +4994,8 @@
       "exampleTranslation": "药箭命中时会施加药水效果。",
       "phrase": "carry tipped arrow",
       "phraseTranslation": "携带药箭",
-      "sentence": "I carry the tipped arrow in my bag.",
-      "sentenceTranslation": "我把药箭带在包里。"
+      "sentence": "The chest contains a useful tipped arrow.",
+      "sentenceTranslation": "箱子里有一个有用的药箭。"
     },
     {
       "index": "417",
@@ -5006,8 +5006,8 @@
       "exampleTranslation": "骑猪时手持胡萝卜钓竿来引导猪的方向。",
       "phrase": "eat carrot on a stick",
       "phraseTranslation": "吃胡萝卜钓竿",
-      "sentence": "I eat the carrot on a stick after mining.",
-      "sentenceTranslation": "挖矿后我吃胡萝卜钓竿。"
+      "sentence": "The carrot on a stick gives us energy for the climb.",
+      "sentenceTranslation": "胡萝卜钓竿给我们爬山的能量。"
     },
     {
       "index": "418",
@@ -5018,8 +5018,8 @@
       "exampleTranslation": "摧毁末地水晶，阻止末影龙恢复生命值。",
       "phrase": "explore the end crystal",
       "phraseTranslation": "探索末地水晶",
-      "sentence": "We explore the end crystal at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末地水晶。"
+      "sentence": "We explore the end crystal after breakfast.",
+      "sentenceTranslation": "我们早餐后探索末地水晶。"
     },
     {
       "index": "419",
@@ -5030,8 +5030,8 @@
       "exampleTranslation": "向烈焰人投掷雪球可以对它造成伤害。",
       "phrase": "carry snowball",
       "phraseTranslation": "携带雪球",
-      "sentence": "I carry the snowball in my bag.",
-      "sentenceTranslation": "我把雪球带在包里。"
+      "sentence": "I find the snowball beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到雪球。"
     },
     {
       "index": "420",
@@ -5042,8 +5042,8 @@
       "exampleTranslation": "在墙上挂一幅画来装饰你的房子。",
       "phrase": "carry painting",
       "phraseTranslation": "携带画",
-      "sentence": "I carry the painting in my bag.",
-      "sentenceTranslation": "我把画带在包里。"
+      "sentence": "We trade the painting with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换画。"
     },
     {
       "index": "421",
@@ -5054,8 +5054,8 @@
       "exampleTranslation": "把你的剑放在物品展示框里展示在墙上。",
       "phrase": "carry item frame",
       "phraseTranslation": "携带物品展示框",
-      "sentence": "I carry the item frame in my bag.",
-      "sentenceTranslation": "我把物品展示框带在包里。"
+      "sentence": "I find the item frame beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到物品展示框。"
     },
     {
       "index": "422",
@@ -5066,8 +5066,8 @@
       "exampleTranslation": "把你最好的护甲放在盔甲架上展示。",
       "phrase": "carry armor stand",
       "phraseTranslation": "携带盔甲架",
-      "sentence": "I carry the armor stand in my bag.",
-      "sentenceTranslation": "我把盔甲架带在包里。"
+      "sentence": "I keep the armor stand in my backpack.",
+      "sentenceTranslation": "我把盔甲架放在背包里。"
     },
     {
       "index": "423",
@@ -5078,8 +5078,8 @@
       "exampleTranslation": "投掷附魔之瓶，让经验值光球四散飞溅。",
       "phrase": "carry bottle o' enchanting",
       "phraseTranslation": "携带附魔之瓶",
-      "sentence": "I carry the bottle o' enchanting in my bag.",
-      "sentenceTranslation": "我把附魔之瓶带在包里。"
+      "sentence": "We trade the bottle o' enchanting with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换附魔之瓶。"
     },
     {
       "index": "424",
@@ -5090,8 +5090,8 @@
       "exampleTranslation": "在书中写下你的故事并签名，制作一本成书。",
       "phrase": "carry written book",
       "phraseTranslation": "携带成书",
-      "sentence": "I carry the written book in my bag.",
-      "sentenceTranslation": "我把成书带在包里。"
+      "sentence": "I keep the written book in my backpack.",
+      "sentenceTranslation": "我把成书放在背包里。"
     },
     {
       "index": "425",
@@ -5102,8 +5102,8 @@
       "exampleTranslation": "知识之书在使用时会教给你合成配方。",
       "phrase": "carry knowledge book",
       "phraseTranslation": "携带知识之书",
-      "sentence": "I carry the knowledge book in my bag.",
-      "sentenceTranslation": "我把知识之书带在包里。"
+      "sentence": "The knowledge book helps us prepare for the journey.",
+      "sentenceTranslation": "知识之书帮助我们为旅程做准备。"
     },
     {
       "index": "426",
@@ -5114,8 +5114,8 @@
       "exampleTranslation": "在烟熏炉中烹饪生鳕鱼，就能得到美味的熟鳕鱼。",
       "phrase": "carry cooked cod",
       "phraseTranslation": "携带熟鳕鱼",
-      "sentence": "I carry the cooked cod in my bag.",
-      "sentenceTranslation": "我把熟鳕鱼带在包里。"
+      "sentence": "I find the cooked cod beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到熟鳕鱼。"
     },
     {
       "index": "427",
@@ -5126,8 +5126,8 @@
       "exampleTranslation": "熟兔肉是一种健康食物，能很好地填充饥饿值。",
       "phrase": "carry cooked rabbit",
       "phraseTranslation": "携带熟兔肉",
-      "sentence": "I carry the cooked rabbit in my bag.",
-      "sentenceTranslation": "我把熟兔肉带在包里。"
+      "sentence": "I find the cooked rabbit beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到熟兔肉。"
     },
     {
       "index": "428",
@@ -5138,8 +5138,8 @@
       "exampleTranslation": "羊会掉落羊肉——将其煮熟就能得到饱腹的美食。",
       "phrase": "carry cooked mutton",
       "phraseTranslation": "携带熟羊肉",
-      "sentence": "I carry the cooked mutton in my bag.",
-      "sentenceTranslation": "我把熟羊肉带在包里。"
+      "sentence": "The chest contains a useful cooked mutton.",
+      "sentenceTranslation": "箱子里有一个有用的熟羊肉。"
     },
     {
       "index": "429",
@@ -5150,8 +5150,8 @@
       "exampleTranslation": "不要吃河豚——它会让你非常难受！",
       "phrase": "eat pufferfish",
       "phraseTranslation": "吃河豚",
-      "sentence": "I eat the pufferfish after mining.",
-      "sentenceTranslation": "挖矿后我吃河豚。"
+      "sentence": "I share the pufferfish with my teammate.",
+      "sentenceTranslation": "我和队友分享河豚。"
     },
     {
       "index": "430",
@@ -5162,8 +5162,8 @@
       "exampleTranslation": "热带鱼在海洋中有许多美丽的颜色。",
       "phrase": "eat tropical fish",
       "phraseTranslation": "吃热带鱼",
-      "sentence": "I eat the tropical fish after mining.",
-      "sentenceTranslation": "挖矿后我吃热带鱼。"
+      "sentence": "I share the tropical fish with my teammate.",
+      "sentenceTranslation": "我和队友分享热带鱼。"
     },
     {
       "index": "431",
@@ -5174,8 +5174,8 @@
       "exampleTranslation": "兔肉汤是游戏中最能填饱肚子的食物之一。",
       "phrase": "carry rabbit stew",
       "phraseTranslation": "携带兔肉汤",
-      "sentence": "I carry the rabbit stew in my bag.",
-      "sentenceTranslation": "我把兔肉汤带在包里。"
+      "sentence": "I find the rabbit stew beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到兔肉汤。"
     },
     {
       "index": "432",
@@ -5186,8 +5186,8 @@
       "exampleTranslation": "用六个甜菜根和一个碗合成甜菜汤。",
       "phrase": "a friendly beetroot soup",
       "phraseTranslation": "一只友好的甜菜汤",
-      "sentence": "A beetroot soup is near the village.",
-      "sentenceTranslation": "一只甜菜汤在村庄附近。"
+      "sentence": "We watch the beetroot soup from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察甜菜汤。"
     },
     {
       "index": "433",
@@ -5198,8 +5198,8 @@
       "exampleTranslation": "烤马铃薯很容易制作——只需把马铃薯放进熔炉！",
       "phrase": "eat baked potato",
       "phraseTranslation": "吃烤马铃薯",
-      "sentence": "I eat the baked potato after mining.",
-      "sentenceTranslation": "挖矿后我吃烤马铃薯。"
+      "sentence": "We cook the baked potato at the camp.",
+      "sentenceTranslation": "我们在营地烹饪烤马铃薯。"
     },
     {
       "index": "434",
@@ -5210,8 +5210,8 @@
       "exampleTranslation": "把南瓜戴在头上，这样末影人就不会攻击你了。",
       "phrase": "carry pumpkin",
       "phraseTranslation": "携带南瓜",
-      "sentence": "I carry the pumpkin in my bag.",
-      "sentenceTranslation": "我把南瓜带在包里。"
+      "sentence": "I keep the pumpkin in my backpack.",
+      "sentenceTranslation": "我把南瓜放在背包里。"
     },
     {
       "index": "435",
@@ -5222,8 +5222,8 @@
       "exampleTranslation": "鸡下的蛋可以投掷或用于烹饪。",
       "phrase": "carry egg",
       "phraseTranslation": "携带鸡蛋",
-      "sentence": "I carry the egg in my bag.",
-      "sentenceTranslation": "我把鸡蛋带在包里。"
+      "sentence": "The chest contains a useful egg.",
+      "sentenceTranslation": "箱子里有一个有用的鸡蛋。"
     },
     {
       "index": "436",
@@ -5234,8 +5234,8 @@
       "exampleTranslation": "喝桶里的牛奶可以消除所有负面状态效果。",
       "phrase": "carry milk",
       "phraseTranslation": "携带牛奶",
-      "sentence": "I carry the milk in my bag.",
-      "sentenceTranslation": "我把牛奶带在包里。"
+      "sentence": "I find the milk beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到牛奶。"
     },
     {
       "index": "437",
@@ -5246,8 +5246,8 @@
       "exampleTranslation": "打碎西瓜可以获得几片西瓜片来吃。",
       "phrase": "carry melon slice",
       "phraseTranslation": "携带西瓜片",
-      "sentence": "I carry the melon slice in my bag.",
-      "sentenceTranslation": "我把西瓜片带在包里。"
+      "sentence": "The melon slice helps us prepare for the journey.",
+      "sentenceTranslation": "西瓜片帮助我们为旅程做准备。"
     },
     {
       "index": "438",
@@ -5258,8 +5258,8 @@
       "exampleTranslation": "有时你会从农田里收获有毒马铃薯。",
       "phrase": "eat poisonous potato",
       "phraseTranslation": "吃有毒马铃薯",
-      "sentence": "I eat the poisonous potato after mining.",
-      "sentenceTranslation": "挖矿后我吃有毒马铃薯。"
+      "sentence": "We cook the poisonous potato at the camp.",
+      "sentenceTranslation": "我们在营地烹饪有毒马铃薯。"
     },
     {
       "index": "439",
@@ -5270,8 +5270,8 @@
       "exampleTranslation": "山羊生活在山上，还会把你顶下悬崖！",
       "phrase": "carry goat",
       "phraseTranslation": "携带山羊",
-      "sentence": "I carry the goat in my bag.",
-      "sentenceTranslation": "我把山羊带在包里。"
+      "sentence": "The goat helps us prepare for the journey.",
+      "sentenceTranslation": "山羊帮助我们为旅程做准备。"
     },
     {
       "index": "440",
@@ -5282,8 +5282,8 @@
       "exampleTranslation": "羊驼会向敌人吐口水来保护自己。",
       "phrase": "carry llama",
       "phraseTranslation": "携带羊驼",
-      "sentence": "I carry the llama in my bag.",
-      "sentenceTranslation": "我把羊驼带在包里。"
+      "sentence": "I find the llama beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到羊驼。"
     },
     {
       "index": "441",
@@ -5294,8 +5294,8 @@
       "exampleTranslation": "商人羊驼与流浪商人一起旅行。",
       "phrase": "carry trader llama",
       "phraseTranslation": "携带商人羊驼",
-      "sentence": "I carry the trader llama in my bag.",
-      "sentenceTranslation": "我把商人羊驼带在包里。"
+      "sentence": "We trade the trader llama with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换商人羊驼。"
     },
     {
       "index": "442",
@@ -5306,8 +5306,8 @@
       "exampleTranslation": "北极熊单独时很平静，但在幼崽附近时会变得愤怒。",
       "phrase": "carry polar bear",
       "phraseTranslation": "携带北极熊",
-      "sentence": "I carry the polar bear in my bag.",
-      "sentenceTranslation": "我把北极熊带在包里。"
+      "sentence": "The chest contains a useful polar bear.",
+      "sentenceTranslation": "箱子里有一个有用的北极熊。"
     },
     {
       "index": "443",
@@ -5318,8 +5318,8 @@
       "exampleTranslation": "建造一个雪傀儡来向敌人投掷雪球。",
       "phrase": "carry snow golem",
       "phraseTranslation": "携带雪傀儡",
-      "sentence": "I carry the snow golem in my bag.",
-      "sentenceTranslation": "我把雪傀儡带在包里。"
+      "sentence": "We trade the snow golem with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换雪傀儡。"
     },
     {
       "index": "444",
@@ -5330,8 +5330,8 @@
       "exampleTranslation": "不要攻击僵尸猪灵——它们会一起反击你！",
       "phrase": "a friendly zombified piglin",
       "phraseTranslation": "一只友好的僵尸猪灵",
-      "sentence": "A zombified piglin is near the village.",
-      "sentenceTranslation": "一只僵尸猪灵在村庄附近。"
+      "sentence": "We watch the zombified piglin from a safe hill.",
+      "sentenceTranslation": "我们从安全的小山上观察僵尸猪灵。"
     },
     {
       "index": "445",
@@ -5342,8 +5342,8 @@
       "exampleTranslation": "猪灵蛮兵会一直攻击你——给金子也没用！",
       "phrase": "a friendly piglin brute",
       "phraseTranslation": "一只友好的猪灵蛮兵",
-      "sentence": "A piglin brute is near the village.",
-      "sentenceTranslation": "一只猪灵蛮兵在村庄附近。"
+      "sentence": "A piglin brute is walking near the village.",
+      "sentenceTranslation": "一只猪灵蛮兵正在村庄附近散步。"
     },
     {
       "index": "446",
@@ -5354,8 +5354,8 @@
       "exampleTranslation": "疣猪兽进入主世界后会变成僵尸疣猪兽。",
       "phrase": "carry zoglin",
       "phraseTranslation": "携带僵尸疣猪兽",
-      "sentence": "I carry the zoglin in my bag.",
-      "sentenceTranslation": "我把僵尸疣猪兽带在包里。"
+      "sentence": "The chest contains a useful zoglin.",
+      "sentenceTranslation": "箱子里有一个有用的僵尸疣猪兽。"
     },
     {
       "index": "447",
@@ -5366,8 +5366,8 @@
       "exampleTranslation": "骑着炽足兽穿越下界的岩浆湖。",
       "phrase": "carry strider",
       "phraseTranslation": "携带炽足兽",
-      "sentence": "I carry the strider in my bag.",
-      "sentenceTranslation": "我把炽足兽带在包里。"
+      "sentence": "We trade the strider with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换炽足兽。"
     },
     {
       "index": "448",
@@ -5378,8 +5378,8 @@
       "exampleTranslation": "当你投掷末影珍珠时，有时会出现末影螨。",
       "phrase": "explore the endermite",
       "phraseTranslation": "探索末影螨",
-      "sentence": "We explore the endermite at sunrise.",
-      "sentenceTranslation": "我们在日出时探索末影螨。"
+      "sentence": "Our map shows a trail through the endermite.",
+      "sentenceTranslation": "我们的地图显示有一条穿过末影螨的小路。"
     },
     {
       "index": "449",
@@ -5390,8 +5390,8 @@
       "exampleTranslation": "泥沼骷髅是一种发射毒箭的骷髅。",
       "phrase": "carry bogged",
       "phraseTranslation": "携带泥沼骷髅",
-      "sentence": "I carry the bogged in my bag.",
-      "sentenceTranslation": "我把泥沼骷髅带在包里。"
+      "sentence": "The bogged helps us prepare for the journey.",
+      "sentenceTranslation": "泥沼骷髅帮助我们为旅程做准备。"
     },
     {
       "index": "450",
@@ -5402,8 +5402,8 @@
       "exampleTranslation": "嘎吱怪只在你不看它的时候才会移动。",
       "phrase": "carry creaking",
       "phraseTranslation": "携带嘎吱怪",
-      "sentence": "I carry the creaking in my bag.",
-      "sentenceTranslation": "我把嘎吱怪带在包里。"
+      "sentence": "The chest contains a useful creaking.",
+      "sentenceTranslation": "箱子里有一个有用的嘎吱怪。"
     },
     {
       "index": "451",
@@ -5414,8 +5414,8 @@
       "exampleTranslation": "用药水和金苹果治愈一名僵尸村民。",
       "phrase": "a friendly zombie villager",
       "phraseTranslation": "一只友好的僵尸村民",
-      "sentence": "A zombie villager is near the village.",
-      "sentenceTranslation": "一只僵尸村民在村庄附近。"
+      "sentence": "A zombie villager is walking near the village.",
+      "sentenceTranslation": "一只僵尸村民正在村庄附近散步。"
     },
     {
       "index": "452",
@@ -5426,8 +5426,8 @@
       "exampleTranslation": "鳕鱼在寒冷的海洋生物群系中游泳，被击杀时掉落鱼。",
       "phrase": "carry cod",
       "phraseTranslation": "携带鳕鱼",
-      "sentence": "I carry the cod in my bag.",
-      "sentenceTranslation": "我把鳕鱼带在包里。"
+      "sentence": "We trade the cod with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换鳕鱼。"
     },
     {
       "index": "453",
@@ -5438,8 +5438,8 @@
       "exampleTranslation": "鲑鱼在河流中逆流而上跳跃——你可以抓住它们！",
       "phrase": "carry salmon",
       "phraseTranslation": "携带鲑鱼",
-      "sentence": "I carry the salmon in my bag.",
-      "sentenceTranslation": "我把鲑鱼带在包里。"
+      "sentence": "I keep the salmon in my backpack.",
+      "sentenceTranslation": "我把鲑鱼放在背包里。"
     },
     {
       "index": "454",
@@ -5450,8 +5450,8 @@
       "exampleTranslation": "流浪商人会来拜访你，出售稀有植物和物品。",
       "phrase": "a friendly wandering trader (mob)",
       "phraseTranslation": "一只友好的流浪商人（生物）",
-      "sentence": "A wandering trader (mob) is near the village.",
-      "sentenceTranslation": "一只流浪商人（生物）在村庄附近。"
+      "sentence": "The wandering trader (mob) follows us along the path.",
+      "sentenceTranslation": "流浪商人（生物）沿着小路跟着我们。"
     },
     {
       "index": "455",
@@ -5462,8 +5462,8 @@
       "exampleTranslation": "幻术师会制造自己的复制品来迷惑你。",
       "phrase": "carry illusioner",
       "phraseTranslation": "携带幻术师",
-      "sentence": "I carry the illusioner in my bag.",
-      "sentenceTranslation": "我把幻术师带在包里。"
+      "sentence": "I find the illusioner beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到幻术师。"
     },
     {
       "index": "456",
@@ -5474,8 +5474,8 @@
       "exampleTranslation": "积雪的平原生物群系全年都覆盖着白雪。",
       "phrase": "carry snowy plains",
       "phraseTranslation": "携带积雪的平原",
-      "sentence": "I carry the snowy plains in my bag.",
-      "sentenceTranslation": "我把积雪的平原带在包里。"
+      "sentence": "We trade the snowy plains with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换积雪的平原。"
     },
     {
       "index": "457",
@@ -5486,8 +5486,8 @@
       "exampleTranslation": "在冰刺生物群系中，巨大的致密冰柱向上突出。",
       "phrase": "carry ice spikes",
       "phraseTranslation": "携带冰刺",
-      "sentence": "I carry the ice spikes in my bag.",
-      "sentenceTranslation": "我把冰刺带在包里。"
+      "sentence": "I keep the ice spikes in my backpack.",
+      "sentenceTranslation": "我把冰刺放在背包里。"
     },
     {
       "index": "458",
@@ -5498,8 +5498,8 @@
       "exampleTranslation": "繁花森林是游戏中最多彩的生物群系。",
       "phrase": "explore the flower forest",
       "phraseTranslation": "探索繁花森林",
-      "sentence": "We explore the flower forest at sunrise.",
-      "sentenceTranslation": "我们在日出时探索繁花森林。"
+      "sentence": "We explore the flower forest after breakfast.",
+      "sentenceTranslation": "我们早餐后探索繁花森林。"
     },
     {
       "index": "459",
@@ -5510,8 +5510,8 @@
       "exampleTranslation": "白桦林里有高大的带黑色斑点的白色树木。",
       "phrase": "explore the birch forest",
       "phraseTranslation": "探索白桦林",
-      "sentence": "We explore the birch forest at sunrise.",
-      "sentenceTranslation": "我们在日出时探索白桦林。"
+      "sentence": "The birch forest is full of new plants to discover.",
+      "sentenceTranslation": "白桦林里有许多等待发现的新植物。"
     },
     {
       "index": "460",
@@ -5522,8 +5522,8 @@
       "exampleTranslation": "黑森林非常茂密，即使在白天也很昏暗。",
       "phrase": "explore the dark forest",
       "phraseTranslation": "探索黑森林",
-      "sentence": "We explore the dark forest at sunrise.",
-      "sentenceTranslation": "我们在日出时探索黑森林。"
+      "sentence": "We explore the dark forest after breakfast.",
+      "sentenceTranslation": "我们早餐后探索黑森林。"
     },
     {
       "index": "461",
@@ -5534,8 +5534,8 @@
       "exampleTranslation": "巨大的竹子茎秆充满了竹林丛林生物群系。",
       "phrase": "grow bamboo jungle",
       "phraseTranslation": "种植竹林丛林",
-      "sentence": "I grow bamboo jungle near the farm.",
-      "sentenceTranslation": "我在农场旁种植竹林丛林。"
+      "sentence": "The bamboo jungle grows well after the rain.",
+      "sentenceTranslation": "下雨后竹林丛林长得很好。"
     },
     {
       "index": "462",
@@ -5546,8 +5546,8 @@
       "exampleTranslation": "繁茂洞穴是地下生物群系，充满了植物和美西螈。",
       "phrase": "explore the lush caves",
       "phraseTranslation": "探索繁茂洞穴",
-      "sentence": "We explore the lush caves at sunrise.",
-      "sentenceTranslation": "我们在日出时探索繁茂洞穴。"
+      "sentence": "Our map shows a trail through the lush caves.",
+      "sentenceTranslation": "我们的地图显示有一条穿过繁茂洞穴的小路。"
     },
     {
       "index": "463",
@@ -5558,8 +5558,8 @@
       "exampleTranslation": "滴水石锥洞穴的天花板上悬挂着尖锐的石钟乳。",
       "phrase": "explore the dripstone caves",
       "phraseTranslation": "探索滴水石锥洞穴",
-      "sentence": "We explore the dripstone caves at sunrise.",
-      "sentenceTranslation": "我们在日出时探索滴水石锥洞穴。"
+      "sentence": "Our map shows a trail through the dripstone caves.",
+      "sentenceTranslation": "我们的地图显示有一条穿过滴水石锥洞穴的小路。"
     },
     {
       "index": "464",
@@ -5570,8 +5570,8 @@
       "exampleTranslation": "草甸生物群系有鲜花、蜜蜂，附近还有大山。",
       "phrase": "carry meadow",
       "phraseTranslation": "携带草甸",
-      "sentence": "I carry the meadow in my bag.",
-      "sentenceTranslation": "我把草甸带在包里。"
+      "sentence": "We trade the meadow with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换草甸。"
     },
     {
       "index": "465",
@@ -5582,8 +5582,8 @@
       "exampleTranslation": "树林是一种寒冷的积雪生物群系，生长着云杉树。",
       "phrase": "carry grove",
       "phraseTranslation": "携带树林",
-      "sentence": "I carry the grove in my bag.",
-      "sentenceTranslation": "我把树林带在包里。"
+      "sentence": "The grove helps us prepare for the journey.",
+      "sentenceTranslation": "树林帮助我们为旅程做准备。"
     },
     {
       "index": "466",
@@ -5594,8 +5594,8 @@
       "exampleTranslation": "冻结的山峰是覆盖着致密冰的冰冷山顶。",
       "phrase": "carry frozen peaks",
       "phraseTranslation": "携带冻结的山峰",
-      "sentence": "I carry the frozen peaks in my bag.",
-      "sentenceTranslation": "我把冻结的山峰带在包里。"
+      "sentence": "The frozen peaks helps us prepare for the journey.",
+      "sentenceTranslation": "冻结的山峰帮助我们为旅程做准备。"
     },
     {
       "index": "467",
@@ -5606,8 +5606,8 @@
       "exampleTranslation": "温暖的海洋里有色彩缤纷的珊瑚礁和热带鱼。",
       "phrase": "explore the warm ocean",
       "phraseTranslation": "探索温暖的海洋",
-      "sentence": "We explore the warm ocean at sunrise.",
-      "sentenceTranslation": "我们在日出时探索温暖的海洋。"
+      "sentence": "Our map shows a trail through the warm ocean.",
+      "sentenceTranslation": "我们的地图显示有一条穿过温暖的海洋的小路。"
     },
     {
       "index": "468",
@@ -5618,8 +5618,8 @@
       "exampleTranslation": "深海非常黑暗，深处充满了惊喜。",
       "phrase": "explore the deep ocean",
       "phraseTranslation": "探索深海",
-      "sentence": "We explore the deep ocean at sunrise.",
-      "sentenceTranslation": "我们在日出时探索深海。"
+      "sentence": "We explore the deep ocean after breakfast.",
+      "sentenceTranslation": "我们早餐后探索深海。"
     },
     {
       "index": "469",
@@ -5642,8 +5642,8 @@
       "exampleTranslation": "风蚀丘陵有悬浮的石头，看起来非常奇特。",
       "phrase": "carry windswept hills",
       "phraseTranslation": "携带风蚀丘陵",
-      "sentence": "I carry the windswept hills in my bag.",
-      "sentenceTranslation": "我把风蚀丘陵带在包里。"
+      "sentence": "I keep the windswept hills in my backpack.",
+      "sentenceTranslation": "我把风蚀丘陵放在背包里。"
     },
     {
       "index": "471",
@@ -5654,8 +5654,8 @@
       "exampleTranslation": "侵蚀恶地有高大细长的陶瓦塔柱。",
       "phrase": "carry eroded badlands",
       "phraseTranslation": "携带侵蚀恶地",
-      "sentence": "I carry the eroded badlands in my bag.",
-      "sentenceTranslation": "我把侵蚀恶地带在包里。"
+      "sentence": "The chest contains a useful eroded badlands.",
+      "sentenceTranslation": "箱子里有一个有用的侵蚀恶地。"
     },
     {
       "index": "472",
@@ -5666,8 +5666,8 @@
       "exampleTranslation": "苍白花园阴森森的，布满了白色的树木。",
       "phrase": "carry pale garden",
       "phraseTranslation": "携带苍白花园",
-      "sentence": "I carry the pale garden in my bag.",
-      "sentenceTranslation": "我把苍白花园带在包里。"
+      "sentence": "The pale garden helps us prepare for the journey.",
+      "sentenceTranslation": "苍白花园帮助我们为旅程做准备。"
     },
     {
       "index": "473",
@@ -5678,8 +5678,8 @@
       "exampleTranslation": "裸岩山峰是由方解石和石头组成的高耸山峰。",
       "phrase": "carry stony peaks",
       "phraseTranslation": "携带裸岩山峰",
-      "sentence": "I carry the stony peaks in my bag.",
-      "sentenceTranslation": "我把裸岩山峰带在包里。"
+      "sentence": "I keep the stony peaks in my backpack.",
+      "sentenceTranslation": "我把裸岩山峰放在背包里。"
     },
     {
       "index": "474",
@@ -5690,8 +5690,8 @@
       "exampleTranslation": "冻结的海洋表面漂浮着冰块。",
       "phrase": "explore the frozen ocean",
       "phraseTranslation": "探索冻结的海洋",
-      "sentence": "We explore the frozen ocean at sunrise.",
-      "sentenceTranslation": "我们在日出时探索冻结的海洋。"
+      "sentence": "Our map shows a trail through the frozen ocean.",
+      "sentenceTranslation": "我们的地图显示有一条穿过冻结的海洋的小路。"
     },
     {
       "index": "475",
@@ -5702,8 +5702,8 @@
       "exampleTranslation": "横扫之刃让你的剑能同时击中多个生物。",
       "phrase": "carry sweeping edge",
       "phraseTranslation": "携带横扫之刃",
-      "sentence": "I carry the sweeping edge in my bag.",
-      "sentenceTranslation": "我把横扫之刃带在包里。"
+      "sentence": "I find the sweeping edge beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到横扫之刃。"
     },
     {
       "index": "476",
@@ -5726,8 +5726,8 @@
       "exampleTranslation": "爆炸保护帮助你在苦力怕的爆炸中存活。",
       "phrase": "carry blast protection",
       "phraseTranslation": "携带爆炸保护",
-      "sentence": "I carry the blast protection in my bag.",
-      "sentenceTranslation": "我把爆炸保护带在包里。"
+      "sentence": "The blast protection helps us prepare for the journey.",
+      "sentenceTranslation": "爆炸保护帮助我们为旅程做准备。"
     },
     {
       "index": "478",
@@ -5738,8 +5738,8 @@
       "exampleTranslation": "弹射物保护减少箭矢和火球对你造成的伤害。",
       "phrase": "carry projectile protection",
       "phraseTranslation": "携带弹射物保护",
-      "sentence": "I carry the projectile protection in my bag.",
-      "sentenceTranslation": "我把弹射物保护带在包里。"
+      "sentence": "I keep the projectile protection in my backpack.",
+      "sentenceTranslation": "我把弹射物保护放在背包里。"
     },
     {
       "index": "479",
@@ -5750,8 +5750,8 @@
       "exampleTranslation": "诱钓附魔帮助你更快地钓到鱼。",
       "phrase": "carry lure",
       "phraseTranslation": "携带诱钓",
-      "sentence": "I carry the lure in my bag.",
-      "sentenceTranslation": "我把诱钓带在包里。"
+      "sentence": "The chest contains a useful lure.",
+      "sentenceTranslation": "箱子里有一个有用的诱钓。"
     },
     {
       "index": "480",
@@ -5762,8 +5762,8 @@
       "exampleTranslation": "海之眷顾让你钓鱼时能钓到更好的物品。",
       "phrase": "get the luck of the sea effect",
       "phraseTranslation": "获得海之眷顾效果",
-      "sentence": "The luck of the sea effect helps me explore.",
-      "sentenceTranslation": "海之眷顾效果帮助我探索。"
+      "sentence": "The potion gives me the luck of the sea effect.",
+      "sentenceTranslation": "药水让我获得海之眷顾效果。"
     },
     {
       "index": "481",
@@ -5774,8 +5774,8 @@
       "exampleTranslation": "迅捷潜行让你在潜行时也能快速移动。",
       "phrase": "carry swift sneak",
       "phraseTranslation": "携带迅捷潜行",
-      "sentence": "I carry the swift sneak in my bag.",
-      "sentenceTranslation": "我把迅捷潜行带在包里。"
+      "sentence": "I find the swift sneak beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到迅捷潜行。"
     },
     {
       "index": "482",
@@ -5786,8 +5786,8 @@
       "exampleTranslation": "密集让你的狼牙棒在坠落攻击时造成更多伤害。",
       "phrase": "carry density",
       "phraseTranslation": "携带密集",
-      "sentence": "I carry the density in my bag.",
-      "sentenceTranslation": "我把密集带在包里。"
+      "sentence": "I find the density beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到密集。"
     },
     {
       "index": "483",
@@ -5798,8 +5798,8 @@
       "exampleTranslation": "狼牙棒上的破甲附魔有助于击穿敌人的护甲。",
       "phrase": "carry breach",
       "phraseTranslation": "携带破甲",
-      "sentence": "I carry the breach in my bag.",
-      "sentenceTranslation": "我把破甲带在包里。"
+      "sentence": "I find the breach beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到破甲。"
     },
     {
       "index": "484",
@@ -5810,8 +5810,8 @@
       "exampleTranslation": "风爆在你击中敌人后会将你弹射到空中。",
       "phrase": "carry wind burst",
       "phraseTranslation": "携带风爆",
-      "sentence": "I carry the wind burst in my bag.",
-      "sentenceTranslation": "我把风爆带在包里。"
+      "sentence": "I find the wind burst beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到风爆。"
     },
     {
       "index": "485",
@@ -5822,8 +5822,8 @@
       "exampleTranslation": "废墟传送门是一个损坏的下界传送门，你可以修复它。",
       "phrase": "find a ruined portal",
       "phraseTranslation": "找到废墟传送门",
-      "sentence": "We find the ruined portal in the new world.",
-      "sentenceTranslation": "我们在新世界里找到废墟传送门。"
+      "sentence": "We discover the ruined portal beyond the river.",
+      "sentenceTranslation": "我们在河流对岸发现废墟传送门。"
     },
     {
       "index": "486",
@@ -5834,8 +5834,8 @@
       "exampleTranslation": "掠夺者前哨站是掠夺者居住的瞭望塔。",
       "phrase": "carry pillager outpost",
       "phraseTranslation": "携带掠夺者前哨站",
-      "sentence": "I carry the pillager outpost in my bag.",
-      "sentenceTranslation": "我把掠夺者前哨站带在包里。"
+      "sentence": "The pillager outpost helps us prepare for the journey.",
+      "sentenceTranslation": "掠夺者前哨站帮助我们为旅程做准备。"
     },
     {
       "index": "487",
@@ -5846,8 +5846,8 @@
       "exampleTranslation": "冰屋是一座雪地小屋，里面有一个秘密地下室。",
       "phrase": "carry igloo",
       "phraseTranslation": "携带冰屋",
-      "sentence": "I carry the igloo in my bag.",
-      "sentenceTranslation": "我把冰屋带在包里。"
+      "sentence": "We trade the igloo with a friendly villager.",
+      "sentenceTranslation": "我们和友好的村民交换冰屋。"
     },
     {
       "index": "488",
@@ -5858,8 +5858,8 @@
       "exampleTranslation": "探索水下的沉船来找到藏宝图。",
       "phrase": "carry shipwreck",
       "phraseTranslation": "携带沉船",
-      "sentence": "I carry the shipwreck in my bag.",
-      "sentenceTranslation": "我把沉船带在包里。"
+      "sentence": "I find the shipwreck beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到沉船。"
     },
     {
       "index": "489",
@@ -5870,8 +5870,8 @@
       "exampleTranslation": "跟随藏宝图在沙滩上找到埋藏的宝藏。",
       "phrase": "carry buried treasure",
       "phraseTranslation": "携带埋藏的宝藏",
-      "sentence": "I carry the buried treasure in my bag.",
-      "sentenceTranslation": "我把埋藏的宝藏带在包里。"
+      "sentence": "I find the buried treasure beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到埋藏的宝藏。"
     },
     {
       "index": "490",
@@ -5882,8 +5882,8 @@
       "exampleTranslation": "紫水晶晶洞是充满紫色水晶的空心球体。",
       "phrase": "carry amethyst geode",
       "phraseTranslation": "携带紫水晶晶洞",
-      "sentence": "I carry the amethyst geode in my bag.",
-      "sentenceTranslation": "我把紫水晶晶洞带在包里。"
+      "sentence": "The chest contains a useful amethyst geode.",
+      "sentenceTranslation": "箱子里有一个有用的紫水晶晶洞。"
     },
     {
       "index": "491",
@@ -5894,8 +5894,8 @@
       "exampleTranslation": "下界荒地是下界中最常见的生物群系。",
       "phrase": "explore the nether wastes",
       "phraseTranslation": "探索下界荒地",
-      "sentence": "We explore the nether wastes at sunrise.",
-      "sentenceTranslation": "我们在日出时探索下界荒地。"
+      "sentence": "Our map shows a trail through the nether wastes.",
+      "sentenceTranslation": "我们的地图显示有一条穿过下界荒地的小路。"
     },
     {
       "index": "492",
@@ -5906,8 +5906,8 @@
       "exampleTranslation": "灵魂沙谷里到处是骨头和幽灵般的蓝色火焰。",
       "phrase": "carry soul sand valley",
       "phraseTranslation": "携带灵魂沙谷",
-      "sentence": "I carry the soul sand valley in my bag.",
-      "sentenceTranslation": "我把灵魂沙谷带在包里。"
+      "sentence": "I find the soul sand valley beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到灵魂沙谷。"
     },
     {
       "index": "493",
@@ -5918,8 +5918,8 @@
       "exampleTranslation": "绯红森林是下界中一片红色蘑菇森林。",
       "phrase": "explore the crimson forest",
       "phraseTranslation": "探索绯红森林",
-      "sentence": "We explore the crimson forest at sunrise.",
-      "sentenceTranslation": "我们在日出时探索绯红森林。"
+      "sentence": "Our map shows a trail through the crimson forest.",
+      "sentenceTranslation": "我们的地图显示有一条穿过绯红森林的小路。"
     },
     {
       "index": "494",
@@ -5930,8 +5930,8 @@
       "exampleTranslation": "诡异森林是蓝色的，在下界中出奇地安全。",
       "phrase": "explore the warped forest",
       "phraseTranslation": "探索诡异森林",
-      "sentence": "We explore the warped forest at sunrise.",
-      "sentenceTranslation": "我们在日出时探索诡异森林。"
+      "sentence": "We explore the warped forest after breakfast.",
+      "sentenceTranslation": "我们早餐后探索诡异森林。"
     },
     {
       "index": "495",
@@ -5942,8 +5942,8 @@
       "exampleTranslation": "玄武岩三角洲充满了黑色柱子和白色灰烬。",
       "phrase": "carry basalt deltas",
       "phraseTranslation": "携带玄武岩三角洲",
-      "sentence": "I carry the basalt deltas in my bag.",
-      "sentenceTranslation": "我把玄武岩三角洲带在包里。"
+      "sentence": "The chest contains a useful basalt deltas.",
+      "sentenceTranslation": "箱子里有一个有用的玄武岩三角洲。"
     },
     {
       "index": "496",
@@ -5954,8 +5954,8 @@
       "exampleTranslation": "化石是埋藏在沙漠地下的骨头结构。",
       "phrase": "carry fossil",
       "phraseTranslation": "携带化石",
-      "sentence": "I carry the fossil in my bag.",
-      "sentenceTranslation": "我把化石带在包里。"
+      "sentence": "The fossil helps us prepare for the journey.",
+      "sentenceTranslation": "化石帮助我们为旅程做准备。"
     },
     {
       "index": "497",
@@ -5966,8 +5966,8 @@
       "exampleTranslation": "女巫住在沼泽小屋里，酿造强力药水。",
       "phrase": "carry swamp hut",
       "phraseTranslation": "携带沼泽小屋",
-      "sentence": "I carry the swamp hut in my bag.",
-      "sentenceTranslation": "我把沼泽小屋带在包里。"
+      "sentence": "I find the swamp hut beside the campfire.",
+      "sentenceTranslation": "我在篝火旁找到沼泽小屋。"
     },
     {
       "index": "498",
@@ -5978,8 +5978,8 @@
       "exampleTranslation": "一口小小的沙漠水井是荒野中的罕见发现。",
       "phrase": "explore the desert well",
       "phraseTranslation": "探索沙漠水井",
-      "sentence": "We explore the desert well at sunrise.",
-      "sentenceTranslation": "我们在日出时探索沙漠水井。"
+      "sentence": "We explore the desert well after breakfast.",
+      "sentenceTranslation": "我们早餐后探索沙漠水井。"
     },
     {
       "index": "499",
@@ -5990,8 +5990,8 @@
       "exampleTranslation": "试炼刷怪笼会生成一波又一波的生物来与你战斗。",
       "phrase": "carry trial spawner",
       "phraseTranslation": "携带试炼刷怪笼",
-      "sentence": "I carry the trial spawner in my bag.",
-      "sentenceTranslation": "我把试炼刷怪笼带在包里。"
+      "sentence": "The chest contains a useful trial spawner.",
+      "sentenceTranslation": "箱子里有一个有用的试炼刷怪笼。"
     },
     {
       "index": "500",
@@ -6002,8 +6002,8 @@
       "exampleTranslation": "用试炼钥匙打开金库来获取你的奖励。",
       "phrase": "carry vault",
       "phraseTranslation": "携带金库",
-      "sentence": "I carry the vault in my bag.",
-      "sentenceTranslation": "我把金库带在包里。"
+      "sentence": "I keep the vault in my backpack.",
+      "sentenceTranslation": "我把金库放在背包里。"
     }
   ]
 }

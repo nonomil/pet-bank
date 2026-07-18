@@ -81,9 +81,87 @@ function generatedPhrase(word, translation, category) {
   return { phrase: `use ${w}`, phraseTranslation: `使用${zh}` };
 }
 
+function variantIndex(word, category, length) {
+  let value = 0;
+  for (const character of `${category}:${word}`) value = (value * 31 + character.charCodeAt(0)) >>> 0;
+  return value % length;
+}
+
 function generatedSentence(word, translation, category) {
   const w = clean(word).toLowerCase();
   const zh = clean(translation);
+  const variants = {
+    block: [
+      [`I place the ${w} beside the doorway.`, `我把${zh}放在门口旁边。`],
+      [`The ${w} makes my base look brighter.`, `${zh}让我的基地看起来更明亮。`],
+      [`We use the ${w} to mark the path home.`, `我们用${zh}标记回家的路。`],
+      [`I collect the ${w} before sunset.`, `我在日落前收集${zh}。`],
+      [`The builder stores the ${w} in a chest.`, `建筑师把${zh}存进箱子里。`]
+    ],
+    item: [
+      [`I keep the ${w} in my backpack.`, `我把${zh}放在背包里。`],
+      [`The ${w} helps us prepare for the journey.`, `${zh}帮助我们为旅程做准备。`],
+      [`We trade the ${w} with a friendly villager.`, `我们和友好的村民交换${zh}。`],
+      [`I find the ${w} beside the campfire.`, `我在篝火旁找到${zh}。`],
+      [`The chest contains a useful ${w}.`, `箱子里有一个有用的${zh}。`]
+    ],
+    tool: [
+      [`I use the ${w} to gather materials.`, `我用${zh}收集材料。`],
+      [`The ${w} is ready for our next mission.`, `${zh}已经准备好参加下一次任务。`],
+      [`I repair the ${w} at the crafting table.`, `我在工作台修理${zh}。`],
+      [`The ${w} helps me work faster.`, `${zh}帮助我更快地工作。`]
+    ],
+    weapon: [
+      [`I hold the ${w} when night falls.`, `夜幕降临时我拿着${zh}。`],
+      [`The ${w} protects our team on the trail.`, `${zh}保护我们的小队走过小路。`],
+      [`I keep the ${w} ready for a surprise attack.`, `我准备好${zh}应对突然袭击。`]
+    ],
+    food: [
+      [`I share the ${w} with my teammate.`, `我和队友分享${zh}。`],
+      [`The ${w} gives us energy for the climb.`, `${zh}给我们爬山的能量。`],
+      [`We cook the ${w} at the camp.`, `我们在营地烹饪${zh}。`]
+    ],
+    plant: [
+      [`I plant the ${w} beside the farm.`, `我把${zh}种在农场旁边。`],
+      [`The ${w} grows well after the rain.`, `下雨后${zh}长得很好。`],
+      [`A bee flies over the ${w}.`, `一只蜜蜂飞过${zh}。`]
+    ],
+    mob: [
+      [`A ${w} is walking near the village.`, `一只${zh}正在村庄附近散步。`],
+      [`We watch the ${w} from a safe hill.`, `我们从安全的小山上观察${zh}。`],
+      [`The ${w} follows us along the path.`, `${zh}沿着小路跟着我们。`]
+    ],
+    biome: [
+      [`We explore the ${w} after breakfast.`, `我们早餐后探索${zh}。`],
+      [`The ${w} is full of new plants to discover.`, `${zh}里有许多等待发现的新植物。`],
+      [`Our map shows a trail through the ${w}.`, `我们的地图显示有一条穿过${zh}的小路。`]
+    ],
+    structure: [
+      [`We discover the ${w} beyond the river.`, `我们在河流对岸发现${zh}。`],
+      [`A secret treasure may be inside the ${w}.`, `${zh}里面可能藏着秘密宝藏。`],
+      [`We place a flag beside the ${w}.`, `我们在${zh}旁边插上一面旗子。`]
+    ],
+    effect: [
+      [`The ${w} effect helps me cross the cave.`, `${zh}效果帮助我穿过洞穴。`],
+      [`I notice the ${w} effect during the challenge.`, `我在挑战中注意到了${zh}效果。`],
+      [`The potion gives me the ${w} effect.`, `药水让我获得${zh}效果。`]
+    ],
+    advancement: [
+      [`We celebrate after completing ${w}.`, `完成${zh}后我们一起庆祝。`],
+      [`This challenge unlocks the ${w} badge.`, `这个挑战会解锁“${zh}”徽章。`],
+      [`I record ${w} in my adventure book.`, `我把${zh}记录在冒险书里。`]
+    ],
+    color: [
+      [`The banner is ${w} under the sunlight.`, `阳光下的旗帜是${zh}色的。`],
+      [`We choose ${w} wool for the cozy room.`, `我们为舒适的房间选择${zh}色羊毛。`],
+      [`A ${w} path leads to the garden.`, `一条${zh}色的小路通向花园。`]
+    ]
+  };
+  const categoryVariants = variants[category];
+  if (categoryVariants) {
+    const [sentence, sentenceTranslation] = categoryVariants[variantIndex(w, category, categoryVariants.length)];
+    return { sentence, sentenceTranslation };
+  }
   if (category === 'greeting') return { sentence: 'Say hello to your friend.', sentenceTranslation: '向你的朋友打招呼。' };
   if (category === 'people') return { sentence: 'My friend is here.', sentenceTranslation: `我的${zh}在这里。` };
   if (category === 'place') return { sentence: `The ${w} is safe in the new world.`, sentenceTranslation: `新世界里的${zh}很安全。` };
@@ -113,7 +191,7 @@ function enrichCard(card, options = {}) {
   const word = clean(card.word);
   const translation = clean(card.translation || card.chinese);
   const category = categoryOf(card);
-  const regenerate = options.refreshGenerated && (card.sourceProvider === 'mayihaoke' || !card.sourceProvider);
+  const regenerate = Boolean(options.refreshGenerated);
   const phrase = regenerate ? '' : clean(card.phrase);
   const phraseTranslation = regenerate ? '' : clean(card.phraseTranslation);
   const sentence = regenerate ? '' : clean(card.sentence || card.example);

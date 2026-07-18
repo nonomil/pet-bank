@@ -147,6 +147,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-path", default=DEFAULT_MODEL_PATH)
     parser.add_argument("--inference-timesteps", type=int, default=10)
     parser.add_argument("--replace-word", action="store_true", help="also regenerate the existing word clip")
+    parser.add_argument("--refresh-text", action="store_true", help="regenerate phrase/sentence/translation clips even when files already exist")
     return parser.parse_args()
 
 
@@ -233,6 +234,14 @@ async def run(args: argparse.Namespace) -> int:
         }
         write_json(MANIFEST_PATH, manifest)
 
+    def refresh_entry_texts(entry: dict[str, Any], card: dict[str, Any]) -> dict[str, Any]:
+        entry["word"] = str(card.get("word") or "").strip()
+        entry["texts"] = {
+            key: str(card.get("word") or "").strip() if key == "word" else card_text(card, key)
+            for key in ALL_KEYS
+        }
+        return entry
+
     def prepare_context(index: int, card: dict[str, Any]) -> dict[str, Any]:
         card_id = str(card.get("id") or f"card-{index + 1:04d}")
         files = dict((entries_by_id.get(card_id) or {}).get("files") or {})
@@ -263,6 +272,8 @@ async def run(args: argparse.Namespace) -> int:
                     failures.append({"cardId": context["cardId"], "key": key, "error": f"missing text field: {field}"})
                     continue
                 relative, output = target_for(context["index"], context["word"], key, "mp3")
+                if args.refresh_text and key != "word" and output.exists():
+                    output.unlink()
                 tasks.append((context, key, relative, output, generate_edge(text_value, voice, rate, output, semaphore)))
         results = await asyncio.gather(*(task[4] for task in tasks), return_exceptions=True)
         for task, result in zip(tasks, results):
@@ -275,6 +286,7 @@ async def run(args: argparse.Namespace) -> int:
                 context["voices"][key] = next(item[2] for item in FIELDS if item[0] == key)
         for context in contexts:
             entry = make_entry(context["index"], context["card"], context["files"], context["engines"], context["voices"])
+            entry = refresh_entry_texts(entry, context["card"])
             entries_by_id[context["cardId"]] = entry
             if entry_is_complete(entry):
                 context["card"]["narrationAudio"] = context["files"]
@@ -298,6 +310,8 @@ async def run(args: argparse.Namespace) -> int:
                     failures.append({"cardId": context["cardId"], "key": key, "error": f"missing text field: {field}"})
                     continue
                 relative, output = target_for(offset, context["word"], key, "wav")
+                if args.refresh_text and key != "word" and output.exists():
+                    output.unlink()
                 if model is None:
                     print(f"Loading VoxCPM2 from {args.model_path}", flush=True)
                     model = load_voxcpm2(args.model_path)
@@ -309,6 +323,7 @@ async def run(args: argparse.Namespace) -> int:
                 except Exception as error:
                     failures.append({"cardId": context["cardId"], "key": key, "error": str(error)})
             entry = make_entry(offset, card, context["files"], context["engines"], context["voices"])
+            entry = refresh_entry_texts(entry, card)
             entries_by_id[context["cardId"]] = entry
             if entry_is_complete(entry):
                 card["narrationAudio"] = context["files"]
@@ -319,6 +334,17 @@ async def run(args: argparse.Namespace) -> int:
             if (offset - args.start + 1) % 16 == 0 or offset == args.start + len(selected) - 1:
                 await save_progress()
                 write_json(VOCAB_PATH, vocab)
+
+    for index, card in enumerate(cards):
+        card_id = str(card.get("id") or f"card-{index + 1:04d}")
+        existing = entries_by_id.get(card_id)
+        if not existing:
+            continue
+        refreshed = refresh_entry_texts(dict(existing), card)
+        entries_by_id[card_id] = refreshed
+        if entry_is_complete(refreshed):
+            card["narrationAudio"] = refreshed["files"]
+            card["narrationAudioSource"] = refreshed.get("engines", {}).get("sentence", args.engine)
 
     await save_progress()
     write_json(VOCAB_PATH, vocab)

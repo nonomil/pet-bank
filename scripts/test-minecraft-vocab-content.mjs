@@ -63,7 +63,12 @@ for (const [label, cards] of [['main', mainCards], ['reference', referenceCards]
 const generated = enrichCard({ word: 'creeper', translation: '苦力怕', category: 'mob' });
 assert.equal(generated.phrase, 'a friendly creeper');
 assert.equal(generated.phraseTranslation, '一只友好的苦力怕');
-assert.equal(generated.sentence, 'A creeper is near the village.');
-assert.equal(generated.sentenceTranslation, '一只苦力怕在村庄附近。');
+assert.match(generated.sentence, /creeper/);
+assert.match(generated.sentenceTranslation, /苦力怕/);
+const oreExamples = new Set([
+  'diamond ore', 'iron ore', 'redstone ore', 'gold ore', 'coal ore', 'copper ore', 'quartz ore'
+].map(word => enrichCard({ word, translation: '矿石', category: 'block' }).sentence));
+assert.ok(oreExamples.size >= 4, 'ore examples should rotate across multiple Minecraft scenes');
+assert.ok([...oreExamples].some(sentence => /doorway|base|path|sunset|chest/i.test(sentence)));
 
 console.log('minecraft vocab content: PASS');
