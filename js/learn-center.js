@@ -599,6 +599,11 @@
         persistCatalogState();
     }
 
+    function openHubTab(tabId) {
+        setHubTab(tabId);
+        void renderHub('learn-container');
+    }
+
     function renderHubEntryCard(options) {
         return `
             <article class="learn-entry-card ${options?.theme ? `learn-entry-card-${options.theme}` : ''}">
@@ -2879,6 +2884,11 @@
         const poemTodayLesson = readingCompanions?.poem || getPoemLessonForDay(poemsModule, parseLessonDay(readingSheetId) || todayPlan.readingDay || 1);
         const readingDoneToday = !!(readingSheetId && isLessonCompleted(summerRecord.id, 'morning-reading', readingSheetId));
         const literacyDoneToday = !!(literacySheetId && isLessonCompleted(summerRecord.id, 'literacy-45days', literacySheetId));
+        const englishDoneToday = !!(englishContinueId && isLessonCompleted(englishRecord?.id || '', 'mcbook56-story', englishContinueId));
+        const siteDoneToday = !!(siteTodayId && isLessonCompleted(siteRecord?.id || '', 'guided-sites', siteTodayId));
+        const todayDoneCount = [readingDoneToday, literacyDoneToday, englishDoneToday, siteDoneToday].filter(Boolean).length;
+        const todayTaskTotal = 4;
+        const todayPercent = Math.round((todayDoneCount / todayTaskTotal) * 100);
         const rewards = getRewardState();
         const totalPointsEarned = sumRewardPoints(rewards);
         const overallPercent = totalProgress.total ? Math.round((totalProgress.completed / totalProgress.total) * 100) : 0;
@@ -3045,6 +3055,70 @@
             }) : '')
         ].filter(Boolean).join('');
 
+        const demoResourceCards = [
+            readingModule ? {
+                theme: 'reading',
+                image: 'assets/story/pixel-worlds-v1/maps/forest.webp',
+                meta: '新手村 · 中文',
+                title: '幼小衔接',
+                desc: '晨读、识字、拼音一起收集。',
+                progress: literacyProgress.percent,
+                action: `LearnCenter.openLesson('${summerRecord.id}', 'morning-reading', '${readingTodayId || readingContinueId || ''}')`
+            } : null,
+            {
+                theme: 'picturebook',
+                image: 'assets/story/pixel-worlds-v1/maps/detective.webp',
+                meta: '故事世界 · 绘本',
+                title: '绘本书架',
+                desc: '每本绘本都是一张可探索的地图。',
+                progress: overallPercent,
+                action: `LearnCenter.openHubTab('picturebooks')`
+            },
+            literacyModule ? {
+                theme: 'literacy',
+                image: 'assets/story/pixel-worlds-v1/maps/sci-fi.webp',
+                meta: '村庄练习 · 认字',
+                title: '汉字拼音',
+                desc: '认读、拼音和字形练习。',
+                progress: literacyProgress.percent,
+                action: `LearnCenter.openLesson('${summerRecord.id}', 'literacy-45days', '${literacyTodayId || literacyContinueId || ''}')`
+            } : null,
+            {
+                theme: 'english',
+                image: 'assets/story/pixel-worlds-v1/maps/sci-fi.webp',
+                meta: '星光航站 · 英语',
+                title: '英语故事',
+                desc: '先听、再跟读，沿着故事推进。',
+                progress: englishProgress.percent,
+                action: englishStoryModule
+                    ? `LearnCenter.openLesson('${englishRecord.id}', 'mcbook56-story', '${englishContinueId || ''}')`
+                    : `LearnCenter.openMinecraftVocab()`
+            },
+            englishRecord ? {
+                theme: 'words',
+                image: 'assets/story/pixel-worlds-v1/maps/block.webp',
+                meta: '方块词汇 · 远征',
+                title: '单词远征',
+                desc: '听发音、看词义、回到场景复习。',
+                progress: englishProgress.percent,
+                action: 'LearnCenter.openMinecraftVocab()'
+            } : null
+        ].filter(Boolean);
+
+        const demoResourceCardMarkup = demoResourceCards.slice(0, 6).map(card => `
+            <article class="learn-demo-resource-card learn-demo-resource-card-${card.theme}">
+                <button type="button" class="learn-demo-resource-hit" onclick="${card.action}">
+                    <span class="learn-demo-resource-media"><img src="${card.image}" alt="${card.title}"></span>
+                    <span class="learn-demo-resource-body">
+                        <span class="learn-demo-resource-meta">${card.meta}</span>
+                        <strong>${card.title}</strong>
+                        <small>${card.desc}</small>
+                        <span class="learn-demo-resource-progress"><span class="learn-demo-resource-bar"><i style="width:${Math.max(0, Math.min(100, card.progress || 0))}%"></i></span><em>${card.progress || 0}%</em></span>
+                    </span>
+                </button>
+            </article>
+        `).join('');
+
         const packCards = packRecords.map(record => `
             <article class="learn-card">
                 <div class="learn-card-kicker">${record.packMeta.coverEmoji || '📚'} ${record.packMeta.audience || '学习资料包'}</div>
@@ -3185,14 +3259,78 @@
         `;
 
         const activeHubTab = ['today', 'packs', 'sites', 'prints', 'progress', 'picturebooks'].includes(state.activeHubTab) ? state.activeHubTab : 'today';
+        const hubTabMeta = {
+            today: { icon: '☀️', label: '今日学习', title: '今天学什么', desc: '按今天的节奏，直接打开一项学习内容。' },
+            packs: { icon: '📚', label: '资料包', title: '学习资料包', desc: '中文、英语和幼小衔接资料集中在这里。' },
+            sites: { icon: '🌐', label: '学习网站', title: '学习网站入口', desc: '先选入口，再去外部网站学习，回来继续记录。' },
+            prints: { icon: '🖨️', label: '打印讲义', title: '打印与讲义', desc: '需要纸面学习时，从这里打开 A4 讲义。' },
+            progress: { icon: '📈', label: '全部进度', title: '学习总览', desc: '查看每个资料包和模块的完成情况。' },
+            picturebooks: { icon: '📖', label: '绘本阅读', title: '绘本阅读', desc: '读完绘本，再回来继续学习和领取成长奖励。' }
+        };
+        const activeHubMeta = hubTabMeta[activeHubTab];
+        const workspaceProgress = `
+            <div class="learn-workspace-progress-head">
+                <div>
+                    <p class="learn-workspace-eyebrow">个人学习档案</p>
+                    <h2>我的进度</h2>
+                </div>
+                <span class="learn-workspace-profile-dot" aria-hidden="true"></span>
+            </div>
+            <div class="learn-workspace-progress-score">
+                <div>
+                    <span>整体完成率</span>
+                    <strong>${overallPercent}%</strong>
+                </div>
+                <div class="learn-workspace-score-ring" style="--progress:${overallPercent}%"><span>${totalProgress.completed}/${totalProgress.total}</span></div>
+            </div>
+            <div class="learn-workspace-stats">
+                <div><span>资料包</span><strong>${packRecords.length}</strong></div>
+                <div><span>学习分</span><strong>${totalPointsEarned}</strong></div>
+            </div>
+            <section class="learn-workspace-progress-section">
+                <div class="learn-workspace-section-title"><h3>资料包进度</h3><span>实时</span></div>
+                <div class="learn-workspace-progress-list">${progressRows}</div>
+            </section>
+            <section class="learn-workspace-progress-section">
+                <div class="learn-workspace-section-title"><h3>最近完成</h3><span>最近 6 条</span></div>
+                <ul class="learn-progress-recent">${recentProgressList}</ul>
+            </section>
+            <section class="learn-progress-next learn-workspace-next">
+                <h4>下一步</h4>
+                <p>${todayPlan.note}</p>
+                <div class="learn-card-actions">${nextStepItems}</div>
+            </section>
+        `;
         const tabPanelMap = {
             today: `
-                <div class="learn-stage-head learn-stage-head-tight">
-                    <h3 class="learn-section-title">今日推荐入口</h3>
-                    ${buildBadges(['📚 晨读', '✏️ 识字', '🔤 英语', '🌐 网站加餐'])}
+                <div class="learn-demo-focus-grid" aria-label="今日主线">
+                    <article class="learn-demo-mission-card">
+                        <div class="learn-demo-mission-copy">
+                            <span class="learn-demo-mission-kicker">今日主线任务 · ${todayPlan.todayLabel}</span>
+                            <h3>${readingTodayLesson?.title || '先完成一小块，学习基地就会升级'}</h3>
+                            <p>${todayPlan.note} 晨读、识字、绘本和单词远征都放在同一条清晰的成长路线上。</p>
+                            <div class="learn-demo-mission-actions">
+                                ${readingTodayId ? `<button class="learn-btn learn-btn-primary" type="button" onclick="LearnCenter.openLesson('${summerRecord.id}', 'morning-reading', '${readingTodayId}')">继续今日任务</button>` : `<button class="learn-btn learn-btn-primary" type="button" onclick="LearnCenter.openHubTab('packs')">查看资料包</button>`}
+                                <button class="learn-btn learn-btn-secondary" type="button" onclick="LearnCenter.openHubTab('picturebooks')">打开绘本书架</button>
+                            </div>
+                        </div>
+                        <div class="learn-demo-mission-visual"><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="萤火森林学习地图"></div>
+                    </article>
+                    <article class="learn-demo-today-card">
+                        <span class="learn-demo-card-kicker">今日任务完成度</span>
+                        <strong>${todayDoneCount} / ${todayTaskTotal}</strong>
+                        <p>完成一节阅读，再收集一个故事方块。</p>
+                        <div class="learn-demo-meter"><span style="width:${todayPercent}%"></span></div>
+                        <div class="learn-demo-today-foot"><span>已完成</span><em>${todayPercent}%</em></div>
+                    </article>
                 </div>
-                <div class="learn-hub-grid">${quickCards}</div>
-                <div class="learn-soft-note">${todayPlan.note}。学习页现在优先负责“快速找到入口”，今日学习打卡已经移到积分页。</div>
+                <section aria-labelledby="learn-demo-resource-title">
+                    <div class="learn-demo-section-heading">
+                        <div><h3 id="learn-demo-resource-title">当前可进入的区域</h3><p>一行三张卡片，方便快速比较今天要做什么。</p></div>
+                        <button class="learn-demo-mini-link" type="button" onclick="LearnCenter.openHubTab('packs')">查看全部区域</button>
+                    </div>
+                    <div class="learn-demo-resource-grid">${demoResourceCardMarkup}</div>
+                </section>
             `,
             packs: `
                 <div class="learn-stage-head learn-stage-head-tight">
@@ -3275,37 +3413,68 @@
         };
 
         container.innerHTML = `
-            <div class="learn-shell">
-                <section class="learn-hero learn-hub-hero">
-                    <div class="learn-hub-hero-copy">
-                        <p class="learn-hub-eyebrow">学习入口大厅</p>
-                        <h2>先找到要学什么，再一键进去</h2>
-                        <p>学习入口先放到最上面，中文、英语、汉字、学习网站、打印讲义都尽量首屏可见，不再把关键入口藏深。${todayPlan.note}</p>
-                        ${buildBadges([
-                            '📚 中文主线',
-                            '🔤 Minecraft英语',
-                            '📝 汉字练习',
-                            '🌐 网站入口',
-                            '🖨️ 打印讲义'
-                        ])}
-                    </div>
-                    <div class="learn-portal-grid learn-portal-grid-hero">${portalCards}</div>
-                </section>
-                <div class="learn-progress-overview learn-hub-summary-overview">${summaryCards}</div>
-                <section class="learn-stage-panel learn-hub-panel-wrap">
-                    <div class="learn-stage-head learn-hub-tabs-head">
-                        <h3 class="learn-section-title">学习选项卡</h3>
-                        <div class="learn-hub-tabs">
-                            <button type="button" role="tab" aria-selected="${activeHubTab === 'today' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'today' ? 'is-active' : ''}" data-learn-hub-tab="today">快速入口</button>
-                            <button type="button" role="tab" aria-selected="${activeHubTab === 'packs' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'packs' ? 'is-active' : ''}" data-learn-hub-tab="packs">资料包</button>
-                            <button type="button" role="tab" aria-selected="${activeHubTab === 'sites' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'sites' ? 'is-active' : ''}" data-learn-hub-tab="sites">学习网站</button>
-                            <button type="button" role="tab" aria-selected="${activeHubTab === 'prints' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'prints' ? 'is-active' : ''}" data-learn-hub-tab="prints">打印讲义</button>
-                            <button type="button" role="tab" aria-selected="${activeHubTab === 'progress' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'progress' ? 'is-active' : ''}" data-learn-hub-tab="progress">我的进度</button>
-                            <button type="button" role="tab" aria-selected="${activeHubTab === 'picturebooks' ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-hub-tab ${activeHubTab === 'picturebooks' ? 'is-active' : ''}" data-learn-hub-tab="picturebooks">绘本</button>
+            <div class="learn-shell learn-demo-shell">
+                <div class="learn-demo-workspace">
+                    <aside class="learn-demo-sidebar" aria-label="学习栏目">
+                        <div class="learn-demo-sidebar-head">
+                            <span class="learn-demo-brand-mark" aria-hidden="true">✦</span>
+                            <div><strong>学习终端</strong><small>栏目可以继续向下滚动</small></div>
                         </div>
-                    </div>
-                    <div class="learn-hub-panel" id="learn-hub-panel" role="tabpanel">${tabPanelMap[activeHubTab] || tabPanelMap.today}</div>
-                </section>
+                        <nav class="learn-demo-sidebar-nav" role="tablist" aria-label="学习栏目导航">
+                            <p class="learn-demo-sidebar-label">学习世界</p>
+                            ${Object.entries(hubTabMeta).map(([tabId, tab]) => `
+                                <button type="button" role="tab" aria-selected="${activeHubTab === tabId ? 'true' : 'false'}" aria-controls="learn-hub-panel" class="learn-demo-side-link ${activeHubTab === tabId ? 'is-active' : ''}" data-learn-hub-tab="${tabId}">
+                                    <span class="learn-demo-pixel-icon" aria-hidden="true">${tab.icon}</span>
+                                    <span class="learn-demo-side-copy"><strong>${tab.label}</strong><small>${tab.desc}</small></span>
+                                </button>
+                            `).join('')}
+                            <p class="learn-demo-sidebar-label">拓展区域</p>
+                            <button type="button" class="learn-demo-side-link" data-learn-hub-tab="sites"><span class="learn-demo-pixel-icon">⌕</span><span class="learn-demo-side-copy"><strong>资源地图</strong><small>网站与打印</small></span></button>
+                            <button type="button" class="learn-demo-side-link" data-learn-hub-tab="progress"><span class="learn-demo-pixel-icon">↗</span><span class="learn-demo-side-copy"><strong>成长成就</strong><small>经验与进度</small></span></button>
+                        </nav>
+                        <div class="learn-demo-companion">
+                            <span class="learn-demo-companion-art">🐾</span>
+                            <div><small>陪伴状态</small>
+                            <strong>${todayPlan.todayLabel}</strong>
+                            </div>
+                        </div>
+                    </aside>
+                    <main class="learn-demo-main">
+                        <header class="learn-demo-stage-heading">
+                            <div>
+                                <p class="learn-demo-eyebrow">PIXEL LEARNING HUB</p>
+                                <h1>${activeHubMeta.title}</h1>
+                                <p>${activeHubMeta.desc}</p>
+                            </div>
+                            <span class="learn-demo-stage-note"><i aria-hidden="true"></i> 原创主题 · 学习中心</span>
+                        </header>
+                        <div class="learn-hub-panel learn-demo-panel" id="learn-hub-panel" role="tabpanel">${tabPanelMap[activeHubTab] || tabPanelMap.today}</div>
+                    </main>
+                    <aside class="learn-demo-right-rail" aria-label="个人学习进度">
+                        <section class="learn-demo-rail-section">
+                            <div class="learn-demo-rail-heading"><div><h2>我的成长</h2><p>本周的闪光记录</p></div><span>${overallPercent}%</span></div>
+                            <div class="learn-demo-rail-meter"><span style="width:${overallPercent}%"></span></div>
+                            <div class="learn-demo-stat-grid">
+                                <div><small>今日完成</small><strong>${todayDoneCount} / ${todayTaskTotal}</strong></div>
+                                <div><small>资料包</small><strong>${packRecords.length}</strong></div>
+                                <div><small>学习分</small><strong>${totalPointsEarned}</strong></div>
+                                <div><small>已完成</small><strong>${totalProgress.completed}</strong></div>
+                            </div>
+                        </section>
+                        <section class="learn-demo-rail-section">
+                            <div class="learn-demo-rail-heading"><div><h2>下一步</h2><p>右侧只保留最重要的行动。</p></div></div>
+                            <div class="learn-demo-next-list">
+                                ${readingTodayId ? `<button type="button" onclick="LearnCenter.openLesson('${summerRecord.id}', 'morning-reading', '${readingTodayId}')"><b>1</b><span><strong>继续晨读</strong><small>新手村 · 约 8 分钟</small></span></button>` : ''}
+                                <button type="button" onclick="LearnCenter.openHubTab('picturebooks')"><b>2</b><span><strong>读一本绘本</strong><small>完成后解锁成长奖励</small></span></button>
+                                <button type="button" onclick="LearnCenter.openMinecraftVocab()"><b>3</b><span><strong>玩一局学习游戏</strong><small>单词远征或互动挑战</small></span></button>
+                            </div>
+                        </section>
+                        <section class="learn-demo-rail-section">
+                            <div class="learn-demo-rail-heading"><div><h2>最近获得</h2><p>把完成的小事留下来。</p></div></div>
+                            <ul class="learn-demo-recent-list">${recentRewardItems.slice(0, 3).map(item => `<li><strong>${item.title}</strong><small>${formatDateText(new Date(item.claimedAt))} · 获得 +${item.points} 成长分</small></li>`).join('') || '<li><strong>今天还没有记录</strong><small>完成一项学习后，这里会留下足迹。</small></li>'}</ul>
+                        </section>
+                    </aside>
+                </div>
             </div>
         `;
 
@@ -3996,6 +4165,7 @@
         renderPrint,
         openPack,
         openLesson,
+        openHubTab,
         openPlan,
         openPrint,
         openMinecraftVocab,
