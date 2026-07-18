@@ -25,7 +25,7 @@ test('runtime audio variant manifest is valid and all Opus variants are smaller'
         encoding: 'utf8'
     });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
-    assert.match(result.stdout, /checked=10920/);
+    assert.match(result.stdout, /checked=11800/);
     assert.match(result.stdout, /missing=0/);
     assert.match(result.stdout, /larger=0/);
 });
@@ -43,8 +43,8 @@ test('local audio sources remain WAV files beside compressed variants', () => {
         }
     }
     walk(sourceRoot);
-    assert.equal(wavs.length, 80);
-    assert.equal(oggs.length, 80);
+    assert.equal(wavs.length, 960);
+    assert.equal(oggs.length, 960);
     assert.ok(wavs.every((file) => fs.statSync(file).size > 256));
     assert.ok(oggs.every((file) => fs.statSync(file).size > 256));
 

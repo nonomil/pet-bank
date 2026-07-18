@@ -83,11 +83,13 @@
     const assetBaseHref = resolveAssetBaseHref();
 
     const STYLE_BUNDLES = {
+        home: ['css/travel-memory.css'],
         walk: ['css/walk.css'],
-        card: ['css/card-collection.css'],
+        card: ['css/travel-memory.css', 'css/card-collection.css'],
         arena: ['css/arena.css'],
-        playground: ['css/playground.css?v=8', 'css/leaderboard.css?v=2', 'css/hanzi-game.css?v=4'],
-        learn: ['css/learn-center.css?v=6'],
+        playground: ['css/playground.css?v=fullscreen-shell-20260711', 'css/leaderboard.css?v=2', 'css/hanzi-game.css?v=4'],
+        explore: ['css/travel-memory.css', 'css/pixel-story.css?v=20260715-stage-fullscreen1'],
+        learn: ['css/learn-center.css?v=7'],
         minecraftVocab: ['css/minecraft-vocab.css?v=1'],
         picturebooks: ['css/picturebook-portal.css']
     };
@@ -101,7 +103,7 @@
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
         explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1', 'js/pixel-story-engine.js?v=20260715-stage-fullscreen1'],
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js'],
-        learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=6'],
+        learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=7'],
         minecraftVocab: ['js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=1'],
         picturebooks: ['js/picturebook-external-bridge.js'],
         shop: ['js/shop.js'],
@@ -254,6 +256,7 @@
     async function ensureHomeFeature() {
         return once('feature-home', async function () {
             await ensurePetCatalog();
+            await loadSeries(STYLE_BUNDLES.home, loadStyle);
             await loadSeries(SCRIPT_BUNDLES.home, loadScript);
             if (!initFlags.homeInit && window.HomeSystem && typeof window.HomeSystem.init === 'function') {
                 window.HomeSystem.init();
@@ -329,6 +332,7 @@
             await ensurePetCatalog();
             await ensurePetSkills();
             await ensureAudioFeature();
+            await loadSeries(STYLE_BUNDLES.explore, loadStyle);
             await loadSeries(SCRIPT_BUNDLES.explore, loadScript);
             if (window.ExplorationSystem && typeof window.ExplorationSystem.loadScenes === 'function') {
                 await window.ExplorationSystem.loadScenes();

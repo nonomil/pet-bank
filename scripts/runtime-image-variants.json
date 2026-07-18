@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "sets": [
+    {
+      "id": "word-memory-world-tiles",
+      "sourceDir": "prj/单词记忆射击场原型/assets/generated/world-bg-tiles",
+      "include": ["**/*.png"],
+      "runtimePrefix": "assets/generated/world-bg-tiles",
+      "publishRoot": "prj/单词记忆射击场原型/assets/generated/world-bg-tiles",
+      "quality": 82,
+      "lossless": false
+    },
+    {
+      "id": "word-memory-gpt-panorama",
+      "sourceDir": "prj/单词记忆射击场原型/assets/generated/world-bg-single",
+      "include": ["farm-gpt-panorama.png"],
+      "runtimePrefix": "assets/generated/world-bg-single",
+      "publishRoot": "prj/单词记忆射击场原型/assets/generated/world-bg-single",
+      "quality": 82,
+      "lossless": false
+    },
+    {
+      "id": "word-memory-default-world-tiles",
+      "sourceDir": "prj/单词记忆射击场原型/assets/背景图片",
+      "include": ["*.png"],
+      "runtimePrefix": "assets/背景图片",
+      "publishRoot": "prj/单词记忆射击场原型/assets/背景图片",
+      "quality": 82,
+      "lossless": false
+    },
+    {
+      "id": "typing-defense-backgrounds",
+      "sourceDir": "prj/消灭苦力怕打字游戏/assets/generated/typing-defense-assets",
+      "include": ["voxel_map_background_*.jpg"],
+      "runtimePrefix": "assets/generated/typing-defense-assets",
+      "publishRoot": "app/playground/typing-defense-runtime/assets/generated/typing-defense-assets",
+      "quality": 82,
+      "lossless": false
+    },
+    {
+      "id": "typing-defense-transparent-foregrounds",
+      "sourceDir": "prj/消灭苦力怕打字游戏/assets/generated/typing-defense-assets",
+      "include": ["voxel_ground_foreground_*.png"],
+      "runtimePrefix": "assets/generated/typing-defense-assets",
+      "publishRoot": "app/playground/typing-defense-runtime/assets/generated/typing-defense-assets",
+      "quality": 100,
+      "lossless": true
+    },
+    {
+      "id": "pixel-worlds-map-backgrounds",
+      "sourceDir": "assets/story/pixel-worlds-v1/maps",
+      "include": ["*.png"],
+      "runtimePrefix": "assets/story/pixel-worlds-v1/maps",
+      "publishRoot": "assets/story/pixel-worlds-v1/maps",
+      "quality": 82,
+      "lossless": false
+    },
+    {
+      "id": "card-arena-backgrounds",
+      "sourceDir": "assets/arena",
+      "include": ["arena-*.png", "training-bg-*.png"],
+      "runtimePrefix": "assets/arena",
+      "publishRoot": "assets/arena",
+      "quality": 82,
+      "lossless": false
+    },
+    {
+      "id": "minecraft-vocab-visual-pack",
+      "sourceDir": "assets/learn/english-vocab/generated/minecraft-vocab-visual-pack",
+      "include": ["*.png"],
+      "runtimePrefix": "assets/learn/english-vocab/generated/minecraft-vocab-visual-pack",
+      "publishRoot": "assets/learn/english-vocab/generated/minecraft-vocab-visual-pack",
+      "quality": 82,
+      "lossless": false
+    },
+    {
+      "id": "minecraft-vocab-normalized-cards",
+      "sourceDir": "assets/learn/english-vocab/minecraft-cards/normalized",
+      "include": ["*.png"],
+      "runtimePrefix": "assets/learn/english-vocab/minecraft-cards/normalized",
+      "publishRoot": "assets/learn/english-vocab/minecraft-cards/normalized",
+      "quality": 85,
+      "lossless": false,
+      "method": 4,
+      "validation": "aggregate"
+    }
+  ]
+}

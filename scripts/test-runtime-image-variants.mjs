@@ -8,10 +8,11 @@ const repoRoot = process.cwd();
 const configPath = path.join(repoRoot, 'scripts', 'runtime-image-variants.json');
 const converterPath = path.join(repoRoot, 'scripts', 'convert-runtime-image-variants.py');
 
-test('runtime image variant manifest is valid and all WebP variants are smaller', () => {
+test('runtime image variant manifest validates configured compression policies', () => {
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     assert.equal(config.version, 1);
     assert.ok(config.sets.length >= 3);
+    assert.ok(config.sets.some((imageSet) => imageSet.validation === 'aggregate'));
 
     const result = spawnSync('python', [converterPath, '--check'], {
         cwd: repoRoot,
@@ -29,5 +30,6 @@ test('manifest keeps local source images and uses adjacent WebP variants', () =>
         assert.ok(imageSet.sourceDir && imageSet.runtimePrefix && imageSet.publishRoot);
         assert.ok(imageSet.include.length > 0);
         assert.ok(['boolean', 'undefined'].includes(typeof imageSet.lossless));
+        assert.ok(imageSet.validation === undefined || imageSet.validation === 'aggregate');
     }
 });

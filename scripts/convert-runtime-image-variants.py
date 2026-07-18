@@ -64,7 +64,7 @@ def convert(source: Path, variant: Path, image_set: dict, force: bool) -> bool:
         try:
             save_options = {
                 "format": "WEBP",
-                "method": 6,
+                "method": int(image_set.get("method", 4)),
                 "quality": int(image_set.get("quality", 82)),
             }
             if image_set.get("lossless"):
@@ -79,8 +79,12 @@ def validate(config: dict) -> tuple[int, int, int]:
     checked = 0
     missing = 0
     larger = 0
+    aggregate_sizes: dict[str, list[int]] = {}
     for _image_set, source, variant, _runtime_path in iter_entries(config):
         checked += 1
+        set_id = str(_image_set.get("id") or _image_set.get("sourceDir"))
+        if _image_set.get("validation") == "aggregate":
+            aggregate_sizes.setdefault(set_id, [0, 0])
         if not variant.is_file() or not is_webp(variant):
             print(f"MISSING_WEBP {variant.relative_to(ROOT).as_posix()}")
             missing += 1
@@ -89,11 +93,18 @@ def validate(config: dict) -> tuple[int, int, int]:
             if source_image.size != variant_image.size:
                 print(f"DIMENSION_MISMATCH {source.relative_to(ROOT)} {variant.relative_to(ROOT)}")
                 missing += 1
-        if variant.stat().st_size > source.stat().st_size:
+        if _image_set.get("validation") == "aggregate":
+            aggregate_sizes[set_id][0] += source.stat().st_size
+            aggregate_sizes[set_id][1] += variant.stat().st_size
+        elif variant.stat().st_size > source.stat().st_size:
             print(
                 f"LARGER_THAN_SOURCE {variant.relative_to(ROOT).as_posix()} "
                 f"{variant.stat().st_size} > {source.stat().st_size}"
             )
+            larger += 1
+    for set_id, (source_bytes, variant_bytes) in aggregate_sizes.items():
+        if variant_bytes > source_bytes:
+            print(f"AGGREGATE_LARGER_THAN_SOURCE {set_id} {variant_bytes} > {source_bytes}")
             larger += 1
     return checked, missing, larger
 
