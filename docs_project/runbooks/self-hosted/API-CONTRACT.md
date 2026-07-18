@@ -9,6 +9,7 @@
 | `POST` | `/api/v1/auth/login` | 家长登录 |
 | `POST` | `/api/v1/auth/refresh` | refresh token 轮换 |
 | `POST` | `/api/v1/auth/logout` | 撤销 refresh token |
+| `GET` | `/api/v1/auth/check` | Nginx `auth_request` 检查当前 Cookie/Bearer 会话；成功返回 `204` |
 | `GET` | `/api/v1/auth/me` | 返回当前家长公开资料 |
 | `DELETE` | `/api/v1/auth/account` | 使用当前密码删除账号；名下仍有家庭时返回 `409` |
 | `GET/POST` | `/api/v1/households` | 查询或创建当前账号所属家庭 |
@@ -29,6 +30,8 @@
 - 注册成功后创建 `account_access_grants`。登录、refresh 和所有登录后 API 都要求账号为 active 且至少有一条未撤销、未过期授权。
 - `node src/authorization-cli.mjs revoke CODE` 会停用注册码并撤销该注册码已发出的授权；`revoke-account ACCOUNT_ID` 只撤销指定账号授权。
 - 注册码只在发行命令的标准输出中显示一次；Hermes 不得把完整注册码写入聊天记录、仓库、日志或环境文件。
+- 注册、登录和 refresh 响应同时写入短期 `HttpOnly; SameSite=Lax` access Cookie；生产环境强制追加 `Secure`。Bearer token JSON 字段继续保留，兼容现有前端和脚本客户端。
+- `/api/v1/auth/check` 不负责刷新会话：无效或已撤销授权返回 `401/403`，供 Nginx 拒绝受保护静态路由；浏览器 logout 清除 Cookie 并撤销 refresh token。
 
 ## 尚未实现的后续接口
 

@@ -1,6 +1,6 @@
 # PetBank 自托管后端与腾讯云部署
 
-> 对应项目版本：`v0.7.43`
+> 对应项目版本：`v0.7.60`
 
 > 目标：在一台腾讯云 2C4G Linux 服务器上部署网站和轻量后端。网站升级不会覆盖账号、家庭和孩子资料。
 
@@ -30,7 +30,9 @@ Internet
         -> SQLite, /srv/pet-bank/shared/data/petbank.db
 ```
 
-后端源代码在 `prj/petbank-server/`。当前已提供注册码注册/授权、登录、refresh 轮换、家庭成员、家庭邀请码、孩子档案和 revision 快照 API；好友、串门、PK 和动态流仍未实现。
+后端源代码在 `prj/petbank-server/`。当前已提供注册码注册/授权、登录、refresh 轮换、家庭成员、家庭邀请码、孩子档案和 revision 快照 API；浏览器会话通过 HttpOnly Cookie 供 Nginx `auth_request` 检查，好友、串门、PK 和动态流仍未实现。
+
+生产静态访问采用分级门禁：`/parent/`、`/settings` 家庭登录/注册码入口、绘本和游乐场公开；根首页、`/app/` 核心孩子端、`/settings/learning|rules|advanced`、`/parent/works` 和 `/parent/tools` 需要有效授权。配置片段见 `prj/petbank-server/deploy/nginx-api.conf` 与 `nginx-static-gate.conf`，必须包含到同一个 HTTPS `server {}`，不能只部署 API 代理。
 
 注册码不是家庭邀请码。需要新增一个授权时，在 VPS 上执行：
 

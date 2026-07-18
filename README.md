@@ -6,7 +6,7 @@
 [![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-blue.svg)]()
 [![Deploy: GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue.svg)]()
 [![Language: 中文](https://img.shields.io/badge/Language-中文-red.svg)]()
-[![Version: v0.7.42](https://img.shields.io/badge/Version-v0.7.42-brightgreen.svg)](CHANGELOG.md)
+[![Version: v0.7.60](https://img.shields.io/badge/Version-v0.7.60-brightgreen.svg)](CHANGELOG.md)
 
 📖 **项目文档**：[公开说明](docs/README.md) ｜ [工程文档索引](docs_project/README.md) ｜ [技术架构](docs_project/ARCHITECTURE.md) ｜ [自托管后端说明](docs/工程/自托管/README.md) ｜ [更新日志](CHANGELOG.md)
 
@@ -27,7 +27,7 @@
 
 ---
 
-## 🎉 最近更新（v0.7.42）
+## 🎉 最近更新（v0.7.60）
 
 > 完整版本历史见 [CHANGELOG.md](CHANGELOG.md)
 
@@ -56,6 +56,7 @@
 - 🪸 **像素探险海洋世界**：海边巡航改为连续 3×3 珊瑚地图，九块实景图和海洋/森林敌人回退资源均随 Pages 发布，离线或远程词图失败时仍保持主题一致
 - 🧭 **孩子首页主线**：首页先给出“今天先完成一件小事”，再用“今天 / 伙伴 / 冒险”三条小路降低选择压力；完成今日任务后会出现伙伴反馈卡，探索和兑换仍保留在次级入口
 - 🖥️ **自托管账号与快照**：Node.js + SQLite 已提供注册码授权、认证、家庭/邀请码、孩子档案和 revision 快照 API；Profile 已在启动恢复、切换前和页面隐藏/退出时上传或恢复，业务数据固定放在服务器共享目录，不随网站升级覆盖
+- 🔒 **分级静态门禁**：绘本、游乐场和 `/parent/` 登录/注册码入口公开；成长、积分、宠物、探索、学习、家长管理子页和设置页在 VPS 由 Nginx `auth_request` 硬门禁保护，API 同步校验授权
 - 🎴 **游乐场卡片统一**：游戏入口统一改成“上图下文”的单卡，去掉彩色标签带；`数学PK`、`卡牌对战` 换成新的 `VS` 风格图卡
 - 🧼 **沉浸子页再收口**：游戏子页统一隐藏主站顶部状态条和底部 dock，打开后只保留左上 `首页` 与右上 `关闭`
 - 🧭 **像素探险改名落地**：`单词记忆射击场` 在主站正式更名为 `像素探险`，入口、标题、通关提示和最近活动文案同步

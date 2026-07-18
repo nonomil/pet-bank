@@ -1,6 +1,6 @@
 # 宠物积分系统（成长伙伴·萌宠冒险岛）架构总览
 
-> 当前基线：2026-07-12 工作树扫描。本文描述当前代码实际可运行的形态；产品愿景、历史方案和未接入能力必须单独标注。长期维护规则见仓库根目录 `AGENTS.md`。
+> 当前基线：2026-07-19 工作树扫描。本文描述当前代码实际可运行的形态；产品愿景、历史方案和未接入能力必须单独标注。长期维护规则见仓库根目录 `AGENTS.md`。
 
 ## 1. 当前结论
 
@@ -8,7 +8,7 @@
 - 主站默认是本地优先模式：业务状态在浏览器 `localStorage`，静态内容由 `fetch()` 读取 JSON/词库资源。
 - `runtime-loader.js` 根据页面按需串行加载 JS/CSS，主站模块通过 `window` 命名空间和少量 DOM/浏览器事件通信。
 - GitHub Pages 通过 `scripts/assemble-pages-artifact.mjs` 组装白名单制品；`prj/` 不是可整体发布的运行目录。
-- `prj/petbank-server/` 是自托管 Node.js + SQLite 服务，已实现 health、账号认证、家庭/邀请码、孩子档案和 revision 快照 API；前端家长设置页与孩子 Profile 的启动恢复、切换/隐藏页上传已接入运行生命周期。
+- `prj/petbank-server/` 是自托管 Node.js + SQLite 服务，已实现 health、账号认证、家庭/邀请码、孩子档案和 revision 快照 API；认证响应提供 Bearer 兼容令牌和生产 HttpOnly Cookie，`/api/v1/auth/check` 由 Nginx `auth_request` 用于静态硬门禁；前端家长设置页与孩子 Profile 的启动恢复、切换/隐藏页上传已接入运行生命周期。
 - 当前工作树的 Supabase、旧账号、家庭、社交和云同步运行时已经移除；相关文档仅可作为迁移历史或目标合同，不能当作现行功能。
 
 ## 2. Repo Map

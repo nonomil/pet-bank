@@ -2,7 +2,7 @@
 
 > 此文档给执行部署的 AI 或 Hermes 使用。目标是安全部署，不丢失现有用户数据。
 
-> 当前发布：`v0.7.45`。本版本仍是“孩子端本地优先 + SQLite 账号/家庭/孩子/快照层”；不要改成每次玩法操作都请求 API。
+> 当前发布：`v0.7.60`。本版本仍是“孩子端本地优先 + SQLite 账号/家庭/孩子/快照层”；不要改成每次玩法操作都请求 API。
 
 > 本次像素故事发布的专用验收见 [PIXEL-WORLDS-HERMES.md](./PIXEL-WORLDS-HERMES.md)。
 
@@ -50,15 +50,26 @@ curl --fail http://127.0.0.1:3000/api/v1/health
 ln -sfn "$release_dir" /srv/pet-bank/current
 ```
 
-Nginx 静态站点根目录必须使用 `/srv/pet-bank/current/site`，绝不能指向仓库根目录或 `/srv/pet-bank/current`。仓库根目录会绕过发布白名单，导致打字防线等独立游戏运行时没有被装配。将 `prj/petbank-server/deploy/nginx-api.conf` 的 `location /api/` 加入该站点配置并执行：
+Nginx 静态站点根目录必须使用 `/srv/pet-bank/current/site`，绝不能指向仓库根目录或 `/srv/pet-bank/current`。仓库根目录会绕过发布白名单，导致打字防线等独立游戏运行时没有被装配。将下面两个配置片段按顺序加入同一个 HTTPS `server {}`：
+
+```nginx
+include /srv/pet-bank/current/prj/petbank-server/deploy/nginx-api.conf;
+include /srv/pet-bank/current/prj/petbank-server/deploy/nginx-static-gate.conf;
+```
+
+`nginx-api.conf` 提供 `/api/` 反向代理和内部 `/_petbank_static_auth` 校验子请求；`nginx-static-gate.conf` 设置 `/srv/pet-bank/current/site` 根目录。公开路由只有 `/parent/` 登录/注册码入口、`/settings` 家庭登录入口、绘本和游乐场（含已组装独立玩法）；根首页、`/app/` 其他路径、`/settings/learning`、`/settings/rules`、`/settings/advanced`、`/parent/works` 和 `/parent/tools` 未授权时返回 302 到 `/parent/`。静态 JS/CSS/图片/数据资源可公开读取，但不包含账号或孩子运行数据。
 
 ```bash
 nginx -t && systemctl reload nginx
-curl --fail http://127.0.0.1/app/
 curl --fail http://127.0.0.1/parent/
+curl --fail http://127.0.0.1/app/picturebooks/
+curl --fail http://127.0.0.1/app/playground/
 curl --fail http://127.0.0.1/app/playground/typing-defense-runtime/web/index.html
 curl --fail http://127.0.0.1/prj/学习机玩法原型/index.html
 curl --fail http://127.0.0.1/prj/单词记忆射击场原型/index.html
+test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1/)" = 302
+test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1/app/)" = 302
+test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1/settings/learning/)" = 302
 ```
 
 任一检查失败都不要保留新 `current`；先切回上一 release，再处理新 release。
@@ -73,6 +84,8 @@ curl --fail http://127.0.0.1/prj/单词记忆射击场原型/index.html
 
 ```bash
 node --test prj/petbank-server/test/*.test.mjs
+node scripts/test-static-access-gate-contract.mjs
+node scripts/test-static-access-policy-contract.mjs
 node scripts/test-self-hosted-ops.mjs
 node scripts/assemble-pages-artifact.mjs site
 ```
