@@ -44,8 +44,13 @@ docs/*
 !docs/README.md
 !docs/方案/
 docs/方案/*
+!docs/方案/2026-07-18-首页与探索地图解耦分析方案.md
 !docs/方案/项目路线/
 !docs/方案/项目路线/**
+!docs/plans/
+docs/plans/*
+!docs/plans/2026-07-18-home-explore-page-decoupling.md
+!docs/plans/2026-07-18-worktree-release-organization.md
 *.zip
 *.mp4
 
