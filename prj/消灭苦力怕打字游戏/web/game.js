@@ -943,8 +943,9 @@ function pickEnemyTasks() {
 }
 
 function buildActiveEnemies() {
-  return pickEnemyTasks().map((task, index) => {
-    const role = ENEMY_ROLES[index] || "front";
+  const wave = createEnemyWavePlan();
+  return pickEnemyTasks().slice(0, wave.length).map((task, index) => {
+    const role = wave[index];
     return {
       id: `${role}-${roundIndex}-${taskAnswer(task)}-${index}`,
       role,
@@ -952,10 +953,44 @@ function buildActiveEnemies() {
       answer: taskAnswer(task),
       label: taskLabel(task),
       gait: createEnemyGait(role, index),
+      route: createEnemyRoute(role, index),
       state: "walking",
       isTargeted: index === 0
     };
   });
+}
+
+function createEnemyWavePlan() {
+  const maxEnemies = roundIndex <= 2 ? 2 : ENEMY_ROLES.length;
+  const count = 1 + Math.floor(Math.random() * maxEnemies);
+  return ENEMY_ROLES.slice(0, count);
+}
+
+function createEnemyRoute(role, index = 0) {
+  const bases = {
+    front: { startX: 0.5, endX: 0.5, groundStart: 0.55, groundEnd: 0.85, spread: 0.17, scaleStart: 0.46, scaleEnd: 1.56, zIndex: 3 },
+    side: { startX: 0.72, endX: 0.64, groundStart: 0.56, groundEnd: 0.8, spread: 0.13, scaleStart: 0.34, scaleEnd: 1.02, zIndex: 2 },
+    back: { startX: 0.34, endX: 0.42, groundStart: 0.53, groundEnd: 0.73, spread: 0.1, scaleStart: 0.28, scaleEnd: 0.82, zIndex: 1 }
+  };
+  const base = bases[role] || bases.front;
+  const randomOffset = () => (Math.random() - 0.5) * base.spread;
+  const startX = Math.max(0.16, Math.min(0.84, base.startX + randomOffset()));
+  const endX = Math.max(0.16, Math.min(0.84, base.endX + randomOffset()));
+  return {
+    startX,
+    middleX: Math.max(0.14, Math.min(0.86, (startX + endX) / 2 + randomOffset())),
+    endX,
+    curve: (Math.random() < 0.5 ? -1 : 1) * (0.012 + Math.random() * 0.034),
+    phase: Math.random() * Math.PI * 2 + index,
+    pauseAt: 0.26 + Math.random() * 0.28,
+    pauseStrength: 0.04 + Math.random() * 0.05,
+    groundStart: base.groundStart,
+    groundEnd: base.groundEnd,
+    scaleStart: base.scaleStart,
+    scaleEnd: base.scaleEnd,
+    zIndex: base.zIndex,
+    spawnAt: role === "front" ? 0 : 0.1 + Math.random() * 0.28
+  };
 }
 
 function createEnemyGait(role, index = 0) {
@@ -1635,6 +1670,10 @@ function spawnTask() {
   setImage(backupCreeperImage, ASSETS.creeper.generatedFar);
   setImage(sideCreeperImage, ASSETS.creeper.generatedFar);
   setMonsterMode("walking");
+  ENEMY_ROLES.forEach((role) => {
+    const element = getEnemyElement(role);
+    if (element) element.hidden = !getEnemyByRole(role);
+  });
   [monsterWrap, backupMonsterWrap, sideMonsterWrap].forEach((element) => {
     element?.classList.remove("is-hit", "is-danger", "is-exploding", "is-step", "is-targeted");
   });
@@ -1713,37 +1752,46 @@ function tick(now) {
 function placeMonster(now = performance.now()) {
   const eased = progress * progress * (3 - 2 * progress);
   updateStageMotion(eased);
-  applyCreeperTransform(monsterWrap, eased, "front");
-  updateBackupCreeper(now, eased);
-  updateSideCreeper(now, eased);
+  activeEnemies.forEach((enemy, index) => {
+    const enemyEased = getEnemyApproachProgress(enemy, eased);
+    const element = getEnemyElement(enemy.role);
+    if (!element) return;
+    element.hidden = enemyEased <= 0;
+    if (element.hidden) return;
+    applyCreeperTransform(element, enemyEased, enemy.role);
+    const enemyDanger = Math.max(0, (enemyEased - (enemy.role === "front" ? 0.54 : 0.7)) / (enemy.role === "front" ? 0.46 : 0.3));
+    element.style.setProperty("--danger-level", enemyDanger.toFixed(3));
+    element.classList.toggle("is-danger", enemyDanger > 0.42 && !hitLock);
+    updateCreeperVisualAsset(enemyEased, enemy.role);
+    if (!hitLock) updateCreeperWalk(now + index * 420, enemyEased, getEnemyRig(enemy.role), enemy.role);
+  });
   updateThreatVisuals(eased);
   updateCountdownSound(eased);
   targetBubble.style.opacity = progress > 0.82 ? "0.82" : "1";
   approachFill.style.width = `${Math.min(100, progress * 100)}%`;
-  updateCreeperVisualAsset(eased, "front");
-  updateCreeperVisualAsset(Math.max(0, eased * 0.74 - 0.02), "side");
+}
 
-  if (!hitLock) {
-    updateCreeperWalk(now, eased, creeperRig, "front");
-    updateCreeperWalk(now + 420, Math.max(0, eased * 0.74 - 0.02), sideCreeperRig, "side");
-    updateCreeperWalk(now + 640, Math.max(0, eased * 0.62 - 0.04), backupCreeperRig, "back");
-  }
+function getEnemyApproachProgress(enemy, eased) {
+  const spawnAt = enemy?.route?.spawnAt || 0;
+  return Math.max(0, Math.min(1, (eased - spawnAt) / Math.max(0.01, 1 - spawnAt)));
 }
 
 function applyCreeperTransform(element, eased, role) {
   const stageRect = stage.getBoundingClientRect();
-  const laneConfigs = {
-    front: { laneX: 0.5, laneDrift: 0.02, groundStart: 0.55, groundEnd: 0.85, scaleStart: 0.46, scaleEnd: 1.56, zIndex: 3 },
-    side: { laneX: 0.72, laneDrift: -0.08, groundStart: 0.56, groundEnd: 0.8, scaleStart: 0.34, scaleEnd: 1.02, zIndex: 2 },
-    back: { laneX: 0.34, laneDrift: 0.06, groundStart: 0.53, groundEnd: 0.73, scaleStart: 0.28, scaleEnd: 0.82, zIndex: 1 }
-  };
-  const config = laneConfigs[role] || laneConfigs.front;
+  const enemy = getEnemyByRole(role);
+  const config = enemy?.route || createEnemyRoute(role);
   const depth = Math.pow(eased, 1.18);
-  const scale = config.scaleStart + depth * (config.scaleEnd - config.scaleStart);
-  const groundRatio = config.groundStart + depth * (config.groundEnd - config.groundStart);
+  const pauseDistance = Math.abs(depth - config.pauseAt);
+  const pausedDepth = pauseDistance < 0.09
+    ? depth - (0.09 - pauseDistance) * config.pauseStrength
+    : depth;
+  const scale = config.scaleStart + pausedDepth * (config.scaleEnd - config.scaleStart);
+  const groundRatio = config.groundStart + pausedDepth * (config.groundEnd - config.groundStart);
   const groundY = stageRect.top + stageRect.height * groundRatio;
-  const laneX = stageRect.left
-    + stageRect.width * (config.laneX + Math.sin(eased * Math.PI * 1.6) * config.laneDrift * (0.3 + depth * 0.7));
+  const routeX = depth < 0.5
+    ? config.startX + (config.middleX - config.startX) * (depth * 2)
+    : config.middleX + (config.endX - config.middleX) * ((depth - 0.5) * 2);
+  const laneX = stageRect.left + stageRect.width * (routeX + Math.sin(depth * Math.PI * 2 + config.phase) * config.curve * (0.35 + depth * 0.65));
   const bottom = stageRect.bottom - groundY;
   element.style.left = `${Math.round(laneX - stageRect.left)}px`;
   element.style.bottom = `${Math.round(bottom)}px`;
@@ -1752,6 +1800,7 @@ function applyCreeperTransform(element, eased, role) {
   element.dataset.groundY = String(Math.round(groundY));
   element.dataset.role = role;
   element.dataset.scale = scale.toFixed(3);
+  element.dataset.routeX = routeX.toFixed(3);
 }
 
 function updateBackupCreeper(now, frontEased) {
@@ -2978,6 +3027,15 @@ function enemySnapshots() {
       bottom: Math.round(rect.bottom),
       feetBottom: Math.round(rect.bottom),
       groundY: Number(element.dataset.groundY || 0),
+      route: enemy.route ? {
+        startX: Number(enemy.route.startX.toFixed(3)),
+        middleX: Number(enemy.route.middleX.toFixed(3)),
+        endX: Number(enemy.route.endX.toFixed(3)),
+        curve: Number(enemy.route.curve.toFixed(3)),
+        groundStart: enemy.route.groundStart,
+        groundEnd: enemy.route.groundEnd,
+        spawnAt: Number(enemy.route.spawnAt.toFixed(3))
+      } : null,
       isTargeted: enemy.isTargeted,
       generatedImageLoaded: image.naturalWidth > 0
     };
@@ -2999,6 +3057,20 @@ if (TEST_MODE) {
     },
     forceDamage() {
       if (state === "playing" && !hitLock) takeDamage();
+    },
+    previewEnemyWave() {
+      return createEnemyWavePlan().map((role, index) => {
+        const route = createEnemyRoute(role, index);
+        return {
+          role,
+          route: {
+            startX: Number(route.startX.toFixed(3)),
+            endX: Number(route.endX.toFixed(3)),
+            curve: Number(route.curve.toFixed(3)),
+            spawnAt: Number(route.spawnAt.toFixed(3))
+          }
+        };
+      });
     }
   };
 }

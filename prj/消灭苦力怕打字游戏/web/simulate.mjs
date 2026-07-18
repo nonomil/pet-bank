@@ -54,6 +54,15 @@ try {
   assert(initial.vocabWordCount >= 200, `kindergarten word pool should come from the real graded bank, got ${JSON.stringify(initial)}`);
   assert(initial.modeConfiguredSpeedMs >= 20000, `word mode should keep a calm timer, got ${JSON.stringify(initial)}`);
 
+  const openingEnemies = await page.evaluate(() => window.__typingDefenseTest.enemySnapshots());
+  assert(openingEnemies.every(enemy => enemy.route && Number.isFinite(enemy.route.startX) && Number.isFinite(enemy.route.endX)), `each creeper needs an individual pursuit route, got ${JSON.stringify(openingEnemies)}`);
+  assert(openingEnemies.length === 1 || new Set(openingEnemies.map(enemy => `${enemy.route.startX}:${enemy.route.endX}:${enemy.route.curve}`)).size > 1, `creepers should not share one fixed route, got ${JSON.stringify(openingEnemies)}`);
+  assert(openingEnemies.every(enemy => enemy.route.groundStart >= 0.45 && enemy.route.groundEnd <= 0.9), `creeper routes must stay grounded, got ${JSON.stringify(openingEnemies)}`);
+  const spawnWaves = await page.evaluate(() => Array.from({ length: 12 }, () => window.__typingDefenseTest.previewEnemyWave()));
+  assert(new Set(spawnWaves.map(wave => wave.length)).size > 1, `enemy waves should vary between one and three creepers, got ${JSON.stringify(spawnWaves)}`);
+  assert(spawnWaves.every(wave => wave.length >= 1 && wave.length <= 3), `enemy waves should remain child-manageable, got ${JSON.stringify(spawnWaves)}`);
+  assert(spawnWaves.some(wave => wave.some(enemy => enemy.route.spawnAt > 0)), `extra creepers should enter with staggered timing, got ${JSON.stringify(spawnWaves)}`);
+
   const menuState = await page.evaluate(() => ({
     title: document.querySelector("#startSummaryTitle")?.textContent?.trim() || "",
     startAction: document.querySelector("#overlayStart")?.textContent?.trim() || "",
