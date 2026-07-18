@@ -58,10 +58,12 @@ try {
   assert(openingEnemies.every(enemy => enemy.route && Number.isFinite(enemy.route.startX) && Number.isFinite(enemy.route.endX)), `each creeper needs an individual pursuit route, got ${JSON.stringify(openingEnemies)}`);
   assert(openingEnemies.length === 1 || new Set(openingEnemies.map(enemy => `${enemy.route.startX}:${enemy.route.endX}:${enemy.route.curve}`)).size > 1, `creepers should not share one fixed route, got ${JSON.stringify(openingEnemies)}`);
   assert(openingEnemies.every(enemy => enemy.route.groundStart >= 0.45 && enemy.route.groundEnd <= 0.9), `creeper routes must stay grounded, got ${JSON.stringify(openingEnemies)}`);
-  const spawnWaves = await page.evaluate(() => Array.from({ length: 12 }, () => window.__typingDefenseTest.previewEnemyWave()));
+  const spawnWaves = await page.evaluate(() => Array.from({ length: 12 }, (_, index) => window.__typingDefenseTest.previewEnemyWave((index % 6) + 1)));
   assert(new Set(spawnWaves.map(wave => wave.length)).size > 1, `enemy waves should vary between one and three creepers, got ${JSON.stringify(spawnWaves)}`);
   assert(spawnWaves.every(wave => wave.length >= 1 && wave.length <= 3), `enemy waves should remain child-manageable, got ${JSON.stringify(spawnWaves)}`);
   assert(spawnWaves.some(wave => wave.some(enemy => enemy.route.spawnAt > 0)), `extra creepers should enter with staggered timing, got ${JSON.stringify(spawnWaves)}`);
+  const stagedWaves = await page.evaluate(() => [1, 2, 3, 4, 5, 6].map(round => window.__typingDefenseTest.previewEnemyWave(round)));
+  assert(JSON.stringify(stagedWaves.map(wave => wave.length)) === JSON.stringify([1, 1, 2, 2, 2, 3]), `waves should progress from warmup to pursuit to climax, got ${JSON.stringify(stagedWaves)}`);
 
   const menuState = await page.evaluate(() => ({
     title: document.querySelector("#startSummaryTitle")?.textContent?.trim() || "",
@@ -75,6 +77,14 @@ try {
   assert(menuState.selectedTab === "年级单词", `default selected tab should be grade word mode, got ${JSON.stringify(menuState)}`);
 
   await page.locator("#overlayStart").click();
+  const letterBefore = await snapshot(page);
+  await page.keyboard.press(letterBefore.target[0]);
+  await page.waitForFunction((before) => window.__typingDefenseTest.snapshot().lastMiniArrowCount > before, letterBefore.lastMiniArrowCount);
+  const letterAfter = await snapshot(page);
+  const enemiesAfterLetter = await page.evaluate(() => window.__typingDefenseTest.enemySnapshots());
+  assert(letterAfter.lastLetterFeedback === "step", `a correct partial word should give immediate hit feedback, got ${JSON.stringify(letterAfter)}`);
+  assert(enemiesAfterLetter.some(enemy => enemy.recoil > 0), `a correct letter should push its creeper back, got ${JSON.stringify(enemiesAfterLetter)}`);
+  if (!letterAfter.hitLock) await page.keyboard.press('Backspace');
   await solveRound(page);
   await solveRound(page);
   const autoRound3 = await snapshot(page);

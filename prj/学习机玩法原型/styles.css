@@ -5845,7 +5845,7 @@ button {
   place-items: center;
   text-align: center;
   transform: translate(-50%, -50%);
-  transition: top 140ms linear, filter 160ms ease, transform 160ms ease;
+  transition: left 180ms ease, top 140ms linear, filter 160ms ease, transform 160ms ease;
 }
 
 .pinyin-racer .cannon-target {
@@ -6588,7 +6588,8 @@ button {
   .pinyin-racer .cannon-current-word {
     left: 10px;
     top: auto;
-    bottom: 172px;
+    bottom: auto;
+    top: 8px;
     width: 150px;
     min-height: 42px;
     grid-template-columns: 38px minmax(0, 1fr);
@@ -6881,7 +6882,8 @@ button {
   .pinyin-racer .cannon-current-word {
     left: 10px;
     top: auto;
-    bottom: 172px;
+    bottom: auto;
+    top: 8px;
     width: 150px;
     min-height: 42px;
     grid-template-columns: 38px minmax(0, 1fr);

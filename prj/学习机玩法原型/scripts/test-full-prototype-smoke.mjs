@@ -295,8 +295,8 @@ async function runWordCannonRound(page) {
   assert.equal(replayState.progress, `0 / ${replayState.roundGoal}`, 'pinyin racing replay should reset the visible progress');
   assert.equal(
     replayState.feedback,
-    '看汉字，左右移动车子，接住正确拼音卡。',
-    'pinyin racing replay should restore the default lane-catching hint'
+    '看汉字，上下左右移动车子，接住正确拼音卡。',
+    'pinyin racing replay should restore the default free-movement hint'
   );
   await returnHome(page);
 }

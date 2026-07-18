@@ -124,6 +124,7 @@ async function main() {
         stageRect: stage.getBoundingClientRect().toJSON(),
         carRect: document.querySelector('.pinyin-race-car')?.getBoundingClientRect().toJSON() || null,
         feedback: document.getElementById('cannonFeedback').textContent.trim(),
+        difficulty: window.LearningArcadePrototype.wordDifficulty().current,
         correctTarget: window.LearningArcadePrototype.wordCannon().targets.find(target => target.correct) || null,
         optionWords: window.LearningArcadePrototype.wordCannon().targets.map(target => ({
           word: target.word,
@@ -142,7 +143,8 @@ async function main() {
     assert.ok(before.checkpointArch?.width > 0 && before.checkpointArch?.height > 0, 'checkpoint arch PNG should load');
     assert.match(before.checkpointArch.src, /pinyin-racer-assets\/checkpoint_arch\.png/, 'checkpoint arch should use the prepared transparent racer asset');
     assert.ok(before.sign?.width > 0 && before.sign?.height > 0, 'road sign PNG should load');
-    assert.equal(before.targetCount, 3, 'pinyin racing should show one option card in each lane');
+    const expectedTargetCount = { basic: 4, intermediate: 5, full: 6 }[before.difficulty] || 4;
+    assert.ok(before.targetCount >= expectedTargetCount, `pinyin racing should show at least ${expectedTargetCount} moving options at the selected difficulty`);
     assert.ok(before.targetLabels.every(label => label && label !== before.correctTarget?.word), 'pinyin facility labels should remain instructional without revealing the answer text');
     assert.ok(before.targetRect?.width <= 150, 'pinyin option cards should stay child-readable without covering the road');
     assert.ok(before.targetRect?.height <= 86, 'pinyin option cards should remain compact');
@@ -162,15 +164,38 @@ async function main() {
     );
 
     await page.screenshot({ path: path.join(screenshotDir, 'pinyin-racer-desktop.png'), fullPage: true });
-    const wrongLane = (before.correctTarget.laneIndex + 1) % 3;
-    const laneClickX = [0.28, 0.5, 0.72][wrongLane];
-    await page.mouse.click(before.stageRect.left + before.stageRect.width * laneClickX, before.stageRect.top + before.stageRect.height * 0.72);
-    await page.waitForTimeout(80);
-    const afterClick = await page.evaluate(() => ({
-      selectedLane: window.LearningArcadePrototype.wordCannon().playerLane,
-      feedback: document.getElementById('cannonFeedback').textContent.trim()
-    }));
-    assert.equal(afterClick.selectedLane, wrongLane, 'clicking the stage should move the racer toward the touched road position');
+    const afterClick = await page.evaluate(() => {
+      const stage = document.getElementById('cannonStage');
+      const rect = stage.getBoundingClientRect();
+      const before = window.LearningArcadePrototype.wordCannon().player;
+      stage.dispatchEvent(new MouseEvent('click', {
+        bubbles: true,
+        clientX: rect.left + rect.width * 0.27,
+        clientY: rect.top + rect.height * 0.68,
+        pointerId: 1,
+        pointerType: 'mouse'
+      }));
+      const after = window.LearningArcadePrototype.wordCannon().player;
+      return {
+        before,
+        after,
+        feedback: document.getElementById('cannonFeedback').textContent.trim()
+      };
+    });
+    assert.ok(afterClick.after.x < afterClick.before.x, 'clicking the stage should move the racer to the touched horizontal position');
+    assert.ok(afterClick.after.y < afterClick.before.y, 'clicking the stage should move the racer to the touched vertical position');
+
+    const verticalMovement = await page.evaluate(() => ({ before: window.LearningArcadePrototype.wordCannon().player }));
+    await page.keyboard.press('ArrowUp');
+    verticalMovement.afterUp = await page.evaluate(() => window.LearningArcadePrototype.wordCannon().player);
+    await page.keyboard.press('ArrowDown');
+    verticalMovement.afterDown = await page.evaluate(() => window.LearningArcadePrototype.wordCannon().player);
+    assert.ok(verticalMovement.afterUp.y < verticalMovement.before.y, 'up control should move the racer forward on the track');
+    assert.ok(verticalMovement.afterDown.y > verticalMovement.afterUp.y, 'down control should move the racer backward on the track');
+    const horizontalBefore = await page.evaluate(() => window.LearningArcadePrototype.wordCannon().player);
+    await page.keyboard.press('ArrowRight');
+    const horizontalAfter = await page.evaluate(() => window.LearningArcadePrototype.wordCannon().player);
+    assert.ok(horizontalAfter.x > horizontalBefore.x, 'right control should move the racer across the track');
 
     await page.evaluate(() => window.LearningArcadePrototype.tickWordCannonFrame(220, 40));
     await page.waitForTimeout(80);
@@ -193,6 +218,7 @@ async function main() {
 
     const segmentTrace = [];
     for (let wave = 0; wave < 5; wave += 1) {
+      console.log(`racer wave ${wave + 1}: read`);
       const waveState = await page.evaluate(() => {
         const stage = document.getElementById('cannonStage');
         const cannon = window.LearningArcadePrototype.wordCannon();
@@ -203,24 +229,41 @@ async function main() {
           route: stage?.dataset.route || '',
           taskType: stage?.dataset.taskType || '',
           correctLane: correct?.laneIndex ?? -1,
+          correctX: correct?.x ?? -1,
           laneXs: cannon.targets.map(target => target.x),
           completed: cannon.completedWords.length
         };
       });
       assert.ok(waveState.correctLane >= 0, `wave ${wave + 1} should expose a correct lane`);
       segmentTrace.push(waveState);
-      await page.screenshot({ path: path.join(screenshotDir, `pinyin-racer-segment-${wave + 1}.png`), fullPage: true });
       const stageRect = await page.locator('#cannonStage').boundingBox();
-      const laneClickX = waveState.laneXs[waveState.correctLane] / 100;
+      const laneClickX = waveState.correctX / 100;
       await page.mouse.click(stageRect.x + stageRect.width * laneClickX, stageRect.y + stageRect.height * 0.72);
+      const aimedPlayer = await page.evaluate(() => window.LearningArcadePrototype.wordCannon().player);
+      assert.ok(Math.abs(aimedPlayer.x - waveState.correctX) < 1, `wave ${wave + 1} should move the racer to the selected target x: ${JSON.stringify({ waveState, aimedPlayer })}`);
       await page.evaluate(() => window.LearningArcadePrototype.tickWordCannonFrame(220, 40));
       await page.waitForTimeout(60);
       const progressed = await page.evaluate(() => window.LearningArcadePrototype.wordCannon());
-      assert.equal(progressed.completedWords.length, waveState.completed + 1, `wave ${wave + 1} should advance after the correct answer`);
+      assert.equal(progressed.completedWords.length, waveState.completed + 1, `wave ${wave + 1} should advance after the correct answer: ${JSON.stringify({ waveState, progressed: { player: progressed.player, targets: progressed.targets } })}`);
     }
     assert.equal(new Set(segmentTrace.map(item => item.mapId)).size, 1, 'selected racing map should remain stable through a learning round');
     assert.ok(new Set(segmentTrace.map(item => item.segment)).size >= 1, 'a selected map should still provide a playable route');
     assert.ok(segmentTrace.every(item => item.route), 'each segment should expose a correct or recovery route');
+
+    for (const [difficulty, expectedCount] of [['intermediate', 5], ['full', 6]]) {
+      await page.evaluate(level => {
+        document.querySelector(`[data-word-difficulty="${level}"]`)?.click();
+      }, difficulty);
+      await page.waitForSelector('#wordCannon:not([hidden]) .cannon-target');
+      const difficultyState = await page.evaluate(() => ({
+        difficulty: window.LearningArcadePrototype.wordDifficulty().current,
+        count: document.querySelectorAll('.cannon-target').length,
+        targets: [...document.querySelectorAll('.cannon-target')].map(node => node.getBoundingClientRect().toJSON())
+      }));
+      assert.equal(difficultyState.difficulty, difficulty, `${difficulty} difficulty should be active`);
+      assert.ok(difficultyState.count >= expectedCount, `${difficulty} difficulty should show at least ${expectedCount} moving options`);
+      assert.ok(difficultyState.targets.every((rect, index, all) => all.every((other, otherIndex) => index === otherIndex || !overlaps(rect, other))), `${difficulty} pinyin cards should stay separated`);
+    }
 
     const mobile = await browser.newPage({
       viewport: { width: 390, height: 844 },
@@ -231,6 +274,7 @@ async function main() {
     try {
       await mobile.goto(`http://127.0.0.1:${port}/${prototypePath.replaceAll('\\\\', '/')}`, { waitUntil: 'networkidle' });
       await mobile.dispatchEvent('[data-game="word-cannon"]', 'click');
+      await mobile.evaluate(() => document.querySelector('#cannonDifficultySwitch [data-word-difficulty="full"]')?.click());
       await mobile.waitForSelector('#wordCannon:not([hidden]) .pinyin-race-car-img');
       const mobileState = await mobile.evaluate(() => {
         const rect = selector => document.querySelector(selector)?.getBoundingClientRect().toJSON() || null;
@@ -244,12 +288,13 @@ async function main() {
       });
       const mobileOverlaps = (a, b) => !!a && !!b && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
       assert.ok(mobileState.stage?.width >= 350, 'mobile racing stage should use almost the full screen width');
+      assert.ok(mobileState.targets.length >= 6, 'mobile full difficulty should keep the expanded target field');
       assert.equal(mobileState.controls.length, 4, 'mobile racing stage should keep four-direction touch controls');
       assert.ok(mobileState.controls.every(rect => rect.width >= 56 && rect.height >= 50), 'mobile touch controls should remain large enough for a child');
       assert.ok(mobileState.controls.every(rect => rect.top >= mobileState.stage.top && rect.bottom <= mobileState.stage.bottom), 'mobile touch controls should remain inside the visible stage');
       assert.ok(mobileState.targets.every(rect => !mobileOverlaps(mobileState.task, rect)), 'mobile task card should not cover pinyin options');
       assert.ok(mobileState.controls.every(rect => !mobileOverlaps(mobileState.task, rect)), 'mobile task card should not cover touch controls');
-      assert.ok(mobileState.targets.every((rect, index, all) => all.every((other, otherIndex) => index === otherIndex || !mobileOverlaps(rect, other))), 'mobile pinyin cards should stay separated across the three lanes');
+      assert.ok(mobileState.targets.every((rect, index, all) => all.every((other, otherIndex) => index === otherIndex || !mobileOverlaps(rect, other))), 'mobile pinyin cards should stay separated across the moving field');
       await mobile.screenshot({ path: path.join(screenshotDir, 'pinyin-racer-mobile.png'), fullPage: true });
     } finally {
       await mobile.close();

@@ -130,19 +130,16 @@ async function main() {
       const target = await page.evaluate(() => {
         const snap = window.LearningArcadePrototype.wordCannon();
         return {
-          playerLane: snap.playerLane,
           correct: snap.targets.find(item => item.correct) || null
         };
       });
       assert.ok(target.correct?.word, `word cannon should expose a correct pinyin card for replay reset ${cleared + 1}`);
-      while (target.playerLane > target.correct.laneIndex) {
-        await page.keyboard.press('ArrowLeft');
-        target.playerLane -= 1;
-      }
-      while (target.playerLane < target.correct.laneIndex) {
-        await page.keyboard.press('ArrowRight');
-        target.playerLane += 1;
-      }
+      const stageRect = await page.locator('#cannonStage').boundingBox();
+      assert.ok(stageRect, 'word cannon stage should be measurable during replay reset');
+      await page.mouse.click(
+        stageRect.x + stageRect.width * target.correct.x / 100,
+        stageRect.y + stageRect.height * 0.72
+      );
       await page.evaluate(() => window.LearningArcadePrototype.tickWordCannonFrame(220, 40));
       await page.waitForTimeout(80);
     }
@@ -158,8 +155,8 @@ async function main() {
     );
     assert.equal(
       cannonFeedback?.trim(),
-      '看汉字，左右移动车子，接住正确拼音卡。',
-      'pinyin racing replay should restore the default lane-catching hint'
+      '看汉字，上下左右移动车子，接住正确拼音卡。',
+      'pinyin racing replay should restore the default free-movement hint'
     );
 
     console.log('PASS - replay resets instructional feedback for snake and pinyin racing games');

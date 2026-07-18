@@ -85,6 +85,7 @@ const TASKS = [
     { label: 'pet growth feedback', cmd: 'node', args: ['scripts/test-pet-growth-feedback.mjs'] },
     { label: 'pet growth history', cmd: 'node', args: ['scripts/test-pet-growth-history.mjs'] },
     { label: 'playground entry shell', cmd: 'node', args: ['scripts/test-playground-entry-shell.mjs'] },
+    { label: 'playground catalog contract', cmd: 'node', args: ['scripts/test-playground-catalog-contract.mjs'] },
     { label: 'repository boundaries', cmd: 'node', args: ['scripts/test-repository-boundaries.mjs'] },
     { label: 'short travel chapter browser', cmd: 'node', args: ['scripts/test-short-travel-chapter-browser.mjs'] },
     { label: 'static route entries', cmd: 'node', args: ['scripts/test-static-route-entries.mjs'] },

@@ -943,7 +943,7 @@ function pickEnemyTasks() {
 }
 
 function buildActiveEnemies() {
-  const wave = createEnemyWavePlan();
+  const wave = createEnemyWavePlan(roundIndex);
   return pickEnemyTasks().slice(0, wave.length).map((task, index) => {
     const role = wave[index];
     return {
@@ -960,9 +960,9 @@ function buildActiveEnemies() {
   });
 }
 
-function createEnemyWavePlan() {
-  const maxEnemies = roundIndex <= 2 ? 2 : ENEMY_ROLES.length;
-  const count = 1 + Math.floor(Math.random() * maxEnemies);
+function createEnemyWavePlan(round = roundIndex) {
+  const normalizedRound = Math.max(1, Number(round) || 1);
+  const count = normalizedRound <= 2 ? 1 : normalizedRound <= 5 ? 2 : 3;
   return ENEMY_ROLES.slice(0, count);
 }
 
@@ -1740,6 +1740,9 @@ function tick(now) {
   const dt = Math.min(80, now - lastTime);
   lastTime = now;
   progress += dt / spawnDuration;
+  activeEnemies.forEach((enemy) => {
+    enemy.recoil = Math.max(0, (enemy.recoil || 0) - dt / 5000);
+  });
   placeMonster(now);
 
   if (progress >= 1 && !hitLock) {
@@ -1773,7 +1776,8 @@ function placeMonster(now = performance.now()) {
 
 function getEnemyApproachProgress(enemy, eased) {
   const spawnAt = enemy?.route?.spawnAt || 0;
-  return Math.max(0, Math.min(1, (eased - spawnAt) / Math.max(0.01, 1 - spawnAt)));
+  const recoil = Math.max(0, Number(enemy?.recoil || 0));
+  return Math.max(0, Math.min(1, (eased - spawnAt) / Math.max(0.01, 1 - spawnAt) - recoil));
 }
 
 function applyCreeperTransform(element, eased, role) {
@@ -2051,7 +2055,14 @@ function handleLetterStep() {
   pulseLetterStep();
   spawnMiniArrow();
   spawnLetterImpact();
+  applyLetterRecoil(getActiveEnemy());
   playLetterStep();
+}
+
+function applyLetterRecoil(targetEnemy = getActiveEnemy()) {
+  if (!targetEnemy) return;
+  targetEnemy.recoil = Math.min(0.16, (targetEnemy.recoil || 0) + 0.055);
+  getEnemyElement(targetEnemy.role)?.classList.add("is-step");
 }
 
 function spawnMiniArrow() {
@@ -2118,6 +2129,7 @@ function hitMonster(targetEnemy = getActiveEnemy()) {
   const earnedStarsBeforeHit = getEarnedStarCount();
   combo += 1;
   bestCombo = Math.max(bestCombo, combo);
+  if (combo > 0 && combo % 3 === 0) triggerComboBurst(targetEnemy);
   hits += 1;
   const reward = 10 + Math.min(10, (combo - 1) * 2);
   score += reward;
@@ -2158,6 +2170,16 @@ function hitMonster(targetEnemy = getActiveEnemy()) {
   });
   playTone(620, 0.08, "square");
   completeRound(true, HIT_DELAY);
+}
+
+function triggerComboBurst(sourceEnemy) {
+  activeEnemies.forEach((enemy) => {
+    if (enemy.id === sourceEnemy?.id || enemy.state === "exploding") return;
+    enemy.recoil = Math.min(0.2, (enemy.recoil || 0) + 0.12);
+    getEnemyElement(enemy.role)?.classList.add("is-step");
+  });
+  lastLetterFeedback = "burst";
+  showFloat("穿透箭", "连击蓄力击退附近苦力怕", "reward");
 }
 
 function takeDamage() {
@@ -3036,6 +3058,7 @@ function enemySnapshots() {
         groundEnd: enemy.route.groundEnd,
         spawnAt: Number(enemy.route.spawnAt.toFixed(3))
       } : null,
+      recoil: Number((enemy.recoil || 0).toFixed(3)),
       isTargeted: enemy.isTargeted,
       generatedImageLoaded: image.naturalWidth > 0
     };
@@ -3058,8 +3081,8 @@ if (TEST_MODE) {
     forceDamage() {
       if (state === "playing" && !hitLock) takeDamage();
     },
-    previewEnemyWave() {
-      return createEnemyWavePlan().map((role, index) => {
+    previewEnemyWave(round = roundIndex) {
+      return createEnemyWavePlan(round).map((role, index) => {
         const route = createEnemyRoute(role, index);
         return {
           role,

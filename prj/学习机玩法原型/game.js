@@ -248,11 +248,34 @@
   const WORD_CANNON_STAGE_GOAL = 8;
   const WORD_CANNON_ROUND_GOAL = 32;
   const WORD_CANNON_TICK_MS = 140;
-  const WORD_CANNON_LANES = [32, 50, 68];
+  const WORD_CANNON_LANES = [28, 50, 72];
+  const PINYIN_RACER_TARGET_LAYOUTS = {
+    basic: [
+      { x: 30, visualOffset: -12 },
+      { x: 70, visualOffset: -12 },
+      { x: 35, visualOffset: 12 },
+      { x: 65, visualOffset: 12 }
+    ],
+    intermediate: [
+      { x: 20, visualOffset: -12 },
+      { x: 50, visualOffset: -12 },
+      { x: 80, visualOffset: -12 },
+      { x: 30, visualOffset: 12 },
+      { x: 70, visualOffset: 12 }
+    ],
+    full: [
+      { x: 20, visualOffset: -12 },
+      { x: 50, visualOffset: -12 },
+      { x: 80, visualOffset: -12 },
+      { x: 20, visualOffset: 12 },
+      { x: 50, visualOffset: 12 },
+      { x: 80, visualOffset: 12 }
+    ]
+  };
   const WORD_CANNON_DANGER_Y = 82;
   const PINYIN_RACER_CATCH_Y = 76;
-  const PINYIN_RACER_CARD_START_Y = 16;
-  const WORD_CANNON_DEFAULT_FEEDBACK = '看汉字，左右移动车子，接住正确拼音卡。';
+  const PINYIN_RACER_CARD_START_Y = 36;
+  const WORD_CANNON_DEFAULT_FEEDBACK = '看汉字，上下左右移动车子，接住正确拼音卡。';
   const DEFAULT_HANZI_PACK_CANDIDATES = ['kindergarten-hanzi', 'kindergarten-pinyin', 'grade1-ready', 'bridge-hanzi', 'level-1', 'all'];
   const WORD_CANNON_MAPS = [
     { id: 'pinyin-racer-meadow-sbend', title: '赛车·草地 S 弯', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-01-彩色卡通赛车道.png`, artDirection: 'retheme' },
@@ -280,15 +303,15 @@
   const WORD_DIFFICULTY_TUNING = {
     basic: {
       shooter: { roundGoal: 8, maxEnemies: 2, speedMultiplier: 0.36, crashOnly: true },
-      cannon: { roundGoal: 8, stageGoal: 20, maxTargets: 2, speedMultiplier: 0.68, missLimit: 99 }
+      cannon: { roundGoal: 8, stageGoal: 20, maxTargets: 4, speedMultiplier: 0.68, missLimit: 99 }
     },
     intermediate: {
       shooter: { roundGoal: 10, maxEnemies: 3, speedMultiplier: 0.55, crashOnly: true },
-      cannon: { roundGoal: 16, stageGoal: 20, maxTargets: 3, speedMultiplier: 0.88, missLimit: 5 }
+      cannon: { roundGoal: 16, stageGoal: 20, maxTargets: 5, speedMultiplier: 0.88, missLimit: 5 }
     },
     full: {
       shooter: { roundGoal: 12, maxEnemies: 4, speedMultiplier: 0.72, crashOnly: true },
-      cannon: { roundGoal: 24, stageGoal: 20, maxTargets: 4, speedMultiplier: 1.06, missLimit: 3 }
+      cannon: { roundGoal: 24, stageGoal: 20, maxTargets: 6, speedMultiplier: 1.06, missLimit: 3 }
     }
   };
   const WORD_SHOOTER_STAGE_THEMES = {
@@ -355,6 +378,7 @@
       completedWords: [],
       activeEnemyId: null,
       currentTyped: '',
+      pendingMistakes: 0,
       score: 0,
       combo: 0,
       misses: 0,
@@ -385,6 +409,16 @@
       nextMineAt: 0,
       nextMeteorAt: 0,
       hazardEvents: [],
+      learning: {
+        tasksPresented: 0,
+        wordsCompleted: 0,
+        firstTryWords: 0,
+        retryWords: 0,
+        correctLetters: 0,
+        wrongLetters: 0,
+        targetSwitches: 0,
+        voiceAnnounced: 0
+      },
       boss: {
         active: false,
         defeated: false,
@@ -429,6 +463,16 @@
       mapLocked: false,
       segmentIndex: 0,
       segment: null,
+      taskHadRetry: false,
+      learning: {
+        tasksPresented: 0,
+        tasksResolved: 0,
+        correctChoice: 0,
+        firstTryCorrect: 0,
+        retryCount: 0,
+        wrongChoices: 0,
+        voiceAnnounced: 0
+      },
       roundComplete: false
     },
     snake: {
@@ -815,6 +859,16 @@
       });
       map[packId] = normalizedItems;
     });
+    if (!map['kindergarten-hanzi'] && map['level-1']?.length) {
+      packs.push({
+        id: 'kindergarten-hanzi',
+        title: '认汉字',
+        description: '先看单字，适合刚开始玩。',
+        suitability: '适合第一次玩。',
+        count: map['level-1'].length
+      });
+      map['kindergarten-hanzi'] = map['level-1'];
+    }
     const kindergartenHanziPack = sampleExternalHanziPack(readGlobalArray('kindergartenHanzi'), {
       maxItems: 160,
       maxLength: 1
@@ -976,11 +1030,47 @@
     const phaseIndex = Math.floor(Math.max(0, completedWords) / 5) % 4;
     const phases = [
       { id: 'warmup', label: '预热', maxEnemies: Math.min(2, tuning.maxEnemies), speedMultiplier: tuning.speedMultiplier * 0.86 },
-      { id: 'formation', label: '编队', maxEnemies: Math.min(3, tuning.maxEnemies), speedMultiplier: tuning.speedMultiplier * 0.94 },
-      { id: 'reward', label: '奖励', maxEnemies: Math.min(3, tuning.maxEnemies), speedMultiplier: tuning.speedMultiplier },
-      { id: 'climax', label: '小高潮', maxEnemies: tuning.maxEnemies, speedMultiplier: tuning.speedMultiplier * 1.08 }
+      { id: 'formation', label: '编队', maxEnemies: Math.min(2, tuning.maxEnemies), speedMultiplier: tuning.speedMultiplier * 0.86 },
+      { id: 'reward', label: '奖励', maxEnemies: Math.min(2, tuning.maxEnemies), speedMultiplier: tuning.speedMultiplier * 0.98 },
+      { id: 'climax', label: '小高潮', maxEnemies: tuning.maxEnemies, speedMultiplier: tuning.speedMultiplier * 1.06 }
     ];
     return phases[phaseIndex];
+  }
+
+  function wordShooterLearningSnapshot() {
+    const learning = state.wordShooter.learning;
+    const resolved = Math.max(0, learning.wordsCompleted);
+    const attempts = learning.correctLetters + learning.wrongLetters;
+    return {
+      tasksPresented: learning.tasksPresented,
+      wordsCompleted: resolved,
+      firstTryWords: learning.firstTryWords,
+      retryWords: learning.retryWords,
+      firstTryAccuracy: resolved ? Number((learning.firstTryWords / resolved).toFixed(2)) : 0,
+      correctLetters: learning.correctLetters,
+      wrongLetters: learning.wrongLetters,
+      letterAccuracy: attempts ? Number((learning.correctLetters / attempts).toFixed(2)) : 0,
+      targetSwitches: learning.targetSwitches,
+      voiceAnnounced: learning.voiceAnnounced,
+      voiceEnabled: Boolean(state.soundEnabled)
+    };
+  }
+
+  function wordCannonLearningSnapshot() {
+    const learning = state.wordCannon.learning;
+    const choices = learning.correctChoice + learning.wrongChoices;
+    return {
+      tasksPresented: learning.tasksPresented,
+      tasksResolved: learning.tasksResolved,
+      correctChoice: learning.correctChoice,
+      firstTryCorrect: learning.firstTryCorrect,
+      firstTryAccuracy: learning.tasksResolved ? Number((learning.firstTryCorrect / learning.tasksResolved).toFixed(2)) : 0,
+      retryCount: learning.retryCount,
+      wrongChoices: learning.wrongChoices,
+      choiceAccuracy: choices ? Number((learning.correctChoice / choices).toFixed(2)) : 0,
+      voiceAnnounced: learning.voiceAnnounced,
+      voiceEnabled: Boolean(state.soundEnabled)
+    };
   }
 
   function readSavedSettings() {
@@ -1767,6 +1857,24 @@
     };
   }
 
+  function learningRoundStats(gameId) {
+    if (gameId === 'word-shooter') {
+      const learning = wordShooterLearningSnapshot();
+      return [
+        { label: '首答正确', value: `${learning.firstTryWords}/${learning.wordsCompleted}` },
+        { label: '字母准确率', value: `${Math.round(learning.letterAccuracy * 100)}%` }
+      ];
+    }
+    if (gameId === 'word-cannon') {
+      const learning = wordCannonLearningSnapshot();
+      return [
+        { label: '首选正确', value: `${learning.firstTryCorrect}/${learning.tasksResolved}` },
+        { label: '再试次数', value: String(learning.retryCount) }
+      ];
+    }
+    return [];
+  }
+
   function enhanceRoundSummary(gameId, payload) {
     if (['word-shooter', 'word-cannon'].includes(gameId) && payload.title === '任务完成') {
       const completedStat = payload.stats.find(item => ['击破单词', '击破拼音', '接到拼音'].includes(item.label));
@@ -1778,8 +1886,10 @@
       const reviewStats = gameId === 'word-cannon'
         ? pinyinRoundReviewStats()
         : [];
+      const learningStats = learningRoundStats(gameId);
       const rewardStats = [
         { label: '本局模式', value: reward.tier },
+        ...learningStats,
         ...reviewStats,
         { label: '金币', value: `+${reward.coins}` },
         { label: '星星', value: `+${reward.stars}` },
@@ -2092,6 +2202,7 @@
     const fighter = WORD_SHOOTER_ASSETS.enemyFighters[(enemyId - 1) % WORD_SHOOTER_ASSETS.enemyFighters.length];
     ws.enemyId = enemyId;
     ws.spawnCursor = (ws.spawnCursor + 1) % Math.max(1, state.words.length);
+    ws.learning.tasksPresented += 1;
     return {
       id: `enemy-${enemyId}`,
       kind: 'fighter',
@@ -2105,6 +2216,11 @@
       artScale: fighter.scale,
       labelTop: fighter.labelTop,
       wordData,
+      learning: {
+        mistakes: 0,
+        correctLetters: 0,
+        totalAttempts: 0
+      },
       destroying: false,
       destroyAt: 0,
       nextShotAt: ws.elapsedMs + WORD_SHOOTER_ENEMY_FIRE_INTERVAL + ((enemyId * 137) % 700)
@@ -3215,6 +3331,7 @@
       spawnCount: state.wordShooter.enemyId,
       difficulty: { ...wordDifficultyTuning().shooter },
       attackEvents: state.wordShooter.attackEvents.slice()
+      ,learning: wordShooterLearningSnapshot()
       ,player: { x: Number(state.wordShooter.player.x.toFixed(2)), y: Number(state.wordShooter.player.y.toFixed(2)) }
       ,shield: state.wordShooter.shield
       ,invulnerableUntil: state.wordShooter.invulnerableUntil
@@ -3278,6 +3395,7 @@
     ws.attackEvents = [];
     ws.announcedKey = '';
     ws.resolvingHit = false;
+    ws.pendingMistakes = 0;
     ws.player = { x: WORD_SHOOTER_PLAYER_X, y: WORD_SHOOTER_PLAYER_START_Y };
     ws.moveInput = { up: false, down: false, left: false, right: false };
     ws.shield = loadout.shield;
@@ -3289,6 +3407,16 @@
     ws.nextMineAt = WORD_SHOOTER_MINE_INTERVAL;
     ws.nextMeteorAt = WORD_SHOOTER_METEOR_INTERVAL;
     ws.hazardEvents = [];
+    ws.learning = {
+      tasksPresented: 0,
+      wordsCompleted: 0,
+      firstTryWords: 0,
+      retryWords: 0,
+      correctLetters: 0,
+      wrongLetters: 0,
+      targetSwitches: 0,
+      voiceAnnounced: 0
+    };
     ws.boss = {
       active: false,
       defeated: false,
@@ -3319,6 +3447,7 @@
       const announcedKey = focusEnemy ? `${focusEnemy.id}:${focusEnemy.wordData.word}` : '';
       if (!focusEnemy || (!force && state.wordShooter.announcedKey === announcedKey)) return Promise.resolve();
       state.wordShooter.announcedKey = announcedKey;
+      state.wordShooter.learning.voiceAnnounced += 1;
       return speakSequence(focusEnemy.wordData);
     }
     return speakSequence(currentWord());
@@ -3333,6 +3462,8 @@
       if (targetEnemy) {
         ws.activeEnemyId = targetEnemy.id;
         ws.currentTyped = '';
+        targetEnemy.learning.mistakes += ws.pendingMistakes;
+        ws.pendingMistakes = 0;
         sfx.lock();
       }
     }
@@ -3343,8 +3474,16 @@
         targetEnemy = switchTarget;
         ws.activeEnemyId = switchTarget.id;
         ws.currentTyped = '';
+        ws.learning.targetSwitches += 1;
         sfx.lock();
       } else {
+        ws.learning.wrongLetters += 1;
+        if (targetEnemy?.learning) {
+          targetEnemy.learning.mistakes += 1;
+          targetEnemy.learning.totalAttempts += 1;
+        } else {
+          ws.pendingMistakes += 1;
+        }
         sfx.wrong();
         ws.combo = 0;
         renderTypingArena();
@@ -3353,12 +3492,18 @@
     }
     const nextExpected = targetEnemy.wordData.word[ws.currentTyped.length];
     if (letter !== nextExpected) {
+      ws.learning.wrongLetters += 1;
+      targetEnemy.learning.mistakes += 1;
+      targetEnemy.learning.totalAttempts += 1;
       sfx.wrong();
       ws.combo = 0;
       renderTypingArena();
       return;
     }
     ws.currentTyped += letter;
+    ws.learning.correctLetters += 1;
+    targetEnemy.learning.correctLetters += 1;
+    targetEnemy.learning.totalAttempts += 1;
     state.input = ws.currentTyped;
     sfx.tick();
     pulseWordShooterHud('hit');
@@ -3374,6 +3519,9 @@
       const finisherNode = targetEnemyHitNode(targetEnemy.id);
       const finisherPoint = getArenaPoint(finisherNode, 0.5, 0.5);
       ws.completedWords.push(targetEnemy.wordData.word);
+      ws.learning.wordsCompleted += 1;
+      if (targetEnemy.learning.mistakes) ws.learning.retryWords += 1;
+      else ws.learning.firstTryWords += 1;
       if (ws.boss.active && !ws.boss.defeated) {
         damageWordShooterBoss(Math.max(1, Math.ceil(targetEnemy.wordData.word.length / 5)));
       }
@@ -3381,6 +3529,7 @@
       scheduleWordShooterEnemyDestroy(targetEnemy.id, 520);
       ws.activeEnemyId = null;
       ws.currentTyped = '';
+      ws.pendingMistakes = 0;
       ws.resolvingHit = false;
       state.wordIndex = (state.wordIndex + 1) % Math.max(1, state.words.length);
       state.input = '';
@@ -3416,7 +3565,7 @@
   function wordCannonTargetsSorted() {
     return [...state.wordCannon.targets].sort((left, right) => {
       if (right.y !== left.y) return right.y - left.y;
-      return left.laneIndex - right.laneIndex;
+      return (left.targetIndex ?? left.laneIndex) - (right.targetIndex ?? right.laneIndex);
     });
   }
 
@@ -3466,45 +3615,59 @@
     return unique;
   }
 
-  function createPinyinRacerChoices(wordData, correctLane) {
+  function pinyinRacerTargetLayout() {
+    const tuning = wordDifficultyTuning().cannon;
+    const layout = PINYIN_RACER_TARGET_LAYOUTS[state.wordDifficulty] || PINYIN_RACER_TARGET_LAYOUTS.basic;
+    return layout.slice(0, tuning.maxTargets);
+  }
+
+  function createPinyinRacerChoices(wordData, correctTargetIndex) {
     const choices = [{ text: wordData.pinyin, correct: true }];
     const pool = pinyinOptionPool(wordData.pinyin);
-    while (choices.length < WORD_CANNON_LANES.length) {
+    const targetCount = pinyinRacerTargetLayout().length;
+    while (choices.length < targetCount) {
       const candidate = pool[(state.wordCannon.targetId + choices.length * 5) % Math.max(1, pool.length)] || `${wordData.pinyin}${choices.length}`;
       if (!choices.some(choice => choice.text === candidate)) choices.push({ text: candidate, correct: false });
-      if (choices.length < WORD_CANNON_LANES.length && pool.length < choices.length) {
+      if (choices.length < targetCount && pool.length < choices.length) {
         choices.push({ text: ['ba', 'ma', 'shi', 'xin', 'yue'][choices.length] || 'pin', correct: false });
       }
     }
-    const rotated = choices.slice(0, WORD_CANNON_LANES.length);
+    const rotated = choices.slice(0, targetCount);
     const currentCorrectIndex = rotated.findIndex(choice => choice.correct);
-    [rotated[currentCorrectIndex], rotated[correctLane]] = [rotated[correctLane], rotated[currentCorrectIndex]];
+    [rotated[currentCorrectIndex], rotated[correctTargetIndex]] = [rotated[correctTargetIndex], rotated[currentCorrectIndex]];
     return rotated;
   }
 
-  function createWordCannonTarget(laneIndex = 0, wordData = null, choice = null, targetNumber = 1) {
+  function createWordCannonTarget(targetIndex = 0, wordData = null, choice = null, targetNumber = 1) {
     const data = wordData || pinyinCannonItemAt(state.wordCannon.spawnCursor);
     const option = choice || { text: data.pinyin, correct: true };
+    const layout = pinyinRacerTargetLayout()[targetIndex] || { x: WORD_CANNON_LANES[targetIndex % WORD_CANNON_LANES.length], visualOffset: 0 };
+    const laneIndex = layout.x < 40 ? 0 : layout.x > 60 ? 2 : 1;
     return {
-      id: `cannon-${targetNumber}-${laneIndex}`,
+      id: `cannon-${targetNumber}-${targetIndex}`,
       laneIndex,
-      x: WORD_CANNON_LANES[laneIndex],
+      targetIndex,
+      x: layout.x,
       y: PINYIN_RACER_CARD_START_Y,
-      speed: (10.5 + data.word.length * 0.3) * wordDifficultyTuning().cannon.speedMultiplier,
+      visualOffset: layout.visualOffset || 0,
+      speed: (6.6 + data.word.length * 0.12) * wordDifficultyTuning().cannon.speedMultiplier,
       word: option.text,
       pinyin: data.pinyin,
       char: data.char,
       correct: !!option.correct,
       route: option.correct ? 'inner' : 'wide',
-      cardType: ['gate', 'boost', 'sign'][laneIndex],
+      cardType: ['gate', 'boost', 'sign', 'supply', 'finish'][targetIndex % 5],
       wordData: {
         ...data,
         word: option.text,
         option: option.text,
         correct: !!option.correct
       },
+      learning: {
+        mistakes: 0
+      },
       hitTick: 0,
-      theme: WORD_CANNON_TARGET_THEMES[(targetNumber + laneIndex - 1) % WORD_CANNON_TARGET_THEMES.length]
+      theme: WORD_CANNON_TARGET_THEMES[(targetNumber + targetIndex - 1) % WORD_CANNON_TARGET_THEMES.length]
     };
   }
 
@@ -3521,22 +3684,28 @@
       wc.spawnCursor = (wc.spawnCursor + 1) % Math.max(1, (state.hanzi.length ? state.hanzi : FALLBACK_HANZI).length);
     }
     wc.retryTask = null;
-    const correctLane = segment.shape === 'fork' ? 0 : segment.shape === 'finish-sprint' ? 2 : targetNumber % WORD_CANNON_LANES.length;
-    const choices = createPinyinRacerChoices(wordData, correctLane);
+    wc.taskHadRetry = Boolean(retryTask);
+    if (!retryTask) wc.learning.tasksPresented += 1;
+    const targetLayout = pinyinRacerTargetLayout();
+    const correctTargetIndex = segment.shape === 'fork'
+      ? 0
+      : segment.shape === 'finish-sprint'
+        ? targetLayout.length - 1
+        : targetNumber % targetLayout.length;
+    const choices = createPinyinRacerChoices(wordData, correctTargetIndex);
     wc.currentTask = wordData;
     wc.activeTargetId = null;
     wc.currentTyped = '';
-    return choices.map((choice, laneIndex) => {
-      const target = createWordCannonTarget(laneIndex, wordData, choice, targetNumber);
-      target.x = segment.laneXs?.[laneIndex] || target.x;
+    return choices.map((choice, targetIndex) => {
+      const target = createWordCannonTarget(targetIndex, wordData, choice, targetNumber);
       target.taskType = segment.taskType;
       target.landmark = segment.landmark;
       target.segmentId = segment.id;
-      target.cardType = segment.taskType === 'image-supply' && laneIndex === 1
+      target.cardType = segment.taskType === 'image-supply' && targetIndex === 1
         ? 'supply'
-        : segment.taskType === 'tone-sign' && laneIndex === 2
+        : segment.taskType === 'tone-sign' && targetIndex === 2
           ? 'sign'
-          : segment.taskType === 'final-gate' && laneIndex === 1
+          : segment.taskType === 'final-gate' && targetIndex === 1
             ? 'finish'
             : target.cardType;
       return target;
@@ -3663,7 +3832,7 @@
         const warning = target.y >= PINYIN_RACER_CATCH_Y - 12 ? ' is-warning' : '';
         const hint = wc.hintUntil > wc.elapsedMs && target.correct;
         return `
-            <article class="cannon-target cannon-card-${target.cardType || 'gate'}${locked ? ' is-locked' : ''}${warning}${hint ? ' is-hint-option' : ''}" data-cannon-target-id="${target.id}" data-cannon-theme="${target.theme}" data-cannon-lane="${target.laneIndex}" style="left:${target.x.toFixed(2)}%;top:${target.y.toFixed(2)}%">
+            <article class="cannon-target cannon-card-${target.cardType || 'gate'}${locked ? ' is-locked' : ''}${warning}${hint ? ' is-hint-option' : ''}" data-cannon-target-id="${target.id}" data-cannon-theme="${target.theme}" data-cannon-lane="${target.laneIndex}" data-cannon-target-index="${target.targetIndex ?? target.laneIndex}" style="left:${target.x.toFixed(2)}%;top:${(target.y + (target.visualOffset || 0)).toFixed(2)}%">
             <img class="cannon-target-frame" src="${pinyinRacerFacilityAsset(target)}" alt="" aria-hidden="true">
             <span class="cannon-target-facility" aria-hidden="true">${target.cardType === 'supply' ? '◆' : target.cardType === 'finish' ? '★' : target.cardType === 'sign' ? '⌁' : target.cardType === 'boost' ? '➤' : '●'}</span>
             <div class="cannon-target-copy">
@@ -3779,9 +3948,10 @@
     wc.targets.forEach(target => {
       target.y += target.speed * (deltaMs / 1000);
     });
-    const catchWave = wc.targets.length && wc.targets.some(target => target.y >= PINYIN_RACER_CATCH_Y);
+    const catchWave = wc.targets.find(target => target.y >= PINYIN_RACER_CATCH_Y) || null;
     if (catchWave) {
-      const caught = wc.targets.reduce((nearest, target) => {
+      const eligibleTargets = wc.targets.filter(target => target.y >= PINYIN_RACER_CATCH_Y);
+      const caught = eligibleTargets.reduce((nearest, target) => {
         const distance = Math.hypot(target.x - wc.player.x, target.y - wc.player.y);
         return !nearest || distance < nearest.distance ? { target, distance } : nearest;
       }, null);
@@ -3792,6 +3962,9 @@
       if (correct) {
         const finishedWord = caughtTarget.pinyin;
         wc.completedWords.push(finishedWord);
+        wc.learning.tasksResolved += 1;
+        wc.learning.correctChoice += 1;
+        if (!wc.taskHadRetry) wc.learning.firstTryCorrect += 1;
         wc.completedReview.push({ char: caught.char || '', pinyin: finishedWord });
         wc.score += Math.max(1, finishedWord.length);
         wc.combo += 1;
@@ -3804,6 +3977,9 @@
       } else {
         wc.combo = 0;
         wc.misses += 1;
+        wc.learning.retryCount += 1;
+        wc.learning.wrongChoices += 1;
+        wc.taskHadRetry = true;
         wc.retryTask = {
           ...(wc.currentTask || caughtTarget?.wordData || {}),
           word: caughtTarget?.pinyin || wc.currentTask?.pinyin || '',
@@ -3852,6 +4028,7 @@
         translation: target.wordData.translation || '',
         correct: !!target.correct,
         laneIndex: target.laneIndex,
+        targetIndex: target.targetIndex ?? target.laneIndex,
         cardType: target.cardType || 'gate',
         x: Number(target.x.toFixed(2)),
         y: Number(target.y.toFixed(2))
@@ -3871,7 +4048,8 @@
         mapIndex: state.wordCannon.mapIndex,
         mapLocked: state.wordCannon.mapLocked,
         mapTitle: currentWordCannonMap().title,
-        mapAsset: currentWordCannonMap().asset
+        mapAsset: currentWordCannonMap().asset,
+        learning: wordCannonLearningSnapshot()
       };
     }
 
@@ -3912,6 +4090,16 @@
     wc.hintUntil = 0;
     wc.retryTask = null;
     wc.currentTask = null;
+    wc.taskHadRetry = false;
+    wc.learning = {
+      tasksPresented: 0,
+      tasksResolved: 0,
+      correctChoice: 0,
+      firstTryCorrect: 0,
+      retryCount: 0,
+      wrongChoices: 0,
+      voiceAnnounced: 0
+    };
     wc.roundGoal = wordDifficultyTuning().cannon.roundGoal;
     wc.stageGoal = wordDifficultyTuning().cannon.stageGoal;
     wc.mapIndex = 0;
@@ -3935,6 +4123,7 @@
     const announcedKey = task ? `${task.char}:${task.pinyin}` : '';
     if (!task || (!force && state.wordCannon.announcedKey === announcedKey)) return Promise.resolve();
     state.wordCannon.announcedKey = announcedKey;
+    state.wordCannon.learning.voiceAnnounced += 1;
     const source = task.sourceHanzi || {};
     return speakHanziTask([
       { text: task.char || task.translation, lang: 'zh-CN' },
@@ -4044,7 +4233,8 @@
   }
 
   function currentSnakeTarget() {
-    return state.hanzi[state.snake.targetIndex % state.hanzi.length] || FALLBACK_HANZI[0];
+    const source = state.hanziAll.length ? state.hanziAll : state.hanzi;
+    return source[state.snake.targetIndex % Math.max(1, source.length)] || FALLBACK_HANZI[0];
   }
 
   function splitPinyinChunks(value) {
@@ -4066,7 +4256,8 @@
   }
 
   function snakeChunkPool(expected) {
-    const sourceChunks = state.hanzi.flatMap(item => splitPinyinChunks(item));
+    const source = state.hanziAll.length ? state.hanziAll : state.hanzi;
+    const sourceChunks = source.flatMap(item => splitPinyinChunks(item));
     return [...new Set([...sourceChunks, ...PINYIN_DISTRACTOR_CHUNKS])]
       .filter(chunk => chunk && chunk !== expected);
   }
@@ -5020,8 +5211,8 @@
     },
     pinyinSnake: () => state.snake,
     hanziPool: () => ({
-      count: state.hanzi.length,
-      sample: state.hanzi.slice(0, 8).map(item => ({
+      count: (state.hanziAll.length ? state.hanziAll : state.hanzi).length,
+      sample: (state.hanziAll.length ? state.hanziAll : state.hanzi).slice(0, 8).map(item => ({
         char: item.char,
         pinyin: item.pinyin,
         normalized: normalizePinyin(item.pinyin)
