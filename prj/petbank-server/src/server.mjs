@@ -8,7 +8,9 @@ import {
     createRefreshToken,
     hashPassword,
     hashRefreshToken,
+    hashRegistrationCode,
     normalizeUsername,
+    normalizeRegistrationCode,
     verifyAccessToken,
     verifyPassword,
 } from './security.mjs';
@@ -38,6 +40,7 @@ function accountView(row) {
         username: row.username || row.identifier || row.email,
         displayName: row.display_name,
         createdAt: row.created_at,
+        accessStatus: row.access_status,
     };
 }
 
@@ -144,6 +147,30 @@ function issueSession(database, config, accountId, now = Math.floor(Date.now() /
     return { accessToken, refreshToken, expiresIn: config.accessTokenTtlSeconds };
 }
 
+function requireAccountAccess(database, account, now = Math.floor(Date.now() / 1000)) {
+    if (account.access_status !== 'active') throw Object.assign(new Error('ACCESS_NOT_AUTHORIZED'), { statusCode: 403 });
+    if (!account.authorization_required) return null;
+    const grant = database.prepare(`
+        select * from account_access_grants
+        where account_id = ? and revoked_at is null
+          and (expires_at is null or expires_at > ?)
+        order by created_at desc limit 1
+    `).get(account.id, now);
+    if (!grant) throw Object.assign(new Error('ACCESS_NOT_AUTHORIZED'), { statusCode: 403 });
+    return grant;
+}
+
+function findRegistrationInvite(database, code, secret, now = Math.floor(Date.now() / 1000)) {
+    const normalized = normalizeRegistrationCode(code);
+    if (!normalized) throw Object.assign(new Error('REGISTRATION_CODE_REQUIRED'), { statusCode: 400 });
+    const invite = database.prepare('select * from registration_invites where code_hash = ?')
+        .get(hashRegistrationCode(normalized, secret));
+    if (!invite || invite.revoked_at || (invite.expires_at != null && invite.expires_at <= now) || invite.used_count >= invite.max_uses) {
+        throw Object.assign(new Error('REGISTRATION_INVITE_NOT_FOUND'), { statusCode: 400 });
+    }
+    return invite;
+}
+
 function publicInvite(row) {
     return { id: row.id, householdId: row.household_id, code: row.code, role: row.role, expiresAt: row.expires_at };
 }
@@ -163,6 +190,9 @@ function mapKnownError(error) {
     if (error?.message === 'INVITE_NOT_FOUND') return { statusCode: 404, code: 'INVITE_NOT_FOUND', message: '邀请码不存在、已使用或已过期。' };
     if (error?.message === 'SNAPSHOT_REVISION_CONFLICT') return { statusCode: 409, code: 'SNAPSHOT_REVISION_CONFLICT', message: '本地数据版本落后，请先恢复最新快照。' };
     if (error?.message === 'REGISTRATION_DISABLED') return { statusCode: 403, code: 'REGISTRATION_DISABLED', message: '当前暂未开放注册。' };
+    if (error?.message === 'REGISTRATION_CODE_REQUIRED') return { statusCode: 400, code: 'REGISTRATION_CODE_REQUIRED', message: '注册需要管理员提供的注册码。' };
+    if (error?.message === 'REGISTRATION_INVITE_NOT_FOUND') return { statusCode: 400, code: 'REGISTRATION_INVITE_NOT_FOUND', message: '注册码不存在、已使用、已撤销或已过期。' };
+    if (error?.message === 'ACCESS_NOT_AUTHORIZED') return { statusCode: 403, code: 'ACCESS_NOT_AUTHORIZED', message: '当前账号尚未获得使用授权或授权已失效。' };
     if (error?.message === 'INVALID_CREDENTIALS') return { statusCode: 401, code: 'INVALID_CREDENTIALS', message: '账号或密码不正确。' };
     if (error?.message === 'REFRESH_REUSED') return { statusCode: 401, code: 'REFRESH_REUSED', message: '刷新凭证已失效，请重新登录。' };
     if (error?.message === 'OWNER_CANNOT_BE_REMOVED') return { statusCode: 409, code: 'OWNER_CANNOT_BE_REMOVED', message: '家庭所有者不能被移除。' };
@@ -201,9 +231,29 @@ export function createServer({ config, database }) {
                 const displayName = validateName(body.displayName || '家长', 'name');
                 const accountId = createId();
                 const email = `${username}@local.petbank.invalid`;
+                const now = Math.floor(Date.now() / 1000);
+                const registrationCode = normalizeRegistrationCode(body.registrationCode);
+                let invite = null;
                 try {
-                    database.prepare(`insert into accounts (id, email, identifier, username, password_hash, display_name) values (?, ?, ?, ?, ?, ?)`)
-                        .run(accountId, email, username, username, hashPassword(body.password), displayName);
+                    database.transaction(() => {
+                        if (config.requireRegistrationCode || registrationCode) {
+                            invite = findRegistrationInvite(database, registrationCode, config.jwtSecret, now);
+                        }
+                        database.prepare(`insert into accounts (id, email, identifier, username, password_hash, display_name, authorization_required) values (?, ?, ?, ?, ?, ?, ?)`)
+                            .run(accountId, email, username, username, hashPassword(body.password), displayName, invite ? 1 : 0);
+                        if (invite) {
+                            const consumed = database.prepare(`
+                                update registration_invites
+                                set used_count = used_count + 1
+                                where id = ? and revoked_at is null
+                                  and (expires_at is null or expires_at > ?)
+                                  and used_count < max_uses
+                            `).run(invite.id, now);
+                            if (consumed.changes !== 1) throw Object.assign(new Error('REGISTRATION_INVITE_NOT_FOUND'), { statusCode: 400 });
+                            database.prepare('insert into account_access_grants (id, account_id, registration_invite_id, expires_at) values (?, ?, ?, ?)')
+                                .run(createId(), accountId, invite.id, invite.authorization_expires_at);
+                        }
+                    })();
                 } catch (error) {
                     if (String(error?.message).includes('UNIQUE')) throw Object.assign(new Error('ACCOUNT_EXISTS'), { statusCode: 409 });
                     throw error;
@@ -218,6 +268,7 @@ export function createServer({ config, database }) {
                 const username = normalizeUsername(body.username);
                 const account = database.prepare('select * from accounts where username = ? or identifier = ?').get(username, username);
                 if (!account || !verifyPassword(body.password, account.password_hash)) throw new Error('INVALID_CREDENTIALS');
+                requireAccountAccess(database, account);
                 return json(response, 200, { ...issueSession(database, config, account.id), account: accountView(account) });
             }
 
@@ -227,6 +278,9 @@ export function createServer({ config, database }) {
                 const now = Math.floor(Date.now() / 1000);
                 const current = database.prepare(`select * from auth_refresh_tokens where token_hash = ?`).get(hashRefreshToken(token));
                 if (!current || current.revoked_at || current.expires_at <= now) throw new Error('REFRESH_REUSED');
+                const refreshAccount = database.prepare('select * from accounts where id = ?').get(current.account_id);
+                if (!refreshAccount) throw new Error('REFRESH_REUSED');
+                requireAccountAccess(database, refreshAccount, now);
                 const nextToken = createRefreshToken();
                 const nextId = createId();
                 database.transaction(() => {
@@ -248,7 +302,8 @@ export function createServer({ config, database }) {
                 return json(response, 204, {});
             }
 
-            const account = requireAccount(request, database, config);
+    const account = requireAccount(request, database, config);
+            requireAccountAccess(database, account);
             if (request.method === 'DELETE' && url.pathname === '/api/v1/auth/account') {
                 const body = await parseJsonBody(request);
                 const password = String(body.password || '');

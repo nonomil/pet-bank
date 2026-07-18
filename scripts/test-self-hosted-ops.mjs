@@ -10,6 +10,9 @@ test('self-hosted shell scripts keep data outside releases and require restore c
     const deploy = fs.readFileSync(path.join(root, 'ops', 'deploy-self-hosted.sh'), 'utf8');
     const backup = fs.readFileSync(path.join(root, 'ops', 'backup-sqlite.sh'), 'utf8');
     const restore = fs.readFileSync(path.join(root, 'ops', 'restore-sqlite.sh'), 'utf8');
+    const issueCode = fs.readFileSync(path.join(root, 'ops', 'issue-registration-code.sh'), 'utf8');
+    const revokeCode = fs.readFileSync(path.join(root, 'ops', 'revoke-registration-code.sh'), 'utf8');
+    const listCodes = fs.readFileSync(path.join(root, 'ops', 'list-registration-codes.sh'), 'utf8');
 
     assert.match(deploy, /SHARED_DIR=.*\/shared/);
     assert.match(deploy, /\$\{SHARED_DIR\}\/data/);
@@ -39,6 +42,9 @@ test('self-hosted shell scripts keep data outside releases and require restore c
     assert.match(restore, /PETBANK_COMPOSE_FILE/);
     assert.match(restore, /docker compose -f "\$COMPOSE_FILE" -p petbank-api/);
     assert.doesNotMatch(deploy, /rm\s+-rf\s+.*\/srv\/pet-bank/);
+    assert.match(issueCode, /authorization-cli\.mjs issue/);
+    assert.match(revokeCode, /authorization-cli\.mjs revoke/);
+    assert.match(listCodes, /authorization-cli\.mjs list/);
 });
 
 test('Hermes declares the assembled site artifact as the self-hosted frontend root', () => {

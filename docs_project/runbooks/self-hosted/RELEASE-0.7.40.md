@@ -30,7 +30,7 @@ node scripts/assemble-pages-artifact.mjs _site_verify  PASS
 Hermes 需要在 VPS 上补做真实部署验证：
 
 1. 新 release 先备份 `/srv/pet-bank/shared/data/petbank.db`，再运行后端测试和静态制品组装。
-2. API 健康检查确认 `migrationCount: 3`，确认数据库仍来自 `/srv/pet-bank/shared/data/`。
+2. API 健康检查确认当前迁移数量，当前授权版本应为 `migrationCount: 4`，确认数据库仍来自 `/srv/pet-bank/shared/data/`。
 3. 通过外部域名验证首页、`/parent/`、`/settings/learning` 和 `/api/v1/health`。
 4. 用专用测试账号/孩子验证登录、家庭/孩子读取、最新快照读取，以及积分/宠物修改后的 revision 递增。
 5. 验证 API/Node 重启后账号和孩子仍存在；确认旧 release 可切回，且不删除 `shared/`。

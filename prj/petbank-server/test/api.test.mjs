@@ -4,7 +4,50 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 
+import { openDatabase } from '../src/database.mjs';
 import { createServer } from '../src/server.mjs';
+import { createInviteCode, hashRegistrationCode } from '../src/security.mjs';
+
+async function withApi(run, options = {}) {
+    const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'petbank-api-'));
+    const database = openDatabase({ databasePath: path.join(dataDir, 'petbank.db') });
+    const server = createServer({
+        config: {
+            production: false,
+            host: '127.0.0.1',
+            port: 0,
+            jwtSecret: 'test-secret-that-is-long-enough-for-api-tests',
+            accessTokenTtlSeconds: 900,
+            refreshTokenTtlSeconds: 86400,
+            enableRegistration: true,
+            requireRegistrationCode: Boolean(options.requireRegistrationCode),
+            allowedOrigin: 'http://127.0.0.1:7000',
+        },
+        database,
+    });
+    await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+    const address = server.address();
+    const baseUrl = `http://127.0.0.1:${address.port}`;
+    const request = async (method, pathname, body, token) => {
+        const headers = { accept: 'application/json' };
+        if (body !== undefined) headers['content-type'] = 'application/json';
+        if (token) headers.authorization = `Bearer ${token}`;
+        const response = await fetch(`${baseUrl}${pathname}`, {
+            method,
+            headers,
+            body: body === undefined ? undefined : JSON.stringify(body),
+        });
+        const text = await response.text();
+        return { response, data: text ? JSON.parse(text) : null };
+    };
+    try {
+        await run({ request, database });
+    } finally {
+        await new Promise((resolve) => server.close(resolve));
+        database.close();
+        fs.rmSync(dataDir, { recursive: true, force: true });
+    }
+}
 
 test('registration and login use a username and reject phone or email identifiers', async () => {
     await withApi(async ({ request }) => {
@@ -38,47 +81,6 @@ test('registration and login use a username and reject phone or email identifier
         assert.equal(email.data.error.code, 'INVALID_USERNAME');
     });
 });
-import { openDatabase } from '../src/database.mjs';
-
-async function withApi(run) {
-    const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'petbank-api-'));
-    const database = openDatabase({ databasePath: path.join(dataDir, 'petbank.db') });
-    const server = createServer({
-        config: {
-            production: false,
-            host: '127.0.0.1',
-            port: 0,
-            jwtSecret: 'test-secret-that-is-long-enough-for-api-tests',
-            accessTokenTtlSeconds: 900,
-            refreshTokenTtlSeconds: 86400,
-            enableRegistration: true,
-            allowedOrigin: 'http://127.0.0.1:7000',
-        },
-        database,
-    });
-    await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
-    const address = server.address();
-    const baseUrl = `http://127.0.0.1:${address.port}`;
-    const request = async (method, pathname, body, token) => {
-        const headers = { accept: 'application/json' };
-        if (body !== undefined) headers['content-type'] = 'application/json';
-        if (token) headers.authorization = `Bearer ${token}`;
-        const response = await fetch(`${baseUrl}${pathname}`, {
-            method,
-            headers,
-            body: body === undefined ? undefined : JSON.stringify(body),
-        });
-        const text = await response.text();
-        return { response, data: text ? JSON.parse(text) : null };
-    };
-    try {
-        await run({ request });
-    } finally {
-        await new Promise((resolve) => server.close(resolve));
-        database.close();
-        fs.rmSync(dataDir, { recursive: true, force: true });
-    }
-}
 
 test('account, household, child and snapshot journey enforces ownership and revision conflicts', async () => {
     await withApi(async ({ request }) => {
@@ -249,7 +251,42 @@ test('refresh token and password material are never returned by the account endp
         });
         const response = await request('GET', '/api/v1/auth/me', undefined, registered.data.accessToken);
         assert.equal(response.response.status, 200);
-        assert.deepEqual(Object.keys(response.data.account).sort(), ['createdAt', 'displayName', 'id', 'username']);
+        assert.deepEqual(Object.keys(response.data.account).sort(), ['accessStatus', 'createdAt', 'displayName', 'id', 'username']);
         assert.doesNotMatch(JSON.stringify(response.data), /password_hash|refreshToken|jwtSecret/i);
     });
+});
+
+test('production registration requires a one-time code and grants account access', async () => {
+    await withApi(async ({ request, database }) => {
+        const code = createInviteCode();
+        const now = Math.floor(Date.now() / 1000);
+        database.prepare(`
+            insert into registration_invites
+                (id, code_hash, code_hint, label, max_uses, expires_at, authorization_expires_at)
+            values (?, ?, ?, ?, ?, ?, ?)
+        `).run('registration-invite-1', hashRegistrationCode(code, 'test-secret-that-is-long-enough-for-api-tests'), code.slice(-4), '测试注册码', 1, now + 3600, now + 7200);
+
+        const missingCode = await request('POST', '/api/v1/auth/register', {
+            username: 'licensed_parent', password: 'StrongPass123!', displayName: '授权家长',
+        });
+        assert.equal(missingCode.response.status, 400);
+        assert.equal(missingCode.data.error.code, 'REGISTRATION_CODE_REQUIRED');
+
+        const registered = await request('POST', '/api/v1/auth/register', {
+            username: 'licensed_parent', password: 'StrongPass123!', displayName: '授权家长', registrationCode: code,
+        });
+        assert.equal(registered.response.status, 201);
+        assert.equal(registered.data.account.accessStatus, 'active');
+
+        const reused = await request('POST', '/api/v1/auth/register', {
+            username: 'licensed_parent_two', password: 'StrongPass123!', displayName: '第二家长', registrationCode: code,
+        });
+        assert.equal(reused.response.status, 400);
+        assert.equal(reused.data.error.code, 'REGISTRATION_INVITE_NOT_FOUND');
+
+        database.prepare('update account_access_grants set revoked_at = ? where account_id = ?').run(now, registered.data.account.id);
+        const blocked = await request('GET', '/api/v1/auth/me', undefined, registered.data.accessToken);
+        assert.equal(blocked.response.status, 403);
+        assert.equal(blocked.data.error.code, 'ACCESS_NOT_AUTHORIZED');
+    }, { requireRegistrationCode: true });
 });

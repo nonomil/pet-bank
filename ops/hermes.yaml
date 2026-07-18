@@ -36,6 +36,14 @@ selfHostedApi:
     - PETBANK_JWT_SECRET
     - PETBANK_DATA_DIR
     - PETBANK_ALLOWED_ORIGIN
+  authorizationCommands:
+    issue: ops/issue-registration-code.sh
+    list: ops/list-registration-codes.sh
+    revoke: ops/revoke-registration-code.sh
+  authorizationRules:
+    - registration-codes-are-hashed
+    - full-code-is-shown-only-on-issue
+    - never-put-code-in-git-or-server-env
   rules:
     - never-delete-shared-directory
     - migration-files-are-additive-only

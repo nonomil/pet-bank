@@ -150,7 +150,7 @@
                 </div>
                 <p class="parent-account-copy">先登录家长账号，再创建或加入家庭，孩子档案会挂靠在当前家庭下面。</p>
                 <form id="parent-account-form" class="parent-account-form">
-                    ${register ? '<label>显示名称<input name="displayName" autocomplete="name" maxlength="80" placeholder="例如：妈妈" required></label>' : ''}
+                    ${register ? '<label>显示名称<input name="displayName" autocomplete="name" maxlength="80" placeholder="例如：妈妈" required></label><label>注册码<input name="registrationCode" autocomplete="one-time-code" autocapitalize="characters" maxlength="32" placeholder="生产环境由管理员提供"></label>' : ''}
                     <label>用户名<input name="username" autocomplete="username" autocapitalize="none" maxlength="32" placeholder="例如：mama_01" required></label>
                     <label>密码<input name="password" type="password" autocomplete="${register ? 'new-password' : 'current-password'}" minlength="8" maxlength="128" placeholder="至少 8 个字符" required></label>
                     <div class="parent-account-actions">
@@ -250,7 +250,7 @@
         renderSignedOut();
         try {
             const payload = state.mode === 'register'
-                ? await SelfHostedApi.register(data.get('username'), data.get('password'), data.get('displayName'))
+                ? await SelfHostedApi.register(data.get('username'), data.get('password'), data.get('displayName'), data.get('registrationCode'))
                 : await SelfHostedApi.login(data.get('username'), data.get('password'));
             state.account = payload.account;
             await loadData();

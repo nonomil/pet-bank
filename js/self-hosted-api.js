@@ -80,8 +80,8 @@
         writeToken(REFRESH_KEY, '');
     }
 
-    async function register(username, password, displayName) {
-        const payload = await request('/auth/register', { method: 'POST', body: { username, password, displayName } });
+    async function register(username, password, displayName, registrationCode) {
+        const payload = await request('/auth/register', { method: 'POST', body: { username, password, displayName, registrationCode } });
         writeToken(ACCESS_KEY, payload.accessToken);
         writeToken(REFRESH_KEY, payload.refreshToken);
         return payload;

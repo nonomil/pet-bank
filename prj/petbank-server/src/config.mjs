@@ -41,6 +41,7 @@ export function loadConfig(env = process.env) {
         accessTokenTtlSeconds: parsePositiveInteger(env.PETBANK_ACCESS_TOKEN_TTL_SECONDS, 900, 'PETBANK_ACCESS_TOKEN_TTL_SECONDS'),
         refreshTokenTtlSeconds: parsePositiveInteger(env.PETBANK_REFRESH_TOKEN_TTL_SECONDS, 2_592_000, 'PETBANK_REFRESH_TOKEN_TTL_SECONDS'),
         enableRegistration: parseBoolean(env.PETBANK_ENABLE_REGISTRATION, true),
+        requireRegistrationCode: parseBoolean(env.PETBANK_REQUIRE_REGISTRATION_CODE, production),
         allowedOrigin: String(env.PETBANK_ALLOWED_ORIGIN || '').trim(),
     };
 }

@@ -30,7 +30,25 @@ Internet
         -> SQLite, /srv/pet-bank/shared/data/petbank.db
 ```
 
-后端源代码在 `prj/petbank-server/`。当前已提供注册、登录、refresh 轮换、家庭成员、家庭邀请码、孩子档案和 revision 快照 API；好友、串门、PK 和动态流仍未实现。
+后端源代码在 `prj/petbank-server/`。当前已提供注册码注册/授权、登录、refresh 轮换、家庭成员、家庭邀请码、孩子档案和 revision 快照 API；好友、串门、PK 和动态流仍未实现。
+
+注册码不是家庭邀请码。需要新增一个授权时，在 VPS 上执行：
+
+```bash
+/srv/pet-bank/current/ops/issue-registration-code.sh --label "家庭 A" --access-days 365
+```
+
+把命令输出中的 `code` 通过安全渠道交给用户。查看授权发行记录只显示末四位：
+
+```bash
+/srv/pet-bank/current/ops/list-registration-codes.sh
+```
+
+撤销注册码及其已发授权：
+
+```bash
+/srv/pet-bank/current/ops/revoke-registration-code.sh CODE
+```
 
 ## 必备软件
 
@@ -93,7 +111,7 @@ curl --fail http://127.0.0.1:3000/api/v1/health
 预期包含：
 
 ```json
-{"ok":true,"service":"petbank-server","migrationCount":3}
+{"ok":true,"service":"petbank-server","migrationCount":4}
 ```
 
 这证明容器、持久化数据卷和增量迁移可用。注册/登录、家庭、孩子和快照接口的端到端测试见 `prj/petbank-server/test/api.test.mjs`，完整接口规则见 [API 契约](./API-CONTRACT.md)。

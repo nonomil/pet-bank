@@ -102,3 +102,17 @@ export function createInviteCode() {
     const bytes = randomBytes(8);
     return Array.from(bytes, (byte) => alphabet[byte % alphabet.length]).join('');
 }
+
+export function normalizeRegistrationCode(value) {
+    return String(value || '').trim().toUpperCase().replace(/[\s-]/g, '');
+}
+
+export function hashRegistrationCode(value, secret) {
+    const normalized = normalizeRegistrationCode(value);
+    return createHmac('sha256', String(secret || 'petbank-registration-code-v1')).update(normalized).digest('hex');
+}
+
+export function registrationCodeHint(value) {
+    const normalized = normalizeRegistrationCode(value);
+    return normalized ? normalized.slice(-4) : '';
+}

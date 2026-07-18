@@ -77,7 +77,7 @@ node scripts/test-self-hosted-ops.mjs
 node scripts/assemble-pages-artifact.mjs site
 ```
 
-API 健康检查应返回 `ok: true`、`service: petbank-server` 和 `migrationCount: 3`。切换后还要从外部域名检查：
+API 健康检查应返回 `ok: true`、`service: petbank-server` 和 `migrationCount: 4`。切换后还要从外部域名检查：
 
 ```bash
 curl --fail https://<domain>/api/v1/health
@@ -91,6 +91,24 @@ curl --fail https://<domain>/app/playground/word-memory-map/
 curl --fail https://<domain>/prj/单词记忆射击场原型/index.html
 ```
 
-使用专用测试账号和已有测试孩子做非破坏性 canary：登录、读取家庭/孩子、读取最新快照；再从家长端确认账号入口不显示手机号/邮箱注册，孩子只能挂靠在家庭下。不要在生产家庭中创建临时孩子或临时家庭，除非已有明确清理方案。
+使用专用测试账号和已有测试孩子做非破坏性 canary：登录、读取家庭/孩子、读取最新快照；再从家长端确认注册表单包含注册码、账号入口不显示手机号/邮箱注册，孩子只能挂靠在家庭下。不要在生产家庭中创建临时孩子或临时家庭，除非已有明确清理方案。
 
 账号登录和页面检查通过后，使用测试孩子在本地修改一次积分或宠物状态，确认家长端出现“已同步”或网络异常时出现“待同步”，然后检查 API 返回的快照 revision 递增。若出现 revision 冲突，必须保留旧 release 和冲突记录，不得强制覆盖远端。
+
+## Hermes 授权操作
+
+当用户明确要求“新增一个授权”时，只执行下面的本机脚本，不新增公网管理员 API：
+
+```bash
+/srv/pet-bank/current/ops/issue-registration-code.sh --label "用户可识别标签" --access-days 365
+```
+
+发行前确认 API 容器健康；发行后只把标准输出中的完整 `code` 通过用户指定的安全渠道返回。不要把完整注册码写入部署日志、Git、`server.env` 或公开聊天记录。默认注册码 7 天可注册、单次使用，注册后的授权默认 365 天；永久期限使用 `--expires-days 0` 或 `--access-days 0`。
+
+撤销时执行：
+
+```bash
+/srv/pet-bank/current/ops/revoke-registration-code.sh CODE
+```
+
+该命令同时停用注册码并撤销由它产生的授权。`list-registration-codes.sh` 只显示末四位和统计信息，适合审计，不会恢复完整注册码。
