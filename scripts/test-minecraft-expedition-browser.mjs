@@ -206,7 +206,7 @@ try {
       return { regionId: value?.regionId || '', queue: (value?.queue || []).map(task => task.cardId) };
     });
     assert.equal(sessionBinding.regionId, regionId, `${regionId} session should retain the story region`);
-    assert.deepEqual(new Set(sessionBinding.queue), new Set(REGION_CARD_IDS[regionId]), `${regionId} session should load only bound cards`);
+    assert.deepEqual(new Set(sessionBinding.queue), new Set(story.missionCardIds), `${regionId} session should load only bound cards`);
     if (regionId === REGION_IDS[0]) {
       await page.click('[data-mv-flip]');
       const card = await page.evaluate(() => {
