@@ -64,7 +64,7 @@ test('child main navigation has a direct minecraft-vocab entry with expedition c
 
     const openingTag = vocabEntry[0].match(/^<button\b[^>]*>/i);
     assert.ok(openingTag, 'minecraft-vocab app-dock button opening tag is missing');
-    const onclickAttribute = openingTag[0].match(/\bonclick\s*=\s*(?:"([^"]*)"|'([^']*)')/i);
+    const onclickAttribute = openingTag[0].match(/(?:^|\s)onclick\s*=\s*(?:"([^"]*)"|'([^']*)')/i);
     assert.ok(onclickAttribute, 'minecraft-vocab app-dock button onclick attribute is missing');
     const onclickValue = onclickAttribute[1] ?? onclickAttribute[2];
     assertContract(
