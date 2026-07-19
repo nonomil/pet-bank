@@ -39,6 +39,9 @@ const EXCLUDED_PREFIXES = [
     'assets/references',
     'data/source-snapshots',
     'data/GPT生图',
+    // These are generator inputs and file:// fallback sources, not HTTP runtime data.
+    'data/vocab/单词库_分级',
+    'data/vocab/external',
 ];
 
 const ALLOWED_RASTER_EXACT = new Set([
