@@ -141,7 +141,7 @@
     }
   };
   const PINYIN_RACER_ASSETS = {
-    background: `${PINYIN_RACER_RETHEME_BASE}level-01-meadow-sbend/level-01-meadow-sbend.png`,
+    background: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-01-彩色卡通赛车道.png`,
     checkpointArch: `${PINYIN_RACER_ASSET_BASE}checkpoint_arch.png`,
     facilities: {
       gate: `${PINYIN_RACER_SEMANTIC_BASE}initial_sound_gate.png`,

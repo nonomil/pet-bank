@@ -36,6 +36,7 @@ jobs:
           node --check js/app.js
           node scripts/test-initial-media-loading-contract.mjs
           node scripts/test-pages-vocab-publish-contract.mjs
+          node scripts/test-learning-arcade-publish-contract.mjs
           node scripts/test-static-route-entries.mjs
           node scripts/test-static-access-policy-contract.mjs
           node prj/runtime_loader_route_base_contract.test.mjs
@@ -43,6 +44,8 @@ jobs:
           node prj/profile_isolation_journey_simulation.mjs
       - name: Assemble static site artifact
         run: node scripts/assemble-pages-artifact.mjs _site
+      - name: Verify learning arcade publish boundary
+        run: node scripts/test-learning-arcade-publish-contract.mjs _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

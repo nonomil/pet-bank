@@ -9,6 +9,7 @@ const requiredCommands = [
     'node --check js/app.js',
     'node scripts/test-initial-media-loading-contract.mjs',
     'node scripts/test-pages-vocab-publish-contract.mjs',
+    'node scripts/test-learning-arcade-publish-contract.mjs',
     'node scripts/test-static-route-entries.mjs',
     'node scripts/test-static-access-policy-contract.mjs',
     'node prj/runtime_loader_route_base_contract.test.mjs',
@@ -16,6 +17,7 @@ const requiredCommands = [
     'node prj/profile_isolation_journey_simulation.mjs',
 ];
 const contractCommand = 'node scripts/test-pages-fast-gate-contract.mjs';
+const artifactContractCommand = 'node scripts/test-learning-arcade-publish-contract.mjs _site';
 
 function fail(message) {
     console.error(`FAIL ${message}`);
@@ -50,6 +52,9 @@ for (const command of requiredCommands) {
 }
 if (!gateBlock.includes(contractCommand)) {
     fail(`Pages fast-gate run block must run its workflow contract: ${contractCommand}`);
+}
+if (!workflow.includes(artifactContractCommand)) {
+    fail(`Pages workflow must verify the assembled learning arcade artifact: ${artifactContractCommand}`);
 }
 if (gateBlock.includes('scripts/run-full-regression.mjs')) {
     fail('Pages fast gate must not run the local-server full regression');

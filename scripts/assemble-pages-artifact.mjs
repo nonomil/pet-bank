@@ -12,6 +12,13 @@ const RUNTIME_AUDIO_VARIANT_CONFIG = JSON.parse(fs.readFileSync(
     path.join(repoRoot, 'scripts', 'runtime-audio-variants.json'),
     'utf8'
 ));
+const LEARNING_ARCADE_MANIFEST = JSON.parse(fs.readFileSync(
+    path.join(repoRoot, 'scripts', 'runtime-asset-manifests', 'learning-arcade.json'),
+    'utf8'
+));
+const LEARNING_ARCADE_RUNTIME_FILES = new Set(LEARNING_ARCADE_MANIFEST.runtimeFiles || []);
+const LEARNING_ARCADE_RUNTIME_PREFIXES = LEARNING_ARCADE_MANIFEST.runtimePrefixes || [];
+const LEARNING_ARCADE_EXCLUDED_PREFIXES = LEARNING_ARCADE_MANIFEST.excludedPrefixes || [];
 
 function toPosix(filePath) {
     return filePath.split(path.sep).join('/');
@@ -551,6 +558,9 @@ function isDirectChildOf(parent, target) {
 
 function includeWhenAnyDescendantMatches(rel, exactFiles, allowedPrefixes) {
     if (exactFiles.has(rel)) return true;
+    for (const exactFile of exactFiles) {
+        if (isDirectChildOf(rel, exactFile)) return true;
+    }
     for (const prefix of allowedPrefixes) {
         if (isDirectChildOf(prefix, rel) || isDirectChildOf(rel, prefix)) {
             return true;
@@ -560,30 +570,16 @@ function includeWhenAnyDescendantMatches(rel, exactFiles, allowedPrefixes) {
 }
 
 function includeLearningArcadeRuntime(rel) {
-    const exactFiles = new Set([
-        'index.html',
-        'styles.css',
-        'game.js',
-    ]);
-    const allowedReferencePrefixes = [
-        'assets/generated/reference/pinyin-racer-long-track-strip',
-        'assets/generated/reference/pinyin-racer-long-track-skybridge',
-        'assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/dawn-training-ground-clean',
-        'assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/candy-nebula-clean',
-        'assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/volcanic-meteor-belt-clean',
-    ];
-    const allowedPrefixes = [
-        'assets/generated',
-    ];
-    if (!includeWhenAnyDescendantMatches(rel, exactFiles, allowedPrefixes)) {
+    if (LEARNING_ARCADE_EXCLUDED_PREFIXES.some((prefix) =>
+        rel === prefix || rel.startsWith(`${prefix}/`)
+    )) {
         return false;
     }
-    if (isDirectChildOf('assets/generated/reference', rel)) {
-        return allowedReferencePrefixes.some((prefix) =>
-            isDirectChildOf(prefix, rel) || isDirectChildOf(rel, prefix)
-        );
-    }
-    return !rel.endsWith('.md');
+    return includeWhenAnyDescendantMatches(
+        rel,
+        LEARNING_ARCADE_RUNTIME_FILES,
+        LEARNING_ARCADE_RUNTIME_PREFIXES
+    );
 }
 
 function includeTypingDefenseRuntime(rel) {
