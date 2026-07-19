@@ -7528,10 +7528,24 @@ body.shell-parent .app-bottom-dock {
         border-radius: 20px;
     }
     .app-dock-item {
-        min-height: 48px;
-        padding: 6px 4px;
+        min-height: 54px;
+        gap: 3px;
+        padding: 5px 2px;
         border-radius: 14px;
         font-size: 10px;
+    }
+    .app-dock-item > span {
+        display: grid;
+        width: 100%;
+        min-width: 0;
+        height: 22px;
+        min-height: 0;
+        place-items: center;
+        text-align: center;
+        line-height: 1.1;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        overflow: hidden;
     }
     .top-nav {
         padding: 10px 12px;

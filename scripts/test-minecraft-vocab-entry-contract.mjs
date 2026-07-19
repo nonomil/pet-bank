@@ -6,11 +6,12 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-const [indexSource, routerSource, runtimeLoaderSource, appSource] = await Promise.all([
+const [indexSource, routerSource, runtimeLoaderSource, appSource, styleSource] = await Promise.all([
     fs.readFile(path.join(ROOT, 'index.html'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/page-router.js'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/runtime-loader.js'), 'utf8'),
-    fs.readFile(path.join(ROOT, 'js/app.js'), 'utf8')
+    fs.readFile(path.join(ROOT, 'js/app.js'), 'utf8'),
+    fs.readFile(path.join(ROOT, 'css/style.css'), 'utf8')
 ]);
 
 function extractTextContent(html) {
@@ -33,9 +34,19 @@ test('HTML contains the Minecraft vocab page container', () => {
     );
 });
 
-test('page router registers minecraft-vocab under the learn route', () => {
-    assertContract(routerSource, /["']minecraft-vocab["']\s*:\s*["']learn["']/i, 'page router must map minecraft-vocab to learn');
-    assertContract(routerSource, /["']minecraft-vocab["']\s*:\s*["']\/app\/learn\/minecraft-vocab["']/i, 'page router path for minecraft-vocab is missing');
+test('Minecraft vocab keeps the learn shell while using its own dock tab', () => {
+    assertContract(routerSource, /const\s+CLASSIC_APP_PAGES\s*=\s*new\s+Set\(\[[\s\S]*?["']minecraft-vocab["'][\s\S]*?\]\)/i, 'minecraft-vocab must remain in the classic route shell page set');
+    assertContract(routerSource, /["']minecraft-vocab["']\s*:\s*["']minecraft-vocab["']/i, 'page router must map minecraft-vocab to its own dock tab');
+    assertContract(routerSource, /["']minecraft-vocab["']\s*:\s*["']\/app\/learn\/minecraft-vocab["']/i, 'page router path for minecraft-vocab must remain under learn');
+    assertContract(appSource, /classList\.toggle\(\s*["']learn-mode["'][\s\S]*?page\s*===\s*["']minecraft-vocab["']/i, 'minecraft-vocab must keep the learn-mode business shell');
+});
+
+test('mobile child dock gives app labels a stable readable layout', () => {
+    assertContract(
+        styleSource,
+        /\.app-dock-item\s*>\s*span\s*\{[^}]*width\s*:\s*100%[^}]*height\s*:\s*22px[^}]*white-space\s*:\s*normal[^}]*overflow-wrap\s*:\s*anywhere[^}]*overflow\s*:\s*hidden/is,
+        'mobile app dock labels need fixed two-line dimensions and readable wrapping'
+    );
 });
 
 test('runtime loader registers the minecraftVocab style and script bundles', () => {

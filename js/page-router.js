@@ -29,7 +29,7 @@
         'learn-plan': 'learn',
         'learn-lesson': 'learn',
         'learn-print': 'learn',
-        'minecraft-vocab': 'learn',
+        'minecraft-vocab': 'minecraft-vocab',
         playground: 'playground',
         mathpk: 'playground',
         hanzi: 'playground',
