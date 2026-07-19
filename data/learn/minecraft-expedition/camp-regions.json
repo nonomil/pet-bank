@@ -1,63 +1,128 @@
 {
-  "version": 1,
+  "version": 2,
   "camp": {
     "id": "minecraft-camp",
     "title": "方块营地",
-    "subtitle": "从篝火出发，收集你的第一册单词卡"
+    "titleEn": "Block Camp",
+    "subtitle": "从篝火出发，收集词卡，准备最后的末地挑战",
+    "subtitleEn": "Start at the campfire, collect word cards, and prepare for the End.",
+    "mapImage": "assets/learn/english-vocab/generated/minecraft-expedition/expedition-map.png"
+  },
+  "story": {
+    "title": "词语远征",
+    "titleEn": "The Word Expedition",
+    "opening": "营地的地图在篝火旁展开。每一张词卡都会让远征者更强。",
+    "openingEn": "The camp map unfolds beside the fire. Every word card makes the explorer stronger.",
+    "ending": "末影龙倒下了，新的世界正在等待下一次远征。",
+    "endingEn": "The Ender Dragon falls, and a new world waits for the next expedition."
   },
   "regions": [
     {
       "id": "grassland-trail",
       "title": "草原小径",
+      "titleEn": "Grassland Trail",
       "subtitle": "沿着河流找到村庄",
+      "subtitleEn": "Follow the river to the village.",
       "icon": "🌾",
+      "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/grassland-trail.png",
       "status": "available",
       "prerequisiteRegionIds": [],
-      "missions": [
-        {
-          "id": "grassland-first-steps",
-          "title": "点亮草原路牌",
-          "cardIds": ["mc-word-block", "mc-word-world", "mc-word-stone", "mc-word-light"],
-          "reward": {"rewardId": "minecraft-expedition-grassland-stamp", "points": 3, "collectionItem": "grassland-stamp"}
-        }
-      ]
+      "story": {"en": "The trail is bright, but the bridge is broken. Name the blocks and rebuild the path.", "zh": "小径很明亮，可是桥断了。说出方块的名字，重新铺好道路。"},
+      "mission": {
+        "id": "grassland-first-steps",
+        "title": "点亮草原路牌",
+        "titleEn": "Light the Grassland Sign",
+        "cardIds": ["mc-word-block", "mc-word-world", "anki-mc-0927-grass", "mc-word-water"],
+        "battle": {"enemy": "迷路的史莱姆", "enemyEn": "Lost Slime", "enemyPower": 5, "requiredAbility": "", "winText": "指南针找到了回家的路。", "winTextEn": "The compass finds the way home."},
+        "reward": {"rewardId": "minecraft-expedition-grassland-stamp", "points": 3, "experience": 12, "collectionItem": "grassland-stamp", "item": "pathfinder", "itemLabel": "寻路指南针", "itemLabelEn": "Pathfinder Compass"}
+      }
     },
     {
-      "id": "mineshaft-entrance",
-      "title": "矿洞入口",
-      "subtitle": "带上工具，发现闪亮的矿石",
-      "icon": "⛏️",
+      "id": "village-gate",
+      "title": "村庄门口",
+      "titleEn": "Village Gate",
+      "subtitle": "帮助村民点亮夜晚的营火",
+      "subtitleEn": "Help the villagers light the campfire.",
+      "icon": "🏡",
+      "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/village-gate.png",
       "status": "locked",
       "prerequisiteRegionIds": ["grassland-trail"],
-      "missions": [
-        {
-          "id": "mineshaft-light-the-way",
-          "title": "火把照亮矿洞",
-          "cardIds": ["mc-word-sword", "mc-word-pickaxe", "mc-word-diamond", "mc-word-creeper"],
-          "reward": {"rewardId": "minecraft-expedition-mineshaft-stamp", "points": 4, "collectionItem": "mineshaft-stamp"}
-        }
-      ]
+      "story": {"en": "The village gate opens at sunset. Build a warm campfire and protect the homes.", "zh": "日落时村庄大门打开。生起温暖的营火，保护村民的房子。"},
+      "mission": {
+        "id": "village-light-the-night",
+        "title": "村庄的第一盏灯",
+        "titleEn": "The Village First Light",
+        "cardIds": ["card-0346", "mc-word-house", "mc-word-tree", "card-0407"],
+        "battle": {"enemy": "夜行僵尸", "enemyEn": "Night Zombie", "enemyPower": 10, "requiredAbility": "pathfinder", "winText": "营火照亮了村庄，僵尸退开了。", "winTextEn": "The campfire lights the village, and the zombie backs away."},
+        "reward": {"rewardId": "minecraft-expedition-village-stamp", "points": 4, "experience": 18, "collectionItem": "village-stamp", "item": "camp-keeper", "itemLabel": "营火守护徽章", "itemLabelEn": "Camp Keeper Badge"}
+      }
     },
     {
-      "id": "broken-bridge-cove",
-      "title": "断桥河湾",
-      "subtitle": "让伙伴和你一起跨过小河",
-      "icon": "🌉",
+      "id": "deep-mine",
+      "title": "深层矿洞",
+      "titleEn": "Deep Mine",
+      "subtitle": "带上工具，发现闪亮的钻石",
+      "subtitleEn": "Take your tools and find a bright diamond.",
+      "icon": "⛏️",
+      "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/deep-mine.png",
       "status": "locked",
-      "prerequisiteRegionIds": ["mineshaft-entrance"],
-      "missions": [
-        {
-          "id": "broken-bridge-crossing",
-          "title": "修好通往村庄的桥",
-          "cardIds": ["mc-word-house", "mc-word-tree", "anki-mc-0927-grass", "mc-word-water"],
-          "reward": {"rewardId": "minecraft-expedition-bridge-stamp", "points": 5, "collectionItem": "bridge-stamp"}
-        }
-      ]
+      "prerequisiteRegionIds": ["village-gate"],
+      "story": {"en": "A dark tunnel hides a diamond. Use the pickaxe and torch before the creeper wakes.", "zh": "黑暗的隧道里藏着钻石。在苦力怕醒来前使用镐和火把。"},
+      "mission": {
+        "id": "deep-mine-find-the-gem",
+        "title": "矿洞里的闪光",
+        "titleEn": "A Spark in the Mine",
+        "cardIds": ["mc-word-pickaxe", "card-0148", "mc-word-diamond", "mc-word-stone"],
+        "battle": {"enemy": "矿洞苦力怕", "enemyEn": "Cave Creeper", "enemyPower": 18, "requiredAbility": "camp-keeper", "winText": "盾牌挡住了爆炸，钻石安全了。", "winTextEn": "The shield blocks the blast, and the diamond is safe."},
+        "reward": {"rewardId": "minecraft-expedition-mine-stamp", "points": 5, "experience": 24, "collectionItem": "mine-stamp", "item": "ore-breaker", "itemLabel": "矿石破译者", "itemLabelEn": "Ore Breaker"}
+      }
+    },
+    {
+      "id": "nether-portal",
+      "title": "下界传送门",
+      "titleEn": "Nether Portal",
+      "subtitle": "穿过熔岩湖，寻找末影之眼",
+      "subtitleEn": "Cross the lava lake and find an Eye of Ender.",
+      "icon": "🔥",
+      "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/nether-portal.png",
+      "status": "locked",
+      "prerequisiteRegionIds": ["deep-mine"],
+      "story": {"en": "The purple portal hums above the lava. Carry the fire charm and keep moving.", "zh": "紫色传送门在熔岩上嗡鸣。带上抗火护符，继续前进。"},
+      "mission": {
+        "id": "nether-crossing",
+        "title": "熔岩湖上的火光",
+        "titleEn": "Firelight over the Lava",
+        "cardIds": ["anki-mc-1177-lava", "anki-mc-6514-nether", "card-0132", "card-0180"],
+        "battle": {"enemy": "下界烈焰人", "enemyEn": "Nether Blaze", "enemyPower": 28, "requiredAbility": "ore-breaker", "winText": "抗火护符让远征者穿过了熔岩。", "winTextEn": "The fire charm carries the explorer across the lava."},
+        "reward": {"rewardId": "minecraft-expedition-nether-stamp", "points": 6, "experience": 32, "collectionItem": "nether-stamp", "item": "fire-ward", "itemLabel": "抗火护符", "itemLabelEn": "Fire Ward"}
+      }
+    },
+    {
+      "id": "ender-dragon-arena",
+      "title": "末影龙竞技场",
+      "titleEn": "Ender Dragon Arena",
+      "subtitle": "集齐末地词卡，完成最后的挑战",
+      "subtitleEn": "Gather the End cards for the final challenge.",
+      "icon": "🐉",
+      "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/ender-dragon-arena.png",
+      "status": "locked",
+      "prerequisiteRegionIds": ["nether-portal"],
+      "story": {"en": "The End portal opens. Speak the final words, use the Eye of Ender, and face the dragon.", "zh": "末地传送门打开了。说出最后的词语，使用末影之眼，面对末影龙。"},
+      "mission": {
+        "id": "ender-dragon-final-battle",
+        "title": "末影龙的最后一战",
+        "titleEn": "The Final Dragon Battle",
+        "cardIds": ["card-0186", "card-0344", "card-0185", "card-0358"],
+        "battle": {"enemy": "末影龙 Boss", "enemyEn": "Ender Dragon Boss", "enemyPower": 42, "requiredAbility": "fire-ward", "winText": "所有词卡的力量汇成一道光，末影龙被击败了！", "winTextEn": "The power of every word card becomes one light. The Ender Dragon is defeated!"},
+        "reward": {"rewardId": "minecraft-expedition-dragon-crown", "points": 10, "experience": 50, "collectionItem": "dragon-crown", "item": "dragon-slayer", "itemLabel": "末影龙征服者", "itemLabelEn": "Dragon Slayer"}
+      }
     }
   ],
   "collection": {
     "id": "word-card-collection",
     "title": "词语收藏册",
-    "description": "每完成一个节点，就为收藏册点亮一枚区域印章。"
+    "titleEn": "Word Card Collection",
+    "description": "每完成一个节点，就为收藏册点亮一枚区域印章。",
+    "descriptionEn": "Clear a node to light up a new region stamp."
   }
 }

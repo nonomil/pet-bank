@@ -90,7 +90,7 @@
         playground: ['css/playground.css?v=category-tabs-20260719', 'css/leaderboard.css?v=2', 'css/hanzi-game.css?v=4'],
         explore: ['css/travel-memory.css', 'css/pixel-story.css?v=20260715-stage-fullscreen1'],
         learn: ['css/learn-center.css?v=7'],
-        minecraftVocab: ['css/minecraft-vocab.css?v=1'],
+        minecraftVocab: ['css/minecraft-vocab.css?v=2'],
         picturebooks: ['css/picturebook-portal.css']
     };
 
@@ -104,7 +104,7 @@
         explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-page.js', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1', 'js/pixel-story-engine.js?v=20260715-stage-fullscreen1'],
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js', 'js/playground-catalog.js?v=20260719'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=7'],
-        minecraftVocab: ['js/minecraft-vocab-expedition.js?v=1', 'js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=1'],
+        minecraftVocab: ['js/minecraft-vocab-expedition.js?v=2', 'js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=2'],
         picturebooks: ['js/picturebook-external-bridge.js'],
         shop: ['js/shop.js'],
         review: ['js/family-review.js']

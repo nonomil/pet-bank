@@ -38,7 +38,7 @@ test('expedition data references real cards and has a connected MVP route', asyn
     const expedition = JSON.parse(await fs.readFile(expeditionPath, 'utf8'));
     const vocab = JSON.parse(await fs.readFile(vocabPath, 'utf8'));
     const cardIds = new Set(vocab.cards.map(card => card.id));
-    assert.equal(expedition.version, 1);
+    assert.equal(expedition.version, 2);
     assert.equal(expedition.camp.id, 'minecraft-camp');
     assert.ok(Array.isArray(expedition.regions));
     assert.ok(expedition.regions.length >= 3);
@@ -50,17 +50,22 @@ test('expedition data references real cards and has a connected MVP route', asyn
     let missionCount = 0;
     for (const region of expedition.regions) {
         assert.match(region.title, /\S/);
+        assert.match(region.titleEn, /\S/);
+        assert.match(region.sceneImage, /minecraft-expedition\/.+\.png$/);
         for (const prerequisite of region.prerequisiteRegionIds || []) assert.ok(regionIds.has(prerequisite));
-        for (const mission of region.missions || []) {
-            assert.ok(!missionIds.has(mission.id));
-            missionIds.add(mission.id);
-            missionCount += 1;
-            assert.ok(mission.cardIds.length >= 3 && mission.cardIds.length <= 5);
-            mission.cardIds.forEach(cardId => assert.ok(cardIds.has(cardId), `missing vocab card ${cardId}`));
-            assert.match(mission.reward.rewardId, /^minecraft-expedition-/);
-        }
+        const mission = region.mission;
+        assert.ok(mission, `${region.id} should expose one story mission`);
+        assert.ok(!missionIds.has(mission.id));
+        missionIds.add(mission.id);
+        missionCount += 1;
+        assert.equal(mission.cardIds.length, 4);
+        mission.cardIds.forEach(cardId => assert.ok(cardIds.has(cardId), `missing vocab card ${cardId}`));
+        assert.match(mission.reward.rewardId, /^minecraft-expedition-/);
+        assert.ok(mission.battle.enemy && mission.battle.enemyEn);
+        assert.ok(mission.battle.enemyPower > 0);
+        assert.ok(mission.reward.item && mission.reward.experience > 0);
     }
-    assert.ok(missionCount >= 3);
+    assert.equal(missionCount, expedition.regions.length);
 });
 
 test('expedition state transitions unlock the next region and persist by profile', async () => {

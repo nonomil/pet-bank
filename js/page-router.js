@@ -66,7 +66,7 @@
 
     const PUBLIC_ACCESS_PAGES = new Set([
         'parent', 'picturebooks', 'playground', 'mathpk', 'hanzi', 'typing-defense',
-        'learning-arcade', 'word-memory-map', 'leaderboard'
+        'learning-arcade', 'word-memory-map', 'leaderboard', 'minecraft-vocab'
     ]);
 
     const SETTINGS_SECTION_ROUTES = {

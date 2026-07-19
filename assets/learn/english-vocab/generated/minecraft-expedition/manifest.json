@@ -1,0 +1,16 @@
+{
+  "id": "minecraft-expedition-scenes",
+  "schemaVersion": 1,
+  "status": "generated-agnes-image-2.1-flash",
+  "runtimeRoot": "assets/learn/english-vocab/generated/minecraft-expedition/",
+  "assets": [
+    {"id": "expedition-map", "purpose": "wide route map from camp to End", "path": "assets/learn/english-vocab/generated/minecraft-expedition/expedition-map.png", "dimensions": [1536, 1024], "source": "agnes-image-2.1-flash", "runtime": true},
+    {"id": "grassland-trail", "purpose": "grassland node scene", "path": "assets/learn/english-vocab/generated/minecraft-expedition/grassland-trail.png", "dimensions": [1536, 1024], "source": "agnes-image-2.1-flash", "runtime": true},
+    {"id": "village-gate", "purpose": "village node scene", "path": "assets/learn/english-vocab/generated/minecraft-expedition/village-gate.png", "dimensions": [1536, 1024], "source": "agnes-image-2.1-flash", "runtime": true},
+    {"id": "deep-mine", "purpose": "mine node scene", "path": "assets/learn/english-vocab/generated/minecraft-expedition/deep-mine.png", "dimensions": [1536, 1024], "source": "agnes-image-2.1-flash", "runtime": true},
+    {"id": "nether-portal", "purpose": "Nether node scene", "path": "assets/learn/english-vocab/generated/minecraft-expedition/nether-portal.png", "dimensions": [1536, 1024], "source": "agnes-image-2.1-flash", "runtime": true},
+    {"id": "ender-dragon-arena", "purpose": "final Ender Dragon node scene", "path": "assets/learn/english-vocab/generated/minecraft-expedition/ender-dragon-arena.png", "dimensions": [1536, 1024], "source": "agnes-image-2.1-flash", "runtime": true}
+  ],
+  "promptRoot": "assets/learn/english-vocab/generated/minecraft-expedition/prompts/",
+  "textOverlayPolicy": "All English and Chinese labels are rendered by HTML/CSS; generated images contain no readable text."
+}

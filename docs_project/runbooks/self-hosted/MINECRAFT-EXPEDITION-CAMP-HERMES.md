@@ -5,8 +5,9 @@
 ## 当前实现边界
 
 - 主站入口仍是孩子端 `学习` tab → `Minecraft 单词远征`。
-- 营地地图数据在 `data/learn/minecraft-expedition/camp-regions.json`。
-- Profile 隔离状态由 `js/minecraft-vocab-expedition.js` 写入 `petbank_minecraft_expedition_state_v1_{profileId}`。
+- 营地地图数据在 `data/learn/minecraft-expedition/camp-regions.json`，当前是五段连续路线：草原小径、村庄门口、深层矿洞、下界传送门和末影龙竞技场。
+- Profile 隔离状态由 `js/minecraft-vocab-expedition.js` 写入 `petbank_minecraft_expedition_state_v2_{profileId}`；读取旧 `v1` 状态时会兼容升级，不再写回旧键。
+- 营地场景图及路线图由 `assets/learn/english-vocab/generated/minecraft-expedition/manifest.json` 管理；只发布 manifest 标记为 runtime 的 PNG，不发布参考站原始素材。
 - 词卡、图片、发音、短语、例句继续由 `minecraft-vocab-page.js`、`minecraft-vocab-session.js` 和现有英语词库提供。
 - 积分必须继续经过 `GameRewardReceipts` / `PetBankPoints`；不要新增营地积分账本。
 - `docs/` 中的调研截图和生图参考只用于设计审查，不得复制到发布目录。
@@ -34,7 +35,7 @@ node scripts/test-minecraft-expedition-browser.mjs
 node scripts/test-minecraft-vocab-browser.mjs
 ```
 
-浏览器验收必须确认：桌面横屏显示营地路线和多张后续卡，手机竖屏节点与词卡单列显示，点击词卡可以翻转，六种中英文音频按钮存在，完成草原小径后矿洞入口解锁，重复进入不重复加分。
+浏览器验收必须确认：桌面横屏显示路线图、五个区域节点和战斗面板，手机竖屏节点与词卡单列显示，点击词卡可以翻转，六种中英文音频按钮存在；按顺序完成每个区域后只解锁下一个区域，经验、能力道具和 Boss 结果按 Profile 保存，重复进入不重复加分。
 
 ## Pages 制品验收
 
@@ -58,5 +59,5 @@ curl --fail https://<domain>/js/minecraft-vocab-expedition.js
 
 - 静态资源回滚：切回上一 release 的 `current` symlink。
 - 本次没有新增数据库 migration。
-- 孩子端状态是本地 Profile 快照；回滚代码后旧的 `petbank_minecraft_expedition_state_v1_*` 应安全保留，旧版本不识别时不会影响积分和其他学习记录。
+- 孩子端状态是本地 Profile 快照；回滚代码后 `petbank_minecraft_expedition_state_v1_*` 和 `petbank_minecraft_expedition_state_v2_*` 都应安全保留，不得清空积分或其他学习记录。v2 读取旧状态时会补齐经验、等级、道具和战斗字段。
 - 如果营地奖励重复或状态异常，先保留浏览器 localStorage 导出与 receipt 记录，再处理，不得直接清空整个 Profile。

@@ -50,9 +50,9 @@ function resolveFile(requestUrl) {
     // Browsers may resolve relative shell assets against a deep route before
     // the runtime base element is applied. Serve those requests as aliases to
     // the shared root assets during local development.
-    const deepAssetMatch = requestPath.match(/^\/(?:app|parent|settings)\/(.+)$/);
+    const deepAssetMatch = requestPath.match(/^\/(?:app|parent|settings)(?:\/[^/]+)*\/(css|js|assets|data|prj)\/(.+)$/);
     if (deepAssetMatch) {
-        const rootAsset = path.resolve(repoRoot, `./${deepAssetMatch[1]}`);
+        const rootAsset = path.resolve(repoRoot, `./${deepAssetMatch[1]}/${deepAssetMatch[2]}`);
         if (isInsideRoot(rootAsset)) {
             try {
                 if (fs.statSync(rootAsset).isFile()) return rootAsset;

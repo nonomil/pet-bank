@@ -1,7 +1,8 @@
 (function (global) {
     'use strict';
 
-    const STORAGE_PREFIX = 'petbank_minecraft_expedition_state_v1';
+    const STORAGE_PREFIX = 'petbank_minecraft_expedition_state_v2';
+    const LEGACY_STORAGE_PREFIX = 'petbank_minecraft_expedition_state_v1';
     const STATUS = Object.freeze({ LOCKED: 'locked', AVAILABLE: 'available', ACTIVE: 'active', CLEARED: 'cleared' });
 
     function activeProfileId() {
@@ -19,6 +20,10 @@
         return `${STORAGE_PREFIX}_${String(profileId || 'default')}`;
     }
 
+    function legacyStorageKey(profileId = activeProfileId()) {
+        return `${LEGACY_STORAGE_PREFIX}_${String(profileId || 'default')}`;
+    }
+
     function safeRegions(regions) {
         return Array.isArray(regions) ? regions.filter(region => region && region.id) : [];
     }
@@ -31,12 +36,18 @@
         const statuses = {};
         for (const region of safeRegions(regions)) statuses[region.id] = canUnlock(region, statuses) ? STATUS.AVAILABLE : STATUS.LOCKED;
         return {
-            version: 1,
+            version: 2,
             profileId: String(profileId || 'default'),
             regions: statuses,
             activeRegionId: '',
             clearedMissionIds: [],
             collection: [],
+            experience: 0,
+            level: 1,
+            inventory: [],
+            abilities: [],
+            defeatedEnemies: [],
+            storyComplete: false,
             updatedAt: ''
         };
     }
@@ -47,11 +58,17 @@
         const next = {
             ...defaults,
             ...value,
-            version: 1,
+            version: 2,
             profileId: String(profileId || value.profileId || 'default'),
             regions: { ...defaults.regions },
             clearedMissionIds: Array.isArray(value.clearedMissionIds) ? [...new Set(value.clearedMissionIds.map(String))] : [],
-            collection: Array.isArray(value.collection) ? [...new Set(value.collection.map(String))] : []
+            collection: Array.isArray(value.collection) ? [...new Set(value.collection.map(String))] : [],
+            experience: Math.max(0, Number(value.experience || 0)),
+            level: Math.max(1, Number(value.level || 1)),
+            inventory: Array.isArray(value.inventory) ? [...new Set(value.inventory.map(String))] : [],
+            abilities: Array.isArray(value.abilities) ? [...new Set(value.abilities.map(String))] : [],
+            defeatedEnemies: Array.isArray(value.defeatedEnemies) ? [...new Set(value.defeatedEnemies.map(String))] : [],
+            storyComplete: value.storyComplete === true
         };
         for (const region of safeRegions(regions)) {
             const current = String(value.regions[region.id] || defaults.regions[region.id]);
@@ -63,7 +80,7 @@
     function readState(regions, profileId = activeProfileId()) {
         const id = String(profileId || 'default');
         try {
-            const raw = global.localStorage && global.localStorage.getItem(storageKey(id));
+            const raw = global.localStorage && (global.localStorage.getItem(storageKey(id)) || global.localStorage.getItem(legacyStorageKey(id)));
             return normalizeState(raw ? JSON.parse(raw) : null, regions, id);
         } catch (error) {
             console.warn('[MinecraftVocabExpedition] failed to read state', error);
@@ -97,7 +114,7 @@
         return stateResult(state, { activeRegionId: regionId, regions: { ...state.regions, [regionId]: STATUS.ACTIVE } });
     }
 
-    function completeRegion(state, regionId, regions, missionId = '', collectionItem = '') {
+    function completeRegion(state, regionId, regions, missionId = '', collectionItem = '', reward = {}) {
         const status = getRegionState(state, regionId);
         if (status === STATUS.CLEARED) return { state, persisted: true, duplicate: true };
         if (status !== STATUS.ACTIVE) return { state, persisted: true, duplicate: false, reason: 'not-active' };
@@ -111,11 +128,29 @@
         const nextCollection = collectionItem && !state.collection.includes(collectionItem)
             ? [...state.collection, collectionItem]
             : state.collection;
+        const experience = Math.max(0, Number(state.experience || 0) + Number(reward.experience || 0));
+        const level = Math.max(1, Math.floor(experience / 20) + 1);
+        const inventory = reward.item && !state.inventory.includes(reward.item)
+            ? [...state.inventory, String(reward.item)]
+            : state.inventory;
+        const abilities = reward.item && !state.abilities.includes(reward.item)
+            ? [...state.abilities, String(reward.item)]
+            : state.abilities;
+        const defeatedEnemies = reward.enemy && !state.defeatedEnemies.includes(reward.enemy)
+            ? [...state.defeatedEnemies, String(reward.enemy)]
+            : state.defeatedEnemies;
+        const storyComplete = safeRegions(regions).every(region => nextRegions[region.id] === STATUS.CLEARED);
         const result = stateResult(state, {
             activeRegionId: '',
             regions: nextRegions,
             clearedMissionIds: nextMissionIds,
-            collection: nextCollection
+            collection: nextCollection,
+            experience,
+            level,
+            inventory,
+            abilities,
+            defeatedEnemies,
+            storyComplete
         });
         return { ...result, duplicate: false };
     }
@@ -126,8 +161,22 @@
             total: statuses.length,
             cleared: statuses.filter(status => status === STATUS.CLEARED).length,
             available: statuses.filter(status => status === STATUS.AVAILABLE).length,
-            percent: statuses.length ? Math.round((statuses.filter(status => status === STATUS.CLEARED).length / statuses.length) * 100) : 0
+            percent: statuses.length ? Math.round((statuses.filter(status => status === STATUS.CLEARED).length / statuses.length) * 100) : 0,
+            experience: Number(state?.experience || 0),
+            level: Number(state?.level || 1),
+            inventory: Array.isArray(state?.inventory) ? state.inventory : [],
+            abilities: Array.isArray(state?.abilities) ? state.abilities : [],
+            defeatedEnemies: Array.isArray(state?.defeatedEnemies) ? state.defeatedEnemies : [],
+            storyComplete: state?.storyComplete === true
         };
+    }
+
+    function calculateBattle(state, battle = {}) {
+        const requiredAbility = String(battle.requiredAbility || '');
+        const hasAbility = !requiredAbility || (state?.abilities || []).includes(requiredAbility);
+        const playerPower = 8 + Number(state?.level || 1) * 6 + (state?.inventory || []).length * 2 + (hasAbility ? 8 : 0);
+        const enemyPower = Math.max(1, Number(battle.enemyPower || 1));
+        return { won: hasAbility && playerPower >= enemyPower, hasAbility, playerPower, enemyPower, requiredAbility };
     }
 
     global.MinecraftVocabExpedition = {
@@ -141,6 +190,7 @@
         getRegionState,
         enterRegion,
         completeRegion,
-        getSummary
+        getSummary,
+        calculateBattle
     };
 })(typeof window !== 'undefined' ? window : globalThis);

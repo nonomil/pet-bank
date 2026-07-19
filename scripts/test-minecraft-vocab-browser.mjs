@@ -6,6 +6,14 @@ const BASE = process.env.MMWG_E2E_BASE_URL || 'http://127.0.0.1:7000';
 const browser = await chromium.launch(browserLaunchOpts());
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 const page = await context.newPage();
+await page.addInitScript(() => {
+  window.__PETBANK_API_BASE_URL__ = '/__local-only-api';
+  ['petbank_self_hosted_api_base_url', 'petbank_self_hosted_access_token', 'petbank_self_hosted_refresh_token'].forEach(key => localStorage.removeItem(key));
+  const nativeFetch = window.fetch.bind(window);
+  window.fetch = (input, init) => String(input).includes('/__local-only-api')
+    ? Promise.resolve(new Response(JSON.stringify({ error: { code: 'LOCAL_ONLY' } }), { status: 404, headers: { 'content-type': 'application/json' } }))
+    : nativeFetch(input, init);
+});
 const errors = [];
 page.on('pageerror', error => errors.push(String(error?.message || error)));
 page.on('console', message => {
@@ -15,7 +23,8 @@ page.on('console', message => {
 try {
   await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 20000 });
   await page.waitForFunction(() => typeof window.switchPage === 'function', { timeout: 15000 });
-  await page.evaluate(() => window.switchPage('learn'));
+  await page.waitForFunction(() => document.body.classList.contains('app-ready'), { timeout: 20000 });
+  await page.evaluate(() => window.switchPage('learn', { skipAccessGate: true }));
   await page.waitForFunction(() => document.querySelector('#page-learn.active .learn-shell'), { timeout: 15000 });
   await page.waitForSelector('#page-learn.active [data-minecraft-vocab-launch], #page-learn.active .learn-demo-resource-card-words button', { timeout: 15000 });
   const learnEntry = await page.evaluate(() => {
@@ -96,7 +105,12 @@ try {
       cardImage: root?.querySelector('[data-mv-card-image]')?.getAttribute('src') || '',
       cardImageWidth: root?.querySelector('[data-mv-card-image]')?.naturalWidth || 0,
       cardArtSize: Math.round(root?.querySelector('[data-mv-card-art]')?.getBoundingClientRect().width || 0),
-      cardObjectFit: root?.querySelector('[data-mv-card-image]') ? getComputedStyle(root.querySelector('[data-mv-card-image]')).objectFit : ''
+      cardObjectFit: root?.querySelector('[data-mv-card-image]') ? getComputedStyle(root.querySelector('[data-mv-card-image]')).objectFit : '',
+      shellDisplay: getComputedStyle(document.querySelector('.page-shell')).display,
+      primarySidebarDisplay: getComputedStyle(document.querySelector('#childPrimarySidebar')).display,
+      progressRailDisplay: getComputedStyle(document.querySelector('#childProgressRail')).display,
+      learningWidth: Math.round(root?.querySelector('.mv-learning-column')?.getBoundingClientRect().width || 0),
+      cardBackWidth: Math.round(root?.querySelector('.mv-card-back')?.getBoundingClientRect().width || 0)
     };
   });
   assert.match(session.text, /第 1\/11|1 \/ 11/);
@@ -117,6 +131,11 @@ try {
   assert.match(session.sessionBg, /warmup-grove\.png/);
   assert.match(session.cardImage, /(?:assets\/learn\/english-vocab\/minecraft-cards\/normalized\/card-\d{4}-|assets\/learn\/english-vocab\/minecraft-cards\/card-\d{3}-|prj\/anki-minecraft-vocab\/assets\/media\/)/);
   assert.equal(session.cardImageWidth > 0, true);
+  assert.equal(session.shellDisplay, 'block');
+  assert.equal(session.primarySidebarDisplay, 'none');
+  assert.equal(session.progressRailDisplay, 'none');
+  assert.equal(session.learningWidth > 900, true);
+  assert.equal(session.cardBackWidth > 900, true);
   await page.click('[data-mv-toggle-progress]');
   await page.waitForSelector('[data-mv-progress-panel][data-open="true"]');
   const expandedProgress = await page.evaluate(() => ({
