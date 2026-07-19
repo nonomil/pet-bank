@@ -10,19 +10,17 @@
     "assets/generated/home-card-word-cannon.png",
     "assets/generated/home-card-pinyin-snake.png",
     "assets/generated/learning-games-content.json",
-    "assets/generated/english-typing-unified.js",
     "assets/generated/english-typing-unified.json",
-    "assets/generated/minecraft-typing-expanded.js",
     "assets/generated/minecraft-typing-expanded.json",
-    "assets/generated/pinyin-racer-reference-bg.png",
+    "assets/generated/pinyin-racer-reference-bg.webp",
     "assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/dawn-training-ground-clean/dawn-training-ground-clean.png",
     "assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/candy-nebula-clean/candy-nebula-clean.png",
     "assets/generated/reference/word-shooter-levels-gpt-20260711/agnes-20260712/volcanic-meteor-belt-clean/volcanic-meteor-belt-clean.png",
-    "assets/拼音赛车/拼音赛车参考图-01-彩色卡通赛车道.png",
-    "assets/拼音赛车/拼音赛车参考图-02-漂浮天空赛道.png",
-    "assets/拼音赛车/拼音赛车参考图-03--玩具森林赛道png.png",
-    "assets/拼音赛车/拼音赛车参考图-04-梦幻通话赛道.png",
-    "assets/拼音赛车/拼音赛车参考图-05--赛道终点.png"
+    "assets/拼音赛车/拼音赛车参考图-01-彩色卡通赛车道.webp",
+    "assets/拼音赛车/拼音赛车参考图-02-漂浮天空赛道.webp",
+    "assets/拼音赛车/拼音赛车参考图-03--玩具森林赛道png.webp",
+    "assets/拼音赛车/拼音赛车参考图-04-梦幻通话赛道.webp",
+    "assets/拼音赛车/拼音赛车参考图-05--赛道终点.webp"
   ],
   "runtimePrefixes": [
     "assets/generated/hanzi-jumper-assets",
@@ -37,5 +35,11 @@
     "assets/generated/pinyin-racer-prepared-assets",
     "assets/generated/word-shooter-assets",
     "assets/generated/word-cannon-maps"
-  ]
+  ],
+  "budgetsMiB": {
+    "fullRuntimePool": 35,
+    "runtimeShell": 10,
+    "firstSession": 8
+  },
+  "fallback": "none"
 }

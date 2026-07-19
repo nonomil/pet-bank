@@ -141,7 +141,7 @@
     }
   };
   const PINYIN_RACER_ASSETS = {
-    background: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-01-彩色卡通赛车道.png`,
+    background: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-01-彩色卡通赛车道.webp`,
     checkpointArch: `${PINYIN_RACER_ASSET_BASE}checkpoint_arch.png`,
     facilities: {
       gate: `${PINYIN_RACER_SEMANTIC_BASE}initial_sound_gate.png`,
@@ -278,11 +278,11 @@
   const WORD_CANNON_DEFAULT_FEEDBACK = '看汉字，上下左右移动车子，接住正确拼音卡。';
   const DEFAULT_HANZI_PACK_CANDIDATES = ['kindergarten-hanzi', 'kindergarten-pinyin', 'grade1-ready', 'bridge-hanzi', 'level-1', 'all'];
   const WORD_CANNON_MAPS = [
-    { id: 'pinyin-racer-meadow-sbend', title: '赛车·草地 S 弯', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-01-彩色卡通赛车道.png`, artDirection: 'retheme' },
-    { id: 'pinyin-racer-cloud-fork', title: '赛车·云桥分叉', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-02-漂浮天空赛道.png`, artDirection: 'retheme' },
-    { id: 'pinyin-racer-forest-tunnel', title: '赛车·森林隧道', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-03--玩具森林赛道png.png`, artDirection: 'retheme' },
-    { id: 'pinyin-racer-candy-bridge', title: '赛车·糖果声调桥', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-04-梦幻通话赛道.png`, artDirection: 'retheme' },
-    { id: 'pinyin-racer-finish-sprint', title: '赛车·终点冲刺', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-05--赛道终点.png`, artDirection: 'retheme' }
+    { id: 'pinyin-racer-meadow-sbend', title: '赛车·草地 S 弯', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-01-彩色卡通赛车道.webp`, artDirection: 'retheme' },
+    { id: 'pinyin-racer-cloud-fork', title: '赛车·云桥分叉', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-02-漂浮天空赛道.webp`, artDirection: 'retheme' },
+    { id: 'pinyin-racer-forest-tunnel', title: '赛车·森林隧道', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-03--玩具森林赛道png.webp`, artDirection: 'retheme' },
+    { id: 'pinyin-racer-candy-bridge', title: '赛车·糖果声调桥', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-04-梦幻通话赛道.webp`, artDirection: 'retheme' },
+    { id: 'pinyin-racer-finish-sprint', title: '赛车·终点冲刺', asset: `${PINYIN_RACER_PREPARED_BASE}拼音赛车参考图-05--赛道终点.webp`, artDirection: 'retheme' }
   ];
   const PINYIN_RACER_SEGMENTS = [
     { id: 's-bend', shape: 's-bend', taskType: 'sound-gate', correctRoute: 'inner', recoveryRoute: 'wide', landmark: '声母弯道', mapIndex: 0, laneXs: [32, 50, 68] },

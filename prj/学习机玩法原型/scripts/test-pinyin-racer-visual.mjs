@@ -76,6 +76,41 @@ function createStaticServer(rootDir) {
   });
 }
 
+async function captureRacerGeometry(page) {
+  return page.evaluate(() => {
+    const rect = selector => document.querySelector(selector)?.getBoundingClientRect().toJSON() || null;
+    const stage = document.getElementById('cannonStage');
+    const cannon = window.LearningArcadePrototype.wordCannon();
+    const targets = [...document.querySelectorAll('.cannon-target')];
+    const targetRects = targets.map(node => ({
+      id: node.dataset.cannonTargetId || '',
+      rect: node.getBoundingClientRect().toJSON()
+    }));
+    const targetDistances = cannon.targets.map(target => ({
+      id: target.id,
+      x: target.x,
+      y: target.y,
+      distancePercent: Math.hypot(target.x - cannon.player.x, target.y - cannon.player.y),
+      rect: targetRects.find(item => item.id === target.id)?.rect || null
+    }));
+    return {
+      viewport: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        devicePixelRatio: window.devicePixelRatio
+      },
+      scroll: { x: window.scrollX, y: window.scrollY },
+      stage: stage?.getBoundingClientRect().toJSON() || null,
+      car: rect('.pinyin-race-car'),
+      targetRects,
+      controlRects: [...document.querySelectorAll('.pinyin-stage-controls .key-button')]
+        .map(node => node.getBoundingClientRect().toJSON()),
+      player: cannon.player,
+      targetDistances
+    };
+  });
+}
+
 async function listen(server) {
   await new Promise((resolve, reject) => {
     server.once('error', reject);
@@ -94,6 +129,8 @@ async function main() {
   const logs = [];
   page.on('console', msg => logs.push({ type: msg.type(), text: msg.text() }));
   page.on('pageerror', err => logs.push({ type: 'pageerror', text: err.message }));
+  page.on('close', () => console.error('racer diagnostic: page closed'));
+  browser.on('disconnected', () => console.error('racer diagnostic: browser disconnected'));
 
   try {
     await page.goto(`http://127.0.0.1:${port}/${prototypePath.replaceAll('\\', '/')}`, { waitUntil: 'networkidle' });
@@ -237,8 +274,25 @@ async function main() {
       assert.ok(waveState.correctLane >= 0, `wave ${wave + 1} should expose a correct lane`);
       segmentTrace.push(waveState);
       const stageRect = await page.locator('#cannonStage').boundingBox();
+      assert.ok(stageRect, `wave ${wave + 1} should expose a measurable racing stage`);
+      const beforeWaveGeometry = await captureRacerGeometry(page);
+      console.log(`racer wave ${wave + 1} geometry before click: ${JSON.stringify(beforeWaveGeometry)}`);
       const laneClickX = waveState.correctX / 100;
-      await page.mouse.click(stageRect.x + stageRect.width * laneClickX, stageRect.y + stageRect.height * 0.72);
+      const stageClickY = 0.5;
+      const stageClickPoint = {
+        x: stageRect.x + stageRect.width * laneClickX,
+        y: stageRect.y + stageRect.height * stageClickY
+      };
+      const clickHitsControl = beforeWaveGeometry.controlRects.some(rect => (
+        stageClickPoint.x >= rect.left
+        && stageClickPoint.x <= rect.right
+        && stageClickPoint.y >= rect.top
+        && stageClickPoint.y <= rect.bottom
+      ));
+      assert.equal(clickHitsControl, false, `wave ${wave + 1} stage click should remain on the road, not a touch control: ${JSON.stringify({ stageClickPoint, controlRects: beforeWaveGeometry.controlRects, viewport: beforeWaveGeometry.viewport, scroll: beforeWaveGeometry.scroll })}`);
+      await page.mouse.click(stageClickPoint.x, stageClickPoint.y);
+      const afterClickGeometry = await captureRacerGeometry(page);
+      console.log(`racer wave ${wave + 1} geometry after click: ${JSON.stringify({ stageClickPoint, ...afterClickGeometry })}`);
       const aimedPlayer = await page.evaluate(() => window.LearningArcadePrototype.wordCannon().player);
       assert.ok(Math.abs(aimedPlayer.x - waveState.correctX) < 1, `wave ${wave + 1} should move the racer to the selected target x: ${JSON.stringify({ waveState, aimedPlayer })}`);
       await page.evaluate(() => window.LearningArcadePrototype.tickWordCannonFrame(220, 40));

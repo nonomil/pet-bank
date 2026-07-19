@@ -11,6 +11,30 @@
       "lossless": false
     },
     {
+      "id": "learning-arcade-pinyin-racer-reference",
+      "sourceDir": "prj/学习机玩法原型/assets/generated",
+      "include": ["pinyin-racer-reference-bg.png"],
+      "runtimePrefix": "assets/generated",
+      "publishRoot": "prj/学习机玩法原型/assets/generated",
+      "quality": 82,
+      "lossless": false
+    },
+    {
+      "id": "learning-arcade-pinyin-racer-backgrounds",
+      "sourceDir": "prj/学习机玩法原型/assets/拼音赛车",
+      "include": [
+        "拼音赛车参考图-01-彩色卡通赛车道.png",
+        "拼音赛车参考图-02-漂浮天空赛道.png",
+        "拼音赛车参考图-03--玩具森林赛道png.png",
+        "拼音赛车参考图-04-梦幻通话赛道.png",
+        "拼音赛车参考图-05--赛道终点.png"
+      ],
+      "runtimePrefix": "assets/拼音赛车",
+      "publishRoot": "prj/学习机玩法原型/assets/拼音赛车",
+      "quality": 82,
+      "lossless": false
+    },
+    {
       "id": "word-memory-gpt-panorama",
       "sourceDir": "prj/单词记忆射击场原型/assets/generated/world-bg-single",
       "include": ["farm-gpt-panorama.png"],

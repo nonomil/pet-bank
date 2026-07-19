@@ -39,9 +39,46 @@ assert.ok(
     'prepared pinyin-racer library must be explicitly excluded'
 );
 assert.ok(
-    manifest.runtimeFiles.includes('assets/拼音赛车/拼音赛车参考图-01-彩色卡通赛车道.png'),
+    manifest.runtimeFiles.includes('assets/拼音赛车/拼音赛车参考图-01-彩色卡通赛车道.webp'),
     'the selected pinyin-racer background must be published from the runtime map set'
 );
+assert.ok(
+    manifest.runtimeFiles.includes('assets/generated/english-typing-unified.json'),
+    'the HTTP runtime must publish the unified typing JSON'
+);
+assert.ok(
+    manifest.runtimeFiles.includes('assets/generated/minecraft-typing-expanded.json'),
+    'the HTTP runtime must publish the Minecraft typing JSON'
+);
+for (const webpFile of [
+    'assets/generated/pinyin-racer-reference-bg.webp',
+    'assets/拼音赛车/拼音赛车参考图-01-彩色卡通赛车道.webp',
+    'assets/拼音赛车/拼音赛车参考图-02-漂浮天空赛道.webp',
+    'assets/拼音赛车/拼音赛车参考图-03--玩具森林赛道png.webp',
+    'assets/拼音赛车/拼音赛车参考图-04-梦幻通话赛道.webp',
+    'assets/拼音赛车/拼音赛车参考图-05--赛道终点.webp'
+]) {
+    assert.ok(manifest.runtimeFiles.includes(webpFile), `learning arcade should publish WebP runtime image: ${webpFile}`);
+}
+for (const sourceFile of [
+    'assets/generated/pinyin-racer-reference-bg.png',
+    'assets/拼音赛车/拼音赛车参考图-01-彩色卡通赛车道.png',
+    'assets/拼音赛车/拼音赛车参考图-02-漂浮天空赛道.png',
+    'assets/拼音赛车/拼音赛车参考图-03--玩具森林赛道png.png',
+    'assets/拼音赛车/拼音赛车参考图-04-梦幻通话赛道.png',
+    'assets/拼音赛车/拼音赛车参考图-05--赛道终点.png'
+]) {
+    assert.ok(!manifest.runtimeFiles.includes(sourceFile), `source PNG must stay out of Pages runtime manifest: ${sourceFile}`);
+}
+for (const fallbackFile of [
+    'assets/generated/english-typing-unified.js',
+    'assets/generated/minecraft-typing-expanded.js'
+]) {
+    assert.ok(
+        !manifest.runtimeFiles.includes(fallbackFile),
+        `file:// fallback script must stay out of the Pages runtime manifest: ${fallbackFile}`
+    );
+}
 
 for (const file of manifest.runtimeFiles) {
     assert.ok(
@@ -52,6 +89,24 @@ for (const file of manifest.runtimeFiles) {
 
 if (artifactRoot) {
     assert.ok(fs.existsSync(artifactRoot), `missing artifact: ${artifactArg}`);
+    const publishedGamePath = path.join(artifactRoot, manifest.packageRoot, 'game.js');
+    const publishedGame = fs.readFileSync(publishedGamePath, 'utf8');
+    for (const filename of [
+        '拼音赛车参考图-01-彩色卡通赛车道',
+        '拼音赛车参考图-02-漂浮天空赛道',
+        '拼音赛车参考图-03--玩具森林赛道png',
+        '拼音赛车参考图-04-梦幻通话赛道',
+        '拼音赛车参考图-05--赛道终点'
+    ]) {
+        assert.ok(
+            publishedGame.includes(`${filename}.webp`),
+            `published learning arcade game must reference the WebP racer background: ${filename}`
+        );
+        assert.ok(
+            !publishedGame.includes(`${filename}.png`),
+            `published learning arcade game must not reference the PNG racer background: ${filename}`
+        );
+    }
     const publishedFiles = [];
     const stack = [artifactRoot];
     while (stack.length) {
