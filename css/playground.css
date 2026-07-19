@@ -105,7 +105,7 @@
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 18px;
     align-content: start;
 }
@@ -738,5 +738,46 @@ body.shell-app[data-app-route-page="typing-defense"] #typing-defense-frame {
 @media (max-width: 720px) and (min-width: 561px) {
     .playground-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 1200px) {
+    .playground-layout {
+        grid-template-columns: minmax(240px, 286px) minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .playground-grid {
+        gap: 12px;
+    }
+
+    .pg-img-card {
+        min-height: 392px;
+        border-radius: 20px;
+    }
+
+    .pg-card-copy {
+        gap: 5px;
+        padding: 14px 14px 8px;
+    }
+
+    .pg-card-title {
+        font-size: 17px;
+    }
+
+    .pg-card-desc {
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .pg-card-footer {
+        padding: 0 14px 14px;
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 721px) and (max-width: 1199px) {
+    .playground-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }

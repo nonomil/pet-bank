@@ -219,33 +219,49 @@
 
       <section class="game-panel pinyin-snake" id="pinyinSnake" data-game-panel="pinyin-snake" hidden>
         <div class="game-hud">
-          <span>贪吃蛇</span>
+          <span class="snake-hud-title">拼音方向挑战</span>
           <strong id="snakePrompt">shan</strong>
-          <span id="snakeScore">0</span>
+          <span class="snake-hud-score"><b id="snakeScore">0</b> 星</span>
           <button class="snake-pause-button" id="snakePauseButton" type="button" data-snake-action="pause" aria-pressed="false">暂停</button>
         </div>
-        <section class="snake-task-card" aria-label="当前拼音任务">
-          <span>按顺序吃拼音块</span>
-          <strong id="snakeTaskWord">山</strong>
-          <div class="snake-task-meaning" aria-live="polite">
-            <span class="snake-task-emoji" id="snakeTaskEmoji" role="img" aria-label="语义提示">⛰️</span>
-            <span class="snake-task-example" id="snakeTaskExample">我们一起去爬山。</span>
-          </div>
-          <div class="snake-piece-row" id="snakePieces"></div>
-          <small id="snakeTaskHint">拼成 shan，点亮星星。</small>
-          <div class="snake-status-badge" id="snakeStatusBadge" aria-live="polite"></div>
-          <button class="snake-hint-button" id="snakeHintButton" type="button" data-snake-action="hint" aria-label="显示拼音提示">提示 <b id="snakeHintUses">2</b></button>
-        </section>
-        <section class="snake-reference-stage" id="snakeReferenceStage" aria-label="参考图风格拼音贪吃蛇舞台">
-          <div class="snake-ref-hud" aria-hidden="true">
-            <span class="snake-ref-stat">长度：<b id="snakeLengthStat">3</b></span>
-            <span class="snake-ref-stat">星星：<b id="snakeStarStat">0</b></span>
-          </div>
-          <div class="snake-board" id="snakeBoard" aria-label="拼音贪吃蛇棋盘"></div>
-        </section>
-        <div class="snake-speed-switch" id="snakeSpeedSwitch" aria-label="贪吃蛇节奏">
-          <button type="button" data-snake-speed="slow" aria-pressed="true">慢速</button>
-          <button type="button" data-snake-speed="standard" aria-pressed="false">标准</button>
+        <div class="snake-main-layout">
+          <section class="snake-task-card" aria-label="当前拼音任务">
+            <span class="snake-task-kicker">现在要吃</span>
+            <div class="snake-task-word-row">
+              <strong id="snakeTaskWord">山</strong>
+              <div class="snake-task-meaning" aria-live="polite">
+                <span class="snake-task-emoji" id="snakeTaskEmoji" role="img" aria-label="语义提示">⛰️</span>
+                <span class="snake-task-example" id="snakeTaskExample">我们一起去爬山。</span>
+              </div>
+            </div>
+            <div class="snake-piece-row" id="snakePieces"></div>
+            <small id="snakeTaskHint">拼成 shan，点亮星星。</small>
+            <div class="snake-status-badge" id="snakeStatusBadge" aria-live="polite"></div>
+            <button class="snake-hint-button" id="snakeHintButton" type="button" data-snake-action="hint" aria-label="显示拼音提示">提示 <b id="snakeHintUses">2</b></button>
+          </section>
+          <section class="snake-reference-stage" id="snakeReferenceStage" aria-label="拼音贪吃蛇舞台">
+            <div class="snake-ref-hud" aria-hidden="true">
+              <span class="snake-ref-stat">长度 <b id="snakeLengthStat">3</b></span>
+              <span class="snake-ref-stat">星星 <b id="snakeStarStat">0</b></span>
+            </div>
+            <div class="snake-board" id="snakeBoard" aria-label="拼音贪吃蛇棋盘"></div>
+            <span class="snake-board-caption">吃亮色拼音块，拼出完整读音</span>
+          </section>
+          <aside class="snake-control-card" aria-label="方向键控制">
+            <span class="snake-control-kicker">方向键</span>
+            <strong>控制小蛇</strong>
+            <div class="snake-control-pad" aria-label="屏幕方向键">
+              <button type="button" data-snake-control="up" aria-label="向上移动">↑</button>
+              <button type="button" data-snake-control="left" aria-label="向左移动">←</button>
+              <button type="button" data-snake-control="down" aria-label="向下移动">↓</button>
+              <button type="button" data-snake-control="right" aria-label="向右移动">→</button>
+            </div>
+            <p>也可以使用蓝牙键盘方向键</p>
+            <div class="snake-speed-switch" id="snakeSpeedSwitch" aria-label="贪吃蛇节奏">
+              <button type="button" data-snake-speed="slow" aria-pressed="true">慢速</button>
+              <button type="button" data-snake-speed="standard" aria-pressed="false">标准</button>
+            </div>
+          </aside>
         </div>
         <p class="game-feedback" id="snakeFeedback">方向键移动，先吃高亮拼音块。</p>
       </section>

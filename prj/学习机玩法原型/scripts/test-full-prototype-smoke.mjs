@@ -173,16 +173,22 @@ async function runSnakeFinishHome(page) {
   const snakeVisualState = await page.evaluate(() => ({
     hanziCount: window.LearningArcadePrototype.hanziPool().count,
     stageClass: document.getElementById('snakeReferenceStage')?.className || '',
-    targetFloat: document.querySelector('.snake-target-float')?.textContent.trim() || '',
     statText: [...document.querySelectorAll('.snake-ref-stat')].map(node => node.textContent.trim()).join(' '),
     dotCount: document.querySelectorAll('.snake-food-dot').length,
+    foodAssetCount: document.querySelectorAll('.snake-food-asset').length,
+    foodLabelCount: document.querySelectorAll('.snake-food-label').length,
+    targetLabel: document.querySelector('.snake-food-dot.is-target .snake-food-label')?.textContent.trim() || '',
+    controlCount: document.querySelectorAll('.snake-control-pad [data-snake-control]').length,
     feedback: document.getElementById('snakeFeedback').textContent.trim()
   }));
   assert.ok(snakeVisualState.hanziCount >= 30, 'pinyin snake should use the full root hanzi question pool instead of a 12-item slice');
   assert.match(snakeVisualState.stageClass, /snake-reference-stage/, 'snake should render inside a reference-style arena');
-  assert.match(snakeVisualState.targetFloat, /\[[a-z]+\]/, 'snake should show the current pinyin chunk as a floating bracket label');
   assert.match(snakeVisualState.statText, /长度|星星/, 'snake should show simple length and score stats like the reference');
   assert.ok(snakeVisualState.dotCount >= 1, 'snake should render round dot food markers');
+  assert.equal(snakeVisualState.foodAssetCount, snakeVisualState.dotCount, 'every snake food should use a visual food asset');
+  assert.equal(snakeVisualState.foodLabelCount, snakeVisualState.dotCount, 'every snake food should show a readable pinyin label');
+  assert.match(snakeVisualState.targetLabel, /^[a-z]+$/, 'the target food should expose its pinyin label');
+  assert.equal(snakeVisualState.controlCount, 4, 'snake should expose four visible direction controls');
   assert.match(snakeVisualState.feedback, /方向键.*高亮拼音块/, 'pinyin snake should show a gentle first-run starter hint');
   await page.evaluate(() => {
     const snake = window.LearningArcadePrototype.pinyinSnake();

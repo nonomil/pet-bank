@@ -1986,10 +1986,11 @@
     stopHanziJumper();
     hideRoundSummary();
     state.activeGame = gameId;
-    els.gameHome.hidden = true;
-    els.gameHome.setAttribute('aria-hidden', 'true');
     els.gameScreen.hidden = false;
     els.gameScreen.dataset.activeGame = gameId;
+    els.gameScreen.focus({ preventScroll: true });
+    els.gameHome.hidden = true;
+    els.gameHome.setAttribute('aria-hidden', 'true');
     document.querySelectorAll('[data-game-panel]').forEach(panel => {
       panel.hidden = panel.dataset.gamePanel !== gameId;
     });
@@ -4492,11 +4493,11 @@
         const foodColorIndex = food ? state.snake.foods.indexOf(food) % 4 : 0;
         const foodHintActive = food?.correct && state.snake.hintActiveUntil > Date.now();
         const foodContent = food
-          ? `<b class="snake-food-card snake-food-dot${food.correct ? ' is-target' : ''}${foodStateClass}${foodHintActive ? ' is-hint-target' : ''}" data-food-state="${food.correct ? state.snake.currentFoodState : 'distractor'}" data-food-hint="${foodHintActive ? 'active' : 'none'}" data-food-label="${food.label}" data-food-color="${foodColorIndex}">
-              <span class="snake-food-color" aria-hidden="true"></span>
-              ${food.correct ? `<em class="snake-target-float">[${food.label}]</em>` : ''}
-              <span>${food.label}</span>
-            </b>`
+          ? `<span class="snake-food-card snake-food-dot${food.correct ? ' is-target' : ''}${foodStateClass}${foodHintActive ? ' is-hint-target' : ''}" data-food-state="${food.correct ? state.snake.currentFoodState : 'distractor'}" data-food-hint="${foodHintActive ? 'active' : 'none'}" data-food-label="${food.label}" data-food-color="${foodColorIndex}" aria-label="拼音 ${food.label}">
+              <img class="snake-food-asset" src="${foodAsset}" alt="" aria-hidden="true">
+              <span class="snake-food-label">${food.label}</span>
+              ${food.correct ? '<em class="snake-food-target-mark">目标</em>' : ''}
+            </span>`
           : '';
         const snakeContent = snakeAsset
           ? `<img class="snake-asset snake-${snakeAsset.name.split(' ')[0]}" src="${snakeAsset.src}" alt="" style="--snake-rotate:${snakeAsset.rotate}deg">`
@@ -4574,6 +4575,22 @@
     return !(state.snake.body.length > 1
       && nextDir.x === -state.snake.dir.x
       && nextDir.y === -state.snake.dir.y);
+  }
+
+  function moveSnakeDirection(directionName) {
+    if (state.activeGame !== 'pinyin-snake'
+      || state.snake.roundComplete
+      || state.snake.paused) return;
+    const dirMap = {
+      up: { x: 0, y: -1 },
+      down: { x: 0, y: 1 },
+      left: { x: -1, y: 0 },
+      right: { x: 1, y: 0 }
+    };
+    const nextDir = dirMap[directionName];
+    if (!nextDir || !canTurnSnake(nextDir)) return;
+    state.snake.dir = nextDir;
+    stepSnake();
   }
 
   function startHanziJumper() {
@@ -4860,6 +4877,11 @@
       else toggleSnakePause();
       return;
     }
+    const snakeControl = event.target.closest('[data-snake-control]');
+    if (snakeControl && state.activeGame === 'pinyin-snake') {
+      moveSnakeDirection(snakeControl.dataset.snakeControl);
+      return;
+    }
     const snakeSpeed = event.target.closest('[data-snake-speed]');
     if (snakeSpeed && state.activeGame === 'pinyin-snake') {
       setSnakeSpeed(snakeSpeed.dataset.snakeSpeed);
@@ -4982,15 +5004,10 @@
       toggleSnakePause();
     } else if (state.activeGame === 'pinyin-snake' && ['arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) {
       event.preventDefault();
-      if (state.snake.paused) return;
-      const dirMap = {
-        arrowup: { x: 0, y: -1 },
-        arrowdown: { x: 0, y: 1 },
-        arrowleft: { x: -1, y: 0 },
-        arrowright: { x: 1, y: 0 }
-      };
-      if (canTurnSnake(dirMap[key])) state.snake.dir = dirMap[key];
-      stepSnake();
+      moveSnakeDirection(key.replace('arrow', ''));
+    } else if (state.activeGame === 'pinyin-snake' && ['w', 'a', 's', 'd'].includes(key)) {
+      event.preventDefault();
+      moveSnakeDirection(({ w: 'up', a: 'left', s: 'down', d: 'right' })[key]);
     } else if (state.activeGame === 'hanzi-jumper' && ['arrowleft', 'arrowright', 'a', 'd'].includes(key)) {
       event.preventDefault();
       moveJumper(key === 'arrowleft' || key === 'a' ? -1 : 1);

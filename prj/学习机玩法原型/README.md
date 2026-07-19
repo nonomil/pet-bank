@@ -78,7 +78,7 @@ node "prj\学习机玩法原型\scripts\test-replay-feedback-reset.mjs"
 - Typing Attack：[typinggames.zone/typingattack](https://www.typinggames.zone/typingattack)，参考“多目标推进、首字母锁定、每个字母发射一次、目标击毁后清屏反馈”
 - 拼音赛车：替代原拼音炮台方向，保留“看汉字、打拼音、每个字母立刻反馈”的输入逻辑，但把外壳改成赛道、小车、汉字路牌和加速反馈
 - Snake / 贪吃蛇：保留“蛇头持续前进、吃食物变长、方向键控制”的核心识别点；调研与合入路线见 [贪吃蛇调研与合入方案.md](./贪吃蛇调研与合入方案.md)
-- 2026-07-09 贪吃蛇按用户参考图复刻为浅色网格舞台：圆润长蛇、彩色圆点食物、目标食物浮动 `[拼音块]` 标签、左上角长度/星星统计；游戏台改为全屏铺满式舞台，横屏和竖屏都保持棋盘占主要视觉区域；Agnes 参考图保存在 `assets/generated/reference/pinyin-snake-reference-agnes.png`
+- 2026-07-19 贪吃蛇重做为“拼音方向挑战”：任务卡固定显示汉字、语义图、拼音块进度和星星；四个食物都使用 `pinyin-snake-assets` 图片并直接显示可读拼音，目标食物用黄色描边和“目标”标记区分；新增屏幕方向键、`P` 暂停、`WASD` 兼容输入和横竖屏布局适配；不再依赖悬浮 `[拼音块]` 文字
 - TypingGames、edclub、打字鸭：参考低门槛入口、课程卡片和游戏式反馈，不直接嵌入第三方站点
 - 金山打字通、TypingMaster、TypingClub、Star Rune：参考“移动目标、短局、连击、每次按键反馈”的打字游戏机制；调研文档见 `../学习机游戏方案设计/06-打字游戏调研与汉字跑酷方案.md`
 

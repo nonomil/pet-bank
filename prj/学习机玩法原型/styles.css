@@ -7462,3 +7462,711 @@ button {
     min-height: 44px;
   }
 }
+
+/* 拼音方向挑战：把任务、棋盘和方向键收成一个可读的学习游戏舞台。 */
+.game-screen[data-active-game="pinyin-snake"] .pinyin-snake {
+  display: flex !important;
+  flex-direction: column;
+  gap: 12px !important;
+  padding: 14px 24px 18px !important;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .pinyin-snake > .game-hud {
+  width: min(100%, 980px);
+  min-height: 46px;
+  display: grid;
+  grid-template-columns: auto minmax(100px, 1fr) auto auto;
+  gap: 8px;
+  margin: 0 auto;
+  padding-left: 72px;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .pinyin-snake > .game-hud span,
+.game-screen[data-active-game="pinyin-snake"] .pinyin-snake > .game-hud strong,
+.game-screen[data-active-game="pinyin-snake"] .snake-pause-button {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: 1px solid rgba(92, 121, 76, 0.18);
+  border-radius: 14px;
+  color: #29482f;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 6px 14px rgba(51, 82, 46, 0.08);
+}
+
+.game-screen[data-active-game="pinyin-snake"] .pinyin-snake > .game-hud strong {
+  color: #1e512f;
+  background: linear-gradient(180deg, #efffd2, #d8f29b);
+  font-size: clamp(20px, 2.2vw, 30px);
+  letter-spacing: 0;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-hud-title {
+  color: #55735d !important;
+  font-size: 12px !important;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-hud-score {
+  color: #9a6714 !important;
+  background: #fff5c9 !important;
+  white-space: nowrap;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-pause-button {
+  color: #3a6548;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.snake-main-layout {
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(196px, 232px) minmax(0, 1fr) minmax(176px, 210px);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-task-card,
+.snake-control-card {
+  min-width: 0;
+  min-height: 0;
+  width: auto;
+  margin: 0;
+  padding: 20px 16px;
+  border: 1px solid rgba(117, 151, 97, 0.22);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 16px 28px rgba(64, 89, 56, 0.12);
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-task-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.snake-task-kicker,
+.snake-control-kicker {
+  display: block;
+  color: #6a8c56 !important;
+  font-size: 12px !important;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.snake-task-word-row {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-task-word-row > strong {
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  color: #31532b;
+  background: linear-gradient(180deg, #fff8c8, #ffe486);
+  box-shadow: inset 0 -6px 0 rgba(187, 130, 24, 0.14), 0 8px 16px rgba(160, 113, 27, 0.12);
+  font-size: 42px;
+  line-height: 1;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-task-meaning {
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 7px;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-task-emoji {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  font-size: 22px;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-task-example {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-piece-row {
+  min-height: 42px;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow: visible;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-piece {
+  min-width: 46px;
+  min-height: 34px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 17px;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-task-card small {
+  display: block;
+  color: #6b7c70;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-status-badge {
+  grid-column: auto;
+  min-height: 30px;
+  justify-self: stretch;
+  font-size: 12px;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-hint-button {
+  grid-column: auto;
+  justify-self: stretch;
+  min-height: 36px;
+  margin-top: auto;
+  font-size: 12px;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-reference-stage {
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 42px 18px 38px;
+  border: 1px solid rgba(108, 151, 82, 0.28);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, #f5ffdf 0%, #d9f3a2 48%, #c2e985 100%);
+  box-shadow: 0 18px 36px rgba(61, 96, 45, 0.18), inset 0 0 0 8px rgba(255, 255, 255, 0.22);
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-ref-hud {
+  left: 18px;
+  top: 14px;
+  display: flex;
+  gap: 8px;
+  color: #47653f;
+  font-size: 12px;
+  text-shadow: none;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-ref-stat {
+  padding: 6px 9px;
+  border: 1px solid rgba(91, 131, 69, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-board {
+  width: min(100%, 680px);
+  height: auto;
+  padding: 10px;
+  border: 8px solid rgba(255, 255, 255, 0.46);
+  border-radius: 22px;
+  background:
+    linear-gradient(rgba(154, 205, 78, 0.11), rgba(154, 205, 78, 0.11)),
+    url("./assets/generated/pinyin-snake-assets/board_10x10.png") center / 100% 100% no-repeat;
+  box-shadow: 0 10px 24px rgba(60, 91, 42, 0.18), inset 0 0 0 1px rgba(67, 114, 43, 0.18);
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-cell {
+  border-radius: 8px;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-cell.is-food {
+  z-index: 5;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-cell.is-snake {
+  z-index: 6;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-food-card {
+  width: 94%;
+  height: 94%;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: none;
+  font-size: 0;
+  overflow: visible;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-food-asset {
+  position: absolute;
+  inset: 1%;
+  z-index: 1;
+  width: 98%;
+  height: 98%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 3px rgba(46, 74, 41, 0.18));
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-food-card .snake-food-label {
+  position: absolute !important;
+  z-index: 2;
+  inset: auto 4px 5px;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0;
+  overflow: visible !important;
+  clip: auto !important;
+  padding: 1px 4px;
+  border-radius: 6px;
+  color: #203a27;
+  background: rgba(255, 255, 255, 0.88);
+  font-family: Arial, "Microsoft YaHei", sans-serif;
+  font-size: clamp(9px, 1.35vw, 15px);
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1.05;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-food-card.is-target {
+  outline: 3px solid rgba(255, 210, 72, 0.96);
+  outline-offset: 1px;
+  filter: drop-shadow(0 0 8px rgba(255, 197, 44, 0.7));
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-food-card.is-target .snake-food-label {
+  color: #754b04;
+  background: #fff1a6;
+  font-size: clamp(10px, 1.55vw, 17px);
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-food-target-mark {
+  position: absolute;
+  z-index: 3;
+  top: -8px;
+  right: -5px;
+  padding: 2px 4px;
+  border: 1px solid rgba(169, 115, 12, 0.24);
+  border-radius: 6px;
+  color: #80530b;
+  background: #fff8c9;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .snake-food-card.is-hint-target {
+  animation: snake-food-hint-modern 780ms ease-in-out infinite alternate;
+}
+
+.snake-control-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #355138;
+  text-align: center;
+}
+
+.snake-control-card > strong {
+  color: #27462f;
+  font-size: 18px;
+}
+
+.snake-control-pad {
+  width: min(100%, 174px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 48px);
+  gap: 6px;
+  margin: 12px auto 8px;
+}
+
+.snake-control-pad button {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  border: 1px solid rgba(83, 133, 68, 0.22);
+  border-radius: 13px;
+  color: #355c38;
+  background: linear-gradient(180deg, #f8ffe8, #d9f1a6);
+  box-shadow: 0 5px 0 rgba(109, 145, 61, 0.2), 0 8px 16px rgba(62, 101, 46, 0.12);
+  font-size: 24px;
+  font-weight: 950;
+  cursor: pointer;
+  user-select: none;
+}
+
+.snake-control-pad button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(109, 145, 61, 0.2), 0 5px 10px rgba(62, 101, 46, 0.12);
+}
+
+.snake-control-pad button:nth-child(1) { grid-column: 2; grid-row: 1; }
+.snake-control-pad button:nth-child(2) { grid-column: 1; grid-row: 2; }
+.snake-control-pad button:nth-child(3) { grid-column: 2; grid-row: 3; }
+.snake-control-pad button:nth-child(4) { grid-column: 3; grid-row: 2; }
+
+.snake-control-card p {
+  margin: auto 0 0;
+  color: #708271;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.snake-control-card .snake-speed-switch {
+  margin: 8px 0 0;
+}
+
+.game-screen[data-active-game="pinyin-snake"] .game-feedback {
+  position: static;
+  width: min(100%, 980px);
+  min-height: 32px;
+  margin: 0 auto;
+  padding: 7px 14px;
+  border: 1px solid rgba(117, 151, 97, 0.2);
+  border-radius: 12px;
+  color: #4a684f;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 8px 16px rgba(61, 96, 45, 0.08);
+  font-size: 12px;
+  text-align: center;
+}
+
+@keyframes snake-food-hint-modern {
+  from { transform: scale(1); filter: drop-shadow(0 0 7px rgba(255, 202, 54, 0.55)); }
+  to { transform: scale(1.1); filter: drop-shadow(0 0 15px rgba(255, 202, 54, 0.98)); }
+}
+
+@media (max-width: 1120px) and (min-width: 721px) {
+  .snake-main-layout {
+    grid-template-columns: minmax(180px, 230px) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .snake-control-card {
+    grid-column: 1 / -1;
+    min-height: 112px;
+    display: grid;
+    grid-template-columns: auto auto minmax(220px, 1fr) auto;
+    align-items: center;
+    text-align: left;
+  }
+
+  .snake-control-pad {
+    width: 174px;
+    margin: 0 auto;
+  }
+
+  .snake-control-card p {
+    margin: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .game-screen[data-active-game="pinyin-snake"] .pinyin-snake {
+    gap: 8px !important;
+    padding: 10px 10px 12px !important;
+    overflow-y: auto;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .pinyin-snake > .game-hud {
+    min-height: 38px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding-left: 48px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .pinyin-snake > .game-hud span,
+  .game-screen[data-active-game="pinyin-snake"] .pinyin-snake > .game-hud strong,
+  .game-screen[data-active-game="pinyin-snake"] .snake-pause-button {
+    min-height: 32px;
+    padding: 0 8px;
+    border-radius: 10px;
+    font-size: 11px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .pinyin-snake > .game-hud .snake-pause-button {
+    grid-column: 3;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-hud-score {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .snake-main-layout {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 8px;
+    overflow: visible;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-card {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr) auto;
+    min-height: 98px;
+    padding: 10px;
+    gap: 7px 10px;
+  }
+
+  .snake-task-kicker {
+    grid-column: 1 / -1;
+  }
+
+  .snake-task-word-row {
+    grid-column: 1 / -1;
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-word-row > strong {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    font-size: 32px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-piece-row {
+    grid-column: 1 / -1;
+    min-height: 30px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-card small {
+    grid-column: 1 / 3;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-status-badge {
+    grid-column: 3;
+    grid-row: 3;
+    min-width: 58px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-hint-button {
+    grid-column: 3;
+    grid-row: 4;
+    min-height: 28px;
+    margin-top: 0;
+    padding: 0 8px;
+    font-size: 10px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-reference-stage {
+    flex: 0 0 auto;
+    height: auto;
+    min-height: min(58vh, 480px);
+    padding: 34px 8px 30px;
+    border-radius: 18px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-board {
+    width: min(100%, 70vh, 520px);
+    padding: 6px;
+    border-width: 5px;
+    border-radius: 16px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-food-card .snake-food-label {
+    inset: auto 1px 2px;
+    padding: 1px 2px;
+    font-size: 9px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-food-card.is-target .snake-food-label {
+    font-size: 10px;
+  }
+
+  .snake-control-card {
+    flex: 0 0 auto;
+    min-height: 92px;
+    display: grid;
+    grid-template-columns: 82px 1fr;
+    grid-template-rows: 24px 30px 28px;
+    align-items: center;
+    text-align: left;
+    padding: 12px;
+  }
+
+  .snake-control-card .snake-control-kicker {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .snake-control-card > strong {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: left;
+  }
+
+  .snake-control-card > p {
+    display: none;
+  }
+
+  .snake-control-pad {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    width: 78px;
+    grid-template-rows: repeat(3, 23px);
+    gap: 3px;
+    margin: 0;
+  }
+
+  .snake-control-pad button {
+    border-radius: 7px;
+    font-size: 15px;
+    box-shadow: 0 3px 0 rgba(109, 145, 61, 0.2);
+  }
+
+  .snake-control-card .snake-speed-switch {
+    grid-column: 2;
+    grid-row: 3;
+    justify-content: flex-start;
+    margin: 0;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .game-feedback {
+    position: static;
+    flex: 0 0 auto;
+    min-height: 28px;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .game-screen[data-active-game="pinyin-snake"] .pinyin-snake {
+    padding: 8px 12px 8px !important;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-main-layout {
+    position: relative;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    width: 100%;
+    height: 100%;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-reference-stage {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0;
+    padding: 32px 8px 24px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-board {
+    width: min(calc(100vw - 70px), calc(100dvh - 120px), 680px) !important;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-card {
+    position: absolute;
+    z-index: 10;
+    top: 8px;
+    left: 8px;
+    width: 220px;
+    min-height: 52px;
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    gap: 4px 6px;
+    padding: 5px 7px;
+    border-radius: 10px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-kicker,
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-example,
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-card small {
+    display: none;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-word-row {
+    grid-column: 1 / -1;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-word-row > strong {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    font-size: 24px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-meaning {
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-task-emoji {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    font-size: 15px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-piece-row {
+    grid-column: 1 / 3;
+    min-height: 22px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-piece {
+    min-width: 28px;
+    min-height: 21px;
+    padding: 1px 5px;
+    border-radius: 5px;
+    font-size: 11px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-status-badge,
+  .game-screen[data-active-game="pinyin-snake"] .snake-hint-button {
+    display: none;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-control-card {
+    position: absolute;
+    z-index: 10;
+    top: 8px;
+    right: 8px;
+    width: 132px;
+    min-height: 88px;
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 2px 6px;
+    padding: 6px;
+    border-radius: 10px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-control-card > strong,
+  .game-screen[data-active-game="pinyin-snake"] .snake-control-card > p,
+  .game-screen[data-active-game="pinyin-snake"] .snake-speed-switch {
+    display: none;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-control-pad {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    width: 108px;
+    grid-template-rows: repeat(3, 22px);
+    gap: 3px;
+    margin: 0 auto;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .snake-control-pad button {
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .game-screen[data-active-game="pinyin-snake"] .game-feedback {
+    display: none;
+  }
+}

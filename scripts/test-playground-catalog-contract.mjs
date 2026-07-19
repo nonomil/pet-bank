@@ -21,6 +21,6 @@ assert.equal(cards[0][2], '单词跑酷', 'word parkour should remain the first 
 assert.match(moduleSource, /PetBankPlaygroundCatalog/);
 assert.match(moduleSource, /setCategory/);
 assert.match(moduleSource, /nextCategory === 'all'/, 'all category should show every card');
-assert.match(styleSource, /grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/, 'desktop game cards should use three columns');
+assert.match(styleSource, /grid-template-columns:\s*repeat\(5,\s*minmax\(0,\s*1fr\)\)/, 'large desktop game cards should use five columns');
 
 console.log('PASS playground catalog contract');
