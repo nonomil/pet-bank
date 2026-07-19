@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { annotateCards } = require('./annotate_minecraft_vocab_levels.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const mainPath = path.join(repoRoot, 'data', 'learn', 'packs', 'english-mc-hybrid-2026', 'modules', 'minecraft-vocab.json');
@@ -204,10 +205,12 @@ function main() {
     }
   }
 
-  const cards = addDistractors([...map.values()]).map((card, index) => ({
+  const mergedCards = addDistractors([...map.values()]).map((card, index) => ({
     ...card,
     id: card.id || `card-${String(index + 1).padStart(4, '0')}`
   }));
+  const curriculum = annotateCards(mergedCards);
+  const cards = curriculum.cards;
   const next = {
     ...existing,
     id: 'minecraft-vocab',
@@ -217,14 +220,15 @@ function main() {
     sourceSnapshot: 'prj/anki-minecraft-vocab/data/cards.json + data/learn/external/mayihaoke/word-cards.json',
     description: '完整学习池：保留参考站词卡，并合并 Anki 可读官方词条；原始 Anki 逐卡目录仍保留在独立图鉴中。',
     contentCuration: 'full-anki-reference-v1',
+    curriculumLeveling: curriculum.metadata,
     imagePromptPolicy: {
-      version: 'minecraft-card-back-v1',
-      provider: 'agnes-image-2.1-flash',
+      version: 'minecraft-card-back-v2',
+      provider: 'mixed-agnes-grok-batched-theme-scenes',
       purpose: 'sentence-scene-memory',
       promptField: 'backImagePrompt',
       assetField: 'backImage',
       assetRoot: 'assets/learn/english-vocab/minecraft-card-backs/',
-      status: cards.some(card => card.backImage) ? 'partially-generated' : 'prompt-ready-not-generated',
+      status: cards.every(card => card.backImage) ? 'generated-batched-theme-scenes' : cards.some(card => card.backImage) ? 'partially-generated' : 'prompt-ready-not-generated',
       generatedCount: cards.filter(card => card.backImage).length
     },
     generatedAt: new Date().toISOString(),

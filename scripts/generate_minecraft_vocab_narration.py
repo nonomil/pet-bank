@@ -117,9 +117,24 @@ def make_entry(index: int, card: dict[str, Any], files: dict[str, str], engines:
     }
 
 
-def entry_is_complete(entry: dict[str, Any]) -> bool:
+def entry_is_complete(entry: dict[str, Any], card: dict[str, Any] | None = None) -> bool:
     files = entry.get("files") or {}
-    return all(key in files and valid_audio(local_path(str(files[key]))) for key in ALL_KEYS)
+    if not all(key in files and valid_audio(local_path(str(files[key]))) for key in ALL_KEYS):
+        return False
+    if card is None:
+        return True
+    expected_texts = {
+        key: str(card.get("word") or "").strip() if key == "word" else card_text(card, key)
+        for key in ALL_KEYS
+    }
+    actual_texts = entry.get("texts") or {}
+    return all(str(actual_texts.get(key) or "").strip() == value for key, value in expected_texts.items())
+
+
+def manifest_status(complete_count: int, total_cards: int, failures: list[dict[str, str]], phase: str = "idle") -> str:
+    if phase == "in-progress":
+        return "in-progress"
+    return "complete" if complete_count == total_cards and not failures else "partial"
 
 
 def current_entry(index: int, card: dict[str, Any], previous: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -132,7 +147,7 @@ def current_entry(index: int, card: dict[str, Any], previous: dict[str, Any] | N
         engines.setdefault("word", str(card.get("audioSource") or "existing"))
         voices.setdefault("word", str(card.get("audioVoice") or ""))
     entry = make_entry(index, card, files, engines, voices)
-    return entry if entry_is_complete(entry) else None
+    return entry if entry_is_complete(entry, card) else None
 
 
 def parse_args() -> argparse.Namespace:
@@ -148,6 +163,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--inference-timesteps", type=int, default=10)
     parser.add_argument("--replace-word", action="store_true", help="also regenerate the existing word clip")
     parser.add_argument("--refresh-text", action="store_true", help="regenerate phrase/sentence/translation clips even when files already exist")
+    parser.add_argument("--refresh-sentence", action="store_true", help="regenerate sentence and Chinese sentence clips even when files already exist")
     return parser.parse_args()
 
 
@@ -213,16 +229,20 @@ async def run(args: argparse.Namespace) -> int:
 
     failures: list[dict[str, str]] = []
     entries_by_id = dict(previous)
+    cards_by_id = {str(card.get("id") or f"card-{index + 1:04d}"): card for index, card in enumerate(cards)}
     model = None
     semaphore = asyncio.Semaphore(args.concurrency)
 
-    async def save_progress() -> None:
+    async def save_progress(phase: str = "idle") -> None:
         entries = sorted(entries_by_id.values(), key=lambda item: str(item.get("cardId")))
-        complete_count = sum(1 for entry in entries if entry_is_complete(entry))
+        complete_count = sum(
+            1 for card_id, card in cards_by_id.items()
+            if entry_is_complete(entries_by_id.get(card_id) or {}, card)
+        )
         manifest = {
             "schemaVersion": 1,
             "vocabId": vocab.get("id", "minecraft-vocab"),
-            "status": "complete" if complete_count == len(cards) else "partial",
+            "status": manifest_status(complete_count, len(cards), failures, phase),
             "engine": args.engine,
             "clipsPerCard": len(ALL_KEYS),
             "totalCards": len(cards),
@@ -272,7 +292,11 @@ async def run(args: argparse.Namespace) -> int:
                     failures.append({"cardId": context["cardId"], "key": key, "error": f"missing text field: {field}"})
                     continue
                 relative, output = target_for(context["index"], context["word"], key, "mp3")
-                if args.refresh_text and key != "word" and output.exists():
+                refresh_current = (
+                    (args.refresh_text and key != "word")
+                    or (args.refresh_sentence and key in {"sentence", "sentenceTranslation"})
+                )
+                if refresh_current and output.exists():
                     output.unlink()
                 tasks.append((context, key, relative, output, generate_edge(text_value, voice, rate, output, semaphore)))
         results = await asyncio.gather(*(task[4] for task in tasks), return_exceptions=True)
@@ -288,18 +312,20 @@ async def run(args: argparse.Namespace) -> int:
             entry = make_entry(context["index"], context["card"], context["files"], context["engines"], context["voices"])
             entry = refresh_entry_texts(entry, context["card"])
             entries_by_id[context["cardId"]] = entry
-            if entry_is_complete(entry):
+            if entry_is_complete(entry, context["card"]):
                 context["card"]["narrationAudio"] = context["files"]
                 context["card"]["narrationAudioSource"] = args.engine
                 print(f"OK {context['index'] + 1}/{len(cards)} {context['word']}", flush=True)
             else:
                 print(f"PARTIAL {context['index'] + 1}/{len(cards)} {context['word']}", flush=True)
 
+    await save_progress("in-progress")
+
     if args.engine == "edge-tts":
         for batch_start in range(0, len(selected), args.batch_size):
             batch = list(enumerate(selected[batch_start:batch_start + args.batch_size], start=args.start + batch_start))
             await process_edge_batch(batch)
-            await save_progress()
+            await save_progress("in-progress")
             write_json(VOCAB_PATH, vocab)
     else:
         for offset, card in enumerate(selected, start=args.start):
@@ -325,14 +351,14 @@ async def run(args: argparse.Namespace) -> int:
             entry = make_entry(offset, card, context["files"], context["engines"], context["voices"])
             entry = refresh_entry_texts(entry, card)
             entries_by_id[context["cardId"]] = entry
-            if entry_is_complete(entry):
+            if entry_is_complete(entry, card):
                 card["narrationAudio"] = context["files"]
                 card["narrationAudioSource"] = args.engine
                 print(f"OK {offset + 1}/{len(cards)} {context['word']}", flush=True)
             else:
                 print(f"PARTIAL {offset + 1}/{len(cards)} {context['word']}", flush=True)
             if (offset - args.start + 1) % 16 == 0 or offset == args.start + len(selected) - 1:
-                await save_progress()
+                await save_progress("in-progress")
                 write_json(VOCAB_PATH, vocab)
 
     for index, card in enumerate(cards):
@@ -342,14 +368,17 @@ async def run(args: argparse.Namespace) -> int:
             continue
         refreshed = refresh_entry_texts(dict(existing), card)
         entries_by_id[card_id] = refreshed
-        if entry_is_complete(refreshed):
+        if entry_is_complete(refreshed, card):
             card["narrationAudio"] = refreshed["files"]
             card["narrationAudioSource"] = refreshed.get("engines", {}).get("sentence", args.engine)
 
     await save_progress()
     write_json(VOCAB_PATH, vocab)
-    complete_count = sum(1 for entry in entries_by_id.values() if entry_is_complete(entry))
-    status = "complete" if complete_count == len(cards) and not failures else "partial"
+    complete_count = sum(
+        1 for card_id, card in cards_by_id.items()
+        if entry_is_complete(entries_by_id.get(card_id) or {}, card)
+    )
+    status = manifest_status(complete_count, len(cards), failures)
     print(json.dumps({"status": status, "completeCards": complete_count, "totalCards": len(cards), "failures": len(failures)}, ensure_ascii=False))
     return 0 if status == "complete" else 2
 

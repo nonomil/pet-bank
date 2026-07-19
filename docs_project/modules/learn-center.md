@@ -109,7 +109,7 @@ catalog.json → pack manifest.json → module json → lesson (content)
 2. 写入 `petbank_learning_rewards`，包含课时奖励、每日 bundle 和资料包连续奖励；失败会回滚本次学习进度，不发积分。
 3. 通过 `PetBankPoints.add()` 发放本次合计积分；积分 API 不可用时恢复本次修改前的进度和奖励记录，并返回失败。
 
-完成按钮只有收到 `persisted: true` 才显示成功状态。英语词卡由 `EnglishVocabProgress` 管理显式 Profile 键：`record()` 返回 `persisted: false` 时，界面只提示重试，不推进词卡；里程碑兑换券写入失败时不会渲染为已获得。
+完成按钮只有收到 `persisted: true` 才显示成功状态。英语词卡由 `EnglishVocabProgress` 管理显式 Profile 键：`record()` 返回 `persisted: false` 时，界面只提示重试，不推进词卡；里程碑兑换券写入失败时不会渲染为已获得。词卡进度使用轻量间隔重复：`again` 10 分钟重新到期，`hard` 12 小时重新到期，`good` 首次 1 天、随后 3/7/14/30/60 天递进，`easy` 使用更长的受控间隔。每张卡记录 `lastGrade`、`hintUsed`、`responseMode`、`lastResponseMs`、`lapses`、`ease`、`intervalDays` 和 `dueAt`；旧的布尔 `record(cardId, isCorrect)` 调用仍兼容。保存成功会请求 Profile 云同步防抖，未绑定账户时仍可离线运行。
 
 ### 课时类型渲染路由
 
@@ -145,14 +145,28 @@ renderLessonBody (pack, module, lesson, showPinyin) → :2733
 
 ### Minecraft 单词远征
 
-英语资料包中的 Minecraft 词卡有两条入口：原有 `learn-lesson` 词卡页继续作为资料包内的回退路径；新的 `/app/learn/minecraft-vocab` 是按日运行的短会话页面。完整 Anki 档案仍在 `prj/anki-minecraft-vocab/` 独立站，不由学习中心全量加载。
+英语资料包中的 Minecraft 词卡有两条入口：原有 `learn-lesson` 词卡页继续作为资料包内的回退路径；新的 `/app/learn/minecraft-vocab` 是按日运行的短会话页面。孩子端主导航现在将“单词远征 / Word Quest”作为与“探索”同级的入口，点击后直接进入方块营地，而不是进入普通词卡列表。学习中心和今日页只提供继续/开始远征的辅助入口，目标仍统一为 `minecraft-vocab`。完整 Anki 档案仍在 `prj/anki-minecraft-vocab/` 独立站，不由学习中心全量加载。
 
-- 默认学习池为 `data/learn/packs/english-mc-hybrid-2026/` 中 2,168 个去重词，合并现有精选卡、参考站公开接口的 500 条结构化快照和 Anki 可读官方词条；完整 11,241 张 Anki 原始卡片与目录位于 `prj/anki-minecraft-vocab/`。
-- 每次会话固定为 2 个复习位、5 个新词位、3 个主动回忆位和 1 个场景句位，共 11 步；无历史复习词时只用稳定顺序补足复习位，不伪造词卡掌握状态。
-- `MinecraftVocabSession` 负责 Profile 会话快照、队列和完成判定；`MinecraftVocabPage` 负责页面渲染、音频回退和离页清理。页面由 `runtime-loader.js` 按 `minecraft-vocab` bundle 加载。
+第一阶段按幼儿园和小学低年级设计：默认阶段为 `kindergarten`，先开放“草原小径”，通过 2-3 个双语故事节拍、4-6 张本章词卡、轻量战斗和章节结算完成一次远征。词卡学习、词卡收集、远征经验、能力道具和主站积分是不同状态：`EnglishVocabProgress` 记录词卡熟练度，`MinecraftVocabExpedition` 记录远征成长，积分仍由统一奖励 receipt 发放。小学中年级、高年级内容保留阶段和分片边界，尚未作为默认幼儿园路线开放。
+
+- 默认学习池为 `data/learn/packs/english-mc-hybrid-2026/` 中 2,168 个去重词，合并现有精选卡、参考站公开接口的 500 条结构化快照和 Anki 可读官方词条；完整 11,241 张 Anki 原始卡片与目录位于 `prj/anki-minecraft-vocab/`。每张运行卡带有 `curriculumLevel`，当前映射为幼儿园 87、幼小衔接新增 39、小学低年级新增 3、Minecraft 初级 2,039、完整高级 0。
+- 运行时不直接读取 7.2 MiB 的源码全量 JSON：`js/minecraft-vocab-loader.js` 首次加载 `minecraft-vocab-runtime-starter.json`（140 张，约 0.44 MiB），Minecraft 初级再按 `minecraft-core`、`minecraft-basic`、`minecraft-building`、`minecraft-mobs`、`minecraft-world`、`minecraft-advanced` 加载对应 band；`all` 才会并行加载六个 band。`minecraft-vocab.json` 是仓库源文件，不进入 Pages 制品。
+- 旁白采用同样的发布边界：主站只发布 starter/远征首轮的 700 条 OGG；非 starter band 不携带可直接访问的本地音频 URL，但保留 `externalNarrationAudio` CDN key。配置完整音频包后按 starter/band 索引和播放动作取音频，只有 CDN 不可用时才使用浏览器语音回退。完整 2,168 词旁白源池不进入默认 Pages 长尾资源。
+- 完整旁白可由 `scripts/assemble-minecraft-audio-artifact.mjs` 生成独立版本包；只有配置 `window.PetBankConfig.minecraftAudioBaseUrl` 后，Minecraft 词库页才加载根 manifest，再按 starter/band 加载选择索引，具体 OGG 按播放动作取用，并通过 `js/minecraft-vocab-audio.js` 映射播放。CDN 不可用时保持本地 starter，band 仅在异常时浏览器语音回退。
+- 远征首页提供累积式学习阶段选择，默认 `kindergarten`：幼儿园、幼小衔接、小学低年级、Minecraft 初级、完整词库。选择按 Profile 写入 `petbank_minecraft_vocab_level_v1_{profileId}`；会话快照同时记录 `levelId`，切换阶段不会错误恢复当天旧队列。
+- 营地节点声明 `minVocabLevel`：草原小径从幼儿园开放，村庄门口需要幼小衔接，深层矿洞需要小学低年级，下界与末影龙路线需要 Minecraft 初级；阶段不足时地图节点显示为锁定，不会把高级词卡塞进默认远征。
+- 每次会话最多安排 2 个到期复习位、5 个新词位、3 个主动回忆位和 1 个场景句位，共 11 步；未到期的学习中/已掌握卡不会提前进入复习位。没有到期复习卡时，用新词补足热身位，不伪造词卡掌握状态。
+- `MinecraftVocabSession` 负责 Profile 会话快照、队列和完成判定；`MinecraftVocabLoader` 负责分片请求、Promise 缓存和卡片去重；`MinecraftVocabPage` 负责页面渲染、双语故事、音频回退和离页清理。页面由 `runtime-loader.js` 按 `minecraft-vocab` bundle 加载。
 - 完成后只通过 `GameRewardReceipts` 发放 `source=minecraft-vocab`、`eventId=session:<localDate>` 的 10 成长分，重复完成返回 duplicate，不直接写积分键。
-- 离开页面时必须执行 `MinecraftVocabPage.stop()`；媒体播放和页面 timer 不得跨页面继续运行。Profile 切换由现有快照策略隔离 `petbank_minecraft_vocab_session_v1_*`。
-- 视觉资源分为运行场景包 `minecraft-vocab-visual-pack` 和 GPT UI 组件包 `minecraft-vocab-ui-pack`；后者只包含无文字透明 PNG，页面文字、按钮和可访问名称继续由 HTML/CSS 提供。
+- 离开页面时必须执行 `MinecraftVocabPage.stop()`；媒体播放、页面 timer 和探索桥接上下文不得跨页面继续运行。营地状态使用 `petbank_minecraft_expedition_state_v2_{profileId}`，阶段选择使用 `petbank_minecraft_vocab_level_v1_{profileId}` 和 `petbank_minecraft_vocab_band_v1_{profileId}`，由现有 Profile 快照策略隔离。
+- `MinecraftVocabExplorationBridge` 只传递区域、能力和返回目标。它支持探索故事节点打开远征并返回原探索宿主，不接管 `#page-explore`，也不改写通用 `BattleEngine` 伤害公式。当前只接入方块故事的一个节点作为验证样板。
+- 视觉资源分为运行场景包 `minecraft-vocab-visual-pack`、`minecraft-vocab-ui-pack` 和远征故事场景包；运行时 PNG 与 manifest 进入 Pages，Grok 提示词、`docs/`、`tmp/` 和 Anki 原始目录不进入制品。页面文字、按钮和可访问名称继续由 HTML/CSS 提供。
+
+#### 当前未实现边界
+
+- 没有离线 outbox、跨设备复杂合并或多人联机；现有孩子端玩法仍以本地 Profile 为事实来源。
+- 没有把完整 Anki 工作台迁移到主站，也没有把小学中年级、高年级课程全部展开为远征章节。
+- 末影龙是当前营地路线的终点内容和能力验证目标，不代表已经实现完整 Minecraft 世界模拟或实时联机战斗。
 
 ### 持久化
 
@@ -165,7 +179,9 @@ key: petbank_learning_print_prefs    → 打印偏好 (JSON)
 key: petbank_learning_daily_sheet    → 每日学习单数据 (JSON)
 key: petbank_learning_sheet_mode     → 模板选择 ('template-a'|'template-b'|'template-c')
 key: petbank_learning_vocab_focus    → 词汇焦点索引 (JSON)
-key: petbank_minecraft_vocab_session_v1_{profileId} → Minecraft 单词远征会话快照（JSON，按 Profile 隔离）
+key: petbank_minecraft_expedition_state_v2_{profileId} → Minecraft 单词远征营地、XP、能力、道具和词卡收集状态（JSON，按 Profile 隔离；兼容读取 v1）
+key: petbank_minecraft_vocab_level_v1_{profileId} → Minecraft 单词远征阶段选择（string，按 Profile 隔离，默认 kindergarten）
+key: petbank_minecraft_vocab_band_v1_{profileId} → Minecraft 初级内部层级选择（string，按 Profile 隔离，默认 minecraft-core）
 ```
 
 ---

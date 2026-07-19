@@ -6,12 +6,15 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const vocabPath = path.join(repoRoot, 'data', 'learn', 'packs', 'english-mc-hybrid-2026', 'modules', 'minecraft-vocab.json');
 const mediaManifestPath = path.join(repoRoot, 'assets', 'learn', 'english-vocab', 'minecraft-cards', 'manifest.json');
+const backManifestPath = path.join(repoRoot, 'assets', 'learn', 'english-vocab', 'minecraft-card-backs', 'manifest.json');
 const narrationManifestPath = path.join(repoRoot, 'data', 'vocab', 'english-minecraft', 'narration-manifest.json');
 const vocab = JSON.parse(fs.readFileSync(vocabPath, 'utf8'));
 const mediaManifest = JSON.parse(fs.readFileSync(mediaManifestPath, 'utf8'));
+const backManifest = JSON.parse(fs.readFileSync(backManifestPath, 'utf8'));
 const narrationManifest = JSON.parse(fs.readFileSync(narrationManifestPath, 'utf8'));
 const cards = vocab.cards || [];
 const mediaByPath = new Map((mediaManifest.assets || []).map(asset => [String(asset.path), asset]));
+const backByPath = new Map((backManifest.assets || []).map(asset => [String(asset.path), asset]));
 const narrationById = new Map((narrationManifest.entries || []).map(entry => [String(entry.cardId), entry]));
 const narrationKeys = ['word', 'phrase', 'sentence', 'translation', 'phraseTranslation', 'sentenceTranslation'];
 
@@ -32,6 +35,8 @@ function assertText(value, label) {
 
 assert.equal(cards.length, 2168);
 assert.ok(mediaManifest.assets.length >= 122);
+assert.ok(backManifest.assets.length >= 50);
+assert.equal(vocab.imagePromptPolicy?.generatedCount, cards.length);
 assert.equal(narrationManifest.generatedCount, cards.length);
 assert.equal(narrationManifest.generatedClipCount, cards.length * narrationKeys.length);
 
@@ -54,6 +59,15 @@ for (const [index, card] of cards.entries()) {
     assert.equal(imageBytes.readUInt32BE(20), 512, `${label}.image height must be 512`);
     const media = mediaByPath.get(card.image);
     if (media) assert.equal(media.path, card.image, `${label}.image must match media manifest`);
+
+    const backPath = localFile(card.backImage, `${label}.backImage`);
+    const backBytes = fs.readFileSync(backPath);
+    assert.equal(backBytes.subarray(0, 8).toString('hex'), '89504e470d0a1a0a', `${label}.backImage must be PNG`);
+    assert.equal(backBytes.readUInt32BE(16), 512, `${label}.backImage width must be 512`);
+    assert.equal(backBytes.readUInt32BE(20), 512, `${label}.backImage height must be 512`);
+    const backAsset = backByPath.get(card.backImage);
+    assert.ok(backAsset, `${label}.backImage must match back-image manifest`);
+    assert.deepEqual(backAsset.dimensions, [512, 512], `${label}.backImage manifest dimensions`);
 
     localFile(card.audio, `${label}.audio`);
     const narration = card.narrationAudio;

@@ -146,6 +146,11 @@ function semanticCategory(word, category) {
   if (key === 'friend') return 'people';
   if (key === 'world' || key === 'house' || key === 'cave') return 'place';
   if (/^(run|look|play|craft|build|mine|jump|eat|open|find|use)$/.test(key)) return 'verb';
+  if (/^arrow of /.test(key)) return 'item';
+  if (/^(sun|light|fire|water|sky|rain|snow|cloud|day|night)$/.test(key)) return 'nature';
+  if (/^(block|stone|dirt|sand|gravel|glass|wood|log|brick|cobblestone)$/.test(key)) return 'block';
+  if (/^(sword|bow|crossbow|shield|trident)$/.test(key)) return 'weapon';
+  if (/^bowl$/.test(key)) return 'item';
   if (/cow|pig|sheep|chicken|cat|wolf|horse|villager|zombie|skeleton|creeper|spider|guardian|bee|fox|goat|parrot|rabbit|enderman|blaze|slime|phantom|wither|witch|hoglin|piglin|strider|dolphin|squid|fish|axolotl|frog|turtle/.test(key)) return 'mob';
   if (/apple|bread|cake|carrot|potato|beef|pork|chicken|mutton|cod|salmon|cookie|melon|stew|soup|milk/.test(key) && !/spawn egg/.test(key)) return 'food';
   if (/pickaxe|sword|axe|shovel|hoe|bow|crossbow|shield|trident|fishing rod|flint and steel|shears/.test(key)) return 'tool';
@@ -275,68 +280,155 @@ function generatedSentence(word, translation, category) {
   const variants = {
     block: [
       [`I place the ${w} beside the doorway.`, `我把${zh}放在门口旁边。`],
-      [`The ${w} makes my base look brighter.`, `${zh}让我的基地看起来更明亮。`],
+      [`The ${w} gives our base a new shape.`, `${zh}让我们的基地有了新的形状。`],
       [`We use the ${w} to mark the path home.`, `我们用${zh}标记回家的路。`],
       [`I collect the ${w} before sunset.`, `我在日落前收集${zh}。`],
-      [`The builder stores the ${w} in a chest.`, `建筑师把${zh}存进箱子里。`]
+      [`The builder stores the ${w} in a chest.`, `建筑师把${zh}存进箱子里。`],
+      [`I stack the ${w} to make a small wall.`, `我堆起${zh}砌一面小墙。`],
+      [`We build a safe step with the ${w}.`, `我们用${zh}搭出安全的台阶。`],
+      [`The ${w} keeps our little house strong.`, `${zh}让我们的小房子更牢固。`],
+      [`I replace the broken ${w} near camp.`, `我换掉营地附近坏掉的${zh}。`],
+      [`A torch shines on the ${w} at night.`, `夜里一支火把照亮了${zh}。`],
+      [`We choose the ${w} for the garden wall.`, `我们选择${zh}来建花园围墙。`],
+      [`We make a small path with the ${w}.`, `我们用${zh}铺出一条小路。`],
+      [`I count the ${w} before we start building.`, `开始建造前，我数了数${zh}。`],
+      [`Rain falls softly on the ${w}.`, `雨水轻轻落在${zh}上。`]
     ],
     item: [
       [`I use the ${w} during our mission.`, `我在任务中使用${zh}。`],
       [`I place the ${w} in my adventure chest.`, `我把${zh}放进冒险箱。`],
       [`We prepare the ${w} before sunset.`, `我们在日落前准备好${zh}。`],
       [`I show the ${w} to my teammate at camp.`, `我在营地把${zh}展示给队友看。`],
-      [`The ${w} is ready for our next adventure.`, `${zh}已经准备好陪我们开始下一次冒险。`]
+      [`The ${w} is ready for our next adventure.`, `${zh}已经准备好陪我们开始下一次冒险。`],
+      [`I find the ${w} beside the crafting table.`, `我在工作台旁找到${zh}。`],
+      [`My teammate passes me the ${w}.`, `我的队友把${zh}递给我。`],
+      [`We keep the ${w} in a quiet corner.`, `我们把${zh}放在安静的角落里。`],
+      [`The ${w} helps us finish the small task.`, `${zh}帮助我们完成小任务。`],
+      [`I check the ${w} before leaving camp.`, `离开营地前，我检查了${zh}。`],
+      [`I check the ${w} beside the campfire.`, `我检查篝火旁的${zh}。`],
+      [`We share the ${w} when the team needs it.`, `队伍需要时，我们一起使用${zh}。`],
+      [`I pick up the ${w} near the path.`, `我在小路旁捡起${zh}。`],
+      [`The ${w} stays safe in my backpack.`, `${zh}安全地放在我的背包里。`],
+      [`I return the ${w} after the mission.`, `任务结束后，我归还了${zh}。`]
     ],
     tool: [
       [`I use the ${w} to gather materials.`, `我用${zh}收集材料。`],
       [`The ${w} is ready for our next mission.`, `${zh}已经准备好参加下一次任务。`],
       [`I repair the ${w} at the crafting table.`, `我在工作台修理${zh}。`],
-      [`The ${w} helps me work faster.`, `${zh}帮助我更快地工作。`]
+      [`The ${w} helps me work faster.`, `${zh}帮助我更快地工作。`],
+      [`I put the ${w} beside my bed at night.`, `晚上我把${zh}放在床边。`],
+      [`The ${w} breaks the block in front of me.`, `${zh}打破了我面前的方块。`],
+      [`I carry the ${w} through the narrow cave.`, `我带着${zh}穿过狭窄的洞穴。`],
+      [`We choose the right ${w} for the job.`, `我们为这项工作选择合适的${zh}。`],
+      [`My ${w} is nearly ready to use.`, `我的${zh}快可以使用了。`],
+      [`I lend the ${w} to my teammate.`, `我把${zh}借给队友。`],
+      [`The ${w} helps us reach the high ledge.`, `${zh}帮助我们到达高处的平台。`],
+      [`I hear the ${w} tap against the stone.`, `我听见${zh}敲击石头的声音。`],
+      [`We store the ${w} after gathering wood.`, `收集木头后，我们收好${zh}。`]
     ],
     weapon: [
       [`I hold the ${w} when night falls.`, `夜幕降临时我拿着${zh}。`],
       [`The ${w} protects our team on the trail.`, `${zh}保护我们的小队走过小路。`],
-      [`I keep the ${w} ready for a surprise attack.`, `我准备好${zh}应对突然袭击。`]
+      [`I keep the ${w} ready for a surprise attack.`, `我准备好${zh}应对突然袭击。`],
+      [`We practice with the ${w} near the training yard.`, `我们在训练场附近练习使用${zh}。`],
+      [`The ${w} hangs beside the camp gate.`, `${zh}挂在营地门旁。`],
+      [`I put away the ${w} before bedtime.`, `睡觉前我收好${zh}。`],
+      [`My teammate carries the ${w} across the bridge.`, `我的队友带着${zh}走过桥。`],
+      [`We choose the ${w} for a careful rescue.`, `我们选择${zh}进行一次小心的救援。`],
+      [`The ${w} stays in its display frame.`, `${zh}放在展示框里。`],
+      [`I check the ${w} before the journey.`, `出发前我检查了${zh}。`]
     ],
     food: [
       [`I share the ${w} with my teammate.`, `我和队友分享${zh}。`],
       [`The ${w} gives us energy for the climb.`, `${zh}给我们爬山的能量。`],
-      [`We cook the ${w} at the camp.`, `我们在营地烹饪${zh}。`]
+      [`We cook the ${w} at the camp.`, `我们在营地烹饪${zh}。`],
+      [`I eat the ${w} beside the warm fire.`, `我在温暖的篝火旁吃${zh}。`],
+      [`The ${w} fills my hunger bar.`, `${zh}填满了我的饥饿值。`],
+      [`We save the ${w} for the long walk.`, `我们把${zh}留给漫长的路程。`],
+      [`I put the ${w} in the camp chest.`, `我把${zh}放进营地箱子。`],
+      [`My friend brings fresh ${w} for breakfast.`, `我的朋友带来新鲜的${zh}当早餐。`],
+      [`The ${w} helps me feel ready to explore.`, `${zh}让我准备好继续探索。`],
+      [`We make a picnic with the ${w}.`, `我们用${zh}准备了一顿野餐。`]
     ],
     plant: [
       [`I plant the ${w} beside the farm.`, `我把${zh}种在农场旁边。`],
-      [`The ${w} grows well after the rain.`, `下雨后${zh}长得很好。`],
-      [`A bee flies over the ${w}.`, `一只蜜蜂飞过${zh}。`]
+      [`Rain helps the ${w} grow.`, `雨水帮助${zh}生长。`],
+      [`A bee flies over the ${w}.`, `一只蜜蜂飞过${zh}。`],
+      [`I water the ${w} in the morning.`, `我早上给${zh}浇水。`],
+      [`The ${w} makes the garden feel cheerful.`, `${zh}让花园充满生机。`],
+      [`We visit the ${w} before the storm.`, `暴风雨前，我们去看看${zh}。`],
+      [`A path winds around the ${w}.`, `一条小路绕过${zh}。`],
+      [`I plant the ${w} near the village well.`, `我把${zh}种在村庄水井旁。`],
+      [`The ${w} gives our garden a bright color.`, `${zh}让我们的花园更加明亮。`],
+      [`I check the ${w} before leaving camp.`, `离开营地前，我检查了${zh}。`]
     ],
     mob: [
       [`I spot a ${w} near the village.`, `我在村庄附近发现一只${zh}。`],
       [`We watch the ${w} from a safe hill.`, `我们从安全的小山上观察${zh}。`],
-      [`The ${w} follows us along the path.`, `${zh}沿着小路跟着我们。`]
+      [`The ${w} follows us along the path.`, `${zh}沿着小路跟着我们。`],
+      [`A ${w} rests beside the river.`, `一只${zh}在河边休息。`],
+      [`We hear a ${w} behind the trees.`, `我们听见树后有一只${zh}。`],
+      [`The ${w} visits our camp at dawn.`, `${zh}黎明时来到我们的营地。`],
+      [`I leave food for the ${w}.`, `我给${zh}留下食物。`],
+      [`A ${w} crosses the bridge slowly.`, `一只${zh}慢慢走过桥。`],
+      [`We draw the ${w} in our adventure book.`, `我们在冒险书里画下${zh}。`],
+      [`The ${w} hides behind a tree.`, `${zh}躲在一棵树后面。`],
+      [`I wave when the ${w} comes closer.`, `${zh}靠近时，我挥了挥手。`],
+      [`Our map marks a ${w} nearby.`, `我们的地图标出了附近有一只${zh}。`]
     ],
     biome: [
       [`We explore the ${w} after breakfast.`, `我们早餐后探索${zh}。`],
       [`The ${w} is full of new plants to discover.`, `${zh}里有许多等待发现的新植物。`],
-      [`Our map shows a trail through the ${w}.`, `我们的地图显示有一条穿过${zh}的小路。`]
+      [`Our map shows a trail through the ${w}.`, `我们的地图显示有一条穿过${zh}的小路。`],
+      [`The sunrise paints the ${w} gold.`, `日出把${zh}染成金色。`],
+      [`We build a lookout in the ${w}.`, `我们在${zh}里建了一座瞭望台。`],
+      [`A river winds through the ${w}.`, `一条河流穿过${zh}。`],
+      [`We listen for new sounds in the ${w}.`, `我们在${zh}里聆听新的声音。`],
+      [`The ${w} looks different after rain.`, `下雨后，${zh}看起来不一样了。`],
+      [`Our camp sits at the edge of the ${w}.`, `我们的营地坐落在${zh}边缘。`],
+      [`We mark the ${w} on our map.`, `我们在地图上标记${zh}。`]
     ],
     structure: [
       [`We discover the ${w} beyond the river.`, `我们在河流对岸发现${zh}。`],
       [`A secret treasure may be inside the ${w}.`, `${zh}里面可能藏着秘密宝藏。`],
-      [`We place a flag beside the ${w}.`, `我们在${zh}旁边插上一面旗子。`]
+      [`We place a flag beside the ${w}.`, `我们在${zh}旁边插上一面旗子。`],
+      [`Our guide draws the ${w} on the map.`, `我们的向导把${zh}画在地图上。`],
+      [`We walk toward the ${w} before sunset.`, `我们在日落前走向${zh}。`],
+      [`The ${w} stands above the valley.`, `${zh}矗立在山谷上方。`],
+      [`I take a picture of the ${w}.`, `我给${zh}拍了一张照片。`],
+      [`We rest beside the ${w} and share a snack.`, `我们在${zh}旁休息并分享点心。`],
+      [`A hidden path leads to the ${w}.`, `一条隐藏的小路通向${zh}。`],
+      [`We return to the ${w} by following the torch trail.`, `我们沿着火把路返回${zh}。`]
     ],
     effect: [
       [`The ${w} helps me cross the cave.`, `${zh}帮助我穿过洞穴。`],
       [`I notice the ${w} during the challenge.`, `我在挑战中注意到了${zh}。`],
-      [`The potion gives me ${w}.`, `药水让我获得${zh}。`]
+      [`The potion gives me ${w}.`, `药水让我获得${zh}。`],
+      [`The ${w} keeps me ready for the next step.`, `${zh}让我准备好迈出下一步。`],
+      [`I check the ${w} before entering the cave.`, `进入洞穴前，我检查了${zh}。`],
+      [`A glowing icon shows the ${w}.`, `一个发光图标显示出${zh}。`],
+      [`The ${w} fades after a short time.`, `${zh}过了一会儿就消退了。`],
+      [`We talk about the ${w} at camp.`, `我们在营地谈论${zh}。`]
     ],
     advancement: [
       [`We celebrate after completing ${w}.`, `完成${zh}后我们一起庆祝。`],
       [`This challenge unlocks the ${w} badge.`, `这个挑战会解锁“${zh}”徽章。`],
-      [`I record ${w} in my adventure book.`, `我把${zh}记录在冒险书里。`]
+      [`I record ${w} in my adventure book.`, `我把${zh}记录在冒险书里。`],
+      [`Our team earns ${w} today.`, `我们小队今天完成了${zh}。`],
+      [`The map lights up after ${w}.`, `完成${zh}后，地图亮了起来。`],
+      [`I show ${w} to my family.`, `我把${zh}展示给家人看。`],
+      [`We add ${w} to our camp banner.`, `我们把${zh}加到营地旗帜上。`],
+      [`A new reward appears after ${w}.`, `完成${zh}后出现了新的奖励。`]
     ],
     color: [
-      [`The banner is ${w} under the sunlight.`, `阳光下的旗帜是${zh}色的。`],
-      [`We choose ${w} wool for the cozy room.`, `我们为舒适的房间选择${zh}色羊毛。`],
-      [`A ${w} path leads to the garden.`, `一条${zh}色的小路通向花园。`]
+      [`The banner is ${w} under the sunlight.`, `阳光下的旗帜是${zh}。`],
+      [`We choose ${w} wool for the cozy room.`, `我们为舒适的房间选择${zh}羊毛。`],
+      [`A ${w} path leads to the garden.`, `一条${zh}小路通向花园。`],
+      [`The ${w} torch glows beside the door.`, `${zh}火把在门旁发光。`],
+      [`I paint the sign ${w} for our camp.`, `我把营地的标牌涂成${zh}。`],
+      [`We fly a ${w} flag above the tower.`, `我们在塔顶升起${zh}旗帜。`],
+      [`The ${w} carpet makes the room warm.`, `${zh}地毯让房间更温馨。`],
+      [`I choose a ${w} block for the roof.`, `我为屋顶选择${zh}方块。`]
     ]
   };
   const categoryVariants = variants[category];
@@ -346,25 +438,45 @@ function generatedSentence(word, translation, category) {
   }
   if (category === 'greeting') return { sentence: 'Say hello to your friend.', sentenceTranslation: '向你的朋友打招呼。' };
   if (category === 'people') return { sentence: 'My friend is here.', sentenceTranslation: `我的${zh}在这里。` };
-  if (category === 'place') return { sentence: `The ${w} is safe in the new world.`, sentenceTranslation: `新世界里的${zh}很安全。` };
+  if (category === 'place') {
+    if (w === 'world') return { sentence: 'We explore a new world together.', sentenceTranslation: '我们一起探索一个新世界。' };
+    if (w === 'house') return { sentence: 'I return to my house before dark.', sentenceTranslation: '天黑前我回到自己的房子。' };
+    if (w === 'cave') return { sentence: 'We enter the cave with bright torches.', sentenceTranslation: '我们带着明亮的火把进入洞穴。' };
+    return { sentence: `The ${w} is safe in the new world.`, sentenceTranslation: `新世界里的${zh}很安全。` };
+  }
   if (category === 'mode') {
     if (w === 'minecraft') return { sentence: 'I build a home in a Minecraft world.', sentenceTranslation: '我在《我的世界》里建造家园。' };
     return { sentence: `We play in ${w} together.`, sentenceTranslation: `我们一起在${zh}中游玩。` };
   }
-  if (category === 'nature') return { sentence: `The ${w} is beautiful today.`, sentenceTranslation: `今天的${zh}很美。` };
+  if (category === 'nature') {
+    if (w === 'sun') return { sentence: 'The sun lights our path in the morning.', sentenceTranslation: '早晨，太阳照亮我们的道路。' };
+    if (w === 'light') return { sentence: 'The light helps us find the way home.', sentenceTranslation: '光帮助我们找到回家的路。' };
+    if (w === 'fire') return { sentence: 'The fire keeps our camp warm.', sentenceTranslation: '篝火让我们的营地保持温暖。' };
+    if (w === 'water') return { sentence: 'We drink clean water beside the river.', sentenceTranslation: '我们在河边喝干净的水。' };
+    return { sentence: `The ${w} looks beautiful today.`, sentenceTranslation: `今天的${zh}看起来很美。` };
+  }
   if (category === 'object') return { sentence: `I can see the ${w}.`, sentenceTranslation: `我能看见${zh}。` };
-  if (category === 'block') return { sentence: `I place the ${w} near my house.`, sentenceTranslation: `我把${zh}放在房子附近。` };
-  if (category === 'item') return { sentence: `I carry the ${w} in my bag.`, sentenceTranslation: `我把${zh}带在包里。` };
-  if (category === 'mob') return { sentence: `A ${w} is near the village.`, sentenceTranslation: `一只${zh}在村庄附近。` };
-  if (category === 'biome') return { sentence: `We explore the ${w} at sunrise.`, sentenceTranslation: `我们在日出时探索${zh}。` };
-  if (category === 'structure') return { sentence: `We find the ${w} in the new world.`, sentenceTranslation: `我们在新世界里找到${zh}。` };
-  if (category === 'tool' || category === 'weapon') return { sentence: `I use the ${w} to collect resources.`, sentenceTranslation: `我用${zh}收集资源。` };
-  if (category === 'food') return { sentence: `I eat the ${w} after mining.`, sentenceTranslation: `挖矿后我吃${zh}。` };
-  if (category === 'plant') return { sentence: `I grow ${w} near the farm.`, sentenceTranslation: `我在农场旁种植${zh}。` };
-  if (category === 'effect') return { sentence: `The ${w} effect helps me explore.`, sentenceTranslation: `${zh}效果帮助我探索。` };
-  if (category === 'advancement') return { sentence: `We complete the ${w} challenge.`, sentenceTranslation: `我们完成“${zh}”挑战。` };
-  if (category === 'color') return { sentence: `The wool is ${w}.`, sentenceTranslation: `羊毛是${zh}色的。` };
-  if (category === 'verb') return { sentence: `I ${w} in the village today.`, sentenceTranslation: `我今天在村庄里${zh}。` };
+  if (category === 'environment') return { sentence: `We take care of the ${w}.`, sentenceTranslation: `我们照顾${zh}。` };
+  if (category === 'verb') {
+    const verbSentences = {
+      look: ['I look at the map beside the campfire.', '我在篝火旁看地图。'],
+      run: ['I run to the village before sunset.', '我在日落前跑到村庄。'],
+      play: ['We play together in the Minecraft world.', '我们一起在《我的世界》里玩。'],
+      craft: ['I craft a tool at the table.', '我在工作台合成工具。'],
+      build: ['We build a small shelter before night.', '我们在天黑前建一座小避难所。'],
+      mine: ['I mine stone with my pickaxe.', '我用镐挖石头。'],
+      jump: ['I jump across the small stream.', '我跳过小溪。'],
+      eat: ['I eat a warm meal at camp.', '我在营地吃一顿热饭。'],
+      open: ['I open the chest beside the door.', '我打开门旁边的箱子。'],
+      find: ['I find a torch on the path.', '我在小路上找到一支火把。'],
+      use: ['I use a torch to light the cave.', '我用火把照亮洞穴。']
+    };
+    if (verbSentences[w]) {
+      const [sentence, sentenceTranslation] = verbSentences[w];
+      return { sentence, sentenceTranslation };
+    }
+    return { sentence: `I ${w} near the village today.`, sentenceTranslation: `我今天在村庄附近${zh}。` };
+  }
   return { sentence: `I found a ${w} in the cave.`, sentenceTranslation: `我在洞穴里找到了${zh}。` };
 }
 

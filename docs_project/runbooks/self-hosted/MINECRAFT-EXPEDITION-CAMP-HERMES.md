@@ -4,13 +4,21 @@
 
 ## 当前实现边界
 
-- 主站入口仍是孩子端 `学习` tab → `Minecraft 单词远征`。
+- 主站入口是孩子端主导航中与“探索”同级的 `单词远征 / Word Quest`；学习中心和今日页也提供同一 `minecraft-vocab` 路由的辅助入口。
 - 营地地图数据在 `data/learn/minecraft-expedition/camp-regions.json`，当前是五段连续路线：草原小径、村庄门口、深层矿洞、下界传送门和末影龙竞技场。
+- 幼儿园默认只开放草原小径；阶段提升后才会进入村庄、深层矿洞、下界和末影龙路线。当前页面已实现营地 → 双语故事 → 本章词卡 → 轻量战斗 → 章节结算 → 返回营地。
 - Profile 隔离状态由 `js/minecraft-vocab-expedition.js` 写入 `petbank_minecraft_expedition_state_v2_{profileId}`；读取旧 `v1` 状态时会兼容升级，不再写回旧键。
 - 营地场景图及路线图由 `assets/learn/english-vocab/generated/minecraft-expedition/manifest.json` 管理；只发布 manifest 标记为 runtime 的 PNG，不发布参考站原始素材。
 - 词卡、图片、发音、短语、例句继续由 `minecraft-vocab-page.js`、`minecraft-vocab-session.js` 和现有英语词库提供。
+- 探索桥接由 `js/minecraft-vocab-exploration-bridge.js` 提供；当前只有方块故事 `block-01 → grassland-trail` 的单点接入，桥接不会改写通用探索战斗公式。
 - 积分必须继续经过 `GameRewardReceipts` / `PetBankPoints`；不要新增营地积分账本。
-- `docs/` 中的调研截图和生图参考只用于设计审查，不得复制到发布目录。
+- `docs/` 中的调研截图和生图参考、远征 `prompts/` 下的 Grok 提示词只用于设计/生成审查，不得复制到发布目录。
+
+## 尚未实现
+
+- 离线 outbox、跨设备复杂合并和多人联机。
+- 小学中年级、高年级的完整课程和对应远征章节。
+- 完整 Minecraft 世界模拟；末影龙是营地路线的终点挑战，不是实时联机 Boss。
 
 ## 发布前检查
 
@@ -24,6 +32,7 @@ node scripts/test-minecraft-vocab-narration.mjs
 node scripts/test-static-route-entries.mjs
 node scripts/test-pages-fast-gate-contract.mjs
 node scripts/assemble-pages-artifact.mjs _site_verify
+node scripts/test-minecraft-vocab-publish-contract.mjs _site_verify
 git diff --check
 ```
 

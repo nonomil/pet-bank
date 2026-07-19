@@ -32,6 +32,7 @@
     var PREFETCH_EXT = '.mp3';
     var _prefetchMap = null;       // null=未加载/失败；{}=已加载（可能为空）
     var _prefetchReady = false;
+    var _prefetchLoading = null;
     var _pendingSpeak = null;
 
     // TTS 层（像素故事角色配音）
@@ -83,11 +84,13 @@
 
     // ===== 预生成层：加载 map.json =====
     function _loadPrefetchMap() {
+        if (_prefetchReady) return Promise.resolve(_prefetchMap || {});
+        if (_prefetchLoading) return _prefetchLoading;
         var ctrl;
         try { ctrl = new AbortController(); } catch (e) { ctrl = null; }
         var timer = ctrl ? setTimeout(function () { try { ctrl.abort(); } catch (e2) {} }, 3000) : null;
         var cleanup = function () { if (timer) clearTimeout(timer); };
-        fetch(PREFETCH_BASE + '/map.json', ctrl ? { signal: ctrl.signal } : {})
+        _prefetchLoading = fetch(PREFETCH_BASE + '/map.json', ctrl ? { signal: ctrl.signal } : {})
             .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
             .then(function (m) {
                 _prefetchMap = (m && typeof m === 'object') ? m : {};
@@ -101,7 +104,9 @@
                 _pendingSpeak = null;
                 /* 静默失败，运行时不降级 */
             })
-            .then(cleanup, cleanup);
+            .then(cleanup, cleanup)
+            .then(function () { return _prefetchMap || {}; });
+        return _prefetchLoading;
     }
 
     // ===== galgame 文本清洗 =====
@@ -161,6 +166,7 @@
         _lastText = key; _lastTime = now;
         if (!_prefetchReady) {
             _pendingSpeak = { text: key };
+            _loadPrefetchMap();
             return;
         }
         _playMappedText(key);
@@ -508,11 +514,10 @@
         if (_booted) return;
         _booted = true;
         load();
-        _loadPrefetchMap();
         _initPlayButtonObserver();
         _initAutoPlayObserver();
         _initPanelObserver();
-        console.log('[VoiceSystem] boot, enabled=' + settings.enabled + ', autoPlay=' + settings.autoPlay + ', prefetchMap=' + (_prefetchMap === null ? 'loading' : 'ready'));
+        console.log('[VoiceSystem] boot, enabled=' + settings.enabled + ', autoPlay=' + settings.autoPlay + ', prefetchMap=idle');
         // 运行时加载器会优先加载音效；这里保留兜底，避免单独引入 voice.js 时缺失 sfx。
         _ensureAuxScript('js/zzfx.js');
         _ensureAuxScript('js/sfx.js');

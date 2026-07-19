@@ -160,7 +160,13 @@
         if (!id || !moduleId) return null;
         const pack = await getPack(id);
         if (pack.modules[moduleId]) return pack.modules[moduleId];
-        const data = await fetchJson(`data/learn/packs/${id}/modules/${moduleId}.json`);
+        const modulePath = id === 'english-mc-hybrid-2026' && moduleId === 'minecraft-vocab'
+            ? 'data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-starter.json'
+            : `data/learn/packs/${id}/modules/${moduleId}.json`;
+        const loaded = await fetchJson(modulePath);
+        const data = id === 'english-mc-hybrid-2026' && moduleId === 'minecraft-vocab' && loaded
+            ? { ...loaded, id: moduleId, sourceModuleId: moduleId, type: 'vocab' }
+            : loaded;
         pack.modules[moduleId] = data;
         return data;
     }

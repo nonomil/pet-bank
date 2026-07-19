@@ -75,7 +75,8 @@ assert.ok(manifest.assets.filter(asset => asset.source === 'grok-imagine-image-q
 for (const asset of manifest.assets) {
   const file = path.join(root, asset.path);
   assert.ok(fs.existsSync(file), `${asset.id} file missing`);
-  assert.deepEqual(asset.dimensions, [1536, 1024]);
+  const png = fs.readFileSync(file);
+  assert.deepEqual(asset.dimensions, [png.readUInt32BE(16), png.readUInt32BE(20)], `${asset.id} manifest dimensions must match the PNG`);
 }
 
 const expeditionSource = fs.readFileSync(path.join(root, 'js', 'minecraft-vocab-expedition.js'), 'utf8');

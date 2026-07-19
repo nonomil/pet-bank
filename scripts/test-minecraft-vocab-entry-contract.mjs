@@ -89,8 +89,9 @@ test('minecraftVocab runtime bundle has one loader in dependency order', () => {
         'js/minecraft-vocab-loader.js?v=1',
         'js/minecraft-vocab-audio.js?v=1',
         'js/minecraft-vocab-session.js?v=1',
-        'js/minecraft-vocab-page.js?v=2'
-    ], 'minecraftVocab scripts must load expedition -> levels -> loader -> audio -> session -> page');
+        'js/minecraft-vocab-page.js?v=2',
+        'js/minecraft-vocab-exploration-bridge.js?v=1'
+    ], 'minecraftVocab scripts must load expedition -> levels -> loader -> audio -> session -> page -> exploration bridge');
     assert.equal(bundleItems.filter(item => item === 'js/minecraft-vocab-loader.js?v=1').length, 1, 'minecraft vocab loader must appear exactly once in the bundle');
     assertContract(loaderSource, /global\.MinecraftVocabLoader\s*=\s*Object\.freeze/, 'minecraft vocab loader namespace is missing');
     assertContract(loaderSource, /async function\s+loadForSelection\s*\(/, 'minecraft vocab loader selection API is missing');
@@ -107,7 +108,7 @@ test('app renders MinecraftVocabPage when minecraft-vocab is activated', () => {
 test('Minecraft vocab page invalidates stale render and selection requests', () => {
     assertContract(pageSource, /let\s+pageGeneration\s*=\s*0/, 'Minecraft vocab page needs a render generation token');
     assertContract(pageSource, /function\s+isCurrentGeneration\s*\([^)]*\)[\s\S]*?mounted[\s\S]*?pageGeneration/, 'Minecraft vocab page needs a mounted generation guard');
-    assertContract(pageSource, /function\s+stop\s*\(\)[\s\S]*?mounted\s*=\s*false[\s\S]*?pageGeneration\s*\+=\s*1[\s\S]*?selectionRequestId\s*\+=\s*1/, 'stop() must invalidate render and selection requests');
+    assertContract(pageSource, /function\s+stop\s*\([^)]*\)[\s\S]*?mounted\s*=\s*false[\s\S]*?pageGeneration\s*\+=\s*1[\s\S]*?selectionRequestId\s*\+=\s*1/, 'stop() must invalidate render and selection requests');
     assertContract(pageSource, /async function\s+render\s*\([^)]*[\s\S]*?const\s+generation\s*=\s*\+\+pageGeneration/, 'render() must create a new generation token');
     assert.ok((pageSource.match(/isCurrentGeneration\(generation\)/g) || []).length >= 5, 'async render paths must check the active generation after awaits');
     assertContract(pageSource, /async function\s+reloadSelection\s*\([^)]*[\s\S]*?const\s+generation\s*=\s*pageGeneration[\s\S]*?requestId\s*!==\s*selectionRequestId/, 'reloadSelection() must reject stale page generations and requests');

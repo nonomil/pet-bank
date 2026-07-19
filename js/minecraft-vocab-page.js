@@ -209,6 +209,15 @@
         return regionForId(selectedRegionId || state?.regionId || '');
     }
 
+    function returnToPreviousHost() {
+        const bridge = global.MinecraftVocabExplorationBridge;
+        if (bridge && typeof bridge.getReturnContext === 'function' && bridge.getReturnContext()) {
+            bridge.returnToExploration({ reason: 'back' });
+            return;
+        }
+        if (typeof global.switchPage === 'function') global.switchPage('learn');
+    }
+
     function resolveDataUrl(path) {
         return global.PetBankRuntime && typeof global.PetBankRuntime.resolveAssetUrl === 'function'
             ? global.PetBankRuntime.resolveAssetUrl(path)
@@ -512,13 +521,13 @@
     }
 
     function renderCampMap() {
-        const summary = global.MinecraftVocabExpedition?.getSummary(expeditionState) || { cleared: 0, total: regionList().length, percent: 0, level: 1, experience: 0, inventory: [] };
+        const summary = global.MinecraftVocabExpedition?.getSummary(expeditionState) || { cleared: 0, total: regionList().length, percent: 0, level: 1, experience: 0, wordCards: [], inventory: [] };
         return `
             <section class="mv-camp-map" aria-labelledby="mvCampMapTitle">
                 <div class="mv-camp-map-heading"><div><span class="mv-kicker">冒险地图 · Adventure Map</span><h2 id="mvCampMapTitle">${escapeHtml(expedition?.camp?.title || '方块营地')}</h2><p>${escapeHtml(expedition?.camp?.subtitle || '')}</p><small>${escapeHtml(expedition?.camp?.subtitleEn || '')}</small></div><span class="mv-camp-map-progress">${summary.cleared}/${summary.total} 区域 · ${summary.percent}%</span></div>
                 ${expedition?.camp?.mapImage ? `<div class="mv-expedition-map-art"><img src="${escapeHtml(asset(expedition.camp.mapImage))}" alt="Minecraft 单词远征路线地图" loading="eager" decoding="async" data-mv-expedition-image></div>` : ''}
                 <div class="mv-expedition-story"><div><span class="mv-kicker">${escapeHtml(expedition?.story?.titleEn || 'The Word Expedition')}</span><strong>${escapeHtml(expedition?.story?.opening || '')}</strong></div><p>${escapeHtml(expedition?.story?.openingEn || '')}</p></div>
-                <div class="mv-expedition-stats" aria-label="远征者成长"><div><span>等级 Level</span><strong>${summary.level}</strong></div><div><span>经验 XP</span><strong>${summary.experience}</strong></div><div><span>道具 Items</span><strong>${summary.inventory.length}</strong></div><div><span>词卡 Cards</span><strong>${summary.cleared * 4}</strong></div></div>
+                <div class="mv-expedition-stats" aria-label="远征者成长"><div><span>等级 Level</span><strong>${summary.level}</strong></div><div><span>经验 XP</span><strong>${summary.experience}</strong></div><div><span>道具 Items</span><strong>${summary.inventory.length}</strong></div><div><span>词卡 Cards</span><strong>${summary.wordCards.length}</strong></div></div>
                 <div class="mv-region-route">
                     ${regionList().map((region, index) => {
                         const rawStatus = global.MinecraftVocabExpedition?.getRegionState(expeditionState, region.id) || 'locked';
@@ -813,7 +822,7 @@
         const card = cardForTask(task);
         if (!task || !card || !progressApi() || typeof progressApi().record !== 'function') return;
         const grade = typeof result === 'boolean' ? (result ? 'good' : 'again') : String(result || 'again');
-        const correct = grade !== 'again';
+        const progressBefore = typeof progressApi().get === 'function' ? progressApi().get(card.id) : { status: 'new' };
         const progress = progressApi().record(card.id, grade, {
             ...metadata,
             responseMode: metadata.responseMode || task.mode,
@@ -824,6 +833,19 @@
             renderRoot();
             return;
         }
+        const growth = global.MinecraftVocabExpedition?.recordWordAction?.(
+            expeditionState,
+            card.id,
+            progressBefore,
+            grade,
+            { mode: metadata.responseMode || task.mode }
+        );
+        if (growth && growth.persisted === false) {
+            feedback = '远征成长保存失败，本次没有推进，请重试。';
+            renderRoot();
+            return;
+        }
+        if (growth?.state) expeditionState = growth.state;
         const next = global.MinecraftVocabSession.recordAction(state, card.id);
         if (!next.persisted) {
             feedback = '远征进度保存失败，本次没有推进，请重试。';
@@ -928,11 +950,11 @@
 
     function bindEvents() {
         root.querySelectorAll('[data-mv-back]').forEach(button => button.addEventListener('click', () => {
-            if (typeof global.switchPage === 'function') global.switchPage('learn');
+            returnToPreviousHost();
         }));
         root.querySelectorAll('[data-mv-return-camp]').forEach(button => button.addEventListener('click', () => {
             if (!selectedRegionId) {
-                if (typeof global.switchPage === 'function') global.switchPage('learn');
+                returnToPreviousHost();
                 return;
             }
             selectedRegionId = '';
@@ -1082,7 +1104,7 @@
     }
 
     async function render(containerId = 'minecraft-vocab-root') {
-        stop();
+        stop({ preserveBridgeContext: true });
         const generation = ++pageGeneration;
         mounted = true;
         root = document.getElementById(containerId);
@@ -1103,8 +1125,18 @@
             if (!isCurrentGeneration(generation)) return;
             expeditionState = global.MinecraftVocabExpedition?.readState(regionList()) || null;
             if (!isCurrentGeneration(generation)) return;
+            const openContext = global.MinecraftVocabExplorationBridge?.consumeOpenContext?.() || null;
+            const requestedRegionId = String(openContext?.regionId || '');
+            let canOpenRequestedRegion = false;
+            if (requestedRegionId) {
+                const entered = global.MinecraftVocabExpedition?.enterRegion?.(expeditionState, requestedRegionId, regionList());
+                if (entered?.state && entered.reason !== 'locked') {
+                    expeditionState = entered.state;
+                    canOpenRequestedRegion = true;
+                }
+            }
             const savedSession = global.MinecraftVocabSession.readState?.();
-            const savedRegionId = String(savedSession?.regionId || expeditionState?.activeRegionId || '');
+            const savedRegionId = requestedRegionId || String(savedSession?.regionId || expeditionState?.activeRegionId || '');
             const savedRegion = regionForId(savedRegionId);
             const savedMission = missionForRegion(savedRegionId);
             const sessionOptions = savedRegion && savedMission
@@ -1114,7 +1146,9 @@
             const result = global.MinecraftVocabSession.start(sessionCards, card => progressApi()?.get?.(card.id), '', sessionOptions);
             state = result.state;
             selectedRegionId = String(state.regionId || '');
-            view = global.MinecraftVocabSession.isComplete(state) ? (selectedRegionId ? 'battle' : 'complete') : selectedRegionId ? 'session' : 'home';
+            view = canOpenRequestedRegion
+                ? 'story'
+                : global.MinecraftVocabSession.isComplete(state) ? (selectedRegionId ? 'battle' : 'complete') : selectedRegionId ? 'session' : 'home';
             feedback = result.persisted ? '' : '本日进度暂时无法保存，仍可查看词卡。';
             renderRoot(generation);
         } catch (error) {
@@ -1124,11 +1158,12 @@
         }
     }
 
-    function stop() {
+    function stop(options = {}) {
         mounted = false;
         pageGeneration += 1;
         selectionRequestId += 1;
         root = null;
+        if (!options.preserveBridgeContext) global.MinecraftVocabExplorationBridge?.stop?.();
         if (audio) {
             try { audio.pause(); } catch (error) {}
             audio = null;

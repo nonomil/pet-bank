@@ -114,10 +114,13 @@ test('learning page exposes camp map controls and responsive card layout', async
     const pageSource = await fs.readFile(pagePath, 'utf8');
     const cssSource = await fs.readFile(cssPath, 'utf8');
     assert.match(pageSource, /data-mv-region/);
+    assert.match(pageSource, /data-mv-story-study/);
+    assert.match(pageSource, /storyBeats/);
     assert.match(pageSource, /data-mv-return-camp/);
     assert.match(pageSource, /camp-regions\.json/);
     assert.match(pageSource, /data-mv-listen/);
     assert.match(cssSource, /\.mv-region-route\s*\{[\s\S]*grid-template-columns: repeat\(5/);
     assert.match(cssSource, /@media \(max-width: 760px\)[\s\S]*\.mv-region-route\s*\{\s*grid-template-columns: 1fr/);
     assert.match(cssSource, /\.mv-card-rack\s*\{[\s\S]*grid-template-columns/);
+    assert.match(cssSource, /\.mv-story-panel\s*\{/);
 });

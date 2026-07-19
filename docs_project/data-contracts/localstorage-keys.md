@@ -78,7 +78,7 @@ receipt 不等于余额：奖励事件必须先校验和去重，再调用既有
 | `petbank_learning_sheet_mode`、`petbank_learning_print_prefs` | string/JSON | `learn-center.js` | 学习模板/打印偏好 |
 | `petbank_learning_vocab_focus`、`petbank_learning_vocab_progress` | JSON | `learn-center.js` | 词汇焦点/进度 |
 | `petbank_learning_english_rewards` | JSON | `english-vocab-progress.js` | 英语奖励状态 |
-| `petbank_learning_vocab_progress_{profileId}` | JSON | `english-vocab-progress.js` | 英语显式 profile scope，当前主读写键 |
+  | `petbank_learning_vocab_progress_{profileId}` | JSON | `english-vocab-progress.js` | 英语显式 Profile 进度；每张卡记录 `seen/correct/wrong/streak/status/repetitions/intervalDays/ease/lapses/dueAt/lastReviewedAt/lastGrade/hintUsed/responseMode/lastResponseMs`，`lastGrade` 为 `again/hard/good/easy`，兼容旧布尔调用；按 Profile 隔离并进入快照 |
 | `petbank_learning_english_rewards_{profileId}` | JSON | `english-vocab-progress.js` | 英语显式 profile scope，当前主读写键 |
 | `petbank_english_vocab_scope_migration_v2_{id}` | flag | `english-vocab-progress.js` | 固定旧键迁移标记 |
 | `petbank_hanzi_progress_{id}` | JSON | `hanzi-progress.js` | 汉字 profile 进度 |
@@ -86,7 +86,11 @@ receipt 不等于余额：奖励事件必须先校验和去重，再调用既有
 | `petbank_learning_arcade_word_shooter_progression_v1` | JSON object | `prj/学习机玩法原型/game.js` | 飞机大战独立机库存档：`version/level/experience/starDust/totalRuns/selectedShip/equippedWeapon/shipUpgrades`；当前原型 scope，损坏时回退默认值，不进入主站积分账本 |
   | `petbank_pixel_worlds_progress_v1` | JSON | `js/pixel-story-engine.js` | 三世界像素故事与 20 个侦探小游戏进度（`schemaVersion/storyId/chapters`）；认字内容不产生答题统计，按 Profile 快照隔离。旧 `petbank_pixel_story_progress_v1` 保留用于 04 故事包兼容回退 |
   | `petbank_minecraft_vocab_session_v1_*` | JSON object | `minecraft-vocab-session.js` | 主站 Minecraft 单词远征的 Profile 会话状态；按 Profile 隔离，不进入主站积分账本；完整 Anki 工作台仍独立部署 |
-  | `petbank_minecraft_expedition_state_v2_*` | JSON object | `minecraft-vocab-expedition.js` | Minecraft 单词远征营地/地图节点状态；按 Profile 隔离，记录节点状态、当前节点、已清除任务、收藏印章、经验等级、能力道具和 Boss 战斗结果，进入 Profile 快照但不单独记积分；读取旧 v1 状态兼容升级 |
+  | `petbank_minecraft_vocab_level_v1` | string | `minecraft-vocab-page.js` | 阶段选择键前缀；实际运行键带 Profile 后缀 |
+  | `petbank_minecraft_vocab_level_v1_*` | string | `minecraft-vocab-page.js` | Minecraft 单词远征的学习阶段选择；按 Profile 隔离，默认 `kindergarten`，不进入积分账本 |
+  | `petbank_minecraft_vocab_band_v1_*` | string | `minecraft-vocab-page.js` | Minecraft 初级内部层级选择；按 Profile 隔离，默认 `minecraft-core`，用于把 2039 张初级词卡拆成常用核心、基础、建造、生物、世界、进阶六层；不进入积分账本 |
+  | `petbank_minecraft_expedition_state_v2_*` | JSON object | `minecraft-vocab-expedition.js` | Minecraft 单词远征营地/地图节点状态；按 Profile 隔离，记录节点状态、当前节点、已清除任务、区域印章、`wordCardIds` 词卡收藏、经验等级、能力道具和 Boss 战斗结果，进入 Profile 快照但不单独记积分；词卡熟练度仍由英语进度键维护；读取旧 v1 状态兼容升级 |
+  | `petbank_minecraft_expedition_state_v2` | JSON object | `minecraft-vocab-expedition.js` | 远征状态键前缀；实际运行键带 Profile 后缀 |
   | `petbank_minecraft_expedition_state_v1_*` | JSON object | `minecraft-vocab-expedition.js` | 旧版 Minecraft 单词远征状态；仅用于 v2 首次读取迁移，不再写入 |
 | `petbank_picturebook_progress_v1` | JSON | `js/picturebooks.js` | 当前 Profile 的绘本阅读进度；`{schemaVersion:1,books:{storyId:{currentPage,completedCount,lastReadAt,lastCompletedAt,completionEventId,rewardClaimed}}}`，首读奖励由核心 receipt 去重 |
 | `petbank_picturebook_library_v1` | JSON | `js/picturebooks.js` | 当前 Profile 的收藏偏好；`{schemaVersion:1,favorites:string[]}` |

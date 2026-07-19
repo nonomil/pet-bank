@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "id": "minecraft-vocab",
+  "releaseStage": "lazy-sharded-runtime",
+  "entry": [
+    "js/minecraft-vocab-page.js",
+    "js/minecraft-vocab-session.js",
+    "js/minecraft-vocab-levels.js",
+    "js/minecraft-vocab-loader.js",
+    "js/minecraft-vocab-expedition.js",
+    "js/minecraft-vocab-exploration-bridge.js"
+  ],
+  "data": [
+    "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-starter.json",
+    "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-core.json",
+    "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-basic.json",
+    "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-building.json",
+    "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-mobs.json",
+    "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-world.json",
+    "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-advanced.json",
+    "data/learn/minecraft-expedition/camp-regions.json"
+  ],
+  "sourceData": [
+    "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab.json",
+    "data/vocab/english-minecraft/narration-manifest.json",
+    "data/vocab/english-minecraft/audio-manifest.json"
+  ],
+  "runtimeData": {
+    "starter": {
+      "path": "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-starter.json",
+      "purpose": "initial",
+      "budgetMiB": 2
+    },
+    "bands": [
+      {"id": "minecraft-core", "path": "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-core.json", "cardCount": 123},
+      {"id": "minecraft-basic", "path": "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-basic.json", "cardCount": 312},
+      {"id": "minecraft-building", "path": "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-building.json", "cardCount": 610},
+      {"id": "minecraft-mobs", "path": "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-mobs.json", "cardCount": 131},
+      {"id": "minecraft-world", "path": "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-world.json", "cardCount": 269},
+      {"id": "minecraft-advanced", "path": "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-minecraft-advanced.json", "cardCount": 594}
+    ]
+  },
+  "runtimeFiles": [
+    "assets/learn/english-vocab/generated/minecraft-expedition/manifest.json",
+    "assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/manifest.json",
+    "assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/manifest.json"
+  ],
+  "runtimePrefixes": [
+    "assets/learn/english-vocab/audio/",
+    "assets/learn/english-vocab/minecraft-cards/normalized/",
+    "assets/learn/english-vocab/minecraft-card-backs/",
+    "assets/learn/english-vocab/minecraft-audio/",
+    "assets/learn/english-vocab/generated/minecraft-expedition/",
+    "assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/",
+    "assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/"
+  ],
+  "scopedPrefixes": [
+    "assets/learn/english-vocab/minecraft-cards/",
+    "assets/learn/english-vocab/minecraft-card-backs/",
+    "assets/learn/english-vocab/minecraft-reference/",
+    "assets/learn/english-vocab/minecraft-audio/",
+    "assets/learn/english-vocab/minecraft-narration/",
+    "assets/learn/english-vocab/generated/minecraft-expedition/",
+    "assets/learn/english-vocab/generated/minecraft-vocab-visual-pack/",
+    "assets/learn/english-vocab/generated/minecraft-vocab-ui-pack/"
+  ],
+  "excludedPrefixes": [
+    "assets/learn/english-vocab/minecraft-reference/",
+    "assets/learn/english-vocab/minecraft-cards/",
+    "assets/learn/english-vocab/generated/minecraft-expedition/prompts/"
+  ],
+  "audioSets": [
+    {
+      "id": "starter-narration",
+      "sourceDir": "assets/learn/english-vocab/minecraft-narration",
+      "runtimePrefix": "assets/learn/english-vocab/minecraft-narration",
+      "includeFromData": "data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-runtime-starter.json",
+      "publishedExtension": ".ogg",
+      "cardCount": 140,
+      "clipsPerCard": 5,
+      "note": "主站只发布 starter/远征首轮旁白；其他 band 保留 externalNarrationAudio CDN key，按选择索引和播放动作取完整音频，异常才使用 speech-synthesis 回退。"
+    }
+  ],
+  "externalAudioArtifact": {
+    "manifestId": "minecraft-vocab-audio",
+    "configKey": "minecraftAudioBaseUrl",
+    "generator": "scripts/assemble-minecraft-audio-artifact.mjs",
+    "clipCount": 10840,
+    "format": "OGG",
+    "subtype": "OPUS",
+    "indexMode": "selection",
+    "defaultEnabled": false
+  },
+  "budgetsMiB": {
+    "fullRuntimePool": 500,
+    "starter": 2,
+    "typingView": 30,
+    "expedition": 30
+  },
+  "fallback": {
+    "image": "text-card",
+    "audio": "speech-synthesis-en-US"
+  }
+}

@@ -50,6 +50,7 @@ const TASKS = [
     { label: 'pixel worlds story audio contract', cmd: 'node', args: ['scripts/test-pixel-worlds-story-audio-contract.mjs'] },
     { label: 'pixel story browser journey', cmd: 'node', args: ['scripts/test-pixel-story-browser.mjs'] },
     { label: 'pixel worlds story audio browser journey', cmd: 'node', args: ['scripts/test-pixel-worlds-story-audio-browser.mjs'] },
+    { label: 'legacy voice audio lazy browser journey', cmd: 'node', args: ['scripts/test-voice-audio-lazy-browser.mjs'] },
     { label: 'pixel worlds route browser journey', cmd: 'node', args: ['scripts/test-exploration-entry-browser.mjs'] },
     { label: 'pixel worlds all route browser journey', cmd: 'node', args: ['scripts/test-pixel-story-all-chapters-browser.mjs'] },
     { label: 'pixel story published artifact', cmd: 'node', args: ['scripts/test-pixel-story-published-artifact.mjs'] },

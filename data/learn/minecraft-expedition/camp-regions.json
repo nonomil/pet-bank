@@ -6,7 +6,8 @@
     "titleEn": "Block Camp",
     "subtitle": "从篝火出发，收集词卡，准备最后的末地挑战",
     "subtitleEn": "Start at the campfire, collect word cards, and prepare for the End.",
-    "mapImage": "assets/learn/english-vocab/generated/minecraft-expedition/expedition-map.png"
+    "mapImage": "assets/learn/english-vocab/generated/minecraft-expedition/expedition-map.png",
+    "storyImage": "assets/learn/english-vocab/generated/minecraft-expedition/story-camp.png"
   },
   "story": {
     "title": "词语远征",
@@ -24,10 +25,17 @@
       "subtitle": "沿着河流找到村庄",
       "subtitleEn": "Follow the river to the village.",
       "icon": "🌾",
+      "minVocabLevel": "kindergarten",
       "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/grassland-trail.png",
+      "storyImage": "assets/learn/english-vocab/generated/minecraft-expedition/story-grassland.png",
       "status": "available",
       "prerequisiteRegionIds": [],
       "story": {"en": "The trail is bright, but the bridge is broken. Name the blocks and rebuild the path.", "zh": "小径很明亮，可是桥断了。说出方块的名字，重新铺好道路。"},
+      "storyBeats": [
+        {"title": "地图上的第一条路", "titleEn": "The First Trail on the Map", "zh": "清晨，远征者背起背包，沿着河流找到断桥。", "en": "At dawn, the explorer follows the river and finds a broken bridge."},
+        {"title": "把桥拼回来", "titleEn": "Build the Bridge Back", "zh": "他认出木头、石头和水，用词卡把桥一块一块拼回来。", "en": "The explorer names the wood, stone, and water, then rebuilds the bridge block by block."},
+        {"title": "迷路的史莱姆", "titleEn": "The Lost Slime", "zh": "一只迷路的史莱姆挡住路牌。说出最后一个词，指南针带大家回到小径。", "en": "A lost slime blocks the sign. One final word lets the compass guide everyone back to the trail."}
+      ],
       "mission": {
         "id": "grassland-first-steps",
         "title": "点亮草原路牌",
@@ -44,10 +52,17 @@
       "subtitle": "帮助村民点亮夜晚的营火",
       "subtitleEn": "Help the villagers light the campfire.",
       "icon": "🏡",
+      "minVocabLevel": "bridge",
       "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/village-gate.png",
+      "storyImage": "assets/learn/english-vocab/generated/minecraft-expedition/story-village.png",
       "status": "locked",
       "prerequisiteRegionIds": ["grassland-trail"],
       "story": {"en": "The village gate opens at sunset. Build a warm campfire and protect the homes.", "zh": "日落时村庄大门打开。生起温暖的营火，保护村民的房子。"},
+      "storyBeats": [
+        {"title": "日落的村庄门", "titleEn": "The Village Gate at Sunset", "zh": "桥修好后，村庄大门在日落时打开，村民们挥手欢迎远征者。", "en": "When the bridge is fixed, the village gate opens at sunset and the villagers wave hello."},
+        {"title": "点亮营火", "titleEn": "Light the Campfire", "zh": "远征者找来木头和火种，让每一间房子都有温暖的光。", "en": "The explorer gathers wood and kindling so every home has a warm light."},
+        {"title": "守住夜晚", "titleEn": "Guard the Night", "zh": "夜行僵尸靠近时，营火守护徽章让村庄保持安全。", "en": "When a night zombie comes near, the Camp Keeper Badge keeps the village safe."}
+      ],
       "mission": {
         "id": "village-light-the-night",
         "title": "村庄的第一盏灯",
@@ -64,10 +79,17 @@
       "subtitle": "带上工具，发现闪亮的钻石",
       "subtitleEn": "Take your tools and find a bright diamond.",
       "icon": "⛏️",
+      "minVocabLevel": "lower-grade",
       "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/deep-mine.png",
+      "storyImage": "assets/learn/english-vocab/generated/minecraft-expedition/story-deep-mine.png",
       "status": "locked",
       "prerequisiteRegionIds": ["village-gate"],
       "story": {"en": "A dark tunnel hides a diamond. Use the pickaxe and torch before the creeper wakes.", "zh": "黑暗的隧道里藏着钻石。在苦力怕醒来前使用镐和火把。"},
+      "storyBeats": [
+        {"title": "矿洞入口", "titleEn": "The Mine Entrance", "zh": "村庄的灯光照亮了矿洞入口，远征者带上镐和火把。", "en": "The village lights reach the mine entrance. The explorer brings a pickaxe and a torch."},
+        {"title": "钻石的蓝光", "titleEn": "The Blue Spark", "zh": "矿车旁的石墙里闪出蓝光，四张词卡拼出通往钻石的路线。", "en": "A blue spark shines in the stone wall. Four word cards reveal the route to the diamond."},
+        {"title": "小心苦力怕", "titleEn": "Watch the Creeper", "zh": "苦力怕在远处醒来，矿石破译者能力让大家安全退出隧道。", "en": "A creeper wakes in the distance, but the Ore Breaker ability gets everyone out safely."}
+      ],
       "mission": {
         "id": "deep-mine-find-the-gem",
         "title": "矿洞里的闪光",
@@ -84,10 +106,17 @@
       "subtitle": "穿过熔岩湖，寻找末影之眼",
       "subtitleEn": "Cross the lava lake and find an Eye of Ender.",
       "icon": "🔥",
+      "minVocabLevel": "minecraft",
       "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/nether-portal.png",
+      "storyImage": "assets/learn/english-vocab/generated/minecraft-expedition/story-nether.png",
       "status": "locked",
       "prerequisiteRegionIds": ["deep-mine"],
       "story": {"en": "The purple portal hums above the lava. Carry the fire charm and keep moving.", "zh": "紫色传送门在熔岩上嗡鸣。带上抗火护符，继续前进。"},
+      "storyBeats": [
+        {"title": "紫色传送门", "titleEn": "The Purple Portal", "zh": "钻石的光照亮黑曜石，紫色传送门在熔岩湖上方发出嗡鸣。", "en": "The diamond lights the obsidian, and a purple portal hums above the lava lake."},
+        {"title": "走过玄武岩桥", "titleEn": "Cross the Basalt Bridge", "zh": "远征者带着抗火护符，和伙伴一起走过玄武岩桥。", "en": "With the Fire Ward ready, the explorer crosses the basalt bridge with a companion."},
+        {"title": "找到末影之眼", "titleEn": "Find the Eye of Ender", "zh": "下界的火光指向一扇新的门，末影之眼就在前方。", "en": "The Nether fire points to a new doorway. The Eye of Ender is close."}
+      ],
       "mission": {
         "id": "nether-crossing",
         "title": "熔岩湖上的火光",
@@ -104,10 +133,18 @@
       "subtitle": "集齐末地词卡，完成最后的挑战",
       "subtitleEn": "Gather the End cards for the final challenge.",
       "icon": "🐉",
+      "minVocabLevel": "minecraft",
       "sceneImage": "assets/learn/english-vocab/generated/minecraft-expedition/ender-dragon-arena.png",
+      "storyImage": "assets/learn/english-vocab/generated/minecraft-expedition/story-end.png",
+      "storyFinalImage": "assets/learn/english-vocab/generated/minecraft-expedition/story-dragon.png",
       "status": "locked",
       "prerequisiteRegionIds": ["nether-portal"],
       "story": {"en": "The End portal opens. Speak the final words, use the Eye of Ender, and face the dragon.", "zh": "末地传送门打开了。说出最后的词语，使用末影之眼，面对末影龙。"},
+      "storyBeats": [
+        {"title": "末地的星空", "titleEn": "The End Sky", "zh": "末影之眼打开传送门，远征者踏上漂浮的末地岛。", "en": "The Eye of Ender opens the portal, and the explorer steps onto a floating End island."},
+        {"title": "水晶塔的光", "titleEn": "The Crystal Towers", "zh": "水晶塔在黑色星空下闪烁，所有收集到的词卡汇成护盾。", "en": "Crystal towers shine under the dark stars as every collected word card becomes a shield."},
+        {"title": "末影龙的最后一战", "titleEn": "The Final Dragon Battle", "zh": "末影龙飞过天际。远征者说出最后的词，和伙伴一起守住希望的光。", "en": "The Ender Dragon crosses the sky. The explorer speaks the final words and protects the light of hope with every companion."}
+      ],
       "mission": {
         "id": "ender-dragon-final-battle",
         "title": "末影龙的最后一战",

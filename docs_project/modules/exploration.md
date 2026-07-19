@@ -88,6 +88,12 @@
 
 探索页默认还装配 `js/pixel-story-engine.js` 与 `js/pixel-story-map.js` 的像素故事模式。当前正式故事包位于 `data/story-packs/05-pixel-worlds-story/`：科幻、森林、方块三条主线各 20 节点，另有 20 个侦探支线节点；使用 `petbank_pixel_worlds_progress_v1` 保存章节位置，完成奖励经 `CoreRewardService` 去重。内容策略为 `recognition-only`，不把故事对白改成数学题；资源、内容和浏览器验收以 `scripts/test-pixel-worlds-assets-contract.mjs`、`scripts/test-pixel-story-content-contract.mjs` 和像素故事浏览器脚本为准。旧的 `04-pixel-dialogue-story` 仅作为历史资料包保留。
 
+#### Minecraft 单词远征桥接
+
+方块故事节点可以声明可选的 `vocabRegionId`、`requiredAbility` 和 `returnTarget`。当前样板是 `block-01` 显式绑定 `grassland-trail`：孩子从探索故事进入单词远征营地，完成双语故事与词卡后，通过 `MinecraftVocabExplorationBridge` 带着能力上下文返回原探索宿主。桥接只传递上下文和导航事件，不复制词卡状态、不直接写积分、不接管 `#page-explore`，普通探索战斗仍使用 `BattleEngine` 和现有 BattleFx。
+
+这是一条已实现的单点集成，不等于所有探索章节都已经接入单词学习。离线 outbox、多人联机、跨设备复杂合并和中高年级课程扩展仍未实现。
+
 ### 首页与故事探索的页面边界
 
 当前页面有四个固定宿主，写入者不得跨宿主接管顶级容器：

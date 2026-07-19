@@ -15,9 +15,16 @@ await page.addInitScript(() => {
     : nativeFetch(input, init);
 });
 const errors = [];
+const minecraftDataRequests = [];
 page.on('pageerror', error => errors.push(String(error?.message || error)));
 page.on('console', message => {
   if (message.type() === 'error') errors.push(message.text());
+});
+page.on('request', request => {
+  const url = request.url();
+  if (url.includes('/data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab')) {
+    minecraftDataRequests.push(url);
+  }
 });
 
 try {
@@ -81,6 +88,43 @@ try {
   assert.equal(home.start, true);
   assert.equal(home.companion > 0, true);
   assert.equal(home.stageBadges, 4);
+  assert.equal(await page.locator('.mv-level-option').count(), 5);
+  assert.match(home.text, /幼儿园/);
+  assert.equal(minecraftDataRequests.some(url => url.endsWith('/minecraft-vocab.json')), false);
+  assert.equal(minecraftDataRequests.some(url => url.includes('minecraft-vocab-runtime-starter.json')), true);
+  await page.click('[data-mv-level="bridge"]');
+  await page.waitForFunction(() => document.querySelector('[data-mv-level="bridge"]')?.getAttribute('aria-checked') === 'true');
+  const bridgeSelection = await page.evaluate(() => ({
+    stored: Object.entries(localStorage).find(([key]) => key.startsWith('petbank_minecraft_vocab_level_v1_'))?.[1] || '',
+    selected: document.querySelector('[data-mv-level="bridge"]')?.getAttribute('aria-checked') || '',
+    deepMineLocked: document.querySelector('[data-mv-region="deep-mine"]')?.disabled || false,
+    netherLocked: document.querySelector('[data-mv-region="nether-portal"]')?.disabled || false
+  }));
+  assert.equal(bridgeSelection.stored, 'bridge');
+  assert.equal(bridgeSelection.selected, 'true');
+  assert.equal(bridgeSelection.deepMineLocked, true);
+  assert.equal(bridgeSelection.netherLocked, true);
+  await page.click('[data-mv-level="kindergarten"]');
+  await page.waitForFunction(() => document.querySelector('[data-mv-level="kindergarten"]')?.getAttribute('aria-checked') === 'true');
+  await page.click('[data-mv-level="minecraft"]');
+  await page.waitForFunction(() => document.querySelector('[data-mv-level="minecraft"]')?.getAttribute('aria-checked') === 'true' && document.querySelectorAll('[data-mv-band]').length === 6);
+  const minecraftBandSelection = await page.evaluate(() => ({
+    bandCount: document.querySelectorAll('[data-mv-band]').length,
+    selected: document.querySelector('[data-mv-band="minecraft-core"]')?.getAttribute('aria-checked') || '',
+    stored: Object.entries(localStorage).find(([key]) => key.startsWith('petbank_minecraft_vocab_band_v1_'))?.[1] || '',
+    hasCoreCount: document.querySelector('#minecraft-vocab-root')?.innerText.includes('123 张') || false
+  }));
+  assert.equal(minecraftBandSelection.bandCount, 6);
+  assert.equal(minecraftBandSelection.selected, 'true');
+  assert.equal(minecraftBandSelection.stored, 'minecraft-core');
+  assert.equal(minecraftBandSelection.hasCoreCount, true);
+  assert.equal(minecraftDataRequests.some(url => url.includes('minecraft-vocab-runtime-minecraft-core.json')), true);
+  await page.click('[data-mv-band="minecraft-advanced"]');
+  await page.waitForFunction(() => document.querySelector('[data-mv-band="minecraft-advanced"]')?.getAttribute('aria-checked') === 'true');
+  assert.equal(await page.evaluate(() => localStorage.getItem([...Object.keys(localStorage)].find(key => key.startsWith('petbank_minecraft_vocab_band_v1_')) || '')), 'minecraft-advanced');
+  assert.equal(minecraftDataRequests.some(url => url.includes('minecraft-vocab-runtime-minecraft-advanced.json')), true);
+  await page.click('[data-mv-level="kindergarten"]');
+  await page.waitForFunction(() => document.querySelector('[data-mv-level="kindergarten"]')?.getAttribute('aria-checked') === 'true');
   await page.screenshot({ path: 'tmp/minecraft-vocab-home-gpt-ui-1280.png', fullPage: true });
 
   await page.click('[data-mv-start]');
@@ -99,6 +143,8 @@ try {
       phrase: root?.querySelector('.mv-card-detail-block.is-phrase')?.textContent || '',
       sentence: root?.querySelector('.mv-card-detail-block.is-sentence')?.textContent || '',
       actionCount: root?.querySelectorAll('[data-mv-answer], [data-mv-self-assess]').length || 0,
+      gradeButtons: root ? [...root.querySelectorAll('[data-mv-grade]')].map(button => button.dataset.mvGrade) : [],
+      hintButtonCount: root?.querySelectorAll('[data-mv-hint]').length || 0,
       cornerCount: root?.querySelectorAll('.mv-card-corner').length || 0,
       taskMode: root?.querySelector('[data-mv-session]')?.dataset.mvMode || '',
       sessionBg: getComputedStyle(root?.querySelector('[data-mv-session]')).backgroundImage,
@@ -123,7 +169,8 @@ try {
   assert.equal(session.upcomingVisible, false);
   assert.match(session.phrase, /短语/);
   assert.match(session.sentence, /场景句/);
-  assert.equal(session.actionCount >= 2, true);
+  assert.equal(session.actionCount, 0);
+  assert.deepEqual(session.gradeButtons, []);
   assert.equal(session.cornerCount, 0);
   assert.equal(session.cardObjectFit, 'contain');
   assert.equal(session.cardArtSize > 280, true);
@@ -150,13 +197,13 @@ try {
   await page.waitForFunction(() => document.querySelector('[data-mv-flip-card]')?.classList.contains('is-flipped'));
   const flipped = await page.evaluate(() => ({
     isFlipped: document.querySelector('[data-mv-flip-card]')?.classList.contains('is-flipped') || false,
-    backText: document.querySelector('.mv-card-back')?.textContent || ''
+    backText: document.querySelector('.mv-card-back')?.textContent || '',
+    gradeButtons: [...document.querySelectorAll('[data-mv-grade]')].map(button => button.dataset.mvGrade)
   }));
   assert.equal(flipped.isFlipped, true);
   assert.match(flipped.backText, /短语|场景句/);
-  await page.click('.mv-card-back[data-mv-flip]');
-  await page.waitForFunction(() => !document.querySelector('[data-mv-flip-card]')?.classList.contains('is-flipped'));
-  await page.screenshot({ path: 'tmp/minecraft-vocab-session-gpt-ui-1280.png', fullPage: true });
+  assert.deepEqual(flipped.gradeButtons, ['again', 'hard', 'good', 'easy']);
+  await page.screenshot({ path: 'tmp/minecraft-vocab-card-back-1280.png', fullPage: true });
 
   await page.click('[data-mv-self-assess="known"]');
   await page.waitForTimeout(120);
@@ -179,6 +226,16 @@ try {
   await page.setViewportSize({ width: 1280, height: 900 });
 
   for (let index = 0; index < 10; index += 1) {
+    const taskMode = await page.locator('[data-mv-session]').getAttribute('data-mv-mode');
+    if (taskMode === 'recall' || taskMode === 'scene') {
+      assert.equal(await page.locator('[data-mv-hint]').count(), 1);
+      await page.click('[data-mv-hint]');
+      assert.equal(await page.locator('[data-mv-hint-status]').count(), 1);
+    }
+    await page.waitForFunction(() => {
+      const image = document.querySelector('[data-mv-card-image]');
+      return !image || image.naturalWidth > 0;
+    });
     const cardMedia = await page.evaluate(() => ({
       src: document.querySelector('[data-mv-card-image]')?.getAttribute('src') || '',
       width: document.querySelector('[data-mv-card-image]')?.naturalWidth || 0
@@ -188,8 +245,12 @@ try {
     const selfAssess = page.locator('[data-mv-self-assess="known"]');
     if (await selfAssess.count()) {
       await selfAssess.click();
-    } else {
+    } else if (await page.locator('[data-mv-choice]').count()) {
       await page.locator('[data-mv-choice]').first().click();
+    } else {
+      await page.click('[data-mv-flip]');
+      await page.waitForFunction(() => document.querySelector('[data-mv-flip-card]')?.classList.contains('is-flipped'));
+      await page.locator('[data-mv-self-assess="known"]').click();
     }
     await page.waitForTimeout(80);
   }

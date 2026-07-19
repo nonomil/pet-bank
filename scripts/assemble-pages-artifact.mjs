@@ -16,9 +16,35 @@ const LEARNING_ARCADE_MANIFEST = JSON.parse(fs.readFileSync(
     path.join(repoRoot, 'scripts', 'runtime-asset-manifests', 'learning-arcade.json'),
     'utf8'
 ));
+const MINECRAFT_VOCAB_MANIFEST = JSON.parse(fs.readFileSync(
+    path.join(repoRoot, 'scripts', 'runtime-asset-manifests', 'minecraft-vocab.json'),
+    'utf8'
+));
+const PIXEL_WORLDS_MANIFEST = JSON.parse(fs.readFileSync(
+    path.join(repoRoot, 'scripts', 'runtime-asset-manifests', 'pixel-worlds-story.json'),
+    'utf8'
+));
+const TYPING_DEFENSE_MANIFEST = JSON.parse(fs.readFileSync(
+    path.join(repoRoot, 'scripts', 'runtime-asset-manifests', 'typing-defense.json'),
+    'utf8'
+));
 const LEARNING_ARCADE_RUNTIME_FILES = new Set(LEARNING_ARCADE_MANIFEST.runtimeFiles || []);
 const LEARNING_ARCADE_RUNTIME_PREFIXES = LEARNING_ARCADE_MANIFEST.runtimePrefixes || [];
 const LEARNING_ARCADE_EXCLUDED_PREFIXES = LEARNING_ARCADE_MANIFEST.excludedPrefixes || [];
+const MINECRAFT_VOCAB_RUNTIME_FILES = new Set(MINECRAFT_VOCAB_MANIFEST.runtimeFiles || []);
+const MINECRAFT_VOCAB_RUNTIME_PREFIXES = MINECRAFT_VOCAB_MANIFEST.runtimePrefixes || [];
+const MINECRAFT_VOCAB_SCOPED_PREFIXES = MINECRAFT_VOCAB_MANIFEST.scopedPrefixes || [];
+const MINECRAFT_VOCAB_EXCLUDED_PREFIXES = MINECRAFT_VOCAB_MANIFEST.excludedPrefixes || [];
+const RUNTIME_MANIFEST_AUDIO_SETS = new Map([
+    ...(MINECRAFT_VOCAB_MANIFEST.audioSets || []),
+    ...(PIXEL_WORLDS_MANIFEST.audioSets || [])
+].map((audioSet) => [audioSet.id, audioSet]));
+const PIXEL_WORLDS_RUNTIME_FILES = new Set(PIXEL_WORLDS_MANIFEST.runtimeFiles || []);
+const PIXEL_WORLDS_RUNTIME_PREFIXES = PIXEL_WORLDS_MANIFEST.runtimePrefixes || [];
+const PIXEL_WORLDS_SCOPED_PREFIXES = PIXEL_WORLDS_MANIFEST.scopedPrefixes || [];
+const PIXEL_WORLDS_SOURCE_DATA = new Set(PIXEL_WORLDS_MANIFEST.sourceData || []);
+const TYPING_DEFENSE_RUNTIME_FILES = new Set(TYPING_DEFENSE_MANIFEST.runtimeFiles || []);
+const TYPING_DEFENSE_RUNTIME_PREFIXES = TYPING_DEFENSE_MANIFEST.runtimePrefixes || [];
 
 function toPosix(filePath) {
     return filePath.split(path.sep).join('/');
@@ -102,15 +128,68 @@ function isAllowedMinecraftVocabVisualFile(rel) {
     return !child.includes('/') && ['.png', '.webp'].includes(path.extname(child).toLowerCase());
 }
 
+function pathMatchesManifestEntry(rel, entry) {
+    const normalized = String(entry || '').replace(/\\/g, '/').replace(/\/$/, '');
+    if (!normalized) return false;
+    return rel === normalized || rel.startsWith(`${normalized}/`) || normalized.startsWith(`${rel}/`);
+}
+
+function isMinecraftVocabScopedAsset(rel) {
+    return MINECRAFT_VOCAB_SCOPED_PREFIXES.some((prefix) => pathMatchesManifestEntry(rel, prefix));
+}
+
+function isAllowedMinecraftVocabAsset(rel) {
+    if (MINECRAFT_VOCAB_RUNTIME_FILES.has(rel)) return true;
+    if (MINECRAFT_VOCAB_RUNTIME_PREFIXES.some((prefix) => pathMatchesManifestEntry(rel, prefix))) return true;
+    return MINECRAFT_VOCAB_RUNTIME_PREFIXES.some((prefix) =>
+        String(prefix).replace(/\\/g, '/').startsWith(`${rel}/`)
+    );
+}
+
+function isPixelWorldsScopedAsset(rel) {
+    return PIXEL_WORLDS_SCOPED_PREFIXES.some((prefix) => pathMatchesManifestEntry(rel, prefix));
+}
+
+function isAllowedPixelWorldsAsset(rel) {
+    if (PIXEL_WORLDS_RUNTIME_FILES.has(rel)) return true;
+    if (PIXEL_WORLDS_RUNTIME_PREFIXES.some((prefix) => pathMatchesManifestEntry(rel, prefix))) return true;
+    return PIXEL_WORLDS_RUNTIME_PREFIXES.some((prefix) =>
+        String(prefix).replace(/\\/g, '/').startsWith(`${rel}/`)
+    );
+}
+
+function getAudioIncludePatterns(audioSet) {
+    const manifestSet = audioSet.manifestSet ? RUNTIME_MANIFEST_AUDIO_SETS.get(audioSet.manifestSet) : null;
+    const includeFromData = manifestSet?.includeFromData || audioSet.includeFromData;
+    if (includeFromData) {
+        const dataPaths = Array.isArray(includeFromData) ? includeFromData : [includeFromData];
+        const patterns = new Set();
+        for (const relativePath of dataPaths) {
+            const dataPath = path.join(repoRoot, relativePath);
+            if (!fs.existsSync(dataPath)) throw new Error(`Missing audio include data: ${relativePath}`);
+            const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+            const sourcePrefix = `${(manifestSet?.sourceDir || audioSet.sourceDir).replace(/\\/g, '/').replace(/\/$/, '')}/`;
+            for (const card of data.cards || []) {
+                for (const value of [card.audio, ...Object.values(card.narrationAudio || {})]) {
+                    const relative = String(value || '').replace(/\\/g, '/');
+                    if (relative.startsWith(sourcePrefix)) patterns.add(relative.slice(sourcePrefix.length));
+                }
+            }
+        }
+        return [...patterns].sort();
+    }
+    return manifestSet?.include || audioSet.include || [];
+}
+
 function isConfiguredRuntimeAudioFile(rel) {
     for (const audioSet of RUNTIME_AUDIO_VARIANT_CONFIG.sets || []) {
         const sourcePrefix = `${audioSet.sourceDir.replace(/\\/g, '/').replace(/\/$/, '')}/`;
         if (!rel.startsWith(sourcePrefix)) continue;
         const relative = rel.slice(sourcePrefix.length);
-        const patterns = (audioSet.include || []).map(globToRegExp);
+        const patterns = getAudioIncludePatterns(audioSet).map(globToRegExp);
         if (patterns.some((pattern) => pattern.test(relative))) return true;
         const extension = audioSet.extension || '.ogg';
-        const sourceExtensions = (audioSet.include || [])
+        const sourceExtensions = getAudioIncludePatterns(audioSet)
             .map((pattern) => pattern.match(/\.[a-z0-9]+$/i)?.[0])
             .filter(Boolean);
         if (path.extname(relative).toLowerCase() !== extension.toLowerCase()) continue;
@@ -125,11 +204,21 @@ function isConfiguredRuntimeAudioFile(rel) {
 function shouldExclude(src) {
     const rel = relativeToRoot(src);
     if (!rel || rel.startsWith('..')) return false;
+    if (MINECRAFT_VOCAB_EXCLUDED_PREFIXES.some((prefix) => {
+        const normalized = String(prefix || '').replace(/\\/g, '/').replace(/\/$/, '');
+        return normalized && (rel === normalized || rel.startsWith(`${normalized}/`));
+    })) return true;
     if (rel === MINECRAFT_VOCAB_VISUAL_DIR || rel.startsWith(MINECRAFT_VOCAB_VISUAL_PREFIX)) {
         return !isAllowedMinecraftVocabVisualFile(rel);
     }
     if (rel.endsWith('.bak')) return true;
     if (isConfiguredRuntimeAudioFile(rel)) return true;
+    if (isMinecraftVocabScopedAsset(rel)) return !isAllowedMinecraftVocabAsset(rel);
+    if (isPixelWorldsScopedAsset(rel)) {
+        // Keep scoped directories traversable; apply the manifest boundary to files.
+        if (!path.extname(rel)) return false;
+        return !isAllowedPixelWorldsAsset(rel);
+    }
     if (EXCLUDED_PREFIXES.some((prefix) => rel === prefix || rel.startsWith(`${prefix}/`))) {
         return true;
     }
@@ -330,7 +419,7 @@ function expandRuntimeAudioVariants() {
     for (const audioSet of RUNTIME_AUDIO_VARIANT_CONFIG.sets || []) {
         const sourceDir = path.join(repoRoot, audioSet.sourceDir);
         if (!fs.existsSync(sourceDir)) throw new Error(`Missing audio variant source directory: ${audioSet.sourceDir}`);
-        const patterns = (audioSet.include || []).map(globToRegExp);
+        const patterns = getAudioIncludePatterns(audioSet).map(globToRegExp);
         const extension = audioSet.extension || '.ogg';
         for (const source of walkFiles(sourceDir).sort()) {
             const relative = toPosix(path.relative(sourceDir, source));
@@ -356,7 +445,7 @@ function rewritePublishedAudioReferences(entries) {
     const textExtensions = new Set(['.css', '.html', '.js', '.json', '.mjs']);
     const pathRewrites = [];
     for (const audioSet of RUNTIME_AUDIO_VARIANT_CONFIG.sets || []) {
-        const sourceExtensions = [...new Set((audioSet.include || [])
+        const sourceExtensions = [...new Set(getAudioIncludePatterns(audioSet)
             .map((pattern) => pattern.match(/\.[a-z0-9]+$/i)?.[0])
             .filter(Boolean))];
         const runtimeRoot = audioSet.runtimePrefix.replace(/\/$/, '');
@@ -377,6 +466,13 @@ function rewritePublishedAudioReferences(entries) {
     for (const file of walkFiles(outDir)) {
         if (!textExtensions.has(path.extname(file).toLowerCase())) continue;
         const source = fs.readFileSync(file, 'utf8');
+        const relativeFile = toPosix(path.relative(outDir, file));
+        const preserveExternalMinecraftAudio = /^data\/learn\/packs\/english-mc-hybrid-2026\/modules\/minecraft-vocab-runtime-[^/]+\.json$/.test(relativeFile);
+        let originalExternalAudio = null;
+        if (preserveExternalMinecraftAudio) {
+            const originalModule = JSON.parse(source);
+            originalExternalAudio = (originalModule.cards || []).map((card) => card.externalNarrationAudio || null);
+        }
         let rewritten = pathRewrites.reduce(
             (content, { matcher, sourceExtension, variantExtension }) => content.replace(
                 matcher,
@@ -399,6 +495,13 @@ function rewritePublishedAudioReferences(entries) {
             rewritten = rewritten
                 .replace('"audioFormat": "wav"', '"audioFormat": "ogg",\n  "audioSubtype": "opus"');
         }
+        if (originalExternalAudio) {
+            const publishedModule = JSON.parse(rewritten);
+            for (const [index, externalAudio] of originalExternalAudio.entries()) {
+                if (externalAudio) publishedModule.cards[index].externalNarrationAudio = externalAudio;
+            }
+            rewritten = `${JSON.stringify(publishedModule, null, 2)}\n`;
+        }
         if (rewritten !== source) fs.writeFileSync(file, rewritten);
     }
 }
@@ -407,7 +510,7 @@ function copyRuntimeAudioVariantSet(audioSet) {
     const sourceDir = path.join(repoRoot, audioSet.sourceDir);
     const destDir = path.join(outDir, audioSet.publishRoot);
     const extension = (audioSet.extension || '.ogg').toLowerCase();
-    const variantPatterns = (audioSet.include || []).map((pattern) => {
+    const variantPatterns = getAudioIncludePatterns(audioSet).map((pattern) => {
         const sourceExtension = pattern.match(/\.[a-z0-9]+$/i)?.[0];
         return sourceExtension
             ? globToRegExp(pattern.slice(0, -sourceExtension.length) + extension)
@@ -455,7 +558,6 @@ function normalizePublishedWordMemoryImageUrl(value) {
 function sanitizePublishedWordMemoryCards() {
     const assetDir = path.join(outDir, 'prj', '单词记忆射击场原型', 'assets');
     const jsonPath = path.join(assetDir, 'word-memory-cards.json');
-    const fallbackPath = path.join(assetDir, 'word-memory-cards.js');
     const raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
     let normalizedCount = 0;
 
@@ -468,13 +570,21 @@ function sanitizePublishedWordMemoryCards() {
     }
 
     fs.writeFileSync(jsonPath, `${JSON.stringify(raw, null, 2)}\n`);
-    const fallback = fs.readFileSync(fallbackPath, 'utf8');
-    const assignment = 'window.WORD_MEMORY_CARDS_DATA = ';
-    if (!fallback.startsWith(assignment) || !fallback.trimEnd().endsWith(';')) {
-        throw new Error('Unexpected word-memory fallback card data format.');
-    }
-    fs.writeFileSync(fallbackPath, `${assignment}${JSON.stringify(raw, null, 2)};\n`);
     console.log(`[pages-artifact] normalized ${normalizedCount} malformed word-memory remote image URLs`);
+}
+
+function pruneMinecraftVocabSourceFromArtifact() {
+    for (const relativePath of MINECRAFT_VOCAB_MANIFEST.sourceData || []) {
+        const target = path.join(outDir, relativePath);
+        if (fs.existsSync(target)) fs.rmSync(target, { force: true });
+    }
+}
+
+function prunePixelWorldsSourceDataFromArtifact() {
+    for (const relativePath of PIXEL_WORLDS_SOURCE_DATA) {
+        const target = path.join(outDir, relativePath);
+        if (fs.existsSync(target)) fs.rmSync(target, { force: true });
+    }
 }
 
 const STATIC_ROUTE_ENTRIES = [
@@ -583,17 +693,11 @@ function includeLearningArcadeRuntime(rel) {
 }
 
 function includeTypingDefenseRuntime(rel) {
-    const exactFiles = new Set([
-        'assets/creeper-bow-scene-chatgpt-raw.png',
-    ]);
-    const allowedPrefixes = [
-        'web',
-        'assets/generated/audio',
-        'assets/generated/minecraft-typing-defense',
-        'assets/generated/typing-defense-assets',
-        'assets/generated/word-cards',
-    ];
-    return includeWhenAnyDescendantMatches(rel, exactFiles, allowedPrefixes);
+    return includeWhenAnyDescendantMatches(
+        rel,
+        TYPING_DEFENSE_RUNTIME_FILES,
+        TYPING_DEFENSE_RUNTIME_PREFIXES
+    );
 }
 
 function includeWordMemoryRuntime(rel) {
@@ -601,11 +705,8 @@ function includeWordMemoryRuntime(rel) {
         'index.html',
         'styles.css',
         'game.js',
-        'assets/word-memory-cards.js',
         'assets/word-memory-cards.json',
-        'assets/word-memory-core-cards.js',
         'assets/word-memory-core-cards.json',
-        'assets/word-memory-extension-cards.js',
         'assets/word-memory-extension-cards.json',
         'assets/stage-background.png',
         'assets/generated/reference/topdown-clean-bg-chatgpt.png',
@@ -637,6 +738,8 @@ copyFile('index.html', '404.html');
 for (const dirName of ['css', 'js', 'assets', 'data', 'app']) {
     copyDir(dirName);
 }
+pruneMinecraftVocabSourceFromArtifact();
+prunePixelWorldsSourceDataFromArtifact();
 
 copyDirWithFilter('prj/学习机玩法原型', includeLearningArcadeRuntime);
 copyDirWithFilterTo(

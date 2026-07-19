@@ -3,6 +3,7 @@
 
     const STORAGE_PREFIX = 'petbank_minecraft_expedition_state_v2';
     const LEGACY_STORAGE_PREFIX = 'petbank_minecraft_expedition_state_v1';
+    const WORD_XP = 2;
     const STATUS = Object.freeze({ LOCKED: 'locked', AVAILABLE: 'available', ACTIVE: 'active', CLEARED: 'cleared' });
 
     function activeProfileId() {
@@ -42,6 +43,7 @@
             activeRegionId: '',
             clearedMissionIds: [],
             collection: [],
+            wordCardIds: [],
             experience: 0,
             level: 1,
             inventory: [],
@@ -63,6 +65,7 @@
             regions: { ...defaults.regions },
             clearedMissionIds: Array.isArray(value.clearedMissionIds) ? [...new Set(value.clearedMissionIds.map(String))] : [],
             collection: Array.isArray(value.collection) ? [...new Set(value.collection.map(String))] : [],
+            wordCardIds: Array.isArray(value.wordCardIds) ? [...new Set(value.wordCardIds.map(String))] : [],
             experience: Math.max(0, Number(value.experience || 0)),
             level: Math.max(1, Number(value.level || 1)),
             inventory: Array.isArray(value.inventory) ? [...new Set(value.inventory.map(String))] : [],
@@ -112,6 +115,29 @@
         const region = safeRegions(regions).find(item => item.id === regionId);
         if (!region || getRegionState(state, regionId) === STATUS.LOCKED) return { state, persisted: true, reason: 'locked' };
         return stateResult(state, { activeRegionId: regionId, regions: { ...state.regions, [regionId]: STATUS.ACTIVE } });
+    }
+
+    function normalizeGrade(input) {
+        const grade = String(input || '').trim().toLowerCase();
+        return ['again', 'hard', 'good', 'easy'].includes(grade) ? grade : 'again';
+    }
+
+    function recordWordAction(state, cardId, progress = {}, grade = 'again', metadata = {}) {
+        const id = String(cardId || '').trim();
+        const masteryStatus = String(progress?.status || 'new');
+        const normalizedGrade = normalizeGrade(grade);
+        const wordCardIds = Array.isArray(state?.wordCardIds) ? state.wordCardIds : [];
+        if (!state || !id) return { state, persisted: false, accepted: false, reason: 'invalid-card', masteryStatus };
+        if (normalizedGrade === 'again') return { state, persisted: true, accepted: false, duplicate: false, reason: 'incorrect', masteryStatus };
+        if (wordCardIds.includes(id)) return { state, persisted: true, accepted: true, duplicate: true, masteryStatus, wordExperience: 0 };
+        const experience = Math.max(0, Number(state.experience || 0) + WORD_XP);
+        const level = Math.max(1, Math.floor(experience / 20) + 1);
+        const result = stateResult(state, {
+            wordCardIds: [...wordCardIds, id],
+            experience,
+            level
+        });
+        return { ...result, accepted: result.persisted, duplicate: false, masteryStatus, wordExperience: WORD_XP, mode: String(metadata.mode || '') };
     }
 
     function completeRegion(state, regionId, regions, missionId = '', collectionItem = '', reward = {}) {
@@ -164,6 +190,7 @@
             percent: statuses.length ? Math.round((statuses.filter(status => status === STATUS.CLEARED).length / statuses.length) * 100) : 0,
             experience: Number(state?.experience || 0),
             level: Number(state?.level || 1),
+            wordCards: Array.isArray(state?.wordCardIds) ? state.wordCardIds : [],
             inventory: Array.isArray(state?.inventory) ? state.inventory : [],
             abilities: Array.isArray(state?.abilities) ? state.abilities : [],
             defeatedEnemies: Array.isArray(state?.defeatedEnemies) ? state.defeatedEnemies : [],
@@ -181,6 +208,7 @@
 
     global.MinecraftVocabExpedition = {
         STORAGE_PREFIX,
+        WORD_XP,
         STATUS,
         activeProfileId,
         storageKey,
@@ -189,6 +217,7 @@
         writeState,
         getRegionState,
         enterRegion,
+        recordWordAction,
         completeRegion,
         getSummary,
         calculateBattle
