@@ -13,11 +13,12 @@ const [indexSource, routerSource, runtimeLoaderSource, appSource] = await Promis
     fs.readFile(path.join(ROOT, 'js/app.js'), 'utf8')
 ]);
 
-function visibleHtml(source) {
-    return source
+function extractTextContent(html) {
+    return html
         .replace(/<!--[\s\S]*?-->/g, '')
-        .replace(/<script\b[\s\S]*?<\/script>/gi, '')
-        .replace(/<style\b[\s\S]*?<\/style>/gi, '');
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 }
 
 function assertContract(source, pattern, message) {
@@ -50,14 +51,11 @@ test('app renders MinecraftVocabPage when minecraft-vocab is activated', () => {
     );
 });
 
-test('child main navigation has a direct minecraft-vocab entry', () => {
+test('child main navigation has a direct minecraft-vocab entry with expedition copy', () => {
     const mainNav = indexSource.match(
         /<nav\b(?=[^>]*\baria-label\s*=\s*["']孩子端主导航["'])[^>]*>[\s\S]*?<\/nav>/i
     );
     assert.ok(mainNav, '孩子端主导航 nav is missing');
     assertContract(mainNav[0], /switchPage\s*\(\s*["']minecraft-vocab["']\s*\)/i, '孩子端主导航 lacks a direct minecraft-vocab action');
-});
-
-test('child-facing copy names the feature as 单词远征 or Word Quest', () => {
-    assertContract(visibleHtml(indexSource), /单词远征|Word Quest/i, 'visible HTML copy must say 单词远征 or Word Quest');
+    assertContract(extractTextContent(mainNav[0]), /单词远征|Word Quest/i, '孩子端主导航 text must say 单词远征 or Word Quest');
 });
