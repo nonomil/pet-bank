@@ -25,6 +25,7 @@ const TASKS = [
     { label: 'word memory prototype', cmd: 'node', args: ['prj/单词记忆射击场原型/verify.mjs'] },
     { label: 'learning arcade prototype', cmd: 'node', args: ['prj/学习机玩法原型/verify.mjs'] },
     { label: 'asset fallback loading', cmd: 'node', args: ['scripts/test-asset-fallback-loading.mjs'] },
+    { label: 'shared asset JSON loader', cmd: 'node', args: ['scripts/test-asset-json-loader.mjs'] },
     { label: 'runtime image variants', cmd: 'node', args: ['scripts/test-runtime-image-variants.mjs'] },
     { label: 'runtime audio variants', cmd: 'node', args: ['scripts/test-runtime-audio-variants.mjs'] },
     { label: 'learning arcade browser smoke', cmd: 'node', args: ['prj/学习机玩法原型/scripts/test-full-prototype-smoke.mjs'] },

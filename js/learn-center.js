@@ -99,10 +99,10 @@
 
     async function fetchJson(url) {
         try {
-            const resolvedUrl = window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl(url) : url;
-            const resp = await fetch(resolvedUrl);
-            if (!resp.ok) return null;
-            return await resp.json();
+            if (!window.PetBankAssetLoader || typeof window.PetBankAssetLoader.fetchJson !== 'function') {
+                throw new Error('PetBankAssetLoader is unavailable');
+            }
+            return await window.PetBankAssetLoader.fetchJson(url);
         } catch (err) {
             console.warn('[LearnCenter] fetch failed:', url, err);
             return null;

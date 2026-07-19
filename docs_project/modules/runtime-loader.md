@@ -84,3 +84,5 @@ Bundle 映射:
 - ensurePlaygroundFeature 中 400ms 后自动预加载卡牌对战（增强体验）
 - 账号/家庭模块不是 runtime-loader 的玩法 bundle：`index.html` 直接加载 `self-hosted-api.js`、`parent-account.js`，由家长设置页按需显示；runtime-loader 仍不加载 Supabase、旧社交或第三方云端 bundle
 - 样式通过 `data-petbank-src` / `data-petbank-href` 属性追踪已加载资源
+- 公共 JSON 由 `js/asset-loader.js` 提供的 `PetBankAssetLoader.fetchJson()` 统一读取，按解析后 URL 去重；请求或 JSON 解析失败会清除缓存，允许后续调用重试。
+- 公共 JSON 加载合同：`node --test scripts/test-asset-json-loader.mjs`

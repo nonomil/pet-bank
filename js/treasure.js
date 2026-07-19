@@ -30,8 +30,10 @@ const TreasureChest = (function () {
 
     async function load() {
         try {
-            const resp = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/items.json') : 'data/items.json');
-            const data = await resp.json();
+            if (!window.PetBankAssetLoader || typeof window.PetBankAssetLoader.fetchJson !== 'function') {
+                throw new Error('PetBankAssetLoader is unavailable');
+            }
+            const data = await window.PetBankAssetLoader.fetchJson('data/items.json');
             itemsData = data.items || [];
         } catch (e) {
             console.warn('[Treasure] items.json load failed:', e);

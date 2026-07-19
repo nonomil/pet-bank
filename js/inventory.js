@@ -11,11 +11,13 @@ const InventorySystem = (function () {
     async function loadItemsData() {
         if (itemsData) return itemsData;
         try {
-            const response = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/items.json') : 'data/items.json');
-            itemsData = await response.json();
+            if (!window.PetBankAssetLoader || typeof window.PetBankAssetLoader.fetchJson !== 'function') {
+                throw new Error('PetBankAssetLoader is unavailable');
+            }
+            itemsData = await window.PetBankAssetLoader.fetchJson('data/items.json');
             return itemsData;
         } catch (e) {
-            console.error('Failed to load items.json:', e);
+            console.error('[InventorySystem] Failed to load items.json:', e);
             return { items: [] };
         }
     }

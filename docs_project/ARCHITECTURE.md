@@ -52,7 +52,7 @@
 | `learn-*`、`learning-sheet` | 英语 scope、学习中心及学习包 |
 | `review` | 本机成长复盘 |
 
-资源路径必须经 `window.resolvePetBankAssetUrl()` 解析，以支持根路径、GitHub Pages 子路径和深层 URL。加载脚本使用 `async=false` 和 Promise 去重来维持依赖顺序。
+资源路径必须经 `window.resolvePetBankAssetUrl()` 解析，以支持根路径、GitHub Pages 子路径和深层 URL。加载脚本使用 `async=false` 和 Promise 去重来维持依赖顺序；公共静态 JSON 通过 `PetBankAssetLoader.fetchJson()` 共享请求缓存，失败后会清除对应 Promise 以允许重试。
 
 ### 3.3 Pages 制品链路
 
