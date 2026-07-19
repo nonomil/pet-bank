@@ -4,13 +4,6 @@ import { browserLaunchOpts } from './playwright-browser.mjs';
 
 const BASE = process.env.MMWG_E2E_BASE_URL || 'http://127.0.0.1:7000';
 const REGION_IDS = ['grassland-trail', 'village-gate', 'deep-mine', 'nether-portal', 'ender-dragon-arena'];
-const REGION_CARD_IDS = {
-  'grassland-trail': ['mc-word-block', 'mc-word-world', 'anki-mc-0927-grass', 'mc-word-water'],
-  'village-gate': ['card-0346', 'mc-word-house', 'mc-word-tree', 'card-0407'],
-  'deep-mine': ['mc-word-pickaxe', 'card-0148', 'mc-word-diamond', 'mc-word-stone'],
-  'nether-portal': ['anki-mc-1177-lava', 'anki-mc-6514-nether', 'card-0132', 'card-0180'],
-  'ender-dragon-arena': ['card-0186', 'card-0344', 'card-0185', 'card-0358']
-};
 const browser = await chromium.launch(browserLaunchOpts());
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 const page = await context.newPage();
@@ -36,8 +29,6 @@ async function clearLocalState() {
   await page.evaluate(() => {
     Object.keys(localStorage).filter(key => key.startsWith('petbank_minecraft_expedition_state_') || key.startsWith('petbank_minecraft_vocab_session_') || key.includes('learning_vocab_progress')).forEach(key => localStorage.removeItem(key));
     Object.keys(localStorage).filter(key => key.startsWith('petbank_minecraft_vocab_level_v1_')).forEach(key => localStorage.removeItem(key));
-    const profileId = window.ProfileManager?.getActiveId?.() || 'default';
-    localStorage.setItem(`petbank_minecraft_vocab_level_v1_${profileId}`, 'all');
     localStorage.removeItem('petbank_game_reward_receipts_v1');
     localStorage.removeItem('petbank_core_reward_receipts_v1');
     window.EnglishVocabProgress?.reset?.();
@@ -77,10 +68,15 @@ try {
 
   const home = await page.evaluate(() => {
     const mapImage = document.querySelector('[data-mv-expedition-image]');
+    const progressSidebar = document.querySelector('.mv-progress-sidebar');
     return {
       nodes: document.querySelectorAll('[data-mv-region]').length,
       enabled: document.querySelectorAll('[data-mv-region]:not([disabled])').length,
       title: document.querySelector('[data-mv-region="grassland-trail"]')?.innerText || '',
+      campTitle: document.querySelector('#mvCampMapTitle')?.innerText || '',
+      todayStatus: progressSidebar?.querySelector('.mv-sidebar-kicker')?.innerText || '',
+      todayProgress: progressSidebar?.querySelector('.mv-progress-count')?.innerText || '',
+      todayPercent: progressSidebar?.querySelector('.mv-progress-meter')?.innerText || '',
       mapWidth: mapImage?.naturalWidth || 0,
       mapSrc: mapImage?.getAttribute('src') || ''
     };
@@ -88,8 +84,56 @@ try {
   assert.equal(home.nodes, 5, 'five story map regions should render');
   assert.equal(home.enabled, 1, 'only the first region should start unlocked');
   assert.match(home.title, /草原小径|Grassland Trail/);
+  assert.match(home.campTitle, /方块营地|Block Camp/);
+  assert.match(home.todayStatus, /今日远征/);
+  assert.match(home.todayProgress, /0\s*\/\s*11\s*张卡片/);
+  assert.match(home.todayPercent, /0%/);
   assert.equal(home.mapWidth > 0, true, 'expedition map image should load');
   assert.match(home.mapSrc, /minecraft-expedition\/expedition-map\.png/);
+
+  const kindergarten = await page.evaluate(async () => {
+    const levels = window.MinecraftVocabLevels;
+    const module = await window.MinecraftVocabLoader.loadForSelection('kindergarten');
+    const response = await fetch('data/learn/minecraft-expedition/camp-regions.json');
+    if (!response.ok) throw new Error(`expedition data request failed: ${response.status}`);
+    const pack = await response.json();
+    const selected = levels.get('kindergarten');
+    const advancedRegions = pack.regions.filter(region => (levels.get(region.minVocabLevel)?.rank || 0) > selected.rank);
+    const advancedRegionStates = advancedRegions.map(region => {
+      const button = document.querySelector(`[data-mv-region="${region.id}"]`);
+      return {
+        id: region.id,
+        minVocabLevel: region.minVocabLevel,
+        disabled: !!button?.disabled,
+        levelLocked: button?.classList.contains('is-level-locked') || false
+      };
+    });
+    const filteredCards = levels.filterCards(module.cards, 'kindergarten');
+    const cardsById = new Map(module.cards.map(card => [card.id, card]));
+    const sessionKey = Object.keys(localStorage).find(key => key.startsWith('petbank_minecraft_vocab_session_v1_'));
+    const session = sessionKey ? JSON.parse(localStorage.getItem(sessionKey)) : null;
+    const queue = (session?.queue || []).map(task => task.cardId);
+    const queueAdvancedCards = queue.filter(cardId => {
+      const card = cardsById.get(cardId);
+      const cardLevel = levels.get(levels.cardLevel(card));
+      return !cardLevel || cardLevel.rank > selected.rank;
+    });
+    return {
+      selectedLevel: document.querySelector('[data-mv-level="kindergarten"]')?.getAttribute('aria-checked') || '',
+      advancedRegionStates,
+      queue,
+      queueUsesFilteredPool: queue.every(cardId => filteredCards.some(card => card.id === cardId)),
+      queueAdvancedCards
+    };
+  });
+  assert.equal(kindergarten.selectedLevel, 'true', 'the default level should be kindergarten');
+  assert.ok(kindergarten.advancedRegionStates.length > 0, 'kindergarten must have higher-level expedition regions to guard');
+  assert.equal(kindergarten.advancedRegionStates.every(region => region.disabled && region.levelLocked), true, 'higher-level regions must be disabled in kindergarten');
+  assert.equal(kindergarten.queueUsesFilteredPool, true, 'the default queue must use kindergarten-filtered cards');
+  assert.deepEqual(kindergarten.queueAdvancedCards, [], 'the default queue must not select cards above kindergarten');
+
+  await page.click('[data-mv-level="all"]');
+  await page.waitForFunction(() => document.querySelector('[data-mv-level="all"]')?.getAttribute('aria-checked') === 'true');
 
   const snapshots = [];
   for (const regionId of REGION_IDS) {
@@ -99,20 +143,32 @@ try {
       const image = document.querySelector('[data-mv-story-image]');
       return !!image && image.complete && image.naturalWidth > 0;
     }, { timeout: 15000 });
-    const story = await page.evaluate(() => {
+    const story = await page.evaluate(async regionId => {
       const root = document.querySelector('#minecraft-vocab-root');
       const image = root?.querySelector('[data-mv-story-image]');
+      const response = await fetch('data/learn/minecraft-expedition/camp-regions.json');
+      if (!response.ok) throw new Error(`expedition data request failed: ${response.status}`);
+      const pack = await response.json();
+      const region = pack.regions.find(item => item.id === regionId);
+      const module = await window.MinecraftVocabLoader.loadForSelection('all');
+      const cardsById = new Map(module.cards.map(card => [card.id, card]));
+      const targetCards = (region?.mission?.cardIds || []).map(cardId => cardsById.get(cardId));
       return {
         beats: root?.querySelectorAll('.mv-story-beat').length || 0,
         hasBilingual: !!root?.querySelector('.mv-story-intro strong') && !!root?.querySelector('.mv-story-intro p') && root?.querySelectorAll('.mv-story-beat p.is-en').length >= 3,
         previewCards: root?.querySelectorAll('.mv-story-card-chip').length || 0,
+        missionCardIds: region?.mission?.cardIds || [],
+        targetWords: targetCards.map(card => card?.word || ''),
+        previewWords: [...(root?.querySelectorAll('.mv-story-card-chip strong') || [])].map(node => node.innerText.trim()),
         imageWidth: image?.naturalWidth || 0,
         study: !!root?.querySelector('[data-mv-story-study]')
       };
-    });
+    }, regionId);
     assert.equal(story.beats >= 3, true, `${regionId} should show story beats`);
     assert.equal(story.hasBilingual, true, `${regionId} should show bilingual story text`);
-    assert.equal(story.previewCards, REGION_CARD_IDS[regionId].length, `${regionId} story should preview only its bound cards`);
+    assert.equal(story.previewCards, story.missionCardIds.length, `${regionId} story should preview only its bound cards`);
+    assert.equal(story.targetWords.includes(''), false, `${regionId} mission cards should resolve to vocabulary cards`);
+    assert.deepEqual(story.previewWords, story.targetWords, `${regionId} story preview should match mission.cardIds in order`);
     assert.equal(story.imageWidth > 0, true, `${regionId} story image should load`);
     assert.equal(story.study, true, `${regionId} should link story to vocabulary study`);
     if (regionId === REGION_IDS[0]) {
@@ -129,6 +185,10 @@ try {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.screenshot({ path: 'tmp/minecraft-expedition-story-390.png', fullPage: true });
       await page.setViewportSize({ width: 1280, height: 900 });
+      const storyDesktop = await page.evaluate(() => ({
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
+      }));
+      assert.equal(storyDesktop.overflow, false, 'story page should not overflow at 1280px');
     }
     await page.click('[data-mv-story-study]');
     await page.waitForSelector('[data-mv-session]', { timeout: 10000 });
