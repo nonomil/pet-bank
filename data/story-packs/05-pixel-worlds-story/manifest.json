@@ -75,7 +75,7 @@
       "title": "星港科技区",
       "subtitle": "跟着光核信号，修好回家的星图",
       "tone": "sci-fi",
-      "background": "assets/story/pixel-worlds-v1/maps/sci-fi.png",
+      "background": "assets/story/pixel-worlds-v1/maps/sci-fi.webp",
       "nodes": [
         {
           "levelId": "sf-01",
@@ -680,7 +680,7 @@
       "title": "森林回声区",
       "subtitle": "听见树木、溪流和朋友的声音",
       "tone": "forest",
-      "background": "assets/story/pixel-worlds-v1/maps/forest.png",
+      "background": "assets/story/pixel-worlds-v1/maps/forest.webp",
       "nodes": [
         {
           "levelId": "forest-01",
@@ -1311,7 +1311,7 @@
       "title": "方块地下城",
       "subtitle": "在方块世界里寻找最后一枚星门晶石",
       "tone": "block",
-      "background": "assets/story/pixel-worlds-v1/maps/block.png",
+      "background": "assets/story/pixel-worlds-v1/maps/block.webp",
       "nodes": [
         {
           "levelId": "block-01",
@@ -1966,7 +1966,7 @@
       "title": "像素冒险·侦探小游戏",
       "subtitle": "每个线索都是一小段剧情",
       "tone": "detective",
-      "background": "assets/story/pixel-worlds-v1/maps/detective.png",
+      "background": "assets/story/pixel-worlds-v1/maps/detective.webp",
       "nodes": [
         {
           "levelId": "detective-01",

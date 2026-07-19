@@ -6,6 +6,8 @@ import path from 'node:path';
 const repoRoot = process.cwd();
 const manifestPath = path.join(repoRoot, 'scripts', 'runtime-asset-manifests', 'pixel-worlds-story.json');
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+const storyManifestPath = path.join(repoRoot, 'data', 'story-packs', '05-pixel-worlds-story', 'manifest.json');
+const storyManifest = JSON.parse(fs.readFileSync(storyManifestPath, 'utf8'));
 const providedArtifact = process.argv[2] ? path.resolve(repoRoot, process.argv[2]) : null;
 
 function walkFiles(root) {
@@ -25,6 +27,15 @@ function walkFiles(root) {
 function assertSourceManifest() {
     assert.equal(manifest.id, 'pixel-worlds-story');
     assert.equal(manifest.releaseStage, 'full-runtime-pool');
+    const mapBackgrounds = [...(storyManifest.worlds || []), ...(storyManifest.bonusTracks || [])]
+        .map((track) => track.background)
+        .filter(Boolean);
+    assert.ok(mapBackgrounds.length > 0, 'story manifest should define map backgrounds');
+    assert.ok(mapBackgrounds.every((background) => background.endsWith('.webp')),
+        `story map backgrounds should use published WebP variants: ${mapBackgrounds.join(', ')}`);
+    mapBackgrounds.forEach((background) => {
+        assert.ok(fs.existsSync(path.join(repoRoot, background)), `story map background is missing: ${background}`);
+    });
     for (const relative of [...manifest.entry, ...manifest.data, ...(manifest.sourceData || [])]) {
         assert.ok(fs.existsSync(path.join(repoRoot, relative)), `manifest source is missing: ${relative}`);
     }

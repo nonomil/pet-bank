@@ -12,6 +12,9 @@
     }
 
     function fetchJson(path) {
+        if (root.PetBankAssetLoader && typeof root.PetBankAssetLoader.fetchJson === 'function') {
+            return root.PetBankAssetLoader.fetchJson(path);
+        }
         return root.fetch(assetUrl(path)).then(function (response) {
             if (!response.ok) throw new Error('HTTP ' + response.status + ': ' + path);
             return response.json();

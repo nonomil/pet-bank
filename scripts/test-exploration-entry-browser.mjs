@@ -7,7 +7,13 @@ const browser = await chromium.launch(browserLaunchOpts());
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 const page = await context.newPage();
 const errors = [];
+const storyManifestRequests = [];
 page.on('pageerror', (error) => errors.push(String(error?.message || error)));
+page.on('request', (request) => {
+    if (request.url().includes('/data/story-packs/05-pixel-worlds-story/manifest.json')) {
+        storyManifestRequests.push(request.url());
+    }
+});
 page.on('console', (message) => {
     if (message.type() === 'error' && !/404|favicon|Failed to load resource/i.test(message.text())) errors.push(message.text());
 });
@@ -23,6 +29,7 @@ try {
 
     await page.evaluate(() => window.switchPage('explore'));
     await page.waitForSelector('#page-explore #pixelStoryShell .pixel-story-node', { state: 'attached', timeout: 20000 });
+    assert.equal(storyManifestRequests.length, 1, `pixel story manifest should be fetched once per page: ${JSON.stringify(storyManifestRequests)}`);
     assert.equal(await page.locator('#page-explore #pixelStoryShell .pixel-story-world-tab').count(), 3, 'explore exposes three story worlds');
     assert.ok(await page.locator('#page-explore #pixelStoryShell .pixel-story-node').count() >= 1, 'explore exposes the first unlocked story node');
     await page.screenshot({ path: 'tmp/exploration-story-roaming.png', fullPage: true });
