@@ -7,14 +7,15 @@ import vm from 'node:vm';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-const [indexSource, routerSource, runtimeLoaderSource, appSource, styleSource, learnCenterSource, sessionSource] = await Promise.all([
+const [indexSource, routerSource, runtimeLoaderSource, appSource, styleSource, learnCenterSource, sessionSource, pageSource] = await Promise.all([
     fs.readFile(path.join(ROOT, 'index.html'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/page-router.js'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/runtime-loader.js'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/app.js'), 'utf8'),
     fs.readFile(path.join(ROOT, 'css/style.css'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/learn-center.js'), 'utf8'),
-    fs.readFile(path.join(ROOT, 'js/minecraft-vocab-session.js'), 'utf8')
+    fs.readFile(path.join(ROOT, 'js/minecraft-vocab-session.js'), 'utf8'),
+    fs.readFile(path.join(ROOT, 'js/minecraft-vocab-page.js'), 'utf8')
 ]);
 
 const routerWindow = { location: { pathname: '/', protocol: 'http:' } };
@@ -33,6 +34,12 @@ function assertContract(source, pattern, message) {
     assert.ok(pattern.test(source), message);
 }
 
+function countAttributeOccurrences(source, tagName, attribute, value) {
+    const escapedValue = String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(`<${tagName}\\b[^>]*\\b${attribute}\\s*=\\s*["']${escapedValue}["'][^>]*>`, 'gi');
+    return [...source.matchAll(pattern)].length;
+}
+
 function extractPageMarkup(source, pageId, nextMarker) {
     const start = source.indexOf(`<div class="page" id="${pageId}">`);
     assert.notEqual(start, -1, `${pageId} page container is missing`);
@@ -42,11 +49,8 @@ function extractPageMarkup(source, pageId, nextMarker) {
 }
 
 test('HTML contains the Minecraft vocab page container', () => {
-    assertContract(
-        indexSource,
-        /<div\b(?=[^>]*\bid\s*=\s*["']page-minecraft-vocab["'])(?=[^>]*\bclass\s*=\s*["'][^"']*\bpage\b[^"']*["'])[^>]*>/i,
-        'page-minecraft-vocab page container is missing'
-    );
+    assert.equal(countAttributeOccurrences(indexSource, 'div', 'id', 'page-minecraft-vocab'), 1, 'page-minecraft-vocab page container must be unique');
+    assertContract(indexSource, /<div\b(?=[^>]*\bid\s*=\s*["']page-minecraft-vocab["'])(?=[^>]*\bclass\s*=\s*["'][^"']*\bpage\b[^"']*["'])[^>]*>/i, 'page-minecraft-vocab page container is missing');
 });
 
 test('Minecraft vocab keeps the learn business tab in the app shell with its own dock tab', () => {
@@ -78,6 +82,15 @@ test('app renders MinecraftVocabPage when minecraft-vocab is activated', () => {
         /if\s*\(\s*page\s*===\s*["']minecraft-vocab["']\s*&&\s*window\.MinecraftVocabPage\s*\)\s*void\s+MinecraftVocabPage\.render\s*\(/i,
         'app.js must render MinecraftVocabPage on the minecraft-vocab page'
     );
+});
+
+test('Minecraft vocab page invalidates stale render and selection requests', () => {
+    assertContract(pageSource, /let\s+pageGeneration\s*=\s*0/, 'Minecraft vocab page needs a render generation token');
+    assertContract(pageSource, /function\s+isCurrentGeneration\s*\([^)]*\)[\s\S]*?mounted[\s\S]*?pageGeneration/, 'Minecraft vocab page needs a mounted generation guard');
+    assertContract(pageSource, /function\s+stop\s*\(\)[\s\S]*?mounted\s*=\s*false[\s\S]*?pageGeneration\s*\+=\s*1[\s\S]*?selectionRequestId\s*\+=\s*1/, 'stop() must invalidate render and selection requests');
+    assertContract(pageSource, /async function\s+render\s*\([^)]*[\s\S]*?const\s+generation\s*=\s*\+\+pageGeneration/, 'render() must create a new generation token');
+    assert.ok((pageSource.match(/isCurrentGeneration\(generation\)/g) || []).length >= 5, 'async render paths must check the active generation after awaits');
+    assertContract(pageSource, /async function\s+reloadSelection\s*\([^)]*[\s\S]*?const\s+generation\s*=\s*pageGeneration[\s\S]*?requestId\s*!==\s*selectionRequestId/, 'reloadSelection() must reject stale page generations and requests');
 });
 
 test('learning center exposes a stable secondary CTA that only navigates to minecraft-vocab', () => {
@@ -141,7 +154,11 @@ test('child main navigation has a direct minecraft-vocab entry with expedition c
     );
     assert.ok(mainNav, 'app-bottom-dock child main navigation is missing');
 
-    const vocabEntry = mainNav[0].match(
+    const dockMarkup = mainNav[0];
+    assert.equal(countAttributeOccurrences(dockMarkup, 'button', 'data-app-dock', 'explore'), 1, 'child main navigation must contain exactly one explore entry');
+    assert.equal(countAttributeOccurrences(dockMarkup, 'button', 'data-app-dock', 'minecraft-vocab'), 1, 'child main navigation must contain exactly one minecraft-vocab entry');
+
+    const vocabEntry = dockMarkup.match(
         /<button\b(?=[^>]*\bclass\s*=\s*["'][^"']*\bapp-dock-item\b[^"']*["'])(?=[^>]*\bdata-app-dock\s*=\s*["']minecraft-vocab["'])[^>]*>[\s\S]*?<\/button>/i
     );
     assert.ok(vocabEntry, 'child main navigation lacks a minecraft-vocab app-dock button');

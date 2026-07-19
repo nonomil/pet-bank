@@ -36,6 +36,8 @@
         bl: `${UI_ASSET_ROOT}card-corner-bl.png`,
         br: `${UI_ASSET_ROOT}card-corner-br.png`
     };
+    const LEVEL_STORAGE_PREFIX = 'petbank_minecraft_vocab_level_v1';
+    const BAND_STORAGE_PREFIX = 'petbank_minecraft_vocab_band_v1';
 
     let mounted = false;
     let root = null;
@@ -51,6 +53,15 @@
     let rewardResult = null;
     let audio = null;
     let progressOpen = false;
+    let hintUsed = false;
+    let selectedLevelId = 'kindergarten';
+    let selectedBandId = 'minecraft-core';
+    let pageGeneration = 0;
+    let selectionRequestId = 0;
+
+    function isCurrentGeneration(generation) {
+        return mounted && generation === pageGeneration;
+    }
 
     function escapeHtml(value) {
         return String(value ?? '')
@@ -77,6 +88,82 @@
         return Array.isArray(module?.cards) ? module.cards : [];
     }
 
+    function levelsApi() {
+        return global.MinecraftVocabLevels || null;
+    }
+
+    function profileId() {
+        try {
+            return String(global.ProfileManager?.getActiveId?.() || 'default');
+        } catch (error) {
+            return 'default';
+        }
+    }
+
+    function levelStorageKey() {
+        return `${LEVEL_STORAGE_PREFIX}_${profileId()}`;
+    }
+
+    function readSelectedLevel() {
+        const fallback = levelsApi()?.DEFAULT_LEVEL_ID || 'kindergarten';
+        try {
+            return levelsApi()?.normalizeLevelId(global.localStorage?.getItem(levelStorageKey()) || fallback) || fallback;
+        } catch (error) {
+            console.warn('[MinecraftVocabPage] failed to read level selection', error);
+            return fallback;
+        }
+    }
+
+    function saveSelectedLevel(levelId) {
+        const normalized = levelsApi()?.normalizeLevelId(levelId) || 'kindergarten';
+        selectedLevelId = normalized;
+        try {
+            global.localStorage?.setItem(levelStorageKey(), normalized);
+            return true;
+        } catch (error) {
+            console.warn('[MinecraftVocabPage] failed to save level selection', error);
+            return false;
+        }
+    }
+
+    function bandStorageKey() {
+        return `${BAND_STORAGE_PREFIX}_${profileId()}`;
+    }
+
+    function readSelectedBand() {
+        const fallback = levelsApi()?.DEFAULT_MINECRAFT_BAND_ID || 'minecraft-core';
+        try {
+            return levelsApi()?.normalizeBandId(global.localStorage?.getItem(bandStorageKey()) || fallback) || fallback;
+        } catch (error) {
+            console.warn('[MinecraftVocabPage] failed to read Minecraft band selection', error);
+            return fallback;
+        }
+    }
+
+    function saveSelectedBand(bandId) {
+        const normalized = levelsApi()?.normalizeBandId(bandId) || 'minecraft-core';
+        selectedBandId = normalized;
+        try {
+            global.localStorage?.setItem(bandStorageKey(), normalized);
+            return true;
+        } catch (error) {
+            console.warn('[MinecraftVocabPage] failed to save Minecraft band selection', error);
+            return false;
+        }
+    }
+
+    function currentLevel() {
+        return levelsApi()?.get(selectedLevelId) || { id: selectedLevelId, label: selectedLevelId, description: '' };
+    }
+
+    function currentBand() {
+        return levelsApi()?.getBand?.(selectedBandId) || { id: selectedBandId, label: selectedBandId, description: '' };
+    }
+
+    function cardsForLevel() {
+        return levelsApi()?.filterCards(cards(), selectedLevelId, selectedLevelId === 'minecraft' ? selectedBandId : '') || cards();
+    }
+
     function regionList() {
         return Array.isArray(expedition?.regions) ? expedition.regions : [];
     }
@@ -97,7 +184,7 @@
     }
 
     function activeQueueCards() {
-        return selectedRegionId ? cardsForRegion(selectedRegionId) : cards();
+        return selectedRegionId ? cardsForRegion(selectedRegionId) : cardsForLevel();
     }
 
     function progressApi() {
@@ -105,8 +192,9 @@
     }
 
     function stats() {
-        const result = progressApi()?.stats?.(cards());
-        return result || { total: cards().length, new: cards().length, learning: 0, mastered: 0 };
+        const activeCards = activeQueueCards();
+        const result = progressApi()?.stats?.(activeCards);
+        return result || { total: activeCards.length, new: activeCards.length, learning: 0, mastered: 0, due: 0 };
     }
 
     function cardForTask(task) {
@@ -173,7 +261,8 @@
     function cardAudio(card, key = 'word') {
         const narration = card?.narrationAudio || {};
         const audioPath = String(narration[key] || (key === 'word' ? card?.audio : '') || '');
-        return /^(?:assets|prj\/anki-minecraft-vocab)\//.test(audioPath) ? asset(audioPath) : '';
+        if (!/^(?:assets|prj\/anki-minecraft-vocab)\//.test(audioPath)) return '';
+        return global.MinecraftVocabAudio?.getUrl?.(audioPath) || asset(audioPath);
     }
 
     function cardText(card, key) {
@@ -189,7 +278,7 @@
     }
 
     function fallbackChoices(card) {
-        const words = cards().map(item => item.word).filter(Boolean);
+        const words = activeQueueCards().map(item => item.word).filter(Boolean);
         return [...new Set([card?.word, ...(card?.distractors || []), ...words])]
             .filter(Boolean)
             .slice(0, 4);
@@ -217,16 +306,16 @@
         return state?.completed?.length || 0;
     }
 
-    function renderShell(content) {
-        if (!root || !mounted) return;
+    function renderShell(content, generation = pageGeneration) {
+        if (!root || !isCurrentGeneration(generation)) return;
         root.innerHTML = `<div class="minecraft-vocab-page" data-minecraft-vocab-page style="--mv-card-frame: ${escapeHtml(cssImage(CARD_FRAME_IMAGE))}; --mv-corner-tl: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.tl))}; --mv-corner-tr: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.tr))}; --mv-corner-bl: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.bl))}; --mv-corner-br: ${escapeHtml(cssImage(CARD_CORNER_IMAGES.br))}">${content}</div>`;
         bindEvents();
         if (global.lucide && typeof global.lucide.createIcons === 'function') global.lucide.createIcons();
-        root.querySelectorAll('[data-mv-card-image], [data-mv-back-image], [data-mv-expedition-image]').forEach(image => {
+        root.querySelectorAll('[data-mv-card-image], [data-mv-back-image], [data-mv-expedition-image], [data-mv-story-image]').forEach(image => {
             image.addEventListener('error', () => {
                 const placeholder = document.createElement('div');
                 placeholder.className = 'mv-card-image-placeholder mv-card-text-visual';
-                placeholder.textContent = image.dataset.mvExpeditionImage ? '地图待补' : image.dataset.mvBackImage ? '场景图待补' : '图片待补';
+                placeholder.textContent = image.dataset.mvExpeditionImage ? '地图待补' : image.dataset.mvStoryImage ? '故事图待补' : image.dataset.mvBackImage ? '场景图待补' : '图片待补';
                 image.replaceWith(placeholder);
             }, { once: true });
         });
@@ -379,6 +468,48 @@
         `;
     }
 
+    function renderLevelPicker(currentStats = stats()) {
+        const levelList = levelsApi()?.list?.() || [];
+        const selected = currentLevel();
+        const selectedBand = currentBand();
+        const minecraftTotal = levelsApi()?.filterCards(cards(), 'minecraft').filter(card => levelsApi()?.cardLevel(card) === 'minecraft').length || 0;
+        return `
+            <section class="mv-level-picker" aria-labelledby="mvLevelPickerTitle">
+                <div class="mv-level-picker-copy">
+                    <span class="mv-kicker">词库设置 · Learning Stage</span>
+                    <h2 id="mvLevelPickerTitle">${escapeHtml(selected.label)}${selectedLevelId === 'minecraft' ? ` · ${escapeHtml(selectedBand.label)}` : ''} <small>${escapeHtml(selectedLevelId === 'minecraft' ? selectedBand.labelEn : selected.labelEn || '')}</small></h2>
+                    <p>${escapeHtml(selectedLevelId === 'minecraft' ? `${selectedBand.description} Minecraft 初级共 ${minecraftTotal.toLocaleString('zh-CN')} 张，当前待复习 ${Number(currentStats.due || 0).toLocaleString('zh-CN')} 张，先从当前层级随机抽取。` : selected.description || '')}</p>
+                </div>
+                <div class="mv-level-options" role="radiogroup" aria-label="选择单词学习阶段">
+                    ${levelList.map(level => {
+                        const count = levelsApi()?.filterCards(cards(), level.id).length || 0;
+                        const isSelected = level.id === selectedLevelId;
+                        return `<button class="mv-level-option${isSelected ? ' is-selected' : ''}" type="button" role="radio" aria-checked="${isSelected ? 'true' : 'false'}" data-mv-level="${escapeHtml(level.id)}">
+                            <strong>${escapeHtml(level.label)}</strong><small>${Number(count).toLocaleString('zh-CN')} 张</small>
+                        </button>`;
+                        }).join('')}
+                </div>
+                ${selectedLevelId === 'minecraft' ? `<div class="mv-band-picker" role="radiogroup" aria-label="选择 Minecraft 初级内部层级">
+                    ${levelsApi()?.minecraftBands?.().map(band => {
+                        const count = levelsApi()?.filterCards(cards(), 'minecraft', band.id).length || 0;
+                        const isSelected = band.id === selectedBandId;
+                        return `<button class="mv-level-option mv-band-option${isSelected ? ' is-selected' : ''}" type="button" role="radio" aria-checked="${isSelected ? 'true' : 'false'}" data-mv-band="${escapeHtml(band.id)}">
+                            <strong>${escapeHtml(band.label)}</strong><small>${Number(count).toLocaleString('zh-CN')} 张</small>
+                        </button>`;
+                    }).join('') || ''}
+                </div>` : ''}
+            </section>
+        `;
+    }
+
+    function regionLevelAllowed(region) {
+        const required = String(region?.minVocabLevel || '').trim();
+        if (!required || !levelsApi()) return true;
+        const selected = levelsApi().get(selectedLevelId);
+        const minimum = levelsApi().get(required);
+        return !selected || !minimum || selected.rank >= minimum.rank;
+    }
+
     function renderCampMap() {
         const summary = global.MinecraftVocabExpedition?.getSummary(expeditionState) || { cleared: 0, total: regionList().length, percent: 0, level: 1, experience: 0, inventory: [] };
         return `
@@ -389,16 +520,69 @@
                 <div class="mv-expedition-stats" aria-label="远征者成长"><div><span>等级 Level</span><strong>${summary.level}</strong></div><div><span>经验 XP</span><strong>${summary.experience}</strong></div><div><span>道具 Items</span><strong>${summary.inventory.length}</strong></div><div><span>词卡 Cards</span><strong>${summary.cleared * 4}</strong></div></div>
                 <div class="mv-region-route">
                     ${regionList().map((region, index) => {
-                        const status = global.MinecraftVocabExpedition?.getRegionState(expeditionState, region.id) || 'locked';
+                        const rawStatus = global.MinecraftVocabExpedition?.getRegionState(expeditionState, region.id) || 'locked';
+                        const levelLocked = !regionLevelAllowed(region);
+                        const status = levelLocked ? 'level-locked' : rawStatus;
                         const mission = missionForRegion(region.id);
-                        const isCleared = status === 'cleared';
-                        return `<button class="mv-region-node is-${escapeHtml(status)}" type="button" data-mv-region="${escapeHtml(region.id)}" ${status === 'locked' ? 'disabled' : ''} aria-label="${escapeHtml(region.title)}，${escapeHtml(status === 'locked' ? '未解锁' : isCleared ? '已完成' : '可以进入')}">
-                            <span class="mv-region-node-number">${isCleared ? '✓' : index + 1}</span><span class="mv-region-node-icon">${escapeHtml(region.icon || '◆')}</span><strong>${escapeHtml(region.title)}<small>${escapeHtml(region.titleEn || '')}</small></strong><small>${escapeHtml(region.subtitle || '')}</small><em>${isCleared ? '已点亮 · Cleared' : status === 'locked' ? '完成前置后解锁 · Locked' : `${mission?.cardIds?.length || 0} 张词卡 · Enter`}</em>
+                        const isCleared = rawStatus === 'cleared';
+                        const requiredLabel = levelsApi()?.get(region.minVocabLevel)?.label || '更高阶段';
+                        const statusLabel = levelLocked ? `需要${requiredLabel}` : status === 'locked' ? '未解锁' : isCleared ? '已完成' : '可以进入';
+                        const actionLabel = isCleared ? '已点亮 · Cleared' : levelLocked ? `需要${requiredLabel}` : status === 'locked' ? '完成前置后解锁 · Locked' : `${mission?.cardIds?.length || 0} 张词卡 · Enter`;
+                        return `<button class="mv-region-node is-${escapeHtml(status)}" type="button" data-mv-region="${escapeHtml(region.id)}" ${status === 'locked' || levelLocked ? 'disabled' : ''} aria-label="${escapeHtml(region.title)}，${escapeHtml(statusLabel)}">
+                            <span class="mv-region-node-number">${isCleared ? '✓' : index + 1}</span><span class="mv-region-node-icon">${escapeHtml(region.icon || '◆')}</span><strong>${escapeHtml(region.title)}<small>${escapeHtml(region.titleEn || '')}</small></strong><small>${escapeHtml(region.subtitle || '')}</small><em>${escapeHtml(actionLabel)}</em>
                         </button>${index < regionList().length - 1 ? '<span class="mv-region-path" aria-hidden="true">➜</span>' : ''}`;
                     }).join('')}
                 </div>
                 <div class="mv-collection-strip"><span>📖 ${escapeHtml(expedition?.collection?.title || '词语收藏册')} · ${escapeHtml(expedition?.collection?.titleEn || 'Word Card Collection')}</span><strong>${summary.inventory.length ? summary.inventory.join(' · ') : '等待第一件道具'}</strong><small>${escapeHtml(expedition?.collection?.description || '')}</small></div>
             </section>
+        `;
+    }
+
+    function renderStory() {
+        const region = currentRegion();
+        const mission = missionForRegion(selectedRegionId);
+        if (!region || !mission) return renderHome();
+        const beats = Array.isArray(region.storyBeats) && region.storyBeats.length
+            ? region.storyBeats
+            : [{ title: region.title, titleEn: region.titleEn, zh: region.story?.zh || '', en: region.story?.en || '' }];
+        const storyImage = String(region.storyImage || region.sceneImage || EXPEDITION_FALLBACK_IMAGE);
+        const status = global.MinecraftVocabExpedition?.getRegionState(expeditionState, region.id) || 'available';
+        const cardsPreview = cardsForRegion(region.id);
+        return `
+            ${renderHeader(region.title, `章节故事 / ${region.titleEn}`)}
+            <main class="mv-main">
+                <section class="mv-story-panel" data-mv-story>
+                    <div class="mv-story-hero" style="--mv-story-bg: ${escapeHtml(cssImage(storyImage))}">
+                        <img src="${escapeHtml(asset(storyImage))}" alt="${escapeHtml(region.title)} 故事场景" data-mv-story-image loading="eager" decoding="async">
+                        <div class="mv-story-hero-copy">
+                            <span class="mv-kicker">Chapter ${escapeHtml(String(regionList().findIndex(item => item.id === region.id) + 1).padStart(2, '0'))} · ${escapeHtml(region.titleEn)}</span>
+                            <h2>${escapeHtml(region.title)}</h2>
+                            <p>${escapeHtml(region.subtitle || '')}</p>
+                            <small>${escapeHtml(region.subtitleEn || '')}</small>
+                        </div>
+                    </div>
+                    <div class="mv-story-intro">
+                        <div><span class="mv-kicker">双语剧情 · Bilingual Story</span><strong>${escapeHtml(region.story?.zh || '')}</strong></div>
+                        <p>${escapeHtml(region.story?.en || '')}</p>
+                    </div>
+                    <div class="mv-story-beats">
+                        ${beats.map((beat, index) => `<article class="mv-story-beat">
+                            <span class="mv-story-beat-number">${index + 1}</span>
+                            <div><h3>${escapeHtml(beat.title || '')}</h3><small>${escapeHtml(beat.titleEn || '')}</small><p>${escapeHtml(beat.zh || '')}</p><p class="is-en">${escapeHtml(beat.en || '')}</p></div>
+                        </article>`).join('')}
+                    </div>
+                    <div class="mv-story-goal">
+                        <div class="mv-story-goal-copy"><span class="mv-kicker">本章收集目标 · Chapter Collection</span><h3>${escapeHtml(mission.title || '')}</h3><p>${escapeHtml(mission.titleEn || '')}</p><small>完成 ${mission.cardIds.length} 张词卡，获得 ${Number(mission.reward?.experience || 0)} XP</small></div>
+                        <div class="mv-story-card-strip" aria-label="本章词卡预览">
+                            ${cardsPreview.map(card => `<div class="mv-story-card-chip"><img src="${escapeHtml(cardImage(card))}" alt="" loading="lazy" decoding="async"><strong>${escapeHtml(card.word || '')}</strong><small>${escapeHtml(card.translation || '')}</small></div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="mv-story-actions">
+                        <button class="mv-secondary-button" type="button" data-mv-story-back><i data-lucide="map" aria-hidden="true"></i><span>返回营地地图</span></button>
+                        <button class="mv-primary-button" type="button" data-mv-story-study><i data-lucide="book-open-check" aria-hidden="true"></i><span>${status === 'cleared' ? '重温本章词卡' : '进入本章词卡'}</span></button>
+                    </div>
+                </section>
+            </main>
         `;
     }
 
@@ -419,6 +603,7 @@
                         </div>
                         <img class="mv-hero-companion" src="${escapeHtml(asset(COMPANION_IMAGE))}" alt="学习伙伴" loading="eager" decoding="async">
                     </section>
+                    ${renderLevelPicker(currentStats)}
                     <section class="mv-card-column" aria-label="下一张单词卡">
                         <div class="mv-column-heading"><div><span class="mv-kicker">卡片栏目</span><h2>准备好，开始一张</h2></div><span class="mv-column-caption">图像 · 发音 · 场景</span></div>
                         ${renderCardPreview(cardForTask(currentTask()))}
@@ -440,8 +625,10 @@
         const prompt = mode === 'scene'
             ? String(card?.example || `I see a ${card?.word || 'block'}.`).replace(new RegExp(`\\b${String(card?.word || '').replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}\\b`, 'i'), '_____')
             : (card?.translation || '看图回忆英文');
+        const firstLetter = String(card?.word || '').trim().charAt(0).toUpperCase();
         return `
             <div class="mv-recall-prompt"><span>${mode === 'scene' ? '场景句' : '中文提示'}</span><strong>${escapeHtml(prompt)}</strong></div>
+            <div class="mv-hint-row"><button class="mv-hint-button" type="button" data-mv-hint aria-label="显示首字母提示"><i data-lucide="lightbulb" aria-hidden="true"></i><span>给我一点提示</span></button>${hintUsed ? `<span class="mv-hint-status" data-mv-hint-status>首字母：<strong>${escapeHtml(firstLetter || '?')}</strong></span>` : ''}</div>
             <div class="mv-choice-grid" role="group" aria-label="选择英文答案">
                 ${choices.map(word => `<button class="mv-choice-button" type="button" data-mv-choice="${escapeHtml(word)}">${escapeHtml(word)}</button>`).join('')}
             </div>
@@ -538,7 +725,7 @@
                     ${isQuestion ? renderChoices(card, task.mode) : ''}
                     ${feedback ? `<p class="mv-feedback" data-mv-feedback aria-live="polite">${escapeHtml(feedback)}</p>` : ''}
                     <div class="mv-card-actions" data-mv-mobile-actions>
-                        ${!isQuestion ? `<button class="mv-secondary-button" type="button" data-mv-self-assess="unknown"><i data-lucide="rotate-ccw" aria-hidden="true"></i><span>还不熟</span></button><button class="mv-primary-button" type="button" data-mv-self-assess="known"><i data-lucide="check" aria-hidden="true"></i><span>认识了</span></button>` : ''}
+                        ${!isQuestion && flipped ? `<button class="mv-secondary-button mv-grade-button" type="button" data-mv-self-assess="unknown" data-mv-grade="again"><i data-lucide="rotate-ccw" aria-hidden="true"></i><span>再练</span></button><button class="mv-secondary-button mv-grade-button" type="button" data-mv-self-assess="hard" data-mv-grade="hard"><i data-lucide="help-circle" aria-hidden="true"></i><span>有点难</span></button><button class="mv-primary-button mv-grade-button" type="button" data-mv-self-assess="known" data-mv-grade="good"><i data-lucide="check" aria-hidden="true"></i><span>记住了</span></button><button class="mv-primary-button mv-grade-button" type="button" data-mv-self-assess="easy" data-mv-grade="easy"><i data-lucide="sparkles" aria-hidden="true"></i><span>太简单</span></button>` : ''}
                     </div>
                 </section>
                 </section>
@@ -583,12 +770,13 @@
         `;
     }
 
-    function renderRoot() {
-        if (!mounted || !root) return;
-        if (view === 'battle') renderShell(renderBattle());
-        else if (view === 'complete') renderShell(renderComplete());
-        else if (view === 'session') renderShell(renderSession());
-        else renderShell(renderHome());
+    function renderRoot(generation = pageGeneration) {
+        if (!root || !isCurrentGeneration(generation)) return;
+        if (view === 'battle') renderShell(renderBattle(), generation);
+        else if (view === 'complete') renderShell(renderComplete(), generation);
+        else if (view === 'story') renderShell(renderStory(), generation);
+        else if (view === 'session') renderShell(renderSession(), generation);
+        else renderShell(renderHome(), generation);
     }
 
     function speakText(card, key = 'word') {
@@ -619,11 +807,17 @@
         speakText(card, key);
     }
 
-    function finishAction(correct) {
+    function finishAction(result, metadata = {}) {
         const task = currentTask();
         const card = cardForTask(task);
         if (!task || !card || !progressApi() || typeof progressApi().record !== 'function') return;
-        const progress = progressApi().record(card.id, correct);
+        const grade = typeof result === 'boolean' ? (result ? 'good' : 'again') : String(result || 'again');
+        const correct = grade !== 'again';
+        const progress = progressApi().record(card.id, grade, {
+            ...metadata,
+            responseMode: metadata.responseMode || task.mode,
+            hintUsed
+        });
         if (progress?.persisted === false) {
             feedback = '保存失败，本次没有推进，请重试。';
             renderRoot();
@@ -636,7 +830,14 @@
             return;
         }
         state = next.state;
-        feedback = correct ? '答对了，继续前进。' : `再看一次：${card.word}`;
+        hintUsed = false;
+        feedback = grade === 'again'
+            ? `再看一次：${card.word}`
+            : grade === 'hard'
+                ? '想起来了，稍后再见一次。'
+                : grade === 'easy'
+                    ? '太棒了，这个词可以走得更远。'
+                    : '答对了，继续前进。';
         revealed = false;
         flipped = false;
         if (global.MinecraftVocabSession.isComplete(state)) {
@@ -656,6 +857,72 @@
         renderRoot();
     }
 
+    function startRegionSession() {
+        const mission = missionForRegion(selectedRegionId);
+        if (!selectedRegionId || !mission) return;
+        const result = global.MinecraftVocabSession.start(cardsForRegion(selectedRegionId), card => progressApi()?.get?.(card.id), '', {
+            regionId: selectedRegionId,
+            missionId: mission.id,
+            queueSize: mission.cardIds.length,
+            rewardPoints: mission.reward?.points || 3,
+            levelId: selectedLevelId,
+            bandId: ''
+        });
+        state = result.state;
+        view = 'session';
+        feedback = result.persisted ? '' : '节点进度暂时无法保存，仍可查看词卡。';
+        flipped = false;
+        progressOpen = false;
+        renderRoot();
+    }
+
+    function startGeneralSession() {
+        selectedRegionId = '';
+        const result = global.MinecraftVocabSession.start(cardsForLevel(), card => progressApi()?.get?.(card.id), '', {
+            regionId: '',
+            queueSize: 11,
+            levelId: selectedLevelId,
+            bandId: selectedLevelId === 'minecraft' ? selectedBandId : ''
+        });
+        state = result.state;
+        view = 'session';
+        feedback = result.persisted ? '' : '本日进度暂时无法保存，仍可查看词卡。';
+        flipped = false;
+        progressOpen = false;
+        renderRoot();
+    }
+
+    async function reloadSelection(nextLevelId, nextBandId = selectedBandId) {
+        const generation = pageGeneration;
+        const requestId = ++selectionRequestId;
+        if (!isCurrentGeneration(generation)) return;
+        selectedLevelId = levelsApi()?.normalizeLevelId(nextLevelId) || 'kindergarten';
+        selectedBandId = levelsApi()?.normalizeBandId(nextBandId) || 'minecraft-core';
+        saveSelectedLevel(selectedLevelId);
+        saveSelectedBand(selectedBandId);
+        selectedRegionId = '';
+        if (root) root.innerHTML = '<div class="mv-loading" aria-live="polite">正在切换词库...</div>';
+        try {
+            module = await global.MinecraftVocabLoader.loadForSelection(selectedLevelId, selectedBandId);
+            if (!isCurrentGeneration(generation) || requestId !== selectionRequestId) return;
+            const result = global.MinecraftVocabSession.start(cardsForLevel(), card => progressApi()?.get?.(card.id), '', {
+                regionId: '',
+                queueSize: 11,
+                levelId: selectedLevelId,
+                bandId: selectedLevelId === 'minecraft' ? selectedBandId : ''
+            });
+            state = result.state;
+            view = 'home';
+            feedback = result.persisted ? '' : '本日进度暂时无法保存，仍可查看词卡。';
+            flipped = false;
+            renderRoot(generation);
+        } catch (error) {
+            if (!isCurrentGeneration(generation) || requestId !== selectionRequestId) return;
+            console.warn('[MinecraftVocabPage] selection load failed', error);
+            if (root) root.innerHTML = '<div class="mv-error" role="alert">词库分片加载失败，请稍后重试。</div>';
+        }
+    }
+
     function bindEvents() {
         root.querySelectorAll('[data-mv-back]').forEach(button => button.addEventListener('click', () => {
             if (typeof global.switchPage === 'function') global.switchPage('learn');
@@ -666,20 +933,35 @@
                 return;
             }
             selectedRegionId = '';
-            const result = global.MinecraftVocabSession.start(cards(), card => progressApi()?.get?.(card.id), '', { regionId: '', queueSize: 11 });
+            const result = global.MinecraftVocabSession.start(cardsForLevel(), card => progressApi()?.get?.(card.id), '', { regionId: '', queueSize: 11, levelId: selectedLevelId, bandId: selectedLevelId === 'minecraft' ? selectedBandId : '' });
             state = result.state;
             view = 'home';
             feedback = '';
             renderRoot();
         }));
         root.querySelectorAll('[data-mv-start]').forEach(button => button.addEventListener('click', () => {
+            startGeneralSession();
+        }));
+        root.querySelectorAll('[data-mv-level]').forEach(button => button.addEventListener('click', () => {
+            const nextLevel = button.dataset.mvLevel || '';
+            if (nextLevel === selectedLevelId) return;
+            void reloadSelection(nextLevel, selectedBandId);
+        }));
+        root.querySelectorAll('[data-mv-band]').forEach(button => button.addEventListener('click', () => {
+            const nextBand = button.dataset.mvBand || '';
+            if (nextBand === selectedBandId && selectedLevelId === 'minecraft') return;
+            if (selectedLevelId !== 'minecraft') return;
+            void reloadSelection(selectedLevelId, nextBand);
+        }));
+        root.querySelectorAll('[data-mv-story-back]').forEach(button => button.addEventListener('click', () => {
             selectedRegionId = '';
-            view = 'session';
+            const result = global.MinecraftVocabSession.start(cardsForLevel(), card => progressApi()?.get?.(card.id), '', { regionId: '', queueSize: 11, levelId: selectedLevelId, bandId: selectedLevelId === 'minecraft' ? selectedBandId : '' });
+            state = result.state;
+            view = 'home';
             feedback = '';
-            flipped = false;
-            progressOpen = false;
             renderRoot();
         }));
+        root.querySelectorAll('[data-mv-story-study]').forEach(button => button.addEventListener('click', () => startRegionSession()));
         root.querySelectorAll('[data-mv-toggle-progress]').forEach(button => button.addEventListener('click', () => {
             progressOpen = !progressOpen;
             renderRoot();
@@ -688,17 +970,13 @@
             const regionId = button.dataset.mvRegion || '';
             const region = regionForId(regionId);
             const mission = missionForRegion(regionId);
-            if (!region || !mission || !global.MinecraftVocabExpedition) return;
+            if (!region || !mission || !regionLevelAllowed(region) || !global.MinecraftVocabExpedition) return;
             const entered = global.MinecraftVocabExpedition.enterRegion(expeditionState, regionId, regionList());
             if (entered.reason === 'locked' || entered.reason === 'cleared') return;
             selectedRegionId = regionId;
             if (entered.persisted) expeditionState = entered.state;
-            const result = global.MinecraftVocabSession.start(cardsForRegion(regionId), card => progressApi()?.get?.(card.id), '', { regionId, missionId: mission.id, queueSize: mission.cardIds.length, rewardPoints: mission.reward?.points || 3 });
-            state = result.state;
-            view = 'session';
-            feedback = result.persisted ? '' : '节点进度暂时无法保存，仍可查看词卡。';
-            flipped = false;
-            progressOpen = false;
+            view = 'story';
+            feedback = '';
             renderRoot();
         }));
         root.querySelectorAll('[data-mv-open-pack]').forEach(button => button.addEventListener('click', () => {
@@ -710,6 +988,11 @@
         }));
         root.querySelectorAll('[data-mv-reveal]').forEach(button => button.addEventListener('click', () => {
             revealed = true;
+            renderRoot();
+        }));
+        root.querySelectorAll('[data-mv-hint]').forEach(button => button.addEventListener('click', event => {
+            event.stopPropagation();
+            hintUsed = true;
             renderRoot();
         }));
         root.querySelectorAll('[data-mv-flip]').forEach(target => {
@@ -732,15 +1015,20 @@
             event.stopPropagation();
             playAudio(cardForTask(currentTask()), button.dataset.mvListen || 'word');
         }));
-        root.querySelectorAll('[data-mv-self-assess]').forEach(button => button.addEventListener('click', () => finishAction(button.dataset.mvSelfAssess === 'known')));
+        root.querySelectorAll('[data-mv-self-assess]').forEach(button => button.addEventListener('click', () => {
+            const grade = button.dataset.mvGrade || (button.dataset.mvSelfAssess === 'known' ? 'good' : 'again');
+            finishAction(grade, { responseMode: currentTask()?.mode || 'review' });
+        }));
         root.querySelectorAll('[data-mv-choice]').forEach(button => button.addEventListener('click', () => {
             const card = cardForTask(currentTask());
-            finishAction(String(button.dataset.mvChoice || '').toLocaleLowerCase() === String(card?.word || '').toLocaleLowerCase());
+            const correct = String(button.dataset.mvChoice || '').toLocaleLowerCase() === String(card?.word || '').toLocaleLowerCase();
+            finishAction(correct ? 'good' : 'again', { responseMode: currentTask()?.mode || 'recall' });
         }));
         root.querySelectorAll('[data-mv-submit-answer]').forEach(button => button.addEventListener('click', () => {
             const input = root.querySelector('[data-mv-answer]');
             const card = cardForTask(currentTask());
-            finishAction(String(input?.value || '').trim().toLocaleLowerCase() === String(card?.word || '').toLocaleLowerCase());
+            const correct = String(input?.value || '').trim().toLocaleLowerCase() === String(card?.word || '').toLocaleLowerCase();
+            finishAction(correct ? 'good' : 'again', { responseMode: currentTask()?.mode || 'recall' });
         }));
         root.querySelectorAll('[data-mv-answer]').forEach(input => input.addEventListener('keydown', event => {
             if (event.key === 'Enter') root.querySelector('[data-mv-submit-answer]')?.click();
@@ -792,35 +1080,42 @@
 
     async function render(containerId = 'minecraft-vocab-root') {
         stop();
+        const generation = ++pageGeneration;
         mounted = true;
         root = document.getElementById(containerId);
         if (!root) return;
         root.innerHTML = '<div class="mv-loading" aria-live="polite">正在准备今日远征...</div>';
         try {
+            selectedLevelId = readSelectedLevel();
+            selectedBandId = readSelectedBand();
+            void global.MinecraftVocabAudio?.prepare?.();
             const [loadedModule, response] = await Promise.all([
-                global.LearnCenter.getModule(PACK_ID, MODULE_ID),
+                global.MinecraftVocabLoader.loadForSelection(selectedLevelId, selectedBandId),
                 fetch(resolveDataUrl('data/learn/minecraft-expedition/camp-regions.json'))
             ]);
+            if (!isCurrentGeneration(generation)) return;
             if (!response.ok) throw new Error(`expedition data request failed: ${response.status}`);
             module = loadedModule;
             expedition = await response.json();
+            if (!isCurrentGeneration(generation)) return;
             expeditionState = global.MinecraftVocabExpedition?.readState(regionList()) || null;
-            if (!mounted) return;
+            if (!isCurrentGeneration(generation)) return;
             const savedSession = global.MinecraftVocabSession.readState?.();
             const savedRegionId = String(savedSession?.regionId || expeditionState?.activeRegionId || '');
             const savedRegion = regionForId(savedRegionId);
             const savedMission = missionForRegion(savedRegionId);
             const sessionOptions = savedRegion && savedMission
-                ? { regionId: savedRegionId, missionId: savedMission.id, queueSize: savedMission.cardIds.length, rewardPoints: savedMission.reward?.points || 3 }
-                : { regionId: '', queueSize: 11 };
-            const sessionCards = savedRegion && savedMission ? cardsForRegion(savedRegionId) : cards();
+                ? { regionId: savedRegionId, missionId: savedMission.id, queueSize: savedMission.cardIds.length, rewardPoints: savedMission.reward?.points || 3, levelId: selectedLevelId, bandId: '' }
+                : { regionId: '', queueSize: 11, levelId: selectedLevelId, bandId: selectedLevelId === 'minecraft' ? selectedBandId : '' };
+            const sessionCards = savedRegion && savedMission ? cardsForRegion(savedRegionId) : cardsForLevel();
             const result = global.MinecraftVocabSession.start(sessionCards, card => progressApi()?.get?.(card.id), '', sessionOptions);
             state = result.state;
             selectedRegionId = String(state.regionId || '');
             view = global.MinecraftVocabSession.isComplete(state) ? (selectedRegionId ? 'battle' : 'complete') : selectedRegionId ? 'session' : 'home';
             feedback = result.persisted ? '' : '本日进度暂时无法保存，仍可查看词卡。';
-            renderRoot();
+            renderRoot(generation);
         } catch (error) {
+            if (!isCurrentGeneration(generation)) return;
             console.warn('[MinecraftVocabPage] render failed', error);
             root.innerHTML = '<div class="mv-error" role="alert">Minecraft 单词远征加载失败，请稍后重试。</div>';
         }
@@ -828,6 +1123,9 @@
 
     function stop() {
         mounted = false;
+        pageGeneration += 1;
+        selectionRequestId += 1;
+        root = null;
         if (audio) {
             try { audio.pause(); } catch (error) {}
             audio = null;
