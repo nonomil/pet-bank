@@ -104,7 +104,7 @@
         explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-page.js', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1', 'js/pixel-story-engine.js?v=20260715-stage-fullscreen1'],
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js', 'js/playground-catalog.js?v=20260719'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=7'],
-        minecraftVocab: ['js/minecraft-vocab-expedition.js?v=2', 'js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=2'],
+        minecraftVocab: ['js/minecraft-vocab-expedition.js?v=2', 'js/minecraft-vocab-levels.js?v=1', 'js/minecraft-vocab-loader.js?v=1', 'js/minecraft-vocab-audio.js?v=1', 'js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=2'],
         picturebooks: ['js/picturebook-external-bridge.js'],
         shop: ['js/shop.js'],
         review: ['js/family-review.js']

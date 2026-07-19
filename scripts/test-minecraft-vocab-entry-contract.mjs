@@ -7,7 +7,7 @@ import vm from 'node:vm';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-const [indexSource, routerSource, runtimeLoaderSource, appSource, styleSource, learnCenterSource, sessionSource, pageSource] = await Promise.all([
+const [indexSource, routerSource, runtimeLoaderSource, appSource, styleSource, learnCenterSource, sessionSource, pageSource, loaderSource] = await Promise.all([
     fs.readFile(path.join(ROOT, 'index.html'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/page-router.js'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/runtime-loader.js'), 'utf8'),
@@ -15,7 +15,8 @@ const [indexSource, routerSource, runtimeLoaderSource, appSource, styleSource, l
     fs.readFile(path.join(ROOT, 'css/style.css'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/learn-center.js'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/minecraft-vocab-session.js'), 'utf8'),
-    fs.readFile(path.join(ROOT, 'js/minecraft-vocab-page.js'), 'utf8')
+    fs.readFile(path.join(ROOT, 'js/minecraft-vocab-page.js'), 'utf8'),
+    fs.readFile(path.join(ROOT, 'js/minecraft-vocab-loader.js'), 'utf8')
 ]);
 
 const routerWindow = { location: { pathname: '/', protocol: 'http:' } };
@@ -74,6 +75,25 @@ test('mobile child dock gives app labels a stable readable layout', () => {
 test('runtime loader registers the minecraftVocab style and script bundles', () => {
     assertContract(runtimeLoaderSource, /minecraftVocab\s*:\s*\[[^\]]*minecraft-vocab\.css/i, 'minecraftVocab style bundle is missing');
     assertContract(runtimeLoaderSource, /minecraftVocab\s*:\s*\[[^\]]*minecraft-vocab-page\.js/i, 'minecraftVocab script bundle is missing');
+});
+
+test('minecraftVocab runtime bundle has one loader in dependency order', () => {
+    const scriptBundlesStart = runtimeLoaderSource.indexOf('const SCRIPT_BUNDLES');
+    assert.ok(scriptBundlesStart >= 0, 'runtime loader script bundles are missing');
+    const bundleMatch = runtimeLoaderSource.slice(scriptBundlesStart).match(/minecraftVocab\s*:\s*\[([^\]]*)\]/i);
+    assert.ok(bundleMatch, 'minecraftVocab script bundle is missing');
+    const bundleItems = [...bundleMatch[1].matchAll(/["']([^"']+)["']/g)].map(match => match[1]);
+    assert.deepEqual(bundleItems, [
+        'js/minecraft-vocab-expedition.js?v=2',
+        'js/minecraft-vocab-levels.js?v=1',
+        'js/minecraft-vocab-loader.js?v=1',
+        'js/minecraft-vocab-audio.js?v=1',
+        'js/minecraft-vocab-session.js?v=1',
+        'js/minecraft-vocab-page.js?v=2'
+    ], 'minecraftVocab scripts must load expedition -> levels -> loader -> audio -> session -> page');
+    assert.equal(bundleItems.filter(item => item === 'js/minecraft-vocab-loader.js?v=1').length, 1, 'minecraft vocab loader must appear exactly once in the bundle');
+    assertContract(loaderSource, /global\.MinecraftVocabLoader\s*=\s*Object\.freeze/, 'minecraft vocab loader namespace is missing');
+    assertContract(loaderSource, /async function\s+loadForSelection\s*\(/, 'minecraft vocab loader selection API is missing');
 });
 
 test('app renders MinecraftVocabPage when minecraft-vocab is activated', () => {
