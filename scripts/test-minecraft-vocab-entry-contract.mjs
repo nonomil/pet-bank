@@ -61,6 +61,13 @@ test('child main navigation has a direct minecraft-vocab entry with expedition c
         /<button\b(?=[^>]*\bclass\s*=\s*["'][^"']*\bapp-dock-item\b[^"']*["'])(?=[^>]*\bdata-app-dock\s*=\s*["']minecraft-vocab["'])[^>]*>[\s\S]*?<\/button>/i
     );
     assert.ok(vocabEntry, 'child main navigation lacks a minecraft-vocab app-dock button');
-    assertContract(vocabEntry[0], /switchPage\s*\(\s*["']minecraft-vocab["']\s*\)/i, 'minecraft-vocab app-dock button lacks a direct action');
+
+    const openingTag = vocabEntry[0].match(/^<button\b[^>]*>/i);
+    assert.ok(openingTag, 'minecraft-vocab app-dock button opening tag is missing');
+    assertContract(
+        openingTag[0],
+        /\bonclick\s*=\s*(?:"[^"]*switchPage\s*\(\s*'minecraft-vocab'\s*\)[^"]*"|'[^']*switchPage\s*\(\s*"minecraft-vocab"\s*\)[^']*')/i,
+        'minecraft-vocab app-dock button onclick must call switchPage on its opening tag'
+    );
     assertContract(extractTextContent(vocabEntry[0]), /单词远征|Word Quest/i, 'minecraft-vocab app-dock button text must say 单词远征 or Word Quest');
 });
