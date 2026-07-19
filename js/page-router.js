@@ -29,7 +29,7 @@
         'learn-plan': 'learn',
         'learn-lesson': 'learn',
         'learn-print': 'learn',
-        'minecraft-vocab': 'minecraft-vocab',
+        'minecraft-vocab': 'learn',
         playground: 'playground',
         mathpk: 'playground',
         hanzi: 'playground',
@@ -53,13 +53,12 @@
     const CLASSIC_APP_PAGES = new Set([
         'map', 'today', 'learning-sheet', 'review', 'reward', 'shop', 'inventory',
         'learn', 'learn-pack', 'learn-plan', 'learn-lesson', 'learn-print',
-        'minecraft-vocab',
         'pet', 'home', 'explore', 'forest-map', 'picturebooks', 'playground'
     ]);
 
     const APP_SHELL_PAGES = new Set([
         'walk', 'card', 'mathpk', 'hanzi', 'typing-defense', 'learning-arcade',
-        'word-memory-map', 'leaderboard'
+        'word-memory-map', 'leaderboard', 'minecraft-vocab'
     ]);
 
     const PARENT_SHELL_PAGES = new Set(['parent', 'works', 'tools', 'settings']);
@@ -279,6 +278,10 @@
         return 'home';
     }
 
+    function getAppDockPage(page) {
+        return page === 'minecraft-vocab' ? page : (PAGE_TO_TAB[page] || page);
+    }
+
     function requiresAccess(page, settingsSection) {
         if (page === 'settings' && ['home', 'family', 'account'].includes(normalizeSettingsSection(settingsSection))) return false;
         return !PUBLIC_ACCESS_PAGES.has(page);
@@ -298,6 +301,7 @@
         getRouteShell,
         getParentShellNavKey,
         getAppShellSurface,
+        getAppDockPage,
         requiresAccess
     });
 }(window));

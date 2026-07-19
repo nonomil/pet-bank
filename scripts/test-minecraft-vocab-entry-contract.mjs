@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import vm from 'node:vm';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -13,6 +14,10 @@ const [indexSource, routerSource, runtimeLoaderSource, appSource, styleSource] =
     fs.readFile(path.join(ROOT, 'js/app.js'), 'utf8'),
     fs.readFile(path.join(ROOT, 'css/style.css'), 'utf8')
 ]);
+
+const routerWindow = { location: { pathname: '/', protocol: 'http:' } };
+vm.runInNewContext(routerSource, { window: routerWindow });
+const router = routerWindow.PetBankPageRouter;
 
 function extractTextContent(html) {
     return html
@@ -34,11 +39,14 @@ test('HTML contains the Minecraft vocab page container', () => {
     );
 });
 
-test('Minecraft vocab keeps the learn shell while using its own dock tab', () => {
-    assertContract(routerSource, /const\s+CLASSIC_APP_PAGES\s*=\s*new\s+Set\(\[[\s\S]*?["']minecraft-vocab["'][\s\S]*?\]\)/i, 'minecraft-vocab must remain in the classic route shell page set');
-    assertContract(routerSource, /["']minecraft-vocab["']\s*:\s*["']minecraft-vocab["']/i, 'page router must map minecraft-vocab to its own dock tab');
+test('Minecraft vocab keeps the learn business tab in the app shell with its own dock tab', () => {
+    assert.equal(router.getPageToTab('minecraft-vocab'), 'learn');
+    assert.equal(router.getRouteShell('minecraft-vocab'), 'app');
+    assert.equal(router.getAppShellSurface('minecraft-vocab'), 'focus');
+    assert.equal(router.getAppDockPage('minecraft-vocab'), 'minecraft-vocab');
     assertContract(routerSource, /["']minecraft-vocab["']\s*:\s*["']\/app\/learn\/minecraft-vocab["']/i, 'page router path for minecraft-vocab must remain under learn');
     assertContract(appSource, /classList\.toggle\(\s*["']learn-mode["'][\s\S]*?page\s*===\s*["']minecraft-vocab["']/i, 'minecraft-vocab must keep the learn-mode business shell');
+    assert.ok(appSource.includes('const dockPage = router.getAppDockPage(page);'), 'app shell must use the dedicated dock page mapping');
 });
 
 test('mobile child dock gives app labels a stable readable layout', () => {

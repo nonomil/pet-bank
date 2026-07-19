@@ -2099,6 +2099,7 @@ function applyRouteShell(page) {
     const router = window.PetBankPageRouter;
     const shell = router.getRouteShell(page);
     const tabPage = router.getPageToTab(page);
+    const dockPage = router.getAppDockPage(page);
     const parentNavKey = router.getParentShellNavKey(page);
     document.body.classList.toggle('shell-home', shell === 'home');
     document.body.classList.toggle('shell-app', shell === 'app');
@@ -2114,8 +2115,8 @@ function applyRouteShell(page) {
         delete document.body.dataset.appSurface;
     }
     document.querySelectorAll('[data-app-dock]').forEach((item) => {
-        item.classList.toggle('is-current', item.dataset.appDock === tabPage);
-        item.setAttribute('aria-current', item.dataset.appDock === tabPage ? 'page' : 'false');
+        item.classList.toggle('is-current', item.dataset.appDock === dockPage);
+        item.setAttribute('aria-current', item.dataset.appDock === dockPage ? 'page' : 'false');
     });
     document.querySelectorAll('[data-parent-shell-nav]').forEach((item) => {
         item.classList.toggle('is-current', item.dataset.parentShellNav === parentNavKey);
