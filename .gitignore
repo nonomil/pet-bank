@@ -42,6 +42,8 @@ prj/tts-portable/
 # docs/ 是本地方案/调研/会话材料区；远端只保留 docs/README.md 说明入口。
 docs/*
 !docs/README.md
+!docs/项目优化加速方案/
+!docs/项目优化加速方案/**
 !docs/方案/
 docs/方案/*
 !docs/方案/2026-07-18-首页与探索地图解耦分析方案.md

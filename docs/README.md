@@ -35,4 +35,5 @@
 - [参考](参考/README.md)
 - [方案](方案/README.md)
 - [工程](工程/README.md)
+- [项目优化加速方案](项目优化加速方案/README.md)
 - [资源](资源/README.md)

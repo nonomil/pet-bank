@@ -7,6 +7,7 @@ const requiredCommands = [
     'python scripts/convert-runtime-image-variants.py --check',
     'python scripts/convert-runtime-audio-variants.py --check',
     'node --check js/app.js',
+    'node scripts/test-initial-media-loading-contract.mjs',
     'node scripts/test-static-route-entries.mjs',
     'node scripts/test-static-access-policy-contract.mjs',
     'node prj/runtime_loader_route_base_contract.test.mjs',
