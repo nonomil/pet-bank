@@ -9,7 +9,13 @@ const requiredCommands = [
     'node --check js/app.js',
     'node scripts/test-initial-media-loading-contract.mjs',
     'node scripts/test-pages-vocab-publish-contract.mjs',
+    'node scripts/test-minecraft-vocab-runtime-shards.mjs',
+    'node scripts/test-minecraft-vocab-publish-contract.mjs',
+    'node scripts/test-pixel-story-publish-contract.mjs',
+    'node scripts/test-typing-defense-publish-contract.mjs',
     'node scripts/test-learning-arcade-publish-contract.mjs',
+    'node scripts/test-pages-artifact-size-audit.mjs',
+    'node scripts/test-measure-page-load.mjs',
     'node scripts/test-static-route-entries.mjs',
     'node scripts/test-static-access-policy-contract.mjs',
     'node prj/runtime_loader_route_base_contract.test.mjs',
@@ -18,6 +24,10 @@ const requiredCommands = [
 ];
 const contractCommand = 'node scripts/test-pages-fast-gate-contract.mjs';
 const artifactContractCommand = 'node scripts/test-learning-arcade-publish-contract.mjs _site';
+const minecraftArtifactContractCommand = 'node scripts/test-minecraft-vocab-publish-contract.mjs _site';
+const pixelStoryArtifactContractCommand = 'node scripts/test-pixel-story-publish-contract.mjs _site';
+const typingDefenseArtifactContractCommand = 'node scripts/test-typing-defense-publish-contract.mjs _site';
+const artifactBudgetAuditCommand = 'node scripts/audit-pages-artifact-size.mjs _site --top=30 --max-mib=400 --require-manifest-budgets --require-manifest-coverage';
 
 function fail(message) {
     console.error(`FAIL ${message}`);
@@ -55,6 +65,18 @@ if (!gateBlock.includes(contractCommand)) {
 }
 if (!workflow.includes(artifactContractCommand)) {
     fail(`Pages workflow must verify the assembled learning arcade artifact: ${artifactContractCommand}`);
+}
+if (!workflow.includes(minecraftArtifactContractCommand)) {
+    fail(`Pages workflow must verify the assembled Minecraft vocab artifact: ${minecraftArtifactContractCommand}`);
+}
+if (!workflow.includes(pixelStoryArtifactContractCommand)) {
+    fail(`Pages workflow must verify the assembled pixel story artifact: ${pixelStoryArtifactContractCommand}`);
+}
+if (!workflow.includes(typingDefenseArtifactContractCommand)) {
+    fail(`Pages workflow must verify the assembled typing defense artifact: ${typingDefenseArtifactContractCommand}`);
+}
+if (!workflow.includes(artifactBudgetAuditCommand)) {
+    fail(`Pages workflow must enforce the assembled artifact budget: ${artifactBudgetAuditCommand}`);
 }
 if (gateBlock.includes('scripts/run-full-regression.mjs')) {
     fail('Pages fast gate must not run the local-server full regression');

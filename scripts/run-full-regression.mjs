@@ -5,7 +5,8 @@ import https from 'node:https';
 
 const ROOT = process.cwd();
 const BASE_URL = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:7000';
-const TASK_TIMEOUT_MS = Number(process.env.PETBANK_REGRESSION_TASK_TIMEOUT_MS || 120000);
+// Browser journeys assemble a Pages artifact before launching; keep margin for asset-heavy worktrees.
+const TASK_TIMEOUT_MS = Number(process.env.PETBANK_REGRESSION_TASK_TIMEOUT_MS || 180000);
 
 const TASKS = [
     { label: 'regression runner integrity', cmd: 'node', args: ['scripts/test-regression-runner-integrity.mjs'] },
@@ -38,6 +39,7 @@ const TASKS = [
     { label: 'child journey feedback', cmd: 'node', args: ['scripts/test-child-journey-feedback.mjs'] },
     { label: 'child journey home', cmd: 'node', args: ['scripts/test-child-journey-home.mjs'] },
     { label: 'local preview port contract', cmd: 'node', args: ['scripts/test-local-preview-port-contract.mjs'] },
+    { label: 'local server deep route contract', cmd: 'node', args: ['scripts/test-local-server-route.mjs'] },
     { label: 'home explore DOM ownership', cmd: 'node', args: ['scripts/test-home-explore-dom-ownership.mjs'] },
     { label: 'explore deep route browser journey', cmd: 'node', args: ['scripts/test-explore-deep-route-browser.mjs'] },
     { label: 'exploration return target browser journey', cmd: 'node', args: ['scripts/test-exploration-return-target-browser.mjs'] },

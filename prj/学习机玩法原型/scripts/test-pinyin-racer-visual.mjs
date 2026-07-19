@@ -127,10 +127,15 @@ async function main() {
   const browser = await chromium.launch({ executablePath: findChrome(), headless: true });
   const page = await browser.newPage({ viewport: { width: 1366, height: 768 }, deviceScaleFactor: 1 });
   const logs = [];
+  let expectedBrowserShutdown = false;
   page.on('console', msg => logs.push({ type: msg.type(), text: msg.text() }));
   page.on('pageerror', err => logs.push({ type: 'pageerror', text: err.message }));
-  page.on('close', () => console.error('racer diagnostic: page closed'));
-  browser.on('disconnected', () => console.error('racer diagnostic: browser disconnected'));
+  page.on('close', () => {
+    if (!expectedBrowserShutdown) console.error('racer diagnostic: page closed');
+  });
+  browser.on('disconnected', () => {
+    if (!expectedBrowserShutdown) console.error('racer diagnostic: browser disconnected');
+  });
 
   try {
     await page.goto(`http://127.0.0.1:${port}/${prototypePath.replaceAll('\\', '/')}`, { waitUntil: 'networkidle' });
@@ -359,6 +364,7 @@ async function main() {
     console.log(JSON.stringify({ screenshot: path.join(screenshotDir, 'pinyin-racer-desktop.png'), before, after, segmentTrace }, null, 2));
     console.log('PASS - pinyin racer visual smoke');
   } finally {
+    expectedBrowserShutdown = true;
     await browser.close();
     await new Promise(resolve => server.close(resolve));
   }

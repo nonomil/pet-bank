@@ -152,8 +152,17 @@ try {
             fail(`word memory optional panorama ${excludedPanorama} exceeds the Pages artifact budget`);
         }
     }
-    const wordMemoryJson = fs.readFileSync(path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-cards.json'), 'utf8');
-    const wordMemoryFallback = fs.readFileSync(path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-cards.js'), 'utf8');
+    const wordMemoryAssetsDir = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets');
+    const wordMemoryJson = fs.readFileSync(path.join(wordMemoryAssetsDir, 'word-memory-cards.json'), 'utf8');
+    for (const fallbackFile of [
+        'word-memory-cards.js',
+        'word-memory-core-cards.js',
+        'word-memory-extension-cards.js'
+    ]) {
+        if (fs.existsSync(path.join(wordMemoryAssetsDir, fallbackFile))) {
+            fail(`word memory file:// fallback script must stay out of the Pages artifact: ${fallbackFile}`);
+        }
+    }
     const coreVocabViewPath = path.join(artifactDir, 'data', 'vocab', 'core-english', 'views', 'core.json');
     const coreVocabDbPath = path.join(artifactDir, 'data', 'vocab', 'core-english', 'core-english.db');
     const coreWordMemoryPath = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-core-cards.json');
@@ -162,9 +171,6 @@ try {
     const extensionWordMemoryPath = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'word-memory-extension-cards.json');
     if (/https:\/\/images\.unsplash\.com\/[^"'\s]*\?[^"'\s]*\?/.test(wordMemoryJson)) {
         fail('word memory artifact still contains malformed Unsplash image URLs');
-    }
-    if (/https:\/\/images\.unsplash\.com\/[^"'\s]*\?[^"'\s]*\?/.test(wordMemoryFallback)) {
-        fail('word memory fallback artifact still contains malformed Unsplash image URLs');
     }
     if (!fs.existsSync(coreVocabViewPath) || !fs.existsSync(coreVocabDbPath) || !fs.existsSync(coreWordMemoryPath)) {
         fail('core English vocabulary database, view, or word-memory adapter is missing from the Pages artifact');

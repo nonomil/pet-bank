@@ -32,6 +32,14 @@ try {
     const exploreResponse = await waitForServer();
     const exploreHtml = await exploreResponse.text();
     assert.match(exploreHtml, /<title>成长伙伴 · 萌宠冒险岛<\/title>/, 'deep explore route should serve the SPA shell');
+    assert.equal(new URL(exploreResponse.url).pathname, '/index.html', 'deep SPA routes should redirect through the shared index so the route base is resolved before assets load');
+    assert.equal(new URL(exploreResponse.url).searchParams.get('route'), '/app/explore', 'deep SPA redirects should preserve the requested route');
+
+    const queryResponse = await fetch(`http://127.0.0.1:${port}/app/explore?from=deep-route`);
+    const queryUrl = new URL(queryResponse.url);
+    assert.equal(queryUrl.searchParams.get('route'), '/app/explore', 'deep SPA redirects should set the route query');
+    assert.equal(queryUrl.searchParams.get('from'), 'deep-route', 'deep SPA redirects should preserve existing query parameters');
+
     assert.doesNotMatch(exploreHtml, /<link\s+rel="preload"[^>]+href="(?:js|css)\//i, 'deep routes must not preload route-relative assets before the base is resolved');
 
     const assetResponse = await fetch(`http://127.0.0.1:${port}/js/app.js`);

@@ -27,9 +27,9 @@ function loadProfileManager(storage) {
     return window.ProfileManager;
 }
 
-function loadProgress(storage, getActiveId) {
+function loadProgress(storage, getActiveId, onSync) {
     const window = {
-        ProfileManager: getActiveId ? { getActiveId } : undefined
+        ProfileManager: getActiveId ? { getActiveId, requestHighPrioritySync: onSync || (() => ({ scheduled: false })) } : undefined
     };
     vm.runInNewContext(source, {
         window,
@@ -39,6 +39,57 @@ function loadProgress(storage, getActiveId) {
     });
     Object.defineProperty(window.EnglishVocabProgress, '__testWindow', { value: window });
     return window.EnglishVocabProgress;
+}
+
+{
+    const storage = createStorage();
+    const syncReasons = [];
+    const progress = loadProgress(storage, () => 'profile-a', reason => syncReasons.push(reason));
+    const first = progress.record('stone', true, { now: '2026-07-19T08:00:00.000Z' });
+    assert.equal(first.repetitions, 1);
+    assert.equal(first.intervalDays, 1);
+    assert.equal(first.dueAt, '2026-07-20T08:00:00.000Z');
+    const second = progress.record('stone', true, { now: '2026-07-20T08:00:00.000Z' });
+    assert.equal(second.repetitions, 2);
+    assert.equal(second.intervalDays, 3);
+    assert.equal(second.dueAt, '2026-07-23T08:00:00.000Z');
+    const lapsed = progress.record('stone', false, { now: '2026-07-20T09:00:00.000Z' });
+    assert.equal(lapsed.status, 'learning');
+    assert.equal(lapsed.lapses, 1);
+    assert.equal(lapsed.intervalDays, 0);
+    assert.equal(lapsed.dueAt, '2026-07-20T09:10:00.000Z');
+    assert.deepEqual(syncReasons, ['english-vocab-progress', 'english-vocab-progress', 'english-vocab-progress']);
+}
+
+{
+    const storage = createStorage();
+    const progress = loadProgress(storage, () => 'profile-a');
+    const again = progress.record('again-card', 'again', {
+        now: '2026-07-19T08:00:00.000Z',
+        hintUsed: true,
+        responseMode: 'picture-recall',
+        responseMs: 4200
+    });
+    assert.equal(again.lastGrade, 'again');
+    assert.equal(again.hintUsed, true);
+    assert.equal(again.responseMode, 'picture-recall');
+    assert.equal(again.lastResponseMs, 4200);
+    assert.equal(again.dueAt, '2026-07-19T08:10:00.000Z');
+
+    const hard = progress.record('hard-card', 'hard', { now: '2026-07-19T08:00:00.000Z' });
+    assert.equal(hard.lastGrade, 'hard');
+    assert.equal(hard.dueAt, '2026-07-19T20:00:00.000Z');
+    assert.equal(hard.status, 'learning');
+
+    const good = progress.record('good-card', 'good', { now: '2026-07-19T08:00:00.000Z' });
+    assert.equal(good.lastGrade, 'good');
+    assert.equal(good.intervalDays, 1);
+    assert.equal(good.dueAt, '2026-07-20T08:00:00.000Z');
+
+    const easy = progress.record('easy-card', 'easy', { now: '2026-07-19T08:00:00.000Z' });
+    assert.equal(easy.lastGrade, 'easy');
+    assert.equal(easy.intervalDays, 2);
+    assert.equal(easy.dueAt, '2026-07-21T08:00:00.000Z');
 }
 
 const legacyProgressKey = 'petbank_learning_vocab_progress';

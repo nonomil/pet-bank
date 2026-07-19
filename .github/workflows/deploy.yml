@@ -36,7 +36,13 @@ jobs:
           node --check js/app.js
           node scripts/test-initial-media-loading-contract.mjs
           node scripts/test-pages-vocab-publish-contract.mjs
+          node scripts/test-minecraft-vocab-runtime-shards.mjs
+          node scripts/test-minecraft-vocab-publish-contract.mjs
+          node scripts/test-pixel-story-publish-contract.mjs
+          node scripts/test-typing-defense-publish-contract.mjs
           node scripts/test-learning-arcade-publish-contract.mjs
+          node scripts/test-pages-artifact-size-audit.mjs
+          node scripts/test-measure-page-load.mjs
           node scripts/test-static-route-entries.mjs
           node scripts/test-static-access-policy-contract.mjs
           node prj/runtime_loader_route_base_contract.test.mjs
@@ -46,6 +52,14 @@ jobs:
         run: node scripts/assemble-pages-artifact.mjs _site
       - name: Verify learning arcade publish boundary
         run: node scripts/test-learning-arcade-publish-contract.mjs _site
+      - name: Verify Minecraft vocab publish boundary
+        run: node scripts/test-minecraft-vocab-publish-contract.mjs _site
+      - name: Verify pixel story publish boundary
+        run: node scripts/test-pixel-story-publish-contract.mjs _site
+      - name: Verify typing defense publish boundary
+        run: node scripts/test-typing-defense-publish-contract.mjs _site
+      - name: Audit assembled artifact budgets
+        run: node scripts/audit-pages-artifact-size.mjs _site --top=30 --max-mib=400 --require-manifest-budgets --require-manifest-coverage
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

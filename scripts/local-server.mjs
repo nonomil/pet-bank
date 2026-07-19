@@ -37,6 +37,19 @@ function decodeRequestPath(requestUrl) {
     return decodeURIComponent(pathname);
 }
 
+function getSpaRoute(requestUrl) {
+    const requestPath = decodeRequestPath(requestUrl).replace(/\/+$/, '') || '/';
+    if (path.extname(requestPath)) return '';
+    return /^(?:\/app|\/parent|\/settings)(?:\/|$)/.test(requestPath) ? requestPath : '';
+}
+
+function getSpaRedirectLocation(requestUrl, route) {
+    const redirectUrl = new URL(requestUrl || '/', `http://${host}`);
+    redirectUrl.pathname = '/index.html';
+    redirectUrl.searchParams.set('route', route);
+    return `${redirectUrl.pathname}?${redirectUrl.searchParams.toString()}`;
+}
+
 function resolveFile(requestUrl) {
     const requestPath = decodeRequestPath(requestUrl);
     const candidate = path.resolve(repoRoot, `.${requestPath}`);
@@ -67,10 +80,6 @@ function resolveFile(requestUrl) {
         }
     }
 
-    // Match the static Pages shell for direct app/parent/settings deep links.
-    if (!path.extname(requestPath) && /^(?:\/app|\/parent|\/settings)(?:\/|$)/.test(requestPath)) {
-        return path.join(repoRoot, 'index.html');
-    }
     return null;
 }
 
@@ -94,6 +103,17 @@ function sendFile(response, filePath) {
 const server = http.createServer((request, response) => {
     try {
         const filePath = resolveFile(request.url);
+        if (!filePath) {
+            const route = getSpaRoute(request.url);
+            if (route) {
+                response.writeHead(302, {
+                    'Cache-Control': 'no-store',
+                    Location: getSpaRedirectLocation(request.url, route),
+                });
+                response.end();
+                return;
+            }
+        }
         if (!filePath) {
             response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
             response.end('404 Not Found');

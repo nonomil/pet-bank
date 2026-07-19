@@ -31,6 +31,13 @@ try {
         assert.ok(fs.existsSync(path.join(artifactRoot, relative)), `${relative} must remain published`);
     }
 
+    for (const relative of [
+        'data/vocab/english-minecraft/narration-manifest.json',
+        'data/vocab/english-minecraft/audio-manifest.json'
+    ]) {
+        assert.equal(fs.existsSync(path.join(artifactRoot, relative)), false, `${relative} must stay out of Pages`);
+    }
+
     const forbiddenSourcePaths = [
         'data/vocab/单词库_分级',
         'data/vocab/external',

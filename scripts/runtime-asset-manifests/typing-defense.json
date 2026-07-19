@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "id": "typing-defense",
+  "releaseStage": "runtime-shell",
+  "packageRoot": "prj/消灭苦力怕打字游戏",
+  "publishRoot": "app/playground/typing-defense-runtime",
+  "entry": [
+    "web/index.html",
+    "web/game.js",
+    "web/styles.css"
+  ],
+  "runtimeFiles": [
+    "assets/creeper-bow-scene-chatgpt-raw.png"
+  ],
+  "runtimePrefixes": [
+    "web",
+    "assets/generated/audio",
+    "assets/generated/minecraft-typing-defense",
+    "assets/generated/typing-defense-assets",
+    "assets/generated/word-cards"
+  ],
+  "excludedPrefixes": [
+    "reference/",
+    "browser-screenshots/",
+    "tmp/",
+    "prompts/",
+    "docs/"
+  ],
+  "budgetsMiB": {
+    "runtimeShell": 50,
+    "firstSession": 20
+  },
+  "fallback": "none"
+}

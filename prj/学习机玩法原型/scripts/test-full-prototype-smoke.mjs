@@ -4,12 +4,15 @@ import http from 'node:http';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import { BROWSER_PATH } from '../../../scripts/playwright-browser.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '..', '..', '..');
 const prototypePath = path.join('prj', '学习机玩法原型', 'index.html');
 const screenshotDir = path.join(repoRoot, 'prj', '学习机玩法原型', 'tmp-screenshots');
+const configuredBrowserPath = process.env.PLAYWRIGHT_BROWSER_PATH || process.env.PLAYWRIGHT_BROWSER || '';
 const chromeCandidates = [
+  configuredBrowserPath,
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
   'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
@@ -695,7 +698,8 @@ async function main() {
   const baseUrl = `http://127.0.0.1:${port}/${prototypePath}`;
   const browser = await chromium.launch({
     headless: true,
-    executablePath: findChrome()
+    executablePath: BROWSER_PATH || findChrome(),
+    args: ['--disable-gpu']
   });
   const consoleMessages = [];
 
