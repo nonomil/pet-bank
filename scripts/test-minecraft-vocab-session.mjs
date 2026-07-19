@@ -48,6 +48,57 @@ function load(storage, profileId = 'profile-a') {
 
 {
   const session = load(createStorage());
+  const scheduledCards = [
+    { id: 'due-card', word: 'due', category: 'block' },
+    { id: 'future-card', word: 'future', category: 'item' },
+    { id: 'new-card', word: 'new', category: 'mob' }
+  ];
+  const progress = {
+    'due-card': { status: 'learning', dueAt: '2020-01-01T00:00:00.000Z' },
+    'future-card': { status: 'mastered', dueAt: '2099-01-01T00:00:00.000Z' },
+    'new-card': { status: 'new', dueAt: '' }
+  };
+  const queue = session.createQueue(scheduledCards, card => progress[card.id], '2026-07-19', 3);
+  assert.equal(queue.some(item => item.cardId === 'due-card'), true, 'due cards should enter the review queue');
+  assert.equal(queue.some(item => item.cardId === 'future-card'), false, 'future cards should wait for their due time');
+  assert.equal(queue.some(item => item.cardId === 'new-card'), true, 'new cards should fill remaining learning slots');
+}
+
+{
+  const storage = createStorage();
+  const session = load(storage);
+  const kindergarten = session.start(cards, () => ({ status: 'new' }), '2026-07-14', { levelId: 'kindergarten' });
+  assert.equal(kindergarten.state.levelId, 'kindergarten');
+  const bridge = session.start(cards, () => ({ status: 'new' }), '2026-07-14', { levelId: 'bridge' });
+  assert.equal(bridge.resumed, false, 'changing the selected level should start a fresh queue');
+  assert.equal(bridge.state.levelId, 'bridge');
+  const band = session.start(cards, () => ({ status: 'new' }), '2026-07-14', { levelId: 'minecraft', bandId: 'minecraft-core' });
+  assert.equal(band.resumed, false, 'changing the selected Minecraft band should start a fresh queue');
+  assert.equal(band.state.bandId, 'minecraft-core');
+  const nextBand = session.start(cards, () => ({ status: 'new' }), '2026-07-14', { levelId: 'minecraft', bandId: 'minecraft-basic' });
+  assert.equal(nextBand.resumed, false, 'changing the selected Minecraft band should not resume the previous queue');
+  assert.equal(nextBand.state.bandId, 'minecraft-basic');
+}
+
+{
+  const key = 'petbank_minecraft_vocab_session_v1_profile-a';
+  const legacyState = {
+    version: 1,
+    profileId: 'profile-a',
+    localDate: '2026-07-14',
+    regionId: '',
+    queue: [{ cardId: 'card-1', mode: 'new' }],
+    completed: []
+  };
+  const session = load(createStorage({ [key]: JSON.stringify(legacyState) }));
+  const result = session.start(cards, () => ({ status: 'new' }), '2026-07-14', {});
+  assert.equal(result.resumed, false, 'legacy state without levelId/bandId must not resume');
+  assert.equal(Object.hasOwn(result.state, 'levelId'), true);
+  assert.equal(Object.hasOwn(result.state, 'bandId'), true);
+}
+
+{
+  const session = load(createStorage());
   const started = session.start(cards, () => ({ status: 'new' }), '2026-07-14');
   assert.equal(started.persisted, true);
   assert.equal(started.state.profileId, 'profile-a');

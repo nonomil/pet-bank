@@ -40,10 +40,22 @@
     }
 
     function cardStatus(readProgress, card) {
+        return String(cardProgress(readProgress, card).status || 'new');
+    }
+
+    function cardProgress(readProgress, card) {
         try {
-            const progress = typeof readProgress === 'function' ? readProgress(card) : readProgress?.(card.id);
-            return progress && typeof progress === 'object' ? String(progress.status || 'new') : 'new';
-        } catch (error) { return 'new'; }
+            const progress = typeof readProgress === 'function' ? readProgress(card) : readProgress?.[card.id];
+            return progress && typeof progress === 'object' ? progress : { status: 'new' };
+        } catch (error) { return { status: 'new' }; }
+    }
+
+    function isDue(progress, now = Date.now()) {
+        const status = String(progress?.status || 'new');
+        if (!['learning', 'mastered'].includes(status)) return false;
+        if (!progress?.dueAt) return true;
+        const dueAt = Date.parse(String(progress.dueAt));
+        return !Number.isFinite(dueAt) || dueAt <= Number(now);
     }
 
     function hash(value) {
@@ -88,10 +100,10 @@
         return result;
     }
 
-    function createQueue(cards, readProgress, date, queueSize = QUEUE_SIZE) {
+    function createQueue(cards, readProgress, date, queueSize = QUEUE_SIZE, now = Date.now()) {
         const source = Array.isArray(cards) ? cards.filter(card => card && card.id) : [];
         const ordered = interleaveByCategory(stableSort(source, date));
-        const review = ordered.filter(card => ['learning', 'mastered'].includes(cardStatus(readProgress, card)));
+        const review = ordered.filter(card => isDue(cardProgress(readProgress, card), now));
         const fresh = ordered.filter(card => cardStatus(readProgress, card) === 'new');
         const used = new Set();
         const queue = [];
@@ -108,15 +120,14 @@
             ? STAGE_MODES
             : Array.from({ length: queueSize }, (_, index) => index === queueSize - 1 ? 'scene' : index === 0 ? 'review' : 'new');
         pick(review, Math.min(2, queueSize));
-        pick(ordered, Math.max(0, Math.min(2, queueSize) - queue.length));
         pick(fresh, Math.max(0, Math.min(5, queueSize) - queue.length));
-        pick(ordered, Math.max(0, queueSize - queue.length));
+        pick(fresh, Math.max(0, queueSize - queue.length));
         return queue.slice(0, queueSize).map((item, index) => ({ ...item, mode: stageModes[index] || 'new' }));
     }
 
     function emptyState(cards, readProgress, date, profileId, options = {}) {
         const queueSize = Math.max(1, Number(options.queueSize || QUEUE_SIZE));
-        return { version: 1, profileId, localDate: localDate(date), regionId: String(options.regionId || ''), missionId: String(options.missionId || ''), rewardPoints: Number(options.rewardPoints || REWARD_POINTS), queue: createQueue(cards, readProgress, date, queueSize), completed: [], startedAt: new Date().toISOString(), completedAt: '' };
+        return { version: 1, profileId, localDate: localDate(date), levelId: String(options.levelId || ''), bandId: String(options.bandId || ''), regionId: String(options.regionId || ''), missionId: String(options.missionId || ''), rewardPoints: Number(options.rewardPoints || REWARD_POINTS), queue: createQueue(cards, readProgress, date, queueSize), completed: [], startedAt: new Date().toISOString(), completedAt: '' };
     }
 
     function start(cards, readProgress, date = '', options = {}) {
@@ -124,7 +135,18 @@
         const today = localDate(date);
         const current = readState(profileId);
         const requestedRegionId = String(options.regionId || '');
-        if (current && current.localDate === today && current.queue.length && String(current.regionId || '') === requestedRegionId) return { state: current, persisted: true, resumed: true };
+        const requestedLevelId = String(options.levelId || '');
+        const requestedBandId = String(options.bandId || '');
+        const hasSelectionFields = current
+            && ['regionId', 'levelId', 'bandId'].every(field => Object.prototype.hasOwnProperty.call(current, field));
+        if (hasSelectionFields
+            && current.localDate === today
+            && current.queue.length
+            && String(current.regionId || '') === requestedRegionId
+            && String(current.levelId || '') === requestedLevelId
+            && String(current.bandId || '') === requestedBandId) {
+            return { state: current, persisted: true, resumed: true };
+        }
         const state = emptyState(cards, readProgress, today, profileId, options);
         return { state, persisted: writeState(state), resumed: false };
     }
@@ -154,6 +176,6 @@
 
     global.MinecraftVocabSession = {
         STORAGE_PREFIX, STAGE_MODES, REWARD_POINTS, activeProfileId, storageKey, readState, writeState,
-        categoryOf, interleaveByCategory, createQueue, start, recordAction, isComplete, getRewardEvent, claimReward
+        categoryOf, interleaveByCategory, cardProgress, isDue, createQueue, start, recordAction, isComplete, getRewardEvent, claimReward
     };
 })(typeof window !== 'undefined' ? window : globalThis);

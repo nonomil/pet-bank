@@ -260,7 +260,8 @@
 
     function cardAudio(card, key = 'word') {
         const narration = card?.narrationAudio || {};
-        const audioPath = String(narration[key] || (key === 'word' ? card?.audio : '') || '');
+        const externalNarration = card?.externalNarrationAudio || {};
+        const audioPath = String(narration[key] || externalNarration[key] || (key === 'word' ? card?.audio : '') || '');
         if (!/^(?:assets|prj\/anki-minecraft-vocab)\//.test(audioPath)) return '';
         return global.MinecraftVocabAudio?.getUrl?.(audioPath) || asset(audioPath);
     }
@@ -901,10 +902,12 @@
         saveSelectedLevel(selectedLevelId);
         saveSelectedBand(selectedBandId);
         selectedRegionId = '';
+        void global.MinecraftVocabAudio?.prepareForSelection?.(selectedLevelId, selectedBandId);
         if (root) root.innerHTML = '<div class="mv-loading" aria-live="polite">正在切换词库...</div>';
         try {
-            module = await global.MinecraftVocabLoader.loadForSelection(selectedLevelId, selectedBandId);
+            const loadedModule = await global.MinecraftVocabLoader.loadForSelection(selectedLevelId, selectedBandId);
             if (!isCurrentGeneration(generation) || requestId !== selectionRequestId) return;
+            module = loadedModule;
             const result = global.MinecraftVocabSession.start(cardsForLevel(), card => progressApi()?.get?.(card.id), '', {
                 regionId: '',
                 queueSize: 11,
@@ -1088,7 +1091,7 @@
         try {
             selectedLevelId = readSelectedLevel();
             selectedBandId = readSelectedBand();
-            void global.MinecraftVocabAudio?.prepare?.();
+            void global.MinecraftVocabAudio?.prepareForSelection?.(selectedLevelId, selectedBandId);
             const [loadedModule, response] = await Promise.all([
                 global.MinecraftVocabLoader.loadForSelection(selectedLevelId, selectedBandId),
                 fetch(resolveDataUrl('data/learn/minecraft-expedition/camp-regions.json'))

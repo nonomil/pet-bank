@@ -91,6 +91,10 @@ test('Minecraft vocab page invalidates stale render and selection requests', () 
     assertContract(pageSource, /async function\s+render\s*\([^)]*[\s\S]*?const\s+generation\s*=\s*\+\+pageGeneration/, 'render() must create a new generation token');
     assert.ok((pageSource.match(/isCurrentGeneration\(generation\)/g) || []).length >= 5, 'async render paths must check the active generation after awaits');
     assertContract(pageSource, /async function\s+reloadSelection\s*\([^)]*[\s\S]*?const\s+generation\s*=\s*pageGeneration[\s\S]*?requestId\s*!==\s*selectionRequestId/, 'reloadSelection() must reject stale page generations and requests');
+    assert.ok(pageSource.includes('const loadedModule = await global.MinecraftVocabLoader.loadForSelection(selectedLevelId, selectedBandId);'), 'reloadSelection must await into a local module value');
+    assert.ok(pageSource.includes('if (!isCurrentGeneration(generation) || requestId !== selectionRequestId) return;\n            module = loadedModule;'), 'reloadSelection must validate before publishing the loaded module');
+    assert.ok(pageSource.includes('if (!isCurrentGeneration(generation)) return;\n            if (!response.ok) throw new Error(`expedition data request failed: ${response.status}`);\n            module = loadedModule;'), 'render must validate before publishing the loaded module');
+    assert.ok(pageSource.includes('mounted = false;\n        pageGeneration += 1;\n        selectionRequestId += 1;'), 'stop must invalidate both generation and selection tokens before leaving');
 });
 
 test('learning center exposes a stable secondary CTA that only navigates to minecraft-vocab', () => {
@@ -122,9 +126,16 @@ test('today page preloads only the side-effect-free session API before runtime b
     const sessionIndex = indexSource.indexOf('js/minecraft-vocab-session.js?v=1');
     const runtimeIndex = indexSource.indexOf('js/runtime-loader.js');
     assert.ok(sessionIndex >= 0, 'index.html must preload the Minecraft vocab session API');
+    assert.equal(countAttributeOccurrences(indexSource, 'script', 'src', 'js/minecraft-vocab-session.js?v=1'), 1, 'index.html must preload the session API exactly once');
     assert.ok(runtimeIndex >= 0 && sessionIndex < runtimeIndex, 'session API must load before runtime-loader');
     assertContract(sessionSource, /activeProfileId\s*,\s*storageKey\s*,\s*readState[\s\S]*?isComplete/, 'session API must expose profile-aware readState and isComplete');
     assert.ok(!/document\.|querySelector|innerHTML|classList/.test(sessionSource), 'session API preload must not have DOM side effects');
+});
+
+test('runtime loader deduplicates scripts by source before loading each bundle item', () => {
+    assertContract(runtimeLoaderSource, /function\s+findScript\s*\(src\)[\s\S]*?data-petbank-src[\s\S]*?getAttribute\(['"]src['"]\)[\s\S]*?resolveAssetUrl\(src\)/, 'runtime loader must find an existing script by source');
+    assertContract(runtimeLoaderSource, /function\s+loadScript\s*\(src\)[\s\S]*?scriptPromises\.has\(src\)[\s\S]*?const existing\s*=\s*findScript\(src\)/, 'runtime loader must reuse the in-flight or existing script promise by source');
+    assertContract(runtimeLoaderSource, /async function\s+loadSeries\s*\(items, loader\)[\s\S]*?for\s*\(const item of items \|\| \[\]\)[\s\S]*?await loader\(item\)/, 'runtime loader must load bundle items through the deduplicating loader');
 });
 
 test('app renders today expedition summary from the existing session API without writing expedition state', () => {
