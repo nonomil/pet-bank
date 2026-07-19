@@ -3,6 +3,7 @@
   "sets": [
     {
       "id": "pixel-worlds-story-narration",
+      "manifestSet": "full-chapters",
       "sourceDir": "assets/story/pixel-worlds-v1/audio",
       "include": ["**/*.wav"],
       "runtimePrefix": "assets/story/pixel-worlds-v1/audio",
@@ -13,8 +14,8 @@
     },
     {
       "id": "minecraft-vocab-narration",
+      "manifestSet": "starter-narration",
       "sourceDir": "assets/learn/english-vocab/minecraft-narration",
-      "include": ["*.mp3"],
       "runtimePrefix": "assets/learn/english-vocab/minecraft-narration",
       "publishRoot": "assets/learn/english-vocab/minecraft-narration",
       "format": "OGG",

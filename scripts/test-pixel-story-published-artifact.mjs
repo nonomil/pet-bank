@@ -55,19 +55,20 @@ assert.equal(worldsOggs.length, 960, `expected 960 published pixel story OGG fil
 assert.equal(mp3s.length, 37, `expected 37 story MP3s in Pages artifact, got ${mp3s.length}`);
 assert.ok(fs.existsSync(path.join(outDir, 'data', 'story-packs', '04-pixel-dialogue-story', 'audio-manifest.json')));
 assert.ok(fs.existsSync(path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'manifest.json')));
-const audioManifest = JSON.parse(fs.readFileSync(path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'audio-manifest.json'), 'utf8'));
-assert.equal(audioManifest.status, 'complete');
-assert.equal(audioManifest.generatedNodes, 80);
-assert.equal(audioManifest.audioFormat, 'ogg', 'published audio manifest should record the compressed format');
-assert.equal(audioManifest.audioSubtype, 'opus', 'published audio manifest should record the Opus subtype');
-assert.match(audioManifest.entries['sf-01'].file, /\.ogg$/, 'published audio manifest should be rewritten to OGG');
-assert.ok(fs.statSync(path.join(outDir, audioManifest.entries['sf-01'].file)).size > 256);
+assert.ok(fs.existsSync(path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'audio-index.json')));
+assert.equal(fs.existsSync(path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'audio-manifest.json')), false,
+  'source full audio manifest must stay out of the Pages artifact');
 const narrationRoot = path.join(outDir, 'assets', 'learn', 'english-vocab', 'minecraft-narration');
 const narrationFiles = fs.readdirSync(narrationRoot);
 assert.equal(narrationFiles.filter((file) => file.endsWith('.mp3')).length, 0, 'published Minecraft narration must not retain MP3 sources');
-assert.equal(narrationFiles.filter((file) => file.endsWith('.ogg')).length, 10840, 'published Minecraft narration must contain all Opus variants');
-const publishedVocab = JSON.parse(fs.readFileSync(path.join(outDir, 'data', 'learn', 'packs', 'english-mc-hybrid-2026', 'modules', 'minecraft-vocab.json'), 'utf8'));
-for (const card of publishedVocab.cards || []) {
+assert.equal(narrationFiles.filter((file) => file.endsWith('.ogg')).length, 700, 'published Minecraft narration must contain the starter Opus variants');
+const publishedVocabModuleDir = path.join(outDir, 'data', 'learn', 'packs', 'english-mc-hybrid-2026', 'modules');
+assert.equal(fs.existsSync(path.join(publishedVocabModuleDir, 'minecraft-vocab.json')), false, 'full Minecraft vocab source must not be published');
+const publishedStarterVocab = JSON.parse(fs.readFileSync(
+  path.join(publishedVocabModuleDir, 'minecraft-vocab-runtime-starter.json'),
+  'utf8'
+));
+for (const card of publishedStarterVocab.cards || []) {
   for (const key of ['phrase', 'sentence', 'translation', 'phraseTranslation', 'sentenceTranslation']) {
     assert.match(String(card.narrationAudio?.[key] || ''), /\.ogg$/, `published narration path should use OGG: ${card.id} ${key}`);
   }

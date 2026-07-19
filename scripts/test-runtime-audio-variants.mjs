@@ -14,7 +14,7 @@ test('runtime audio variant manifest is valid and all Opus variants are smaller'
     assert.ok(config.sets.length >= 1);
     for (const audioSet of config.sets) {
         assert.ok(audioSet.sourceDir && audioSet.runtimePrefix && audioSet.publishRoot);
-        assert.ok(audioSet.include.length > 0);
+        assert.ok(audioSet.include?.length > 0 || audioSet.manifestSet);
         assert.equal(audioSet.format, 'OGG');
         assert.equal(audioSet.subtype, 'OPUS');
         assert.equal(audioSet.extension, '.ogg');
@@ -25,7 +25,7 @@ test('runtime audio variant manifest is valid and all Opus variants are smaller'
         encoding: 'utf8'
     });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
-    assert.match(result.stdout, /checked=11800/);
+    assert.match(result.stdout, /checked=1660/);
     assert.match(result.stdout, /missing=0/);
     assert.match(result.stdout, /larger=0/);
 });

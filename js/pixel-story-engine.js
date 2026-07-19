@@ -6,13 +6,14 @@
     var STORY_ID = 'pixel-worlds-story';
     var CHAPTERS_BASE = 'data/story-packs/05-pixel-worlds-story';
     var LEVELS_BASE = CHAPTERS_BASE + '/levels';
-    var AUDIO_MANIFEST_PATH = CHAPTERS_BASE + '/audio-manifest.json';
+    var AUDIO_INDEX_PATH = CHAPTERS_BASE + '/audio-index.json';
     var DIALOGUE_CONTAINER_SEL = '#pixelStoryBox';
     var TEXT_CONTAINER_SEL = '#pixelStoryText';
 
     /* ===== 状态 ===== */
     var manifest = null;
     var audioManifest = null;
+    var chapterAudioCache = {}; // chapterId -> chapter audio index
     var chaptersCache = {};      // chapterId -> parsed JSON
     var currentChapter = null;   // current chapter data
     var currentSceneIdx = 0;     // scene index within chapter
@@ -47,6 +48,26 @@
             if (!r.ok) throw new Error('HTTP ' + r.status + ': ' + path);
             return r.json();
         });
+    }
+
+    function configuredAudioBase() {
+        var config = root.PetBankConfig || root.PETBANK_CONFIG || {};
+        return String(config.pixelStoryAudioBaseUrl || root.__PETBANK_PIXEL_STORY_AUDIO_BASE_URL__ || '').trim();
+    }
+
+    function resolveAudioUrl(file) {
+        var source = String(file || '');
+        var prefix = 'assets/story/pixel-worlds-v1/audio/';
+        var base = configuredAudioBase();
+        if (base && source.indexOf(prefix) === 0) {
+            try {
+                var relative = source.slice(prefix.length).replace(/\.wav$/i, '.ogg');
+                return new URL(relative, base.replace(/\/+$/, '') + '/').href;
+            } catch (e) {
+                console.warn('[PixelStory] invalid external audio base:', e);
+            }
+        }
+        return assetUrl(source);
     }
 
     function qs(sel, ctx) { return (ctx || document).querySelector(sel); }
@@ -98,13 +119,26 @@
         if (manifest) return Promise.resolve(manifest);
         return fetchJson(CHAPTERS_BASE + '/manifest.json').then(function (m) {
             manifest = m;
-            return fetchJson(AUDIO_MANIFEST_PATH).catch(function (err) {
+            return fetchJson(AUDIO_INDEX_PATH).catch(function (err) {
                 console.warn('[PixelStory] audio manifest unavailable; using TTS fallback:', err.message);
                 return { version: 1, entries: {} };
             });
         }).then(function (a) {
             audioManifest = a;
             return manifest;
+        });
+    }
+
+    function loadChapterAudioIndex(chapterId) {
+        if (chapterAudioCache[chapterId]) return Promise.resolve(chapterAudioCache[chapterId]);
+        var metadata = audioManifest && audioManifest.entries && audioManifest.entries[chapterId];
+        if (!metadata || !metadata.path) return Promise.resolve(null);
+        return fetchJson(metadata.path).then(function (data) {
+            chapterAudioCache[chapterId] = data;
+            return data;
+        }).catch(function (error) {
+            console.warn('[PixelStory] chapter audio index unavailable:', chapterId, error.message);
+            return null;
         });
     }
 
@@ -518,8 +552,8 @@
     }
 
     function getLineAudioUrl() {
-        if (!audioManifest || !audioManifest.entries || !currentChapter) return '';
-        var entry = audioManifest.entries[currentChapter.chapterId];
+        if (!currentChapter) return '';
+        var entry = chapterAudioCache[currentChapter.chapterId];
         if (!entry) return '';
         if (Array.isArray(entry.scenes)) {
             var scene = getCurrentScene();
@@ -527,12 +561,12 @@
             var lineEntry = sceneEntry && sceneEntry.sceneId === (scene && scene.sceneId)
                 ? sceneEntry.lines[currentLineIdx]
                 : null;
-            return lineEntry && lineEntry.file ? assetUrl(lineEntry.file) : '';
+            return lineEntry && lineEntry.file ? resolveAudioUrl(lineEntry.file) : '';
         }
         var scene = getCurrentScene();
         var legacyKey = currentChapter.chapterId + '/' + (scene ? scene.sceneId : 'scene') + '/' + currentLineIdx;
         var legacyEntry = audioManifest.entries[legacyKey];
-        return legacyEntry && legacyEntry.file ? assetUrl(legacyEntry.file) : '';
+        return legacyEntry && legacyEntry.file ? resolveAudioUrl(legacyEntry.file) : '';
     }
 
     function getCharacterData(charId) {
@@ -573,7 +607,8 @@
     function enterChapter(chapterId) {
         if (!shellElement) return;
         if (root.VoiceSystem && typeof root.VoiceSystem.stop === 'function') root.VoiceSystem.stop();
-        loadChapter(chapterId).then(function (chapter) {
+        Promise.all([loadChapter(chapterId), loadChapterAudioIndex(chapterId)]).then(function (loaded) {
+            var chapter = loaded[0];
             currentChapter = chapter;
             currentSceneIdx = 0;
             currentLineIdx = 0;
@@ -716,6 +751,7 @@
         showMap: showMap,
         loadManifest: loadManifest,
         loadChapter: loadChapter,
+        loadChapterAudioIndex: loadChapterAudioIndex,
         setPreferredTrack: setPreferredTrack,
         getCompletedChapters: getCompletedChapters,
         getChapterProgress: getChapterProgress,

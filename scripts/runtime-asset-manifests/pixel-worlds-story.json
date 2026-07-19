@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "id": "pixel-worlds-story",
+  "releaseStage": "full-runtime-pool",
+  "entry": [
+    "js/pixel-story-page.js",
+    "js/pixel-story-map.js",
+    "js/pixel-story-engine.js"
+  ],
+  "data": [
+    "data/story-packs/05-pixel-worlds-story/manifest.json",
+    "data/story-packs/05-pixel-worlds-story/audio-index.json"
+  ],
+  "sourceData": [
+    "data/story-packs/05-pixel-worlds-story/audio-manifest.json"
+  ],
+  "runtimePrefixes": [
+    "assets/story/pixel-worlds-v1/audio/",
+    "assets/story/pixel-worlds-v1/maps/",
+    "assets/story/pixel-worlds-v1/scenes/",
+    "assets/story/pixel-worlds-v1/characters/",
+    "assets/story/pixel-worlds-v1/props/sci-fi/",
+    "assets/story/pixel-worlds-v1/props/forest/",
+    "assets/story/pixel-worlds-v1/props/block/",
+    "assets/story/pixel-worlds-v1/props/detective/",
+    "assets/story/pixel-worlds-v1/icons/"
+  ],
+  "scopedPrefixes": [
+    "assets/story/pixel-worlds-v1/"
+  ],
+  "audioSets": [
+    {
+      "id": "full-chapters",
+      "sourceDir": "assets/story/pixel-worlds-v1/audio",
+      "runtimePrefix": "assets/story/pixel-worlds-v1/audio",
+      "include": ["**/*.wav"],
+      "publishedExtension": ".ogg",
+      "nodeCount": 80,
+      "clipCount": 960,
+      "note": "当前完整 80 节点兼容池；根索引和章节索引按需请求，当前句 OGG 按播放动作请求，可配置 pixelStoryAudioBaseUrl 走独立 CDN。"
+    }
+  ],
+  "budgetsMiB": {
+    "fullRuntimePool": 125,
+    "firstChapter": 5,
+    "perWorld": 40
+  },
+  "fallback": "none"
+}

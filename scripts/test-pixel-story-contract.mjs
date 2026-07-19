@@ -77,7 +77,7 @@ assert.match(runtime, /pixel-story-engine\.js/);
 assert.match(runtime, /css\/pixel-story\.css/);
 assert.match(engine, /resolvePetBankAssetUrl/);
 assert.match(map, /resolvePetBankAssetUrl/);
-assert.match(engine, /audio-manifest\.json/);
+assert.match(engine, /audio-index\.json/);
 assert.match(engine, /playStoryAudio/);
 assert.match(fs.readFileSync(path.join(root, 'js', 'voice.js'), 'utf8'), /playStoryAudio/);
 assert.match(keys, /`petbank_pixel_story_progress_v1`/);

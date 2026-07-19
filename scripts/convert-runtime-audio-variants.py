@@ -21,6 +21,7 @@ except ImportError as error:  # pragma: no cover - environment guard
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "scripts" / "runtime-audio-variants.json"
+RUNTIME_MANIFEST_DIR = ROOT / "scripts" / "runtime-asset-manifests"
 CHUNK_FRAMES = 262_144
 DURATION_TOLERANCE_SECONDS = 0.1
 
@@ -32,8 +33,43 @@ def load_config() -> dict:
     return config
 
 
+def load_manifest_audio_sets() -> dict:
+    audio_sets = {}
+    for manifest_path in sorted(RUNTIME_MANIFEST_DIR.glob("*.json")):
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for audio_set in manifest.get("audioSets", []):
+            if audio_set.get("id"):
+                audio_sets[audio_set["id"]] = audio_set
+    return audio_sets
+
+
+def resolve_include_patterns(audio_set: dict, manifest_audio_sets: dict) -> list[str]:
+    manifest_set = manifest_audio_sets.get(audio_set.get("manifestSet"))
+    include_from_data = (manifest_set or {}).get("includeFromData") or audio_set.get("includeFromData")
+    if include_from_data:
+        data_paths = include_from_data if isinstance(include_from_data, list) else [include_from_data]
+        source_dir = (manifest_set or audio_set)["sourceDir"].replace("\\", "/").rstrip("/") + "/"
+        patterns = set()
+        for relative_path in data_paths:
+            module_path = ROOT / relative_path
+            module = json.loads(module_path.read_text(encoding="utf-8"))
+            for card in module.get("cards", []):
+                values = [card.get("audio")]
+                values.extend((card.get("narrationAudio") or {}).values())
+                for value in values:
+                    relative = str(value or "").replace("\\", "/")
+                    if relative.startswith(source_dir):
+                        patterns.add(relative[len(source_dir):])
+        return sorted(patterns)
+    return (manifest_set or {}).get("include") or audio_set.get("include") or []
+
+
 def iter_entries(config: dict):
     seen: set[Path] = set()
+    manifest_audio_sets = load_manifest_audio_sets()
     for audio_set in config["sets"]:
         source_dir = ROOT / audio_set["sourceDir"]
         if not source_dir.is_dir():
@@ -41,7 +77,7 @@ def iter_entries(config: dict):
         extension = audio_set.get("extension", ".ogg")
         if not extension.startswith("."):
             extension = f".{extension}"
-        for pattern in audio_set["include"]:
+        for pattern in resolve_include_patterns(audio_set, manifest_audio_sets):
             for source in sorted(source_dir.glob(pattern)):
                 if not source.is_file() or source in seen:
                     continue
