@@ -145,7 +145,10 @@
             var isCompleted = completed.indexOf(node.levelId) !== -1;
             var position = getPagePosition(pageNodes.indexOf(node));
             var classNames = 'pixel-story-node pixel-story-node-' + escapeHtml(track.tone || 'default') + (isCompleted ? ' completed' : ' next');
-            html += '<button type="button" class="' + classNames + '" style="left:' + position.x + '%;top:' + position.y + '%" data-chapter="' + escapeHtml(node.levelId) + '" aria-label="进入' + escapeHtml(node.label || node.levelId) + '">';
+            var vocabAttributes = node.vocabRegionId
+                ? ' data-vocab-region-id="' + escapeHtml(node.vocabRegionId) + '" data-required-ability="' + escapeHtml(node.requiredAbility || '') + '"'
+                : '';
+            html += '<button type="button" class="' + classNames + '" style="left:' + position.x + '%;top:' + position.y + '%" data-chapter="' + escapeHtml(node.levelId) + '"' + vocabAttributes + ' aria-label="进入' + escapeHtml(node.label || node.levelId) + '">';
             html += '<div class="pixel-story-node-glow"></div>';
             if (node.icon) html += '<img class="pixel-story-node-icon" src="' + assetUrl(node.icon) + '" alt="">';
             else html += '<span class="pixel-story-node-icon pixel-story-node-symbol" aria-hidden="true">✦</span>';
@@ -192,6 +195,15 @@
             node.addEventListener('click', function () {
                 if (root.PixelStoryEngine && typeof root.PixelStoryEngine.setPreferredTrack === 'function') root.PixelStoryEngine.setPreferredTrack(track.id, false);
                 var chapterId = node.dataset.chapter;
+                if (node.dataset.vocabRegionId && root.MinecraftVocabExplorationBridge && typeof root.MinecraftVocabExplorationBridge.openExpedition === 'function') {
+                    root.MinecraftVocabExplorationBridge.openExpedition(node.dataset.vocabRegionId, {
+                        returnTarget: 'explore',
+                        preferredTrackId: track.id,
+                        storyNodeId: chapterId,
+                        requiredAbility: node.dataset.requiredAbility || ''
+                    });
+                    return;
+                }
                 if (root.PixelStoryEngine && typeof root.PixelStoryEngine.enterChapter === 'function') root.PixelStoryEngine.enterChapter(chapterId);
             });
         });

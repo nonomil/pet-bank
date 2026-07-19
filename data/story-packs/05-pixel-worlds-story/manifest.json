@@ -1318,6 +1318,8 @@
           "order": 1,
           "label": "方块村门口",
           "subtitle": "搭起路牌",
+          "vocabRegionId": "grassland-trail",
+          "requiredAbility": "",
           "position": {
             "x": 13,
             "y": 57
