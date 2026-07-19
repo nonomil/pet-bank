@@ -2304,9 +2304,15 @@ function continueLocalPageNavigation(page, options) {
     return switchPage(page, Object.assign({}, options, { skipAccessGate: true }));
 }
 
+function isLocalTestMode() {
+    return window.__PETBANK_TEST_MODE__ === true
+        && ['127.0.0.1', 'localhost', '::1'].includes(window.location.hostname);
+}
+
 function guardPageAccess(page, options) {
     const api = window.SelfHostedApi;
     if (!api || typeof api.checkAccess !== 'function') return continueLocalPageNavigation(page, options);
+    if (isLocalTestMode()) return continueLocalPageNavigation(page, options);
     return api.checkAccess().then(() => continueLocalPageNavigation(page, options)).catch((error) => {
         const isLocalOnly = error && (
             error.status === 404 ||

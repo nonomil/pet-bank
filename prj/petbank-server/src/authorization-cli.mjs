@@ -28,6 +28,7 @@ function usage() {
         '  node src/authorization-cli.mjs revoke CODE',
         '  node src/authorization-cli.mjs revoke-account ACCOUNT_ID',
         '  node src/authorization-cli.mjs list',
+        '  node src/authorization-cli.mjs list-accounts',
     ].join('\n'));
 }
 
@@ -114,6 +115,49 @@ function list(database) {
     })), null, 2));
 }
 
+function listAccounts(database) {
+    const now = Math.floor(Date.now() / 1000);
+    const rows = database.prepare(`
+        select a.id, a.username, a.display_name, a.access_status, a.authorization_required, a.created_at,
+               g.expires_at as grant_expires_at, g.revoked_at as grant_revoked_at,
+               g.created_at as grant_created_at, ri.code_hint as grant_code_hint
+        from accounts a
+        left join account_access_grants g on g.id = (
+            select latest.id
+            from account_access_grants latest
+            where latest.account_id = a.id
+            order by latest.created_at desc
+            limit 1
+        )
+        left join registration_invites ri on ri.id = g.registration_invite_id
+        order by a.created_at desc
+    `).all();
+    console.log(JSON.stringify(rows.map((row) => {
+        let authorizationStatus = 'not-required';
+        if (row.authorization_required) {
+            authorizationStatus = !row.grant_created_at
+                ? 'missing'
+                : row.grant_revoked_at
+                    ? 'revoked'
+                    : row.grant_expires_at != null && row.grant_expires_at <= now
+                        ? 'expired'
+                        : 'active';
+        }
+        return {
+            id: row.id,
+            username: row.username,
+            displayName: row.display_name,
+            accessStatus: row.access_status,
+            authorizationRequired: Boolean(row.authorization_required),
+            authorizationStatus,
+            grantCodeHint: row.grant_code_hint || '',
+            grantCreatedAt: row.grant_created_at || null,
+            grantExpiresAt: row.grant_expires_at || null,
+            createdAt: row.created_at,
+        };
+    }), null, 2));
+}
+
 export function runAuthorizationCli(argv = process.argv.slice(2), env = process.env) {
     const command = argv[0] || 'help';
     if (command === 'help' || command === '--help' || command === '-h') {
@@ -127,6 +171,7 @@ export function runAuthorizationCli(argv = process.argv.slice(2), env = process.
         else if (command === 'revoke') revoke(database, config, argv[1]);
         else if (command === 'revoke-account') revokeAccount(database, argv[1]);
         else if (command === 'list') list(database);
+        else if (command === 'list-accounts') listAccounts(database);
         else throw new Error('unknown command: ' + command);
     } finally {
         database.close();

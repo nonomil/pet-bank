@@ -29,6 +29,7 @@
 - 注册码由 VPS 容器内 `node src/authorization-cli.mjs issue` 发行；服务端只保存哈希、末四位提示、使用次数、注册码有效期和授权有效期。
 - 注册成功后创建 `account_access_grants`。登录、refresh 和所有登录后 API 都要求账号为 active 且至少有一条未撤销、未过期授权。
 - `node src/authorization-cli.mjs revoke CODE` 会停用注册码并撤销该注册码已发出的授权；`revoke-account ACCOUNT_ID` 只撤销指定账号授权。
+- `node src/authorization-cli.mjs list-accounts` 只输出账号和当前授权状态，用于排查登录失败；不会输出密码、Token 或完整注册码。
 - 注册码只在发行命令的标准输出中显示一次；Hermes 不得把完整注册码写入聊天记录、仓库、日志或环境文件。
 - 注册、登录和 refresh 响应同时写入短期 `HttpOnly; SameSite=Lax` access Cookie；生产环境强制追加 `Secure`。Bearer token JSON 字段继续保留，兼容现有前端和脚本客户端。
 - `/api/v1/auth/check` 不负责刷新会话：无效或已撤销授权返回 `401/403`，供 Nginx 拒绝受保护静态路由；浏览器 logout 清除 Cookie 并撤销 refresh token。

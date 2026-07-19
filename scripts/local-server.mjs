@@ -6,6 +6,11 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = path.resolve(process.env.PETBANK_STATIC_ROOT || path.join(path.dirname(fileURLToPath(import.meta.url)), '..'));
 const host = process.env.PETBANK_HOST || '127.0.0.1';
 const port = Number(process.env.PETBANK_PORT || 7000);
+const testMode = process.env.PETBANK_TEST_MODE === '1';
+
+if (testMode && !['127.0.0.1', 'localhost', '::1'].includes(host)) {
+    throw new Error('PETBANK_TEST_MODE is only allowed on a loopback host.');
+}
 
 const MIME_TYPES = {
     '.css': 'text/css; charset=utf-8',
@@ -71,10 +76,18 @@ function resolveFile(requestUrl) {
 
 function sendFile(response, filePath) {
     const extension = path.extname(filePath).toLowerCase();
-    response.writeHead(200, {
+    const headers = {
         'Cache-Control': extension === '.html' ? 'no-store' : 'no-cache',
         'Content-Type': MIME_TYPES[extension] || 'application/octet-stream',
-    });
+    };
+    if (testMode && extension === '.html') {
+        const source = fs.readFileSync(filePath, 'utf8');
+        const marker = '<script>window.__PETBANK_TEST_MODE__ = true;</script>';
+        response.writeHead(200, headers);
+        response.end(source.replace('<head>', `<head>${marker}`));
+        return;
+    }
+    response.writeHead(200, headers);
     fs.createReadStream(filePath).pipe(response);
 }
 
@@ -102,7 +115,7 @@ const server = http.createServer((request, response) => {
 server.listen(port, host, () => {
     const address = server.address();
     const actualPort = typeof address === 'object' && address ? address.port : port;
-    console.log(`[local-server] listening at http://${host}:${actualPort}/`);
+    console.log(`[local-server] listening at http://${host}:${actualPort}/${testMode ? ' (TEST MODE: local access gate bypassed)' : ''}`);
 });
 
 function shutdown() {

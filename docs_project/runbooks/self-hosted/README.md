@@ -34,6 +34,14 @@ Internet
 
 生产静态访问采用分级门禁：`/parent/`、`/settings` 家庭登录/注册码入口、绘本和游乐场公开；根首页、`/app/` 核心孩子端、`/settings/learning|rules|advanced`、`/parent/works` 和 `/parent/tools` 需要有效授权。配置片段见 `prj/petbank-server/deploy/nginx-api.conf` 与 `nginx-static-gate.conf`，必须包含到同一个 HTTPS `server {}`，不能只部署 API 代理。
 
+本地查看完整内容不需要注册，也不要修改生产环境变量。执行：
+
+```powershell
+node scripts/test-mode-server.mjs
+```
+
+然后打开 `http://127.0.0.1:7001/app`。该模式只在回环地址注入本地测试标记，绕过浏览器页面访问检查；它不启动 API、不创建账号、不提供家长云端管理能力，也不会绕过 VPS/Nginx 的生产门禁。
+
 注册码不是家庭邀请码。需要新增一个授权时，在 VPS 上执行：
 
 ```bash
@@ -46,11 +54,19 @@ Internet
 /srv/pet-bank/current/ops/list-registration-codes.sh
 ```
 
+查看账号授权状态（只显示用户名、状态和注册码末四位，不显示完整注册码）：
+
+```bash
+docker compose -f /srv/pet-bank/current/prj/petbank-server/deploy/compose.yml -p petbank-api exec -T api node src/authorization-cli.mjs list-accounts
+```
+
 撤销注册码及其已发授权：
 
 ```bash
 /srv/pet-bank/current/ops/revoke-registration-code.sh CODE
 ```
+
+注册码只用于新账号注册资格。账号登录失败时先看 `list-accounts`：`authorizationStatus` 为 `expired` 或 `revoked` 表示账号授权失效，`accessStatus` 为 `suspended` 表示账号被停用；`list-registration-codes.sh` 不能恢复完整注册码。
 
 ## 必备软件
 
