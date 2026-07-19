@@ -3026,7 +3026,7 @@
                 title: 'Minecraft 单词远征',
                 desc: '固定 11 步短会话，适合每天完成一小组；进度按当前孩子 Profile 保存。',
                 meta: '2 张复习 · 5 张新词 · 3 张回忆 · 1 句场景',
-                primaryAction: `<button class="learn-btn learn-btn-primary" type="button" data-minecraft-vocab-launch onclick="LearnCenter.openMinecraftVocab()">开始今日单词</button>`,
+                primaryAction: `<button class="learn-btn learn-btn-primary" type="button" data-minecraft-vocab-launch onclick="LearnCenter.openMinecraftVocab()">进入单词远征</button>`,
                 secondaryAction: `<button class="learn-btn learn-btn-secondary" type="button" onclick="LearnCenter.openPack('${englishRecord.id}')">查看完整资料包</button>`
             }) : '',
             (showReviewToday && reviewModule) ? renderHubEntryCard({

@@ -2884,7 +2884,10 @@ function runPageActivation(page) {
         void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');
     }
     if (page === 'inventory') renderInventoryPage();
-    if (page === 'today') updateRewardPetCard();
+    if (page === 'today') {
+        updateRewardPetCard();
+        renderMinecraftVocabTodayEntry();
+    }
     if (page === 'card' && window.CardCollection) CardCollection.renderUI('card-collection-container');
     if (page === 'shop' && window.ShopSystem) ShopSystem.renderUI('shop-ui');
     if (page === 'tools' && window.ToolboxSystem) ToolboxSystem.renderUI('tools-ui');
@@ -4540,6 +4543,47 @@ PetSystem.addExp = function(amount) {
     return result;
 };
 
+function renderMinecraftVocabTodayEntry() {
+    const root = document.getElementById('today-minecraft-vocab-entry');
+    if (!root) return;
+
+    const session = window.MinecraftVocabSession;
+    let status = 'not-started';
+    let completed = 0;
+    let total = 0;
+    if (session
+        && typeof session.activeProfileId === 'function'
+        && typeof session.readState === 'function'
+        && typeof session.isComplete === 'function') {
+        const profileId = String(session.activeProfileId() || '');
+        const state = session.readState(profileId);
+        const today = getLocalDateKey();
+        if (state
+            && String(state.profileId || '') === profileId
+            && state.localDate === today
+            && Array.isArray(state.queue)
+            && Array.isArray(state.completed)
+            && state.queue.length > 0) {
+            total = state.queue.length;
+            completed = Math.min(state.completed.length, total);
+            status = session.isComplete(state) ? 'complete' : 'in-progress';
+        }
+    }
+
+    const copy = {
+        'not-started': { status: '开始今日远征', action: '开始今日远征', progress: '11 步短会话' },
+        'in-progress': { status: '继续今天的远征', action: '继续今天的远征', progress: `${completed} / ${total} 步已完成` },
+        complete: { status: '今天已完成', action: '重温词卡', progress: `${completed} / ${total} 步已完成` }
+    }[status];
+    root.dataset.status = status;
+    const statusEl = document.getElementById('today-minecraft-vocab-status');
+    const progressEl = document.getElementById('today-minecraft-vocab-progress');
+    const actionEl = root.querySelector('[data-minecraft-vocab-entry-launch]');
+    if (statusEl) statusEl.textContent = copy.status;
+    if (progressEl) progressEl.textContent = copy.progress;
+    if (actionEl) actionEl.textContent = copy.action;
+}
+
 // ============ 总体渲染 ============
 function renderAll() {
     const activePage = getActivePageId();
@@ -4550,6 +4594,7 @@ function renderAll() {
     updateHomeDemoSummary();
     renderGrowthStickerReport();
     renderScheduledCheckins();
+    renderMinecraftVocabTodayEntry();
     renderReviewBattleBoard();
     if (activePage === 'learning-sheet' && window.LearnCenter && typeof window.LearnCenter.renderDailyCheckin === 'function') {
         void window.LearnCenter.renderDailyCheckin('points-learning-sheet-container');

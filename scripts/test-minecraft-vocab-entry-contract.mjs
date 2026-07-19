@@ -7,12 +7,14 @@ import vm from 'node:vm';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-const [indexSource, routerSource, runtimeLoaderSource, appSource, styleSource] = await Promise.all([
+const [indexSource, routerSource, runtimeLoaderSource, appSource, styleSource, learnCenterSource, sessionSource] = await Promise.all([
     fs.readFile(path.join(ROOT, 'index.html'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/page-router.js'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/runtime-loader.js'), 'utf8'),
     fs.readFile(path.join(ROOT, 'js/app.js'), 'utf8'),
-    fs.readFile(path.join(ROOT, 'css/style.css'), 'utf8')
+    fs.readFile(path.join(ROOT, 'css/style.css'), 'utf8'),
+    fs.readFile(path.join(ROOT, 'js/learn-center.js'), 'utf8'),
+    fs.readFile(path.join(ROOT, 'js/minecraft-vocab-session.js'), 'utf8')
 ]);
 
 const routerWindow = { location: { pathname: '/', protocol: 'http:' } };
@@ -29,6 +31,14 @@ function extractTextContent(html) {
 
 function assertContract(source, pattern, message) {
     assert.ok(pattern.test(source), message);
+}
+
+function extractPageMarkup(source, pageId, nextMarker) {
+    const start = source.indexOf(`<div class="page" id="${pageId}">`);
+    assert.notEqual(start, -1, `${pageId} page container is missing`);
+    const end = source.indexOf(nextMarker, start);
+    assert.notEqual(end, -1, `${pageId} page boundary is missing`);
+    return source.slice(start, end);
 }
 
 test('HTML contains the Minecraft vocab page container', () => {
@@ -68,6 +78,61 @@ test('app renders MinecraftVocabPage when minecraft-vocab is activated', () => {
         /if\s*\(\s*page\s*===\s*["']minecraft-vocab["']\s*&&\s*window\.MinecraftVocabPage\s*\)\s*void\s+MinecraftVocabPage\.render\s*\(/i,
         'app.js must render MinecraftVocabPage on the minecraft-vocab page'
     );
+});
+
+test('learning center exposes a stable secondary CTA that only navigates to minecraft-vocab', () => {
+    assertContract(learnCenterSource, /data-minecraft-vocab-launch/, 'learning center Minecraft vocab CTA marker is missing');
+    assertContract(
+        learnCenterSource,
+        /data-minecraft-vocab-launch[\s\S]*?onclick="LearnCenter\.openMinecraftVocab\(\)"[\s\S]*?(?:单词远征|Word Quest)/i,
+        'learning center Minecraft vocab CTA must use the public navigation API and expedition copy'
+    );
+});
+
+test('today page exposes a single secondary Minecraft vocab entry without rebuilding the expedition page', () => {
+    const todayPage = extractPageMarkup(indexSource, 'page-today', '<!-- PAGE: 学习单 -->');
+    const entryStart = todayPage.indexOf('id="today-minecraft-vocab-entry"');
+    assert.notEqual(entryStart, -1, 'today page Minecraft vocab entry is missing');
+    const entry = todayPage.slice(entryStart, todayPage.indexOf('</section>', entryStart) + '</section>'.length);
+    assertContract(entry, /单词远征|Word Quest/i, 'today page entry must contain expedition copy');
+    assertContract(entry, /id="today-minecraft-vocab-status"/, 'today page entry status target is missing');
+    assertContract(entry, /id="today-minecraft-vocab-progress"/, 'today page entry progress target is missing');
+    assertContract(
+        entry,
+        /<button\b(?=[^>]*\bdata-minecraft-vocab-entry-launch\b)(?=[^>]*\bonclick="switchPage\('minecraft-vocab'\)")[^>]*>/i,
+        'today page CTA must navigate to the existing minecraft-vocab page'
+    );
+    assert.ok(!/page-minecraft-vocab|minecraft-vocab-root|MinecraftVocabPage\.render/i.test(entry), 'today page entry must not rebuild expedition page markup');
+});
+
+test('today page preloads only the side-effect-free session API before runtime bundles', () => {
+    const sessionIndex = indexSource.indexOf('js/minecraft-vocab-session.js?v=1');
+    const runtimeIndex = indexSource.indexOf('js/runtime-loader.js');
+    assert.ok(sessionIndex >= 0, 'index.html must preload the Minecraft vocab session API');
+    assert.ok(runtimeIndex >= 0 && sessionIndex < runtimeIndex, 'session API must load before runtime-loader');
+    assertContract(sessionSource, /activeProfileId\s*,\s*storageKey\s*,\s*readState[\s\S]*?isComplete/, 'session API must expose profile-aware readState and isComplete');
+    assert.ok(!/document\.|querySelector|innerHTML|classList/.test(sessionSource), 'session API preload must not have DOM side effects');
+});
+
+test('app renders today expedition summary from the existing session API without writing expedition state', () => {
+    assertContract(appSource, /function renderMinecraftVocabTodayEntry\s*\(\)/, 'app.js must define the today Minecraft vocab summary renderer');
+    const rendererStart = appSource.indexOf('function renderMinecraftVocabTodayEntry');
+    const rendererEnd = appSource.indexOf('\nfunction ', rendererStart + 10);
+    const renderer = appSource.slice(rendererStart, rendererEnd === -1 ? undefined : rendererEnd);
+    assertContract(renderer, /MinecraftVocabSession/, 'today summary must use MinecraftVocabSession');
+    assertContract(renderer, /activeProfileId\s*\(\)/, 'today summary must read the active Profile through the session API');
+    assertContract(renderer, /readState\s*\(/, 'today summary must read the existing session state');
+    assertContract(renderer, /isComplete\s*\(/, 'today summary must use the existing completion API');
+    assertContract(renderer, /getLocalDateKey\s*\(\)/, 'today summary must compare against the current local date');
+    assertContract(renderer, /开始今日远征|继续今天的远征|重温词卡/, 'today summary must provide all session states');
+    assert.ok(!/localStorage|setItem|STORAGE_PREFIX|PetBankPoints|EnglishVocabProgress|petbank_[a-z0-9_]+/i.test(renderer), 'today summary must not create or write a second state key');
+    assertContract(appSource, /renderAll\s*\(\)[\s\S]*?renderMinecraftVocabTodayEntry\s*\(\)/, 'renderAll must refresh the today expedition summary');
+    assertContract(appSource, /if\s*\(page\s*===\s*['"]today['"]\)[\s\S]*?renderMinecraftVocabTodayEntry\s*\(\)/, 'today page activation must refresh the expedition summary');
+});
+
+test('today expedition entry has bounded responsive styles', () => {
+    assertContract(styleSource, /\.today-minecraft-vocab-entry\s*\{[\s\S]*?min-width\s*:\s*0[\s\S]*?overflow-wrap\s*:\s*anywhere/is, 'today expedition entry needs bounded wrapping styles');
+    assertContract(styleSource, /\.today-minecraft-vocab-entry[\s\S]*?\.today-minecraft-vocab-entry-action[\s\S]*?min-height\s*:/is, 'today expedition CTA needs a stable button dimension');
 });
 
 test('child main navigation has a direct minecraft-vocab entry with expedition copy', () => {

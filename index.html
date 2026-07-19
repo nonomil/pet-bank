@@ -561,6 +561,20 @@
                     </div>
                     <div id="scheduledCheckinTimeline" class="scheduled-checkin-timeline" aria-live="polite"></div>
                 </section>
+                <section class="today-minecraft-vocab-entry" id="today-minecraft-vocab-entry" aria-labelledby="today-minecraft-vocab-title">
+                    <div class="today-minecraft-vocab-entry-copy">
+                        <p class="today-minecraft-vocab-kicker">学习加餐 · Minecraft</p>
+                        <h2 id="today-minecraft-vocab-title">单词远征</h2>
+                        <p>沿着今天的短会话，听一听、认一认，再把词卡带回营地。</p>
+                        <div class="today-minecraft-vocab-entry-meta" aria-live="polite">
+                            <strong id="today-minecraft-vocab-status">开始今日远征</strong>
+                            <span id="today-minecraft-vocab-progress">11 步短会话</span>
+                        </div>
+                    </div>
+                    <div class="today-minecraft-vocab-entry-action">
+                        <button class="today-minecraft-vocab-entry-button" type="button" data-minecraft-vocab-entry-launch onclick="switchPage('minecraft-vocab')">开始今日远征</button>
+                    </div>
+                </section>
                 <div class="card agnes-task-shell">
                     <div class="card-header flex items-center justify-between">
                         <div><h2 class="text-lg font-bold">今日成长卡片</h2><p class="text-xs mt-1 text-muted">点亮一张卡，就收下一颗小星星</p></div>
@@ -1535,6 +1549,7 @@
     <script src="js/parent-account.js"></script>
     <script src="js/storage-key-migrations.js"></script>
     <script src="js/time-utils.js"></script>
+    <script src="js/minecraft-vocab-session.js?v=1"></script>
     <script src="js/runtime-loader.js?v=20260715-stage-fullscreen1"></script>
     <script src="js/lucide-lite.js?v=20260713"></script>
     <script src="js/battle-fx.js"></script>
