@@ -4,20 +4,12 @@ import http from 'node:http';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import { BROWSER_PATH } from '../../../scripts/playwright-browser.mjs';
+import { browserLaunchOpts } from '../../../scripts/playwright-browser.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '..', '..', '..');
 const prototypePath = path.join('prj', '学习机玩法原型', 'index.html');
 const screenshotDir = path.join(repoRoot, 'prj', '学习机玩法原型', 'tmp-screenshots');
-const configuredBrowserPath = process.env.PLAYWRIGHT_BROWSER_PATH || process.env.PLAYWRIGHT_BROWSER || '';
-const chromeCandidates = [
-  configuredBrowserPath,
-  'C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
-  'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
-];
 const playwrightSearchPaths = [
   process.env.CODEX_NODE_MODULES,
   'C:/Users/No\'mi\'l/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules'
@@ -34,12 +26,6 @@ function requirePlaywright() {
     }
   }
   return baseRequire('playwright');
-}
-
-function findChrome() {
-  const chromePath = chromeCandidates.find(candidate => fs.existsSync(candidate));
-  assert.ok(chromePath, 'Chrome or Edge executable should exist for runtime smoke tests');
-  return chromePath;
 }
 
 function mimeType(filePath) {
@@ -61,17 +47,20 @@ function mimeType(filePath) {
 }
 
 function createStaticServer(rootDir) {
-  return http.createServer((req, res) => {
+  const requestProblems = [];
+  const server = http.createServer((req, res) => {
     const requestUrl = new URL(req.url || '/', 'http://127.0.0.1');
     const decodedPath = decodeURIComponent(requestUrl.pathname);
     const relativePath = decodedPath === '/' ? prototypePath : decodedPath.replace(/^\/+/, '');
     const absolutePath = path.resolve(rootDir, relativePath);
     if (!absolutePath.startsWith(rootDir)) {
+      requestProblems.push({ status: 403, path: decodedPath });
       res.writeHead(403);
       res.end('Forbidden');
       return;
     }
     if (!fs.existsSync(absolutePath) || fs.statSync(absolutePath).isDirectory()) {
+      requestProblems.push({ status: 404, path: decodedPath });
       res.writeHead(404);
       res.end('Not found');
       return;
@@ -79,6 +68,8 @@ function createStaticServer(rootDir) {
     res.writeHead(200, { 'Content-Type': mimeType(absolutePath) });
     fs.createReadStream(absolutePath).pipe(res);
   });
+  server.requestProblems = requestProblems;
+  return server;
 }
 
 async function listen(server) {
@@ -105,7 +96,38 @@ async function openGame(page, gameId) {
     'word-cannon': '#wordCannon:not([hidden])',
     'pinyin-snake': '#pinyinSnake:not([hidden])',
   })[gameId];
-  await page.waitForSelector(selector);
+  await page.waitForSelector(selector, { timeout: 15000 });
+  await page.waitForFunction(() => !document.getElementById('gameScreen')?.hasAttribute('aria-busy'), null, { timeout: 15000 });
+}
+
+async function closeStaticServer(server) {
+  if (!server || !server.listening) return;
+  const closeAll = typeof server.closeAllConnections === 'function'
+    ? () => server.closeAllConnections()
+    : () => {};
+  const closeIdle = typeof server.closeIdleConnections === 'function'
+    ? () => server.closeIdleConnections()
+    : () => {};
+  await new Promise((resolve) => {
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolve();
+    };
+    const timer = setTimeout(() => {
+      closeAll();
+      closeIdle();
+      finish();
+    }, 3000);
+    closeIdle();
+    try {
+      server.close(finish);
+    } catch (_) {
+      finish();
+    }
+  });
 }
 
 async function returnHome(page) {
@@ -131,12 +153,14 @@ async function runWordShooterRound(page) {
     for (const letter of targetWord) {
       await page.keyboard.press(letter);
       if (cleared === 0 && letter === targetWord[0]) {
+        await page.waitForFunction(
+          () => document.querySelectorAll('#typingProjectileLayer .typing-shot-trail').length >= 1,
+          { timeout: 1000 }
+        );
         const projectileState = await page.evaluate(() => ({
-          legacyBullets: document.querySelectorAll('#typingProjectileLayer .typingBullet').length,
-          trails: document.querySelectorAll('#typingProjectileLayer .typing-shot-trail').length
+          legacyBullets: document.querySelectorAll('#typingProjectileLayer .typingBullet').length
         }));
         assert.equal(projectileState.legacyBullets, 0, 'word shooter should not render the old ghost projectile body');
-        assert.ok(projectileState.trails >= 1, 'word shooter should still render the new projectile light trail');
       }
       await page.waitForTimeout(30);
     }
@@ -269,14 +293,15 @@ async function runWordCannonRound(page) {
       };
     });
     assert.ok(target.correct?.word, `pinyin racing should expose a correct card for checkpoint ${cleared + 1}`);
-    while (target.playerLane > target.correct.laneIndex) {
-      await page.keyboard.press('ArrowLeft');
-      target.playerLane -= 1;
-    }
-    while (target.playerLane < target.correct.laneIndex) {
-      await page.keyboard.press('ArrowRight');
-      target.playerLane += 1;
-    }
+    const stageBox = await page.locator('#cannonStage').boundingBox();
+    assert.ok(stageBox, `pinyin racing stage should be measurable at checkpoint ${cleared + 1}`);
+    await page.mouse.click(
+      stageBox.x + stageBox.width * (target.correct.x / 100),
+      stageBox.y + stageBox.height * 0.5
+    );
+    await page.waitForFunction(expectedX => {
+      return Math.abs(window.LearningArcadePrototype.wordCannon().player.x - expectedX) < 1;
+    }, target.correct.x);
     await page.evaluate(() => window.LearningArcadePrototype.tickWordCannonFrame(220, 40));
     await page.waitForTimeout(80);
   }
@@ -383,7 +408,7 @@ async function runDifficultySwitchChecks(page) {
   const shooterIntermediateBadge = await page.locator('#wordDifficultyBadge').innerText();
   assert.match(shooterIntermediateBadge, /进阶战斗/, 'word shooter should update the HUD badge after switching to intermediate');
   assert.match(shooterIntermediateBadge, /10词.*3架/, 'word shooter intermediate badge should summarize the tuned challenge');
-  assert.equal(await page.locator('#wordDifficultyBadge').evaluate(node => node.classList.contains('is-pulsing')), true, 'word shooter difficulty badge should pulse after switching difficulty');
+  await page.waitForFunction(() => document.querySelector('#wordDifficultyBadge')?.classList.contains('is-pulsing'), null, { timeout: 2000 });
   assert.deepEqual(
     await page.evaluate(() => window.LearningArcadePrototype.wordDifficulty().lastCue),
     { gameId: 'word-shooter', level: 'intermediate' },
@@ -411,8 +436,9 @@ async function runDifficultySwitchChecks(page) {
   const shooterFullBadge = await page.locator('#wordDifficultyBadge').innerText();
   assert.match(shooterFullBadge, /完整挑战/, 'word shooter should update the HUD badge after switching to full');
   assert.match(shooterFullBadge, /12词.*4架/, 'word shooter full badge should summarize the tuned challenge');
-  assert.equal(await page.locator('#wordDifficultyBadge').evaluate(node => node.classList.contains('is-pulsing')), true, 'word shooter difficulty badge should pulse again after switching to full');
+  await page.waitForFunction(() => document.querySelector('#wordDifficultyBadge')?.classList.contains('is-pulsing'), null, { timeout: 2000 });
   await page.reload({ waitUntil: 'networkidle' });
+  await openGame(page, 'word-shooter');
   const restoredWordSettings = await page.evaluate(() => ({
     pack: window.LearningArcadePrototype.wordPack(),
     difficulty: window.LearningArcadePrototype.wordDifficulty(),
@@ -424,6 +450,7 @@ async function runDifficultySwitchChecks(page) {
   assert.equal(restoredWordSettings.packLabels.length, 1, 'restored vocab pack should visibly select one pack after reload');
   assert.match(restoredWordSettings.packLabels[0], /Minecraft\s*514/, 'restored vocab pack should be visibly selected with its word count after reload');
   assert.deepEqual(restoredWordSettings.difficultyLabels, ['完整'], 'restored difficulty should be visibly selected after reload');
+  await page.locator('#wordShooterSettings summary').click();
   assert.match(await page.locator('#wordSettingsReset').innerText(), /默认/, 'word shooter should expose a reset-to-default settings action');
   await page.dispatchEvent('#wordSettingsReset', 'click');
   await page.waitForFunction(() => {
@@ -539,7 +566,7 @@ async function runDifficultySwitchChecks(page) {
   const cannonFullBadge = await page.locator('#cannonDifficultyBadge').innerText();
   assert.match(cannonFullBadge, /完整挑战/, 'pinyin racing should update the HUD badge after switching to full');
   assert.match(cannonFullBadge, /24词.*3车道/, 'pinyin racing full badge should summarize the tuned challenge');
-  assert.equal(await page.locator('#cannonDifficultyBadge').evaluate(node => node.classList.contains('is-pulsing')), true, 'pinyin racing difficulty badge should pulse after switching difficulty');
+  await page.waitForFunction(() => document.querySelector('#cannonDifficultyBadge')?.classList.contains('is-pulsing'), null, { timeout: 2000 });
   assert.deepEqual(
     await page.evaluate(() => window.LearningArcadePrototype.wordDifficulty().lastCue),
     { gameId: 'word-cannon', level: 'full' },
@@ -696,17 +723,24 @@ async function main() {
   const server = createStaticServer(repoRoot);
   const port = await listen(server);
   const baseUrl = `http://127.0.0.1:${port}/${prototypePath}`;
-  const browser = await chromium.launch({
-    headless: true,
-    executablePath: BROWSER_PATH || findChrome(),
-    args: ['--disable-gpu']
-  });
+  const browser = await chromium.launch(browserLaunchOpts({ args: ['--disable-gpu', '--mute-audio'] }));
   const consoleMessages = [];
+  const networkProblems = [];
+  browser.on('disconnected', () => {
+    networkProblems.push({ type: 'browser-disconnected' });
+  });
 
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     page.setDefaultTimeout(5000);
     attachConsoleCollector(page, consoleMessages);
+    page.on('requestfailed', request => {
+      const failure = request.failure()?.errorText || '';
+      if (failure !== 'net::ERR_ABORTED') networkProblems.push({ type: 'requestfailed', url: request.url(), failure });
+    });
+    page.on('response', response => {
+      if (response.status() >= 400) networkProblems.push({ type: 'http', status: response.status(), url: response.url() });
+    });
     await page.goto(baseUrl, { waitUntil: 'networkidle' });
     const shooterCardText = await page.locator('[data-game="word-shooter"]').innerText();
     const cannonCardText = await page.locator('[data-game="word-cannon"]').innerText();
@@ -724,6 +758,13 @@ async function main() {
 
     const responsiveProbe = await browser.newPage({ viewport: { width: 1280, height: 720 } });
     attachConsoleCollector(responsiveProbe, consoleMessages);
+    responsiveProbe.on('requestfailed', request => {
+      const failure = request.failure()?.errorText || '';
+      if (failure !== 'net::ERR_ABORTED') networkProblems.push({ type: 'requestfailed', url: request.url(), failure });
+    });
+    responsiveProbe.on('response', response => {
+      if (response.status() >= 400) networkProblems.push({ type: 'http', status: response.status(), url: response.url() });
+    });
     await responsiveProbe.goto(baseUrl, { waitUntil: 'networkidle' });
     await responsiveProbe.close();
 
@@ -732,8 +773,11 @@ async function main() {
 
     console.log('PASS - full prototype smoke covers gameplay rounds, summary flow, responsive layout and clean console output');
   } finally {
+    if (networkProblems.length || server.requestProblems.length) {
+      console.error(`Smoke network diagnostics: ${JSON.stringify({ browser: networkProblems, server: server.requestProblems }, null, 2)}`);
+    }
     await browser.close();
-    await new Promise(resolve => server.close(resolve));
+    await closeStaticServer(server);
   }
 }
 

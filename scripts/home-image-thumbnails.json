@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "width": 640,
+  "height": 360,
+  "quality": 72,
+  "method": 6,
+  "entries": [
+    {
+      "source": "assets/scenes/stargarden.webp",
+      "output": "assets/ui/home-thumbs/today.webp"
+    },
+    {
+      "source": "assets/home-bg/room-forest.webp",
+      "output": "assets/ui/home-thumbs/pet.webp"
+    },
+    {
+      "source": "assets/ui/hanzi-new-bg.webp",
+      "output": "assets/ui/home-thumbs/learn.webp"
+    },
+    {
+      "source": "assets/story/pixel-worlds-v1/maps/forest.webp",
+      "output": "assets/ui/home-thumbs/picturebooks.webp"
+    },
+    {
+      "source": "assets/ui/playground-bg.webp",
+      "output": "assets/ui/home-thumbs/playground.webp"
+    }
+  ]
+}

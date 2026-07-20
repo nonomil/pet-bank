@@ -78,8 +78,10 @@ receipt 不等于余额：奖励事件必须先校验和去重，再调用既有
 | `petbank_learning_sheet_mode`、`petbank_learning_print_prefs` | string/JSON | `learn-center.js` | 学习模板/打印偏好 |
 | `petbank_learning_vocab_focus`、`petbank_learning_vocab_progress` | JSON | `learn-center.js` | 词汇焦点/进度 |
 | `petbank_learning_english_rewards` | JSON | `english-vocab-progress.js` | 英语奖励状态 |
-  | `petbank_learning_vocab_progress_{profileId}` | JSON | `english-vocab-progress.js` | 英语显式 Profile 进度；每张卡记录 `seen/correct/wrong/streak/status/repetitions/intervalDays/ease/lapses/dueAt/lastReviewedAt/lastGrade/hintUsed/responseMode/lastResponseMs`，`lastGrade` 为 `again/hard/good/easy`，兼容旧布尔调用；按 Profile 隔离并进入快照 |
-| `petbank_learning_english_rewards_{profileId}` | JSON | `english-vocab-progress.js` | 英语显式 profile scope，当前主读写键 |
+  | `petbank_learning_vocab_progress_{profileId}` | JSON | `english-vocab-progress.js` | 英语显式 Profile 进度；每张卡记录 `seen/correct/wrong/streak/status/repetitions/intervalDays/ease/lapses/dueAt/lastReviewedAt/lastGrade/hintUsed/responseMode/lastResponseMs/lastReviewId` 以及 `schedulerVersion/stabilityDays/difficulty/retrievability`，旧 SM-2 数据读取时迁移并标记 `schedulerMigration=sm2-to-fsrs5`；按 Profile 隔离并进入快照 |
+  | `petbank_learning_english_rewards_{profileId}` | JSON | `english-vocab-progress.js` | 英语显式 profile scope，当前主读写键 |
+  | `petbank_learning_vocab_review_events_{profileId}` | JSON array | `english-vocab-progress.js` | Profile 作用域的最近复习事件（最多保留 365 条）；记录 `reviewId/cardId/grade/correct/reviewedAt/localDate/dueAt/status/intervalDays/schedulerVersion/elapsedDays/previousStabilityDays/previousDifficulty/previousRetrievability/stabilityDays/difficulty/retrievability/lapses/hintUsed/responseMode/responseMs`，用于 7 日复习报告、FSRS 校准和幂等重试，不是积分账本；词卡跨设备合并按 `reviewId` 去重。代码中的无后缀基键仅作 scope 前缀，不直接写入 |
+  | `petbank_learning_vocab_scheduler_calibration_{profileId}` | JSON object | `english-vocab-progress.js` | FSRS-5 + 艾宾浩斯 Profile 校准结果 `{algorithm,sampleSize,observedRetention,targetRetention,calibrated,confidence,minimumReviews,minimumTransitions,parametersReady,parameterCalibration,ebbinghaus,updatedAt}`；达到 20 条有效 review event 且至少 5 次同卡复习转移后用受限坐标下降拟合 19 个 FSRS 权重和 `R(t)=exp(-lambda*t)`，调度器仅在 `parametersReady`/拟合字段有效时采用参数；云端词卡合并后会标记 `needsRecalibration`，积分/宠物冲突仍不自动合并；按 Profile 隔离并进入快照。代码中的无后缀基键仅作 scope 前缀，不直接写入 |
 | `petbank_english_vocab_scope_migration_v2_{id}` | flag | `english-vocab-progress.js` | 固定旧键迁移标记 |
 | `petbank_hanzi_progress_{id}` | JSON | `hanzi-progress.js` | 汉字 profile 进度 |
 | `petbank_learning_arcade_progress`、`petbank_learning_arcade_settings` | JSON | `app.js`/学习机桥 | 独立学习机结果与设置 |
@@ -95,7 +97,7 @@ receipt 不等于余额：奖励事件必须先校验和去重，再调用既有
 | `petbank_picturebook_progress_v1` | JSON | `js/picturebooks.js` | 当前 Profile 的绘本阅读进度；`{schemaVersion:1,books:{storyId:{currentPage,completedCount,lastReadAt,lastCompletedAt,completionEventId,rewardClaimed}}}`，首读奖励由核心 receipt 去重 |
 | `petbank_picturebook_library_v1` | JSON | `js/picturebooks.js` | 当前 Profile 的收藏偏好；`{schemaVersion:1,favorites:string[]}` |
 
-英语当前采用显式 profile 后缀并保留旧固定键迁移；不能删除旧键直到迁移窗口和回滚验证完成。`mastered` 目前仍主要是短时连续答对语义，不能把它当作跨日保持证明。
+英语当前采用显式 profile 后缀并保留旧固定键迁移；不能删除旧键直到迁移窗口和回滚验证完成。`mastered` 目前仍主要是短时连续答对语义，不能把它当作跨日保持证明。复习报告使用事件日志重算近 7 日复习量、正确率、题型表现和薄弱卡；FSRS-5 使用官方 19 参数、儿童学习步骤和基于事件的目标保持率校准。跨设备冲突只对词卡进度和 review events 自动合并，其他业务键不一致时仍进入家长人工冲突处理。
 
 ## 6. 玩法与设备设置
 

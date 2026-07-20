@@ -94,9 +94,9 @@ try {
       waitUntil: 'domcontentloaded'
     });
     await page.waitForFunction(() => Boolean(window.LearningArcadePrototype?.wordShooter), null, { timeout: 10000 });
-    await page.evaluate(() => {
+    await page.evaluate(async () => {
       window.LearningArcadePrototype.setWordDifficulty('basic');
-      window.LearningArcadePrototype.openGame('word-shooter');
+      await window.LearningArcadePrototype.openGame('word-shooter');
     });
     await page.waitForFunction(() => document.querySelector('#typingStageBackdropImage')?.naturalWidth > 0, null, { timeout: 10000 });
     const runtime = await page.evaluate(() => {

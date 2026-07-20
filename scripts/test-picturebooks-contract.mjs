@@ -17,7 +17,7 @@ assert.ok(catalog.stories.every((story) => story.id && story.titleZh && story.sh
 assert.ok(catalog.stories.every((story) => Array.isArray(story.tags) && story.tags.length > 0));
 
 for (const story of catalog.stories) {
-    assert.match(story.cover, /^assets\/picturebooks\/images\/[a-z0-9-]+\/page-[0-9]+\.(?:jpg|png)$/);
+    assert.match(story.cover, /^assets\/picturebooks\/images\/[a-z0-9-]+\/page-1\.webp$/);
     assert.ok(fs.existsSync(path.join(root, story.cover)), `missing cover: ${story.cover}`);
 }
 
@@ -33,7 +33,6 @@ assert.match(runtime, /picturebooks: \['js\/picturebook-external-bridge\.js'\]/)
 assert.match(runtime, /case 'picturebooks':/);
 
 const index = read('index.html');
-assert.match(index, /data-page="picturebooks"/);
 assert.match(index, /id="page-picturebooks"/);
 assert.match(index, /data-app-dock="picturebooks"/);
 

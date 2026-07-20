@@ -64,12 +64,10 @@
     </script>
     <link rel="stylesheet" href="css/vendor/tailwind-lite.css">
     <link rel="stylesheet" href="css/style.css?v=20260718-glass-home">
-    <link rel="stylesheet" href="css/child-workbench-shell.css?v=20260718-playground-wide">
-    <link rel="stylesheet" href="css/showcase.css">
     <link rel="stylesheet" href="css/treasure.css">
     <link rel="stylesheet" href="css/animations.css">
 </head>
-<body class="map-page-bg app-booting">
+<body class="app-booting">
     <a class="skip-link" href="#mainContent">跳到主要内容</a>
     <!-- TOP NAV -->
     <div class="top-nav">
@@ -269,11 +267,11 @@
                             <article class="home-demo-today-card"><span>今日任务完成度</span><strong id="homeDemoTodayCount">0 / 3</strong><p>完成一节阅读，再收集一个故事方块。</p><div class="home-demo-meter"><i id="homeDemoTodayMeter" style="width:0%"></i></div><div><small>已完成</small><em id="homeDemoTodayPercent">0%</em></div></article>
                         </section>
                         <section id="homeCommonEntries" aria-labelledby="homeCommonEntriesTitle"><div class="home-demo-section-heading"><div><h2 id="homeCommonEntriesTitle">常用入口</h2><p>宠物、积分、学习和游戏都放在这里。</p></div></div><div class="home-demo-resource-grid">
-                            <button class="home-demo-resource-card" type="button" onclick="switchPage('today')"><span><img src="assets/scenes/stargarden.webp" alt="今日积分入口" loading="lazy" decoding="async"></span><small>成长记录 · 积分</small><strong>今日打卡</strong><em>完成小任务，领取成长分。</em></button>
-                            <button class="home-demo-resource-card" type="button" onclick="switchPage('pet')"><span><img src="assets/home-bg/room-forest.webp" alt="宠物伙伴入口" loading="lazy" decoding="async"></span><small>陪伴养成 · 宠物</small><strong>我的宠物</strong><em>看看伙伴状态，继续照料和成长。</em></button>
-                            <button class="home-demo-resource-card" type="button" onclick="switchPage('learn')"><span><img src="assets/ui/hanzi-new-bg.webp" alt="学习工作台入口" loading="lazy" decoding="async"></span><small>成长训练 · 学习</small><strong>学习工作台</strong><em>识字、英语和数学一起练习。</em></button>
-                            <button class="home-demo-resource-card" type="button" onclick="switchPage('picturebooks')"><span><img src="assets/story/pixel-worlds-v1/maps/forest.webp" alt="绘本书架入口" loading="lazy" decoding="async"></span><small>故事阅读 · 绘本</small><strong>绘本书架</strong><em>挑一本故事，读到最后一页。</em></button>
-                            <button class="home-demo-resource-card" type="button" onclick="switchPage('playground')"><span><img src="assets/ui/playground-bg.webp" alt="游乐场入口" loading="lazy" decoding="async"></span><small>互动挑战 · 游戏</small><strong>游乐场</strong><em>用小游戏练习反应和新本领。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('today')"><span><img data-home-src="assets/ui/home-thumbs/today.webp" alt="今日积分入口" loading="lazy" decoding="async"></span><small>成长记录 · 积分</small><strong>今日打卡</strong><em>完成小任务，领取成长分。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('pet')"><span><img data-home-src="assets/ui/home-thumbs/pet.webp" alt="宠物伙伴入口" loading="lazy" decoding="async"></span><small>陪伴养成 · 宠物</small><strong>我的宠物</strong><em>看看伙伴状态，继续照料和成长。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('learn')"><span><img data-home-src="assets/ui/home-thumbs/learn.webp" alt="学习工作台入口" loading="lazy" decoding="async"></span><small>成长训练 · 学习</small><strong>学习工作台</strong><em>识字、英语和数学一起练习。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('picturebooks')"><span><img data-home-src="assets/ui/home-thumbs/picturebooks.webp" alt="绘本书架入口" loading="lazy" decoding="async"></span><small>故事阅读 · 绘本</small><strong>绘本书架</strong><em>挑一本故事，读到最后一页。</em></button>
+                            <button class="home-demo-resource-card" type="button" onclick="switchPage('playground')"><span><img data-home-src="assets/ui/home-thumbs/playground.webp" alt="游乐场入口" loading="lazy" decoding="async"></span><small>互动挑战 · 游戏</small><strong>游乐场</strong><em>用小游戏练习反应和新本领。</em></button>
                         </div></section>
 
                     </section>
@@ -1552,12 +1550,9 @@
     <script src="js/minecraft-vocab-session.js?v=1"></script>
     <script src="js/runtime-loader.js?v=20260715-stage-fullscreen1"></script>
     <script src="js/lucide-lite.js?v=20260713"></script>
-    <script src="js/battle-fx.js"></script>
     <script src="js/task-catalog.js"></script>
     <script src="js/page-router.js"></script>
-    <script src="js/child-workbench-shell.js?v=20260718-playground-wide"></script>
     <script src="js/app.js?v=20260714-home-maps2"></script>
     <script src="js/child-journey-feedback.js"></script>
-    <script src="js/showcase.js"></script>
 </body>
 </html>

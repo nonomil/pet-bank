@@ -27,21 +27,21 @@
 
       <section class="game-card-grid learn-portal-grid" id="gameCards" aria-label="三个学习游戏">
         <button class="game-card learn-portal-card learn-portal-card-english" type="button" data-game="word-shooter">
-          <img src="./assets/generated/home-card-word-shooter.png" alt="" loading="lazy">
+          <img src="./assets/generated/home-card-word-shooter.webp" alt="" loading="lazy">
           <span>英文单词</span>
           <strong>飞机大战</strong>
           <p>看敌机上的英文单词，按字母发射光束。</p>
           <em>先熟悉字母键</em>
         </button>
         <button class="game-card learn-portal-card learn-portal-card-cannon" type="button" data-game="word-cannon">
-          <img src="./assets/generated/home-card-word-cannon.png" alt="" loading="lazy">
+          <img src="./assets/generated/home-card-word-cannon.webp" alt="" loading="lazy">
           <span>汉字拼音</span>
           <strong>拼音赛车</strong>
           <p>看汉字，上下左右开车，接住正确拼音卡。</p>
           <em>第一次玩先选认汉字</em>
         </button>
         <button class="game-card learn-portal-card learn-portal-card-chinese" type="button" data-game="pinyin-snake">
-          <img src="./assets/generated/home-card-pinyin-snake.png" alt="" loading="lazy">
+          <img src="./assets/generated/home-card-pinyin-snake.webp" alt="" loading="lazy">
           <span>方向键</span>
           <strong>贪吃蛇</strong>
           <p>按方向键吃对拼音块，慢慢点亮星星。</p>
@@ -281,22 +281,6 @@
     </section>
   </main>
 
-  <script>
-    (function loadFileFallbackScripts() {
-      if (window.location.protocol !== 'file:') return;
-      const fallbackScripts = [
-        './assets/generated/minecraft-typing-expanded.js?v=graded-vocab-v1',
-        './assets/generated/english-typing-unified.js?v=english-curriculum-v1',
-        '../../data/vocab/单词库_分级/01_幼儿园/幼儿园完整词库.js',
-        '../../data/vocab/单词库_分级/06_汉字/幼儿园汉字.js',
-        '../../data/vocab/单词库_分级/07_拼音/常用拼音.js',
-        '../../data/vocab/单词库_分级/08_幼小衔接/幼小衔接总词库.js'
-      ];
-      document.write(fallbackScripts.map(function (src) {
-        return '<script src="' + src + '"><\/script>';
-      }).join(''));
-    }());
-  </script>
   <script src="./game.js?v=pinyin-racer-v2"></script>
 </body>
 </html>

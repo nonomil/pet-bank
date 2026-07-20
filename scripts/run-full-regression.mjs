@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 import https from 'node:https';
@@ -6,7 +7,11 @@ import https from 'node:https';
 const ROOT = process.cwd();
 const BASE_URL = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:7000';
 // Browser journeys assemble a Pages artifact before launching; keep margin for asset-heavy worktrees.
-const TASK_TIMEOUT_MS = Number(process.env.PETBANK_REGRESSION_TASK_TIMEOUT_MS || 180000);
+const TASK_TIMEOUT_MS = Number(process.env.PETBANK_REGRESSION_TASK_TIMEOUT_MS || 300000);
+const configuredParentArtifact = String(process.env.PETBANK_PARENT_ARTIFACT_DIR || '').trim();
+const parentArtifactDir = configuredParentArtifact
+    ? path.resolve(configuredParentArtifact)
+    : path.join(ROOT, 'tmp', 'full-regression-parent-artifact');
 
 const TASKS = [
     { label: 'regression runner integrity', cmd: 'node', args: ['scripts/test-regression-runner-integrity.mjs'] },
@@ -25,8 +30,13 @@ const TASKS = [
     { label: 'petbank server database', cmd: 'node', args: ['--test', 'prj/petbank-server/test/database.test.mjs'] },
     { label: 'word memory prototype', cmd: 'node', args: ['prj/单词记忆射击场原型/verify.mjs'] },
     { label: 'learning arcade prototype', cmd: 'node', args: ['prj/学习机玩法原型/verify.mjs'] },
+    { label: 'learning arcade publish manifest', cmd: 'node', args: ['scripts/test-learning-arcade-publish-contract.mjs'] },
+    { label: 'learning arcade local file fallback', cmd: 'node', args: ['prj/学习机玩法原型/scripts/test-local-file-vocab-fallback.mjs'] },
     { label: 'asset fallback loading', cmd: 'node', args: ['scripts/test-asset-fallback-loading.mjs'] },
     { label: 'shared asset JSON loader', cmd: 'node', args: ['scripts/test-asset-json-loader.mjs'] },
+    { label: 'pet runtime index contract', cmd: 'node', args: ['scripts/test-pet-runtime-index-contract.mjs'] },
+    { label: 'pet catalog lazy browser journey', cmd: 'node', args: ['scripts/test-pet-catalog-lazy-browser.mjs'] },
+    { label: 'home image thumbnail contract', cmd: 'node', args: ['scripts/test-home-image-thumbnails.mjs'] },
     { label: 'runtime image variants', cmd: 'node', args: ['scripts/test-runtime-image-variants.mjs'] },
     { label: 'runtime audio variants', cmd: 'node', args: ['scripts/test-runtime-audio-variants.mjs'] },
     { label: 'learning arcade browser smoke', cmd: 'node', args: ['prj/学习机玩法原型/scripts/test-full-prototype-smoke.mjs'] },
@@ -74,6 +84,7 @@ const TASKS = [
     { label: 'Minecraft vocab card completeness', cmd: 'node', args: ['scripts/test-minecraft-vocab-card-completeness.mjs'] },
     { label: 'Minecraft vocab bilingual narration', cmd: 'node', args: ['scripts/test-minecraft-vocab-narration.mjs'] },
     { label: 'Minecraft vocab UI assets', cmd: 'node', args: ['scripts/test-minecraft-vocab-ui-assets.mjs'] },
+    { label: 'Minecraft vocab evidence classification', cmd: 'node', args: ['scripts/test-minecraft-vocab-evidence.mjs'] },
     { label: 'Minecraft vocab session contract', cmd: 'node', args: ['scripts/test-minecraft-vocab-session.mjs'] },
     { label: 'Minecraft vocab browser journey', cmd: 'node', args: ['scripts/test-minecraft-vocab-browser.mjs'] },
     { label: 'game reward receipts', cmd: 'node', args: ['scripts/test-game-reward-receipts.mjs'] },
@@ -118,22 +129,52 @@ function checkBaseUrl(url) {
 function runTask(task) {
     console.log(`\n==> ${task.label}`);
     console.log(`${task.cmd} ${task.args.join(' ')}`);
+    const taskEnv = {
+        ...process.env,
+        PETBANK_BASE_URL: BASE_URL
+    };
+    if (task.label === 'parent account browser journey') {
+        taskEnv.PETBANK_PARENT_ARTIFACT_DIR = parentArtifactDir;
+    }
     const result = spawnSync(task.cmd, task.args, {
         cwd: ROOT,
         stdio: 'inherit',
         shell: false,
         timeout: TASK_TIMEOUT_MS,
         killSignal: 'SIGTERM',
-        env: {
-            ...process.env,
-            PETBANK_BASE_URL: BASE_URL
-        }
+        env: taskEnv
     });
     return {
         label: task.label,
         code: result.status ?? 1,
         timedOut: result.error?.code === 'ETIMEDOUT'
     };
+}
+
+function prepareParentBrowserArtifact() {
+    if (configuredParentArtifact) {
+        if (!fs.existsSync(path.join(parentArtifactDir, 'index.html'))) {
+            throw new Error(`PETBANK_PARENT_ARTIFACT_DIR is missing index.html: ${parentArtifactDir}`);
+        }
+        return;
+    }
+
+    console.log(`\n==> prepare parent account browser artifact`);
+    console.log(`node scripts/assemble-pages-artifact.mjs ${path.relative(ROOT, parentArtifactDir)}`);
+    const result = spawnSync(process.execPath, ['scripts/assemble-pages-artifact.mjs', parentArtifactDir], {
+        cwd: ROOT,
+        stdio: 'inherit',
+        shell: false,
+        timeout: 600000,
+        killSignal: 'SIGTERM',
+        env: process.env
+    });
+    if (result.error || result.status !== 0) {
+        const reason = result.error?.code === 'ETIMEDOUT'
+            ? 'timeout after 600000ms'
+            : `exit ${result.status ?? 1}`;
+        throw new Error(`parent browser artifact preparation failed (${reason})`);
+    }
 }
 
 async function main() {
@@ -144,6 +185,13 @@ async function main() {
     if (!healthy) {
         console.error('\nBase URL is not reachable.');
         console.error(`Please start a local static server first, for example: node scripts/local-server.mjs`);
+        process.exit(1);
+    }
+
+    try {
+        prepareParentBrowserArtifact();
+    } catch (error) {
+        console.error(`\nRegression preparation failed: ${error.message}`);
         process.exit(1);
     }
 

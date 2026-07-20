@@ -6,7 +6,15 @@ const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:7000/';
 const browser = await chromium.launch(browserLaunchOpts());
 const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
 const page = await context.newPage();
+await page.addInitScript(() => { window.__PETBANK_TEST_MODE__ = true; });
 const errors = [];
+const childShellStyleRequests = [];
+const childShellScriptRequests = [];
+
+page.on('request', (request) => {
+    if (request.url().includes('/css/child-workbench-shell.css')) childShellStyleRequests.push(request.url());
+    if (request.url().includes('/js/child-workbench-shell.js')) childShellScriptRequests.push(request.url());
+});
 
 page.on('pageerror', (error) => errors.push(`pageerror: ${String(error?.message || error)}`));
 page.on('console', (message) => {
@@ -21,6 +29,8 @@ try {
 
     await page.evaluate(() => window.switchPage('learn'));
     await page.waitForSelector('#learn-container .learn-shell', { state: 'attached', timeout: 20000 });
+    assert.equal(childShellStyleRequests.length, 1, `child workbench should fetch its stylesheet once: ${JSON.stringify(childShellStyleRequests)}`);
+    assert.equal(childShellScriptRequests.length, 1, `child workbench should fetch its script once: ${JSON.stringify(childShellScriptRequests)}`);
     assert.equal(await page.locator('#childPrimaryNav [data-child-primary]').count(), 7, 'child workbench should expose seven primary entries');
     assert.equal(await page.locator('#childProgressRail').count(), 1, 'child workbench should expose one shared progress rail');
     assert.equal(await page.locator('.top-nav .primary-nav [data-page]').count(), 0, 'top nav should not own child primary entries');

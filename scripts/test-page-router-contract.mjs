@@ -5,7 +5,7 @@ import vm from 'node:vm';
 const source = fs.readFileSync('js/page-router.js', 'utf8');
 const index = fs.readFileSync('index.html', 'utf8');
 const window = { location: { pathname: '/', protocol: 'http:' } };
-vm.runInNewContext(source, { window });
+vm.runInNewContext(source, { window, URL });
 
 const router = window.PetBankPageRouter;
 assert.ok(router, 'page router should expose one named namespace');
@@ -29,6 +29,7 @@ const deepLocation = {
 };
 assert.equal(router.resolveRouteFromLocation(deepLocation).page, 'mathpk');
 assert.equal(router.resolveRouteFromLocation({ pathname: '/pet-bank/app/learn/minecraft-vocab/index.html' }).page, 'minecraft-vocab');
+assert.equal(router.resolveRouteFromLocation({ pathname: '/index.html', search: '?route=%2Fparent%2Fsettings%2Ffamily' }).settingsSection, 'family');
 assert.equal(router.inferRouteBase(deepLocation.pathname), '/pet-bank');
 assert.equal(router.withRouteBase('/prj/demo/index.html', deepLocation.pathname), '/pet-bank/prj/demo/index.html');
 assert.equal(router.resolveRouteFromLocation({ pathname: '/ignored', hash: '#/settings/learning' }).settingsSection, 'learning');

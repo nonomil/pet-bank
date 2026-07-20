@@ -33,14 +33,18 @@ jobs:
           node scripts/test-pages-fast-gate-contract.mjs
           python scripts/convert-runtime-image-variants.py --check
           python scripts/convert-runtime-audio-variants.py --check
+          python scripts/generate-home-image-thumbnails.py --check
           node --check js/app.js
           node scripts/test-initial-media-loading-contract.mjs
+          node scripts/test-home-image-thumbnails.mjs
           node scripts/test-pages-vocab-publish-contract.mjs
           node scripts/test-minecraft-vocab-runtime-shards.mjs
           node scripts/test-minecraft-vocab-publish-contract.mjs
           node scripts/test-pixel-story-publish-contract.mjs
           node scripts/test-typing-defense-publish-contract.mjs
           node scripts/test-learning-arcade-publish-contract.mjs
+          node scripts/test-learning-arcade-vocab-shards-contract.mjs
+          node scripts/test-learning-arcade-lazy-data-contract.mjs
           node scripts/test-pages-artifact-size-audit.mjs
           node scripts/test-measure-page-load.mjs
           node scripts/test-static-route-entries.mjs
@@ -52,6 +56,8 @@ jobs:
         run: node scripts/assemble-pages-artifact.mjs _site
       - name: Verify learning arcade publish boundary
         run: node scripts/test-learning-arcade-publish-contract.mjs _site
+      - name: Verify learning arcade vocab shard boundary
+        run: node scripts/test-learning-arcade-vocab-shards-contract.mjs _site
       - name: Verify Minecraft vocab publish boundary
         run: node scripts/test-minecraft-vocab-publish-contract.mjs _site
       - name: Verify pixel story publish boundary

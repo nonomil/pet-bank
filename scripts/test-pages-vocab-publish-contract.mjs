@@ -20,8 +20,6 @@ try {
         'data/vocab/english-minecraft/manifest.json',
         'data/vocab/english-minecraft/views/all.json',
         'data/vocab/english-minecraft/views/typing-view.json',
-        'data/vocab/word-memory-combined/manifest.json',
-        'data/vocab/word-memory-combined/views/all.json',
         'data/vocab/core-english/manifest.json',
         'data/vocab/core-english/views/core.json',
         'data/vocab/extension-english/manifest.json',
@@ -46,6 +44,17 @@ try {
     for (const relative of forbiddenSourcePaths) {
         assert.equal(fs.existsSync(path.join(artifactRoot, relative)), false, `${relative} must not be published`);
     }
+
+    const sourceOnlyWordMemoryPath = 'data/vocab/word-memory-combined';
+    assert.ok(
+        fs.existsSync(path.join(repoRoot, sourceOnlyWordMemoryPath)),
+        `${sourceOnlyWordMemoryPath} must remain available as a generator source`
+    );
+    assert.equal(
+        fs.existsSync(path.join(artifactRoot, sourceOnlyWordMemoryPath)),
+        false,
+        `${sourceOnlyWordMemoryPath} must stay out of Pages`
+    );
 } finally {
     if (!providedArtifactRoot) fs.rmSync(artifactRoot, { recursive: true, force: true });
 }

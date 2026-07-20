@@ -26,28 +26,30 @@ const v2AssetRoot = path.join(outDir, 'assets', 'story', 'pixel-dialogue-v2');
 const worldsAssetRoot = path.join(outDir, 'assets', 'story', 'pixel-worlds-v1');
 const pngs = [];
 const v2Pngs = [];
+const v2Webps = [];
 const worldsPngs = [];
 const worldsWebps = [];
 const worldsWavs = [];
 const worldsOggs = [];
 const mp3s = [];
-function walk(dir, pngList = pngs) {
+function walk(dir, pngList = pngs, webpList = worldsWebps) {
   assert.ok(fs.existsSync(dir), `artifact asset directory exists: ${dir}`);
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const file = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(file, pngList);
+    if (entry.isDirectory()) walk(file, pngList, webpList);
     else if (entry.name.endsWith('.png')) pngList.push(file);
-    else if (entry.name.endsWith('.webp')) worldsWebps.push(file);
+    else if (entry.name.endsWith('.webp')) webpList.push(file);
     else if (entry.name.endsWith('.wav')) worldsWavs.push(file);
     else if (entry.name.endsWith('.ogg')) worldsOggs.push(file);
     else if (entry.name.endsWith('.mp3')) mp3s.push(file);
   }
 }
 walk(assetRoot);
-walk(v2AssetRoot, v2Pngs);
+walk(v2AssetRoot, v2Pngs, v2Webps);
 walk(worldsAssetRoot, worldsPngs);
 assert.equal(pngs.length, 0, `rejected story PNGs must stay out of the Pages artifact, got ${pngs.length}`);
-assert.equal(v2Pngs.length, 14, `expected 14 accepted v2 story PNGs in Pages artifact, got ${v2Pngs.length}`);
+assert.equal(v2Pngs.length, 0, `v2 story source PNGs must stay out of the Pages artifact, got ${v2Pngs.length}`);
+assert.equal(v2Webps.length, 14, `expected 14 converted v2 story WebPs in Pages artifact, got ${v2Webps.length}`);
 assert.equal(worldsPngs.length, 0, `pixel worlds map PNGs must be converted out of the Pages artifact, got ${worldsPngs.length}`);
 assert.equal(worldsWebps.length, 276, `expected 4 maps + 80 scenes + 80 props + 32 character frames + 80 route icons, got ${worldsWebps.length}`);
 assert.equal(worldsWavs.length, 0, `source pixel story WAV files must stay out of the Pages artifact, got ${worldsWavs.length}`);
@@ -82,4 +84,4 @@ assert.ok(fs.existsSync(path.join(outDir, 'css', 'pixel-story.css')));
 const levelDir = path.join(outDir, 'data', 'story-packs', '05-pixel-worlds-story', 'levels');
 assert.equal(fs.readdirSync(levelDir).filter((file) => file.endsWith('.json')).length, 80, 'all 80 paged story levels are published');
 scheduleArtifactCleanup();
-console.log(`PASS pixel story published artifact: ${v2Pngs.length} v2 PNG, ${worldsOggs.length} OGG, ${mp3s.length} MP3`);
+console.log(`PASS pixel story published artifact: ${v2Webps.length} v2 WebP, ${worldsOggs.length} OGG, ${mp3s.length} MP3`);

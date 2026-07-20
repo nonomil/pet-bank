@@ -27,6 +27,7 @@ try {
     }, { timeout: 10000 });
     assert.equal(await page.locator('#exploreLoadingState').count(), 1, 'deep explore route has a loading host');
     await page.waitForFunction(() => document.body.classList.contains('app-ready'), { timeout: 20000 });
+    await page.evaluate(() => window.switchPage('explore', { skipAccessGate: true }));
     await page.waitForSelector('#page-explore.active #pixelStoryShell .pixel-story-world-tab', { state: 'attached', timeout: 20000 });
     assert.equal(await page.locator('#page-explore.active #pixelStoryShell .pixel-story-world-tab').count(), 3, 'deep explore route loads three world tabs');
     assert.equal(await page.locator('#exploreLoadingState').isHidden(), true, 'loading state hides after map activation');

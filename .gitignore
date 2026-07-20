@@ -42,6 +42,14 @@ prj/tts-portable/
 # docs/ 是本地方案/调研/会话材料区；远端只保留 docs/README.md 说明入口。
 docs/*
 !docs/README.md
+!docs/minecraft-vocab-evidence/
+!docs/minecraft-vocab-evidence/README.md
+!docs/minecraft-vocab-evidence/research.md
+!docs/minecraft-vocab-evidence/sources.md
+!docs/minecraft-vocab-evidence/raw/
+!docs/minecraft-vocab-evidence/raw/NGSL_12_stats.csv
+!docs/minecraft-vocab-evidence/raw/OXFORD_3000_5000_CEFR.csv
+docs/minecraft-vocab-evidence/raw/NGSL_12_lemmatized_for_teaching.csv
 !docs/项目优化加速方案/
 !docs/项目优化加速方案/**
 !docs/方案/
@@ -53,6 +61,7 @@ docs/方案/*
 docs/plans/*
 !docs/plans/2026-07-18-home-explore-page-decoupling.md
 !docs/plans/2026-07-18-worktree-release-organization.md
+!docs/plans/2026-07-20-fsrs-vocab-evidence-implementation.md
 *.zip
 *.mp4
 
@@ -130,7 +139,9 @@ prj/单词记忆射击场原型/test-artifacts/
 # 像素探险的本地原始备份、导入参考与生成中间物；正式发布资源在 world-bg-tiles 清单中单独跟踪。
 prj/单词记忆射击场原型/assets/MineCraft宠物图片/poses-originals/
 prj/单词记忆射击场原型/assets/generated/minecraft-memory-adapter/
-prj/单词记忆射击场原型/assets/generated/reference/
+prj/单词记忆射击场原型/assets/generated/reference/*
+!prj/单词记忆射击场原型/assets/generated/reference/topdown-clean-bg-chatgpt.png
+!prj/单词记忆射击场原型/assets/generated/reference/topdown-clean-bg-chatgpt.webp
 prj/单词记忆射击场原型/assets/generated/level-theme-assets/*
 !prj/单词记忆射击场原型/assets/generated/level-theme-assets/forest/
 !prj/单词记忆射击场原型/assets/generated/level-theme-assets/forest/*.png

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { browserLaunchOpts } from './playwright-browser.mjs';
 
-const BASE = process.env.MMWG_E2E_BASE_URL || 'http://127.0.0.1:7000';
+const BASE = process.env.PETBANK_BASE_URL || process.env.MMWG_E2E_BASE_URL || 'http://127.0.0.1:7000';
 const browser = await chromium.launch(browserLaunchOpts());
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 const page = await context.newPage();
@@ -125,6 +125,7 @@ try {
   assert.equal(minecraftDataRequests.some(url => url.includes('minecraft-vocab-runtime-minecraft-advanced.json')), true);
   await page.click('[data-mv-level="kindergarten"]');
   await page.waitForFunction(() => document.querySelector('[data-mv-level="kindergarten"]')?.getAttribute('aria-checked') === 'true');
+  assert.equal(await page.locator('[data-mv-open-review]').count(), 1);
   await page.screenshot({ path: 'tmp/minecraft-vocab-home-gpt-ui-1280.png', fullPage: true });
 
   await page.click('[data-mv-start]');
@@ -209,6 +210,16 @@ try {
   await page.waitForTimeout(120);
   const afterOne = await page.evaluate(() => document.querySelector('[data-mv-progress]')?.textContent || '');
   assert.match(afterOne, /1\s*\/\s*11/);
+  const firstReviewEvent = await page.evaluate(() => {
+    const key = Object.keys(localStorage).find(item => item.startsWith('petbank_learning_vocab_review_events_'));
+    const events = key ? JSON.parse(localStorage.getItem(key) || '[]') : [];
+    const state = window.MinecraftVocabSession.readState();
+    return { event: events[events.length - 1] || null, sessionId: state?.sessionId || '' };
+  });
+  assert.equal(typeof firstReviewEvent.event?.reviewId, 'string');
+  assert.equal(firstReviewEvent.event?.responseMode, 'review');
+  assert.equal(firstReviewEvent.event?.responseMs > 0, true);
+  assert.equal(firstReviewEvent.sessionId.length > 0, true);
 
   await page.setViewportSize({ width: 390, height: 844 });
   const mobile = await page.evaluate(() => {
@@ -246,6 +257,19 @@ try {
     if (await selfAssess.count()) {
       await selfAssess.click();
     } else if (await page.locator('[data-mv-choice]').count()) {
+      const choices = await page.evaluate(async () => {
+        const state = window.MinecraftVocabSession.readState();
+        const levelId = [...Object.keys(localStorage)].find(key => key.startsWith('petbank_minecraft_vocab_level_v1_')) ? localStorage[[...Object.keys(localStorage)].find(key => key.startsWith('petbank_minecraft_vocab_level_v1_'))] : 'kindergarten';
+        const bandKey = [...Object.keys(localStorage)].find(key => key.startsWith('petbank_minecraft_vocab_band_v1_'));
+        const bandId = bandKey ? localStorage[bandKey] : 'minecraft-core';
+        const module = await window.MinecraftVocabLoader.loadForSelection(levelId, bandId);
+        const cardId = state?.queue?.find(item => !state.completed.includes(item.cardId))?.cardId;
+        const card = module.cards.find(item => item.id === cardId);
+        const values = [...document.querySelectorAll('[data-mv-choice]')].map(button => button.dataset.mvChoice);
+        return { values, correctIndex: values.indexOf(card?.word) };
+      });
+      assert.equal(new Set(choices.values).size, choices.values.length);
+      assert.equal(choices.correctIndex > 0, true);
       await page.locator('[data-mv-choice]').first().click();
     } else {
       await page.click('[data-mv-flip]');
@@ -283,6 +307,38 @@ try {
   }));
   assert.equal(repeatView.complete, true);
   assert.equal(repeatView.points, 10);
+
+  await page.evaluate(() => {
+    const state = window.MinecraftVocabSession.readState();
+    const cardId = state?.queue?.[0]?.cardId;
+    window.EnglishVocabProgress.record(cardId, 'again', {
+      reviewId: 'browser-due-review',
+      now: Date.now() - (60 * 60 * 1000),
+      responseMode: 'manual-review',
+      responseMs: 2100
+    });
+  });
+  await page.click('[data-mv-open-review]');
+  await page.waitForSelector('#minecraft-vocab-root [data-mv-review]');
+  const reviewView = await page.evaluate(() => ({
+    due: Number(document.querySelector('[data-mv-review-due]')?.textContent || 0),
+    dailyCells: document.querySelectorAll('[data-mv-review-day]').length,
+    weakCards: document.querySelectorAll('[data-mv-review-weak-card]').length,
+    startDisabled: document.querySelector('[data-mv-review-start]')?.hasAttribute('disabled') || false
+  }));
+  assert.equal(reviewView.due > 0, true);
+  assert.equal(reviewView.dailyCells, 7);
+  assert.equal(reviewView.weakCards > 0, true);
+  assert.equal(reviewView.startDisabled, false);
+  await page.screenshot({ path: 'tmp/minecraft-vocab-review-1280.png', fullPage: true });
+  await page.click('[data-mv-review-start]');
+  await page.waitForSelector('#minecraft-vocab-root [data-mv-session][data-mv-mode="review"]');
+  const reviewSession = await page.evaluate(() => window.MinecraftVocabSession.readState());
+  assert.equal(reviewSession.sessionType, 'review');
+  assert.equal(reviewSession.reviewOnly, true);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({ path: 'tmp/minecraft-vocab-review-session-390.png', fullPage: true });
+  await page.setViewportSize({ width: 1280, height: 900 });
 
   assert.deepEqual(errors, []);
   console.log('minecraft vocab browser: PASS');

@@ -17,6 +17,8 @@ Anki Minecraft 词卡是独立静态站，部署前另读 [ANKI-MINECRAFT-VOCAB-
 
 主站 Minecraft 单词远征的 Pages 制品、深层路由和浏览器验收见 [MINECRAFT-VOCAB-LEARNING-HERMES.md](./MINECRAFT-VOCAB-LEARNING-HERMES.md)。
 
+Minecraft 词卡的 FSRS/艾宾浩斯校准、Oxford CEFR 证据和跨设备冲突合并见 [MINECRAFT-VOCAB-SYNC-HERMES.md](./MINECRAFT-VOCAB-SYNC-HERMES.md)；本候选版本摘要见 [RELEASE-0.7.60.md](./RELEASE-0.7.60.md)。
+
 像素世界故事的静态验收、生图供应商阻断处理和回滚步骤见 [PIXEL-WORLDS-HERMES.md](./PIXEL-WORLDS-HERMES.md)。
 
 不得删除 `/srv/pet-bank/shared/`。不得把数据库放进 Git 工作区或 release 目录。数据库变更只能通过新的 `db/migrations/NNN_*.sql` 文件追加。

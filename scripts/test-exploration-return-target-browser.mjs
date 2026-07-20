@@ -3,7 +3,7 @@ import { chromium } from 'playwright';
 import { browserLaunchOpts } from './playwright-browser.mjs';
 
 const baseUrl = process.env.PETBANK_BASE_URL || 'http://127.0.0.1:7000/';
-const browser = await chromium.launch(browserLaunchOpts());
+const browser = await chromium.launch(browserLaunchOpts({ args: ['--mute-audio'] }));
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 const page = await context.newPage();
 const errors = [];
@@ -16,6 +16,8 @@ page.on('console', (message) => {
 try {
     await page.goto(new URL('app/explore/forest', baseUrl).href, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForFunction(() => window.PetBankRuntime && window.switchPage, { timeout: 20000 });
+    await page.waitForFunction(() => document.body.classList.contains('app-ready'), { timeout: 20000 });
+    await page.evaluate(() => window.switchPage('forest-map', { skipAccessGate: true }));
     await page.waitForSelector('#forestMapSceneGrid .map-scene-node', { state: 'attached', timeout: 20000 });
 
     await page.locator('#forestMapSceneGrid .map-scene-node').first().click();

@@ -235,7 +235,19 @@
         const hashPath = loc && loc.hash && loc.hash.startsWith('#/')
             ? loc.hash.slice(1).replace(/\/+$/g, '') || '/'
             : '';
-        const routePath = hashPath || normalizeRoutePath(loc ? loc.pathname : '/');
+        let queryPath = '';
+        try {
+            if (loc?.searchParams && typeof loc.searchParams.get === 'function') {
+                queryPath = loc.searchParams.get('route') || '';
+            } else if (loc?.search) {
+                const queryUrl = new URL(loc.href || `https://petbank.invalid/${loc.search}`);
+                queryPath = queryUrl.searchParams.get('route') || '';
+            }
+        } catch (_) {
+            queryPath = '';
+        }
+        const routePath = hashPath
+            || (queryPath ? normalizeRoutePath(queryPath) : normalizeRoutePath(loc ? loc.pathname : '/'));
         return Object.assign({}, ROUTE_TO_PAGE[routePath] || { page: 'map' });
     }
 

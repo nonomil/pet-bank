@@ -6,14 +6,18 @@ const workflow = fs.readFileSync(workflowPath, 'utf8');
 const requiredCommands = [
     'python scripts/convert-runtime-image-variants.py --check',
     'python scripts/convert-runtime-audio-variants.py --check',
+    'python scripts/generate-home-image-thumbnails.py --check',
     'node --check js/app.js',
     'node scripts/test-initial-media-loading-contract.mjs',
+    'node scripts/test-home-image-thumbnails.mjs',
     'node scripts/test-pages-vocab-publish-contract.mjs',
     'node scripts/test-minecraft-vocab-runtime-shards.mjs',
     'node scripts/test-minecraft-vocab-publish-contract.mjs',
     'node scripts/test-pixel-story-publish-contract.mjs',
     'node scripts/test-typing-defense-publish-contract.mjs',
     'node scripts/test-learning-arcade-publish-contract.mjs',
+    'node scripts/test-learning-arcade-vocab-shards-contract.mjs',
+    'node scripts/test-learning-arcade-lazy-data-contract.mjs',
     'node scripts/test-pages-artifact-size-audit.mjs',
     'node scripts/test-measure-page-load.mjs',
     'node scripts/test-static-route-entries.mjs',
@@ -27,6 +31,7 @@ const artifactContractCommand = 'node scripts/test-learning-arcade-publish-contr
 const minecraftArtifactContractCommand = 'node scripts/test-minecraft-vocab-publish-contract.mjs _site';
 const pixelStoryArtifactContractCommand = 'node scripts/test-pixel-story-publish-contract.mjs _site';
 const typingDefenseArtifactContractCommand = 'node scripts/test-typing-defense-publish-contract.mjs _site';
+const learningArcadeVocabShardsArtifactContractCommand = 'node scripts/test-learning-arcade-vocab-shards-contract.mjs _site';
 const artifactBudgetAuditCommand = 'node scripts/audit-pages-artifact-size.mjs _site --top=30 --max-mib=400 --require-manifest-budgets --require-manifest-coverage';
 
 function fail(message) {
@@ -74,6 +79,9 @@ if (!workflow.includes(pixelStoryArtifactContractCommand)) {
 }
 if (!workflow.includes(typingDefenseArtifactContractCommand)) {
     fail(`Pages workflow must verify the assembled typing defense artifact: ${typingDefenseArtifactContractCommand}`);
+}
+if (!workflow.includes(learningArcadeVocabShardsArtifactContractCommand)) {
+    fail(`Pages workflow must verify the assembled learning arcade vocab shards: ${learningArcadeVocabShardsArtifactContractCommand}`);
 }
 if (!workflow.includes(artifactBudgetAuditCommand)) {
     fail(`Pages workflow must enforce the assembled artifact budget: ${artifactBudgetAuditCommand}`);

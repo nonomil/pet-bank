@@ -64,4 +64,4 @@
 - 浏览器在网络失败时将最新本地快照写入 `petbank_self_hosted_snapshot_outbox_v1`，同一 `profileId:childId` 只保留最新待提交记录。
 - outbox 重试使用服务端现有 `revision` 契约；`409 SNAPSHOT_REVISION_CONFLICT` 必须保留本地 payload 和 `conflict` 状态，不能静默重试覆盖远端。
 - outbox 是设备/家长连接状态，不属于孩子业务快照；Profile 切换和导出不得把它打包进 `petbank_profile_data_*`。
-- 当前没有自动多端合并或冲突选择 API；客户端应把冲突报告为待处理，而不是同步成功。
+- 当前没有通用自动多端合并或冲突选择 API；客户端对词卡进度/review events 有受限的本地自动合并，其他业务冲突仍报告为待处理，而不是同步成功。

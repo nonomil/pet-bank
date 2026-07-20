@@ -65,6 +65,41 @@ function load(storage, profileId = 'profile-a') {
 }
 
 {
+  const session = load(createStorage());
+  const reviewCards = [
+    { id: 'due-card-1', word: 'due1', category: 'block' },
+    { id: 'due-card-2', word: 'due2', category: 'item' },
+    { id: 'future-card', word: 'future', category: 'mob' },
+    { id: 'new-card', word: 'new', category: 'biome' }
+  ];
+  const progress = {
+    'due-card-1': { status: 'learning', dueAt: '2020-01-01T00:00:00.000Z' },
+    'due-card-2': { status: 'mastered', dueAt: '2020-01-02T00:00:00.000Z' },
+    'future-card': { status: 'mastered', dueAt: '2099-01-01T00:00:00.000Z' },
+    'new-card': { status: 'new', dueAt: '' }
+  };
+  const queue = session.createQueue(reviewCards, card => progress[card.id], '2026-07-19', 20, Date.parse('2026-07-20T00:00:00.000Z'), { reviewOnly: true });
+  assert.deepEqual(Array.from(queue, item => item.cardId), ['due-card-1', 'due-card-2']);
+  assert.deepEqual(new Set(queue.map(item => item.mode)), new Set(['review']));
+}
+
+{
+  const session = load(createStorage());
+  const dueCards = [{ id: 'review-card', word: 'review', category: 'block' }];
+  const daily = session.start(cards, () => ({ status: 'new' }), '2026-07-14', { sessionType: 'daily' });
+  const review = session.start(dueCards, () => ({ status: 'learning', dueAt: '2020-01-01T00:00:00.000Z' }), '2026-07-14', {
+    sessionType: 'review',
+    reviewOnly: true,
+    queueSize: 1
+  });
+  assert.equal(daily.state.sessionType, 'daily');
+  assert.equal(review.resumed, false);
+  assert.equal(review.state.sessionType, 'review');
+  assert.equal(review.state.reviewOnly, true);
+  assert.deepEqual(Array.from(review.state.queue, item => item.mode), ['review']);
+}
+
+{
   const storage = createStorage();
   const session = load(storage);
   const kindergarten = session.start(cards, () => ({ status: 'new' }), '2026-07-14', { levelId: 'kindergarten' });

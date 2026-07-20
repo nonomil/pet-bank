@@ -83,6 +83,8 @@
     const assetBaseHref = resolveAssetBaseHref();
 
     const STYLE_BUNDLES = {
+        childShell: ['css/child-workbench-shell.css?v=20260718-playground-wide'],
+        map: ['css/showcase.css'],
         home: ['css/travel-memory.css'],
         walk: ['css/walk.css'],
         card: ['css/travel-memory.css', 'css/card-collection.css'],
@@ -96,12 +98,14 @@
 
     const SCRIPT_BUNDLES = {
         audio: ['js/zzfx.js', 'js/sfx.js'],
-        map: ['js/exploration.js'],
+        childShell: ['js/child-workbench-shell.js?v=20260718-playground-wide'],
+        map: ['js/exploration.js', 'js/showcase.js'],
+        today: ['js/minecraft-vocab-session.js?v=1'],
         home: ['js/pet-care-daily.js', 'js/core-reward-feedback.js', 'js/pet-growth-history.js', 'js/task-reward-events.js', 'js/pet-evolution-preview.js', 'js/travel-memory.js', 'js/home.js'],
         walk: ['js/walk.js'],
         cardCollection: ['js/travel-memory.js', 'js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
-        explore: ['js/voice.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-page.js', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1', 'js/pixel-story-engine.js?v=20260715-stage-fullscreen1', 'js/minecraft-vocab-exploration-bridge.js?v=1'],
+        explore: ['js/voice.js', 'js/battle-fx.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-page.js', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1', 'js/pixel-story-engine.js?v=20260715-stage-fullscreen1', 'js/minecraft-vocab-exploration-bridge.js?v=1'],
         playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js', 'js/playground-catalog.js?v=20260719'],
         learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=7'],
         minecraftVocab: ['js/minecraft-vocab-expedition.js?v=2', 'js/minecraft-vocab-levels.js?v=1', 'js/minecraft-vocab-loader.js?v=1', 'js/minecraft-vocab-audio.js?v=1', 'js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=2', 'js/minecraft-vocab-exploration-bridge.js?v=1'],
@@ -233,6 +237,15 @@
         });
     }
 
+    async function ensurePetRuntimeIndex() {
+        return once('pet-runtime-index', async function () {
+            if (window.PetSystem && typeof window.PetSystem.loadPetRuntimeIndex === 'function') {
+                await window.PetSystem.loadPetRuntimeIndex();
+            }
+            return true;
+        });
+    }
+
     async function ensurePetSkills() {
         return once('pet-skills', async function () {
             if (window.PetSystem && typeof window.PetSystem.loadSkills === 'function') {
@@ -278,11 +291,37 @@
 
     async function ensureMapFeature() {
         return once('feature-map', async function () {
-            await ensurePetCatalog();
-            await loadSeries(SCRIPT_BUNDLES.map, loadScript);
+            await Promise.all([
+                ensureChildShellFeature(),
+                loadSeries(STYLE_BUNDLES.map, loadStyle),
+                loadSeries(SCRIPT_BUNDLES.map, loadScript)
+            ]);
             if (window.ExplorationSystem && typeof window.ExplorationSystem.loadScenes === 'function') {
                 await window.ExplorationSystem.loadScenes();
             }
+            if (window.HomeShowcase && typeof window.HomeShowcase.setActive === 'function') {
+                window.HomeShowcase.setActive(true);
+            }
+            return true;
+        });
+    }
+
+    async function ensureTodayFeature() {
+        return once('feature-today', async function () {
+            await Promise.all([
+                ensureChildShellFeature(),
+                loadSeries(SCRIPT_BUNDLES.today, loadScript)
+            ]);
+            return true;
+        });
+    }
+
+    async function ensureChildShellFeature() {
+        return once('feature-child-shell', async function () {
+            await Promise.all([
+                loadSeries(STYLE_BUNDLES.childShell, loadStyle),
+                loadSeries(SCRIPT_BUNDLES.childShell, loadScript)
+            ]);
             return true;
         });
     }
@@ -329,7 +368,7 @@
 
     async function ensureExploreFeature() {
         return once('feature-explore', async function () {
-            await ensurePetCatalog();
+            await ensurePetRuntimeIndex();
             await ensurePetSkills();
             await ensureAudioFeature();
             await loadSeries(STYLE_BUNDLES.explore, loadStyle);
@@ -401,10 +440,14 @@
     }
 
     async function ensurePage(page) {
+        if (['map', 'today', 'learning-sheet', 'learn', 'learn-pack', 'learn-plan', 'learn-lesson', 'learn-print', 'picturebooks', 'pet', 'home', 'explore', 'forest-map', 'playground'].includes(page)) {
+            await ensureChildShellFeature();
+        }
         switch (page) {
             case 'map':
                 return ensureMapFeature();
             case 'today':
+                return ensureTodayFeature();
             case 'reward':
             case 'inventory':
             case 'works':
@@ -509,6 +552,7 @@
     window.PetBankRuntime = {
         ensurePage: ensurePage,
         ensurePetCatalog: ensurePetCatalog,
+        ensurePetRuntimeIndex: ensurePetRuntimeIndex,
         ensureAudioFeature: ensureAudioFeature,
         ensureCardArenaFeature: ensureCardArenaFeature,
         resolveAssetUrl: resolveAssetUrl,

@@ -6,9 +6,19 @@ const LEARNING_DIR = path.join(ROOT, 'prj', '学习机玩法原型');
 const BASE_PATH = path.join(LEARNING_DIR, 'assets', 'generated', 'minecraft-typing-expanded.json');
 const OUTPUT_PATH = path.join(LEARNING_DIR, 'assets', 'generated', 'english-typing-unified.json');
 const OUTPUT_JS_PATH = path.join(LEARNING_DIR, 'assets', 'generated', 'english-typing-unified.js');
+const INDEX_OUTPUT_PATH = path.join(LEARNING_DIR, 'assets', 'generated', 'english-typing-index.json');
+const SHARD_DIR = path.join(LEARNING_DIR, 'assets', 'generated');
 const PACKS = [
   { id: 'core-english', title: '核心主线', description: '322 个高频核心词。', file: 'core-english/views/core.json' },
   { id: 'extension-english', title: '可靠拓展', description: '512 个已通过字段与内容审计的拓展词。', file: 'extension-english/views/extension.json' }
+];
+const SHARD_PACK_IDS = [
+  'minecraft',
+  'kindergarten',
+  'elementary',
+  'junior_high',
+  'core-english',
+  'extension-english'
 ];
 
 function readJson(filePath) {
@@ -67,7 +77,51 @@ function build() {
   };
 }
 
+function buildRuntimeIndex(data) {
+  const metadata = new Map((data.packs || []).map(pack => [pack.id, pack]));
+  const shardFile = packId => `english-typing-${packId}.json`;
+  const shardPacks = SHARD_PACK_IDS.map(packId => ({
+    ...metadata.get(packId),
+    files: [shardFile(packId)]
+  }));
+  const aggregatePacks = [
+    {
+      ...metadata.get('all'),
+      files: ['minecraft', 'kindergarten', 'elementary', 'junior_high'].map(shardFile)
+    },
+    {
+      ...metadata.get('curriculum-all'),
+      files: ['core-english', 'extension-english'].map(shardFile)
+    }
+  ];
+  return {
+    version: 1,
+    id: 'english-typing-index',
+    type: 'vocab-index',
+    title: data.title,
+    sourceViewId: data.sourceViewId,
+    generatedAt: data.generatedAt,
+    packs: [...shardPacks, ...aggregatePacks]
+  };
+}
+
+function writeRuntimeShards(data) {
+  for (const packId of SHARD_PACK_IDS) {
+    const cards = data.cards.filter(card => card.sourcePackGroup === packId);
+    const outputPath = path.join(SHARD_DIR, `english-typing-${packId}.json`);
+    fs.writeFileSync(outputPath, `${JSON.stringify({
+      version: 1,
+      id: `english-typing-${packId}`,
+      type: 'vocab-shard',
+      packId,
+      cards
+    }, null, 2)}\n`, 'utf8');
+  }
+}
+
 const data = build();
 fs.writeFileSync(OUTPUT_PATH, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 fs.writeFileSync(OUTPUT_JS_PATH, `window.LearningArcadeTypingUnified = ${JSON.stringify(data, null, 2)};\n`, 'utf8');
+writeRuntimeShards(data);
+fs.writeFileSync(INDEX_OUTPUT_PATH, `${JSON.stringify(buildRuntimeIndex(data), null, 2)}\n`, 'utf8');
 console.log(`saved ${data.cards.length} unified typing cards`);

@@ -39,9 +39,9 @@ async function show(sceneId) {
 }
 
 async function advanceSeeToChoice() {
-  await page.locator('#galgameBox').click();
+  await page.locator('.galgame-next').click();
   await page.waitForTimeout(80);
-  await page.locator('#galgameBox').click();
+  await page.locator('.galgame-next').click();
   await page.waitForTimeout(80);
   assert.equal(await page.locator('#galgameChoices button').count(), 2, 'short flow exposes one choice after two see cards');
 }
@@ -113,8 +113,8 @@ try {
       await window.ExplorationDetail.show(id);
     }, sceneId);
     await page.waitForSelector('#galgameBox');
-    await page.locator('#galgameBox').click();
-    await page.locator('#galgameBox').click();
+    await page.locator('.galgame-next').click();
+    await page.locator('.galgame-next').click();
     assert.equal(await page.locator('#galgameChoices button').count(), 2, `${sceneId} short flow choice visible`);
     await page.locator('#galgameChoices button').first().click();
     await page.locator('#galgameChoices button').filter({ hasText: '带回家' }).click();

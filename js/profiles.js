@@ -108,6 +108,243 @@
         }, {});
     }
 
+    function isVocabSnapshotKey(key) {
+        return key === 'petbank_learning_vocab_progress'
+            || key.startsWith('petbank_learning_vocab_progress_')
+            || key === 'petbank_learning_vocab_review_events'
+            || key.startsWith('petbank_learning_vocab_review_events_')
+            || key === 'petbank_learning_vocab_scheduler_calibration'
+            || key.startsWith('petbank_learning_vocab_scheduler_calibration_');
+    }
+
+    function parseVocabJson(raw, expectedArray) {
+        if (raw == null) return expectedArray ? [] : {};
+        const parsed = safeParse(raw, null);
+        if (expectedArray) return Array.isArray(parsed) ? parsed : null;
+        return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : null;
+    }
+
+    function recordTimestamp(record) {
+        if (!record || typeof record !== 'object') return 0;
+        return [record.updatedAt, record.lastReviewedAt, record.reviewedAt]
+            .map(value => Date.parse(String(value || '')))
+            .filter(Number.isFinite)
+            .reduce((max, value) => Math.max(max, value), 0);
+    }
+
+    function chooseVocabCard(localCard, remoteCard) {
+        if (!localCard) return remoteCard;
+        if (!remoteCard) return localCard;
+        const localTime = recordTimestamp(localCard);
+        const remoteTime = recordTimestamp(remoteCard);
+        if (remoteTime !== localTime) return remoteTime > localTime ? remoteCard : localCard;
+        const localSeen = Number(localCard.seen || 0);
+        const remoteSeen = Number(remoteCard.seen || 0);
+        if (remoteSeen !== localSeen) return remoteSeen > localSeen ? remoteCard : localCard;
+        const localAttempts = Number(localCard.correct || 0) + Number(localCard.wrong || 0);
+        const remoteAttempts = Number(remoteCard.correct || 0) + Number(remoteCard.wrong || 0);
+        if (remoteAttempts !== localAttempts) return remoteAttempts > localAttempts ? remoteCard : localCard;
+        return localCard;
+    }
+
+    function mergeVocabProgressJson(localRaw, remoteRaw) {
+        const local = parseVocabJson(localRaw, false);
+        const remote = parseVocabJson(remoteRaw, false);
+        if (!local || !remote) return null;
+        const merged = {};
+        new Set([...Object.keys(local), ...Object.keys(remote)]).forEach(cardId => {
+            merged[cardId] = chooseVocabCard(local[cardId], remote[cardId]);
+        });
+        return JSON.stringify(merged);
+    }
+
+    function reviewEventKey(event) {
+        if (event && event.reviewId) return `id:${event.reviewId}`;
+        return `fallback:${event?.cardId || ''}:${event?.reviewedAt || ''}:${event?.grade || ''}:${event?.responseMode || ''}`;
+    }
+
+    function mergeVocabReviewEventsJson(localRaw, remoteRaw) {
+        const local = parseVocabJson(localRaw, true);
+        const remote = parseVocabJson(remoteRaw, true);
+        if (!local || !remote) return null;
+        const merged = new Map();
+        [...local, ...remote].forEach(event => {
+            if (!event || typeof event !== 'object') return;
+            const key = reviewEventKey(event);
+            const previous = merged.get(key);
+            merged.set(key, chooseVocabCard(previous, event));
+        });
+        return JSON.stringify([...merged.values()].sort((a, b) => {
+            const timeDelta = recordTimestamp(a) - recordTimestamp(b);
+            return timeDelta || reviewEventKey(a).localeCompare(reviewEventKey(b));
+        }));
+    }
+
+    function chooseVocabCalibration(local, remote) {
+        if (!local) return remote;
+        if (!remote) return local;
+        const localTime = recordTimestamp(local);
+        const remoteTime = recordTimestamp(remote);
+        if (remoteTime !== localTime) return remoteTime > localTime ? remote : local;
+        const localSample = Number(local.sampleSize || 0);
+        const remoteSample = Number(remote.sampleSize || 0);
+        return remoteSample > localSample ? remote : local;
+    }
+
+    function calibrationKeyToReviewKey(key) {
+        const prefix = 'petbank_learning_vocab_scheduler_calibration';
+        const suffix = String(key).slice(prefix.length);
+        return `petbank_learning_vocab_review_events${suffix}`;
+    }
+
+    function deriveVocabCalibration(local, remote, mergedEvents) {
+        const source = chooseVocabCalibration(local, remote) || {};
+        const minimumReviews = Math.max(
+            1,
+            Number(local?.minimumReviews || 0),
+            Number(remote?.minimumReviews || 0),
+            20
+        );
+        const minimumTransitions = Math.max(
+            1,
+            Number(local?.minimumTransitions || 0),
+            Number(remote?.minimumTransitions || 0),
+            5
+        );
+        const validEvents = Array.isArray(mergedEvents)
+            ? mergedEvents.filter((event) => ['again', 'hard', 'good', 'easy'].includes(String(event?.grade || '').toLowerCase()))
+            : null;
+        if (!validEvents) return { ...source };
+
+        const sampleSize = validEvents.length;
+        const retained = validEvents.filter((event) => String(event.grade).toLowerCase() !== 'again').length;
+        const observedRetention = sampleSize ? retained / sampleSize : null;
+        const calibrated = sampleSize >= minimumReviews && Number.isFinite(observedRetention);
+        const baseTarget = 0.9;
+        const adjustment = calibrated
+            ? Math.max(-0.02, Math.min(0.02, (baseTarget - observedRetention) * 0.25))
+            : 0;
+        const targetRetention = Math.max(0.85, Math.min(0.97, baseTarget + adjustment));
+        const updatedAt = [local?.updatedAt, remote?.updatedAt]
+            .map((value) => ({ value: String(value || ''), time: Date.parse(String(value || '')) }))
+            .filter((entry) => Number.isFinite(entry.time))
+            .sort((a, b) => b.time - a.time)[0]?.value || source.updatedAt || '';
+        const sourceParameters = source.parameterCalibration && typeof source.parameterCalibration === 'object'
+            ? source.parameterCalibration
+            : {};
+        const sourceEbbinghaus = source.ebbinghaus && typeof source.ebbinghaus === 'object'
+            ? source.ebbinghaus
+            : {};
+        const needsRecalibration = sampleSize >= minimumReviews;
+        return {
+            version: Math.max(2, Number(local?.version || 0), Number(remote?.version || 0)),
+            algorithm: source.algorithm || 'fsrs-5',
+            calibrationMethod: source.calibrationMethod || 'fsrs-5-coordinate-descent-plus-ebbinghaus',
+            sampleSize,
+            observedRetention,
+            targetRetention,
+            calibrated,
+            confidence: sampleSize >= 50 ? 'high' : calibrated ? 'medium' : 'insufficient',
+            minimumReviews,
+            minimumTransitions,
+            parametersReady: false,
+            needsRecalibration,
+            parameterCalibration: needsRecalibration
+                ? {
+                    ...sourceParameters,
+                    fitted: false,
+                    needsRecalibration: true,
+                    sampleSize,
+                    reason: 'review-event-union-changed-after-cloud-merge'
+                }
+                : null,
+            ebbinghaus: needsRecalibration
+                ? {
+                    ...sourceEbbinghaus,
+                    fitted: false,
+                    needsRecalibration: true,
+                    sampleSize,
+                    reason: 'review-event-union-changed-after-cloud-merge'
+                }
+                : null,
+            ...(updatedAt ? { updatedAt } : {})
+        };
+    }
+
+    function mergeVocabCalibrationJson(localRaw, remoteRaw, mergedEventsRaw) {
+        const local = localRaw == null ? null : parseVocabJson(localRaw, false);
+        const remote = remoteRaw == null ? null : parseVocabJson(remoteRaw, false);
+        if ((localRaw != null && !local) || (remoteRaw != null && !remote)) return null;
+        if (!local && !remote) return null;
+        const events = mergedEventsRaw == null ? null : parseVocabJson(mergedEventsRaw, true);
+        if (mergedEventsRaw != null && !events) return null;
+        return JSON.stringify(deriveVocabCalibration(local, remote, events));
+    }
+
+    function tryAutoMergeVocabSnapshot(localPayload, remotePayload) {
+        if (!localPayload || typeof localPayload !== 'object' || Array.isArray(localPayload)) return null;
+        if (!remotePayload || typeof remotePayload !== 'object' || Array.isArray(remotePayload)) return null;
+        const keys = new Set([...Object.keys(localPayload), ...Object.keys(remotePayload)]);
+        for (const key of keys) {
+            if (isVocabSnapshotKey(key)) continue;
+            if (!Object.prototype.hasOwnProperty.call(localPayload, key)
+                || !Object.prototype.hasOwnProperty.call(remotePayload, key)
+                || localPayload[key] !== remotePayload[key]) {
+                return null;
+            }
+        }
+
+        const merged = Object.assign({}, localPayload);
+        for (const key of keys) {
+            if (!isVocabSnapshotKey(key)) continue;
+            const localRaw = localPayload[key];
+            const remoteRaw = remotePayload[key];
+            if (key === 'petbank_learning_vocab_review_events'
+                || key.startsWith('petbank_learning_vocab_review_events_')) {
+                const value = mergeVocabReviewEventsJson(localRaw, remoteRaw);
+                if (value === null) return null;
+                merged[key] = value;
+            } else if (key === 'petbank_learning_vocab_progress'
+                || key.startsWith('petbank_learning_vocab_progress_')) {
+                const value = mergeVocabProgressJson(localRaw, remoteRaw);
+                if (value === null) return null;
+                merged[key] = value;
+            } else if (key === 'petbank_learning_vocab_scheduler_calibration'
+                || key.startsWith('petbank_learning_vocab_scheduler_calibration_')) {
+                const reviewKey = calibrationKeyToReviewKey(key);
+                const value = mergeVocabCalibrationJson(localRaw, remoteRaw, merged[reviewKey]);
+                if (value === null) return null;
+                merged[key] = value;
+            } else if (!Object.prototype.hasOwnProperty.call(merged, key)) {
+                merged[key] = remoteRaw;
+            }
+        }
+        return merged;
+    }
+
+    async function autoMergeAndPush(manager, profile, localPayload, remoteSnapshot) {
+        const remoteRevision = Number(remoteSnapshot?.revision || 0);
+        const mergedPayload = tryAutoMergeVocabSnapshot(localPayload, remoteSnapshot?.payload);
+        if (!mergedPayload || !Number.isSafeInteger(remoteRevision) || remoteRevision < 1) return null;
+        const nextRevision = remoteRevision + 1;
+        try {
+            const pushed = await selfHostedApi().pushSnapshot(profile.cloudChildId, nextRevision, mergedPayload);
+            const saved = pushed?.snapshot || {};
+            const savedRevision = Number(saved.revision || nextRevision);
+            manager.applySnapshotForProfile(profile.id, mergedPayload, {
+                activate: profile.id === manager.getActiveId()
+            });
+            updateCloudProfileMeta(profile.id, savedRevision);
+            cloudSyncOutbox()?.remove(localStorage, cloudOutboxId(profile.id, profile.cloudChildId));
+            return { status: 'auto-merged', revision: savedRevision, payload: mergedPayload };
+        } catch (error) {
+            error.mergedPayload = mergedPayload;
+            error.mergedRevision = nextRevision;
+            error.remoteRevision = remoteRevision;
+            throw error;
+        }
+    }
+
     function hasSnapshotData(snapshot) {
         if (!snapshot || typeof snapshot !== 'object') return false;
         return Object.keys(snapshot).some(function (key) {
@@ -456,6 +693,22 @@
             const outboxId = cloudOutboxId(profile.id, profile.cloudChildId);
             const pending = outbox?.get(localStorage, outboxId);
             if (pending?.status === 'conflict') {
+                try {
+                    const latest = await api.latestSnapshot(profile.cloudChildId);
+                    const autoMerged = await autoMergeAndPush(this, profile, pending.payload, latest?.snapshot);
+                    if (autoMerged) return autoMerged;
+                } catch (mergeError) {
+                    if (mergeError?.mergedPayload) {
+                        queueCloudSnapshot(profile, mergeError.mergedPayload, mergeError.mergedRevision, mergeError, {
+                            status: mergeError.code === 'SNAPSHOT_REVISION_CONFLICT' ? 'conflict' : 'pending',
+                            attempts: Number(pending.attempts || 0) + 1,
+                            nextAttemptAt: mergeError.code === 'SNAPSHOT_REVISION_CONFLICT'
+                                ? 0
+                                : Date.now() + Math.min(300000, 1000 * (2 ** Math.min(Number(pending.attempts || 0) + 1, 8))),
+                            remoteRevision: mergeError.remoteRevision || pending.remoteRevision
+                        });
+                    }
+                }
                 const conflict = new Error('本地快照与云端版本冲突，需要先处理冲突再同步');
                 conflict.code = 'SNAPSHOT_REVISION_CONFLICT';
                 conflict.remoteRevision = pending.remoteRevision;
@@ -473,19 +726,48 @@
             } catch (error) {
                 if (error.code === 'SNAPSHOT_REVISION_CONFLICT') {
                     let latestRevision = Number(profile.cloudRevision || 0);
+                    let latestSnapshot = null;
+                    let mergedConflictQueued = false;
                     try {
-                        const latest = await api.latestSnapshot(profile.cloudChildId);
-                        latestRevision = Number(latest?.snapshot?.revision || 0);
+                        latestSnapshot = await api.latestSnapshot(profile.cloudChildId);
+                        latestRevision = Number(latestSnapshot?.snapshot?.revision || 0);
                         updateCloudProfileMeta(profile.id, latestRevision);
                     } catch (latestError) {
                         console.warn('[ProfileManager] 无法读取冲突快照的远端版本', latestError);
                     }
-                    queueCloudSnapshot(profile, snapshot, revision, error, {
-                        status: 'conflict',
-                        attempts: Number(pending?.attempts || 0) + 1,
-                        nextAttemptAt: 0,
-                        remoteRevision: latestRevision
-                    });
+                    if (latestSnapshot?.snapshot?.payload) {
+                        try {
+                            const autoMerged = await autoMergeAndPush(this, profile, snapshot, latestSnapshot.snapshot);
+                            if (autoMerged) return autoMerged;
+                        } catch (mergeError) {
+                            if (mergeError?.mergedPayload) {
+                                queueCloudSnapshot(profile, mergeError.mergedPayload, mergeError.mergedRevision, mergeError, {
+                                    status: mergeError.code === 'SNAPSHOT_REVISION_CONFLICT' ? 'conflict' : 'pending',
+                                    attempts: Number(pending?.attempts || 0) + 1,
+                                    nextAttemptAt: mergeError.code === 'SNAPSHOT_REVISION_CONFLICT'
+                                        ? 0
+                                        : Date.now() + Math.min(300000, 1000 * (2 ** Math.min(Number(pending?.attempts || 0) + 1, 8))),
+                                    remoteRevision: mergeError.remoteRevision || latestRevision
+                                });
+                                mergedConflictQueued = mergeError.code === 'SNAPSHOT_REVISION_CONFLICT';
+                                if (mergeError.code !== 'SNAPSHOT_REVISION_CONFLICT') {
+                                    return {
+                                        queued: true,
+                                        revision: mergeError.mergedRevision,
+                                        reason: mergeError.code || 'sync-error'
+                                    };
+                                }
+                            }
+                        }
+                    }
+                    if (!mergedConflictQueued) {
+                        queueCloudSnapshot(profile, snapshot, revision, error, {
+                            status: 'conflict',
+                            attempts: Number(pending?.attempts || 0) + 1,
+                            nextAttemptAt: 0,
+                            remoteRevision: latestRevision
+                        });
+                    }
                 } else {
                     queueCloudSnapshot(profile, snapshot, revision, error, {
                         attempts: Number(pending?.attempts || 0) + 1,

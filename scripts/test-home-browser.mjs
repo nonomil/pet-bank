@@ -7,7 +7,15 @@ const homeUrl = new URL('app', baseUrl).href;
 const browser = await chromium.launch(browserLaunchOpts());
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 const page = await context.newPage();
+await page.addInitScript(() => { window.__PETBANK_TEST_MODE__ = true; });
 const errors = [];
+const showcaseStyleRequests = [];
+const showcaseScriptRequests = [];
+
+page.on('request', (request) => {
+    if (request.url().includes('/css/showcase.css')) showcaseStyleRequests.push(request.url());
+    if (request.url().includes('/js/showcase.js')) showcaseScriptRequests.push(request.url());
+});
 
 page.on('pageerror', (error) => errors.push(`pageerror: ${String(error?.message || error)}`));
 page.on('console', (message) => {
@@ -46,7 +54,11 @@ try {
     await page.waitForFunction(() => document.body.classList.contains('app-ready'), { timeout: 20000 });
     await assertActivePage('map');
     assert.match(await page.title(), /成长伙伴/);
-    assert.equal(new URL(await page.url()).port, '7000', 'home should be opened on port 7000');
+    assert.equal(
+        new URL(await page.url()).port,
+        new URL(baseUrl).port,
+        'home should be opened on the configured preview port'
+    );
     await page.waitForSelector('#page-map .home-demo-workspace', { state: 'attached', timeout: 20000 });
     assert.equal(await page.locator('#page-map .home-demo-sidebar').count(), 1, 'home should render the demo-style left sidebar');
     assert.equal(await page.locator('#page-map .home-demo-focus-grid').count(), 1, 'home should render the demo-style main focus grid');
@@ -102,6 +114,8 @@ try {
     }
 
     await page.waitForSelector('#showcaseTrack .showcase-slide', { state: 'attached', timeout: 20000 });
+    assert.equal(showcaseStyleRequests.length, 1, `home should fetch the showcase stylesheet once: ${JSON.stringify(showcaseStyleRequests)}`);
+    assert.equal(showcaseScriptRequests.length, 1, `home should fetch the showcase script once: ${JSON.stringify(showcaseScriptRequests)}`);
     const showcaseSlides = page.locator('#showcaseTrack .showcase-slide');
     const showcaseDots = page.locator('#showcaseDots .showcase-dot');
     assert.equal(await showcaseSlides.count(), 7, 'home showcase should expose seven clickable primary columns');

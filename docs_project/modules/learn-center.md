@@ -109,7 +109,7 @@ catalog.json → pack manifest.json → module json → lesson (content)
 2. 写入 `petbank_learning_rewards`，包含课时奖励、每日 bundle 和资料包连续奖励；失败会回滚本次学习进度，不发积分。
 3. 通过 `PetBankPoints.add()` 发放本次合计积分；积分 API 不可用时恢复本次修改前的进度和奖励记录，并返回失败。
 
-完成按钮只有收到 `persisted: true` 才显示成功状态。英语词卡由 `EnglishVocabProgress` 管理显式 Profile 键：`record()` 返回 `persisted: false` 时，界面只提示重试，不推进词卡；里程碑兑换券写入失败时不会渲染为已获得。词卡进度使用轻量间隔重复：`again` 10 分钟重新到期，`hard` 12 小时重新到期，`good` 首次 1 天、随后 3/7/14/30/60 天递进，`easy` 使用更长的受控间隔。每张卡记录 `lastGrade`、`hintUsed`、`responseMode`、`lastResponseMs`、`lapses`、`ease`、`intervalDays` 和 `dueAt`；旧的布尔 `record(cardId, isCorrect)` 调用仍兼容。保存成功会请求 Profile 云同步防抖，未绑定账户时仍可离线运行。
+完成按钮只有收到 `persisted: true` 才显示成功状态。英语词卡由 `EnglishVocabProgress` 管理显式 Profile 键：`record()` 返回 `persisted: false` 或 `eventPersisted: false` 时，界面只提示重试，不推进词卡；同一 `reviewId` 重试不会重复增加计数；里程碑兑换券写入失败时不会渲染为已获得。词卡使用 FSRS-5 官方 19 参数，并保留儿童友好的学习步骤：`Again` 10 分钟重新到期，`Hard` 12 小时重新到期，前两次 `Good` 为 1 天和 3 天，毕业后按稳定性和目标保持率计算间隔，`Easy` 使用受控加成。每张卡记录 `schedulerVersion`、`stabilityDays`、`difficulty`、`retrievability`、`lastGrade`、`hintUsed`、`responseMode`、`lastResponseMs`、`lastReviewId`、`lapses`、`intervalDays` 和 `dueAt`；旧 SM-2 字段读取时迁移。最近 365 条复习事件保存到 `petbank_learning_vocab_review_events_{profileId}`，用于近 7 日复习报告、FSRS 校准和幂等重试；`calibrate()` 在 20 条有效事件且至少 5 次同卡复习转移后拟合 19 个 FSRS-5 权重和独立的艾宾浩斯指数衰减参数，样本不足时不改目标保持率或启用拟合参数，云端词卡事件合并后会标记需要重新校准。保存成功会请求 Profile 云同步防抖，未绑定账户时仍可离线运行。
 
 ### 课时类型渲染路由
 
@@ -155,8 +155,8 @@ renderLessonBody (pack, module, lesson, showPinyin) → :2733
 - 完整旁白可由 `scripts/assemble-minecraft-audio-artifact.mjs` 生成独立版本包；只有配置 `window.PetBankConfig.minecraftAudioBaseUrl` 后，Minecraft 词库页才加载根 manifest，再按 starter/band 加载选择索引，具体 OGG 按播放动作取用，并通过 `js/minecraft-vocab-audio.js` 映射播放。CDN 不可用时保持本地 starter，band 仅在异常时浏览器语音回退。
 - 远征首页提供累积式学习阶段选择，默认 `kindergarten`：幼儿园、幼小衔接、小学低年级、Minecraft 初级、完整词库。选择按 Profile 写入 `petbank_minecraft_vocab_level_v1_{profileId}`；会话快照同时记录 `levelId`，切换阶段不会错误恢复当天旧队列。
 - 营地节点声明 `minVocabLevel`：草原小径从幼儿园开放，村庄门口需要幼小衔接，深层矿洞需要小学低年级，下界与末影龙路线需要 Minecraft 初级；阶段不足时地图节点显示为锁定，不会把高级词卡塞进默认远征。
-- 每次会话最多安排 2 个到期复习位、5 个新词位、3 个主动回忆位和 1 个场景句位，共 11 步；未到期的学习中/已掌握卡不会提前进入复习位。没有到期复习卡时，用新词补足热身位，不伪造词卡掌握状态。
-- `MinecraftVocabSession` 负责 Profile 会话快照、队列和完成判定；`MinecraftVocabLoader` 负责分片请求、Promise 缓存和卡片去重；`MinecraftVocabPage` 负责页面渲染、双语故事、音频回退和离页清理。页面由 `runtime-loader.js` 按 `minecraft-vocab` bundle 加载。
+- 日常会话最多安排 2 个到期复习位、5 个新词位、3 个主动回忆位和 1 个场景句位，共 11 步；未到期的学习中/已掌握卡不会提前进入复习位。复习报告可另起 review-only 会话，完整取出当前阶段全部到期卡，不被日常 2 张限制挤出。
+- `MinecraftVocabSession` 负责 Profile 会话快照、日常/review-only 队列和完成判定；`MinecraftVocabLoader` 负责分片请求、Promise 缓存和卡片去重；`MinecraftVocabPage` 负责页面渲染、双语故事、复习报告、响应时长、音频回退和离页清理。页面由 `runtime-loader.js` 按 `minecraft-vocab` bundle 加载。
 - 完成后只通过 `GameRewardReceipts` 发放 `source=minecraft-vocab`、`eventId=session:<localDate>` 的 10 成长分，重复完成返回 duplicate，不直接写积分键。
 - 离开页面时必须执行 `MinecraftVocabPage.stop()`；媒体播放、页面 timer 和探索桥接上下文不得跨页面继续运行。营地状态使用 `petbank_minecraft_expedition_state_v2_{profileId}`，阶段选择使用 `petbank_minecraft_vocab_level_v1_{profileId}` 和 `petbank_minecraft_vocab_band_v1_{profileId}`，由现有 Profile 快照策略隔离。
 - `MinecraftVocabExplorationBridge` 只传递区域、能力和返回目标。它支持探索故事节点打开远征并返回原探索宿主，不接管 `#page-explore`，也不改写通用 `BattleEngine` 伤害公式。当前只接入方块故事的一个节点作为验证样板。
@@ -164,7 +164,8 @@ renderLessonBody (pack, module, lesson, showPinyin) → :2733
 
 #### 当前未实现边界
 
-- 没有离线 outbox、跨设备复杂合并或多人联机；现有孩子端玩法仍以本地 Profile 为事实来源。
+- 词卡进度和 review events 已支持跨设备安全自动合并；积分、宠物、奖励等非词卡状态仍要求人工选择，避免静默覆盖。
+- 没有多人联机，也没有所有业务状态的通用 CRDT/复杂合并；现有孩子端玩法仍以本地 Profile 为事实来源。
 - 没有把完整 Anki 工作台迁移到主站，也没有把小学中年级、高年级课程全部展开为远征章节。
 - 末影龙是当前营地路线的终点内容和能力验证目标，不代表已经实现完整 Minecraft 世界模拟或实时联机战斗。
 

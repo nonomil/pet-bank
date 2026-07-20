@@ -73,8 +73,10 @@ assert.match(pageSource, /data-prototype="learning-arcade-game"/, 'page should e
 assert.match(pageSource, /GAME_CONTENT_URL/, 'game should load project-local content JSON');
 assert.match(pageSource, /learning-games-content\.json/, 'page should reference separated game content JSON');
 assert.match(pageSource, /assets\/generated\/english-typing-unified\.json/, 'page should load the unified typing pack');
-assert.match(html, /minecraft-typing-expanded\.js\?v=graded-vocab-v1/, 'directly opened index.html should preload the graded vocab data script');
-assert.match(html, /english-typing-unified\.js\?v=english-curriculum-v1/, 'directly opened index.html should preload the unified curriculum data script');
+assert.match(js, /FILE_TYPING_FALLBACK_SCRIPTS/, 'runtime should define the local-file typing fallback script list');
+assert.match(js, /loadFileFallbackScripts\(FILE_TYPING_FALLBACK_SCRIPTS\)/, 'runtime should load the typing fallback only when the game opens');
+assert.match(js, /location\.protocol\s*===\s*['"]file:/, 'local-file fallback should be protocol-gated');
+assert.doesNotMatch(html, /<script\s+src=["']\.\/assets\/generated\/(?:minecraft-typing-expanded|english-typing-unified)\.js/i, 'HTML should not preload deferred vocabulary scripts');
 assert.match(js, /LearningArcadeTypingUnified/, 'runtime should fall back to the unified preloaded vocab script when local JSON fetch is blocked');
 assert.match(readme, /sync_external_minecraft_vocab\.cjs[^]*单词库_分级/, 'README should document the formal graded vocab sync path');
 assert.doesNotMatch(js, /data\/learn\/packs/, 'game runtime should not read formal learning-pack modules directly');
@@ -203,9 +205,9 @@ assert.ok(content.homeNotes.some(tip => /愿意|多玩|熟悉键盘/.test(tip)),
 assert.deepEqual(
   content.games.map(game => game.image),
   [
-    './assets/generated/home-card-word-shooter.png',
-    './assets/generated/home-card-word-cannon.png',
-    './assets/generated/home-card-pinyin-snake.png'
+    './assets/generated/home-card-word-shooter.webp',
+    './assets/generated/home-card-word-cannon.webp',
+    './assets/generated/home-card-pinyin-snake.webp'
   ],
   'home cards should use the Agnes-generated game option images'
 );

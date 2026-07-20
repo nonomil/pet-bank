@@ -26,7 +26,7 @@ body {
   color: var(--ink);
   background:
     linear-gradient(180deg, rgba(255, 253, 247, 0.72), rgba(246, 241, 232, 0.94)),
-    url("./assets/generated/learning-arcade-stage.png") center top / cover fixed no-repeat,
+    url("./assets/generated/learning-arcade-stage.webp") center top / cover fixed no-repeat,
     url("../../assets/ui/playground-bg.webp") center top / cover fixed no-repeat,
     var(--paper);
 }

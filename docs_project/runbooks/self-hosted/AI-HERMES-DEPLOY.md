@@ -8,6 +8,10 @@
 
 > 本次 Minecraft 单词远征的专用验收见 [MINECRAFT-VOCAB-LEARNING-HERMES.md](./MINECRAFT-VOCAB-LEARNING-HERMES.md)，内容补全和独立 Anki 边界也必须执行该手册。
 
+> 本次 FSRS、词库证据和词卡跨设备合并的专项验收见 [MINECRAFT-VOCAB-SYNC-HERMES.md](./MINECRAFT-VOCAB-SYNC-HERMES.md)。
+
+> Hermes 不得把“默认 FSRS 参数”“目标保持率校准”或“Oxford CEFR 交叉证据”写成“已完成儿童年龄词表认证”。逐词年龄认证仍需 Cambridge 官方 YLE 词表快照；当前运行字段对此保持 `curriculum-proxy` 边界。
+
 ## 不可违反的规则
 
 1. 不删除 `/srv/pet-bank/shared`。

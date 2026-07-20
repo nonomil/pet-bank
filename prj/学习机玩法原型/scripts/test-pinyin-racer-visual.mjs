@@ -185,8 +185,7 @@ async function main() {
     assert.ok(before.checkpointArch?.width > 0 && before.checkpointArch?.height > 0, 'checkpoint arch PNG should load');
     assert.match(before.checkpointArch.src, /pinyin-racer-assets\/checkpoint_arch\.png/, 'checkpoint arch should use the prepared transparent racer asset');
     assert.ok(before.sign?.width > 0 && before.sign?.height > 0, 'road sign PNG should load');
-    const expectedTargetCount = { basic: 4, intermediate: 5, full: 6 }[before.difficulty] || 4;
-    assert.ok(before.targetCount >= expectedTargetCount, `pinyin racing should show at least ${expectedTargetCount} moving options at the selected difficulty`);
+    assert.equal(before.targetCount, 3, 'pinyin racing should keep three readable moving options at the selected difficulty');
     assert.ok(before.targetLabels.every(label => label && label !== before.correctTarget?.word), 'pinyin facility labels should remain instructional without revealing the answer text');
     assert.ok(before.targetRect?.width <= 150, 'pinyin option cards should stay child-readable without covering the road');
     assert.ok(before.targetRect?.height <= 86, 'pinyin option cards should remain compact');
@@ -309,7 +308,7 @@ async function main() {
     assert.ok(new Set(segmentTrace.map(item => item.segment)).size >= 1, 'a selected map should still provide a playable route');
     assert.ok(segmentTrace.every(item => item.route), 'each segment should expose a correct or recovery route');
 
-    for (const [difficulty, expectedCount] of [['intermediate', 5], ['full', 6]]) {
+    for (const difficulty of ['intermediate', 'full']) {
       await page.evaluate(level => {
         document.querySelector(`[data-word-difficulty="${level}"]`)?.click();
       }, difficulty);
@@ -320,7 +319,7 @@ async function main() {
         targets: [...document.querySelectorAll('.cannon-target')].map(node => node.getBoundingClientRect().toJSON())
       }));
       assert.equal(difficultyState.difficulty, difficulty, `${difficulty} difficulty should be active`);
-      assert.ok(difficultyState.count >= expectedCount, `${difficulty} difficulty should show at least ${expectedCount} moving options`);
+      assert.equal(difficultyState.count, 3, `${difficulty} difficulty should keep three readable moving options`);
       assert.ok(difficultyState.targets.every((rect, index, all) => all.every((other, otherIndex) => index === otherIndex || !overlaps(rect, other))), `${difficulty} pinyin cards should stay separated`);
     }
 
@@ -347,7 +346,7 @@ async function main() {
       });
       const mobileOverlaps = (a, b) => !!a && !!b && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
       assert.ok(mobileState.stage?.width >= 350, 'mobile racing stage should use almost the full screen width');
-      assert.ok(mobileState.targets.length >= 6, 'mobile full difficulty should keep the expanded target field');
+      assert.equal(mobileState.targets.length, 3, 'mobile full difficulty should keep three readable moving options');
       assert.equal(mobileState.controls.length, 4, 'mobile racing stage should keep four-direction touch controls');
       assert.ok(mobileState.controls.every(rect => rect.width >= 56 && rect.height >= 50), 'mobile touch controls should remain large enough for a child');
       assert.ok(mobileState.controls.every(rect => rect.top >= mobileState.stage.top && rect.bottom <= mobileState.stage.bottom), 'mobile touch controls should remain inside the visible stage');

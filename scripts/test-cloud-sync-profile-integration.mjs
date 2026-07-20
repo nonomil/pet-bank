@@ -186,6 +186,82 @@ async function testConflictCanUseRemoteSnapshot() {
     assert.ok(window.location.replaced, 'using the remote snapshot reloads the app shell');
 }
 
+async function testVocabConflictAutoMergesAcrossDevices() {
+    let pushes = 0;
+    const api = {
+        isSignedIn: () => true,
+        listChildren: async () => ({ children: [] }),
+        pushSnapshot: async (_childId, revision, payload) => {
+            pushes += 1;
+            if (pushes === 1) {
+                const error = new Error('revision conflict');
+                error.code = 'SNAPSHOT_REVISION_CONFLICT';
+                throw error;
+            }
+            assert.equal(revision, 5);
+            assert.ok(payload.petbank_learning_vocab_progress_profile_a.includes('block'));
+            assert.ok(payload.petbank_learning_vocab_progress_profile_a.includes('world'));
+            const calibration = JSON.parse(payload.petbank_learning_vocab_scheduler_calibration_profile_a);
+            assert.equal(calibration.sampleSize, 2, 'calibration should use the deduplicated review union');
+            assert.equal(calibration.observedRetention, 1, 'calibration retention should be recomputed from merged reviews');
+            assert.equal(calibration.calibrated, false, 'calibration should remain insufficient below the review threshold');
+            assert.equal(calibration.parametersReady, false, 'merged calibration must not claim fitted parameters');
+            return { snapshot: { revision, payload } };
+        },
+        latestSnapshot: async () => ({
+            snapshot: {
+                revision: 4,
+                payload: {
+                    petbank_points: '12',
+                    petbank_learning_vocab_progress_profile_a: JSON.stringify({
+                        stone: { seen: 3, correct: 3, wrong: 0, status: 'mastered', updatedAt: '2026-07-21T08:00:00.000Z' },
+                        world: { seen: 1, correct: 1, wrong: 0, status: 'learning', updatedAt: '2026-07-21T08:00:00.000Z' }
+                    }),
+                    petbank_learning_vocab_review_events_profile_a: JSON.stringify([
+                        { reviewId: 'remote-review', cardId: 'world', grade: 'good', reviewedAt: '2026-07-21T08:00:00.000Z' }
+                    ]),
+                    petbank_learning_vocab_scheduler_calibration_profile_a: JSON.stringify({
+                        version: 1,
+                        algorithm: 'fsrs-5',
+                        sampleSize: 1,
+                        observedRetention: 1,
+                        targetRetention: 0.9,
+                        calibrated: false,
+                        confidence: 'insufficient',
+                        minimumReviews: 20,
+                        updatedAt: '2026-07-21T08:00:01.000Z'
+                    })
+                }
+            }
+        })
+    };
+    const { profiles, outbox, storage } = createHarness(api);
+    storage.setItem('petbank_learning_vocab_progress_profile_a', JSON.stringify({
+        stone: { seen: 2, correct: 2, wrong: 0, status: 'learning', updatedAt: '2026-07-20T08:00:00.000Z' },
+        block: { seen: 1, correct: 1, wrong: 0, status: 'learning', updatedAt: '2026-07-20T08:00:00.000Z' }
+    }));
+    storage.setItem('petbank_learning_vocab_review_events_profile_a', JSON.stringify([
+        { reviewId: 'local-review', cardId: 'block', grade: 'good', reviewedAt: '2026-07-20T08:00:00.000Z' }
+    ]));
+    storage.setItem('petbank_learning_vocab_scheduler_calibration_profile_a', JSON.stringify({
+        version: 1,
+        algorithm: 'fsrs-5',
+        sampleSize: 1,
+        observedRetention: 1,
+        targetRetention: 0.9,
+        calibrated: false,
+        confidence: 'insufficient',
+        minimumReviews: 20,
+        updatedAt: '2026-07-20T08:00:01.000Z'
+    }));
+
+    const result = await profiles.syncActiveToCloud();
+    assert.equal(result.status, 'auto-merged');
+    assert.equal(pushes, 2);
+    assert.equal(outbox.get(storage, 'profile-a:child-a'), null);
+    assert.equal(profiles.get('profile-a').cloudRevision, 5);
+}
+
 async function testConflictCanKeepLocalAsNextRevision() {
     let pushedRevision = 0;
     const api = {
@@ -227,6 +303,7 @@ await testRetrySuccessRemovesEntryAndUpdatesRevision();
 await testStalePendingRevisionAdvancesFromKnownCloudRevision();
 await testConflictRemainsPersistedWhenRemoteReadFails();
 await testConflictCanUseRemoteSnapshot();
+await testVocabConflictAutoMergesAcrossDevices();
 await testConflictCanKeepLocalAsNextRevision();
 await testConflictCanBeExportedWithoutMutation();
 

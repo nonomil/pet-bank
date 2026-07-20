@@ -52,6 +52,8 @@ const PetSystem = (function () {
     let SPECIES = [...SPECIES_FALLBACK];
     let PET_DB_LOADED = false;
     let PET_DB_LOAD_PROMISE = null;
+    let PET_RUNTIME_INDEX_LOADED = false;
+    let PET_RUNTIME_INDEX_LOAD_PROMISE = null;
     let ALL_SERIES = {};
 
     // 当前宠物状态
@@ -151,6 +153,21 @@ const PetSystem = (function () {
         return true;
     }
 
+    function getCurrentSpeciesData() {
+        if (!state.species) return null;
+        const catalogSpecies = SPECIES.find(s => s.id === state.species) || null;
+        const savedSpecies = state.species_data && state.species_data.id === state.species
+            ? state.species_data
+            : null;
+        if (!catalogSpecies) return savedSpecies;
+        if (!savedSpecies) return catalogSpecies;
+        return Object.assign({}, savedSpecies, catalogSpecies, {
+            imageUrl: catalogSpecies.imageUrl || savedSpecies.imageUrl || '',
+            imageStages: catalogSpecies.imageStages || savedSpecies.imageStages || null,
+            imageStyle: catalogSpecies.imageStyle || savedSpecies.imageStyle || ''
+        });
+    }
+
     // 获取当前阶段
     function getCurrentStage() {
         let current = STAGES[0];
@@ -171,7 +188,7 @@ const PetSystem = (function () {
     // 根据当前阶段获取宠物图片URL
     function getCurrentStageImage() {
         if (!state.species) return null;
-        const species = SPECIES.find(s => s.id === state.species);
+        const species = getCurrentSpeciesData();
         if (!species || !species.imageStages) return species.imageUrl || null;
         const idx = getEvolutionStageIndex();
         const key = String(idx);
@@ -181,7 +198,7 @@ const PetSystem = (function () {
     // 获取当前阶段 emoji
     function getStageEmoji() {
         if (!state.species) return '🥚';
-        const species = SPECIES.find(s => s.id === state.species);
+        const species = getCurrentSpeciesData();
         if (!species) return '🥚';
         // Lv 1-2: 蛋；Lv 3-4: 物种 emoji 缩小版；Lv 5+: 完整
         if (state.level < 3) return '🥚';
@@ -494,7 +511,7 @@ const PetSystem = (function () {
         return Object.assign({}, state, {
             stage: getCurrentStage(),
             stage_emoji: getStageEmoji(),
-            species_data: SPECIES.find(s => s.id === state.species),
+            species_data: getCurrentSpeciesData(),
             total_atk: getTotalAtk(),
             total_max_hp: getTotalMaxHp()
         });
@@ -553,15 +570,52 @@ const PetSystem = (function () {
         });
     }
 
-    // 加载外部宠物数据库（data/pets.json）
+    function resolveJsonAsset(path) {
+        return typeof window.resolvePetBankAssetUrl === 'function'
+            ? window.resolvePetBankAssetUrl(path)
+            : path;
+    }
+
+    function fetchPetJson(path) {
+        if (window.PetBankAssetLoader && typeof window.PetBankAssetLoader.fetchJson === 'function') {
+            return window.PetBankAssetLoader.fetchJson(path);
+        }
+        return fetch(resolveJsonAsset(path)).then((resp) => {
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            return resp.json();
+        });
+    }
+
+    // 探索/地图只需要战斗与展示元数据，不应阻塞在完整图鉴上。
+    async function loadPetRuntimeIndex() {
+        if (PET_DB_LOADED || PET_RUNTIME_INDEX_LOADED) return true;
+        if (PET_RUNTIME_INDEX_LOAD_PROMISE) return PET_RUNTIME_INDEX_LOAD_PROMISE;
+        PET_RUNTIME_INDEX_LOAD_PROMISE = (async function() {
+            try {
+                const db = await fetchPetJson('data/pets-runtime-index.json');
+                if (Array.isArray(db.flat) && db.flat.length > SPECIES_FALLBACK.length) {
+                    SPECIES = normalizeSpeciesMedia(db.flat);
+                    PET_RUNTIME_INDEX_LOADED = true;
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.warn('[PetDB] Failed to load pets-runtime-index.json:', e);
+                return false;
+            } finally {
+                if (!PET_RUNTIME_INDEX_LOADED) PET_RUNTIME_INDEX_LOAD_PROMISE = null;
+            }
+        })();
+        return PET_RUNTIME_INDEX_LOAD_PROMISE;
+    }
+
+    // 加载外部完整宠物数据库（data/pets.json），供图鉴/选择器/卡牌使用。
     async function loadPetDB() {
         if (PET_DB_LOADED) return true;
         if (PET_DB_LOAD_PROMISE) return PET_DB_LOAD_PROMISE;
         PET_DB_LOAD_PROMISE = (async function() {
             try {
-                const resp = await fetch(window.resolvePetBankAssetUrl ? window.resolvePetBankAssetUrl('data/pets.json') : 'data/pets.json', { priority: 'high' });
-                if (!resp.ok) return false;
-                const db = await resp.json();
+                const db = await fetchPetJson('data/pets.json');
                 if (db.flat && db.flat.length > SPECIES_FALLBACK.length) {
                     SPECIES = normalizeSpeciesMedia(db.flat);
                     ALL_SERIES = db.series || {};
@@ -624,7 +678,7 @@ const PetSystem = (function () {
         equip, unequip, addExploration, addWin, getState, getAllSpecies,
         getTotalAtk, getTotalMaxHp, getTotalDef, getTotalSpd,
         getAllSpeciesBySeries, getSpeciesByRarity, getRarityConfig, getAllSeries,
-        isDBLoaded, loadPetDB,
+        isDBLoaded, loadPetDB, loadPetRuntimeIndex,
         // 战斗深化
         loadSkills, getSkillsData, getSkill, getSkills,
         getCooldown, startCooldown, tickCooldowns, canUseSkill,

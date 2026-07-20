@@ -36,7 +36,7 @@
 | 本地 profile/复盘 | [social-household.md](modules/social-household.md) | `js/profiles.js`、`js/family-review.js` |
 | 自托管后端边界 | [cloud-sync.md](modules/cloud-sync.md) | `prj/petbank-server/` |
 
-`social-household.md` 和 `cloud-sync.md` 区分当前已接入的账号/家庭/孩子管理、基础快照生命周期和 outbox，与尚未实现的自动多端合并及好友/社交能力；不要把其中任一层级混写成“完整云同步已上线”。
+`social-household.md` 和 `cloud-sync.md` 区分当前已接入的账号/家庭/孩子管理、基础快照生命周期和 outbox；词卡进度/review events 已有受限自动合并，但积分/宠物等通用业务的自动多端合并及好友/社交能力仍未实现。不要把其中任一层级混写成“完整云同步已上线”。
 
 ## 数据与运行
 

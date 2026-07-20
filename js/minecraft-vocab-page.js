@@ -58,6 +58,9 @@
     let selectedBandId = 'minecraft-core';
     let pageGeneration = 0;
     let selectionRequestId = 0;
+    let actionInFlight = false;
+    let activeTaskKey = '';
+    let taskStartedAtMs = 0;
 
     function isCurrentGeneration(generation) {
         return mounted && generation === pageGeneration;
@@ -197,12 +200,44 @@
         return result || { total: activeCards.length, new: activeCards.length, learning: 0, mastered: 0, due: 0 };
     }
 
+    function reviewCards() {
+        return selectedRegionId ? cardsForRegion(selectedRegionId) : cardsForLevel();
+    }
+
+    function reviewReport() {
+        const activeCards = reviewCards();
+        const result = progressApi()?.reviewStats?.(activeCards, { days: 7 });
+        return result || {
+            days: 7,
+            totalReviews: 0,
+            correct: 0,
+            wrong: 0,
+            accuracy: 0,
+            due: 0,
+            new: activeCards.length,
+            learning: 0,
+            mastered: 0,
+            daily: Array.from({ length: 7 }, () => ({ date: '', reviews: 0, correct: 0, wrong: 0, accuracy: 0 })),
+            byMode: {},
+            weakCards: [],
+            events: []
+        };
+    }
+
     function cardForTask(task) {
         return cards().find(card => card.id === task?.cardId) || null;
     }
 
     function currentTask() {
         return state?.queue?.find(item => !state.completed.includes(item.cardId)) || null;
+    }
+
+    function ensureTaskTimer(task) {
+        const key = task ? `${state?.sessionId || state?.localDate || ''}:${task.cardId}:${task.mode}` : '';
+        if (key !== activeTaskKey) {
+            activeTaskKey = key;
+            taskStartedAtMs = Date.now();
+        }
     }
 
     function currentRegion() {
@@ -289,9 +324,19 @@
 
     function fallbackChoices(card) {
         const words = activeQueueCards().map(item => item.word).filter(Boolean);
-        return [...new Set([card?.word, ...(card?.distractors || []), ...words])]
+        const choices = [...new Set([card?.word, ...(card?.distractors || []), ...words])]
             .filter(Boolean)
             .slice(0, 4);
+        if (choices.length > 1 && card?.word && choices[0] === card.word) {
+            let hash = 2166136261;
+            for (const character of String(card.id || card.word)) {
+                hash ^= character.charCodeAt(0);
+                hash = Math.imul(hash, 16777619);
+            }
+            const targetIndex = 1 + ((hash >>> 0) % (choices.length - 1));
+            [choices[0], choices[targetIndex]] = [choices[targetIndex], choices[0]];
+        }
+        return choices;
     }
 
     function stageLabel(mode) {
@@ -344,10 +389,11 @@
                     <i data-lucide="sparkles" aria-hidden="true"></i>
                     <span data-mv-progress>${completedCount()} / ${state?.queue?.length || 11}</span>
                     <small>进度</small>
-                </button>` : `<div class="mv-points-badge" aria-label="今日完成任务">
-                    <i data-lucide="sparkles" aria-hidden="true"></i>
-                    <span data-mv-progress>${completedCount()} / ${state?.queue?.length || 11}</span>
-                </div>`}
+                </button>` : view === 'review' ? `<div class="mv-points-badge" aria-label="复习报告">
+                    <i data-lucide="bar-chart-3" aria-hidden="true"></i><small>复习报告</small>
+                </div>` : `<button class="mv-points-badge" type="button" data-mv-open-review aria-label="查看词卡复习报告" title="查看词卡复习报告">
+                    <i data-lucide="bar-chart-3" aria-hidden="true"></i><small>复习报告</small>
+                </button>`}
             </header>
         `;
     }
@@ -720,6 +766,7 @@
             `;
         }
         const card = cardForTask(task) || {};
+        ensureTaskTimer(task);
         const taskIndex = (state.queue || []).findIndex(item => item.cardId === task.cardId) + 1;
         const isQuestion = ['recall', 'scene'].includes(task.mode);
         return `
@@ -738,6 +785,55 @@
                         ${!isQuestion && flipped ? `<button class="mv-secondary-button mv-grade-button" type="button" data-mv-self-assess="unknown" data-mv-grade="again"><i data-lucide="rotate-ccw" aria-hidden="true"></i><span>再练</span></button><button class="mv-secondary-button mv-grade-button" type="button" data-mv-self-assess="hard" data-mv-grade="hard"><i data-lucide="help-circle" aria-hidden="true"></i><span>有点难</span></button><button class="mv-primary-button mv-grade-button" type="button" data-mv-self-assess="known" data-mv-grade="good"><i data-lucide="check" aria-hidden="true"></i><span>记住了</span></button><button class="mv-primary-button mv-grade-button" type="button" data-mv-self-assess="easy" data-mv-grade="easy"><i data-lucide="sparkles" aria-hidden="true"></i><span>太简单</span></button>` : ''}
                     </div>
                 </section>
+                </section>
+            </main>
+        `;
+    }
+
+    function renderReview() {
+        const report = reviewReport();
+        const modes = [
+            ['review', '热身复习'],
+            ['new', '新词输入'],
+            ['recall', '主动回忆'],
+            ['scene', '场景句']
+        ];
+        const maxDailyReviews = Math.max(1, ...report.daily.map(day => Number(day.reviews || 0)));
+        return `
+            ${renderHeader('词卡复习报告', 'Minecraft 单词 / 复习记录')}
+            <main class="mv-main">
+                <section class="mv-review-panel" data-mv-review aria-labelledby="mvReviewTitle">
+                    <div class="mv-review-heading">
+                        <div><span class="mv-kicker">Profile 复习记录 · 近 7 天</span><h2 id="mvReviewTitle">看见记忆正在变牢</h2><p>到期卡优先，先回忆再看答案；这里的记录只属于当前孩子档案。</p></div>
+                        <button class="mv-secondary-button" type="button" data-mv-review-back><i data-lucide="map" aria-hidden="true"></i><span>回到远征</span></button>
+                    </div>
+                    <div class="mv-review-metrics" aria-label="词卡复习汇总">
+                        <div class="mv-review-metric is-due"><span>现在到期</span><strong data-mv-review-due>${Number(report.due || 0)}</strong><small>张卡可以复习</small></div>
+                        <div class="mv-review-metric"><span>近 7 天复习</span><strong>${Number(report.totalReviews || 0)}</strong><small>次回答</small></div>
+                        <div class="mv-review-metric"><span>回忆正确率</span><strong>${Number(report.accuracy || 0)}%</strong><small>${Number(report.correct || 0)} 对 · ${Number(report.wrong || 0)} 次再练</small></div>
+                        <div class="mv-review-metric"><span>已掌握</span><strong>${Number(report.mastered || 0)}</strong><small>张词卡</small></div>
+                    </div>
+                    <div class="mv-review-actions">
+                        <button class="mv-primary-button" type="button" data-mv-review-start ${report.due > 0 ? '' : 'disabled'}><i data-lucide="refresh-cw" aria-hidden="true"></i><span>${report.due > 0 ? `复习全部到期卡 · ${report.due} 张` : '暂无到期卡'}</span></button>
+                        <span>${report.due > 0 ? '完成后会重新安排下一次复习时间。' : '新的到期卡出现后，这里会变成可点击入口。'}</span>
+                    </div>
+                    <div class="mv-review-section">
+                        <div class="mv-review-section-head"><div><span class="mv-kicker">复习节奏</span><h3>每天都有一点进展</h3></div><span>7 日</span></div>
+                        <div class="mv-review-days" aria-label="近 7 日复习量">
+                            ${report.daily.map(day => `<div class="mv-review-day" data-mv-review-day title="${escapeHtml(day.date)}：${Number(day.reviews || 0)} 次，正确率 ${Number(day.accuracy || 0)}%"><span>${escapeHtml(String(day.date || '').slice(5) || '--')}</span><i style="--mv-review-day-height: ${Math.max(8, Math.round((Number(day.reviews || 0) / maxDailyReviews) * 100))}%"></i><strong>${Number(day.reviews || 0)}</strong></div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="mv-review-columns">
+                        <section class="mv-review-section"><div class="mv-review-section-head"><div><span class="mv-kicker">题型表现</span><h3>哪一种回忆最需要练</h3></div></div>
+                            <div class="mv-review-mode-list">${modes.map(([key, label]) => {
+                                const item = report.byMode?.[key] || { reviews: 0, accuracy: 0 };
+                                return `<div class="mv-review-mode-row"><span>${label}</span><strong>${Number(item.reviews || 0)} 次</strong><em>${Number(item.reviews || 0) ? `${Number(item.accuracy || 0)}%` : '尚无记录'}</em></div>`;
+                            }).join('')}</div>
+                        </section>
+                        <section class="mv-review-section"><div class="mv-review-section-head"><div><span class="mv-kicker">薄弱词卡</span><h3>下一次优先再看</h3></div></div>
+                            <div class="mv-review-weak-list">${report.weakCards.length ? report.weakCards.map(card => `<div class="mv-review-weak-card" data-mv-review-weak-card><strong>${escapeHtml(card.word)}</strong><span>${escapeHtml(card.translation)}</span><em>${Number(card.accuracy || 0)}% 正确 · ${Number(card.wrong || 0)} 次再练</em></div>`).join('') : '<p class="mv-review-empty">完成几张词卡后，这里会自动列出最值得再看的词。</p>'}</div>
+                        </section>
+                    </div>
                 </section>
             </main>
         `;
@@ -767,15 +863,16 @@
 
     function renderComplete() {
         const isRegionMission = !!selectedRegionId;
+        const isReviewSession = state?.sessionType === 'review';
         return `
-            ${renderHeader('远征完成', '今日远征 / 已结算')}
+            ${renderHeader(isReviewSession ? '复习完成' : '远征完成', isReviewSession ? '到期复习 / 已完成' : '今日远征 / 已结算')}
             <main class="mv-main"><section class="mv-complete-panel" data-mv-complete style="--mv-complete-bg: ${escapeHtml(cssImage(REWARD_IMAGE))}">
                 <div class="mv-reward-stack" aria-hidden="true"><img class="mv-reward-chest" src="${escapeHtml(asset(REWARD_CHEST_IMAGE))}" alt=""><img class="mv-reward-star" src="${escapeHtml(asset(REWARD_STAR_IMAGE))}" alt=""></div>
                 <div class="mv-complete-icon"><i data-lucide="trophy" aria-hidden="true"></i></div>
                 <span class="mv-kicker">${state?.queue?.length || 11} / ${state?.queue?.length || 11}</span>
-                <h2>今天的词语星已收集</h2>
-                <p>${rewardResult?.duplicate ? '今日奖励已经领取过了。' : `成长分 +${Number(rewardResult?.event?.points || state?.rewardPoints || 10)}，宠物经验同步增加`}</p>
-                <button class="mv-primary-button" type="button" data-mv-return-camp><i data-lucide="map" aria-hidden="true"></i><span>${isRegionMission ? '回到营地地图' : '回到学习中心'}</span></button>
+                <h2>${isReviewSession ? '这一轮到期词卡复习完成' : '今天的词语星已收集'}</h2>
+                <p>${isReviewSession ? '到期卡已重新安排，下一次见面会更合适。' : rewardResult?.duplicate ? '今日奖励已经领取过了。' : `成长分 +${Number(rewardResult?.event?.points || state?.rewardPoints || 10)}，宠物经验同步增加`}</p>
+                ${isReviewSession ? '<button class="mv-primary-button" type="button" data-mv-return-review><i data-lucide="bar-chart-3" aria-hidden="true"></i><span>查看复习报告</span></button>' : `<button class="mv-primary-button" type="button" data-mv-return-camp><i data-lucide="map" aria-hidden="true"></i><span>${isRegionMission ? '回到营地地图' : '回到学习中心'}</span></button>`}
             </section></main>
         `;
     }
@@ -786,6 +883,7 @@
         else if (view === 'complete') renderShell(renderComplete(), generation);
         else if (view === 'story') renderShell(renderStory(), generation);
         else if (view === 'session') renderShell(renderSession(), generation);
+        else if (view === 'review') renderShell(renderReview(), generation);
         else renderShell(renderHome(), generation);
     }
 
@@ -818,66 +916,85 @@
     }
 
     function finishAction(result, metadata = {}) {
+        if (actionInFlight) return;
         const task = currentTask();
         const card = cardForTask(task);
         if (!task || !card || !progressApi() || typeof progressApi().record !== 'function') return;
+        actionInFlight = true;
         const grade = typeof result === 'boolean' ? (result ? 'good' : 'again') : String(result || 'again');
         const progressBefore = typeof progressApi().get === 'function' ? progressApi().get(card.id) : { status: 'new' };
-        const progress = progressApi().record(card.id, grade, {
-            ...metadata,
-            responseMode: metadata.responseMode || task.mode,
-            hintUsed
-        });
-        if (progress?.persisted === false) {
-            feedback = '保存失败，本次没有推进，请重试。';
-            renderRoot();
-            return;
-        }
-        const growth = global.MinecraftVocabExpedition?.recordWordAction?.(
-            expeditionState,
-            card.id,
-            progressBefore,
-            grade,
-            { mode: metadata.responseMode || task.mode }
-        );
-        if (growth && growth.persisted === false) {
-            feedback = '远征成长保存失败，本次没有推进，请重试。';
-            renderRoot();
-            return;
-        }
-        if (growth?.state) expeditionState = growth.state;
-        const next = global.MinecraftVocabSession.recordAction(state, card.id);
-        if (!next.persisted) {
-            feedback = '远征进度保存失败，本次没有推进，请重试。';
-            renderRoot();
-            return;
-        }
-        state = next.state;
-        hintUsed = false;
-        feedback = grade === 'again'
-            ? `再看一次：${card.word}`
-            : grade === 'hard'
-                ? '想起来了，稍后再见一次。'
-                : grade === 'easy'
-                    ? '太棒了，这个词可以走得更远。'
-                    : '答对了，继续前进。';
-        revealed = false;
-        flipped = false;
-        if (global.MinecraftVocabSession.isComplete(state)) {
-            if (selectedRegionId) {
-                feedback = '';
-                view = 'battle';
-            } else {
-                rewardResult = global.MinecraftVocabSession.claimReward(state);
-                if (rewardResult?.accepted || rewardResult?.reason === 'duplicate') {
+        try {
+            const taskIndex = (state.queue || []).findIndex(item => item.cardId === task.cardId);
+            const responseMs = Number.isFinite(Number(metadata.responseMs))
+                ? Math.max(0, Number(metadata.responseMs))
+                : Math.max(0, Date.now() - Number(taskStartedAtMs || Date.now()));
+            const reviewId = String(metadata.reviewId || `${state.sessionId || state.localDate}:${taskIndex}:${card.id}`);
+            const progress = progressApi().record(card.id, grade, {
+                ...metadata,
+                reviewId,
+                responseMs,
+                responseMode: metadata.responseMode || task.mode,
+                hintUsed
+            });
+            if (progress?.persisted === false || progress?.eventPersisted === false) {
+                feedback = progress?.eventPersisted === false
+                    ? '复习记录保存不完整，请重试本次词卡。'
+                    : '保存失败，本次没有推进，请重试。';
+                renderRoot();
+                return;
+            }
+            const growth = global.MinecraftVocabExpedition?.recordWordAction?.(
+                expeditionState,
+                card.id,
+                progressBefore,
+                grade,
+                { mode: metadata.responseMode || task.mode }
+            );
+            if (growth && growth.persisted === false) {
+                feedback = '远征成长保存失败，本次没有推进，请重试。';
+                renderRoot();
+                return;
+            }
+            if (growth?.state) expeditionState = growth.state;
+            const next = global.MinecraftVocabSession.recordAction(state, card.id);
+            if (!next.persisted) {
+                feedback = '远征进度保存失败，本次没有推进，请重试。';
+                renderRoot();
+                return;
+            }
+            state = next.state;
+            hintUsed = false;
+            feedback = grade === 'again'
+                ? `再看一次：${card.word}`
+                : grade === 'hard'
+                    ? '想起来了，稍后再见一次。'
+                    : grade === 'easy'
+                        ? '太棒了，这个词可以走得更远。'
+                        : '答对了，继续前进。';
+            revealed = false;
+            flipped = false;
+            activeTaskKey = '';
+            if (global.MinecraftVocabSession.isComplete(state)) {
+                if (selectedRegionId) {
+                    feedback = '';
+                    view = 'battle';
+                } else if (state.sessionType === 'review') {
+                    rewardResult = { accepted: false, reason: 'review-complete', event: null };
                     view = 'complete';
-                    if (typeof global.showToast === 'function' && rewardResult.accepted) global.showToast('今日远征完成，成长分 +10');
                 } else {
-                    feedback = '答题已完成，但奖励暂时没有结算。';
+                    rewardResult = global.MinecraftVocabSession.claimReward(state);
+                    if (rewardResult?.accepted || rewardResult?.reason === 'duplicate') {
+                        view = 'complete';
+                        if (typeof global.showToast === 'function' && rewardResult.accepted) global.showToast('今日远征完成，成长分 +10');
+                    } else {
+                        feedback = '答题已完成，但奖励暂时没有结算。';
+                    }
                 }
             }
+            renderRoot();
+        } finally {
+            actionInFlight = false;
         }
-        renderRoot();
     }
 
     function startRegionSession() {
@@ -896,6 +1013,7 @@
         feedback = result.persisted ? '' : '节点进度暂时无法保存，仍可查看词卡。';
         flipped = false;
         progressOpen = false;
+        activeTaskKey = '';
         renderRoot();
     }
 
@@ -912,6 +1030,29 @@
         feedback = result.persisted ? '' : '本日进度暂时无法保存，仍可查看词卡。';
         flipped = false;
         progressOpen = false;
+        activeTaskKey = '';
+        renderRoot();
+    }
+
+    function startReviewSession() {
+        const report = reviewReport();
+        if (!report.due) return;
+        selectedRegionId = '';
+        const result = global.MinecraftVocabSession.start(reviewCards(), card => progressApi()?.get?.(card.id), '', {
+            regionId: '',
+            queueSize: report.due,
+            sessionType: 'review',
+            reviewOnly: true,
+            rewardPoints: 0,
+            levelId: selectedLevelId,
+            bandId: selectedLevelId === 'minecraft' ? selectedBandId : ''
+        });
+        state = result.state;
+        view = state.queue.length ? 'session' : 'review';
+        feedback = result.persisted ? '' : '复习队列暂时无法保存，仍可查看记录。';
+        flipped = false;
+        progressOpen = false;
+        activeTaskKey = '';
         renderRoot();
     }
 
@@ -966,6 +1107,23 @@
         }));
         root.querySelectorAll('[data-mv-start]').forEach(button => button.addEventListener('click', () => {
             startGeneralSession();
+        }));
+        root.querySelectorAll('[data-mv-open-review]').forEach(button => button.addEventListener('click', () => {
+            view = 'review';
+            progressOpen = false;
+            renderRoot();
+        }));
+        root.querySelectorAll('[data-mv-review-back]').forEach(button => button.addEventListener('click', () => {
+            view = 'home';
+            selectedRegionId = '';
+            renderRoot();
+        }));
+        root.querySelectorAll('[data-mv-review-start]').forEach(button => button.addEventListener('click', () => {
+            startReviewSession();
+        }));
+        root.querySelectorAll('[data-mv-return-review]').forEach(button => button.addEventListener('click', () => {
+            view = 'review';
+            renderRoot();
         }));
         root.querySelectorAll('[data-mv-level]').forEach(button => button.addEventListener('click', () => {
             const nextLevel = button.dataset.mvLevel || '';
@@ -1163,6 +1321,9 @@
         pageGeneration += 1;
         selectionRequestId += 1;
         root = null;
+        actionInFlight = false;
+        activeTaskKey = '';
+        taskStartedAtMs = 0;
         if (!options.preserveBridgeContext) global.MinecraftVocabExplorationBridge?.stop?.();
         if (audio) {
             try { audio.pause(); } catch (error) {}

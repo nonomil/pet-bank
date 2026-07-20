@@ -512,10 +512,24 @@ function updateHomeDemoSummary() {
     const companionName = document.getElementById('homeDemoCompanionName');
     const companionStage = document.getElementById('homeDemoCompanionStage');
     if (companionImg && petState && typeof PetSystem.getCurrentStageImage === 'function') {
-        companionImg.src = PetSystem.getCurrentStageImage() || 'assets/pets/poses/dog_idle.webp';
+        const stageImage = PetSystem.getCurrentStageImage();
+        if (stageImage) companionImg.src = stageImage;
+        else if (getActivePageId() === 'map') companionImg.src = 'assets/pets/poses/dog_idle.webp';
+        else companionImg.removeAttribute('src');
     }
     if (companionName) companionName.textContent = petState?.species_data?.name || petState?.species || '还没有领养宠物';
     if (companionStage) companionStage.textContent = petState?.species ? `Lv.${petState.level || 1} · 继续一起冒险` : '下一站会显示在这里';
+}
+
+function activateHomeDemoImages() {
+    document.querySelectorAll('#homeCommonEntries img[data-home-src]').forEach((image) => {
+        if (image.getAttribute('src')) return;
+        const rawSource = image.dataset.homeSrc;
+        if (!rawSource) return;
+        image.src = typeof window.resolvePetBankAssetUrl === 'function'
+            ? window.resolvePetBankAssetUrl(rawSource)
+            : rawSource;
+    });
 }
 
 function getHomeFocusTask() {
@@ -1796,8 +1810,10 @@ function updateMapCompanionCard() {
     const hasSpecies = !!pet.species;
     const stageImage = hasSpecies && typeof PetSystem.getCurrentStageImage === 'function'
         ? PetSystem.getCurrentStageImage()
-        : 'assets/pets/poses/dog_idle.webp';
-    companionImg.src = stageImage || 'assets/pets/poses/dog_idle.webp';
+        : '';
+    if (stageImage) companionImg.src = stageImage;
+    else if (getActivePageId() === 'map') companionImg.src = 'assets/pets/poses/dog_idle.webp';
+    else companionImg.removeAttribute('src');
 
     if (hasSpecies) {
         const petName = pet.species_data?.name || pet.species || '我的伙伴';
@@ -2030,7 +2046,11 @@ function updateRewardPetCard() {
     const childName = document.getElementById('rewardChildName');
     const cur = document.getElementById('rewardCurPoints');
     const stage = (window.PetSystem && typeof PetSystem.getCurrentStageImage === 'function') ? PetSystem.getCurrentStageImage() : null;
-    if (img) img.src = stage || 'assets/pets/poses/dog_idle.webp';
+    if (img) {
+        if (stage) img.src = stage;
+        else if (getActivePageId() === 'reward') img.src = 'assets/pets/poses/dog_idle.webp';
+        else img.removeAttribute('src');
+    }
     const p = (window.ProfileManager && typeof ProfileManager.getActive === 'function') ? ProfileManager.getActive() : null;
     if (childName) childName.textContent = (p && p.name) ? p.name : '宝贝';
     const pet = (window.PetSystem && typeof PetSystem.getState === 'function') ? PetSystem.getState() : null;
@@ -2104,6 +2124,7 @@ function applyRouteShell(page) {
     document.body.classList.toggle('shell-home', shell === 'home');
     document.body.classList.toggle('shell-app', shell === 'app');
     document.body.classList.toggle('shell-parent', shell === 'parent');
+    document.body.classList.toggle('map-page-bg', page === 'map');
     document.body.setAttribute('data-route-shell', shell);
     if (shell === 'app') {
         document.body.dataset.appPage = tabPage;
@@ -2434,15 +2455,15 @@ window.switchPage = switchPage;
 window.addEventListener('petbank:exploration-stage-exit', function (event) {
     const target = event.detail?.returnTarget || 'forest-map';
     if (target === 'forest-map') {
-        void switchPage('forest-map');
+        void switchPage('forest-map', { skipAccessGate: true });
         return;
     }
     if (target === 'explore-story-map') {
-        void switchPage('explore');
+        void switchPage('explore', { skipAccessGate: true });
         return;
     }
     if (target === 'forest-map') {
-        void switchPage('forest-map');
+        void switchPage('forest-map', { skipAccessGate: true });
     }
 });
 
@@ -2842,6 +2863,11 @@ async function renderForestMapPage() {
 }
 
 function runPageActivation(page) {
+    if (page === 'map') {
+        activateHomeDemoImages();
+        updateHomeDemoSummary();
+        updateMapCompanionCard();
+    }
     if (page === 'parent') updateParentHomePage();
     if (page === 'works') renderGrowthWorksPage();
     if (page === 'pet') renderPetPage();
@@ -2905,7 +2931,9 @@ function runPageActivation(page) {
         if (settingsMathDiff) settingsMathDiff.innerHTML = '';
     }
     if (page === 'settings' && !window.MathPKGame && window.PetBankRuntime && typeof window.PetBankRuntime.ensurePage === 'function') {
-        void window.PetBankRuntime.ensurePage('playground')
+        // Settings only needs the math difficulty control; loading the full
+        // child playground shell here causes parent routes to fetch child UI.
+        void window.PetBankRuntime.ensurePage('mathpk')
             .then(function () {
                 const settingsPage = document.getElementById('page-settings');
                 if (!settingsPage || !settingsPage.classList.contains('active')) return;
@@ -2929,6 +2957,9 @@ async function preparePage(page) {
         }
     }
     if (token !== pageActivationToken || getActivePageId() !== page) return;
+    if (window.ChildWorkbenchShell && typeof window.ChildWorkbenchShell.sync === 'function') {
+        window.ChildWorkbenchShell.sync(page);
+    }
     runPageActivation(page);
     if (window.lucide) lucide.createIcons();
 }
@@ -4664,6 +4695,13 @@ async function init() {
     InventorySystem.load();
     await InventorySystem.loadItemsData();
     await loadPointItems();
+    // Align the placeholder DOM with a deep-link before the first shared render.
+    // Otherwise hidden map/reward fallbacks can win the first image request.
+    const initialPageElement = document.getElementById(`page-${initialRoute.page}`);
+    if (initialPageElement) {
+        document.querySelectorAll('.page.active').forEach((pageElement) => pageElement.classList.remove('active'));
+        initialPageElement.classList.add('active');
+    }
     updateRewardPetCard();
     // 宠物小屋 decay 补算（R4：PetSystem 加载后，若 last_home_ts 存在则结算离线衰减）
     // decay() 内部结算后会立即写 last_home_ts=now，保证后续 switchPage('home')→renderUI 再算幂等

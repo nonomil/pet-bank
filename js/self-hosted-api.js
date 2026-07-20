@@ -128,7 +128,12 @@
         removeMember: (householdId, accountId) => request(`/households/${encodeURIComponent(householdId)}/members/${encodeURIComponent(accountId)}`, { method: 'DELETE' }),
         createInvite: (householdId, expiresInSeconds) => request(`/households/${encodeURIComponent(householdId)}/invites`, { method: 'POST', body: { expiresInSeconds } }),
         redeemInvite: (code) => request('/household-invites/redeem', { method: 'POST', body: { code } }),
-        listChildren: (householdId) => request(`/children?householdId=${encodeURIComponent(householdId)}`),
+        listChildren: (householdId) => {
+            const normalizedHouseholdId = String(householdId || '').trim();
+            return request(normalizedHouseholdId
+                ? `/children?householdId=${encodeURIComponent(normalizedHouseholdId)}`
+                : '/children');
+        },
         createChild: (householdId, name, localProfileId) => request('/children', { method: 'POST', body: { householdId, name, localProfileId } }),
         getChild: (childId) => request(`/children/${encodeURIComponent(childId)}`),
         renameChild: (childId, name) => request(`/children/${encodeURIComponent(childId)}`, { method: 'PATCH', body: { name } }),

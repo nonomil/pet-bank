@@ -34,8 +34,8 @@
 - outbox 使用 `petbank_self_hosted_snapshot_outbox_v1`，按 `profileId:childId` 合并同一孩子的最新本地快照，最多保留 20 条记录。
 - 网络失败会保留 `pending` 记录并按退避时间重试；`online`、`visibilitychange` 和 `pagehide` 会触发 flush。
 - 积分或宠物保存后的自动上传使用短防抖窗口合并连续变化；本地写入始终先完成，离线时仍可继续使用孩子端。
-- 服务端返回 revision 冲突时，记录会保留为 `conflict`，不会自动覆盖远端，也不会自动合并本地与远端 JSON。
-- 当前已能检测并阻止冲突继续上传；家长端的本地/云端选择、导出和恢复操作仍是后续工作，不能把 `conflict` 状态报告为“已同步”。
+- 服务端返回 revision 冲突时，Profile 会读取远端最新快照；只有当积分、宠物、奖励等所有非词卡业务键逐字一致时，才自动合并 `petbank_learning_vocab_progress_{profileId}` 和 `petbank_learning_vocab_review_events_{profileId}`，并用远端 revision + 1 重试上传。
+- 词卡进度按卡片 `updatedAt/lastReviewedAt` 选择较新状态，review events 按 `reviewId` 去重；合并后的快照也会写回当前 Profile。合并失败或检测到非词卡差异时，仍保留 `conflict`，由家长选择本地、云端或导出备份，不能把冲突报告为“已同步”。
 
 ## 冲突和安全约束
 
@@ -51,6 +51,9 @@
 node --test prj/petbank-server/test/*.test.mjs
 node --check prj/petbank-server/src/server.mjs
 curl --fail http://127.0.0.1:3000/api/v1/health
+node scripts/test-cloud-sync-profile-integration.mjs
+node scripts/test-cloud-sync-outbox.mjs
+node scripts/test-high-priority-sync.mjs
 ```
 
-账号/家庭/孩子接口和 Profile 启动恢复、切换前 push、切换后 pull 已有本地 API/浏览器测试；outbox 存储和 Profile 网络失败/重试/冲突持久化已有专项测试；当前仍没有多端自动合并策略和完整 canary 演练。
+账号/家庭/孩子接口和 Profile 启动恢复、切换前 push、切换后 pull 已有本地 API/浏览器测试；outbox 存储和 Profile 网络失败/重试/冲突持久化已有专项测试；词卡冲突自动合并也有集成测试。通用业务状态仍没有自动合并策略，生产 canary 仍需 Hermes 在目标 VPS 执行。

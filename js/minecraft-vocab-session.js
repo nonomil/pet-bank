@@ -100,10 +100,14 @@
         return result;
     }
 
-    function createQueue(cards, readProgress, date, queueSize = QUEUE_SIZE, now = Date.now()) {
+    function createQueue(cards, readProgress, date, queueSize = QUEUE_SIZE, now = Date.now(), options = {}) {
         const source = Array.isArray(cards) ? cards.filter(card => card && card.id) : [];
         const ordered = interleaveByCategory(stableSort(source, date));
         const review = ordered.filter(card => isDue(cardProgress(readProgress, card), now));
+        if (options.reviewOnly) {
+            const limit = Number.isFinite(Number(queueSize)) ? Math.max(0, Number(queueSize)) : review.length;
+            return review.slice(0, limit).map(card => ({ cardId: card.id, mode: 'review' }));
+        }
         const fresh = ordered.filter(card => cardStatus(readProgress, card) === 'new');
         const used = new Set();
         const queue = [];
@@ -126,8 +130,30 @@
     }
 
     function emptyState(cards, readProgress, date, profileId, options = {}) {
-        const queueSize = Math.max(1, Number(options.queueSize || QUEUE_SIZE));
-        return { version: 1, profileId, localDate: localDate(date), levelId: String(options.levelId || ''), bandId: String(options.bandId || ''), regionId: String(options.regionId || ''), missionId: String(options.missionId || ''), rewardPoints: Number(options.rewardPoints || REWARD_POINTS), queue: createQueue(cards, readProgress, date, queueSize), completed: [], startedAt: new Date().toISOString(), completedAt: '' };
+        const reviewOnly = Boolean(options.reviewOnly);
+        const queueSize = reviewOnly
+            ? Math.max(0, Number.isFinite(Number(options.queueSize)) ? Number(options.queueSize) : Number.MAX_SAFE_INTEGER)
+            : Math.max(1, Number(options.queueSize || QUEUE_SIZE));
+        const sessionType = String(options.sessionType || (reviewOnly ? 'review' : 'daily'));
+        const localDay = localDate(date);
+        const sessionId = String(options.sessionId || `${profileId}:${localDay}:${sessionType}:${options.regionId || 'daily'}:${Date.now()}`);
+        return {
+            version: 1,
+            profileId,
+            localDate: localDay,
+            sessionType,
+            reviewOnly,
+            sessionId,
+            levelId: String(options.levelId || ''),
+            bandId: String(options.bandId || ''),
+            regionId: String(options.regionId || ''),
+            missionId: String(options.missionId || ''),
+            rewardPoints: Number(options.rewardPoints || REWARD_POINTS),
+            queue: createQueue(cards, readProgress, date, queueSize, Date.now(), { reviewOnly }),
+            completed: [],
+            startedAt: new Date().toISOString(),
+            completedAt: ''
+        };
     }
 
     function start(cards, readProgress, date = '', options = {}) {
@@ -137,6 +163,8 @@
         const requestedRegionId = String(options.regionId || '');
         const requestedLevelId = String(options.levelId || '');
         const requestedBandId = String(options.bandId || '');
+        const requestedSessionType = String(options.sessionType || (options.reviewOnly ? 'review' : 'daily'));
+        const requestedReviewOnly = Boolean(options.reviewOnly);
         const hasSelectionFields = current
             && ['regionId', 'levelId', 'bandId'].every(field => Object.prototype.hasOwnProperty.call(current, field));
         if (hasSelectionFields
@@ -144,7 +172,9 @@
             && current.queue.length
             && String(current.regionId || '') === requestedRegionId
             && String(current.levelId || '') === requestedLevelId
-            && String(current.bandId || '') === requestedBandId) {
+            && String(current.bandId || '') === requestedBandId
+            && String(current.sessionType || (current.reviewOnly ? 'review' : 'daily')) === requestedSessionType
+            && Boolean(current.reviewOnly) === requestedReviewOnly) {
             return { state: current, persisted: true, resumed: true };
         }
         const state = emptyState(cards, readProgress, today, profileId, options);

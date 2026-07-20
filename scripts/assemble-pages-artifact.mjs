@@ -75,6 +75,9 @@ const EXCLUDED_PREFIXES = [
     // These are generator inputs and file:// fallback sources, not HTTP runtime data.
     'data/vocab/单词库_分级',
     'data/vocab/external',
+    'data/vocab/word-memory-combined',
+    'data/picturebooks/catalog.json',
+    'assets/picturebooks',
 ];
 
 const ALLOWED_RASTER_EXACT = new Set([
@@ -105,16 +108,21 @@ const TRAVEL_MEMORY_RUNTIME_PREFIXES = [
 
 function isAllowedRuntimeRaster(rel) {
     if (ALLOWED_RASTER_EXACT.has(rel)) return true;
-    if (rel.startsWith('assets/story/pixel-dialogue-v2/') && RASTER_EXTENSIONS.has(path.extname(rel).toLowerCase())) return true;
+    if (rel.startsWith('assets/story/pixel-dialogue-v2/') && rel.endsWith('.webp')) return true;
     if (rel.startsWith('assets/story/pixel-worlds-v1/maps/') && rel.endsWith('.png')) return true;
     if (rel.startsWith('assets/story/pixel-worlds-v1/scenes/') && rel.endsWith('.webp')) return true;
     if (rel.startsWith('assets/story/pixel-worlds-v1/characters/characters-') && rel.endsWith('.webp')) return true;
     if (/^assets\/story\/pixel-worlds-v1\/props\/(sci-fi|forest|block|detective)\/[^/]+\.webp$/.test(rel)) return true;
     if (/^assets\/story\/pixel-worlds-v1\/icons\/(sci-fi|forest|block|detective)\/[^/]+\.webp$/.test(rel)) return true;
-    if (rel.startsWith('assets/picturebooks/') && RASTER_EXTENSIONS.has(path.extname(rel).toLowerCase())) return true;
     if (/^assets\/ui\/pg-card-(mathpk|hanzi|arena|typing-defense|word-shooter|word-cannon|pinyin-snake|word-memory)\.webp$/.test(rel)) return true;
     if (rel === 'assets/ui/playground-bg.webp') return true;
-    if (rel.startsWith('assets/ui/hanzi-img/') && rel.endsWith('.png')) return true;
+    if (rel.startsWith('assets/ui/home-thumbs/') && rel.endsWith('.webp')) return true;
+    if (rel === 'assets/home-bg.webp') return true;
+    if (rel.startsWith('assets/scenes/') && rel.endsWith('.webp')) return true;
+    if (rel.startsWith('assets/home-bg/') && rel.endsWith('.webp')) return true;
+    if (rel.startsWith('assets/pets/poses/') && rel.endsWith('.webp')) return true;
+    if (rel.startsWith('assets/ui/hanzi-') && rel.endsWith('.webp')) return true;
+    if (rel.startsWith('assets/ui/hanzi-img/') && rel.endsWith('.webp')) return true;
     if (rel.startsWith('assets/learn/') && rel.endsWith('.png')) return true;
     if (/^assets\/learn\/english-vocab\/minecraft-reference\/card-\d{3}\.webp$/.test(rel)) return true;
     if (TRAVEL_MEMORY_RUNTIME_PREFIXES.some((prefix) => rel.startsWith(prefix) && rel.endsWith('.png'))) return true;
@@ -555,22 +563,49 @@ function normalizePublishedWordMemoryImageUrl(value) {
     return `${source.slice(0, secondQuestion)}&${source.slice(secondQuestion + 1)}`;
 }
 
+function normalizePublishedWordMemoryPoseUrl(value) {
+    const source = String(value || '').trim();
+    const marker = './assets/MineCraft宠物图片/poses/';
+    if (!source.startsWith(marker) || !/\.png$/i.test(source)) return source;
+    const candidate = source.replace(/\.png$/i, '.webp');
+    const target = path.join(
+        outDir,
+        'prj',
+        '单词记忆射击场原型',
+        candidate.slice(2).replace(/\//g, path.sep)
+    );
+    if (!fs.existsSync(target)) {
+        throw new Error(`Missing published WebP replacement for word memory pose: ${candidate}`);
+    }
+    return candidate;
+}
+
 function sanitizePublishedWordMemoryCards() {
     const assetDir = path.join(outDir, 'prj', '单词记忆射击场原型', 'assets');
     const jsonPath = path.join(assetDir, 'word-memory-cards.json');
     const raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
     let normalizedCount = 0;
+    let poseWebpCount = 0;
 
     for (const card of raw.cards || []) {
-        const normalized = normalizePublishedWordMemoryImageUrl(card.enemyImage);
+        const normalizedImage = normalizePublishedWordMemoryImageUrl(card.enemyImage);
+        const normalized = normalizePublishedWordMemoryPoseUrl(normalizedImage);
         if (normalized !== card.enemyImage) {
             card.enemyImage = normalized;
             normalizedCount += 1;
+        }
+        if (normalized !== normalizedImage) poseWebpCount += 1;
+
+        const normalizedFallback = normalizePublishedWordMemoryPoseUrl(card.enemyFallbackImage);
+        if (normalizedFallback !== card.enemyFallbackImage) {
+            card.enemyFallbackImage = normalizedFallback;
+            poseWebpCount += 1;
         }
     }
 
     fs.writeFileSync(jsonPath, `${JSON.stringify(raw, null, 2)}\n`);
     console.log(`[pages-artifact] normalized ${normalizedCount} malformed word-memory remote image URLs`);
+    console.log(`[pages-artifact] rewrote ${poseWebpCount} word-memory pose URLs to WebP`);
 }
 
 function pruneMinecraftVocabSourceFromArtifact() {
@@ -709,7 +744,7 @@ function includeWordMemoryRuntime(rel) {
         'assets/word-memory-core-cards.json',
         'assets/word-memory-extension-cards.json',
         'assets/stage-background.png',
-        'assets/generated/reference/topdown-clean-bg-chatgpt.png',
+        'assets/generated/reference/topdown-clean-bg-chatgpt.webp',
         'assets/generated/world-bg-single/farm-gpt-panorama.png',
     ]);
     const allowedPrefixes = [
@@ -722,6 +757,12 @@ function includeWordMemoryRuntime(rel) {
         'assets/背景图片',
         'assets/MineCraft宠物图片/poses',
     ];
+    if (
+        rel.startsWith('assets/MineCraft宠物图片/poses/')
+        && path.extname(rel).toLowerCase() === '.png'
+    ) {
+        return false;
+    }
     if (exactFiles.has(rel) || [...exactFiles].some((filePath) => filePath.startsWith(`${rel}/`))) {
         return true;
     }

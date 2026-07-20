@@ -54,6 +54,9 @@ async function preparePet() {
     if (window.PetSystem.getState().level < window.PetSystem.MAX_LEVEL) window.PetSystem.addExp(99999);
     const levelUpOverlay = document.getElementById('levelUpOverlay');
     if (levelUpOverlay) levelUpOverlay.remove();
+    if (typeof window.PetSystem.loadPetDB === 'function') {
+      await window.PetSystem.loadPetDB();
+    }
     const state = window.PetSystem.getState();
     window.PetSystem.heal(state.max_hp);
     return {

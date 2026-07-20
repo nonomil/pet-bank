@@ -5,7 +5,7 @@
       "title": "飞机大战",
       "kicker": "英文单词",
       "description": "看敌机上的英文单词，按字母发射光束。",
-      "image": "./assets/generated/home-card-word-shooter.png",
+      "image": "./assets/generated/home-card-word-shooter.webp",
       "input": "先熟悉字母键"
     },
     {
@@ -13,7 +13,7 @@
       "title": "拼音赛车",
       "kicker": "汉字拼音",
       "description": "看汉字，左右换道，接住正确拼音卡。",
-      "image": "./assets/generated/home-card-word-cannon.png",
+      "image": "./assets/generated/home-card-word-cannon.webp",
       "input": "第一次玩先选认汉字"
     },
     {
@@ -21,7 +21,7 @@
       "title": "贪吃蛇",
       "kicker": "方向键",
       "description": "按方向键吃对拼音块，慢慢点亮星星。",
-      "image": "./assets/generated/home-card-pinyin-snake.png",
+      "image": "./assets/generated/home-card-pinyin-snake.webp",
       "input": "方向键热身"
     }
   ],

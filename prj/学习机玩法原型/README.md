@@ -23,8 +23,11 @@
 - 拼音炮台设计方法：[大炮打单词设计方法.md](./大炮打单词设计方法.md)
 - 学习性与游戏性平衡方案：[学习性与游戏性平衡方案.md](./学习性与游戏性平衡方案.md)
 - 游戏根词库打字视图：[../../data/vocab/english-minecraft/views/typing-view.json](../../data/vocab/english-minecraft/views/typing-view.json)
-- 兼容扩展词包：[assets/generated/minecraft-typing-expanded.json](./assets/generated/minecraft-typing-expanded.json)
-- 直接打开 HTML 的词库兜底脚本：[assets/generated/minecraft-typing-expanded.js](./assets/generated/minecraft-typing-expanded.js)
+- HTTP 运行时词包索引：[assets/generated/english-typing-index.json](./assets/generated/english-typing-index.json)
+- HTTP 默认 Minecraft 分片：[assets/generated/english-typing-minecraft.json](./assets/generated/english-typing-minecraft.json)
+- 统一词包源/`file://` 回退数据：[assets/generated/english-typing-unified.json](./assets/generated/english-typing-unified.json)
+- 兼容扩展词包（源目录/生成输入，Pages 不发布）：[assets/generated/minecraft-typing-expanded.json](./assets/generated/minecraft-typing-expanded.json)
+- 直接打开 HTML 的词库兜底脚本：[assets/generated/english-typing-unified.js](./assets/generated/english-typing-unified.js)
 - 兼容扩展词包导出脚本：[scripts/build_minecraft_typing_pack.cjs](./scripts/build_minecraft_typing_pack.cjs)
 
 静态服务器运行时访问：
@@ -61,7 +64,8 @@ node "prj\学习机玩法原型\scripts\test-replay-feedback-reset.mjs"
 - 游戏根词库继续提供 `data/vocab/english-minecraft/views/typing-view.json`，作为正式主仓的官方 92 词副本保留
 - 根词库 `typing-view.json` 由正式主仓 `data/learn/packs/english-mc-hybrid-2026/modules/minecraft-vocab-typing-view.json` 通过 `scripts/sync_vocab_registry.cjs` 同步，保持官方 92 词副本
 - `scripts/sync_external_minecraft_vocab.cjs` 现在从正式分级词库 `data/vocab/单词库_分级/` 导出原型自己的兼容扩展包 `assets/generated/minecraft-typing-expanded.json`，不再覆盖根游戏词库
-- `word-shooter` 运行时已经切到 `assets/generated/minecraft-typing-expanded.json`，默认使用 Minecraft 词库，也可以在游戏内切换 `Minecraft / 幼儿园 / 小学 / 初中 / 全部英文`
+- `word-shooter` 运行时先按需加载 `assets/generated/english-typing-index.json`，默认只取 Minecraft 分片；切换 `幼儿园 / 小学 / 初中` 时再取对应分片，选择 `全部英文 / 完整英语路径` 时才组合多个分片
+- `english-typing-unified.json` 和 `minecraft-typing-expanded.json` 仍作为生成与本地兼容验证的源数据保留，但不进入 Pages 制品；默认 HTTP 词包请求从约 `4.04 MiB` 降至约 `547 KiB`
 - 当前同步结果共 3212 张英文打字卡：Minecraft 514、幼儿园 557、小学 558、初中 1583、全部英文 3212；难度分层为基础 1391、进阶 604、完整 1217
 - `G:\UserCode\minecraft_words\minecraft_words_apk-main` 的 Minecraft 词库与图片引用，当前通过正式主仓统一筛选，不再让原型自己独立维护一套规则
 - 拼音赛车和拼音贪吃蛇继续复用 `data/hanzi-questions.json` 里的完整 30 条汉字与拼音数据，运行时不再只截取前 12 条；避免把英文单词和拼音混在同一个目标池里
@@ -92,7 +96,7 @@ node "prj\学习机玩法原型\scripts\test-replay-feedback-reset.mjs"
 - 完整击毁目标后有概率掉落 `Triple Beam`、`Homing Missile`、`Pierce Laser`
 - 道具被飞船接到后会短时替换默认 `Pulse Laser`
 - 浏览器烟测截图保存在 `assets/generated/reference/word-shooter-scifi-playtest.png`
-- 词库读取已经收口到原型自己的 `assets/generated/minecraft-typing-expanded.json`，根目录 `data/vocab/english-minecraft/views/typing-view.json` 只作为正式词库副本保留，不再直接依赖 `data/learn/packs/**/modules`
+- 词库读取已经收口到原型自己的索引与分片（`english-typing-index.json`、`english-typing-*.json`），根目录 `data/vocab/english-minecraft/views/typing-view.json`、统一词包和 `minecraft-typing-expanded.json` 分别作为正式词库副本、生成/兼容源保留，不再直接依赖 `data/learn/packs/**/modules`
 - HUD 下方有词库包切换按钮，可以选择 `Minecraft / 幼儿园 / 小学 / 初中 / 全部英文`；切换后会重新开一局并从对应词库抽敌机单词
 - 词库按钮会直接显示当前包的词数，HUD 状态徽章也会显示类似 `幼儿园 557词`，方便确认切换已经生效
 - 词库包和难度会保存到浏览器本地设置，下次打开仍沿用上次选择；旁边有 `恢复默认` 按钮，可一键回到 `Minecraft + 基础`；如果浏览器禁用本地存储，则自动退回默认 `Minecraft + 基础`

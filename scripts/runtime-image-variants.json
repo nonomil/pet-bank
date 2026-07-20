@@ -20,6 +20,22 @@
       "lossless": false
     },
     {
+      "id": "learning-arcade-portal-images",
+      "sourceDir": "prj/学习机玩法原型/assets/generated",
+      "include": [
+        "home-card-word-shooter.png",
+        "home-card-word-cannon.png",
+        "home-card-pinyin-snake.png",
+        "learning-arcade-stage.png"
+      ],
+      "runtimePrefix": "assets/generated",
+      "publishRoot": "prj/学习机玩法原型/assets/generated",
+      "quality": 78,
+      "lossless": false,
+      "method": 4,
+      "validation": "aggregate"
+    },
+    {
       "id": "learning-arcade-pinyin-racer-backgrounds",
       "sourceDir": "prj/学习机玩法原型/assets/拼音赛车",
       "include": [
@@ -40,6 +56,15 @@
       "include": ["farm-gpt-panorama.png"],
       "runtimePrefix": "assets/generated/world-bg-single",
       "publishRoot": "prj/单词记忆射击场原型/assets/generated/world-bg-single",
+      "quality": 82,
+      "lossless": false
+    },
+    {
+      "id": "word-memory-topdown-reference",
+      "sourceDir": "prj/单词记忆射击场原型/assets/generated/reference",
+      "include": ["topdown-clean-bg-chatgpt.png"],
+      "runtimePrefix": "assets/generated/reference",
+      "publishRoot": "prj/单词记忆射击场原型/assets/generated/reference",
       "quality": 82,
       "lossless": false
     },
@@ -104,6 +129,39 @@
       "runtimePrefix": "assets/learn/english-vocab/minecraft-cards/normalized",
       "publishRoot": "assets/learn/english-vocab/minecraft-cards/normalized",
       "quality": 85,
+      "lossless": false,
+      "method": 4,
+      "validation": "aggregate"
+    },
+    {
+      "id": "hanzi-question-images",
+      "sourceDir": "assets/ui/hanzi-img",
+      "include": ["*.png"],
+      "runtimePrefix": "assets/ui/hanzi-img",
+      "publishRoot": "assets/ui/hanzi-img",
+      "quality": 86,
+      "lossless": false,
+      "method": 4,
+      "validation": "aggregate"
+    },
+    {
+      "id": "picturebook-portal-covers",
+      "sourceDir": "assets/picturebooks/images",
+      "include": ["*/page-1.jpg"],
+      "runtimePrefix": "assets/picturebooks/images",
+      "publishRoot": "assets/picturebooks/images",
+      "quality": 84,
+      "lossless": false,
+      "method": 4,
+      "validation": "aggregate"
+    },
+    {
+      "id": "pixel-dialogue-v2-images",
+      "sourceDir": "assets/story/pixel-dialogue-v2",
+      "include": ["**/*.png"],
+      "runtimePrefix": "assets/story/pixel-dialogue-v2",
+      "publishRoot": "assets/story/pixel-dialogue-v2",
+      "quality": 84,
       "lossless": false,
       "method": 4,
       "validation": "aggregate"

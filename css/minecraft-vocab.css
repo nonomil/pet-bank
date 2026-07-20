@@ -1779,6 +1779,158 @@ body.learn-mode .main-content:has(> #page-minecraft-vocab.active) {
     }
 }
 
+/* The review report stays compact and actionable: inspect the week, then start
+   the due queue without leaving the vocabulary feature. */
+.mv-review-panel {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    padding: clamp(22px, 4vw, 42px);
+    border: 1px solid rgba(111, 82, 54, .18);
+    border-radius: 18px;
+    background: rgba(255, 252, 244, .96);
+    box-shadow: 0 18px 46px rgba(52, 38, 22, .12);
+}
+
+.mv-review-heading,
+.mv-review-section-head,
+.mv-review-actions,
+.mv-review-metric,
+.mv-review-mode-row,
+.mv-review-weak-card {
+    display: flex;
+    align-items: center;
+}
+
+.mv-review-heading {
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.mv-review-heading h2,
+.mv-review-section-head h3 {
+    margin: 4px 0 0;
+    color: #2e251d;
+}
+
+.mv-review-heading h2 { font-size: clamp(24px, 4vw, 36px); }
+.mv-review-heading p { margin: 10px 0 0; color: #756858; }
+
+.mv-review-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 28px 0 20px;
+}
+
+.mv-review-metric {
+    min-height: 112px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 16px;
+    border: 1px solid rgba(111, 82, 54, .14);
+    border-radius: 12px;
+    background: #fff;
+}
+
+.mv-review-metric span,
+.mv-review-metric small { color: #8b7967; }
+.mv-review-metric strong { color: #30241b; font-size: 28px; line-height: 1; }
+.mv-review-metric.is-due { border-color: rgba(185, 103, 48, .4); background: #fff5e8; }
+.mv-review-metric.is-due strong { color: #b35e27; }
+
+.mv-review-actions {
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0 24px;
+    border-bottom: 1px solid rgba(111, 82, 54, .12);
+}
+
+.mv-review-actions > span { color: #8b7967; font-size: 13px; }
+.mv-review-actions button[disabled] { opacity: .52; cursor: not-allowed; }
+
+.mv-review-section { padding-top: 24px; }
+.mv-review-section-head { justify-content: space-between; gap: 12px; }
+.mv-review-section-head > span { color: #8b7967; font-size: 13px; }
+
+.mv-review-days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    align-items: end;
+    gap: 10px;
+    min-height: 146px;
+    margin-top: 18px;
+    padding: 18px 14px 12px;
+    border-radius: 12px;
+    background: #f5f0e7;
+}
+
+.mv-review-day {
+    display: grid;
+    grid-template-rows: 22px 1fr 22px;
+    align-items: end;
+    justify-items: center;
+    gap: 5px;
+    height: 112px;
+    color: #8b7967;
+    font-size: 12px;
+}
+
+.mv-review-day i {
+    display: block;
+    width: min(28px, 70%);
+    height: var(--mv-review-day-height);
+    min-height: 8px;
+    border-radius: 6px 6px 2px 2px;
+    background: #5b8f65;
+}
+
+.mv-review-day strong { color: #4d4033; }
+
+.mv-review-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.mv-review-columns > .mv-review-section {
+    min-width: 0;
+    padding: 24px 0 0;
+}
+
+.mv-review-mode-list,
+.mv-review-weak-list { margin-top: 14px; }
+
+.mv-review-mode-row,
+.mv-review-weak-card {
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 44px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(111, 82, 54, .1);
+}
+
+.mv-review-mode-row span { color: #4d4033; }
+.mv-review-mode-row strong { margin-left: auto; color: #6d5a48; font-size: 13px; }
+.mv-review-mode-row em,
+.mv-review-weak-card em { color: #b35e27; font-size: 12px; font-style: normal; }
+
+.mv-review-weak-card { align-items: flex-start; flex-wrap: wrap; }
+.mv-review-weak-card strong { color: #30241b; }
+.mv-review-weak-card span { color: #756858; margin-left: auto; }
+.mv-review-weak-card em { flex-basis: 100%; }
+.mv-review-empty { color: #8b7967; font-size: 14px; }
+
+@media (max-width: 760px) {
+    .mv-review-panel { padding: 20px 16px 26px; border-radius: 14px; }
+    .mv-review-heading { align-items: flex-start; flex-direction: column; }
+    .mv-review-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mv-review-actions { align-items: flex-start; flex-direction: column; }
+    .mv-review-actions .mv-primary-button { width: 100%; justify-content: center; }
+    .mv-review-columns { grid-template-columns: 1fr; }
+    .mv-review-days { gap: 5px; padding-inline: 7px; }
+}
+
 /* The stage picker is the only high-frequency setting exposed on the expedition home. */
 .mv-level-picker {
     display: grid;

@@ -51,15 +51,17 @@ async function main() {
     page.on('console', msg => consoleMessages.push({ type: msg.type(), text: msg.text() }));
     page.on('pageerror', err => consoleMessages.push({ type: 'pageerror', text: err.message }));
     await page.goto(pathToFileURL(indexPath).href, { waitUntil: 'load' });
-    await page.waitForFunction(() => window.LearningArcadePrototype?.wordPack?.().total > 3000);
+    await page.waitForFunction(() => window.LearningArcadePrototype?.wordPack?.().total <= 3);
 
     const initialPack = await page.evaluate(() => window.LearningArcadePrototype.wordPack());
-    assert.ok(initialPack.total >= 3212, `directly opened index.html should load the full graded vocab script fallback, got ${initialPack.total}`);
+    assert.ok(initialPack.total <= 3, `directly opened index.html should keep the full graded vocab script lazy, got ${initialPack.total}`);
     assert.ok(
-      initialPack.packs.some(pack => pack.id === 'kindergarten' && pack.count > 100),
-      'directly opened index.html should expose the kindergarten vocab pack'
+      !initialPack.packs.some(pack => pack.id === 'kindergarten'),
+      'directly opened index.html should not expose deferred kindergarten vocab before a game opens'
     );
 
+    await page.evaluate(() => window.LearningArcadePrototype.openGame('word-shooter'));
+    await page.waitForFunction(() => window.LearningArcadePrototype.wordPack().total > 3000);
     await page.evaluate(() => window.LearningArcadePrototype.setWordPack('kindergarten'));
     await page.evaluate(() => window.LearningArcadePrototype.openGame('word-shooter'));
     await page.waitForFunction(() => window.LearningArcadePrototype.wordShooter().enemies.length > 0);

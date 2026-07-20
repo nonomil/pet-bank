@@ -100,10 +100,24 @@ try {
             fail(`playground card ${name} exceeds the 250KB publish budget`);
         }
     }
-    const picturebookCatalog = path.join(artifactDir, 'data', 'picturebooks', 'catalog.json');
-    const picturebookCover = path.join(artifactDir, 'assets', 'picturebooks', 'images', 'brave-pea-shooter', 'page-1.png');
-    if (!fs.existsSync(picturebookCatalog) || !fs.existsSync(picturebookCover)) {
-        fail('picturebook catalog or cover image is missing from the Pages artifact');
+    const picturebookPortalCatalog = path.join(artifactDir, 'data', 'picturebooks', 'portal-catalog.json');
+    const picturebookCover = path.join(artifactDir, 'assets', 'picturebooks', 'images', 'brave-pea-shooter', 'page-1.webp');
+    if (!fs.existsSync(picturebookPortalCatalog) || !fs.existsSync(picturebookCover)) {
+        fail('picturebook portal catalog or cover image is missing from the Pages artifact');
+    }
+    const mapBoardWebp = path.join(artifactDir, 'assets', 'home-bg', 'map-board.webp');
+    const mapBoardPng = path.join(artifactDir, 'assets', 'home-bg', 'map-board.png');
+    if (!fs.existsSync(mapBoardWebp)) {
+        fail('home map board WebP is missing from the Pages artifact');
+    }
+    if (fs.existsSync(mapBoardPng)) {
+        fail('home map board source PNG must stay out of the Pages artifact');
+    }
+    if (fs.existsSync(path.join(artifactDir, 'data', 'picturebooks', 'catalog.json'))) {
+        fail('legacy picturebook full catalog must stay in the independent picturebook artifact');
+    }
+    if (fs.existsSync(path.join(artifactDir, 'assets', 'picturebooks', 'images', 'brave-pea-shooter', 'page-2.png'))) {
+        fail('picturebook page images must stay in the independent picturebook artifact');
     }
     if (!appSource.includes('<base id="routeBase" href="./">')) {
         fail('index.html must use a relative initial route base before the browser preloads assets');
@@ -135,6 +149,22 @@ try {
     if (!fs.existsSync(farmPanorama)) {
         fail('word memory default farm panorama WebP is missing from the Pages artifact');
     }
+    const wordMemoryReferenceDir = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets', 'generated', 'reference');
+    const wordMemoryReferenceWebp = path.join(wordMemoryReferenceDir, 'topdown-clean-bg-chatgpt.webp');
+    const wordMemoryReferencePng = path.join(wordMemoryReferenceDir, 'topdown-clean-bg-chatgpt.png');
+    if (!fs.existsSync(wordMemoryReferenceWebp)) {
+        fail('word memory top-down reference WebP is missing from the Pages artifact');
+    }
+    if (fs.existsSync(wordMemoryReferencePng)) {
+        fail('word memory top-down reference PNG must stay out of the Pages artifact');
+    }
+    const wordMemoryStyles = fs.readFileSync(path.join(artifactDir, 'prj', '单词记忆射击场原型', 'styles.css'), 'utf8');
+    if (!wordMemoryStyles.includes('topdown-clean-bg-chatgpt.webp')) {
+        fail('word memory styles.css must use the published top-down reference WebP');
+    }
+    if (wordMemoryStyles.includes('topdown-clean-bg-chatgpt.png')) {
+        fail('word memory styles.css must not reference the source top-down reference PNG');
+    }
     const publishedAppSource = fs.readFileSync(path.join(artifactDir, 'js', 'app.js'), 'utf8');
     if (publishedAppSource.includes('assets/arena/arena-${battle.chapter || 1}.png')) {
         fail('published app.js still builds an arena PNG URL after PNG removal');
@@ -154,6 +184,32 @@ try {
     }
     const wordMemoryAssetsDir = path.join(artifactDir, 'prj', '单词记忆射击场原型', 'assets');
     const wordMemoryJson = fs.readFileSync(path.join(wordMemoryAssetsDir, 'word-memory-cards.json'), 'utf8');
+    const wordMemoryPosePrefix = 'prj/单词记忆射击场原型/assets/MineCraft宠物图片/poses/';
+    const wordMemoryPublishedFiles = [];
+    const wordMemoryStack = [path.join(artifactDir, 'prj', '单词记忆射击场原型')];
+    while (wordMemoryStack.length) {
+        const current = wordMemoryStack.pop();
+        for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+            const absolute = path.join(current, entry.name);
+            if (entry.isDirectory()) wordMemoryStack.push(absolute);
+            else wordMemoryPublishedFiles.push(path.relative(artifactDir, absolute).split(path.sep).join('/'));
+        }
+    }
+    const leakedWordMemoryPosePng = wordMemoryPublishedFiles.filter((file) =>
+        file.startsWith(wordMemoryPosePrefix) && file.toLowerCase().endsWith('.png')
+    );
+    if (leakedWordMemoryPosePng.length) {
+        fail(`word memory Minecraft pose PNGs must stay out of the Pages artifact: ${leakedWordMemoryPosePng.length}`);
+    }
+    if (/MineCraft宠物图片\/poses\/[^"'\\]+\.png/i.test(wordMemoryJson)) {
+        fail('word memory published cards still reference Minecraft pose PNGs');
+    }
+    const wordMemoryPoseWebp = wordMemoryPublishedFiles.filter((file) =>
+        file.startsWith(wordMemoryPosePrefix) && file.toLowerCase().endsWith('.webp')
+    );
+    if (!wordMemoryPoseWebp.length) {
+        fail('word memory Minecraft pose WebP runtime assets are missing');
+    }
     for (const fallbackFile of [
         'word-memory-cards.js',
         'word-memory-core-cards.js',

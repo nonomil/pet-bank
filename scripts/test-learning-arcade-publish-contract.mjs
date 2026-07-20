@@ -43,12 +43,20 @@ assert.ok(
     'the selected pinyin-racer background must be published from the runtime map set'
 );
 assert.ok(
-    manifest.runtimeFiles.includes('assets/generated/english-typing-unified.json'),
-    'the HTTP runtime must publish the unified typing JSON'
+    manifest.runtimeFiles.includes('assets/generated/english-typing-index.json'),
+    'the HTTP runtime must publish the typing vocab index'
 );
 assert.ok(
-    manifest.runtimeFiles.includes('assets/generated/minecraft-typing-expanded.json'),
-    'the HTTP runtime must publish the Minecraft typing JSON'
+    manifest.excludedPrefixes.includes('assets/generated/minecraft-typing-expanded.json'),
+    'the source-only Minecraft typing JSON must be explicitly excluded from Pages'
+);
+assert.ok(
+    !manifest.runtimeFiles.includes('assets/generated/minecraft-typing-expanded.json'),
+    'the source-only Minecraft typing JSON must not be listed as an HTTP runtime file'
+);
+assert.ok(
+    manifest.runtimeFiles.includes('assets/generated/hanzi-pinyin-runtime.json'),
+    'the HTTP runtime must publish the hanzi and pinyin runtime JSON'
 );
 for (const webpFile of [
     'assets/generated/pinyin-racer-reference-bg.webp',
@@ -60,6 +68,14 @@ for (const webpFile of [
 ]) {
     assert.ok(manifest.runtimeFiles.includes(webpFile), `learning arcade should publish WebP runtime image: ${webpFile}`);
 }
+for (const webpFile of [
+    'assets/generated/home-card-word-shooter.webp',
+    'assets/generated/home-card-word-cannon.webp',
+    'assets/generated/home-card-pinyin-snake.webp',
+    'assets/generated/learning-arcade-stage.webp'
+]) {
+    assert.ok(manifest.runtimeFiles.includes(webpFile), `learning arcade should publish WebP portal image: ${webpFile}`);
+}
 for (const sourceFile of [
     'assets/generated/pinyin-racer-reference-bg.png',
     'assets/拼音赛车/拼音赛车参考图-01-彩色卡通赛车道.png',
@@ -70,6 +86,14 @@ for (const sourceFile of [
 ]) {
     assert.ok(!manifest.runtimeFiles.includes(sourceFile), `source PNG must stay out of Pages runtime manifest: ${sourceFile}`);
 }
+for (const sourceFile of [
+    'assets/generated/home-card-word-shooter.png',
+    'assets/generated/home-card-word-cannon.png',
+    'assets/generated/home-card-pinyin-snake.png',
+    'assets/generated/learning-arcade-stage.png'
+]) {
+    assert.ok(!manifest.runtimeFiles.includes(sourceFile), `learning arcade portal source PNG must stay out of Pages runtime manifest: ${sourceFile}`);
+}
 for (const fallbackFile of [
     'assets/generated/english-typing-unified.js',
     'assets/generated/minecraft-typing-expanded.js'
@@ -77,6 +101,15 @@ for (const fallbackFile of [
     assert.ok(
         !manifest.runtimeFiles.includes(fallbackFile),
         `file:// fallback script must stay out of the Pages runtime manifest: ${fallbackFile}`
+    );
+}
+
+for (const sourceOnlyFile of [
+    'assets/generated/minecraft-typing-expanded.json'
+]) {
+    assert.ok(
+        fs.existsSync(path.join(repoRoot, manifest.packageRoot, sourceOnlyFile)),
+        `source-only learning arcade data must remain available: ${sourceOnlyFile}`
     );
 }
 
@@ -91,6 +124,8 @@ if (artifactRoot) {
     assert.ok(fs.existsSync(artifactRoot), `missing artifact: ${artifactArg}`);
     const publishedGamePath = path.join(artifactRoot, manifest.packageRoot, 'game.js');
     const publishedGame = fs.readFileSync(publishedGamePath, 'utf8');
+    const publishedIndex = fs.readFileSync(path.join(artifactRoot, manifest.packageRoot, 'index.html'), 'utf8');
+    const publishedStyles = fs.readFileSync(path.join(artifactRoot, manifest.packageRoot, 'styles.css'), 'utf8');
     for (const filename of [
         '拼音赛车参考图-01-彩色卡通赛车道',
         '拼音赛车参考图-02-漂浮天空赛道',
@@ -107,6 +142,25 @@ if (artifactRoot) {
             `published learning arcade game must not reference the PNG racer background: ${filename}`
         );
     }
+    for (const filename of [
+        'home-card-word-shooter',
+        'home-card-word-cannon',
+        'home-card-pinyin-snake',
+        'learning-arcade-stage'
+    ]) {
+        assert.ok(
+            publishedGame.includes(`${filename}.webp`)
+                || publishedIndex.includes(`${filename}.webp`)
+                || publishedStyles.includes(`${filename}.webp`),
+            `published learning arcade must reference the WebP portal image: ${filename}`
+        );
+        assert.ok(
+            !publishedGame.includes(`${filename}.png`)
+                && !publishedIndex.includes(`${filename}.png`)
+                && !publishedStyles.includes(`${filename}.png`),
+            `published learning arcade must not reference the PNG portal image: ${filename}`
+        );
+    }
     const publishedFiles = [];
     const stack = [artifactRoot];
     while (stack.length) {
@@ -120,6 +174,22 @@ if (artifactRoot) {
 
     for (const file of manifest.runtimeFiles) {
         assert.ok(publishedFiles.includes(`${manifest.packageRoot}/${file}`), `missing published runtime file: ${file}`);
+    }
+    for (const sourceFile of [
+        'assets/generated/home-card-word-shooter.png',
+        'assets/generated/home-card-word-cannon.png',
+        'assets/generated/home-card-pinyin-snake.png',
+        'assets/generated/learning-arcade-stage.png'
+    ]) {
+        assert.ok(!publishedFiles.includes(`${manifest.packageRoot}/${sourceFile}`), `portal source PNG leaked: ${sourceFile}`);
+    }
+    for (const sourceOnlyFile of [
+        'assets/generated/minecraft-typing-expanded.json'
+    ]) {
+        assert.ok(
+            !publishedFiles.includes(`${manifest.packageRoot}/${sourceOnlyFile}`),
+            `source-only learning arcade data leaked: ${sourceOnlyFile}`
+        );
     }
     for (const prefix of manifest.excludedPrefixes) {
         const leaked = publishedFiles.filter((file) =>

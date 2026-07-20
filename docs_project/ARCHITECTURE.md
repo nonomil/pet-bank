@@ -124,7 +124,7 @@ settings/family
   -> ProfileManager.linkCloudChild(localProfileId, cloudChildId, householdId)
 ```
 
-当前链路能完成账号、家庭、邀请和孩子档案管理；`ProfileManager` 已在启动恢复、切换前上传、切换后恢复和页面隐藏/退出时调用 `SelfHostedApi.latestSnapshot/pushSnapshot`。网络失败会进入按孩子合并的本地 outbox 并退避重试，revision 冲突会在家长设置页提供本地保留、采用云端和导出备份；当前仍没有多端自动合并策略。
+当前链路能完成账号、家庭、邀请和孩子档案管理；`ProfileManager` 已在启动恢复、切换前上传、切换后恢复和页面隐藏/退出时调用 `SelfHostedApi.latestSnapshot/pushSnapshot`。网络失败会进入按孩子合并的本地 outbox 并退避重试，revision 冲突会在家长设置页提供本地保留、采用云端和导出备份；词卡进度与 review events 已有受限的专用自动合并，其他业务状态仍没有通用多端自动合并策略。
 
 ## 6. 核心约定
 

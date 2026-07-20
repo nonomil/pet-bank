@@ -163,14 +163,14 @@
     }
 
     // ---------- 手绘插图（UI v2 P2）----------
-    // 有图字集合：命中则渲染 assets/ui/hanzi-img/{char}.png，否则 fallback emoji。
+    // 有图字集合：命中则渲染 assets/ui/hanzi-img/{char}.webp，否则 fallback emoji。
     // 题库确认此 30 字作为单字出现（启蒙关 q.char / HSK 关 q.answer）。
     const HANZI_IMG_CHARS = new Set('山水日月花木火雨云星树草果风河鸟马牛鸡车书桌门杯茶田石笔船海'.split(''));
     // 返回题图区域 html：单字命中 manifest → <img>；否则保留原 emoji（HSK 关 emoji 空 → 空串，不报错）。
     function _renderEmoji(q) {
         const char = (q && (q.char || q.answer)) || '';
         if (char && HANZI_IMG_CHARS.has(char)) {
-            return `<img src="${_resolveLocalAsset(`assets/ui/hanzi-img/${char}.png`)}" class="hz-emoji-img" alt="${char}">`;
+            return `<img src="${_resolveLocalAsset(`assets/ui/hanzi-img/${char}.webp`)}" class="hz-emoji-img" alt="${char}">`;
         }
         return (q && q.emoji) || '';
     }

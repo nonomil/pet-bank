@@ -45,20 +45,82 @@ function loadProgress(storage, getActiveId, onSync) {
     const storage = createStorage();
     const syncReasons = [];
     const progress = loadProgress(storage, () => 'profile-a', reason => syncReasons.push(reason));
+    const scheduler = progress.scheduler();
+    assert.equal(scheduler.algorithm, 'fsrs-5');
+    assert.equal(scheduler.targetRetention, 0.9);
+    assert.equal(scheduler.weights.length, 19);
+    const calibration = progress.calibrate({
+        events: Array.from({ length: 20 }, (_, index) => ({
+            reviewId: `calibration-${index}`,
+            grade: index < 17 ? 'good' : 'again',
+            reviewedAt: `2026-07-${String(1 + (index % 10)).padStart(2, '0')}T08:00:00.000Z`
+        }))
+    });
+    assert.equal(calibration.algorithm, 'fsrs-5');
+    assert.equal(calibration.sampleSize, 20);
+    assert.equal(calibration.observedRetention, 0.85);
+    assert.equal(calibration.calibrated, true);
+    assert.equal(calibration.parameterCalibration.weights.length, 19);
+    assert.equal(calibration.parameterCalibration.fitted, true, '20 valid reviews should fit FSRS parameters');
+    assert.ok(calibration.parameterCalibration.transitionCount >= 5);
+    assert.ok(calibration.parameterCalibration.objectiveAfter <= calibration.parameterCalibration.objectiveBefore);
+    assert.equal(calibration.ebbinghaus.fitted, true);
+    assert.ok(calibration.ebbinghaus.lambda > 0);
+    assert.notEqual(progress.scheduler().calibration.sampleSize, 0);
+    assert.equal(progress.scheduler().weightsSource, 'profile-calibration');
+    assert.equal(progress.scheduler().weights.length, 19);
     const first = progress.record('stone', true, { now: '2026-07-19T08:00:00.000Z' });
     assert.equal(first.repetitions, 1);
     assert.equal(first.intervalDays, 1);
     assert.equal(first.dueAt, '2026-07-20T08:00:00.000Z');
+    assert.equal(first.schedulerVersion, 'fsrs-5');
+    assert.ok(first.stabilityDays > 0);
+    assert.ok(first.difficulty >= 1 && first.difficulty <= 10);
+    assert.ok(first.retrievability >= 0.99);
     const second = progress.record('stone', true, { now: '2026-07-20T08:00:00.000Z' });
     assert.equal(second.repetitions, 2);
     assert.equal(second.intervalDays, 3);
     assert.equal(second.dueAt, '2026-07-23T08:00:00.000Z');
+    assert.ok(second.stabilityDays >= first.stabilityDays);
+    const later = progress.record('stone', true, { now: '2026-07-23T08:00:00.000Z' });
+    assert.ok(later.stabilityDays > second.stabilityDays, 'FSRS stability should grow after a successful review');
+    assert.ok(later.intervalDays >= 1, 'FSRS should schedule a positive interval after graduation');
     const lapsed = progress.record('stone', false, { now: '2026-07-20T09:00:00.000Z' });
     assert.equal(lapsed.status, 'learning');
     assert.equal(lapsed.lapses, 1);
     assert.equal(lapsed.intervalDays, 0);
     assert.equal(lapsed.dueAt, '2026-07-20T09:10:00.000Z');
-    assert.deepEqual(syncReasons, ['english-vocab-progress', 'english-vocab-progress', 'english-vocab-progress']);
+    assert.deepEqual(syncReasons, [
+        'english-vocab-progress',
+        'english-vocab-progress',
+        'english-vocab-progress',
+        'english-vocab-progress'
+    ]);
+}
+
+{
+    const storage = createStorage({
+        'petbank_learning_vocab_progress_profile-a': JSON.stringify({
+            legacy: {
+                seen: 4,
+                correct: 3,
+                wrong: 1,
+                streak: 1,
+                status: 'learning',
+                repetitions: 2,
+                intervalDays: 3,
+                ease: 2.4,
+                dueAt: '2026-07-22T08:00:00.000Z',
+                lastReviewedAt: '2026-07-19T08:00:00.000Z'
+            }
+        })
+    });
+    const progress = loadProgress(storage, () => 'profile-a');
+    const migrated = progress.get('legacy');
+    assert.equal(migrated.schedulerVersion, 'fsrs-5');
+    assert.equal(migrated.schedulerMigration, 'sm2-to-fsrs5');
+    assert.ok(migrated.stabilityDays >= 3);
+    assert.ok(migrated.difficulty >= 1 && migrated.difficulty <= 10);
 }
 
 {
@@ -92,6 +154,55 @@ function loadProgress(storage, getActiveId, onSync) {
     assert.equal(easy.dueAt, '2026-07-21T08:00:00.000Z');
 }
 
+{
+    const storage = createStorage();
+    const progress = loadProgress(storage, () => 'profile-a');
+    const first = progress.record('idempotent-card', 'good', {
+        reviewId: 'review-1',
+        now: '2026-07-19T08:00:00.000Z',
+        responseMode: 'recall',
+        responseMs: 1800
+    });
+    const duplicate = progress.record('idempotent-card', 'good', {
+        reviewId: 'review-1',
+        now: '2026-07-19T08:01:00.000Z',
+        responseMode: 'recall',
+        responseMs: 2000
+    });
+    assert.equal(first.eventPersisted, true);
+    assert.equal(duplicate.duplicate, true, 'retrying a reviewId must not increment progress twice');
+    assert.equal(progress.get('idempotent-card').seen, 1);
+    assert.equal(progress.readReviewEvents().filter(event => event.reviewId === 'review-1').length, 1);
+}
+
+{
+    const storage = createStorage();
+    const progress = loadProgress(storage, () => 'profile-a');
+    progress.record('apple', 'again', { reviewId: 'report-1', now: '2026-07-19T08:00:00.000Z', responseMode: 'recall', responseMs: 4200 });
+    progress.record('apple', 'good', { reviewId: 'report-2', now: '2026-07-20T08:00:00.000Z', responseMode: 'recall', responseMs: 2200 });
+    progress.record('stone', 'hard', { reviewId: 'report-3', now: '2026-07-20T09:00:00.000Z', responseMode: 'scene', responseMs: 5300 });
+    const report = progress.reviewStats([
+        { id: 'apple', word: 'apple', translation: '苹果' },
+        { id: 'stone', word: 'stone', translation: '石头' }
+    ], { now: '2026-07-20T12:00:00.000Z', days: 7 });
+    assert.equal(report.totalReviews, 3);
+    assert.equal(report.correct, 2);
+    assert.equal(report.accuracy, 67);
+    assert.equal(report.daily.length, 7);
+    assert.equal(report.byMode.recall.reviews, 2);
+    assert.equal(report.weakCards[0].cardId, 'apple');
+}
+
+{
+    const reviewEventsKey = 'petbank_learning_vocab_review_events_profile-a';
+    const storage = createStorage({}, [reviewEventsKey]);
+    const progress = loadProgress(storage, () => 'profile-a');
+    const result = progress.record('event-write-failure', 'good', { reviewId: 'partial-1', now: '2026-07-19T08:00:00.000Z' });
+    assert.equal(result.persisted, true, 'progress itself remains persisted');
+    assert.equal(result.eventPersisted, false, 'event persistence failure must be observable');
+    assert.equal(result.partial, true);
+}
+
 const legacyProgressKey = 'petbank_learning_vocab_progress';
 const legacyRewardKey = 'petbank_learning_english_rewards';
 const progressKey = (id) => `${legacyProgressKey}_${id}`;
@@ -120,13 +231,20 @@ const rewardKey = (id) => `${legacyRewardKey}_${id}`;
     const progress = loadProgress(storage, () => activeId);
     progress.record('apple', true);
     progress.record('apple', true);
+    progress.record('event-a', 'good', { reviewId: 'profile-event-a', now: '2026-07-19T08:00:00.000Z' });
     activeId = 'profile-b';
     progress.record('apple', true);
+    assert.equal(progress.readReviewEvents().some(event => event.reviewId === 'profile-event-a'), false, 'B must not read A review events');
+    progress.record('event-b', 'good', { reviewId: 'profile-event-b', now: '2026-07-19T08:00:00.000Z' });
 
     assert.equal(progress.get('apple').streak, 1, 'B must not receive A streak');
     assert.equal(JSON.parse(storage.dump(progressKey('profile-a'))).apple.streak, 2);
     assert.equal(JSON.parse(storage.dump(progressKey('profile-b'))).apple.streak, 1);
+    activeId = 'profile-a';
+    assert.equal(progress.readReviewEvents().some(event => event.reviewId === 'profile-event-a'), true, 'A review events remain isolated');
+    assert.equal(progress.readReviewEvents().some(event => event.reviewId === 'profile-event-b'), false, 'A must not read B review events');
 
+    activeId = 'profile-b';
     const cards = Array.from({ length: 10 }, (_, index) => ({ id: `b-${index}` }));
     cards.forEach((card) => {
         progress.record(card.id, true);

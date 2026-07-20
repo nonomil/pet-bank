@@ -22,6 +22,37 @@
 
 视觉方向采用“明亮像素冒险 + 学习工作台”：绿色草地、蓝色水域、橙色任务强调、白色内容面板；像素素材只负责建立世界感，正文和答案控件保持高对比和清晰层级。动效只用于当前任务/奖励反馈，并遵守 `prefers-reduced-motion`。图标使用现有 Lucide 集成，不用 emoji 充当按钮图标。
 
+### 远征主循环示意
+
+```mermaid
+flowchart LR
+    A[主导航：单词远征] --> B[方块营地]
+    B --> C[双语故事节拍]
+    C --> D[词卡：看图、听音、认读]
+    D --> E{词卡任务完成}
+    E -->|需要复习| D
+    E -->|达标| F[轻量战斗：使用本章单词]
+    F --> G[区域印章 + 词卡收藏 + 经验]
+    G --> H[能力道具升级]
+    H --> I{下一张地图}
+    I -->|草原 → 村庄 → 矿洞 → 下界| B
+    I -->|末影龙竞技场| J[最终 Boss：用累计能力完成挑战]
+```
+
+远征的核心闭环是“故事给目标、词卡给能力、战斗给反馈、地图给长期目标”。幼儿园和小学低年级默认每章只要求少量目标词；重复练习会增加熟练度与远征经验，而不是用失败扣除孩子已有成果。
+
+### Grok 视觉参考
+
+以下是已生成并纳入运行时清单的参考图，正文 UI 仍使用 HTML/CSS 文字和控件保证可读性：
+
+![Minecraft 单词远征地图](../../assets/learn/english-vocab/generated/minecraft-expedition/expedition-map.png)
+
+![草原小径故事场景](../../assets/learn/english-vocab/generated/minecraft-expedition/story-grassland.png)
+
+![末影龙终局场景](../../assets/learn/english-vocab/generated/minecraft-expedition/story-dragon.png)
+
+对应的生成提示词保存在 `assets/learn/english-vocab/generated/minecraft-expedition/prompts/`，仅用于素材追溯；提示词、`docs/` 和临时文件不会进入 Pages 制品。
+
 ## 3. 现有能力与本次收口
 
 ### 已有并保留
@@ -42,7 +73,7 @@
 4. 普通今日会话和区域章节会话都能完整结束；完成一次只产生一个稳定奖励事件。
 5. 地图五区域可以按前置关系逐章推进，战斗使用已获得能力，完成后保留收集物和经验。
 6. Pages 制品只包含允许发布的入口、数据、运行分片和素材，深层 URL 仍能通过资源基址工作。
-7. 文档明确区分当前实现、历史残留和未实现的离线 outbox/多端合并能力。
+7. 文档明确区分当前实现、历史残留和未实现的通用多端合并能力；词卡进度与 review events 已有安全的专用自动合并。
 
 ## 4. 数据与生命周期边界
 
@@ -87,7 +118,7 @@
 
 - 不迁移到 React、Tailwind 或 ES modules。
 - 不重新创建 Supabase 运行时。
-- 不实现离线 outbox、多端冲突合并或家长端新的云端同步协议。
+- 不新增云端协议；复用现有离线 outbox 和 revision 快照。词卡进度/review events 的安全合并已实现，积分、宠物和奖励等非词卡冲突仍走家长端人工处理。
 - 不删除工作树里已有的生成素材、音频、词卡分片或未提交文件。
 - 不把现有独立小游戏原型重写成远征页内部玩法。
 

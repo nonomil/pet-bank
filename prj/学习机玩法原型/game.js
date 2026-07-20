@@ -2,9 +2,19 @@
   'use strict';
 
   const GAME_CONTENT_URL = './assets/generated/learning-games-content.json';
+  const TYPING_INDEX_URL = './assets/generated/english-typing-index.json';
   const TYPING_VIEW_URL = './assets/generated/english-typing-unified.json';
   const TYPING_VIEW_GLOBAL = 'LearningArcadeTypingUnified';
   const HANZI_URL = '../../data/hanzi-questions.json';
+  const HANZI_RUNTIME_URL = './assets/generated/hanzi-pinyin-runtime.json';
+  const FILE_TYPING_FALLBACK_SCRIPTS = [
+    './assets/generated/english-typing-unified.js?v=english-curriculum-v1'
+  ];
+  const FILE_HANZI_FALLBACK_SCRIPTS = [
+    '../../data/vocab/单词库_分级/06_汉字/幼儿园汉字.js?v=hanzi-pack-v1',
+    '../../data/vocab/单词库_分级/07_拼音/常用拼音.js?v=pinyin-pack-v1',
+    '../../data/vocab/单词库_分级/08_幼小衔接/幼小衔接总词库.js?v=bridge-pack-v1'
+  ];
   const SETTINGS_STORAGE_KEY = 'learning-arcade-settings-v1';
   const WORD_SHOOTER_PROGRESSION_STORAGE_KEY = 'petbank_learning_arcade_word_shooter_progression_v1';
   const HANZI_SHARED_VOICE_MAP_URL = '../拼音块收集台原型/assets/voice/map.json';
@@ -303,15 +313,15 @@
   const WORD_DIFFICULTY_TUNING = {
     basic: {
       shooter: { roundGoal: 8, maxEnemies: 2, speedMultiplier: 0.36, crashOnly: true },
-      cannon: { roundGoal: 8, stageGoal: 20, maxTargets: 4, speedMultiplier: 0.68, missLimit: 99 }
+      cannon: { roundGoal: 8, stageGoal: 20, maxTargets: 3, speedMultiplier: 0.68, missLimit: 99 }
     },
     intermediate: {
       shooter: { roundGoal: 10, maxEnemies: 3, speedMultiplier: 0.55, crashOnly: true },
-      cannon: { roundGoal: 16, stageGoal: 20, maxTargets: 5, speedMultiplier: 0.88, missLimit: 5 }
+      cannon: { roundGoal: 16, stageGoal: 20, maxTargets: 3, speedMultiplier: 0.88, missLimit: 5 }
     },
     full: {
       shooter: { roundGoal: 12, maxEnemies: 4, speedMultiplier: 0.72, crashOnly: true },
-      cannon: { roundGoal: 24, stageGoal: 20, maxTargets: 6, speedMultiplier: 1.06, missLimit: 3 }
+      cannon: { roundGoal: 24, stageGoal: 20, maxTargets: 3, speedMultiplier: 1.06, missLimit: 3 }
     }
   };
   const WORD_SHOOTER_STAGE_THEMES = {
@@ -356,9 +366,14 @@
     hasExplicitWordDifficultyChoice: false,
     hasExplicitHanziPackChoice: false,
     content: { games: [], homeNotes: [] },
+    dataReady: { typing: false, hanzi: false },
     words: [],
     allWords: [],
     wordPacks: [],
+    typingIndexReady: false,
+    typingPackFiles: {},
+    typingLoadedPacks: new Set(),
+    wordPackRequestId: 0,
     wordPack: 'minecraft',
     wordDifficulty: 'basic',
     hanziAll: [],
@@ -534,6 +549,11 @@
       stats: []
     }
   };
+  let difficultyCueTimer = null;
+  let savedSettings = {};
+  const dataLoadPromises = new Map();
+  const fileFallbackPromises = new Map();
+  let hanziVoiceMapPromise = null;
 
   const els = {
     gameHome: document.getElementById('gameHome'),
@@ -722,6 +742,25 @@
     return uniqueChars.map(char => state.hanzi.find(item => item.char === char) || { char, pinyin: '', example: '' });
   }
 
+  function loadFileFallbackScripts(urls = []) {
+    if (window.location.protocol !== 'file:') return Promise.resolve();
+    const uniqueUrls = [...new Set(urls.filter(Boolean))];
+    return Promise.all(uniqueUrls.map(url => {
+      if (url.includes('english-typing-unified.js') && window[TYPING_VIEW_GLOBAL]) return Promise.resolve();
+      if (fileFallbackPromises.has(url)) return fileFallbackPromises.get(url);
+      const promise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.async = false;
+        script.src = url;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error(`Failed to load file fallback script: ${url}`));
+        document.head.appendChild(script);
+      });
+      fileFallbackPromises.set(url, promise);
+      return promise;
+    })).then(() => undefined);
+  }
+
   async function readJson(url, fallback) {
     if (window.location.protocol === 'file:') {
       if (url === TYPING_VIEW_URL && window[TYPING_VIEW_GLOBAL]) {
@@ -756,6 +795,16 @@
     } catch (err) {
       state.hanziVoiceMap = fallback;
     }
+  }
+
+  function ensureHanziVoiceMap() {
+    if (!hanziVoiceMapPromise) {
+      hanziVoiceMapPromise = loadHanziVoiceMap().catch(err => {
+        console.warn('[learning-arcade] hanzi voice index unavailable', err);
+        state.hanziVoiceMap = {};
+      });
+    }
+    return hanziVoiceMapPromise;
   }
 
   function flattenHanziLevels(data) {
@@ -869,7 +918,7 @@
       });
       map['kindergarten-hanzi'] = map['level-1'];
     }
-    const kindergartenHanziPack = sampleExternalHanziPack(readGlobalArray('kindergartenHanzi'), {
+    const kindergartenHanziPack = sampleExternalHanziPack(data?.runtimePacks?.hanzi || readGlobalArray('kindergartenHanzi'), {
       maxItems: 160,
       maxLength: 1
     });
@@ -883,7 +932,7 @@
       });
       map['kindergarten-hanzi'] = kindergartenHanziPack;
     }
-    const pinyinCorePack = sampleExternalHanziPack(readBundledPinyinCorePack(), {
+    const pinyinCorePack = sampleExternalHanziPack(data?.runtimePacks?.pinyin || readBundledPinyinCorePack(), {
       maxItems: 120,
       maxLength: 1
     });
@@ -898,7 +947,7 @@
       map['kindergarten-pinyin'] = pinyinCorePack;
     }
     const bridgePack = sampleExternalHanziPack(
-      readBundledBridgeVocabFull().filter(item => String(item?.subject || '').toLowerCase() === 'language'),
+      (data?.runtimePacks?.bridge || readBundledBridgeVocabFull()).filter(item => String(item?.subject || '').toLowerCase() === 'language'),
       {
         maxItems: 180,
         maxLength: 2,
@@ -933,6 +982,7 @@
     if (!packs.length) {
       packs.push(...fallbackLevelPacks);
     }
+    const uniquePacks = [...new Map(packs.map(pack => [pack.id, pack])).values()];
     packs.unshift({
       id: 'all',
       title: '全部题卡',
@@ -940,7 +990,7 @@
       suitability: '适合想混着多玩一会儿。',
       count: 0
     });
-    return { packs, map };
+    return { packs: [packs[0], ...uniquePacks], map };
   }
 
   function preferredHanziPackId(packs = state.hanziPacks) {
@@ -987,18 +1037,226 @@
         id: String(pack.id),
         title: String(pack.title),
         description: String(pack.description || ''),
-        count: Number(pack.count) || 0
+        count: Number(pack.count) || 0,
+        files: Array.isArray(pack.files) ? pack.files.map(file => String(file || '')).filter(Boolean) : []
       }));
+  }
+
+  function initializeFallbackData() {
+    state.allWords = FALLBACK_VOCAB;
+    state.wordPacks = normalizeWordPacks([]);
+    state.words = wordsForDifficulty();
+    state.hanziAll = FALLBACK_HANZI;
+    state.hanziLevels = { all: FALLBACK_HANZI };
+    state.hanziPacks = [{
+      id: 'all',
+      title: '全部题卡',
+      description: '把当前可用题卡都放进来。',
+      suitability: '适合想混着多玩一会儿。',
+      count: FALLBACK_HANZI.length
+    }];
+    state.hanzi = FALLBACK_HANZI;
+  }
+
+  function applySavedSettings() {
+    state.pinyinStarterSeen = Boolean(savedSettings._pinyinStarterSeen);
+    state.snakeStarterSeen = Boolean(savedSettings._snakeStarterSeen);
+    state.hasExplicitWordDifficultyChoice = Boolean(
+      savedSettings._explicitWordDifficulty
+      || (typeof savedSettings.wordDifficulty === 'string' && savedSettings.wordDifficulty !== 'basic')
+    );
+    if (WORD_DIFFICULTY_OPTIONS.some(option => option.id === savedSettings.wordDifficulty)) {
+      state.wordDifficulty = savedSettings.wordDifficulty;
+    }
+    if (typeof savedSettings.wordPack === 'string' && savedSettings.wordPack) {
+      state.wordPack = savedSettings.wordPack;
+    }
+    if (typeof savedSettings.hanziPack === 'string' && savedSettings.hanziPack) {
+      state.hanziPack = savedSettings.hanziPack;
+    }
+    state.hasExplicitHanziPackChoice = Boolean(
+      savedSettings._explicitHanziPack
+      || (typeof savedSettings.hanziPack === 'string' && savedSettings.hanziPack !== preferredHanziPackId(state.hanziPacks))
+    );
+  }
+
+  function applyTypingData(typingViewData) {
+    const typingCards = Array.isArray(typingViewData?.cards) ? typingViewData.cards : FALLBACK_VOCAB;
+    state.allWords = normalizeTypingViewCards(typingCards);
+    state.wordPacks = normalizeWordPacks(typingViewData?.packs);
+    state.typingIndexReady = true;
+    state.typingPackFiles = {};
+    state.typingLoadedPacks = new Set(state.wordPacks.map(pack => pack.id));
+    if (state.wordPacks.some(pack => pack.id === savedSettings.wordPack)) {
+      state.wordPack = savedSettings.wordPack;
+    }
+    if (!state.wordPacks.some(pack => pack.id === state.wordPack)) {
+      state.wordPack = state.wordPacks[0]?.id || 'minecraft';
+    }
+    state.words = wordsForDifficulty();
+    state.dataReady.typing = true;
+  }
+
+  function applyTypingIndex(typingIndexData) {
+    const packs = normalizeWordPacks(typingIndexData?.packs);
+    state.allWords = [];
+    state.wordPacks = packs.length ? packs : normalizeWordPacks([]);
+    state.typingPackFiles = Object.fromEntries(state.wordPacks.map(pack => [pack.id, pack.files]));
+    state.typingLoadedPacks = new Set();
+    state.typingIndexReady = true;
+    if (state.wordPacks.some(pack => pack.id === savedSettings.wordPack)) {
+      state.wordPack = savedSettings.wordPack;
+    }
+    if (!state.wordPacks.some(pack => pack.id === state.wordPack)) {
+      state.wordPack = state.wordPacks.some(pack => pack.id === 'minecraft')
+        ? 'minecraft'
+        : (state.wordPacks[0]?.id || 'minecraft');
+    }
+    state.words = [];
+  }
+
+  function mergeTypingPackData(packId, typingPackData) {
+    const normalized = normalizeTypingViewCards(typingPackData?.cards);
+    const existingKeys = new Set(state.allWords.map(card => `${card.sourcePackGroup}:${card.word}`));
+    state.allWords.push(...normalized.filter(card => {
+      const key = `${card.sourcePackGroup}:${card.word}`;
+      if (existingKeys.has(key)) return false;
+      existingKeys.add(key);
+      return true;
+    }));
+    state.typingLoadedPacks.add(packId);
+    state.dataReady.typing = true;
+  }
+
+  function applyHanziData(hanziData, hanziRuntimeData) {
+    const normalizedHanzi = normalizeHanziPacks({ ...hanziData, runtimePacks: hanziRuntimeData });
+    const combinedHanzi = Object.values(normalizedHanzi.map).flat();
+    const uniqueCombinedHanzi = combinedHanzi.filter((item, index, list) => {
+      const key = `${item?.char || ''}:${normalizePinyin(item?.pinyin)}`;
+      return key && list.findIndex(candidate => `${candidate?.char || ''}:${normalizePinyin(candidate?.pinyin)}` === key) === index;
+    });
+    state.hanziAll = uniqueCombinedHanzi.length ? uniqueCombinedHanzi : FALLBACK_HANZI;
+    state.hanziLevels = Object.keys(normalizedHanzi.map).length ? { ...normalizedHanzi.map, all: state.hanziAll } : { all: state.hanziAll };
+    state.hanziPacks = normalizedHanzi.packs.length ? normalizedHanzi.packs : [{
+      id: 'all',
+      title: '全部题卡',
+      description: '把当前可用题卡都放进来。',
+      count: state.hanziAll.length
+    }];
+    state.hasExplicitHanziPackChoice = Boolean(
+      savedSettings._explicitHanziPack
+      || (typeof savedSettings.hanziPack === 'string' && savedSettings.hanziPack !== preferredHanziPackId(state.hanziPacks))
+    );
+    if (state.hanziPacks.some(pack => pack.id === savedSettings.hanziPack)) {
+      state.hanziPack = savedSettings.hanziPack;
+    } else {
+      state.hanziPack = preferredHanziPackId(state.hanziPacks);
+    }
+    state.hanzi = hanziItemsForPack(state.hanziPack);
+    state.dataReady.hanzi = true;
+  }
+
+  async function ensureTypingData() {
+    if (state.dataReady.typing && state.typingLoadedPacks.has(state.wordPack)) return;
+    if (!dataLoadPromises.has('typing-index')) {
+      const promise = (async () => {
+        if (window.location.protocol === 'file:') {
+          try {
+            await loadFileFallbackScripts(FILE_TYPING_FALLBACK_SCRIPTS);
+          } catch (err) {
+            console.warn('[learning-arcade] file typing fallback unavailable', err);
+          }
+          applyTypingData(await readJson(TYPING_VIEW_URL, { cards: FALLBACK_VOCAB }));
+          return;
+        }
+        applyTypingIndex(await readJson(TYPING_INDEX_URL, { packs: [] }));
+      })().catch(err => {
+        console.warn('[learning-arcade] typing data unavailable', err);
+        applyTypingData({ cards: FALLBACK_VOCAB });
+      });
+      dataLoadPromises.set('typing-index', promise);
+    }
+    await dataLoadPromises.get('typing-index');
+    if (window.location.protocol !== 'file:') {
+      await ensureTypingPack(state.wordPack);
+    }
+    renderWordDifficultySwitch();
+  }
+
+  async function ensureTypingPack(packId = state.wordPack) {
+    if (!state.typingIndexReady || state.typingLoadedPacks.has(packId)) return;
+    const loadKey = `typing-pack:${packId}`;
+    if (!dataLoadPromises.has(loadKey)) {
+      const promise = (async () => {
+        const files = Array.isArray(state.typingPackFiles[packId]) ? state.typingPackFiles[packId] : [];
+        if (!files.length) {
+          mergeTypingPackData(packId, { cards: FALLBACK_VOCAB });
+          return;
+        }
+        const data = await Promise.all(files.map(file => readJson(`./assets/generated/${file}`, { cards: FALLBACK_VOCAB })));
+        data.forEach(packData => mergeTypingPackData(packId, packData));
+      })().catch(err => {
+        console.warn(`[learning-arcade] typing pack unavailable: ${packId}`, err);
+        mergeTypingPackData(packId, { cards: FALLBACK_VOCAB });
+      });
+      dataLoadPromises.set(loadKey, promise);
+    }
+    await dataLoadPromises.get(loadKey);
+    if (state.wordPack === packId) {
+      state.words = wordsForDifficulty();
+    }
+  }
+
+  async function ensureHanziData() {
+    if (state.dataReady.hanzi) return;
+    if (!dataLoadPromises.has('hanzi')) {
+      const promise = (async () => {
+        try {
+          await loadFileFallbackScripts(FILE_HANZI_FALLBACK_SCRIPTS);
+        } catch (err) {
+          console.warn('[learning-arcade] file hanzi fallback unavailable', err);
+        }
+        const [hanziData, hanziRuntimeData] = await Promise.all([
+          readJson(HANZI_URL, { levels: { 1: FALLBACK_HANZI } }),
+          readJson(HANZI_RUNTIME_URL, {})
+        ]);
+        applyHanziData(hanziData, hanziRuntimeData);
+        renderWordDifficultySwitch();
+      })().catch(err => {
+        console.warn('[learning-arcade] hanzi data unavailable', err);
+        applyHanziData({ levels: { 1: FALLBACK_HANZI } }, {});
+      });
+      dataLoadPromises.set('hanzi', promise);
+    }
+    await dataLoadPromises.get('hanzi');
+  }
+
+  function ensureGameData(gameId) {
+    if (gameId === 'word-shooter') return ensureTypingData();
+    if (['word-cannon', 'pinyin-snake', 'hanzi-jumper'].includes(gameId)) return ensureHanziData();
+    return Promise.resolve();
   }
 
   function wordsForPack(packId = state.wordPack) {
     const allWords = state.allWords.length ? state.allWords : FALLBACK_VOCAB;
-    if (!allWords.length || packId === 'all') return allWords;
+    if (!state.typingIndexReady) {
+      if (!allWords.length || packId === 'all') return allWords;
+    }
+    if (!allWords.length) return [];
+    if (packId === 'all') {
+      return allWords.filter(word => ['minecraft', 'kindergarten', 'elementary', 'junior_high'].includes(word.sourcePackGroup));
+    }
     if (packId === 'curriculum-all') {
       return allWords.filter(word => ['core-english', 'extension-english'].includes(word.sourcePackGroup));
     }
     const filtered = allWords.filter(word => word.sourcePackGroup === packId);
-    return filtered.length ? filtered : allWords;
+    return filtered;
+  }
+
+  function wordPackCount(packId = state.wordPack) {
+    const loadedCount = wordsForPack(packId).length;
+    if (loadedCount && state.typingLoadedPacks.has(packId)) return loadedCount;
+    return Number(state.wordPacks.find(pack => pack.id === packId)?.count) || 0;
   }
 
   function wordsForDifficulty(level = state.wordDifficulty) {
@@ -1300,7 +1558,7 @@
         aria-pressed="${state.wordPack === pack.id ? 'true' : 'false'}"
         title="${pack.description || `${pack.title}词库`}">
         <span>${pack.title}</span>
-        <small>${wordsForPack(pack.id).length}</small>
+        <small>${wordPackCount(pack.id)}</small>
       </button>
     `).join('');
   }
@@ -1351,10 +1609,14 @@
     const badge = gameId === 'word-cannon' ? els.cannonDifficultyBadge : els.wordDifficultyBadge;
     if (!badge) return;
     state.difficultyCue = { gameId, level };
+    if (difficultyCueTimer) window.clearTimeout(difficultyCueTimer);
     badge.classList.remove('is-pulsing');
     void badge.offsetWidth;
     badge.classList.add('is-pulsing');
-    window.setTimeout(() => badge.classList.remove('is-pulsing'), 1200);
+    difficultyCueTimer = window.setTimeout(() => {
+      badge.classList.remove('is-pulsing');
+      difficultyCueTimer = null;
+    }, 1200);
     sfx.difficulty(level);
   }
 
@@ -1378,9 +1640,12 @@
     renderDifficultyBadge(els.cannonDifficultyBadge, 'word-cannon');
   }
 
-  function setWordPack(packId, options = {}) {
+  async function setWordPack(packId, options = {}) {
     if (!state.wordPacks.some(pack => pack.id === packId)) return;
     if (state.wordPack === packId && !options.force) return;
+    const requestId = ++state.wordPackRequestId;
+    if (state.typingIndexReady) await ensureTypingPack(packId);
+    if (state.wordPackRequestId !== requestId) return;
     state.wordPack = packId;
     state.words = wordsForDifficulty();
     state.wordIndex = 0;
@@ -1388,7 +1653,7 @@
     if (!options.skipSave) saveSettings();
     renderWordDifficultySwitch();
     if (options.restart && state.activeGame === 'word-shooter') {
-      openGame('word-shooter');
+      await openGame('word-shooter');
     }
     if (state.activeGame === 'word-shooter') {
       triggerDifficultyCue('word-shooter', state.wordDifficulty);
@@ -1725,6 +1990,7 @@
     if (!filtered.length) {
       return;
     }
+    await ensureHanziVoiceMap();
     stopHanziVoicePlayback();
     const token = state.hanziVoiceToken;
     for (const line of filtered) {
@@ -1975,11 +2241,13 @@
     els.gameHome.hidden = false;
     els.gameHome.removeAttribute('aria-hidden');
     els.gameScreen.hidden = true;
+    els.gameScreen.removeAttribute('aria-busy');
     els.gameScreen.dataset.activeGame = 'home';
     document.querySelectorAll('[data-game-panel]').forEach(panel => { panel.hidden = true; });
   }
 
-  function openGame(gameId) {
+  async function openGame(gameId) {
+    if (!['word-shooter', 'word-cannon', 'pinyin-snake', 'hanzi-jumper'].includes(gameId)) return;
     stopWordShooter();
     stopWordCannon();
     stopSnake();
@@ -1988,9 +2256,13 @@
     state.activeGame = gameId;
     els.gameScreen.hidden = false;
     els.gameScreen.dataset.activeGame = gameId;
+    els.gameScreen.setAttribute('aria-busy', 'true');
     els.gameScreen.focus({ preventScroll: true });
     els.gameHome.hidden = true;
     els.gameHome.setAttribute('aria-hidden', 'true');
+    document.querySelectorAll('[data-game-panel]').forEach(panel => { panel.hidden = true; });
+    await ensureGameData(gameId);
+    if (state.activeGame !== gameId) return;
     document.querySelectorAll('[data-game-panel]').forEach(panel => {
       panel.hidden = panel.dataset.gamePanel !== gameId;
     });
@@ -2004,6 +2276,7 @@
       }
     }
     renderWordDifficultySwitch();
+    els.gameScreen.removeAttribute('aria-busy');
     if (gameId === 'word-shooter') startWordShooter();
     if (gameId === 'word-cannon') {
       startWordCannon();
@@ -2195,14 +2468,40 @@
     return state.wordShooter.enemyId % WORD_SHOOTER_LANES.length;
   }
 
+  function nextWordShooterWord() {
+    const ws = state.wordShooter;
+    const list = ws.roundWords.length
+      ? ws.roundWords
+      : (state.words.length ? state.words : FALLBACK_VOCAB);
+    if (!list.length) return FALLBACK_VOCAB[0];
+
+    const occupiedStarts = new Set(
+      wordShooterEnemiesSorted()
+        .map(enemy => String(enemy.wordData?.word || '').charAt(0))
+        .filter(Boolean)
+    );
+    const start = ((ws.spawnCursor % list.length) + list.length) % list.length;
+    for (let offset = 0; offset < list.length; offset += 1) {
+      const index = (start + offset) % list.length;
+      const candidate = list[index];
+      const initial = String(candidate?.word || '').charAt(0);
+      if (initial && !occupiedStarts.has(initial)) {
+        ws.spawnCursor = (index + 1) % list.length;
+        return candidate;
+      }
+    }
+
+    ws.spawnCursor = (start + 1) % list.length;
+    return list[start];
+  }
+
   function createWordShooterEnemy(laneIndex = 0) {
     const ws = state.wordShooter;
     const phase = wordShooterPhaseForCompletedWords();
-    const wordData = wordShooterWordAt(ws.spawnCursor);
+    const wordData = nextWordShooterWord();
     const enemyId = ws.enemyId + 1;
     const fighter = WORD_SHOOTER_ASSETS.enemyFighters[(enemyId - 1) % WORD_SHOOTER_ASSETS.enemyFighters.length];
     ws.enemyId = enemyId;
-    ws.spawnCursor = (ws.spawnCursor + 1) % Math.max(1, state.words.length);
     ws.learning.tasksPresented += 1;
     return {
       id: `enemy-${enemyId}`,
@@ -3626,12 +3925,15 @@
     const choices = [{ text: wordData.pinyin, correct: true }];
     const pool = pinyinOptionPool(wordData.pinyin);
     const targetCount = pinyinRacerTargetLayout().length;
+    const fallbackPool = ['ba', 'ma', 'shi', 'xin', 'yue'];
+    const used = new Set(choices.map(choice => choice.text));
     while (choices.length < targetCount) {
-      const candidate = pool[(state.wordCannon.targetId + choices.length * 5) % Math.max(1, pool.length)] || `${wordData.pinyin}${choices.length}`;
-      if (!choices.some(choice => choice.text === candidate)) choices.push({ text: candidate, correct: false });
-      if (choices.length < targetCount && pool.length < choices.length) {
-        choices.push({ text: ['ba', 'ma', 'shi', 'xin', 'yue'][choices.length] || 'pin', correct: false });
-      }
+      const poolCandidate = pool[(state.wordCannon.targetId + choices.length * 5) % Math.max(1, pool.length)];
+      const candidate = [poolCandidate, ...pool, ...fallbackPool, `pin${String.fromCharCode(97 + choices.length)}`]
+        .find(item => item && !used.has(item));
+      if (!candidate) break;
+      choices.push({ text: candidate, correct: false });
+      used.add(candidate);
     }
     const rotated = choices.slice(0, targetCount);
     const currentCorrectIndex = rotated.findIndex(choice => choice.correct);
@@ -3966,7 +4268,7 @@
         wc.learning.tasksResolved += 1;
         wc.learning.correctChoice += 1;
         if (!wc.taskHadRetry) wc.learning.firstTryCorrect += 1;
-        wc.completedReview.push({ char: caught.char || '', pinyin: finishedWord });
+        wc.completedReview.push({ char: caughtTarget?.char || '', pinyin: finishedWord });
         wc.score += Math.max(1, finishedWord.length);
         wc.combo += 1;
         wc.sprintUntil = wc.elapsedMs + 420;
@@ -3974,7 +4276,7 @@
         state.combo = wc.combo;
         spawnCannonImpact(caughtTarget.id, `+${Math.max(1, finishedWord.length)}`);
         sfx.impact('basic');
-        if (els.cannonFeedback) els.cannonFeedback.textContent = `接到 ${caught.char || ''} 的拼音 ${finishedWord}，连击 ${wc.combo}`;
+        if (els.cannonFeedback) els.cannonFeedback.textContent = `接到 ${caughtTarget?.char || ''} 的拼音 ${finishedWord}，连击 ${wc.combo}`;
       } else {
         wc.combo = 0;
         wc.misses += 1;
@@ -4730,7 +5032,7 @@
         </div>
         <div class="runner-feedback-badge is-${state.jumper.lastResult || 'ready'}" data-runner-feedback>${state.jumper.lastResult === 'correct' ? `连击 ${state.jumper.combo}` : state.jumper.lastResult === 'wrong' ? `目标 ${target?.char || ''}` : state.jumper.lastResult === 'finish' ? `最高 ${state.jumper.bestCombo}` : `目标 ${target?.char || ''}`}</div>
         <section class="hanzi-task-card" aria-label="当前汉字提示">
-          <img class="hanzi-task-image" src="${HANZI_IMAGE_BASE}${encodeURIComponent(target?.char || '')}.png" alt="" aria-hidden="true" onerror="this.hidden=true">
+          <img class="hanzi-task-image" src="${HANZI_IMAGE_BASE}${encodeURIComponent(target?.char || '')}.webp" alt="" aria-hidden="true" onerror="this.hidden=true">
           <div class="hanzi-task-copy">
             <span>${normalizePinyin(target?.pinyin)}</span>
             <strong>${maskedHanziExample(target)}</strong>
@@ -5044,52 +5346,10 @@
   });
 
   async function init() {
-    const [contentData, typingViewData, hanziData] = await Promise.all([
-      readJson(GAME_CONTENT_URL, { games: [], homeNotes: [] }),
-      readJson(TYPING_VIEW_URL, { cards: FALLBACK_VOCAB }),
-      readJson(HANZI_URL, { levels: { 1: FALLBACK_HANZI } }),
-      loadHanziVoiceMap()
-    ]);
-    state.content = contentData;
-    const typingCards = Array.isArray(typingViewData.cards) ? typingViewData.cards : FALLBACK_VOCAB;
-    state.allWords = normalizeTypingViewCards(typingCards);
-    state.wordPacks = normalizeWordPacks(typingViewData.packs);
-    const savedSettings = readSavedSettings();
-    state.pinyinStarterSeen = Boolean(savedSettings._pinyinStarterSeen);
-    state.snakeStarterSeen = Boolean(savedSettings._snakeStarterSeen);
-    state.hasExplicitWordDifficultyChoice = Boolean(
-      savedSettings._explicitWordDifficulty
-      || (typeof savedSettings.wordDifficulty === 'string' && savedSettings.wordDifficulty !== 'basic')
-    );
-    if (WORD_DIFFICULTY_OPTIONS.some(option => option.id === savedSettings.wordDifficulty)) {
-      state.wordDifficulty = savedSettings.wordDifficulty;
-    }
-    if (state.wordPacks.some(pack => pack.id === savedSettings.wordPack)) {
-      state.wordPack = savedSettings.wordPack;
-    }
-    if (!state.wordPacks.some(pack => pack.id === state.wordPack)) {
-      state.wordPack = state.wordPacks[0]?.id || 'minecraft';
-    }
-    state.words = wordsForDifficulty();
-    const normalizedHanzi = normalizeHanziPacks(hanziData);
-    const combinedHanzi = Object.values(normalizedHanzi.map).flat();
-    const uniqueCombinedHanzi = combinedHanzi.filter((item, index, list) => {
-      const key = `${item?.char || ''}:${normalizePinyin(item?.pinyin)}`;
-      return key && list.findIndex(candidate => `${candidate?.char || ''}:${normalizePinyin(candidate?.pinyin)}` === key) === index;
-    });
-    state.hanziAll = uniqueCombinedHanzi.length ? uniqueCombinedHanzi : FALLBACK_HANZI;
-    state.hanziLevels = Object.keys(normalizedHanzi.map).length ? { ...normalizedHanzi.map, all: state.hanziAll } : { all: state.hanziAll };
-    state.hanziPacks = normalizedHanzi.packs.length ? normalizedHanzi.packs : [{ id: 'all', title: '全部题卡', description: '全部拼音题卡。', count: state.hanziAll.length }];
-    state.hasExplicitHanziPackChoice = Boolean(
-      savedSettings._explicitHanziPack
-      || (typeof savedSettings.hanziPack === 'string' && savedSettings.hanziPack !== preferredHanziPackId(state.hanziPacks))
-    );
-    if (state.hanziPacks.some(pack => pack.id === savedSettings.hanziPack)) {
-      state.hanziPack = savedSettings.hanziPack;
-    } else {
-      state.hanziPack = preferredHanziPackId(state.hanziPacks);
-    }
-    state.hanzi = hanziItemsForPack(state.hanziPack);
+    state.content = await readJson(GAME_CONTENT_URL, { games: [], homeNotes: [] });
+    savedSettings = readSavedSettings();
+    initializeFallbackData();
+    applySavedSettings();
     renderHomeCards();
     renderWordDifficultySwitch();
     renderWordShooterHangar();
@@ -5170,13 +5430,10 @@
         words: state.words.length
       };
     },
-    setWordPack: packId => {
-      setWordPack(packId, { restart: false });
-      return {
-        wordPack: state.wordPack,
-        words: state.words.length
-      };
-    },
+    setWordPack: packId => setWordPack(packId, { restart: false }).then(() => ({
+      wordPack: state.wordPack,
+      words: state.words.length
+    })),
     resetWordSettings: () => {
       resetWordSettings({ restart: false });
       return {
@@ -5188,11 +5445,11 @@
     wordPack: () => ({
       current: state.wordPack,
       currentTitle: currentWordPackMeta().title,
-      count: wordsForPack(state.wordPack).length,
+      count: wordPackCount(state.wordPack),
       total: state.allWords.length,
       packs: state.wordPacks.map(pack => ({
         ...pack,
-        count: wordsForPack(pack.id).length
+        count: wordPackCount(pack.id)
       }))
     }),
     wordDifficulty: () => ({

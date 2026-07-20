@@ -5,22 +5,24 @@ import test from 'node:test';
 
 const repoRoot = process.cwd();
 const learningArcadeHtml = path.join(repoRoot, 'prj', '学习机玩法原型', 'index.html');
+const learningArcadeGame = path.join(repoRoot, 'prj', '学习机玩法原型', 'game.js');
 const wordMemoryHtml = path.join(repoRoot, 'prj', '单词记忆射击场原型', 'index.html');
 
 function read(filePath) {
   return fs.readFileSync(filePath, 'utf8');
 }
 
-test('learning arcade loads vocabulary fallback scripts only for file protocol', () => {
-  const source = read(learningArcadeHtml);
+test('learning arcade injects vocabulary fallback scripts only when a file game opens', () => {
+  const htmlSource = read(learningArcadeHtml);
+  const gameSource = read(learningArcadeGame);
 
-  assert.match(source, /loadFileFallbackScripts/);
-  assert.match(source, /location\.protocol\s*!==\s*['"]file:/);
-  assert.match(source, /document\.write/);
-  assert.match(source, /minecraft-typing-expanded\.js/);
-  assert.match(source, /english-typing-unified\.js/);
-  assert.doesNotMatch(source, /<script\s+src=["']\.\/assets\/generated\/(?:minecraft-typing-expanded|english-typing-unified)\.js/i);
-  assert.doesNotMatch(source, /<script\s+src=["']\.\.\/\.\.\/data\/vocab\/单词库_分级\/[^"']+\.js/i);
+  assert.match(gameSource, /loadFileFallbackScripts/);
+  assert.match(gameSource, /location\.protocol\s*===\s*['"]file:/);
+  assert.match(gameSource, /english-typing-unified\.js/);
+  assert.match(gameSource, /幼儿园汉字\.js/);
+  assert.doesNotMatch(htmlSource, /fallbackScripts|document\.write/);
+  assert.doesNotMatch(htmlSource, /<script\s+src=["']\.\/assets\/generated\/(?:minecraft-typing-expanded|english-typing-unified)\.js/i);
+  assert.doesNotMatch(htmlSource, /<script\s+src=["']\.\.\/\.\.\/data\/vocab\/单词库_分级\/[^"']+\.js/i);
 });
 
 test('word memory loads only the selected file protocol fallback deck', () => {
