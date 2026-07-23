@@ -3938,7 +3938,7 @@ function showBattleModal(battle) {
     modal.classList.add('show');
 
     const pet = PetSystem.getState();
-    const arenaBg = `assets/arena/arena-${battle.chapter || 1}.png`;
+    const arenaBg = `assets/arena/arena-${battle.chapter || 1}.webp`;
     const petImg = (PetSystem.getCurrentStageImage ? PetSystem.getCurrentStageImage() : '') || '';
     const monsterImg = `assets/monsters/${battle.monster.id}.webp`;
     const petName = pet.species_data?.name || '宠物';
