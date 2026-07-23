@@ -783,11 +783,6 @@ pruneMinecraftVocabSourceFromArtifact();
 prunePixelWorldsSourceDataFromArtifact();
 
 copyDirWithFilter('prj/学习机玩法原型', includeLearningArcadeRuntime);
-copyDirWithFilterTo(
-    'prj/拼音块收集台原型',
-    'prj/拼音块收集台原型',
-    (rel) => rel === 'assets' || rel === 'assets/voice' || rel.startsWith('assets/voice/')
-);
 copyDirWithFilter('prj/单词记忆射击场原型', includeWordMemoryRuntime);
 copyDirWithFilterTo('prj/消灭苦力怕打字游戏', 'app/playground/typing-defense-runtime', includeTypingDefenseRuntime);
 sanitizePublishedWordMemoryCards();
