@@ -82,12 +82,21 @@
         if (data.version !== 1 || !data.launchId || !data.bookId || !data.completionId) return;
         const launches = readLaunches();
         const launch = launches[data.launchId];
-        if (!launch || launch.bookId !== data.bookId || launch.expiresAt < Date.now()) {
-            sendResult(event, { launchId: data.launchId, bookId: data.bookId, completionId: data.completionId, status: 'rejected' });
+        const launchProfileRef = String(launch?.profileRef || '');
+        const messageProfileRef = String(data.profileRef || '');
+        if (
+            !launch
+            || launch.bookId !== data.bookId
+            || launch.expiresAt < Date.now()
+            || !launchProfileRef
+            || launchProfileRef !== messageProfileRef
+            || getProfileId() !== launchProfileRef
+        ) {
+            sendResult(event, { launchId: data.launchId, bookId: data.bookId, completionId: data.completionId, profileRef: messageProfileRef, status: 'rejected' });
             return;
         }
         if (launch.used) {
-            sendResult(event, { launchId: data.launchId, bookId: data.bookId, completionId: data.completionId, status: 'duplicate' });
+            sendResult(event, { launchId: data.launchId, bookId: data.bookId, completionId: data.completionId, profileRef: launchProfileRef, status: 'duplicate' });
             showMessage('这本绘本的首读奖励已经领取过了。', 'muted');
             return;
         }
@@ -97,7 +106,7 @@
         try {
             result = root.CoreRewardService?.claim?.({
                 eventId,
-                profileId: getProfileId(),
+                profileId: launchProfileRef,
                 source: 'game',
                 sourceId: 'picturebook-library',
                 occurredAt: String(data.occurredAt || new Date().toISOString()),
@@ -111,14 +120,14 @@
             result = null;
         }
         if (!result || (!result.accepted && !result.duplicate)) {
-            sendResult(event, { launchId: data.launchId, bookId: data.bookId, completionId: data.completionId, status: 'rejected' });
+            sendResult(event, { launchId: data.launchId, bookId: data.bookId, completionId: data.completionId, profileRef: launchProfileRef, status: 'rejected' });
             showMessage('阅读已记录，但奖励暂未到账，请稍后重试。', 'error');
             return;
         }
         launches[data.launchId] = { ...launch, used: true, completionId: data.completionId };
         writeLaunches(launches);
         const status = result.duplicate ? 'duplicate' : 'accepted';
-        sendResult(event, { launchId: data.launchId, bookId: data.bookId, completionId: data.completionId, status });
+        sendResult(event, { launchId: data.launchId, bookId: data.bookId, completionId: data.completionId, profileRef: launchProfileRef, status });
         showMessage(status === 'accepted' ? '阅读完成，获得 +8 成长分和 +4 宠物经验。' : '这本绘本的首读奖励已经领取过了。', status === 'accepted' ? 'success' : 'muted');
     }
 
@@ -145,14 +154,15 @@
 
     function launch(storyId) {
         const launchId = createLaunchId();
+        const profileRef = getProfileId();
         const launches = readLaunches();
-        launches[launchId] = { bookId: storyId, expiresAt: Date.now() + Number(state.config.sessionTtlMs || 7200000), used: false };
+        launches[launchId] = { bookId: storyId, profileRef, expiresAt: Date.now() + Number(state.config.sessionTtlMs || 7200000), used: false };
         if (!writeLaunches(launches)) {
             showMessage('无法创建阅读会话，请稍后重试。', 'error');
             return;
         }
         const url = new URL(state.libraryUrl);
-        url.hash = `petbankLaunch=${encodeURIComponent(launchId)}`;
+        url.hash = `petbankLaunch=${encodeURIComponent(launchId)}&petbankProfile=${encodeURIComponent(profileRef)}`;
         const opened = root.open(url.toString(), '_blank');
         if (!opened) showMessage('浏览器阻止了新标签，请点击页面中的独立绘本站链接。', 'error');
     }
@@ -210,4 +220,3 @@
 
     root.Picturebooks = { render, stop, launch };
 }(typeof window !== 'undefined' ? window : globalThis));
-

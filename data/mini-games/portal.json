@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "projectId": "mini-games",
+  "projectUrl": "https://nonomil.github.io/mini-games/",
+  "devProjectUrl": "http://127.0.0.1:7003/",
+  "sessionTtlMs": 7200000,
+  "reward": {
+    "growthPoints": 3,
+    "petExp": 2
+  },
+  "activities": [
+    "hanzi-bubble-runner",
+    "pinyin-star-scout"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "projectId": "learning-center",
+  "projectUrl": "https://nonomil.github.io/learning-center/",
+  "devProjectUrl": "http://127.0.0.1:7001/",
+  "sessionTtlMs": 7200000,
+  "reward": {
+    "growthPoints": 2,
+    "petExp": 1
+  }
+}

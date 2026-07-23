@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "projectId": "word-quest",
+  "projectUrl": "https://nonomil.github.io/word-quest-learning-game/",
+  "devProjectUrl": "http://127.0.0.1:7002/",
+  "sessionTtlMs": 7200000,
+  "reward": {
+    "growthPoints": 10,
+    "petExp": 5
+  }
+}

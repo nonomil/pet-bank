@@ -822,13 +822,13 @@
                             <div>
                                 <span class="playground-games-kicker">学习游戏库</span>
                                 <h2 id="playgroundGamesTitle">选择一项挑战</h2>
-                                <p id="playgroundCatalogHint">全部 · 8 款游戏</p>
+                            <p id="playgroundCatalogHint">全部 · 9 款游戏</p>
                             </div>
-                            <strong class="playground-visible-count"><span id="playgroundVisibleCount">8</span> 款</strong>
+                            <strong class="playground-visible-count"><span id="playgroundVisibleCount">9</span> 款</strong>
                         </header>
                         <nav class="playground-category-tabs" id="playgroundCategoryTabs" aria-label="游戏分类" role="tablist">
                             <button class="playground-category-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="playgroundGameGrid" data-playground-category="all" data-playground-category-tab>
-                                <span>全部</span><small>8</small>
+                                <span>全部</span><small>9</small>
                             </button>
                             <button class="playground-category-tab" type="button" role="tab" aria-selected="false" aria-controls="playgroundGameGrid" data-playground-category="english" data-playground-category-tab>
                                 <span>英语打字</span><small>3</small>
@@ -837,7 +837,7 @@
                                 <span>拼音识字</span><small>3</small>
                             </button>
                             <button class="playground-category-tab" type="button" role="tab" aria-selected="false" aria-controls="playgroundGameGrid" data-playground-category="challenge" data-playground-category-tab>
-                                <span>数学对战</span><small>2</small>
+                                <span>数学对战</span><small>3</small>
                             </button>
                         </nav>
                         <section class="playground-grid" id="playgroundGameGrid" aria-label="游乐场游戏卡片">
@@ -928,6 +928,17 @@
                                 <span class="pg-card-desc">方向键配拼音块，轻一点也很上头，适合切换手感。</span>
                             </span>
                             <span class="pg-card-footer">直接开打<span aria-hidden="true">→</span></span>
+                        </button>
+                        <button class="pg-img-card pg-feature-card" type="button" data-playground-category="challenge" onclick="MiniGamesExternalBridge.launch()">
+                            <span class="pg-card-media pg-card-media-crop-center">
+                                <img src="assets/ui/pg-card-hanzi.webp?v=20260704b" alt="独立小游戏项目" loading="lazy" decoding="async" fetchpriority="low">
+                            </span>
+                            <span class="pg-card-copy">
+                                <span class="pg-card-kicker">独立项目</span>
+                                <strong class="pg-card-title">独立小游戏项目</strong>
+                                <span class="pg-card-desc">在新页面打开汉字泡泡跑酷和拼音星际巡航，项目之间保持独立。</span>
+                            </span>
+                            <span class="pg-card-footer">打开新窗口<span aria-hidden="true">↗</span></span>
                         </button>
                         </section>
                     </section>

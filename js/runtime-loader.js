@@ -106,9 +106,9 @@
         cardCollection: ['js/travel-memory.js', 'js/card-collection.js'],
         cardArena: ['js/battle-engine.js', 'js/card-arena.js', 'js/card-arena-ui.js'],
         explore: ['js/voice.js', 'js/battle-fx.js', 'js/battle-engine.js', 'js/exploration.js', 'js/pet-story-cases.js', 'js/space-growth-detective.js', 'js/exploration-copy.js', 'js/exploration-chapter.js', 'js/exploration-progress.js', 'js/travel-memory.js', 'js/exploration-detail.js', 'js/pixel-story-page.js', 'js/pixel-story-map.js?v=20260715-stage-fullscreen1', 'js/pixel-story-engine.js?v=20260715-stage-fullscreen1', 'js/minecraft-vocab-exploration-bridge.js?v=1'],
-        playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js', 'js/playground-catalog.js?v=20260719'],
-        learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=7'],
-        minecraftVocab: ['js/minecraft-vocab-expedition.js?v=2', 'js/minecraft-vocab-levels.js?v=1', 'js/minecraft-vocab-loader.js?v=1', 'js/minecraft-vocab-audio.js?v=1', 'js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=2', 'js/minecraft-vocab-exploration-bridge.js?v=1'],
+        playground: ['js/math-pk.js?v=4', 'js/leaderboard.js', 'js/hanzi-progress.js', 'js/hanzi-game.js', 'js/tools.js', 'js/playground-catalog.js?v=20260719', 'js/mini-games-external-bridge.js?v=1'],
+        learn: ['js/english-vocab-progress.js?v=1', 'js/learn-center.js?v=7', 'js/learning-center-external-bridge.js?v=1'],
+        minecraftVocab: ['js/minecraft-vocab-expedition.js?v=2', 'js/minecraft-vocab-levels.js?v=1', 'js/minecraft-vocab-loader.js?v=1', 'js/minecraft-vocab-audio.js?v=1', 'js/minecraft-vocab-session.js?v=1', 'js/minecraft-vocab-page.js?v=2', 'js/minecraft-vocab-exploration-bridge.js?v=1', 'js/word-quest-external-bridge.js?v=1'],
         picturebooks: ['js/picturebook-external-bridge.js'],
         shop: ['js/shop.js'],
         review: ['js/family-review.js']
@@ -387,6 +387,9 @@
                 loadSeries(STYLE_BUNDLES.playground, loadStyle)
             ]);
             await loadSeries(SCRIPT_BUNDLES.playground, loadScript);
+            if (window.MiniGamesExternalBridge && typeof window.MiniGamesExternalBridge.init === 'function') {
+                await window.MiniGamesExternalBridge.init();
+            }
             if (!initFlags.toolboxInit && window.ToolboxSystem && typeof window.ToolboxSystem.init === 'function') {
                 window.ToolboxSystem.init();
                 initFlags.toolboxInit = true;
@@ -399,6 +402,9 @@
         return once('feature-learn', async function () {
             await loadSeries(STYLE_BUNDLES.learn, loadStyle);
             await loadSeries(SCRIPT_BUNDLES.learn, loadScript);
+            if (window.LearningCenterExternalBridge && typeof window.LearningCenterExternalBridge.init === 'function') {
+                await window.LearningCenterExternalBridge.init();
+            }
             if (!initFlags.learnInit && window.LearnCenter && typeof window.LearnCenter.init === 'function') {
                 await window.LearnCenter.init();
                 initFlags.learnInit = true;
