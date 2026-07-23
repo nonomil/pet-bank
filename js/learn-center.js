@@ -2810,6 +2810,9 @@
     async function renderHub(containerId) {
         const container = document.getElementById(containerId || 'learn-container');
         if (!container) return;
+        if (window.LearningCenterExternalBridge && typeof window.LearningCenterExternalBridge.init === 'function') {
+            await window.LearningCenterExternalBridge.init();
+        }
         const catalog = await getCatalog();
         const packs = Array.isArray(catalog.packs) ? catalog.packs : [];
         if (!packs.length) {
@@ -2977,6 +2980,20 @@
                 desc: '需要纸面讲义或入口单时，直接从这里进打印页。',
                 cta: '打开打印中心',
                 onclick: `LearnCenter.openPrint('${summerRecord?.id || ''}')`
+            }),
+            renderPortalCard({
+                id: 'standalone-learning-center',
+                theme: 'sites',
+                emoji: '学',
+                chip: '独立项目',
+                artTitle: '从幼小衔接到小学',
+                artText: '学习中心独立打开',
+                badges: ['独立网址', '新窗口', '本地进度'],
+                kicker: '独立学习中心',
+                title: '学习中心',
+                desc: '把学习资料和学习计划放到独立项目中维护，需要时从这里打开新页面。',
+                cta: '打开独立学习中心',
+                onclick: 'LearningCenterExternalBridge.launch()'
             })
         ].filter(Boolean).join('');
 
@@ -3432,6 +3449,9 @@
                             </div>
                             <span class="learn-demo-stage-note"><i aria-hidden="true"></i> 原创主题 · 学习中心</span>
                         </header>
+                        <section class="learn-portal-grid learn-portal-grid-hero" aria-label="学习项目入口">
+                            ${portalCards}
+                        </section>
                         <div class="learn-hub-panel learn-demo-panel" id="learn-hub-panel" role="tabpanel">${tabPanelMap[activeHubTab] || tabPanelMap.today}</div>
                     </main>
                     <aside class="learn-demo-right-rail" aria-label="个人学习进度">
